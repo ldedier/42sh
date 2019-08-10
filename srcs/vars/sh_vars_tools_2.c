@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/21 22:21:50 by jmartel           #+#    #+#             */
-/*   Updated: 2019/07/31 19:13:56 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/08/10 11:27:56 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,9 @@ int		sh_vars_add_key(t_dy_tab *vars, char *key, char *value)
 **	value is modified, else the key is created in the vars
 **	(or in env if var is NULL).
 **	return:
-**		SUCESS or FAILURE
+**		SUCESS
+**		FAILURE : Malloc error
+**		ERROR : no '=' char found in assignment
 */
 
 int		sh_vars_assignment(t_dy_tab *env, t_dy_tab *vars, char *assignment)
