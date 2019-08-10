@@ -77,9 +77,9 @@ launch "cd"
 	test_launch "mkdir dir ; chmod 666 dir ; cd dir && pwd && cd .. ; chmod 777 dir ; rm -r dir" "rm -rf dir"
 	test_launch "mkdir dir ; chmod 667 dir ; cd dir && pwd && cd .. ; chmod 777 dir ; rm -r dir" "rm -rf dir"
 
-	test_launch "setenv PWD=asd" "cd - ; pwd" "cd - ; pwd"
-	test_launch "setenv OLDPWD=asd" "cd - ; pwd" "cd - ; pwd"
-	test_launch "setenv OLDPWD=asd" "cd .. ; pwd" "cd - ; pwd" "cd - ; pwd"
+	test_launch "PWD=asd" "cd - ; pwd" "cd - ; pwd"
+	test_launch "OLDPWD=asd" "cd - ; pwd" "cd - ; pwd"
+	test_launch "OLDPWD=asd" "cd .. ; pwd" "cd - ; pwd" "cd - ; pwd"
 
 	## ret value
 	test_launch "cd nodir" 'echo $?'
