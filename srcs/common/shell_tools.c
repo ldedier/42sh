@@ -6,17 +6,11 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/14 13:59:30 by ldedier           #+#    #+#             */
-/*   Updated: 2019/07/31 13:37:09 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/08/14 15:01:15 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
-
-int		putchar_int(int i)
-{
-	ft_putchar_fd(i, 0);
-	return (0);
-}
 
 int		sh_reset_shell(int ret)
 {

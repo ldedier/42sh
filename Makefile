@@ -6,11 +6,11 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/08/10 10:52:04 by jmartel          ###   ########.fr        #
+#    Updated: 2019/08/14 14:55:37 by ldedier          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME	= 21sh
+NAME	= 42sh
 
 CC		= gcc
 
@@ -162,7 +162,7 @@ AUTO_SRCS_NO_PREFIX	=	add_choices_from_dir.c auto_completion.c \
 						left_arrow.c right_arrow.c arrows_vertical.c \
 						fill_buffer.c render_choices_tools.c file_tables.c \
 						fill_buffer_from_tables.c add_file_tools.c \
-						auto_completion_tools.c
+						auto_completion_tools.c escape.c
 
 VARS_SRCS_NO_PREFIX	=	sh_vars_tools_1.c sh_vars_tools_2.c \
 						sh_verbose.c sh_verbose_check.c sh_env_tools.c \

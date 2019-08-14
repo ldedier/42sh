@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 16:56:04 by ldedier           #+#    #+#             */
-/*   Updated: 2019/07/27 16:55:19 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/14 14:55:57 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,12 @@ char		*ft_str_to_ascii_dup(char *str)
 
 int			populate_file(t_file *file, char *name, char **path, t_shell *shell)
 {
-	if (!(file->name = ft_strdup(name)))
+	if (!(file->name = ft_strdup_escaped(name)))
 	{
 		free(file);
 		return (1);
 	}
-	if (!(*path = ft_strdup(file->fullname)))
+	if (!(*path = ft_strdup_escaped(file->fullname)))
 	{
 		free(file);
 		return (1);

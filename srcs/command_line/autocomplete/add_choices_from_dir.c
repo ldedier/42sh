@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 12:03:08 by ldedier           #+#    #+#             */
-/*   Updated: 2019/07/27 16:55:01 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/14 14:52:43 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ int			process_add_choices_from_dir(t_shell *shell,
 	int				ret;
 	t_file			*file;
 
-	if (!prefix && !(fullname = ft_strdup(entry->d_name)))
+	if (!prefix && !(fullname = ft_strdup_escaped(entry->d_name)))
 		return (1);
-	else if (prefix && !(fullname = ft_strjoin(prefix, entry->d_name)))
+	else if (prefix && !(fullname = ft_strjoin_escaped(prefix, entry->d_name)))
 		return (1);
 	if ((ret = ft_preprocess_choice_add(command_line,
 					fullname, &prev_to_add)) != 1)

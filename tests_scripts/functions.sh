@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/21 15:58:19 by jmartel           #+#    #+#              #
-#    Updated: 2019/07/13 19:10:36 by jmartel          ###   ########.fr        #
+#    Updated: 2019/08/13 12:25:14 by ldedier          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,7 +59,7 @@ valgrind_test()
 		inner_log_dir="${log_dir}/test_${tried}"
 		error_exit_code=247
 		valgrind --leak-check=full --suppressions=$suppressions_file \
-			--error-exitcode=$error_exit_code --log-file=$tmp_log_file ./21sh < buffer >/dev/null 2>&1
+			--error-exitcode=$error_exit_code --log-file=$tmp_log_file ./42sh < buffer >/dev/null 2>&1
 		ret=$?
 		if [ $ret -eq $error_exit_code ] ; then
 			echo -e "${red}valgrind error, tracing logs at ${inner_log_dir}${eoc}"

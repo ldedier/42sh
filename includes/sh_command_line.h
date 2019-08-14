@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/11 17:20:10 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/06 19:38:12 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/08/14 14:51:47 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -497,4 +497,9 @@ void				process_edit_command_left(
 void				process_edit_command_right(
 	t_command_line *command_line);
 
+/*
+** escape.c
+*/
+char				*ft_strdup_escaped(char *str);
+char				*ft_strjoin_escaped(char *s1, char *s2);
 #endif
