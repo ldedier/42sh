@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 12:31:41 by ldedier           #+#    #+#             */
-/*   Updated: 2019/07/22 08:29:55 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/08/14 19:21:08 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -308,7 +308,7 @@ int					sh_is_replacing(t_ast_builder *ast_builder);
 */
 int					sh_is_term(t_symbol *symbol);
 void				sh_populate_token(
-	t_token *token, t_symbol_id id, int val, t_token_type type);
+	t_token *token, t_symbol_id id, int val);
 int					sh_parse_token_list(t_lr_parser *parser);
 int					sh_parser(t_list *tokens, t_shell *shell);
 

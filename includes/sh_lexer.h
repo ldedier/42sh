@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 11:08:27 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/07 09:35:23 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/14 19:20:46 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,16 +60,8 @@ typedef struct		s_token_union
 	char			*str;
 }					t_token_union;
 
-typedef enum		e_token_type
-{
-	TYPE_INT,
-	TYPE_FLOAT,
-	TYPE_STR
-}					t_token_type;
-
 typedef struct		s_token
 {
-	t_token_type	token_type;
 	t_token_union	token_union;
 	t_symbol_id		id;
 	int				index;
