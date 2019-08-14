@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 11:08:27 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/14 19:20:46 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/14 19:24:37 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ typedef struct		s_token
 	int				index;
 	char			*value;
 	char			expansion;
+	int				index_start;
+	int				index_end;
 }					t_token;
 
 /*
@@ -160,5 +162,7 @@ int					sh_lexer_rule4(t_lexer *lexer);
 void				t_token_update_id(int id, t_token *token);
 t_token				*t_token_new(int id, char *value);
 void				t_token_free(t_token *token);
+
+t_token	*sh_get_token_by_index(t_list *tokens, int index);
 
 #endif
