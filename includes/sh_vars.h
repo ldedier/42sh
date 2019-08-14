@@ -123,32 +123,11 @@
 */
 
 /*
-** sh_verbose_check.c
-*/
-int		sh_verbose_ast(void);
-int		sh_verbose_lexer(void);
-int		sh_verbose_exec(void);
-int		sh_verbose_pipe(void);
-int		sh_verbose_expansion(void);
-
-/*
-** sh_env_tools.c
-*/
-char	*sh_env_get_value(char **env, char *str);
-
-/*
 ** sh_vars_tools_1.c
 */
 int		sh_vars_key_exist(t_dy_tab *vars, char *key);
 int		sh_vars_get_index(t_dy_tab *vars, char *key);
 char	*sh_vars_get_value(t_dy_tab *env, t_dy_tab *vars, char *key);
-
-/*
-** sh_verbose.c
-*/
-void	sh_verbose_update(t_shell *shell);
-int		sh_verbose_traverse(void);
-int		sh_verbose_builtin(void);
 
 /*
 ** sh_env.c
@@ -167,5 +146,26 @@ int		sh_vars_assignment(
 	t_dy_tab *env, t_dy_tab *vars, char *assignment);
 int		sh_vars_assign_key_val(
 	t_dy_tab *env, t_dy_tab *vars, char *key, char *value);
+
+/*
+** sh_verbose_check.c
+*/
+int		sh_verbose_ast(void);
+int		sh_verbose_lexer(void);
+int		sh_verbose_exec(void);
+int		sh_verbose_pipe(void);
+int		sh_verbose_expansion(void);
+
+/*
+** sh_verbose.c
+*/
+void	sh_verbose_update(t_shell *shell);
+int		sh_verbose_traverse(void);
+int		sh_verbose_builtin(void);
+
+/*
+** sh_env_tools.c
+*/
+char	*sh_env_get_value(char **env, char *str);
 
 #endif
