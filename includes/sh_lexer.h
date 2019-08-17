@@ -76,14 +76,24 @@ typedef struct		s_token
 */
 
 /*
-** sh_lexer_rule_4.c
+** sh_lexer.c
 */
-int					sh_lexer_rule4(t_lexer *lexer);
+int					sh_lexer(char *input, t_list **tokens, t_shell *shell);
 
 /*
-** sh_lexer_rule_tools.c
+** sh_lexer_rule_1.c
 */
-int					sh_lexer_is_operator(int op);
+int					sh_lexer_rule1(t_lexer *lexer);
+
+/*
+** sh_lexer_rule_10.c
+*/
+int					sh_lexer_rule10(t_lexer *lexer);
+
+/*
+** sh_lexer_rule_2.c
+*/
+int					sh_lexer_rule2(t_lexer *lexer);
 
 /*
 ** sh_lexer_rule_3.c
@@ -91,9 +101,54 @@ int					sh_lexer_is_operator(int op);
 int					sh_lexer_rule3(t_lexer *lexer);
 
 /*
+** sh_lexer_rule_4.c
+*/
+int					sh_lexer_rule4(t_lexer *lexer);
+
+/*
+** sh_lexer_rule_5.c
+*/
+int					sh_lexer_rule5(t_lexer *lexer);
+
+/*
+** sh_lexer_rule_6.c
+*/
+int					sh_lexer_rule6(t_lexer *lexer);
+
+/*
+** sh_lexer_rule_7.c
+*/
+int					sh_lexer_rule7(t_lexer *lexer);
+
+/*
+** sh_lexer_rule_8.c
+*/
+int					sh_lexer_rule8_assignment(t_lexer *lexer);
+int					sh_lexer_rule8(t_lexer *lexer);
+
+/*
 ** sh_lexer_rule_9.c
 */
 int					sh_lexer_rule9(t_lexer *lexer);
+
+/*
+** sh_lexer_rule_tools.c
+*/
+int					sh_lexer_is_operator(int op);
+
+/*
+** t_lexer.c
+*/
+void				t_lexer_init(t_lexer *lexer, int tok_start);
+int					t_lexer_add_token(t_lexer *lexer);
+void				t_lexer_show(t_lexer *lexer);
+
+/*
+** t_token.c
+*/
+void				t_token_update_id(int id, t_token *token);
+t_token				*t_token_new(int id, char *value);
+void				t_token_free(t_token *token);
 
 /*
 ** t_token_list.c
@@ -108,60 +163,5 @@ t_token				*sh_get_token_by_index(t_list *tokens, int index);
 */
 void				t_token_show(t_token *token);
 void				t_token_show_id(int i);
-
-/*
-** t_token.c
-*/
-void				t_token_update_id(int id, t_token *token);
-t_token				*t_token_new(int id, char *value);
-void				t_token_free(t_token *token);
-
-/*
-** sh_lexer_rule_7.c
-*/
-int					sh_lexer_rule7(t_lexer *lexer);
-
-/*
-** t_lexer.c
-*/
-void				t_lexer_init(t_lexer *lexer, int tok_start);
-int					t_lexer_add_token(t_lexer *lexer);
-void				t_lexer_show(t_lexer *lexer);
-
-/*
-** sh_lexer_rule_10.c
-*/
-int					sh_lexer_rule10(t_lexer *lexer);
-
-/*
-** sh_lexer_rule_8.c
-*/
-int					sh_lexer_rule8_assignment(t_lexer *lexer);
-int					sh_lexer_rule8(t_lexer *lexer);
-
-/*
-** sh_lexer_rule_2.c
-*/
-int					sh_lexer_rule2(t_lexer *lexer);
-
-/*
-** sh_lexer.c
-*/
-int					sh_lexer(char *input, t_list **tokens, t_shell *shell);
-
-/*
-** sh_lexer_rule_6.c
-*/
-int					sh_lexer_rule6(t_lexer *lexer);
-
-/*
-** sh_lexer_rule_1.c
-*/
-int					sh_lexer_rule1(t_lexer *lexer);
-
-/*
-** sh_lexer_rule_5.c
-*/
-int					sh_lexer_rule5(t_lexer *lexer);
 
 #endif

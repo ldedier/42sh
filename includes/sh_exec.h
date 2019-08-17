@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 17:11:16 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/07 16:59:05 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/17 18:37:19 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,11 @@
 # define SH_RET_CMD_NOT_FOUND	127
 # define SH_RET_SIG_RECEIVED	128
 # define SH_RET_CTRL_C			130
+
+/*
+** Builtin return value
+*/
+# define SH_RET_ARG_ERROR		2
 
 extern pid_t g_parent;
 
@@ -99,12 +104,15 @@ typedef struct		s_context
 */
 
 /*
-** sh_execute_pipe_sequence.c
+** sh_debug.c
 */
-void				sh_execute_pipe_sequence_close_pipes_list(
-	t_list *contexts);
-int					sh_execute_pipe_sequence(
-	t_context *context, t_list *contexts);
+void				print_redirection(t_redirection *redirection);
+void				print_redirection_list(t_list *list);
+
+/*
+** sh_exec_builtin.c
+*/
+int					sh_exec_builtin(t_context *context);
 
 /*
 ** sh_execute.c
@@ -114,10 +122,12 @@ int					sh_add_to_pipe_sequence(t_context *context);
 int					sh_process_execute(t_context *context);
 
 /*
-** sh_debug.c
+** sh_execute_pipe_sequence.c
 */
-void				print_redirection(t_redirection *redirection);
-void				print_redirection_list(t_list *list);
+void				sh_execute_pipe_sequence_close_pipes_list(
+	t_list *contexts);
+int					sh_execute_pipe_sequence(
+	t_context *context, t_list *contexts);
 
 /*
 ** sh_execute_pipes.c
@@ -126,22 +136,6 @@ int					sh_process_process_execute_dup_pipes(
 	t_redirection *redir);
 int					sh_process_execute_dup_pipes(t_context *context);
 int					sh_process_execute_close_pipes(t_context *context);
-
-/*
-** sh_execute_tools.c
-*/
-void				sh_close_all_other_contexts(
-	t_context *context, t_list *contexts);
-void				sh_execute_child_builtin(
-	t_context *context, t_list *contexts);
-void				sh_execute_child_binary(
-	t_context *context, t_list *contexts);
-void				sh_execute_child(t_context *context, t_list *contexts);
-
-/*
-** sh_exec_builtin.c
-*/
-int					sh_exec_builtin(t_context *context);
 
 /*
 ** sh_execute_prefix_postfix.c
@@ -153,12 +147,15 @@ int					sh_pre_execution_pipes(t_list *contexts);
 int					sh_post_execution(void);
 
 /*
-** t_context.c
+** sh_execute_tools.c
 */
-void				sh_free_context_dup_lst(void *c, size_t dummy);
-t_context			*t_context_dup(t_context *context);
-int					t_context_init(t_context *context, t_shell *shell);
-void				t_context_free_content(t_context *context);
+void				sh_close_all_other_contexts(
+	t_context *context, t_list *contexts);
+void				sh_execute_child_builtin(
+	t_context *context, t_list *contexts);
+void				sh_execute_child_binary(
+	t_context *context, t_list *contexts);
+void				sh_execute_child(t_context *context, t_list *contexts);
 
 /*
 ** sh_redirections.c
@@ -176,5 +173,13 @@ int					sh_process_fd_aggregation(
 	t_command_metadata *metadata);
 t_redirection		sh_new_redir(
 	t_redirection_type type, int redirected_fd, int fd);
+
+/*
+** t_context.c
+*/
+void				sh_free_context_dup_lst(void *c, size_t dummy);
+t_context			*t_context_dup(t_context *context);
+int					t_context_init(t_context *context, t_shell *shell);
+void				t_context_free_content(t_context *context);
 
 #endif
