@@ -29,6 +29,7 @@ verbose = 0
 
 def read_dir(dir):
     res = {}
+    files = []
     for filename in os.listdir(dir):
         if (os.path.isfile(os.path.join(dir, filename)) == False):
             continue
@@ -36,6 +37,9 @@ def read_dir(dir):
             continue
         if (filename[-2] != '.' or filename[-1] != 'c'):
             continue
+        files.append(filename)
+    files.sort()
+    for filename in files:
         if (verbose >= 2):
             print(filename)
         fd = open(os.path.join(dir, filename))
