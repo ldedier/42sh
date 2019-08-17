@@ -6,13 +6,13 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/08 11:21:43 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/17 20:59:06 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-int		sh_process_traverse_simple_command_exec(t_context *context, int *ret)
+int		sh_traverse_sc_slash_cmd(t_context *context, int *ret)
 {
 	if (!(context->path = ft_strdup(context->params->tbl[0])))
 	{
@@ -56,10 +56,12 @@ int		sh_traverse_simple_command_exec(t_ast_node *node, t_context *context)
 		return (SUCCESS);
 	if (!ft_strchr(context->params->tbl[0], '/'))
 		ret = sh_traverse_sc_no_slash_cmd(context);
-	else if (sh_process_traverse_simple_command_exec(context, &ret) != SUCCESS)
-		return (FAILURE);
-	if (ret == ERROR)
+	else
+		ret = sh_traverse_sc_slash_cmd(context, &ret);
+	if (ret == ERROR || ret == FAILURE)
 		sh_process_execute_close_pipes(context);
+	if (ret == FAILURE)
+		return (FAILURE);
 	sh_traverse_tools_reset_params(context);
 	if (sh_env_update_question_mark(context->shell) == FAILURE)
 		return (FAILURE);
