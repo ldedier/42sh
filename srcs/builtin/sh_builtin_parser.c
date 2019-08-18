@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/15 13:19:47 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/17 22:34:59 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/18 12:13:36 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	parser_get_arg_content(t_args *args, char **argv, int *index)
 	else if (args->type == E_ARGS_STRING || args->type == E_ARGS_INT)
 	{
 		if (!argv[*index + 1] || argv[*index + 1][0] == '-')
-			return (FAILURE);
+			return (ERROR);
 		args->value = argv[*index + 1];
 		index += 1;
 		return (SUCCESS);
@@ -28,7 +28,7 @@ static int	parser_get_arg_content(t_args *args, char **argv, int *index)
 	else if (args->type == E_ARGS_INT)
 	{
 		if (!argv[*index + 1] || argv[*index + 1][0] == '-')
-			return (FAILURE);
+			return (ERROR);
 		args->value = argv[*index + 1];
 		*index += 1;
 		return (SUCCESS);
@@ -55,20 +55,35 @@ static int	paser_short_arg(char **argv, int *index, t_args args[])
 {
 	int		i;
 	int		j;
+	int		found;
 
-	i = 0;
-	while (args[i].type != E_ARGS_END)
+	i = 1;
+	while (argv[*index][i])
 	{
-		j = 1;
-		while (argv[*index][j])
+		found = 0;
+		ft_dprintf(2, "parsing short arg : %c\n", argv[*index][i]);
+		j = 0;
+		while (args[j].type != E_ARGS_END)
 		{
-			if (args[i].name_short == argv[*index][j])
-				return (parser_get_arg_content(args + i, argv, index));
+			if (args[j].name_short == argv[*index][i])
+			{
+				if (parser_get_arg_content(args + j, argv, index))
+				{
+					ft_dprintf(2, "Error found in short arg (by get arg content) : %c\n", argv[*index][i]);
+					return (ERROR);
+				}
+				i++;
+				found = 1;
+				break ;
+			}
 			j++;
 		}
-		i++;
+		if (found)
+			continue ;
+		ft_dprintf(2, "Error found in short arg : %c\n", argv[*index][i - 1]);
+		return (ERROR);
 	}
-	return (FAILURE);
+	return (SUCCESS);
 }
 
 int		sh_builtin_usage(t_args args[], char *name, char *usage)
@@ -116,10 +131,6 @@ int		sh_builtin_parser(int argc, char **argv, t_args args[], int *index)
 
 	*index = 1;
 	ret = 0;
-	// ft_dprintf(2, "builtin parser : argc = %d\nargv : \n", argc);
-	// ft_strtab_put(argv);
-	// ft_dprintf(2, "(null)\n");
-
 	while (*index < argc && argv[*index] && !ret)
 	{
 		if (argv[*index][0] == '-' && argv[*index][1] == '-')
@@ -137,6 +148,7 @@ int		sh_builtin_parser(int argc, char **argv, t_args args[], int *index)
 			break ;
 		(*index)++;
 	}
+	ft_dprintf(2, "parser returned : %d\n", ret);
 	return (ret);
 }
 
