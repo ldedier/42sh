@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/15 13:19:47 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/18 12:13:36 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/18 18:22:51 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int	paser_long_arg(char **argv, int *index, t_args args[])
 			return (parser_get_arg_content(args + i, argv, index));
 		i++;
 	}
-	return (FAILURE);
+	return (ERROR);
 }
 
 static int	paser_short_arg(char **argv, int *index, t_args args[])
@@ -86,7 +86,7 @@ static int	paser_short_arg(char **argv, int *index, t_args args[])
 	return (SUCCESS);
 }
 
-int		sh_builtin_usage(t_args args[], char *name, char *usage)
+int		sh_builtin_usage(t_args args[], char *name, char *usage, t_shell *shell)
 {
 	int		i;
 
@@ -107,7 +107,8 @@ int		sh_builtin_usage(t_args args[], char *name, char *usage)
 		i++;
 	}
 	ft_dprintf(2, EOC);
-	return (FAILURE);
+	sh_env_update_ret_value(shell, SH_RET_ARG_ERROR);
+	return (ERROR);
 }
 
 int		sh_builtin_parser_is_boolean(t_args args[], char opt)

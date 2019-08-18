@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/15 15:13:53 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/18 12:14:08 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/18 18:40:34 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,12 +122,8 @@ int			sh_builtin_type(t_context *context)
 	};
 
 	argv = (char**)context->params->tbl;
-	if ((ret = sh_builtin_parser(ft_strtab_len(argv), argv, args, &index)))
-	{
-		sh_builtin_usage(args, argv[0], TYPE_USAGE);
-		sh_env_update_ret_value(context->shell, SH_RET_ARG_ERROR);
-		return (ret);
-	}
+	if (sh_builtin_parser(ft_strtab_len(argv), argv, args, &index))
+		return (sh_builtin_usage(args, argv[0], TYPE_USAGE, context->shell));
 	sh_builtin_parser_show(args);
 	if (args[TYPE_A_OPT].value)
 		return (sh_builtin_type_all(context, args, index, argv));

@@ -6,21 +6,15 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 16:18:16 by ldedier           #+#    #+#             */
-/*   Updated: 2019/07/22 12:07:34 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/18 18:41:50 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-static int	sh_builtin_hash_usage(t_context *context, char *invalid_opt)
-{
-	sh_env_update_ret_value(context->shell, 2);
-	if (invalid_opt)
-		sh_perror2_err_fd(context->fd[FD_ERR],
-		invalid_opt, "hash", SH_ERR2_INVALID_OPT);
-	sh_perror_fd(context->fd[FD_ERR], "hash", "usage: hash [-r] [utility...]");
-	return (ERROR);
-}
+#define HASH_USAGE			"[-r] [utility...]"
+#define HASH_R_OPT			0
+#define HASH_R_OPT_USAGE	"Forget all previously remembered utility locations"
 
 static int	sh_builtin_hash_process_utilities(t_context *context, int i)
 {
@@ -48,26 +42,20 @@ static int	sh_builtin_hash_process_utilities(t_context *context, int i)
 
 int			sh_builtin_hash(t_context *context)
 {
-	int		i;
-	int		ret;
+	int		index;
+	char	**argv;
+	t_args	args[] = {
+		{E_ARGS_BOOL, 'r', NULL, NULL, HASH_R_OPT_USAGE, 0},
+		{E_ARGS_END, 0, NULL, NULL, NULL, 0},
+	};
 
-	if (context->params->current_size == 1)
-	{
-		sh_builtin_hash_show(context->shell);
-		return (SUCCESS);
-	}
-	i = 1;
-	ret = 0;
-	while (context->params->tbl[i]
-		&& ((char**)context->params->tbl)[i][0] == '-')
-	{
-		if (ft_strequ(((char**)context->params->tbl)[i], "-r"))
-			ret = 1;
-		else
-			return (sh_builtin_hash_usage(context, context->params->tbl[i]));
-		i++;
-	}
-	if (ret)
+	argv = (char**)context->params->tbl;
+	if (sh_builtin_parser(ft_strtab_len(argv), argv, args, &index))
+		return (sh_builtin_usage(args, argv[0], HASH_USAGE, context->shell));
+	if (!args[HASH_R_OPT].value && !argv[index])
+		return (sh_builtin_hash_show(context->shell));
+	if (args[HASH_R_OPT].value)
 		sh_builtin_hash_empty_table(context->shell);
-	return (sh_builtin_hash_process_utilities(context, i));
+	return (sh_builtin_hash_process_utilities(context, index));
 }
+

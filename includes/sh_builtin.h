@@ -138,6 +138,7 @@ int					sh_builtin_exit(t_context *context);
 ** sh_builtin_hash.c
 */
 int					sh_builtin_hash(t_context *context);
+int					sh_builtin_hash(t_context *context);
 
 /*
 ** sh_builtin_hash_tools.c
@@ -145,7 +146,7 @@ int					sh_builtin_hash(t_context *context);
 int					sh_builtin_hash_add_utility(
 	t_context *context, char *utility);
 void				sh_builtin_hash_empty_table(t_shell *shell);
-void				sh_builtin_hash_show(t_shell *shell);
+int					sh_builtin_hash_show(t_shell *shell);
 void				sh_builtin_hash_update_stats(
 	t_hash_table *table, t_binary_stats *stats);
 
@@ -153,7 +154,7 @@ void				sh_builtin_hash_update_stats(
 ** sh_builtin_parser.c
 */
 int					sh_builtin_usage(
-	t_args args[], char *name, char *usage);
+	t_args args[], char *name, char *usage, t_shell *shell);
 int					sh_builtin_parser_is_boolean(t_args args[], char opt);
 int					sh_builtin_parser(
 	int argc, char **argv, t_args args[], int *index);
