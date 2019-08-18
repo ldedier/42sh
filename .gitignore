@@ -17,6 +17,11 @@ sandbox
 /random/.my_supp.supp
 /random/failed_commands*
 /random/buffer
+/random/res1.21sh
+/random/res1.bash
+/random/res2.21sh
+/random/res2.bash
+/random/tmp_log
 
 #tests_scripts directory :
 tests_scripts/*.log
