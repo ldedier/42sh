@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 12:14:59 by jmartel           #+#    #+#             */
-/*   Updated: 2019/07/26 00:18:31 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/18 16:07:12 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,20 @@
 
 static int		sh_builtin_exit_is_numeric_value(char *str)
 {
-	if (str[0] == '-' && ft_isdigit_only(str + 1))
+	int		len;
+	int		offset;
+
+	offset = 0;
+	if (str[0] == '-' || str[0] == '+')
+		offset++;
+	if (!ft_isdigit_only(str + offset))
+		return (0);
+	len = ft_strlen(str + offset);
+	if (len < 10)
 		return (1);
-	if (ft_isdigit_only(str + 1))
+	else if (len == 10 && str[0] == '-' && ft_strcmp("-2147483648", str) >= 0)
+		return (1);
+	else if (len == 10 && ft_strcmp("2147483647", str + offset) >= 0)
 		return (1);
 	return (0);
 }
