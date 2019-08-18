@@ -1,11 +1,11 @@
-#!/usr/bin/python3
+#!/usr/local/bin/python3
 
 import	random
 import	os
 from signal import signal, SIGINT
 from sys import exit
 
-VALGRIND = False
+VALGRIND = True
 QUIET = True
 TWO = False
 RET = True
@@ -116,16 +116,24 @@ def line_random_quotes(lenght, cmd_generation_func=random_cmd):
 		line = random_add_quotes(line)
 	return (line)
 
+tokens_type_args = [ "-a", "-t", "-t", "--", "cd", "exit", "set", "cp", "ls", "mv", "brew", "brew", "bash" ]
+
+def line_random_type(length, cmd_generation_func=random_cmd):
+	line = "hash ls bash ; type "
+	for l in range(length):
+		line += " " + random_token(tokens_type_args, length) + " "
+	return (line)
+
 def launch_cmd(valgrind=False, quiet=False, two=False, ret=False):
 	cmd = "./tester.sh "
-	if (valgrind):
-		cmd += " -v "
 	if (quiet):
 		cmd += " -e "
 	if (two):
 		cmd += " -2 "
 	if (ret):
 		cmd += " -r "
+	if (valgrind):
+		cmd += " -v "
 	return (os.system(cmd))
 
 def launch_test(line_generation_func, max_range=10, repetition=30, cmd_generation_func=random_cmd, filename="buffer", stop_on_error=STOP_ON_ERROR):
@@ -154,19 +162,20 @@ def handler(signal_received, frame):
 def main():
 	signal(SIGINT, handler)
 	os.system("./init.sh")
-	launch_test(line_random_pipe_sequence, 10, 30)
-	launch_test(line_random_redirection, 10, 30)
-	launch_test(line_random_pipe_and_redir, 5, 40, line_random_redirection)
-	launch_test(line_random_and_or_list, 20, 10)
-	launch_test(line_random_and_or_list, 20, 10, random_env_cmd)
-	launch_test(line_random_and_or_list, 20, 10, line_random_pipe_sequence)
+	# launch_test(line_random_pipe_sequence, 10, 30)
+	# launch_test(line_random_redirection, 10, 30)
+	# launch_test(line_random_pipe_and_redir, 5, 40, line_random_redirection)
+	# launch_test(line_random_and_or_list, 20, 10)
+	# launch_test(line_random_and_or_list, 20, 10, random_env_cmd)
+	# launch_test(line_random_and_or_list, 20, 10, line_random_pipe_sequence)
 
-	launch_test(line_random_jump, 10, 50)
-	launch_test(line_random_jump, 10, 50, line_random_pipe_sequence)
-	launch_test(line_random_jump, 10, 50, line_random_and_or_list)
+	# launch_test(line_random_jump, 10, 50)
+	# launch_test(line_random_jump, 10, 50, line_random_pipe_sequence)
+	# launch_test(line_random_jump, 10, 50, line_random_and_or_list)
 
-	launch_test(line_random_quotes, 10, 50)
-	launch_test(line_random_quotes, 10, 50, line_random_pipe_sequence)
-	launch_test(line_random_quotes, 10, 50, line_random_and_or_list)
-	launch_test(line_random_jump, 10, 50, line_random_redirection)
+	# launch_test(line_random_quotes, 10, 50)
+	# launch_test(line_random_quotes, 10, 50, line_random_pipe_sequence)
+	# launch_test(line_random_quotes, 10, 50, line_random_and_or_list)
+	# launch_test(line_random_jump, 10, 50, line_random_redirection)
+	launch_test(line_random_type, 20, 10)
 main()

@@ -39,6 +39,7 @@ valgrind_test()
 		tmp_log_file="tmp_log"
 		inner_log_dir="${log_dir}/test_${tried}"
 		error_exit_code=247
+	cat buffer
 		valgrind --leak-check=full --suppressions=$suppressions_file \
 			--error-exitcode=$error_exit_code --log-file=$tmp_log_file ./21sh < buffer >/dev/null 2>&1
 		ret=$?
