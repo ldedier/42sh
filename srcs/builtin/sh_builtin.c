@@ -26,7 +26,6 @@ t_builtin_container		*get_builtins(void)
 		{ "hash", sh_builtin_hash },
 		{ "unsetenv", sh_builtin_unsetenv },
 		{ "setenv", sh_builtin_setenv },
-		{ "env", sh_builtin_env },
 		{ "🐑", sh_builtin_🐑 }
 	};
 
