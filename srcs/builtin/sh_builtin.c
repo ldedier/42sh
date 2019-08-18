@@ -18,7 +18,6 @@ t_builtin_container		*get_builtins(void)
 		{ "echo", sh_builtin_echo },
 		{ "pwd", sh_builtin_pwd },
 		{ "exit", sh_builtin_exit },
-		{ "where", sh_builtin_where },
 		{ "type", sh_builtin_type },
 		{ "cd", sh_builtin_cd },
 		{ "verbose", sh_builtin_verbose },

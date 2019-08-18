@@ -13,7 +13,7 @@
 #ifndef SH_BUILTIN_H
 # define SH_BUILTIN_H
 
-# define NB_BUILTINS	10
+# define NB_BUILTINS	9
 
 # define CD_OPT_LOGIC	0x01
 # define CD_OPT_PHYSIC	0x02
