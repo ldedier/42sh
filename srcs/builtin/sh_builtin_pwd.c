@@ -6,56 +6,17 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 12:05:14 by jmartel           #+#    #+#             */
-/*   Updated: 2019/06/30 15:18:27 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/18 19:04:30 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-/*
-** sh_builtin_pwd_usage:
-**		Print pwd usage on fdout.
-*/
-
-static void	sh_builtin_pwd_usage(int fdout)
-{
-	sh_perror_fd(fdout, "usage: pwd [-LP]", "pwd");
-	return ;
-}
-
-/*
-** sh_builtin_pwd_parser:
-**	Read in command parameters to select between -P and -L options.
-**	The last one found is used. If no one is specified -L is used.
-**
-**	returned Values :
-**		ERROR : Invalid option given
-**		SUCCESS : Successfully detected options
-*/
-
-static int	sh_builtin_pwd_parser(t_context *context, int *i, int *flags)
-{
-	char	**params;
-
-	params = (char**)context->params->tbl;
-	*flags = CD_OPT_LOGIC;
-	while (params[*i] && params[*i][0] == '-')
-	{
-		if (ft_strequ(params[*i], "-P"))
-			*flags = CD_OPT_PHYSIC;
-		else if (ft_strequ(params[*i], "-L"))
-			*flags = CD_OPT_LOGIC;
-		else
-		{
-			sh_perror2_err_fd(
-				context->fd[FD_ERR], SH_ERR2_INVALID_OPT, "pwd", params[*i]);
-			sh_builtin_pwd_usage(context->fd[FD_ERR]);
-			return (ERROR);
-		}
-		*i += 1;
-	}
-	return (SUCCESS);
-}
+#define PWD_USAGE			"pwd [-LP]"
+#define PWD_P_OPT			0
+#define PWD_P_OPT_USAGE		"Find pathname without any symlinks"
+#define PWD_L_OPT			1
+#define PWD_L_OPT_USAGE		"Find pathname including symlinks"
 
 /*
 ** sh_builtin_pwd_physical:
@@ -112,17 +73,22 @@ char		*sh_builtin_pwd_logical(t_dy_tab *env, int fd_err)
 
 int			sh_builtin_pwd(t_context *context)
 {
-	int		i;
-	int		flags;
+	int		index;
+	char	**argv;
 	char	*pwd;
+	t_args	args[] = {
+		{E_ARGS_BOOL, 'P', NULL, NULL, PWD_P_OPT_USAGE, 0},
+		{E_ARGS_BOOL, 'L', NULL, NULL, PWD_L_OPT_USAGE, 0},
+		{E_ARGS_END, 0, NULL, NULL, NULL, 0},
+	};
 
-	i = 1;
-	if (sh_builtin_pwd_parser(context, &i, &flags) != SUCCESS)
-		return (ERROR);
-	if (flags & CD_OPT_LOGIC)
-		pwd = sh_builtin_pwd_logical(context->env, context->fd[FD_ERR]);
-	else
+	argv = (char**)context->params->tbl;
+	if (sh_builtin_parser(ft_strtab_len(argv), argv, args, &index))
+		return (sh_builtin_usage(args, argv[0], PWD_USAGE, context->shell));
+	if (args[PWD_P_OPT].value && args[PWD_P_OPT].priority > args[PWD_L_OPT].priority)
 		pwd = sh_builtin_pwd_physical(context->fd[FD_ERR]);
+	else
+		pwd = sh_builtin_pwd_logical(context->env, context->fd[FD_ERR]);
 	if (!pwd)
 		return (FAILURE);
 	ft_dprintf(context->fd[FD_OUT], "%s\n", pwd);
