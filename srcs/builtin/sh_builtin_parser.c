@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/15 13:19:47 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/19 09:55:12 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/19 20:11:27 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,17 +61,13 @@ static int	paser_short_arg(char **argv, int *index, t_args args[])
 	while (argv[*index][i])
 	{
 		found = 0;
-		ft_dprintf(2, "parsing short arg : %c\n", argv[*index][i]);
 		j = 0;
 		while (args[j].type != E_ARGS_END)
 		{
 			if (args[j].name_short == argv[*index][i])
 			{
 				if (parser_get_arg_content(args + j, argv, index))
-				{
-					ft_dprintf(2, "Error found in short arg (by get arg content) : %c\n", argv[*index][i]);
 					return (ERROR);
-				}
 				i++;
 				found = 1;
 				break ;
@@ -80,7 +76,6 @@ static int	paser_short_arg(char **argv, int *index, t_args args[])
 		}
 		if (found)
 			continue ;
-		ft_dprintf(2, "Error found in short arg : %c\n", argv[*index][i - 1]);
 		return (ERROR);
 	}
 	return (SUCCESS);
@@ -149,7 +144,6 @@ int		sh_builtin_parser(int argc, char **argv, t_args args[], int *index)
 			break ;
 		(*index)++;
 	}
-	ft_dprintf(2, "parser returned : %d\n", ret);
 	return (ret);
 }
 
