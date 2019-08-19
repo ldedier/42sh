@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 15:06:13 by jmartel           #+#    #+#             */
-/*   Updated: 2019/07/26 08:43:06 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/08/19 19:12:14 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static void	sh_exec_builtin_fill_fd(t_context *context)
 
 /*
 ** sh_exec_builtin:
-**	Execute a builtin function, update "?" env variable. Manage pipes
+**	Execute a builtin function, update $? env variable. Manage pipes
 **	redirections for builtins.
 **
 **	return Value:

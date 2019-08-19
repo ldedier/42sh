@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/14 14:52:02 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/07 16:35:00 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/19 19:11:32 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ int			sh_env_update_question_mark(t_shell *shell)
 		shell->ret_value);
 	if (!(str = ft_itoa(shell->ret_value)))
 		return (sh_perror(SH_ERR1_MALLOC, "sh_env_update_question_mark"));
-	res = sh_vars_assign_key_val(shell->env, NULL, "?", str);
+	res = sh_vars_assign_key_val(NULL, shell->vars, "?", str);
 	free(str);
 	return (res);
 }
