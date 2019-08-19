@@ -39,7 +39,9 @@ valgrind_test()
 		tmp_log_file="tmp_log"
 		inner_log_dir="${log_dir}/test_${tried}"
 		error_exit_code=247
+
 	cat buffer
+
 		valgrind --leak-check=full --suppressions=$suppressions_file \
 			--error-exitcode=$error_exit_code --log-file=$tmp_log_file ./21sh < buffer >/dev/null 2>&1
 		ret=$?
@@ -66,6 +68,11 @@ check_ret_value()
 	sh_ret=$((ret1 & 0xFF))
 	bash_ret=$((ret2 & 0xFF))
 
+	if [ $sh_ret -eq 130  -o $bash_ret -eq 130 ] ; then
+		echo SIGINT received, exit
+		kill -s SIGINT $$
+	fi
+
 	if [ "$sh_ret" -gt 130 -a "$sh_ret" -lt 200 ] ; then 
 		echo -e "${red}SEGFAULT OR SIGNAL RECEIVED"
 		echo -e "${sh_ret}${eoc}"
@@ -90,10 +97,17 @@ launch_test()
 
 	diff_tried=$((diff_tried+1))
 	touch res1.bash res2.bash res1.21sh res2.21sh
-	cat "$1" | bash 1>res1.bash 2>res2.bash
-	bash_ret=$?
-	cat "$1" | ./${exec} 1>res1.21sh 2>res2.21sh
-	sh_ret=$?
+	if [ -n "$controlled_env" ] ; then
+		cat "$1" | env -i PATH=$PATH TERM=$TERM PWD="`pwd`" bash 1>res1.bash 2>res2.bash
+		bash_ret=$?
+		cat "$1" | env -i PATH=$PATH TERM=$TERM PWD="`pwd`" ./${exec} 1>res1.21sh 2>res2.21sh
+		sh_ret=$?
+	else
+		cat "$1" | bash 1>res1.bash 2>res2.bash
+		bash_ret=$?
+		cat "$1" | ./${exec} 1>res1.21sh 2>res2.21sh
+		sh_ret=$?
+	fi
 
 	check_ret_value sh_ret bash_ret
 	continue=$?

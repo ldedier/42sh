@@ -43,6 +43,10 @@ for arg in $@ ; do
 	if [ "$arg" = "-r" ] ; then
 		test_returned_values="ok"
 	fi
+
+	if [ "$arg" = "-env" ] ; then
+		controlled_env="ok"
+	fi
 done
 
 

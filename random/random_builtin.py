@@ -5,7 +5,7 @@ import	os
 from signal import signal, SIGINT
 from sys import exit
 
-VALGRIND = True
+VALGRIND = False
 QUIET = True
 TWO = False
 RET = True
@@ -36,13 +36,6 @@ def random_token(tokens, lenght=1):
 def random_cmd(lenght=1):
 	return (random_token(tokens_cmd, 1))
 
-def random_env_cmd(lenght=1):
-	str = ""
-	if (random.randint(1, 3) == 2):
-		str = "env "
-	str += random_token(tokens_cmd, 1)
-	return (str)
-
 def random_add_jump(string):
 	index = random.randint(0, len(string) - 1)
 	string = string[index:] + "\\\n" + string[:index]
@@ -57,64 +50,37 @@ def random_add_quotes(string):
 		string = string[index:] + quote + string[:index]
 	return (string)
 
-def line_random_pipe_sequence(lenght, cmd_generation_func=random_cmd):
-	line = ""
-	for l in range(lenght - 1):
-		line += cmd_generation_func()
-		line += " | "
-	line += cmd_generation_func()
+tokens_type_args = [ "-a", "-t", "-t", "--", "cd", "exit", "set", "cp", "ls", "mv", "brew", "brew", "bash" ]
+tokens_export_args = [ "-p", "--", "-E", "--Q" , "var", "var=name", "_ok", "_ok=tamer", "2invalidname", "2invalid=ok"]
+tokens_unset_args = [ "-p", "--", "-E", "--Q" , "PATH", "TERM", "TERM=", "\"?\"", "2inval", "novar", "PWD", "\"\""]
+tokens_set_args = [ "-p", "--", "-E", "--Q" ]
+
+def line_random_type(length, cmd_generation_func=random_cmd):
+	line = "hash ls bash ; type "
+	for l in range(length):
+		line += " " + random_token(tokens_type_args, length) + " "
 	return (line)
 
-def line_random_redirection(redirect_nb, cmd_generation_func=random_cmd):
-	line = cmd_generation_func() + " "
-	filenames = []
-	for redir in range(redirect_nb):
-		buf = random_token(tokens_filename)
-		if (buf != ""):
-			filenames.append(buf)
-		line += buf + " "
-		line += random_token(tokens_redir) + " "
-		buf = random_token(tokens_filename)
-		filenames.append(buf)
-		line += buf + " "
-	for file in filenames:
-		if (file != ""):
-			line += " ; cat " + file
-	line += "; rm -f "
-	for file in filenames:
-		if (file != ""):
-			line += file + " "
+def line_random_export(length, cmd_generation_func=random_cmd):
+	line = "unset _ SHELL SHLVL OLDPWD PWD ; export "
+	for l in range(length):
+		line += " " + random_token(tokens_export_args, length) + " "
+	line += " | sort ; echo $? ; export"
 	return (line)
 
-def line_random_pipe_and_redir(lenght, cmd_generation_func=line_random_redirection):
-	line = ""
-	for l in range(lenght - 1):
-		line += cmd_generation_func(5)
-		line += " | "
-	line += cmd_generation_func(5)
+def line_random_unset(length, cmd_generation_func=random_cmd):
+	line = "unset _ SHELL SHLVL OLDPWD PWD ; unset "
+	for l in range(length):
+		line += " " + random_token(tokens_export_args, length) + " "
+	line += " | sort ; echo $? ; export"
 	return (line)
 
-def line_random_and_or_list(lenght, cmd_generation_func=random_cmd):
-	line = ""
-	for l in range(lenght - 1):
-		line += cmd_generation_func(1)
-		line += " " + random_token(tokens_and_or_list) + " "
-	line += cmd_generation_func(1)
-	return (line)
-
-def line_random_jump(lenght, cmd_generation_func=random_cmd):
-	line = cmd_generation_func(lenght)
-	jumps = lenght + 1
-	for j in range(jumps):
-		line = random_add_jump(line)
-	return (line)
-
-def line_random_quotes(lenght, cmd_generation_func=random_cmd):
-	line = cmd_generation_func(lenght)
-	quotes = lenght + 1
-	for q in range(quotes):
-		line = random_add_quotes(line)
-	return (line)
+# def line_random_set(length, cmd_generation_func=random_cmd):
+# 	line = "unset _ ; export "
+# 	for l in range(length):
+# 		line += " " + random_token(tokens_export_args, length) + " "
+# 	line += " ; echo $? ; export"
+# 	return (line)
 
 def launch_cmd(valgrind=False, quiet=False, two=False, ret=False):
 	cmd = "./tester.sh "
@@ -126,6 +92,7 @@ def launch_cmd(valgrind=False, quiet=False, two=False, ret=False):
 		cmd += " -r "
 	if (valgrind):
 		cmd += " -v "
+	cmd += "-env" ## Launch process with controlled env
 	return (os.system(cmd))
 
 def launch_test(line_generation_func, max_range=10, repetition=30, cmd_generation_func=random_cmd, filename="buffer", stop_on_error=STOP_ON_ERROR):
@@ -156,19 +123,8 @@ def handler(signal_received, frame):
 def main():
 	signal(SIGINT, handler)
 	os.system("./init.sh")
-	launch_test(line_random_pipe_sequence, 10, 30)
-	launch_test(line_random_redirection, 10, 30)
-	launch_test(line_random_pipe_and_redir, 5, 40, line_random_redirection)
-	launch_test(line_random_and_or_list, 20, 10)
-	launch_test(line_random_and_or_list, 20, 10, random_env_cmd)
-	launch_test(line_random_and_or_list, 20, 10, line_random_pipe_sequence)
+	# launch_test(line_random_type, 20, 10)
+	launch_test(line_random_export, 20, 10)
+	launch_test(line_random_unset, 20, 10)
 
-	launch_test(line_random_jump, 10, 50)
-	launch_test(line_random_jump, 10, 50, line_random_pipe_sequence)
-	launch_test(line_random_jump, 10, 50, line_random_and_or_list)
-
-	launch_test(line_random_quotes, 10, 50)
-	launch_test(line_random_quotes, 10, 50, line_random_pipe_sequence)
-	launch_test(line_random_quotes, 10, 50, line_random_and_or_list)
-	launch_test(line_random_jump, 10, 50, line_random_redirection)
 main()
