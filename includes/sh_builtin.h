@@ -6,14 +6,14 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 11:36:31 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/18 16:37:59 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/19 15:28:10 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SH_BUILTIN_H
 # define SH_BUILTIN_H
 
-# define NB_BUILTINS	9
+# define NB_BUILTINS	12
 
 # define CD_OPT_LOGIC	0x01
 # define CD_OPT_PHYSIC	0x02
@@ -135,9 +135,16 @@ int					sh_builtin_env_process_command (
 int					sh_builtin_exit(t_context *context);
 
 /*
+** sh_builtin_export.c
+*/
+int					sh_builtin_export_show(t_context *context);
+int					sh_builtin_export_assign(
+	t_context *context, char *arg);
+int					sh_builtin_export(t_context *context);
+
+/*
 ** sh_builtin_hash.c
 */
-int					sh_builtin_hash(t_context *context);
 int					sh_builtin_hash(t_context *context);
 
 /*
@@ -191,6 +198,11 @@ int					sh_builtin_type_search_in_dir(
 	char *path, DIR *dir, t_context *context, char *name);
 int					sh_builtin_type_search_in_path(
 	t_context *context, char *name, t_args args[]);
+
+/*
+** sh_builtin_unset.c
+*/
+int					sh_builtin_unset(t_context *context);
 
 /*
 ** sh_builtin_unsetenv.c

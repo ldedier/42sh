@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/08/10 11:11:36 by jmartel          ###   ########.fr        #
+#    Updated: 2019/08/19 12:20:17 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -188,6 +188,8 @@ BUILT_SRCS_NO_PREFIX=	sh_builtin.c \
 						sh_builtin_type_path.c \
 						sh_builtin_verbose.c \
 						sh_builtin_set.c \
+						sh_builtin_unset.c \
+						sh_builtin_export.c \
 						sh_builtin_hash.c \
 						sh_builtin_set.c \
 						sh_builtin_setenv.c \

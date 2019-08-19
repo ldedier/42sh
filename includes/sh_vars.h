@@ -151,6 +151,7 @@ int		sh_vars_assignment(
 	t_dy_tab *env, t_dy_tab *vars, char *assignment);
 int		sh_vars_assign_key_val(
 	t_dy_tab *env, t_dy_tab *vars, char *key, char *value);
+void	sh_vars_del_key(t_dy_tab *vars, char *key);
 
 /*
 ** sh_verbose.c

@@ -98,7 +98,6 @@ int		sh_expansions_process_tilde(
 /*
 ** sh_expansions_variable.c
 */
-int		sh_expansions_variable_detect_special(char *name);
 int		sh_expansions_variable_valid_name(char *name);
 int		sh_expansions_variable_detect(char *start);
 int		sh_expansions_variable_fill(t_expansion *exp, char *start);

@@ -6,13 +6,13 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/15 15:13:53 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/18 18:40:34 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/19 09:51:26 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-#define TYPE_USAGE			"type [-atp] name [name ...]"
+#define TYPE_USAGE			"[-atp] name [name ...]"
 #define TYPE_A_OPT			0
 #define TYPE_A_OPT_USAGE	"Print all the places that contain an executable named name"
 #define TYPE_P_OPT			1

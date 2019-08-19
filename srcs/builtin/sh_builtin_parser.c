@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/15 13:19:47 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/18 18:22:51 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/19 09:55:12 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,14 +95,14 @@ int		sh_builtin_usage(t_args args[], char *name, char *usage, t_shell *shell)
 	i = 0;
 	while (args && args[i].type != E_ARGS_END)
 	{
-		if (args[i].name_short && args[i].name_short)
+		if (args[i].name_short && args[i].name_long)
 			ft_dprintf(2, "  -%c, --%s", args[i].name_short, args[i].name_long);
 		else if (args[i].name_short)
 			ft_dprintf(2, "  -%c", args[i].name_short);
 		else if (args[i].name_long)
 			ft_dprintf(2, "  --%s", args[i].name_short, args[i].name_long);
 		if (args[i].usage)
-			ft_dprintf(2, ": %s", usage);
+			ft_dprintf(2, ": %s", args[i].usage);
 		ft_dprintf(2, "\n");
 		i++;
 	}
