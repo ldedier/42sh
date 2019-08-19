@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 13:38:26 by jmartel           #+#    #+#             */
-/*   Updated: 2019/07/08 12:17:04 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/19 19:01:44 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 **		0 : False
 */
 
-int			sh_expansions_variable_detect_special(char *name)
+static int	sh_expansions_variable_detect_special(char *name)
 {
 	if (!name || !*name)
 		return (0);
@@ -54,8 +54,8 @@ int			sh_expansions_variable_valid_name(char *name)
 {
 	int		i;
 
-	if (sh_expansions_variable_detect_special(name))
-		return (1);
+	// if (sh_expansions_variable_detect_special(name))
+	// 	return (1);
 	if (!ft_isalpha(*name) && !(*name == '_'))
 		return (0);
 	i = 0;
@@ -70,7 +70,10 @@ int			sh_expansions_variable_valid_name(char *name)
 
 /*
 ** sh_expansions_variable_detect:
-**	Function used to detect valid variable expansion.
+**	Function used to detect valid variable expansion as $var.
+**	Special parameters : $, #, ? are considered as good.
+**	Else any valid variable name is considered as good,
+**	(it can be preceded by a '$').
 **
 ** return :
 **		-1 : String given is invalid

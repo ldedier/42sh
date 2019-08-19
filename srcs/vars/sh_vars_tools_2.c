@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/21 22:21:50 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/10 11:27:56 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/19 12:44:09 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,4 +119,15 @@ int		sh_vars_assign_key_val(
 	else
 		res = sh_vars_add_key(env, key, value);
 	return (res);
+}
+
+void	sh_vars_del_key(t_dy_tab *vars, char *key)
+{
+	int		index;
+
+	index = sh_vars_get_index(vars, key);
+	if (index == -1)
+		return ;
+	ft_dy_tab_suppr_index(vars, index);
+	return ;
 }
