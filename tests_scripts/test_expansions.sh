@@ -65,6 +65,9 @@ launch "Variables"
 	test_launch 'echo $? ; okalm ; echo $?'
 	test_launch 'echo $? ; echo $?'
 	test_launch 'touch file ; chmod 666 file' './file ; echo $?' 'rm file'
+	test_launch 'echo $?' '?=123' 'echo $?'
+	test_launch 'echo $#' '#=123' 'echo $#'
+	test_launch 'echo $$ > buffer1' '$=1' 'echo $$>buffer2' 'diff buffer1 buffer2' 'rm buffer1 buffer2'
 
 	launch 'assignments'
 	test_launch 'PATH='\''$PATH'\'' ; echo $PATH'
