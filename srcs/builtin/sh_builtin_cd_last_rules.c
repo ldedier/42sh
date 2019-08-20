@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 07:20:20 by jmartel           #+#    #+#             */
-/*   Updated: 2019/07/27 14:29:53 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/20 18:55:03 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ static int	sh_builtin_cd_update_pwd(
 	ret = SUCCESS;
 	if (old_pwd)
 		ret = sh_vars_assign_key_val(
-			context->env, NULL, "OLDPWD", old_pwd);
+			context->saved_env, NULL, "OLDPWD", old_pwd);
 	if (!ret)
-		ret = sh_vars_assign_key_val(context->env, NULL, "PWD", pwd);
+		ret = sh_vars_assign_key_val(context->saved_env, NULL, "PWD", pwd);
 	if (flags & CD_OPT_PHYSIC)
 		free(pwd);
 	return (ret);

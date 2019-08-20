@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:19:57 by jmartel           #+#    #+#             */
-/*   Updated: 2019/07/27 14:37:45 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/20 18:57:28 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int	sh_builtin_verbose_process_all(
 	while (!ret && key[i][0])
 	{
 		ret = sh_vars_assign_key_val(
-			context->env, context->vars, key[i], value);
+			context->saved_env, context->vars, key[i], value);
 		i++;
 	}
 	return (ret);
@@ -52,7 +52,7 @@ static int	sh_builtin_verbose_process(
 		while (*key[j] && !ft_strequ(context->params->tbl[i], key[j] + 8))
 			j++;
 		if (*key[j])
-			ret = sh_vars_assign_key_val(context->env,
+			ret = sh_vars_assign_key_val(context->saved_env,
 				context->vars, key[j], value);
 		else if (!*key[j])
 		{

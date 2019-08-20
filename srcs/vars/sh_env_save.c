@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/20 14:48:43 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/20 18:47:43 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/20 18:57:51 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ int			sh_env_save_restore(t_context *context)
 	ft_dy_tab_del(context->env);
 	context->env = context->saved_env;
 	context->shell->env = context->saved_env;
-	context->
 	context->saved_env = NULL;
 	return (SUCCESS);
 }
