@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/22 10:38:19 by ldedier           #+#    #+#             */
-/*   Updated: 2019/07/31 15:10:48 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/08/20 17:19:59 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	transmit_sig(int signal)
 {
-	if (g_parent)
-		kill(g_parent, signal);
+	// if (g_parent)
+	// 	kill(g_parent, signal);
 	if (isatty(0) && g_glob.command_line.dy_str)
 	{
 		get_down_from_command(&g_glob.command_line);
