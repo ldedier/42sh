@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/20 14:48:43 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/20 18:57:51 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/20 19:02:50 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,15 @@ int			sh_env_save(t_context *context)
 	return (sh_env_save_dup(context));
 }
 
-int			sh_env_save_restore(t_context *context)
+void		sh_env_save_restore(t_context *context)
 {
+	if (!context->saved_env)
+		return ;
 	ft_dy_tab_del(context->env);
 	context->env = context->saved_env;
 	context->shell->env = context->saved_env;
 	context->saved_env = NULL;
-	return (SUCCESS);
+	return ;
 }
 
 void		sh_env_save_delete_exported(t_context *context)
