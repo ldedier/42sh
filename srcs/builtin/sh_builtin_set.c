@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/21 18:00:32 by jmartel           #+#    #+#             */
-/*   Updated: 2019/05/21 18:05:26 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/20 09:11:16 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,13 @@ int			sh_builtin_set(t_context *context)
 	i = 0;
 	while (context->vars->tbl[i])
 	{
-		ft_putstr_fd(context->vars->tbl[i], context->fd[FD_OUT]);
-		ft_putchar_fd('\n', context->fd[FD_OUT]);
+		if (!(*(char*)(context->vars->tbl[i]) == '?'
+			|| *(char*)(context->vars->tbl[i]) == '$'
+			|| *(char*)(context->vars->tbl[i]) == '#'))
+		{
+			ft_putstr_fd(context->vars->tbl[i], context->fd[FD_OUT]);
+			ft_putchar_fd('\n', context->fd[FD_OUT]);
+		}
 		i++;
 	}
 	return (SUCCESS);
