@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 14:19:01 by ldedier           #+#    #+#             */
-/*   Updated: 2019/06/10 11:45:04 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/20 09:52:03 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ t_grammar_holder g_grammar[NB_SYMBOLS] = {
 	{"in", 0, 1, NULL, &sh_traverse_default},
 	{"TERM_TOKEN", 0, 1, NULL, &sh_traverse_default},
 	{"TERM_WORD", 0, 1, NULL, &sh_traverse_default},
-	{"TERM_ASSIGNMENT_WORD", 0, 1, NULL, &sh_traverse_assigment_word},
+	{"TERM_ASSIGNMENT_WORD", 0, 1, NULL, &sh_traverse_assignment_word},
 	{"TERM_NAME", 0, 1, NULL, &sh_traverse_default},
 	{"TERM_IO_NUMBER", 0, 1, NULL, &sh_traverse_default},
 	{"_EOI_", 0, 1, NULL, &sh_traverse_default},

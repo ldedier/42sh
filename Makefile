@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/08/19 12:20:17 by jmartel          ###   ########.fr        #
+#    Updated: 2019/08/20 09:52:03 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,7 +62,7 @@ TRAV_SRCS_NO_PREFIX =	sh_traverse.c \
 						sh_traverse_semicol.c \
 						sh_traverse_pipe_sequence.c \
 						sh_traverse_pipe_sequence_execute.c \
-						sh_traverse_assigment_word.c \
+						sh_traverse_assignment_word.c \
 						sh_traverse_simple_command.c \
 						sh_traverse_simple_command_tools.c \
 						sh_traverse_simple_command_check_perm.c \

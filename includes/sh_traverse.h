@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:35:27 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/17 20:43:36 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/20 09:52:03 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ int		sh_traverse_and_or_launch_phase(
 int		sh_traverse_and_or(t_ast_node *node, t_context *context);
 
 /*
-** sh_traverse_assigment_word.c
+** sh_traverse_assignment_word.c
 */
-int		sh_traverse_assigment_word(t_ast_node *node, t_context *context);
+int		sh_traverse_assignment_word(t_ast_node *node, t_context *context);
 
 /*
 ** sh_traverse_cmd_name.c

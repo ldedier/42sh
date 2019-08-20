@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sh_traverse_assigment_word.c                       :+:      :+:    :+:   */
+/*   sh_traverse_assignment_word.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,7 +12,7 @@
 
 #include "sh_21.h"
 
-int		sh_traverse_assigment_word(t_ast_node *node, t_context *context)
+int		sh_traverse_assignment_word(t_ast_node *node, t_context *context)
 {
 	int		ret;
 
