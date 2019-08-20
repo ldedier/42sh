@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/19 09:45:53 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/19 15:48:11 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/20 16:00:54 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int			sh_builtin_export_show(t_context *context)
 	if (write(context->fd[FD_OUT], NULL, 0))
 		return (sh_perror2_err_fd(context->fd[FD_OUT], "write error", "export", SH_ERR1_BAD_FD));
 	i = 0;
-	tbl = (char**)(context->env->tbl);
+	tbl = (char**)(context->saved_env->tbl);
 	while (tbl[i])
 	{
 		if (!(equal = ft_strchr(tbl[i], '=')))
@@ -58,22 +58,22 @@ int			sh_builtin_export_assign(t_context *context, char *arg)
 		if (sh_vars_get_index(context->vars, arg))
 			sh_vars_del_key(context->vars, arg);
 		*equal = '=';
-		if (sh_vars_assignment(context->env, NULL, arg))
+		if (sh_vars_assignment(context->saved_env, NULL, arg))
 			return (FAILURE); // perror
 	}
 	else
 	{
 		if ((index = sh_vars_get_index(context->vars, arg)) >= 0)
 		{
-			if (sh_vars_assignment(context->env, NULL, context->vars->tbl[index]))
+			if (sh_vars_assignment(context->saved_env, NULL, context->vars->tbl[index]))
 				return (FAILURE); // perror
 			sh_vars_del_key(context->vars, arg);
 			;//transfer vars -> env;
 		}
 		else
 		{
-			if (sh_vars_get_index(context->env, arg) == -1)
-				if (ft_dy_tab_add_str(context->env, arg))
+			if (sh_vars_get_index(context->saved_env, arg) == -1)
+				if (ft_dy_tab_add_str(context->saved_env, arg))
 					return (FAILURE); // perror
 		}
 	}

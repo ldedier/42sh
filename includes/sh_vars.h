@@ -131,6 +131,13 @@ int		sh_env_update_question_mark(t_shell *shell);
 int		sh_env_update_ret_value_and_question(t_shell *shell, int res);
 
 /*
+** sh_env_save.c
+*/
+int		sh_env_save_restore(t_context *context);
+int		sh_env_save(t_context *context);
+void	sh_env_save_delete_exported(t_context *context);
+
+/*
 ** sh_env_tools.c
 */
 char	*sh_env_get_value(char **env, char *str);

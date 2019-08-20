@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/19 12:19:24 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/19 15:40:25 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/20 18:46:59 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ int			sh_builtin_unset(t_context *context)
 			ret = sh_perror2_err_fd(context->fd[FD_ERR], argv[index], "unset", "not a valid identifier");
 		if (sh_vars_get_index(context->vars, argv[index]) >= 0)
 			sh_vars_del_key(context->vars, argv[index]);
-		else if (sh_vars_get_index(context->env, argv[index]) >= 0)
-			sh_vars_del_key(context->env, argv[index]);
+		else if (sh_vars_get_index(context->saved_env, argv[index]) >= 0)
+			sh_vars_del_key(context->saved_env, argv[index]);
 		index++;
 	}
 	return (ret);

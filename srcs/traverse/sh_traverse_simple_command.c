@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/17 20:59:06 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/20 15:59:53 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,17 @@ int		sh_traverse_simple_command(t_ast_node *node, t_context *context)
 {
 	int		ret;
 
+	if (context->phase == E_TRAVERSE_PHASE_EXPANSIONS)
+	{
+		if (sh_traverse_tools_search(node, 87) && sh_traverse_tools_search(node, 88))
+			return (sh_traverse_tools_browse(node, context));
+		if (sh_env_save(context) == FAILURE)
+			return (FAILURE);
+		return (sh_traverse_tools_browse(node, context));
+	}
 	if (context->phase == E_TRAVERSE_PHASE_EXECUTE)
 	{
+		sh_env_save_delete_exported(context);
 		sh_traverse_tools_show_traverse_start(node, context);
 		context->redirections = &node->metadata.command_metadata.redirections;
 		if (context->current_pipe_sequence_node)
@@ -96,25 +105,13 @@ int		sh_traverse_simple_command(t_ast_node *node, t_context *context)
 		else
 			ret = sh_traverse_simple_command_no_exec(node, context);
 		sh_traverse_tools_show_traverse_ret_value(node, context, ret);
+		if (ret != FAILURE)
+			if (sh_env_save_restore(context) == FAILURE)
+				return (FAILURE);
 		return (ret);
 	}
 	else
-	{
-		/* to remove when tried and aknowledged
-
-		if (context->phase == E_TRAVERSE_PHASE_REDIRECTIONS)
-		{
-			t_ast_node *new_node;
-	
-			if (!(new_node = sh_add_to_ast_node(node, CMD_SUFFIX, NULL)))
-				return (FAILURE);
-			if (!(sh_add_to_ast_node(new_node, LEX_TOK_WORD, "-lRa")))
-				return (FAILURE);
-			sh_print_ast(context->shell->parser.ast_root, 0);
-		}
-		*/
 		return (sh_traverse_tools_browse(node, context));
-	}
 }
 
 /*

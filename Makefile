@@ -66,6 +66,7 @@ TRAV_SRCS_NO_PREFIX =	sh_traverse.c \
 						sh_traverse_simple_command.c \
 						sh_traverse_simple_command_tools.c \
 						sh_traverse_simple_command_check_perm.c \
+						sh_traverse_cmd_prefix.c \
 						sh_traverse_cmd_name.c \
 						sh_traverse_cmd_word.c \
 						sh_traverse_cmd_suffix.c \
@@ -166,7 +167,7 @@ AUTO_SRCS_NO_PREFIX	=	add_choices_from_dir.c auto_completion.c \
 
 VARS_SRCS_NO_PREFIX	=	sh_vars_tools_1.c sh_vars_tools_2.c \
 						sh_verbose.c sh_verbose_check.c sh_env_tools.c \
-						sh_env.c
+						sh_env.c sh_env_save.c
 
 EXEC_SRCS_NO_PREFIX	=	sh_execute.c \
 						sh_execute_pipes.c \
