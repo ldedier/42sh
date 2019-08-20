@@ -23,12 +23,6 @@
 int		sh_traverse_tools_browse(t_ast_node *node, t_context *context);
 
 /*
-** sh_traverse_tools_reset.c
-*/
-void	sh_traverse_tools_reset_context(t_context *context);
-void	sh_traverse_tools_reset_params(t_context *context);
-
-/*
 ** sh_traverse_tools_debug.c
 */
 char	*t_phase_name(t_phase phase);
@@ -37,5 +31,11 @@ void	sh_traverse_tools_show_traverse_start(
 	t_ast_node *node, t_context *context);
 void	sh_traverse_tools_show_traverse_ret_value(
 	t_ast_node *node, t_context *context, int ret);
+
+/*
+** sh_traverse_tools_reset.c
+*/
+void	sh_traverse_tools_reset_context(t_context *context);
+void	sh_traverse_tools_reset_params(t_context *context);
 
 #endif

@@ -6,13 +6,13 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/08/14 14:55:37 by ldedier          ###   ########.fr        #
+#    Updated: 2019/08/20 14:57:28 by ldedier          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	= 42sh
 
-CC		= gcc
+CC		= gcc -g3
 
 OS		= $(shell uname -s)
 
@@ -184,6 +184,8 @@ BUILT_SRCS_NO_PREFIX=	sh_builtin.c \
 						sh_builtin_exit.c \
 						sh_builtin_cd.c sh_builtin_cd_pre_rules.c sh_builtin_cd_post_rules.c sh_builtin_cd_last_rules.c \
 						sh_builtin_where.c \
+						sh_builtin_type.c \
+						sh_builtin_type_path.c \
 						sh_builtin_verbose.c \
 						sh_builtin_set.c \
 						sh_builtin_hash.c \
@@ -191,7 +193,9 @@ BUILT_SRCS_NO_PREFIX=	sh_builtin.c \
 						sh_builtin_setenv.c \
 						sh_builtin_unsetenv.c \
 						sh_builtin_env.c sh_builtin_env_process.c sh_builtin_env_parser.c\
-						sh_builtin_hash_tools.c
+						sh_builtin_hash_tools.c \
+						sh_builtin_bonus.c \
+						sh_builtin_parser.c
 
 EXP_SRCS_NO_PREFIX =	sh_expansions.c sh_expansions_scan.c\
 						sh_expansions_parameter.c \

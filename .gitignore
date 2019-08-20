@@ -1,5 +1,5 @@
 ##Useless files
-my_supp.supp
+.my_supp.supp
 ok
 test
 file
@@ -11,19 +11,18 @@ sandbox
 
 /signal
 /signal.c
-/segfault
 /segfault.c
 
 #random directory:
 /random/.my_supp.supp
-/random/failed_commands
+/random/failed_commands*
 /random/buffer
 
 #tests_scripts directory :
 tests_scripts/*.log
 tests_scripts/logs/*
 tests_scripts/tmp_log
-tests_scripts/my_supp.supp
+tests_scripts/.my_supp.supp
 tests_scripts/buffer
 tests_scripts/res1.21sh
 tests_scripts/res1.bash

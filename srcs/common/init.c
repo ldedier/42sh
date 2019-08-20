@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/14 13:19:50 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/07 18:41:10 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/08/20 15:53:52 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ static int	sh_init_command_line(t_shell *shell, t_command_line *command_line)
 	command_line->pinned_index = -1;
 	command_line->mode = E_MODE_INSERT;
 	command_line->context = E_CONTEXT_STANDARD;
+	command_line->fd = open("/dev/tty", O_RDWR); //to protect !
 	if (!(command_line->searcher.dy_str = ft_dy_str_new(63)))
 		return (FAILURE);
 	command_line->searcher.active = 0;

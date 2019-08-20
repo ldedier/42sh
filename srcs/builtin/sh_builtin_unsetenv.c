@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 18:37:17 by ldedier           #+#    #+#             */
-/*   Updated: 2019/07/21 10:46:57 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/10 11:29:03 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	sh_builtin_unsetenv_usage(int fderr)
 {
-	ft_dprintf(fderr, "usage : unsetenv varname [...]");
+	ft_dprintf(fderr, "usage : unsetenv varname [...]\n");
 	return (ERROR);
 }
 

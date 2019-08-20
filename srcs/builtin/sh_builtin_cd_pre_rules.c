@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 14:50:45 by jmartel           #+#    #+#             */
-/*   Updated: 2019/07/26 02:43:26 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/10 11:49:18 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,5 +109,6 @@ int			sh_builtin_cd_rule5(t_context *context, char **curpath, char *param)
 		}
 		return (SUCCESS);
 	}
+	sh_perror_fd(context->fd[FD_ERR], "CD_PATH", "not implemented yet");
 	return (ERROR);
 }

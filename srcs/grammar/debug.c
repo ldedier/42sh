@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/05 19:04:06 by ldedier           #+#    #+#             */
-/*   Updated: 2019/07/03 21:34:56 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/14 19:17:50 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,7 @@ void	sh_print_symbol(t_symbol *symbol)
 
 void	sh_print_token(t_token *token, t_cfg *cfg)
 {
-	if (token->token_type == TYPE_INT)
-		ft_dprintf(2, "%d ", token->token_union.ival);
-	else if (token->id == LEX_TOK_WORD)
+	if (token->id == LEX_TOK_WORD)
 		ft_dprintf(2, "%s%s %s", YELLOW, token->value, EOC);
 	else if (token->id == LEX_TOK_IO_NUMBER)
 		ft_dprintf(2, "IO_NUMBER: %s%s %s ", YELLOW, token->value, EOC);

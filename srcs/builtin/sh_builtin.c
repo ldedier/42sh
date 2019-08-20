@@ -6,32 +6,50 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 19:04:16 by ldedier           #+#    #+#             */
-/*   Updated: 2019/06/15 16:45:29 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/08/17 17:21:44 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-t_builtin_container	*get_builtins(void)
+t_builtin_container		*get_builtins(void)
 {
 	static t_builtin_container res[NB_BUILTINS] = {
 		{ "echo", sh_builtin_echo },
 		{ "pwd", sh_builtin_pwd },
 		{ "exit", sh_builtin_exit },
 		{ "where", sh_builtin_where },
+		{ "type", sh_builtin_type },
 		{ "cd", sh_builtin_cd },
 		{ "verbose", sh_builtin_verbose },
 		{ "set", sh_builtin_set },
 		{ "hash", sh_builtin_hash },
 		{ "unsetenv", sh_builtin_unsetenv },
 		{ "setenv", sh_builtin_setenv },
-		{ "env", sh_builtin_env }
+		{ "env", sh_builtin_env },
+		{ "🐑", sh_builtin_🐑 }
 	};
 
 	return (res);
 }
 
-t_builtin			sh_builtin_find(t_context *context)
+t_builtin			sh_builtin_find_name(char *name)
+{
+	int					i;
+	t_builtin_container	*builtins;
+
+	builtins = get_builtins();
+	i = 0;
+	while (i < NB_BUILTINS)
+	{
+		if (!ft_strcmp(name, builtins[i].name))
+			return (builtins[i].builtin);
+		i++;
+	}
+	return (NULL);
+}
+
+t_builtin				sh_builtin_find(t_context *context)
 {
 	int					i;
 	t_builtin_container	*builtins;

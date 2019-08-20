@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_token_list.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 14:47:59 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/07 14:52:19 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/08/14 19:31:27 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,29 @@ void	sh_free_token_lst(void *t, size_t dummy)
 {
 	(void)dummy;
 	t_token_free((t_token *)t);
+}
+
+/*
+** sh_get_token_by_index:
+**	Look in a token list if any token was, in original input,
+**	at index sent.
+**
+**	Return Value:
+**		NULL : No token correpond to index
+**		Else : Address of token correspoding
+*/
+
+t_token	*sh_get_token_by_index(t_list *tokens, int index)
+{
+	t_token		*token;
+
+	while (tokens)
+	{
+		token = (t_token*)(tokens->content);
+		if (token->index_start >= index && token->index_end < index)
+			return (token);
+		else if (token->index_start > index)
+			return (NULL);
+	}
+	return (NULL);
 }

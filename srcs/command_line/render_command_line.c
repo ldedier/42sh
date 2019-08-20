@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/22 14:40:58 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/06 11:23:24 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/08/20 15:52:33 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,15 @@ void	render_command_researched(t_command_line *command_line)
 	char	*str;
 
 	ft_putnstr_fd(command_line->dy_str->str,
-		command_line->searcher.match_index, 0);
+		command_line->searcher.match_index, command_line->fd);
 	str = tgetstr("us", NULL);
 	tputs(str, 1, putchar_int);
-	ft_putstr_fd(command_line->searcher.dy_str->str, 0);
+	ft_putstr_fd(command_line->searcher.dy_str->str, command_line->fd);
 	str = tgetstr("ue", NULL);
 	tputs(str, 1, putchar_int);
 	len = ft_strlen(command_line->searcher.dy_str->str);
 	ft_putstr_fd(&command_line->dy_str->str[command_line->searcher.match_index
-		+ len], 0);
+		+ len], command_line->fd);
 }
 
 int		print_after_command_line(t_command_line *command_line,
@@ -67,7 +67,8 @@ int		render_command_line(t_command_line *command_line,
 	go_up_to_prompt(g_glob.winsize.ws_col, g_glob.cursor);
 	str = tgetstr("cd", NULL);
 	tputs(str, 1, putchar_int);
-	ft_dprintf(0, "%s%s%s%s", BOLD, CYAN, g_glob.command_line.prompt, EOC);
+	ft_dprintf(command_line->fd, "%s%s%s%s",
+		BOLD, CYAN, g_glob.command_line.prompt, EOC);
 	if (command_line->mode == E_MODE_VISUAL)
 		render_command_visual(command_line);
 	else if (command_line->searcher.active
@@ -75,7 +76,7 @@ int		render_command_line(t_command_line *command_line,
 				&& ft_strcmp(command_line->searcher.dy_str->str, ""))
 		render_command_researched(command_line);
 	else
-		ft_dprintf(0, "%s", command_line->dy_str->str);
+		ft_dprintf(command_line->fd, "%s", command_line->dy_str->str);
 	g_glob.cursor += cursor_inc;
 	replace_cursor_after_render();
 	if (print_after_command_line(command_line, print_choices) != SUCCESS)

@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/11 17:20:10 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/14 14:51:47 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/08/20 15:51:53 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ typedef struct		s_command_line
 	t_cl_context	context;
 	int				prev_prompt_len;
 	char			*to_append_str;
+	int				fd;
 }					t_command_line;
 
 typedef struct		s_historic
@@ -126,15 +127,16 @@ t_glob				g_glob;
 */
 
 /*
-** home_end.c
+** arrows.c
 */
-int					process_end(t_command_line *command_line);
-int					process_start(t_command_line *command_line);
-
-/*
-** free_command_line.c
-*/
-void				sh_free_command_line(t_command_line *command_line);
+int					process_down(
+	t_shell *shell, t_command_line *command_line);
+int					process_up(
+	t_shell *shell, t_command_line *command_line);
+int					process_left(
+	t_shell *shell, t_command_line *command_line);
+int					process_right(
+	t_shell *shell, t_command_line *command_line);
 
 /*
 ** command_line.c
@@ -150,23 +152,51 @@ int					substitute_current_index(
 int					command_line_nb_rows(t_command_line *command_line);
 
 /*
-** is_printable_utf8.c
+** copy_paste_delete.c
 */
-int					is_utf8_len_header(
-	unsigned char first_byte, int length);
-int					is_utf8_next_byte(unsigned char next_byte);
-int					is_utf8_len_3(unsigned char *buffer);
-int					is_utf8_len_4(unsigned char *buffer);
-int					is_printable_utf8(unsigned char *buffer, int nb_bytes);
+int					command_line_copy_all(t_command_line *command_line);
+int					copy_selection_to_clipboard(
+	t_command_line *command_line);
+int					paste_current_index(
+	t_command_line *command_line, char *to_paste);
+int					delete_command_line_selection(
+	t_command_line *command_line);
 
 /*
-** update_prompt_cwd.c
+** cursor_motion.c
 */
-int					update_prompt_from_absolute_path(
-	char *cwd, char **new_prompt);
-int					update_prompt_cwd_bonus_tilde(
-	t_shell *shell, char **new_prompt, char *cwd, int *returned);
-int					update_prompt_cwd(t_shell *shell, char **new_prompt);
+void				go_right(int right);
+void				go_up_left(int up);
+int					go_up_to_prompt(int width, int cursor);
+
+/*
+** cursor_tools.c
+*/
+int					get_true_cursor_pos_prev_prompt(int cursor);
+int					get_true_cursor_pos(int cursor);
+int					get_down_from_command(t_command_line *command_line);
+void				replace_cursor_on_index(void);
+void				replace_cursor_after_render(void);
+
+/*
+** edit_command.c
+*/
+void				ring_bell(void);
+void				process_edit_command_left(
+	t_command_line *command_line);
+void				process_edit_command_right(
+	t_command_line *command_line);
+
+/*
+** eof_percent.c
+*/
+void				print_eof_delimiter(void);
+int					sh_add_eof(int interrupted);
+
+/*
+** free_command_line.c
+*/
+void				sh_free_command_line(t_command_line *command_line);
 
 /*
 ** get_char_len.c
@@ -176,120 +206,20 @@ int					get_char_len2(
 int					get_char_len(int index, unsigned char *entry);
 
 /*
-** keys_ctrl.c
+** get_command.c
 */
-int					process_ctrl_c(
-	t_shell *shell, t_command_line *command_line);
-int					process_ctrl_d(
-	t_shell *shell, t_command_line *command_line);
-
-/*
-** sh_delete_command.c
-*/
-void				process_delete_searcher(
-	t_command_line *command_line, t_shell *shell);
-void				process_process_delete(t_command_line *command_line);
-void				process_delete(
-	t_command_line *command_line, t_shell *shell);
-void				process_suppr(t_command_line *command_line);
-
-/*
-** render_research.c
-*/
-int					render_research(t_command_line *command_line);
-
-/*
-** sh_process_shift_horizontal.c
-*/
-int					process_process_shift_right(
-	t_command_line *c_line, t_word *word, int *index);
-int					process_shift_right(t_command_line *c_line);
-int					process_process_shift_left(
-	t_command_line *command_line, t_word *word, int *index);
-int					process_shift_left(t_command_line *command_line);
-
-/*
-** render_command_line.c
-*/
-void				render_command_researched(
-	t_command_line *command_line);
-int					print_after_command_line(
-	t_command_line *command_line, int print_choices);
-int					render_command_line(
-	t_command_line *command_line, int cursor_inc, int print_choices);
-
-/*
-** sh_process_quoted.c
-*/
-int					sh_process_process_quoted(
-	int old_context, t_lexer *lexer);
-int					sh_process_quoted(t_lexer *lexer);
-
-/*
-** xy.c
-*/
-t_xy				get_position(int cursor);
-int					xy_is_equal(t_xy xy1, t_xy xy2);
-
-/*
-** sh_get_cursor_position.c
-*/
-int					process_read_cursor_position(
-	char answer[4096], size_t *answer_len, int fd);
-int					sh_get_cursor_position(int *x, int *y);
-
-/*
-** keys_insert.c
-*/
-int					process_enter(t_command_line *command_line);
-int					process_process_keys_ret(
-	t_key_buffer *buffer,
-	t_shell *shell,
-	t_command_line *command_line);
-int					process_keys_ret(
-	t_key_buffer *buffer,
-	t_shell *shell,
-	t_command_line *command_line);
-int					process_key_insert_printable_utf8(
-	t_key_buffer *buffer,
-	t_shell *shell,
-	t_command_line *command_line);
-int					process_keys_insert(
-	t_key_buffer *buffer,
-	t_shell *shell,
-	t_command_line *command_line);
-
-/*
-** keys_debug.c
-*/
-void				sh_print_buffer(t_key_buffer buffer);
-
-/*
-** keys_flush.c
-*/
-void				flush_keys(t_key_buffer *buffer);
-int					flush_keys_ret(t_key_buffer *buffer, int ret);
-int					should_flush_buffer(
-	t_key_buffer buffer, t_command_line *command_line);
-
-/*
-** keys.c
-*/
-int					process_escape_sequence(
-	t_shell *shell,
+int					sh_add_to_dy_str(
+	t_dy_str *dy_str,
+	unsigned char buffer[READ_BUFF_SIZE],
+	int nb_bytes);
+int					sh_add_to_command(
 	t_command_line *command_line,
-	t_key_buffer *buffer);
-int					process_shift(
-	t_key_buffer *buffer, t_command_line *command_line);
-int					process_keys(
-	t_key_buffer *buffer,
-	t_shell *shell,
-	t_command_line *command_line);
-int					process_get_keys(
-	t_key_buffer *buffer,
-	t_shell *shell,
-	t_command_line *command_line);
-int					get_keys(t_shell *shell, t_command_line *command_line);
+	unsigned char buffer[READ_BUFF_SIZE],
+	int nb_bytes);
+int					reset_command_line(
+	t_shell *shell, t_command_line *command_line);
+int					sh_get_command(
+	t_shell *shell, t_command_line *command_line);
 
 /*
 ** heredoc.c
@@ -315,6 +245,126 @@ char				*heredoc(
 	int *ret);
 
 /*
+** heredoc_tools.c
+*/
+int					refine_heredoc(char *str);
+int					heredoc_ret(
+	t_shell *shell, t_command_line *command_line, int ret);
+char				*heredoc_ret_str(
+	t_shell *shell, t_command_line *command_line, char *str);
+int					append_to_str(char **str, char *to_append);
+
+/*
+** home_end.c
+*/
+int					process_end(t_command_line *command_line);
+int					process_start(t_command_line *command_line);
+
+/*
+** is_printable_utf8.c
+*/
+int					is_utf8_len_header(
+	unsigned char first_byte, int length);
+int					is_utf8_next_byte(unsigned char next_byte);
+int					is_utf8_len_3(unsigned char *buffer);
+int					is_utf8_len_4(unsigned char *buffer);
+int					is_printable_utf8(unsigned char *buffer, int nb_bytes);
+
+/*
+** keys.c
+*/
+int					process_escape_sequence(
+	t_shell *shell,
+	t_command_line *command_line,
+	t_key_buffer *buffer);
+int					process_shift(
+	t_key_buffer *buffer, t_command_line *command_line);
+int					process_keys(
+	t_key_buffer *buffer,
+	t_shell *shell,
+	t_command_line *command_line);
+int					process_get_keys(
+	t_key_buffer *buffer,
+	t_shell *shell,
+	t_command_line *command_line);
+int					get_keys(t_shell *shell, t_command_line *command_line);
+
+/*
+** keys_ctrl.c
+*/
+int					process_ctrl_c(
+	t_shell *shell, t_command_line *command_line);
+int					process_ctrl_d(
+	t_shell *shell, t_command_line *command_line);
+
+/*
+** keys_debug.c
+*/
+void				sh_print_buffer(t_key_buffer buffer);
+
+/*
+** keys_flush.c
+*/
+void				flush_keys(t_key_buffer *buffer);
+int					flush_keys_ret(t_key_buffer *buffer, int ret);
+int					should_flush_buffer(
+	t_key_buffer buffer, t_command_line *command_line);
+
+/*
+** keys_insert.c
+*/
+int					process_enter(t_command_line *command_line);
+int					process_process_keys_ret(
+	t_key_buffer *buffer,
+	t_shell *shell,
+	t_command_line *command_line);
+int					process_keys_ret(
+	t_key_buffer *buffer,
+	t_shell *shell,
+	t_command_line *command_line);
+int					process_key_insert_printable_utf8(
+	t_key_buffer *buffer,
+	t_shell *shell,
+	t_command_line *command_line);
+int					process_keys_insert(
+	t_key_buffer *buffer,
+	t_shell *shell,
+	t_command_line *command_line);
+
+/*
+** keys_insert_tools.c
+*/
+int					process_enter_no_autocompletion(
+	t_command_line *command_line);
+void				process_cancel_autocompletion(
+	t_command_line *command_line);
+void				cancel_autocompletion(
+	t_key_buffer *buffer, t_command_line *command_line);
+
+/*
+** keys_others.c
+*/
+int					process_keys_others(
+	t_key_buffer *buffer,
+	t_shell *shell,
+	t_command_line *command_line);
+
+/*
+** render_command_line.c
+*/
+void				render_command_researched(
+	t_command_line *command_line);
+int					print_after_command_line(
+	t_command_line *command_line, int print_choices);
+int					render_command_line(
+	t_command_line *command_line, int cursor_inc, int print_choices);
+
+/*
+** render_research.c
+*/
+int					render_research(t_command_line *command_line);
+
+/*
 ** research_historic.c
 */
 int					process_find_in_historic(
@@ -327,27 +377,86 @@ int					process_research_historic(
 	t_command_line *command_line, t_shell *shell);
 
 /*
-** cursor_motion.c
+** screen_tools.c
 */
-void				go_right(int right);
-void				go_up_left(int up);
-int					go_up_to_prompt(int width, int cursor);
+int					process_clear(t_command_line *command_line);
 
 /*
-** get_command.c
+** selection.c
 */
-int					sh_add_to_dy_str(
-	t_dy_str *dy_str,
-	unsigned char buffer[READ_BUFF_SIZE],
-	int nb_bytes);
-int					sh_add_to_command(
+void				populate_min_max_selection(
+	t_command_line *command_line, int *min, int *max);
+void				render_command_visual(t_command_line *command_line);
+
+/*
+** sh_delete_command.c
+*/
+void				process_delete_searcher(
+	t_command_line *command_line, t_shell *shell);
+void				process_process_delete(t_command_line *command_line);
+void				process_delete(
+	t_command_line *command_line, t_shell *shell);
+void				process_suppr(t_command_line *command_line);
+
+/*
+** sh_get_cursor_position.c
+*/
+int					process_read_cursor_position(
+	char answer[4096], size_t *answer_len, int fd);
+int					sh_get_cursor_position(int *x, int *y);
+
+/*
+** sh_process_historic.c
+*/
+int					process_historic_down(
+	t_shell *shell, t_command_line *command_line);
+int					process_historic_up(
+	t_shell *shell, t_command_line *command_line);
+
+/*
+** sh_process_quoted.c
+*/
+int					sh_process_process_quoted(
+	int old_context, t_lexer *lexer);
+int					sh_process_quoted(t_lexer *lexer);
+
+/*
+** sh_process_shift_horizontal.c
+*/
+int					process_process_shift_right(
+	t_command_line *c_line, t_word *word, int *index);
+int					process_shift_right(t_command_line *c_line);
+int					process_process_shift_left(
+	t_command_line *command_line, t_word *word, int *index);
+int					process_shift_left(t_command_line *command_line);
+
+/*
+** sh_process_shift_vertical.c
+*/
+int					process_shift_up(t_command_line *command_line);
+int					process_shift_down(t_command_line *command_line);
+
+/*
+** update_prompt.c
+*/
+int					update_prompt_context(
+	t_shell *shell, t_command_line *command_line, char **new_prompt);
+int					update_prompt(
+	t_shell *shell, t_command_line *command_line);
+int					update_prompt_from_quote(
+	t_shell *shell,
 	t_command_line *command_line,
-	unsigned char buffer[READ_BUFF_SIZE],
-	int nb_bytes);
-int					reset_command_line(
-	t_shell *shell, t_command_line *command_line);
-int					sh_get_command(
-	t_shell *shell, t_command_line *command_line);
+	char quote,
+	int backslash);
+
+/*
+** update_prompt_cwd.c
+*/
+int					update_prompt_from_absolute_path(
+	char *cwd, char **new_prompt);
+int					update_prompt_cwd_bonus_tilde(
+	t_shell *shell, char **new_prompt, char *cwd, int *returned);
+int					update_prompt_cwd(t_shell *shell, char **new_prompt);
 
 /*
 ** update_prompt_keys.c
@@ -365,46 +474,6 @@ int					process_v(
 	t_key_buffer *buffer);
 
 /*
-** eof_percent.c
-*/
-void				print_eof_delimiter(void);
-int					sh_add_eof(int interrupted);
-
-/*
-** cursor_tools.c
-*/
-int					get_true_cursor_pos_prev_prompt(int cursor);
-int					get_true_cursor_pos(int cursor);
-int					get_down_from_command(t_command_line *command_line);
-void				replace_cursor_on_index(void);
-void				replace_cursor_after_render(void);
-
-/*
-** keys_others.c
-*/
-int					process_keys_others(
-	t_key_buffer *buffer,
-	t_shell *shell,
-	t_command_line *command_line);
-
-/*
-** screen_tools.c
-*/
-int					process_clear(t_command_line *command_line);
-
-/*
-** arrows.c
-*/
-int					process_down(
-	t_shell *shell, t_command_line *command_line);
-int					process_up(
-	t_shell *shell, t_command_line *command_line);
-int					process_left(
-	t_shell *shell, t_command_line *command_line);
-int					process_right(
-	t_shell *shell, t_command_line *command_line);
-
-/*
 ** update_prompt_tools.c
 */
 int					end_with_char(char *str, char c);
@@ -412,33 +481,6 @@ int					get_file_in_dir(char *filename, char *dirname);
 int					get_path_from_absolute_path(char *str, char **path);
 int					get_path_and_file_from_str(
 	char *str, char **path, char **file);
-
-/*
-** copy_paste_delete.c
-*/
-int					command_line_copy_all(t_command_line *command_line);
-int					copy_selection_to_clipboard(
-	t_command_line *command_line);
-int					paste_current_index(
-	t_command_line *command_line, char *to_paste);
-int					delete_command_line_selection(
-	t_command_line *command_line);
-
-/*
-** keys_insert_tools.c
-*/
-int					process_enter_no_autocompletion(
-	t_command_line *command_line);
-void				process_cancel_autocompletion(
-	t_command_line *command_line);
-void				cancel_autocompletion(
-	t_key_buffer *buffer, t_command_line *command_line);
-
-/*
-** sh_process_shift_vertical.c
-*/
-int					process_shift_up(t_command_line *command_line);
-int					process_shift_down(t_command_line *command_line);
 
 /*
 ** utf8_tools.c
@@ -451,51 +493,10 @@ int					get_left_w_char_index(t_command_line *command_line);
 int					get_right_w_char_index(t_command_line *command_line);
 
 /*
-** heredoc_tools.c
+** xy.c
 */
-int					refine_heredoc(char *str);
-int					heredoc_ret(
-	t_shell *shell, t_command_line *command_line, int ret);
-char				*heredoc_ret_str(
-	t_shell *shell, t_command_line *command_line, char *str);
-int					append_to_str(char **str, char *to_append);
-
-/*
-** update_prompt.c
-*/
-int					update_prompt_context(
-	t_shell *shell, t_command_line *command_line, char **new_prompt);
-int					update_prompt(
-	t_shell *shell, t_command_line *command_line);
-int					update_prompt_from_quote(
-	t_shell *shell,
-	t_command_line *command_line,
-	char quote,
-	int backslash);
-
-/*
-** sh_process_historic.c
-*/
-int					process_historic_down(
-	t_shell *shell, t_command_line *command_line);
-int					process_historic_up(
-	t_shell *shell, t_command_line *command_line);
-
-/*
-** selection.c
-*/
-void				populate_min_max_selection(
-	t_command_line *command_line, int *min, int *max);
-void				render_command_visual(t_command_line *command_line);
-
-/*
-** edit_command.c
-*/
-void				ring_bell(void);
-void				process_edit_command_left(
-	t_command_line *command_line);
-void				process_edit_command_right(
-	t_command_line *command_line);
+t_xy				get_position(int cursor);
+int					xy_is_equal(t_xy xy1, t_xy xy2);
 
 /*
 ** escape.c
