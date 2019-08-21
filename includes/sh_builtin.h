@@ -6,14 +6,18 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 11:36:31 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/21 11:57:17 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/21 12:08:37 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SH_BUILTIN_H
 # define SH_BUILTIN_H
 
-# define NB_BUILTINS	13
+# if __APPLE__ && __MACH__
+#  define NB_BUILTINS	13
+# else
+#  define NB_BUILTINS	12
+# endif
 
 # define CD_OPT_LOGIC	0x01
 # define CD_OPT_PHYSIC	0x02
