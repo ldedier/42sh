@@ -6,88 +6,68 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:19:57 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/21 21:37:33 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/21 22:11:14 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-static int	sh_builtin_verbose_usage(t_context *context)
-{
-	ft_dprintf(context->fd[FD_ERR], SH_ERR_COLOR"verbose: usage: verbose on/");
-	ft_dprintf(context->fd[FD_ERR], "off [lexer,ast,pipe,exec,expansion,");
-	ft_dprintf(context->fd[FD_ERR], "traverse]\n"EOC);
-	return (ERROR);
-}
+#define VERBOSE_USAGE			"[-lapextb] [--option] [on/off]"
+#define VERBOSE_L_OPT			0
+#define VERBOSE_A_OPT			1
+#define VERBOSE_P_OPT			2
+#define VERBOSE_E_OPT			3
+#define VERBOSE_X_OPT			4
+#define VERBOSE_T_OPT			5
+#define VERBOSE_B_OPT			6
 
-static int	sh_builtin_verbose_process_all(
-	t_context *context, char key[8][20], char value[3])
+static int	sh_builtin_verbose_process(t_context *context, t_args args[], char *state)
 {
-	int		ret;
-	int		i;
-
-	i = 0;
-	ret = 0;
-	while (!ret && key[i][0])
-	{
-		ret = sh_vars_assign_key_val(
-			context->saved_env, context->vars, key[i], value);
-		i++;
-	}
-	return (ret);
-}
-
-static int	sh_builtin_verbose_process(
-	t_context *context, char key[8][20], char value[3])
-{
+	const char	key[9][20] = {"verbose_lexer", "verbose_ast", "verbose_pipe",
+		"verbose_exec", "verbose_expansion", "verbose_traverse",
+		"verbose_builtin", ""};
 	int			i;
-	int			j;
-	int			ret;
-
-	i = 2;
-	ret = 0;
-	while (!ret && context->params->tbl[i])
+	char		value[3];
+	
+	i = 0;
+	if (ft_strequ(state, "on"))
+		ft_strcpy(value, "on");
+	else
+		ft_strcpy(value, "");
+	while (args[i].type != E_ARGS_END)
 	{
-		j = 0;
-		while (*key[j] && !ft_strequ(context->params->tbl[i], key[j] + 8))
-			j++;
-		if (*key[j])
-			ret = sh_vars_assign_key_val(context->saved_env,
-				context->vars, key[j], value);
-		else if (!*key[j])
-		{
-			ret = sh_perror2_err_fd(context->fd[FD_ERR], SH_ERR2_INVALID_OPT,
-				"verbose", context->params->tbl[i]);
-			sh_builtin_verbose_usage(context);
-		}
+		if (args[i].value)
+			if (sh_vars_assign_key_val(NULL, context->vars, (char*)key[i], value))
+				return (FAILURE);
 		i++;
 	}
-	if (i == 2)
-		return (sh_builtin_verbose_process_all(context, key, value));
-	return (ret);
+	return (SUCCESS);
 }
 
 int			sh_builtin_verbose(t_context *context)
 {
-	char		value[3];
-	static char	key[9][20] = {"verbose_ast", "verbose_lexer", "verbose_exec",
-				"verbose_pipe", "verbose_expansion", "verbose_builtin",
-				"verbose_traverse", ""};
-	int			ret;
+	int				index;
+	char			**argv;
+	t_args	args[] = {
+		{E_ARGS_BOOL, 'l', "lexer", NULL, NULL, 0},
+		{E_ARGS_BOOL, 'a', "ast", NULL, NULL, 0},
+		{E_ARGS_BOOL, 'p', "pipe", NULL, NULL, 0},
+		{E_ARGS_BOOL, 'e', "exec", NULL, NULL, 0},
+		{E_ARGS_BOOL, 'x', "expansion", NULL, NULL, 0},
+		{E_ARGS_BOOL, 't', "traverse", NULL, NULL, 0},
+		{E_ARGS_BOOL, 'b', "builtin", NULL, NULL, 0},
+		{E_ARGS_END, 0, NULL, NULL, NULL, 0},
+	};
 
-	if (ft_strequ(context->params->tbl[1], "on"))
-		ft_strcpy(value, "on");
-	else if (ft_strequ(context->params->tbl[1], "off"))
-		ft_strcpy(value, "");
+	argv = (char**)context->params->tbl;
+	if (sh_builtin_parser(ft_strtab_len(argv), argv, args, &index))
+		return (sh_builtin_usage(args, argv[0], VERBOSE_USAGE, context->shell));
+	if (index == 1 || (argv[index] && argv[index + 1]))
+		return (sh_builtin_usage(args, argv[0], VERBOSE_USAGE, context->shell));
+	if (!argv[index] || ft_strequ(argv[index], "on"))
+		return (sh_builtin_verbose_process(context, args, "on"));
+	else if (ft_strequ(argv[index], "off"))
+		return (sh_builtin_verbose_process(context, args, "off"));
 	else
-		return (sh_builtin_verbose_usage(context));
-	ret = sh_builtin_verbose_process(context, key, value);
-	if (ret)
-		return (ret);
-	return (ret);
+		return (sh_builtin_usage(args, argv[0], VERBOSE_USAGE, context->shell));
 }
-
-// int			sh_builtin_verbose(t_context *context)
-// {
-	
-// }
