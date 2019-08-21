@@ -6,14 +6,18 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 11:36:31 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/19 15:28:10 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/21 12:11:55 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SH_BUILTIN_H
 # define SH_BUILTIN_H
 
-# define NB_BUILTINS	12
+# if __APPLE__ && __MACH__
+#  define NB_BUILTINS	12
+# else
+#  define NB_BUILTINS	11
+# endif
 
 # define CD_OPT_LOGIC	0x01
 # define CD_OPT_PHYSIC	0x02
@@ -61,6 +65,15 @@ typedef struct		s_args
 	int			priority;
 }					t_args;
 
+# if __APPLE__ && __MACH__
+
+/*
+** sh_builtin_bonus.c
+*/
+int					sh_builtin_🐑(t_context *context);
+
+# endif
+
 /*
 ********************************************************************************
 */
@@ -71,11 +84,6 @@ typedef struct		s_args
 t_builtin_container	*get_builtins(void);
 t_builtin			sh_builtin_find_name(char *name);
 t_builtin			sh_builtin_find(t_context *context);
-
-/*
-** sh_builtin_bonus.c
-*/
-int					sh_builtin_🐑(t_context *context);
 
 /*
 ** sh_builtin_cd.c
