@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 21:45:25 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/21 20:56:45 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/21 21:29:30 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void		sh_free_context_dup_lst(void *c, size_t dummy)
 	if (context->path)
 		ft_strdel(&context->path);
 	ft_dy_tab_del(context->params);
+	ft_dy_tab_del(context->saved_env);
 	free(context);
 	(void)dummy;
 }
