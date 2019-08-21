@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 11:36:31 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/17 19:48:42 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/21 11:57:17 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,15 @@ typedef struct		s_args
 	int			priority;
 }					t_args;
 
+# if __APPLE__ && __MACH__
+
+/*
+** sh_builtin_bonus.c
+*/
+int					sh_builtin_🐑(t_context *context);
+
+# endif
+
 /*
 ********************************************************************************
 */
@@ -71,11 +80,6 @@ typedef struct		s_args
 t_builtin_container	*get_builtins(void);
 t_builtin			sh_builtin_find_name(char *name);
 t_builtin			sh_builtin_find(t_context *context);
-
-/*
-** sh_builtin_bonus.c
-*/
-int					sh_builtin_🐑(t_context *context);
 
 /*
 ** sh_builtin_cd.c

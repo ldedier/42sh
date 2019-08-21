@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 19:04:16 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/17 17:21:44 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/21 11:58:03 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,9 @@ t_builtin_container		*get_builtins(void)
 		{ "unsetenv", sh_builtin_unsetenv },
 		{ "setenv", sh_builtin_setenv },
 		{ "env", sh_builtin_env },
+#if __APPLE__ && __MACH__
 		{ "🐑", sh_builtin_🐑 }
+#endif
 	};
 
 	return (res);
