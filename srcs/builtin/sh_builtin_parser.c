@@ -6,11 +6,13 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/15 13:19:47 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/19 20:11:27 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/21 22:22:16 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
+
+#define		PARSER_HELP		-1
 
 static int	parser_get_arg_content(t_args *args, char **argv, int *index)
 {
@@ -46,6 +48,8 @@ static int	paser_long_arg(char **argv, int *index, t_args args[])
 	{
 		if (ft_strequ(args[i].name_long, argv[*index] + 2))
 			return (parser_get_arg_content(args + i, argv, index));
+		if (ft_strequ("help", argv[*index] + 2))
+			return (PARSER_HELP);
 		i++;
 	}
 	return (ERROR);
