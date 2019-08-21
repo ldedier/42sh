@@ -16,7 +16,7 @@ import re;
 
 format = "^(void|int|char|t_*)"
 
-ignored_files=["grammar.c","main.c","sh_builtin_bonus.c]
+ignored_files=["grammar.c","main.c","sh_builtin_bonus.c"]
 
 ## Activate or unactivate verbose mode, you can define verbose level between 1 and 3.
 verbose = 0
