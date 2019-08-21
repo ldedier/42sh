@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 12:57:03 by ldedier           #+#    #+#             */
-/*   Updated: 2019/06/18 16:51:43 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/08/21 15:24:51 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int			sh_process_reduce_add_to_ast(t_list *ast_builder_list,
 		if (ft_lstaddnew_ptr_last(&ast_builder->ast_node->children,
 				child_ast_builder->ast_node, sizeof(t_ast_node *)))
 			return (sh_perror(SH_ERR1_MALLOC, "sh_process_reduce"));
+		child_ast_builder->ast_node->parent = ast_builder->ast_node;
 		free(child_ast_builder);
 	}
 	if (sh_process_reduce_add_to_stack(parser, production, ast_builder))

@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 11:08:27 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/14 19:24:37 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/21 13:47:58 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,8 @@ void				t_token_free(t_token *token);
 t_list				*t_token_node_new(int id, char *value);
 void				t_token_free_list(t_list *head);
 void				sh_free_token_lst(void *t, size_t dummy);
-t_token				*sh_get_token_by_index(t_list *tokens, int index);
+t_token				*sh_get_token_by_index(t_list *tokens, int index,
+						t_list **prev);
 
 /*
 ** t_token_show.c

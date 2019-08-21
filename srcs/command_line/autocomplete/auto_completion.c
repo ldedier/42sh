@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 23:28:27 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/13 14:56:29 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/08/21 17:26:22 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,19 +70,6 @@ int		process_completion(t_command_line *command_line, t_word word)
 	return (ft_free_turn(str, 0));
 }
 
-/*
-
-{
-	if ((ret = sh_lexer(command, &tokens, shell)) != SUCCESS)
-	{
-		if (sh_env_update_ret_value_and_question(shell, ret) == FAILURE)
-			ret = FAILURE;
-	}
-	if (!ret && (ret = sh_parser(tokens, shell)))
-		if (sh_env_update_ret_value_and_question(shell, ret) == FAILURE)
-			ret = FAILURE;
-}
-*/
 int		process_tab(t_shell *shell, t_command_line *command_line)
 {
 	t_word	word;
@@ -90,18 +77,18 @@ int		process_tab(t_shell *shell, t_command_line *command_line)
 
 	ret = 0;
 	command_line->autocompletion.choices_common_len = -1;
-	populate_word_by_index(command_line->dy_str->str,
-		command_line->current_index, &word);
+	if ((ret = populate_parsed_word_by_index(shell, command_line->dy_str->str,
+		command_line->current_index, &word)))
+		return (ret == FAILURE);
 	if (!command_line->autocompletion.active)
 	{
 		ft_dlstdel(&command_line->autocompletion.choices, &free_file_dlst);
 		if (populate_choices_from_word(command_line, shell, &word))
-
-			return (ft_free_turn(word.str, 1));
+			return (1);
 		if (command_line->autocompletion.choices != NULL)
 			ret = process_completion(command_line, word);
 	}
 	else
 		process_autocompletion_down(command_line);
-	return (ft_free_turn(word.str, ret));
+	return (ret);
 }

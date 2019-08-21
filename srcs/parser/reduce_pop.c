@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 12:57:03 by ldedier           #+#    #+#             */
-/*   Updated: 2019/07/27 16:57:14 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/21 15:24:00 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	sh_process_add_to_list_child_ast_builder(
 		if (ft_lstaddnew_ptr(ast_builder_list, child_ast_builder,
 			sizeof(t_ast_builder *)))
 			return (FAILURE);
-			//here
+		
 	}
 	return (SUCCESS);
 }

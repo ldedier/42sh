@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/22 14:59:37 by ldedier           #+#    #+#             */
-/*   Updated: 2019/07/03 00:01:48 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/21 15:19:28 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,16 @@ typedef struct s_command_line	t_command_line;
 */
 typedef struct		s_word
 {
+	int				word_index;
 	char			*str;
 	char			*to_compare;
 	int				start_index;
-	int				word_index;
 	int				prev_word_index;
 	int				len;
 	int				utf8_len;
 	int				index_byte_offset;
 	int				index_char_offset;
+	t_token			*token;
 }					t_word;
 
 typedef struct		s_file
@@ -207,8 +208,10 @@ int					process_populate_word_by_index(
 	t_word *word, int nb_words, int parse_w, int index);
 void				increment_word(
 	int i, int index, t_word *word, char *str);
-int					populate_word_by_index(
-	char *s, int index, t_word *word);
+int					populate_word_by_index(char *s,
+						int index, t_word *word);
+int					populate_parsed_word_by_index(t_shell *shell, char *s,
+						int index, t_word *word);
 
 /*
 ** preprocess_choice_add.c

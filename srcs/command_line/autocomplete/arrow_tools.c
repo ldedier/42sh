@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 01:47:50 by ldedier           #+#    #+#             */
-/*   Updated: 2019/06/06 23:26:09 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/08/21 15:21:30 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,5 @@ int		substitute_command_str(t_command_line *command_line, char *str)
 	}
 	free(word.str);
 	return (SUCCESS);
+	
 }
