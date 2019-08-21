@@ -91,7 +91,7 @@ int		process_tab(t_shell *shell, t_command_line *command_line)
 	ret = 0;
 	command_line->autocompletion.choices_common_len = -1;
 	populate_word_by_index(command_line->dy_str->str,
-			command_line->current_index, &word);
+		command_line->current_index, &word);
 	if (!command_line->autocompletion.active)
 	{
 		ft_dlstdel(&command_line->autocompletion.choices, &free_file_dlst);

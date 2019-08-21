@@ -64,6 +64,7 @@ void	increment_word(int i, int index, t_word *word, char *str)
 	word->index_char_offset = ft_strnlen_utf8(&str[i], index - i);
 }
 
+/*
 int		populate_word_by_index(char *s, int index, t_word *word)
 {
 	int nb_w;
@@ -91,4 +92,16 @@ int		populate_word_by_index(char *s, int index, t_word *word)
 	if (i == index)
 		return (process_populate_word_by_index(word, nb_w, parse_w, index));
 	return (0);
+}
+*/
+
+int		populate_word_by_index(char *s, int index, t_word *word)
+{
+	int ret;
+
+	if ((ret = sh_lexer(command, &tokens, shell)) != SUCCESS)
+		return ret;
+	if ((ret = sh_parser(tokens, shell)))
+		return ret;
+	return (ret);
 }

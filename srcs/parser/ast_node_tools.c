@@ -57,5 +57,6 @@ t_ast_node	*sh_add_to_ast_node(t_ast_node *node, t_symbol_id id,
 		sh_free_ast_node(&node, 0);
 		return (sh_perrorn(SH_ERR1_MALLOC, "add_to_ast_node (2)"));
 	}
+	new_node->parent = node;
 	return (new_node);
 }

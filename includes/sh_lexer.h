@@ -36,6 +36,7 @@
 # define LEX_OPERATORS_CHARS		"|&;<>()\0"
 
 typedef struct s_shell		t_shell;
+typedef struct s_ast_node	t_ast_node;
 
 typedef struct		s_lexer
 {
@@ -69,6 +70,7 @@ typedef struct		s_token
 	char			expansion;
 	int				index_start;
 	int				index_end;
+	t_ast_node		*ast_node;
 }					t_token;
 
 /*

@@ -40,6 +40,7 @@ t_token	*t_token_new(int id, char *value)
 	}
 	token->id = id;
 	token->index = sh_index(id);
+	token->ast_node = NULL;
 	token->expansion = 0;
 	return (token);
 }

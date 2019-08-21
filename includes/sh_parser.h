@@ -79,6 +79,7 @@ struct				s_ast_node
 	t_metadata		metadata;
 	t_list			*children;
 	t_ast_node		*relative;
+	t_ast_node		*parent;
 	t_ast_builder	*builder;
 };
 

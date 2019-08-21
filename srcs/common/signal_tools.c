@@ -14,6 +14,7 @@
 
 void	transmit_sig(int signal)
 {
+	(void)signal;
 	// if (g_parent)
 	// 	kill(g_parent, signal);
 	if (isatty(0) && g_glob.command_line.dy_str)

@@ -28,6 +28,7 @@ static int	sh_process_add_to_list_child_ast_builder(
 		if (ft_lstaddnew_ptr(ast_builder_list, child_ast_builder,
 			sizeof(t_ast_builder *)))
 			return (FAILURE);
+			//here
 	}
 	return (SUCCESS);
 }
@@ -69,6 +70,7 @@ static int	sh_process_process_reduce(t_lr_parser *parser,
 		free(stack_item);
 		return (sh_perror(SH_ERR1_MALLOC, "sh_process_reduce_pop"));
 	}
+	child_ast_builder->cst_node->parent = parser->cst_root;
 	if (sh_treat_relevance_in_reduce(child_ast_builder,
 				production, replacing_ast_node, ast_builder_list))
 	{
