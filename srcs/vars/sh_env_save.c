@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/20 14:48:43 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/21 21:43:19 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/21 22:07:50 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,13 @@ int			sh_env_save(t_context *context)
 {
 	if (context->saved_env)
 		ft_dy_tab_del(context->saved_env);
+       return (sh_env_save_dup(context));
 }
 
 int			sh_env_save_restore(t_context *context)
 {
 	if (!context->saved_env)
 		return (SUCCESS);
-	ft_dprintf(2, RED"restoring env\n"EOC);
 	ft_dy_tab_del(context->env);
 	context->env = context->saved_env;
 	context->shell->env = context->saved_env;
