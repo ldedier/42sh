@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/20 19:03:12 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/21 18:29:47 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,18 +84,18 @@ int		sh_traverse_simple_command(t_ast_node *node, t_context *context)
 {
 	int		ret;
 
-	if (context->phase == E_TRAVERSE_PHASE_EXPANSIONS)
-	{
-		if (sh_traverse_tools_search(node, 87) && sh_traverse_tools_search(node, 88))
-			return (sh_traverse_tools_browse(node, context));
-		if (sh_env_save(context) == FAILURE)
-			return (FAILURE);
-		return (sh_traverse_tools_browse(node, context));
-	}
 	if (context->phase == E_TRAVERSE_PHASE_EXECUTE)
 	{
-		sh_env_save_delete_exported(context);
 		sh_traverse_tools_show_traverse_start(node, context);
+		if (sh_traverse_tools_search(node, 87) == ERROR && sh_traverse_tools_search(node, 88) == ERROR)
+			return (sh_traverse_tools_browse(node, context));
+		if (!context->current_pipe_sequence_node)
+		{
+			if (sh_env_save(context) == FAILURE)
+				return (FAILURE);
+			sh_env_save_delete_exported(context);
+		}
+
 		context->redirections = &node->metadata.command_metadata.redirections;
 		if (context->current_pipe_sequence_node)
 			if (sh_env_update_question_mark(context->shell) == FAILURE)
@@ -105,8 +105,9 @@ int		sh_traverse_simple_command(t_ast_node *node, t_context *context)
 		else
 			ret = sh_traverse_simple_command_no_exec(node, context);
 		sh_traverse_tools_show_traverse_ret_value(node, context, ret);
-		if (ret != FAILURE)
-			sh_env_save_restore(context);
+		if (!context->current_pipe_sequence_node && ret != FAILURE)
+			if (sh_env_save_restore(context) == FAILURE)
+				return (FAILURE);
 		return (ret);
 	}
 	else

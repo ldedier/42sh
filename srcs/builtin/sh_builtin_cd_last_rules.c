@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 07:20:20 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/20 18:55:03 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/21 19:23:04 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ int			sh_builtin_cd_rule10(
 			sh_builtin_cd_update_pwd(context, flags, curpath);
 		if (!ret && flags & CD_OPT_HYPHEN)
 			ft_dprintf(context->fd[FD_OUT],
-				"%s\n", sh_vars_get_value(context->env, NULL, "PWD"));
+				"%s\n", sh_vars_get_value(context->saved_env, NULL, "PWD"));
 	}
 	return (ret);
 }

@@ -16,9 +16,10 @@ int		sh_traverse_assignment_word(t_ast_node *node, t_context *context)
 {
 	int		ret;
 
-	if (context->phase == E_TRAVERSE_PHASE_EXPANSIONS)
+	if (context->phase == E_TRAVERSE_PHASE_EXECUTE)
 	{
 		ret = SUCCESS;
+		sh_traverse_tools_show_traverse_start(node, context);
 		if (node && node->token)
 			ret = sh_expansions(context, node);
 		if (!ret && node && node->token && node->token->value
@@ -30,6 +31,7 @@ int		sh_traverse_assignment_word(t_ast_node *node, t_context *context)
 			&& sh_verbose_exec())
 			ft_dprintf(2, "assigned : %s\n", node->token->value);
 		sh_env_update_ret_value_and_question(context->shell, ret);
+		sh_traverse_tools_show_traverse_ret_value(node, context, ret);
 		return (ret);
 	}
 	else

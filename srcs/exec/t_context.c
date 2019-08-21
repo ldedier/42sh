@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 21:45:25 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/20 15:27:33 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/21 20:56:45 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,12 @@ t_context	*t_context_dup(t_context *context)
 		return (NULL);
 	}
 	if (!(res->params = ft_dy_tab_cpy_str(context->params)))
+	{
+		ft_strdel(&res->path);
+		free(res);
+		return (NULL);
+	}
+	if (!(res->saved_env = ft_dy_tab_cpy_str(context->env)))
 	{
 		ft_strdel(&res->path);
 		free(res);
