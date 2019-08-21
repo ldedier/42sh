@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/15 15:13:53 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/19 09:51:26 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/21 18:31:23 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,6 @@ int			sh_builtin_type(t_context *context)
 	argv = (char**)context->params->tbl;
 	if (sh_builtin_parser(ft_strtab_len(argv), argv, args, &index))
 		return (sh_builtin_usage(args, argv[0], TYPE_USAGE, context->shell));
-	sh_builtin_parser_show(args);
 	if (args[TYPE_A_OPT].value)
 		return (sh_builtin_type_all(context, args, index, argv));
 	ret = SUCCESS;
