@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:19:57 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/20 18:57:28 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/21 21:37:33 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,3 +86,8 @@ int			sh_builtin_verbose(t_context *context)
 		return (ret);
 	return (ret);
 }
+
+// int			sh_builtin_verbose(t_context *context)
+// {
+	
+// }

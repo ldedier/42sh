@@ -119,25 +119,6 @@ int					sh_builtin_cd_rule5(
 int					sh_builtin_echo(t_context *context);
 
 /*
-** sh_builtin_env.c
-*/
-void				sh_builtin_env_usage(int fdout);
-int					sh_builtin_env(t_context *context);
-
-/*
-** sh_builtin_env_parser.c
-*/
-int					sh_builtin_env_parser(
-	t_context *context, t_dy_tab **new_env, t_dy_tab **new_param);
-
-/*
-** sh_builtin_env_process.c
-*/
-int					sh_builtin_env_no_args(t_context *context);
-int					sh_builtin_env_process_command (
-	t_context *context, t_dy_tab *new_env);
-
-/*
 ** sh_builtin_exit.c
 */
 int					sh_builtin_exit(t_context *context);
@@ -188,13 +169,6 @@ int					sh_builtin_pwd(t_context *context);
 int					sh_builtin_set(t_context *context);
 
 /*
-** sh_builtin_setenv.c
-*/
-int					sh_builtin_setenv_process (
-	char *entry, t_dy_tab *env, t_context *context);
-int					sh_builtin_setenv(t_context *context);
-
-/*
 ** sh_builtin_type.c
 */
 int					sh_builtin_type(t_context *context);
@@ -211,11 +185,6 @@ int					sh_builtin_type_search_in_path(
 ** sh_builtin_unset.c
 */
 int					sh_builtin_unset(t_context *context);
-
-/*
-** sh_builtin_unsetenv.c
-*/
-int					sh_builtin_unsetenv(t_context *context);
 
 /*
 ** sh_builtin_verbose.c
