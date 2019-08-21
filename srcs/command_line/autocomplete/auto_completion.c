@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 23:28:27 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/21 17:26:22 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/08/21 17:58:12 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,6 @@ int		process_tab(t_shell *shell, t_command_line *command_line)
 			ret = process_completion(command_line, word);
 	}
 	else
-		process_autocompletion_down(command_line);
+		process_autocompletion_down(shell, command_line);
 	return (ret);
 }

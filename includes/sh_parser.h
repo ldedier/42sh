@@ -120,11 +120,82 @@ typedef struct		s_lr_parser
 */
 
 /*
+** print_ast.c
+*/
+char				*sh_color_depth(int i);
+void				sh_print_ast_child(
+	int depth, int *j, t_ast_node *child);
+void				sh_print_ast(t_ast_node *node, int depth);
+
+/*
+** free_parser.c
+*/
+void				sh_free_parser_trees(t_lr_parser *parser);
+void				sh_free_cfg(t_cfg *cfg);
+void				sh_clear_parser(t_lr_parser *parser);
+void				sh_free_parser(t_lr_parser *parser);
+
+/*
+** compute_lr_tables.c
+*/
+t_action			**sh_create_tables(t_lr_parser *parser);
+int					sh_compute_lr_tables(t_lr_parser *parser);
+
+/*
 ** ast_node_tools.c
 */
 t_ast_node			*sh_new_ast_node(t_symbol_id id, char *value);
 t_ast_node			*sh_add_to_ast_node(
 	t_ast_node *node, t_symbol_id id, char *value);
+
+/*
+** fill_lr_tables.c
+*/
+void				sh_fill_reduce(
+	t_state *state, t_item *item, t_lr_parser *parser);
+void				sh_fill_tables_by_transition(
+	t_state *state, t_transition *transition, t_lr_parser *parser);
+void				sh_fill_tables_by_state(
+	t_state *state, t_lr_parser *parser);
+void				sh_fill_tables(t_lr_parser *parser);
+
+/*
+** transitive_first_sets.c
+*/
+void				sh_process_transitive_first_set(
+	t_symbol *symbol, int index, int *changes);
+void				sh_process_transitive_first_sets(
+	t_symbol *symbol, t_symbol *prod_symbol, int *changes);
+void				sh_process_transitive_first_set_2(
+	char first_sets[NB_TERMS], int index);
+void				sh_process_transitive_first_sets_2(
+	char first_sets[NB_TERMS], t_symbol *prod_symbol);
+
+/*
+** lr_parse.c
+*/
+t_stack_item		*new_stack_item(
+	t_ast_builder *ast_builder, int state_index);
+int					process_lr_parser_ret(
+	t_lr_parser *parser, t_action action);
+int					process_lr_parse(t_lr_parser *parser);
+int					sh_lr_parse(t_lr_parser *parser);
+
+/*
+** reduce_pop.c
+*/
+int					sh_process_reduce_pop(
+	t_production *production,
+	t_lr_parser *parser,
+	t_list **ast_builder_list,
+	t_ast_node **replacing_ast_node);
+
+/*
+** compute_lr_automata.c
+*/
+int					sh_compute_state(t_state *state, t_lr_parser *parser);
+int					sh_compute_states(t_lr_parser *parser);
+int					sh_compute_lr_automata(t_lr_parser *parser);
 
 /*
 ** closure_tools.c
@@ -143,179 +214,9 @@ int					sh_update_lookaheads(
 	t_item *item, char lookaheads[NB_TERMS]);
 
 /*
-** compute_closure.c
-*/
-int					process_process_compute_closure_item(
-	t_state *state,
-	t_item *item,
-	char first_sets[NB_TERMS],
-	t_lr_parser *parser);
-int					sh_process_compute_closure_item(
-	t_item *item, t_state *state, t_lr_parser *parser);
-int					sh_process_compute_closure(
-	t_state *state, t_lr_parser *parser);
-int					sh_compute_closure(
-	t_state *state, t_lr_parser *parser);
-
-/*
-** compute_closure_tools.c
-*/
-int					sh_add_to_closure(
-	t_state *state, t_symbol *new_item, char first_sets[NB_TERMS]);
-void				sh_compute_first_sets_str_append(
-	char first_sets[NB_TERMS], t_list *w, t_symbol *append);
-
-/*
-** compute_first_state.c
-*/
-int					populate_first_state(
-	t_lr_parser *parser,
-	char lookaheads[NB_TERMS],
-	t_state *first_state);
-t_state				*sh_compute_first_state(t_lr_parser *parser);
-
-/*
-** compute_lr_automata.c
-*/
-int					sh_compute_state(t_state *state, t_lr_parser *parser);
-int					sh_compute_states(t_lr_parser *parser);
-int					sh_compute_lr_automata(t_lr_parser *parser);
-
-/*
-** compute_lr_tables.c
-*/
-t_action			**sh_create_tables(t_lr_parser *parser);
-int					sh_compute_lr_tables(t_lr_parser *parser);
-
-/*
-** compute_transitions.c
-*/
-int					sh_add_transition(
-	t_state *from, t_state *to, t_symbol *symbol);
-t_state				*sh_new_parser_state_from_item(
-	t_item *item, t_lr_parser *parser);
-int					sh_add_to_state_check(
-	t_state *state, t_item *item, int *changes);
-int					sh_add_transition_item(
-	t_item *item, t_state *state, t_lr_parser *parser, int *changes);
-int					sh_compute_transitions(
-	t_state *state, t_lr_parser *parser);
-
-/*
-** fill_lr_tables.c
-*/
-void				sh_fill_reduce(
-	t_state *state, t_item *item, t_lr_parser *parser);
-void				sh_fill_tables_by_transition(
-	t_state *state, t_transition *transition, t_lr_parser *parser);
-void				sh_fill_tables_by_state(
-	t_state *state, t_lr_parser *parser);
-void				sh_fill_tables(t_lr_parser *parser);
-
-/*
-** free_node.c
-*/
-void				sh_free_token(t_ast_node *node, t_token **token);
-void				sh_free_redirection(void *red, size_t dummy);
-void				sh_free_ast_node_meta(t_ast_node **node);
-void				sh_free_ast_node(t_ast_node **node, int update);
-void				sh_free_ast_builder(t_ast_builder *ast_builder);
-
-/*
-** free_parser.c
-*/
-void				sh_free_parser_trees(t_lr_parser *parser);
-void				sh_free_cfg(t_cfg *cfg);
-void				sh_clear_parser(t_lr_parser *parser);
-void				sh_free_parser(t_lr_parser *parser);
-
-/*
-** free_parser_tools.c
-*/
-void				sh_free_stack_item(t_stack_item *stack_item);
-void				sh_free_stack_item_lst(void *si, size_t dummy);
-void				free_state_lst(void *s, size_t dummy);
-void				sh_free_lr_automata(t_lr_parser *parser);
-void				sh_free_production(void *p, size_t dummy);
-
-/*
 ** init_parsing.c
 */
 int					sh_init_parsing(t_lr_parser *parser);
-
-/*
-** lr_parse.c
-*/
-t_stack_item		*new_stack_item(
-	t_ast_builder *ast_builder, int state_index);
-int					process_lr_parser_ret(
-	t_lr_parser *parser, t_action action);
-int					process_lr_parse(t_lr_parser *parser);
-int					sh_lr_parse(t_lr_parser *parser);
-
-/*
-** parser.c
-*/
-int					sh_is_term(t_symbol *symbol);
-void				sh_populate_token(
-	t_token *token, t_symbol_id id, int val);
-int					sh_parse_token_list(t_lr_parser *parser);
-int					sh_parser(t_list *tokens, t_shell *shell);
-
-/*
-** print_ast.c
-*/
-char				*sh_color_depth(int i);
-void				sh_print_ast_child(
-	int depth, int *j, t_ast_node *child);
-void				sh_print_ast(t_ast_node *node, int depth);
-
-/*
-** reduce.c
-*/
-int					sh_process_reduce_add_to_ast(
-	t_list *ast_builder_list,
-	t_ast_builder *ast_builder,
-	t_production *production,
-	t_lr_parser *parser);
-int					sh_process_reduce(
-	t_production *production, t_lr_parser *parser);
-
-/*
-** reduce_pop.c
-*/
-int					sh_process_reduce_pop(
-	t_production *production,
-	t_lr_parser *parser,
-	t_list **ast_builder_list,
-	t_ast_node **replacing_ast_node);
-
-/*
-** reduce_tools.c
-*/
-void				sh_init_ast_node(
-	t_ast_node *node,
-	t_token *token,
-	t_symbol *symbol,
-	t_ast_node *relative);
-void				sh_init_ast_nodes(
-	t_ast_builder *ast_builder, t_token *token, t_symbol *symbol);
-t_ast_builder		*sh_new_ast_builder(
-	t_token *token, t_symbol *symbol);
-int					sh_is_replacing(t_ast_builder *ast_builder);
-
-/*
-** shift.c
-*/
-int					sh_process_shift_adds_stack_item(
-	t_lr_parser *parser,
-	t_stack_item *stack_item_ast_builder,
-	t_stack_item *stack_item_state_index);
-int					sh_process_shift_adds(
-	t_lr_parser *parser,
-	t_ast_builder *ast_builder,
-	int state_index);
-int					sh_process_shift(int state_index, t_lr_parser *parser);
 
 /*
 ** state.c
@@ -337,15 +238,114 @@ t_transition		*sh_new_transition(
 t_item				*sh_new_item_advance(t_item *item);
 
 /*
-** transitive_first_sets.c
+** compute_closure_tools.c
 */
-void				sh_process_transitive_first_set(
-	t_symbol *symbol, int index, int *changes);
-void				sh_process_transitive_first_sets(
-	t_symbol *symbol, t_symbol *prod_symbol, int *changes);
-void				sh_process_transitive_first_set_2(
-	char first_sets[NB_TERMS], int index);
-void				sh_process_transitive_first_sets_2(
-	char first_sets[NB_TERMS], t_symbol *prod_symbol);
+int					sh_add_to_closure(
+	t_state *state, t_symbol *new_item, char first_sets[NB_TERMS]);
+void				sh_compute_first_sets_str_append(
+	char first_sets[NB_TERMS], t_list *w, t_symbol *append);
+
+/*
+** compute_transitions.c
+*/
+int					sh_add_transition(
+	t_state *from, t_state *to, t_symbol *symbol);
+t_state				*sh_new_parser_state_from_item(
+	t_item *item, t_lr_parser *parser);
+int					sh_add_to_state_check(
+	t_state *state, t_item *item, int *changes);
+int					sh_add_transition_item(
+	t_item *item, t_state *state, t_lr_parser *parser, int *changes);
+int					sh_compute_transitions(
+	t_state *state, t_lr_parser *parser);
+
+/*
+** shift.c
+*/
+int					sh_process_shift_adds_stack_item(
+	t_lr_parser *parser,
+	t_stack_item *stack_item_ast_builder,
+	t_stack_item *stack_item_state_index);
+int					sh_process_shift_adds(
+	t_lr_parser *parser,
+	t_ast_builder *ast_builder,
+	int state_index);
+int					sh_process_shift(int state_index, t_lr_parser *parser);
+
+/*
+** compute_first_state.c
+*/
+int					populate_first_state(
+	t_lr_parser *parser,
+	char lookaheads[NB_TERMS],
+	t_state *first_state);
+t_state				*sh_compute_first_state(t_lr_parser *parser);
+
+/*
+** free_node.c
+*/
+void				sh_free_token(t_ast_node *node, t_token **token);
+void				sh_free_redirection(void *red, size_t dummy);
+void				sh_free_ast_node_meta(t_ast_node **node);
+void				sh_free_ast_node(t_ast_node **node, int update);
+void				sh_free_ast_builder(t_ast_builder *ast_builder);
+
+/*
+** reduce_tools.c
+*/
+void				sh_init_ast_node(
+	t_ast_node *node,
+	t_token *token,
+	t_symbol *symbol,
+	t_ast_node *relative);
+void				sh_init_ast_nodes(
+	t_ast_builder *ast_builder, t_token *token, t_symbol *symbol);
+t_ast_builder		*sh_new_ast_builder(
+	t_token *token, t_symbol *symbol);
+int					sh_is_replacing(t_ast_builder *ast_builder);
+
+/*
+** parser.c
+*/
+int					sh_is_term(t_symbol *symbol);
+void				sh_populate_token(
+	t_token *token, t_symbol_id id, int val);
+int					sh_parse_token_list(t_lr_parser *parser);
+int					sh_parser(t_list *tokens, t_shell *shell);
+
+/*
+** free_parser_tools.c
+*/
+void				sh_free_stack_item(t_stack_item *stack_item);
+void				sh_free_stack_item_lst(void *si, size_t dummy);
+void				free_state_lst(void *s, size_t dummy);
+void				sh_free_lr_automata(t_lr_parser *parser);
+void				sh_free_production(void *p, size_t dummy);
+
+/*
+** reduce.c
+*/
+int					sh_process_reduce_add_to_ast(
+	t_list *ast_builder_list,
+	t_ast_builder *ast_builder,
+	t_production *production,
+	t_lr_parser *parser);
+int					sh_process_reduce(
+	t_production *production, t_lr_parser *parser);
+
+/*
+** compute_closure.c
+*/
+int					process_process_compute_closure_item(
+	t_state *state,
+	t_item *item,
+	char first_sets[NB_TERMS],
+	t_lr_parser *parser);
+int					sh_process_compute_closure_item(
+	t_item *item, t_state *state, t_lr_parser *parser);
+int					sh_process_compute_closure(
+	t_state *state, t_lr_parser *parser);
+int					sh_compute_closure(
+	t_state *state, t_lr_parser *parser);
 
 #endif

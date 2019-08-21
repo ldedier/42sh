@@ -6,12 +6,11 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 12:04:02 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/21 17:25:47 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/08/21 17:59:12 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
-
 int		get_word_len(char *s, int index)
 {
 	int i;
