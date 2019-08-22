@@ -68,10 +68,8 @@ int		substitute_command_str(t_shell *shell ,t_command_line *command_line,
 		return (FAILURE);
 	if (process_substitute_command(command_line, str, word, 0))
 	{
-		free(word.str);
 		return (FAILURE);
 	}
-	free(word.str);
 	return (SUCCESS);	
 }
 

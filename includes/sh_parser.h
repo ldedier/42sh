@@ -55,7 +55,7 @@ typedef enum		e_action_enum
 
 typedef union		u_action_union
 {
-	int				state_index;
+	t_state			*state;
 	t_production	*production;
 }					t_action_union;
 
@@ -91,7 +91,7 @@ typedef enum		e_stack_enum
 
 typedef union		u_stack_union
 {
-	int				state_index;
+	t_state			*state;
 	t_ast_builder	*ast_builder;
 }					t_stack_union;
 
@@ -175,7 +175,7 @@ void				sh_process_transitive_first_sets_2(
 ** lr_parse.c
 */
 t_stack_item		*new_stack_item(
-	t_ast_builder *ast_builder, int state_index);
+	t_ast_builder *ast_builder, t_state *state);
 int					process_lr_parser_ret(
 	t_lr_parser *parser, t_action action);
 int					process_lr_parse(t_lr_parser *parser);
@@ -265,12 +265,10 @@ int					sh_compute_transitions(
 int					sh_process_shift_adds_stack_item(
 	t_lr_parser *parser,
 	t_stack_item *stack_item_ast_builder,
-	t_stack_item *stack_item_state_index);
+	t_stack_item *stack_item_state);
 int					sh_process_shift_adds(
-	t_lr_parser *parser,
-	t_ast_builder *ast_builder,
-	int state_index);
-int					sh_process_shift(int state_index, t_lr_parser *parser);
+	t_lr_parser *parser, t_ast_builder *ast_builder, t_state *state);
+int					sh_process_shift(t_state *state, t_lr_parser *parser);
 
 /*
 ** compute_first_state.c
@@ -303,6 +301,31 @@ void				sh_init_ast_nodes(
 t_ast_builder		*sh_new_ast_builder(
 	t_token *token, t_symbol *symbol);
 int					sh_is_replacing(t_ast_builder *ast_builder);
+
+/*
+** debug.c
+*/
+void				sh_print_symbol_list(t_list *symbols);
+void				sh_print_production(t_production *production);
+void				print_non_terminal_production(t_symbol *symbol);
+void				print_non_terminals_productions(t_cfg *cfg);
+void				sh_process_print_set(t_cfg *cfg, char sets[NB_TERMS]);
+void				sh_print_first_set(t_cfg *cfg, t_symbol *symbol);
+void				sh_print_follow_set(t_cfg *cfg, t_symbol *symbol);
+void				print_follow_sets(t_cfg *cfg);
+void				print_first_sets(t_cfg *cfg);
+void				sh_print_item(t_item *item);
+void				sh_print_transition(
+	t_transition *transition, int depth);
+void				sh_print_state(t_state *state, int depth);
+void				sh_print_lr_table(t_lr_parser *parser);
+void				sh_print_automata(t_lr_parser *parser, int depth);
+void				sh_print_stack_item(t_stack_item *stack_item);
+void				sh_print_parser_state(t_lr_parser *parser);
+void				sh_print_cfg(t_cfg *cfg);
+void				sh_print_ast_parser(t_lr_parser *parser);
+void				sh_print_parser(t_lr_parser *parser, int depth);
+void				sh_print_ast_builder(t_ast_builder *ast_builder);
 
 /*
 ** parser.c

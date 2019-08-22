@@ -114,7 +114,7 @@ PARSER_SRCS_NO_PREFIX =	parser.c \
 						transition_tools.c \
 						closure_tools.c free_node.c free_parser_tools.c \
 						fill_lr_tables.c shift.c compute_closure_tools.c \
-						reduce_pop.c ast_node_tools.c
+						reduce_pop.c ast_node_tools.c debug.c
 
 LEXER_SRCS_NO_PREFIX =	sh_lexer.c \
 						sh_lexer_rule_1.c \

@@ -15,16 +15,16 @@
 static int	sh_process_reduce_add_to_stack(t_lr_parser *parser,
 			t_production *production, t_ast_builder *ast_builder)
 {
-	int				state_index;
+	t_state			*state;
 	int				state_from_index;
 	t_stack_item	*stack_item;
 
 	stack_item = (t_stack_item *)parser->stack->content;
-	state_from_index = stack_item->stack_union.state_index;
-	state_index = parser->lr_tables[state_from_index]
-		[production->from->id].action_union.state_index;
+	state_from_index = stack_item->stack_union.state->index;
+	state = parser->lr_tables[state_from_index]
+		[production->from->id].action_union.state;
 	parser->ast_root = ast_builder->ast_node;
-	if (sh_process_shift_adds(parser, ast_builder, state_index))
+	if (sh_process_shift_adds(parser, ast_builder, state))
 		return (FAILURE);
 	return (SUCCESS);
 }

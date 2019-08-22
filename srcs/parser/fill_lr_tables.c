@@ -45,7 +45,7 @@ void	sh_fill_tables_by_transition(t_state *state, t_transition *transition,
 	parser->lr_tables[state->index][transition->symbol->id].action_enum =
 		E_ACTION_SHIFT;
 	parser->lr_tables[state->index][transition->symbol->id].
-		action_union.state_index = transition->state->index;
+		action_union.state = transition->state;
 }
 
 void	sh_fill_tables_by_state(t_state *state, t_lr_parser *parser)

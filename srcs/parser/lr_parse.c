@@ -12,7 +12,7 @@
 
 #include "sh_21.h"
 
-t_stack_item	*new_stack_item(t_ast_builder *ast_builder, int state_index)
+t_stack_item	*new_stack_item(t_ast_builder *ast_builder, t_state *state)
 {
 	t_stack_item *res;
 
@@ -21,7 +21,7 @@ t_stack_item	*new_stack_item(t_ast_builder *ast_builder, int state_index)
 	if (!ast_builder)
 	{
 		res->stack_enum = E_STACK_STATE_INDEX;
-		res->stack_union.state_index = state_index;
+		res->stack_union.state = state;
 	}
 	else
 	{
@@ -35,7 +35,7 @@ int				process_lr_parser_ret(t_lr_parser *parser, t_action action)
 {
 	if (action.action_enum == E_ACTION_SHIFT)
 	{
-		if (sh_process_shift(action.action_union.state_index, parser))
+		if (sh_process_shift(action.action_union.state, parser))
 			return (FAILURE);
 	}
 	else if (action.action_enum == E_ACTION_REDUCE)
@@ -55,7 +55,7 @@ int				process_lr_parse(t_lr_parser *parser)
 	t_action		action;
 	t_stack_item	*stack_item;
 	t_token			*token;
-	int				state_index;
+	t_state			*state;
 
 	if (parser->stack == NULL)
 		return (ERROR);
@@ -63,9 +63,11 @@ int				process_lr_parse(t_lr_parser *parser)
 	if (stack_item->stack_enum != E_STACK_STATE_INDEX)
 		return (ERROR);
 	else
-		state_index = stack_item->stack_union.state_index;
+		state = stack_item->stack_union.state;
 	token = (t_token *)parser->tokens->content;
-	action = parser->lr_tables[state_index][token->index];
+	ft_printf("CURRENT TOKEN: ");
+	sh_print_token(token, g_glob.cfg);
+	action = parser->lr_tables[state->index][token->index];
 	return (process_lr_parser_ret(parser, action));
 }
 
@@ -82,7 +84,7 @@ int				sh_lr_parse(t_lr_parser *parser)
 	int				ret;
 
 	ft_lstdel(&parser->stack, sh_free_stack_item_lst);
-	if (!(stack_item = new_stack_item(NULL, 0)))
+	if (!(stack_item = new_stack_item(NULL, parser->states->content)))
 		return (FAILURE);
 	if (ft_lstaddnew_ptr(&parser->stack, stack_item, sizeof(t_stack_item *)))
 	{
@@ -94,6 +96,7 @@ int				sh_lr_parse(t_lr_parser *parser)
 		ret = process_lr_parse(parser);
 		if (ret != 3)
 			return (ret);
+		sh_print_parser_state(parser);
 	}
 	return (ERROR);
 }
