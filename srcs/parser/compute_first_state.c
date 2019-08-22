@@ -33,5 +33,11 @@ t_state	*sh_compute_first_state(t_lr_parser *parser)
 		free(first_item);
 		return (NULL);
 	}
+	if (ft_lstaddnew_ptr(&first_state->items_by_productions[0], first_item, sizeof(t_item *)))
+	{
+		free(first_state);
+		free(first_item);
+		return (NULL);
+	}
 	return (first_state);
 }

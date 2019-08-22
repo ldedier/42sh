@@ -17,12 +17,12 @@ int		sh_is_eligible_for_transition(t_state *state, t_item *item)
 	t_list *ptr;
 	t_item *item_ptr;
 
-	ptr = state->items;
+	ptr = state->items_by_productions[item->production->index];
 	while (ptr != NULL)
 	{
 		item_ptr = (t_item *)ptr->content;
 		if (item_ptr->lookahead == item->lookahead &&
-				item->production == item_ptr->production &&
+	//			item->production == item_ptr->production &&
 				item->progress->next == item_ptr->progress)
 			return (1);
 		ptr = ptr->next;
@@ -116,6 +116,12 @@ t_state *sh_new_parser_state_from_item(t_item *item, t_lr_parser *parser)
 		return (NULL);
 	}
 	if (ft_lstaddnew_ptr_last(&res->items, new_item, sizeof(t_item *)))
+	{
+		free(res);
+		return (NULL);
+	
+	}
+	if (ft_lstaddnew_ptr_last(&res->items_by_productions[new_item->production->index], new_item, sizeof(t_item *)))
 	{
 		free(res);
 		return (NULL);

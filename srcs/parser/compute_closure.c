@@ -18,12 +18,12 @@ int			sh_is_in_state_item(t_production *production,
 	t_list	*ptr;
 	t_item	*item;
 
-	ptr = state->items;
+	ptr = state->items_by_productions[production->index];
 	while (ptr != NULL)
 	{
 		item = (t_item *)ptr->content;
 		if (item->lookahead == lookahead
-				&& item->production == production
+		//		&& item->production == production
 				&& item->progress == item->production->symbols)
 			return (1);
 		ptr = ptr->next;
@@ -53,6 +53,11 @@ int			sh_process_add_to_closure(t_production *production,
 	if (!(item = sh_new_item(production, lookahead)))
 		return (-1);
 	if (ft_lstaddnew_ptr_last(&state->items, item, sizeof(t_item *)))
+	{
+		free(item);
+		return (-1);
+	}
+	if (ft_lstaddnew_ptr_last(&state->items_by_productions[item->production->index], item, sizeof(t_item *)))
 	{
 		free(item);
 		return (-1);

@@ -27,6 +27,7 @@ typedef struct		s_state
 {
 	t_list			*transitions;
 	t_list			*items;
+	t_list			*items_by_productions[NB_PRODUCTIONS];
 	int				index;
 	int				parsed;
 }					t_state;
