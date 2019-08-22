@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:19:57 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/21 22:11:14 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/22 16:36:28 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,13 @@ int			sh_builtin_verbose(t_context *context)
 
 	argv = (char**)context->params->tbl;
 	if (sh_builtin_parser(ft_strtab_len(argv), argv, args, &index))
-		return (sh_builtin_usage(args, argv[0], VERBOSE_USAGE, context->shell));
+		return (sh_builtin_usage(args, argv[0], VERBOSE_USAGE, context));
 	if (index == 1 || (argv[index] && argv[index + 1]))
-		return (sh_builtin_usage(args, argv[0], VERBOSE_USAGE, context->shell));
+		return (sh_builtin_usage(args, argv[0], VERBOSE_USAGE, context));
 	if (!argv[index] || ft_strequ(argv[index], "on"))
 		return (sh_builtin_verbose_process(context, args, "on"));
 	else if (ft_strequ(argv[index], "off"))
 		return (sh_builtin_verbose_process(context, args, "off"));
 	else
-		return (sh_builtin_usage(args, argv[0], VERBOSE_USAGE, context->shell));
+		return (sh_builtin_usage(args, argv[0], VERBOSE_USAGE, context));
 }

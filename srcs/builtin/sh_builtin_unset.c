@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/19 12:19:24 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/20 18:46:59 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/22 16:36:20 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int			sh_builtin_unset(t_context *context)
 
 	argv = (char**)context->params->tbl;
 	if (sh_builtin_parser(ft_strtab_len(argv), argv, args, &index))
-		return (sh_builtin_usage(args, argv[0], UNSET_USAGE, context->shell));
+		return (sh_builtin_usage(args, argv[0], UNSET_USAGE, context));
 	if (args[UNSET_F_OPT].priority > args[UNSET_V_OPT].priority)
 		return (SUCCESS);
 	ret = SUCCESS;

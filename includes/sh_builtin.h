@@ -149,12 +149,12 @@ void				sh_builtin_hash_update_stats(
 /*
 ** sh_builtin_parser.c
 */
-int					sh_builtin_usage(
-	t_args args[], char *name, char *usage, t_shell *shell);
 int					sh_builtin_parser_is_boolean(t_args args[], char opt);
 int					sh_builtin_parser(
 	int argc, char **argv, t_args args[], int *index);
 void				sh_builtin_parser_show(t_args args[]);
+int					sh_builtin_usage(
+	t_args args[], char *name, char *usage, t_context *context);
 
 /*
 ** sh_builtin_pwd.c

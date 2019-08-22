@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/15 13:19:47 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/21 22:22:16 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/22 16:34:22 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,31 +85,6 @@ static int	paser_short_arg(char **argv, int *index, t_args args[])
 	return (SUCCESS);
 }
 
-int		sh_builtin_usage(t_args args[], char *name, char *usage, t_shell *shell)
-{
-	int		i;
-
-	ft_dprintf(2, SH_ERR_COLOR);
-	ft_dprintf(2, "Usage: %s %s\n", name, usage);
-	i = 0;
-	while (args && args[i].type != E_ARGS_END)
-	{
-		if (args[i].name_short && args[i].name_long)
-			ft_dprintf(2, "  -%c, --%s", args[i].name_short, args[i].name_long);
-		else if (args[i].name_short)
-			ft_dprintf(2, "  -%c", args[i].name_short);
-		else if (args[i].name_long)
-			ft_dprintf(2, "  --%s", args[i].name_short, args[i].name_long);
-		if (args[i].usage)
-			ft_dprintf(2, ": %s", args[i].usage);
-		ft_dprintf(2, "\n");
-		i++;
-	}
-	ft_dprintf(2, EOC);
-	sh_env_update_ret_value(shell, SH_RET_ARG_ERROR);
-	return (ERROR);
-}
-
 int		sh_builtin_parser_is_boolean(t_args args[], char opt)
 {
 	while (args->type != E_ARGS_END)
@@ -163,4 +138,31 @@ void	sh_builtin_parser_show(t_args args[])
 			ft_dprintf(2, "short : %c || long : %s || value : %s || priority : %d\n", args->name_short, args->name_long, args->value, args->priority);
 		args++;
 	}
+}
+
+int		sh_builtin_usage(t_args args[], char *name, char *usage, t_context *context)
+{
+	int		i;
+	int		fd;
+
+	fd = context->fd[FD_ERR];
+	ft_dprintf(fd, SH_ERR_COLOR);
+	ft_dprintf(fd, "Usage: %s %s\n", name, usage);
+	i = 0;
+	while (args && args[i].type != E_ARGS_END)
+	{
+		if (args[i].name_short && args[i].name_long)
+			ft_dprintf(fd, "  -%c, --%s", args[i].name_short, args[i].name_long);
+		else if (args[i].name_short)
+			ft_dprintf(fd, "  -%c", args[i].name_short);
+		else if (args[i].name_long)
+			ft_dprintf(fd, "  --%s", args[i].name_short, args[i].name_long);
+		if (args[i].usage)
+			ft_dprintf(fd, ": %s", args[i].usage);
+		ft_dprintf(fd, "\n");
+		i++;
+	}
+	ft_dprintf(fd, EOC);
+	sh_env_update_ret_value(context->shell, SH_RET_ARG_ERROR);
+	return (ERROR);
 }

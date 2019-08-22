@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 12:05:14 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/19 09:54:08 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/22 16:36:12 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int			sh_builtin_pwd(t_context *context)
 
 	argv = (char**)context->params->tbl;
 	if (sh_builtin_parser(ft_strtab_len(argv), argv, args, &index))
-		return (sh_builtin_usage(args, argv[0], PWD_USAGE, context->shell));
+		return (sh_builtin_usage(args, argv[0], PWD_USAGE, context));
 	if (args[PWD_P_OPT].value && args[PWD_P_OPT].priority > args[PWD_L_OPT].priority)
 		pwd = sh_builtin_pwd_physical(context->fd[FD_ERR]);
 	else
