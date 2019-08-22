@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/19 09:45:53 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/20 16:00:54 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/22 15:29:32 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,30 +17,68 @@
 #define EXPORT_P_OPT		0
 #define EXPORT_P_OPT_USAGE	"print all exported variables (default option)"
 
-int			sh_builtin_export_show(t_context *context)
+static int	sh_builtin_export_show_min(char **min, char **env)
 {
 	int		i;
+	char	*new_min;
+
+	if (!min || !*min) // look for first minimal value
+	{
+		*min = env[0];
+		i = 1;
+		while (env[i])
+		{
+			if (ft_strcmp(*min, env[i]) > 0)
+				*min = env[i];
+			i++;
+		}
+		return (SUCCESS);
+	}
+	else
+	{
+		i = 0;
+		new_min = NULL;
+		while (env[i])
+		{
+			if (!new_min)
+			{
+				if (ft_strcmp(*min, env[i]) < 0)
+					new_min =  env[i];
+			}
+			else if (ft_strcmp(new_min, env[i]) > 0 && ft_strcmp(*min, env[i]) < 0)
+				new_min = env[i];
+			i++;
+		}
+		*min = new_min;
+	}
+	return (SUCCESS);
+}
+
+int			sh_builtin_export_show(t_context *context)
+{
 	char	**tbl;
+	char	*min;
 	char	*equal;
 
 	if (write(context->fd[FD_OUT], NULL, 0))
 		return (sh_perror2_err_fd(context->fd[FD_OUT], "write error", "export", SH_ERR1_BAD_FD));
-	i = 0;
 	tbl = (char**)(context->saved_env->tbl);
-	while (tbl[i])
+	min = NULL;
+	sh_builtin_export_show_min(&min, tbl);
+	while (min)
 	{
-		if (!(equal = ft_strchr(tbl[i], '=')))
-			ft_dprintf(context->fd[FD_OUT], "%s %s\n", EXPORT_MSG, tbl[i]);
+		if (!(equal = ft_strchr(min, '=')))
+			ft_dprintf(context->fd[FD_OUT], "%s %s\n", EXPORT_MSG, min);
 		else
 		{
 			*equal = '\0';
-			ft_dprintf(context->fd[FD_OUT], "%s %s=", EXPORT_MSG, tbl[i]);
+			ft_dprintf(context->fd[FD_OUT], "%s %s=", EXPORT_MSG, min);
 			if (equal[1])
 				ft_dprintf(context->fd[FD_OUT], "\"%s\"", equal + 1);
-			ft_dprintf(context->fd[FD_OUT], "\n", tbl[i]);
+			ft_dprintf(context->fd[FD_OUT], "\n", min);
 			*equal = '=';
 		}
-		i++;
+		sh_builtin_export_show_min(&min, tbl);
 	}
 	return (SUCCESS);
 }
