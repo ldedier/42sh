@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 14:19:01 by ldedier           #+#    #+#             */
-/*   Updated: 2019/06/10 11:45:04 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/22 17:08:47 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ t_grammar_holder g_grammar[NB_SYMBOLS] = {
 		&sh_traverse_default},
 	{"SUBSHELL", 0, 1, &sh_init_prod_subshell, &sh_traverse_default},
 	{"COMPOUND_LIST", 0, 1, &sh_init_prod_compound_list, &sh_traverse_default},
-	{"TERM", 0, 1, &sh_init_prod_term, &sh_traverse_default},
+	{"TERM", 1, 1, &sh_init_prod_term, &sh_traverse_default},
 	{"FOR_CLAUSE", 0, 1, &sh_init_prod_for_clause, &sh_traverse_default},
 	{"NAME", 0, 1, &sh_init_prod_name, &sh_traverse_default},
 	{"IN", 0, 1, &sh_init_prod_in, &sh_traverse_default},

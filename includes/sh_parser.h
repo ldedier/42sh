@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 12:31:41 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/14 19:21:08 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/22 16:39:03 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ typedef struct		s_item
 {
 	t_production	*production;
 	t_list			*progress;
-	char			lookaheads[NB_TERMS];
+	t_symbol		*lookahead;
 	char			parsed;
 }					t_item;
 
@@ -203,15 +203,12 @@ int					sh_compute_lr_automata(t_lr_parser *parser);
 t_item				*sh_get_state_item(
 	t_production *production, t_state *state);
 t_item				*sh_new_item(
-	t_production *production, char lookaheads[NB_TERMS]);
+	t_production *production, t_symbol *lookahead);
 int					sh_process_add_to_closure(
-	t_production *production,
-	t_state *state,
-	char lookaheads[NB_TERMS]);
+	t_production *production, t_state *state, t_symbol *lookahead);
 t_symbol			*sh_get_next_non_terminal(
 	t_item *item, t_list **w_ptr);
-int					sh_update_lookaheads(
-	t_item *item, char lookaheads[NB_TERMS]);
+int					sh_update_lookaheads(t_item *item, t_symbol *symbol);
 
 /*
 ** init_parsing.c
@@ -241,7 +238,8 @@ t_item				*sh_new_item_advance(t_item *item);
 ** compute_closure_tools.c
 */
 int					sh_add_to_closure(
-	t_state *state, t_symbol *new_item, char first_sets[NB_TERMS]);
+	t_state *state, t_symbol *new_item, char first_sets[NB_TERMS],
+	t_lr_parser *parser);
 void				sh_compute_first_sets_str_append(
 	char first_sets[NB_TERMS], t_list *w, t_symbol *append);
 
@@ -274,9 +272,7 @@ int					sh_process_shift(t_state *state, t_lr_parser *parser);
 ** compute_first_state.c
 */
 int					populate_first_state(
-	t_lr_parser *parser,
-	char lookaheads[NB_TERMS],
-	t_state *first_state);
+	t_lr_parser *parser, t_state *first_state);
 t_state				*sh_compute_first_state(t_lr_parser *parser);
 
 /*
@@ -360,15 +356,10 @@ int					sh_process_reduce(
 ** compute_closure.c
 */
 int					process_process_compute_closure_item(
-	t_state *state,
-	t_item *item,
-	char first_sets[NB_TERMS],
-	t_lr_parser *parser);
+	t_state *state, t_item *item, char first_sets[NB_TERMS]);
 int					sh_process_compute_closure_item(
 	t_item *item, t_state *state, t_lr_parser *parser);
-int					sh_process_compute_closure(
-	t_state *state, t_lr_parser *parser);
-int					sh_compute_closure(
-	t_state *state, t_lr_parser *parser);
+int					sh_process_compute_closure(t_state *state, t_lr_parser *parser);
+int					sh_compute_closure(t_state *state, t_lr_parser *parser);
 
 #endif

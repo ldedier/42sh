@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/08/20 14:57:28 by ldedier          ###   ########.fr        #
+#    Updated: 2019/08/22 16:39:34 by ldedier          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -111,10 +111,10 @@ PARSER_SRCS_NO_PREFIX =	parser.c \
 						compute_closure.c compute_transitions.c \
 						init_parsing.c reduce.c reduce_tools.c \
 						free_parser.c transitive_first_sets.c \
-						transition_tools.c \
-						closure_tools.c free_node.c free_parser_tools.c \
-						fill_lr_tables.c shift.c compute_closure_tools.c \
+						free_node.c free_parser_tools.c \
+						shift.c \
 						reduce_pop.c ast_node_tools.c debug.c
+						#fill_lr_tables.c 
 
 LEXER_SRCS_NO_PREFIX =	sh_lexer.c \
 						sh_lexer_rule_1.c \

@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/05 19:04:06 by ldedier           #+#    #+#             */
-/*   Updated: 2019/04/15 14:32:22 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/08/22 15:59:26 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,17 +161,8 @@ void	sh_print_item(t_item *item)
 	}
 	if (ptr == item->progress)
 		ft_printf(BOLD"·"EOC);
-	int i;
 	ft_printf("\t(for symbol: [");
-	i = 0;
-	while (i < NB_TERMS)
-	{
-		if (item->lookaheads[i])
-			sh_print_symbol(&g_glob.cfg->symbols[i]);
-		ft_printf(" ");
-		i++;
-	}
-	//	sh_print_symbol(item->lookahead);
+	sh_print_symbol(item->lookahead);
 	ft_printf("])\n");
 }
 

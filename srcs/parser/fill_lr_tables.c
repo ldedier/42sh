@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/03 17:19:59 by ldedier           #+#    #+#             */
-/*   Updated: 2019/06/09 19:07:13 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/08/22 15:58:14 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,16 @@
 
 void	sh_fill_reduce(t_state *state, t_item *item, t_lr_parser *parser)
 {
-	int i;
-	int end_of_input_index;
-
-	end_of_input_index = sh_index(END_OF_INPUT);
-	i = 0;
-	while (i < NB_TERMS)
+	if (item->production->from == &parser->cfg.start_symbol
+			&& (item->lookahead->id == sh_index(END_OF_INPUT)))
+		parser->lr_tables[state->index][item->lookahead->id].action_enum =
+			E_ACTION_ACCEPT;
+	else
 	{
-		if (item->lookaheads[i])
-		{
-			if (item->production->from == &parser->cfg.start_symbol
-					&& (i == end_of_input_index))
-				parser->lr_tables[state->index][i].action_enum =
-					E_ACTION_ACCEPT;
-			else
-			{
-				parser->lr_tables[state->index]
-					[i].action_enum = E_ACTION_REDUCE;
-				parser->lr_tables[state->index]
-					[i].action_union.production = item->production;
-			}
-		}
-		i++;
+		parser->lr_tables[state->index]
+			[item->lookahead->id].action_enum = E_ACTION_REDUCE;
+		parser->lr_tables[state->index]
+			[item->lookahead->id].action_union.production = item->production;
 	}
 }
 

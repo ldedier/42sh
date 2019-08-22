@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 17:36:19 by ldedier           #+#    #+#             */
-/*   Updated: 2019/06/11 11:06:05 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/22 16:45:14 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@ int				process_lr_parse(t_lr_parser *parser)
 	else
 		state = stack_item->stack_union.state;
 	token = (t_token *)parser->tokens->content;
-	ft_printf("CURRENT TOKEN: ");
-	sh_print_token(token, g_glob.cfg);
+//	ft_printf("CURRENT TOKEN: ");
+//	sh_print_token(token, g_glob.cfg);
 	action = parser->lr_tables[state->index][token->index];
 	return (process_lr_parser_ret(parser, action));
 }
@@ -96,7 +96,7 @@ int				sh_lr_parse(t_lr_parser *parser)
 		ret = process_lr_parse(parser);
 		if (ret != 3)
 			return (ret);
-		sh_print_parser_state(parser);
+//		sh_print_parser_state(parser);
 	}
 	return (ERROR);
 }
