@@ -142,7 +142,8 @@ int					sh_builtin_hash(t_context *context);
 int					sh_builtin_hash_add_utility(
 	t_context *context, char *utility);
 void				sh_builtin_hash_empty_table(t_shell *shell);
-int					sh_builtin_hash_show(t_shell *shell);
+int					sh_builtin_hash_show(
+	t_context *context, t_shell *shell);
 void				sh_builtin_hash_update_stats(
 	t_hash_table *table, t_binary_stats *stats);
 

@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/21 18:00:32 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/20 09:11:16 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/22 18:41:48 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@ int			sh_builtin_set(t_context *context)
 		i++;
 	}
 	i = 0;
+	if (write(context->fd[FD_OUT], NULL, 0))
+		return (sh_perror2_err_fd(context->fd[FD_ERR], "write error",
+			context->params->tbl[0], SH_ERR1_BAD_FD));
 	while (context->vars->tbl[i])
 	{
 		if (!(*(char*)(context->vars->tbl[i]) == '?'

@@ -56,4 +56,13 @@ launch "Builtins (2)"
 	test_launch 'ls' 'type -a -p -t cd ls brew  type while'
 	test_launch 'ls' 'type -a -t -p cd ls brewe type while'
 
+	launch "write"
+	test_launch "type 1>&-"
+	test_launch "type ls 1>&-"
+	test_launch "type nothing 1>&-"
+	test_launch "type -E 1>&-"
+	test_launch "type -E 2>&-"
+	test_launch "type 2>&-"
+
+
 finish
