@@ -106,6 +106,7 @@ struct				s_stack_item
 typedef struct		s_lr_parser
 {
 	t_list			*states;
+	t_hash_table	*states_by_items;
 	t_action		**lr_tables;
 	t_cfg			cfg;
 	t_list			*tokens;
@@ -206,7 +207,8 @@ t_item				*sh_get_state_item(
 t_item				*sh_new_item(
 	t_production *production, t_symbol *lookahead);
 int					sh_process_add_to_closure(
-	t_production *production, t_state *state, t_symbol *lookahead);
+	t_production *production, t_state *state, t_symbol *lookahead,
+	t_lr_parser *parser);
 t_symbol			*sh_get_next_non_terminal(
 	t_item *item, t_list **w_ptr);
 int					sh_update_lookaheads(t_item *item, t_symbol *symbol);
@@ -252,7 +254,7 @@ int					sh_add_transition(
 t_state				*sh_new_parser_state_from_item(
 	t_item *item, t_lr_parser *parser);
 int					sh_add_to_state_check(
-	t_state *state, t_item *item, int *changes);
+	t_state *state, t_item *item, int *changes, t_lr_parser *parser);
 int					sh_add_transition_item(
 	t_item *item, t_state *state, t_lr_parser *parser, int *changes);
 int					sh_compute_transitions(
@@ -362,5 +364,11 @@ int					sh_process_compute_closure_item(
 	t_item *item, t_state *state, t_lr_parser *parser);
 int					sh_process_compute_closure(t_state *state, t_lr_parser *parser);
 int					sh_compute_closure(t_state *state, t_lr_parser *parser);
+
+int					sh_add_item_to_state(t_lr_parser *parser,
+						t_state *state, t_item *item);
+
+unsigned long		hash_item(void *i);
+unsigned long		hash_item_next(void *i);
 
 #endif

@@ -23,8 +23,7 @@ int			sh_is_in_state_item(t_production *production,
 	{
 		item = (t_item *)ptr->content;
 		if (item->lookahead == lookahead
-		//		&& item->production == production
-				&& item->progress == item->production->symbols)
+			&& item->progress == item->production->symbols)
 			return (1);
 		ptr = ptr->next;
 	}
@@ -46,18 +45,13 @@ t_item		*sh_new_item(t_production *production,
 }
 
 int			sh_process_add_to_closure(t_production *production,
-				t_state *state, t_symbol *lookahead)
+				t_state *state, t_symbol *lookahead, t_lr_parser *parser)
 {
 	t_item *item;
 
 	if (!(item = sh_new_item(production, lookahead)))
 		return (-1);
-	if (ft_lstaddnew_ptr_last(&state->items, item, sizeof(t_item *)))
-	{
-		free(item);
-		return (-1);
-	}
-	if (ft_lstaddnew_ptr_last(&state->items_by_productions[item->production->index], item, sizeof(t_item *)))
+	if (sh_add_item_to_state(parser, state, item))
 	{
 		free(item);
 		return (-1);
@@ -102,7 +96,7 @@ int		sh_add_to_closure(t_state *state,
 							&parser->cfg.symbols[i]))
 				{
 					if (sh_process_add_to_closure(production, state,
-					 		&parser->cfg.symbols[i]))
+					 		&parser->cfg.symbols[i], parser))
 						 return (-1);
 					changes = 1;
 				}

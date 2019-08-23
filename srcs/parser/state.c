@@ -12,6 +12,45 @@
 
 #include "sh_21.h"
 
+unsigned long	hash_item_next(void *i)
+{
+	t_item			*item;
+	unsigned long	res;
+
+	res = 5381;
+	item = (t_item *)i;
+	res += (unsigned long)item->lookahead * 2
+			+ (unsigned long)item->production * 10
+				+ (unsigned long)item->progress->next;
+	return (res);
+}
+
+unsigned long	hash_item(void *i)
+{
+	t_item			*item;
+	unsigned long	res;
+
+	res = 5381;
+	item = (t_item *)i;
+	res += (unsigned long)item->lookahead * 2
+			+ (unsigned long)item->production * 10
+				+ (unsigned long)item->progress;
+	return (res);
+}
+
+int		sh_add_item_to_state(t_lr_parser *parser, t_state *state, t_item *item)
+{
+	if (ft_lstaddnew_ptr(&state->items_by_productions
+		[item->production->index],
+			item, sizeof(t_item *)))
+		return (1);
+	if (ft_lstaddnew_ptr_last(&state->items, item, sizeof(t_item *)))
+		return (1);
+	if (ft_hash_table_add(parser->states_by_items, state, item, hash_item))
+		return (1);
+	return (0);
+}
+
 t_state		*sh_new_state(void)
 {
 	t_state		*res;
