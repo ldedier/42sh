@@ -27,6 +27,7 @@ typedef struct		s_state
 {
 	t_list			*transitions;
 	t_list			*items;
+	t_list			*last_item_ptr;
 	t_list			*items_by_productions[NB_PRODUCTIONS];
 	int				index;
 	int				parsed;
@@ -106,6 +107,7 @@ struct				s_stack_item
 typedef struct		s_lr_parser
 {
 	t_list			*states;
+	t_list			*last_state_ptr;
 	t_hash_table	*states_by_items;
 	t_action		**lr_tables;
 	t_cfg			cfg;

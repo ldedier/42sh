@@ -44,7 +44,8 @@ int		sh_add_item_to_state(t_lr_parser *parser, t_state *state, t_item *item)
 		[item->production->index],
 			item, sizeof(t_item *)))
 		return (1);
-	if (ft_lstaddnew_ptr_last(&state->items, item, sizeof(t_item *)))
+	if (ft_lstaddnew_ptr_last_list(&state->items, item,
+			sizeof(t_item *), &state->last_item_ptr))
 		return (1);
 	if (ft_hash_table_add(parser->states_by_items, state, item, hash_item))
 		return (1);
@@ -61,6 +62,7 @@ t_state		*sh_new_state(void)
 		return (NULL);
 	res->transitions = NULL;
 	res->items = NULL;
+	res->last_item_ptr = NULL;
 	res->index = index++;
 	i = 0;
 	while (i < NB_PRODUCTIONS)

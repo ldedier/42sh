@@ -130,8 +130,8 @@ t_state *sh_new_parser_state_from_item(t_item *item, t_lr_parser *parser)
 		free(res);
 		return (NULL);
 	}
-	if (ft_lstaddnew_ptr_last(&parser->states,
-		res, sizeof(t_state *)))
+	if (ft_lstaddnew_ptr_last_list(&parser->states,
+		res, sizeof(t_state *), &parser->last_state_ptr))
 	{
 		sh_free_state(res);
 		return (NULL);

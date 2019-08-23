@@ -18,6 +18,7 @@ int		sh_init_parsing(t_lr_parser *parser)
 	parser->ast_root = NULL;
 	parser->cst_root = NULL;
 	parser->states = NULL;
+	parser->last_state_ptr = NULL;
 	parser->nb_states = -1;
 	parser->lr_tables = NULL;
 	parser->stack = NULL;
@@ -31,6 +32,5 @@ int		sh_init_parsing(t_lr_parser *parser)
 	if (sh_compute_lr_tables(parser))
 		return (1);
 //	ft_hash_table_show_perf(parser->states_by_items);
-//	sh_free_lr_automata(parser);
 	return (0);
 }

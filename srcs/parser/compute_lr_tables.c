@@ -12,22 +12,17 @@
 
 #include "sh_21.h"
 
-void		sh_init_action(t_action *action)
-{
-	action->action_enum = ERROR;
-}
-
 t_action	**sh_create_tables(t_lr_parser *parser)
 {
 	t_action	**res;
 	int			i;
-	int			height;
+	int			j;
 
-	height = ft_lstlen(parser->states);
-	if (!(res = (t_action **)malloc(height * sizeof(t_action *))))
+	parser->nb_states = ft_lstlen(parser->states);
+	if (!(res = (t_action **)malloc(parser->nb_states * sizeof(t_action *))))
 		return (NULL);
 	i = 0;
-	while (i < height)
+	while (i < parser->nb_states)
 	{
 		if (!(res[i] = (t_action *)malloc(NB_SYMBOLS * sizeof(t_action))))
 		{
@@ -36,7 +31,9 @@ t_action	**sh_create_tables(t_lr_parser *parser)
 			free(res);
 			return (NULL);
 		}
-		sh_init_action(res[i]);
+		j = 0;
+		while (j < NB_SYMBOLS)
+			res[i][j++].action_enum = E_ACTION_ERROR;
 		i++;
 	}
 	return (res);

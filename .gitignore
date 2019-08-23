@@ -29,7 +29,7 @@ tests_scripts/res1.bash
 tests_scripts/res2.21sh
 tests_scripts/res2.bash
 sh21
-21sh
+42sh
 includes/libft.h
 *.vscode
 

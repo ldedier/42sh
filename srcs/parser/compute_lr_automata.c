@@ -55,7 +55,7 @@ int		sh_compute_lr_automata(t_lr_parser *parser)
 	(void)ret;
 	if (!(first_state = sh_compute_first_state(parser)))
 		return (1);
-	if (ft_lstaddnew_ptr(&parser->states, first_state, sizeof(t_state *)))
+	if (ft_lstaddnew_ptr_last_list(&parser->states, first_state, sizeof(t_state *), &parser->last_state_ptr))
 	{
 		sh_free_state(first_state);
 		return (1);
