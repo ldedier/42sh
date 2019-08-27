@@ -184,7 +184,6 @@ BUILT_SRCS_NO_PREFIX=	sh_builtin.c \
 						sh_builtin_echo.c \
 						sh_builtin_exit.c \
 						sh_builtin_cd.c sh_builtin_cd_pre_rules.c sh_builtin_cd_post_rules.c sh_builtin_cd_last_rules.c \
-						sh_builtin_where.c \
 						sh_builtin_type.c \
 						sh_builtin_type_path.c \
 						sh_builtin_verbose.c \
@@ -193,9 +192,6 @@ BUILT_SRCS_NO_PREFIX=	sh_builtin.c \
 						sh_builtin_export.c \
 						sh_builtin_hash.c \
 						sh_builtin_set.c \
-						sh_builtin_setenv.c \
-						sh_builtin_unsetenv.c \
-						sh_builtin_env.c sh_builtin_env_process.c sh_builtin_env_parser.c\
 						sh_builtin_hash_tools.c \
 						sh_builtin_bonus.c \
 						sh_builtin_parser.c
