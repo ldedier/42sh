@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/21 18:29:47 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/27 15:11:02 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,7 @@ int		sh_traverse_sc_no_slash_cmd(t_context *context)
 		return (sh_process_execute(context));
 	else
 	{
-		sh_perror_err(SH_ERR1_CMD_NOT_FOUND, context->params->tbl[0]);
+		sh_perror_err(context->params->tbl[0], SH_ERR1_CMD_NOT_FOUND);
 		if (context->current_pipe_sequence_node)
 			context->current_pipe_sequence_node
 			->metadata.pipe_metadata.last_ret_value = SH_RET_CMD_NOT_FOUND;
