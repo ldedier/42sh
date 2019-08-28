@@ -6,14 +6,14 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 14:50:45 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/10 11:49:18 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/28 14:33:36 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-static int	sh_builtin_cd_parser_hyphen(
-	t_context *context, char *flag, char **curpath, int i)
+int			sh_builtin_cd_parser_hyphen(
+	t_context *context, t_args *args, char **curpath, int i)
 {
 	char	*oldpwd;
 
@@ -35,32 +35,23 @@ static int	sh_builtin_cd_parser_hyphen(
 		return (sh_perror_fd(context->fd[FD_ERR],
 			SH_ERR1_MALLOC, "sh_builtin_cd_parser_hyphen"));
 	}
-	*flag += CD_OPT_HYPHEN;
+	args[CD_HYPHEN_OPT].value = args;
 	return (SUCCESS);
 }
 
-int			sh_builtin_cd_parser(
-	t_context *context, int *i, char *flag, char **curpath)
+int			sh_builtin_cd_parser(t_context *context, t_args *args,
+	int *index, char **curpath, char **argv)
 {
-	char	**params;
+	int		ret;
 
-	params = (char**)context->params->tbl;
-	*flag = CD_OPT_LOGIC;
-	while (params[*i])
-	{
-		if (ft_strequ(params[*i], "-P"))
-			*flag = CD_OPT_PHYSIC;
-		else if (ft_strequ(params[*i], "-L"))
-			*flag = CD_OPT_LOGIC;
-		else if (ft_strequ(params[*i], "-"))
-			return (sh_builtin_cd_parser_hyphen(context, flag, curpath, *i));
-		else if (params[*i] && params[*i + 1])
-			return (sh_perror_err_fd(
-				context->fd[FD_ERR], "cd", SH_ERR1_TOO_MANY_ARGS));
-		else
-			return (SUCCESS);
-		*i += 1;
-	}
+	*curpath = NULL;
+	if (sh_builtin_parser(ft_strtab_len(argv), argv, args, index))
+		return (sh_builtin_usage(args, argv[0], CD_USAGE, context));
+	if (argv[*index] && argv[*index + 1])
+		return (sh_perror_err_fd(context->fd[FD_ERR], argv[0], SH_ERR1_TOO_MANY_ARGS));
+	if (ft_strequ(argv[*index], "-"))
+		if ((ret = sh_builtin_cd_parser_hyphen(context, args, curpath, *index)))
+			return (ret);
 	return (SUCCESS);
 }
 

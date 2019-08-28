@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 11:36:31 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/27 16:39:28 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/08/28 14:18:24 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,16 @@
 #  define NB_BUILTINS	12
 # endif
 
-# define CD_OPT_LOGIC	0x01
-# define CD_OPT_PHYSIC	0x02
-# define CD_OPT_HYPHEN	0x04
-
 # define NB_FLAG_UNARY	15
 # define NB_FLAG_BINARY	8
+
+# define CD_USAGE			"[-LP] [dir] || cd -"
+# define CD_P_OPT			0
+# define CD_P_OPT_USAGE		"Resolve pathname without any symlinks"
+# define CD_L_OPT			1
+# define CD_L_OPT_USAGE		"Resolve pathname including symlinks (default)"
+# define CD_HYPHEN_OPT		2
+// Do usage is working with empty hyphen arg
 
 enum e_built_test_unary {TEST_B, TEST_C, TEST_D, TEST_E, TEST_F, TEST_G, TEST_L,
 	TEST_P, TEST_R, TEST_SS, TEST_S, TEST_U, TEST_W, TEST_X, TEST_Z};
@@ -102,20 +106,26 @@ int					sh_builtin_cd(t_context *context);
 ** sh_builtin_cd_last_rules.c
 */
 int					sh_builtin_cd_rule10(
-	t_context *context, char *curpath, int flags, char *param);
+	t_context *context, char *curpath, t_args *args, char *param);
 
 /*
 ** sh_builtin_cd_post_rules.c
 */
 int					sh_builtin_cd_rule7(
-	t_context *context, char **curpath, char flags);
+	t_context *context, char **curpath, t_args *args);
 int					sh_builtin_cd_rule8_1(char **curpath);
 
 /*
 ** sh_builtin_cd_pre_rules.c
 */
+int					sh_builtin_cd_parser_hyphen(
+	t_context *context, t_args *args, char **curpath, int i);
 int					sh_builtin_cd_parser(
-	t_context *context, int *i, char *flag, char **curpath);
+	t_context *context,
+	t_args *args,
+	int *index,
+	char **curpath,
+	char **argv);
 int					sh_builtin_cd_pre_rules(
 	t_context *context, char *param, char **curpath);
 int					sh_builtin_cd_rule5(

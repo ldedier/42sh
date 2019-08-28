@@ -55,6 +55,9 @@ launch "cd"
 	test_launch "cd -E 2>&-"
 	test_launch "cd 2>&-"
 
+	launch "Old errors"
+	test_launch "cd ././../.." "echo $?" "pwd"
+
 #	launch "Deprecated"
 	# test_launch "PWD=" "OLDPWD=" "cd -" "cd -"
 	# test_launch "PWD=/ OLDPWD=/var cd - ; cd -"

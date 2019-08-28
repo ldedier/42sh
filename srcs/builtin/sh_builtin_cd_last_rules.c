@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 07:20:20 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/21 19:23:04 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/28 14:28:51 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,13 @@
 */
 
 static int	sh_builtin_cd_update_pwd(
-	t_context *context, int flags, char *curpath)
+	t_context *context, t_args *args, char *curpath)
 {
 	char		*pwd;
 	char		*old_pwd;
 	int			ret;
 
-	if (flags & CD_OPT_LOGIC)
+	if (args[CD_L_OPT].value)
 		pwd = curpath;
 	else
 		pwd = sh_builtin_pwd_physical(context->fd[FD_ERR]);
@@ -43,7 +43,7 @@ static int	sh_builtin_cd_update_pwd(
 			context->saved_env, NULL, "OLDPWD", old_pwd);
 	if (!ret)
 		ret = sh_vars_assign_key_val(context->saved_env, NULL, "PWD", pwd);
-	if (flags & CD_OPT_PHYSIC)
+	if (args[CD_P_OPT].value)
 		free(pwd);
 	return (ret);
 }
@@ -101,7 +101,7 @@ static int	sh_builtin_cd_rule10_check_perms(
 */
 
 int			sh_builtin_cd_rule10(
-	t_context *context, char *curpath, int flags, char *param)
+	t_context *context, char *curpath, t_args *args, char *param)
 {
 	int		ret;
 
@@ -114,8 +114,8 @@ int			sh_builtin_cd_rule10(
 				ret = sh_perror2_fd(
 					context->fd[FD_ERR], param, "cd", "unable to process");
 		if (!ret)
-			sh_builtin_cd_update_pwd(context, flags, curpath);
-		if (!ret && flags & CD_OPT_HYPHEN)
+			sh_builtin_cd_update_pwd(context, args, curpath);
+		if (!ret && args[CD_HYPHEN_OPT].value) // Is this protected ???
 			ft_dprintf(context->fd[FD_OUT],
 				"%s\n", sh_vars_get_value(context->saved_env, NULL, "PWD"));
 	}

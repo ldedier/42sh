@@ -6,17 +6,17 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 13:33:24 by jmartel           #+#    #+#             */
-/*   Updated: 2019/07/23 07:20:17 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/28 15:04:23 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-int			sh_builtin_cd_rule7(t_context *context, char **curpath, char flags)
+int			sh_builtin_cd_rule7(t_context *context, char **curpath, t_args *args)
 {
 	char	*pwd;
 
-	if (flags & CD_OPT_LOGIC)
+	if (args[CD_L_OPT].value)
 	{
 		if (**curpath != '/')
 		{
