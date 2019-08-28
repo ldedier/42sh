@@ -26,9 +26,6 @@ int		sh_traverse_tools_browse(t_ast_node *node, t_context *context)
 
 	ptr = node->children;
 	ret = SUCCESS;
-	if (context->phase == E_TRAVERSE_PHASE_EXPANSIONS && node->token && node->token->value && node->token->expansion)
-		if (sh_expansions(context, node) == FAILURE)
-			return (FAILURE);
 	while (ptr != NULL)
 	{
 		child = (t_ast_node *)ptr->content;
