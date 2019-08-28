@@ -19,6 +19,8 @@ static void	backslash(char *input, int *index, int quoted)
 		if (input[*index + 1] == '$' || input[*index + 1] == '"'
 			|| input[*index + 1] == '\\')
 			ft_strcpy(input + *index, input + *index + 1);
+		else if (input[*index + 1] == '\n')
+			ft_strcpy(input + *index, input + *index + 2);
 	}
 	else
 		ft_strcpy(input + *index, input + *index + 1);
@@ -100,7 +102,6 @@ int			sh_expansions(t_context *context, t_ast_node *node)
 		return (SUCCESS);
 	index = 0;
 	input = &node->token->value;
-	ft_printf("mais ke %s\n", *input);
 	if ((*input)[0] == '~'
 		&& (ret = sh_expansions_process_tilde(
 			input, *input, context)) != SUCCESS)
@@ -113,6 +114,5 @@ int			sh_expansions(t_context *context, t_ast_node *node)
 	if (ret != SUCCESS)
 		if (sh_env_update_ret_value_and_question(context->shell, ret))
 			return (FAILURE);
-	ft_printf("mais a la fin... %s\n", *input);
 	return (ret);
 }
