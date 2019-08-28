@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/08/28 09:02:56 by jdugoudr         ###   ########.fr        #
+#    Updated: 2019/08/28 09:26:08 by jdugoudr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -291,21 +291,19 @@ $(OBJDIR)%.o: $(SRC_DIR)%.c $(INCLUDES)
 
 clean:
 	@make clean -C $(LIBFTDIR)
-	@$(RM) -f $(OBJECTS)
-	@$(RM) -rf $(OBJDIR) && echo "${OK_COLOR}Successfully cleaned $(NAME) objects files ${EOC}"
+	@$(RM) $(OBJECTS)
+	@$(RM) -r $(OBJDIR) && echo "${OK_COLOR}Successfully cleaned $(NAME) objects files ${EOC}"
 
-fclean:
+fclean: clean
 	@make fclean -C $(LIBFTDIR)
-	@$(RM) -f $(OBJECTS)
-	@$(RM) -rf $(OBJDIR) && echo "${OK_COLOR}Successfully cleaned $(NAME) objects files ${EOC}"
-	@$(RM) -f $(BINDIR)/$(NAME)  && echo "${OK_COLOR}Successfully cleaned $(NAME) ${EOC}"
+	@$(RM) $(BINDIR)/$(NAME)  && echo "${OK_COLOR}Successfully cleaned $(NAME) ${EOC}"
 
 re: fclean all
 
 rere:
-	@$(RM) -f $(OBJECTS)
-	@$(RM) -rf $(OBJDIR)
-	@$(RM) -f $(BINDIR)/$(NAME)
+	@$(RM) $(OBJECTS)
+	@$(RM) -r $(OBJDIR)
+	@$(RM) $(BINDIR)/$(NAME)
 	make all
 
 os:
