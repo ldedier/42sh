@@ -93,3 +93,6 @@ Module.symvers
 Mkfile.old
 dkms.conf
 .DS_Store
+
+# mdaoud file to group all structures for easier understanding
+structures.h
