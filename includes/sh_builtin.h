@@ -178,6 +178,21 @@ int					sh_builtin_pwd(t_context *context);
 int					sh_builtin_set(t_context *context);
 
 /*
+** sh_builtin_test.c
+*/
+int					sh_builtin_test(t_context *context);
+
+/*
+** sh_builtin_test_binary.c
+*/
+int					sh_builtin_test_binary(char **params, int ope);
+
+/*
+** sh_builtin_test_unary.c
+*/
+int					sh_builtin_test_unary(char **params, int arg);
+
+/*
 ** sh_builtin_type.c
 */
 int					sh_builtin_type(t_context *context);
@@ -199,17 +214,5 @@ int					sh_builtin_unset(t_context *context);
 ** sh_builtin_verbose.c
 */
 int					sh_builtin_verbose(t_context *context);
-
-/*
-** sh_builtin_where.c
-*/
-int					sh_builtin_where(t_context *context);
-
-/*
-** sh_buitlin_test.c
-*/
-int					sh_builtin_test(t_context *context);
-int					sh_builtin_test_unary(char **params, int arg);
-int					sh_builtin_test_binary(char **params, int ope);
 
 #endif
