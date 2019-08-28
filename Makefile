@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/08/28 09:26:08 by jdugoudr         ###   ########.fr        #
+#    Updated: 2019/08/28 09:37:33 by jdugoudr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,8 @@ CC		= gcc -g3
 OS		= $(shell uname -s)
 
 PWD = \"$(shell pwd)\"
+ECHO = echo
+MKDIR = mkdir
 
 DEBUG ?= 0
 
@@ -201,7 +203,7 @@ SRCS			+=	sh_execute.c sh_execute_pipes.c \
 ########						BUILTIN					########
 ################################################################
 SRCS			+=	sh_builtin.c sh_builtin_pwd.c \
-					sh_builtin_echo.c sh_builtin_exit.c \
+					sh_builtin_$(ECHO).c sh_builtin_exit.c \
 					sh_builtin_cd.c sh_builtin_cd_pre_rules.c \
 					sh_builtin_cd_post_rules.c \
 					sh_builtin_cd_last_rules.c \
@@ -268,35 +270,35 @@ else
 endif
 
 all:
-	@make -C $(LIBFTDIR) $(SPEED)
-	@echo "$(FLAGS_COLOR)Compiling with flags $(CFLAGS) $(EOC)"
-	@make $(BINDIR)/$(NAME) $(SPEED)
+	@$(MAKE) -C $(LIBFTDIR) $(SPEED)
+	@$(ECHO) "$(FLAGS_COLOR)Compiling with flags $(CFLAGS) $(EOC)"
+	@$(MAKE) $(BINDIR)/$(NAME) $(SPEED)
 
 debug:
-	@make all DEBUG=1
+	@$(MAKE) all DEBUG=1
 
 $(LIBFT):
-	@make -C $(LIBFTDIR)
+	@$(MAKE) -C $(LIBFTDIR)
 
 $(BINDIR)/$(NAME): $(LIBFT) $(OBJDIR) $(OBJECTS)
 	@$(CC) -o $@ $(OBJECTS) $(CFLAGS) $(LFLAGS)
-	@echo "$(OK_COLOR)$(NAME) linked with success !$(EOC)"
+	@$(ECHO) "$(OK_COLOR)$(NAME) linked with success !$(EOC)"
 
-$(BINDIR)/$(OBJDIR):
-	@mkdir $@
+$(OBJDIR):
+	@$(MKDIR) $@
 
 $(OBJDIR)%.o: $(SRC_DIR)%.c $(INCLUDES)
 	@$(CC) -c $< -o $@ $(CFLAGS)
-	@echo "${COMP_COLOR}$< ${EOC}"
+	@$(ECHO) "${COMP_COLOR}$< ${EOC}"
 
 clean:
-	@make clean -C $(LIBFTDIR)
+	@$(MAKE) clean -C $(LIBFTDIR)
 	@$(RM) $(OBJECTS)
-	@$(RM) -r $(OBJDIR) && echo "${OK_COLOR}Successfully cleaned $(NAME) objects files ${EOC}"
+	@$(RM) -r $(OBJDIR) && $(ECHO) "${OK_COLOR}Successfully cleaned $(NAME) objects files ${EOC}"
 
 fclean: clean
-	@make fclean -C $(LIBFTDIR)
-	@$(RM) $(BINDIR)/$(NAME)  && echo "${OK_COLOR}Successfully cleaned $(NAME) ${EOC}"
+	@$(MAKE) fclean -C $(LIBFTDIR)
+	@$(RM) $(BINDIR)/$(NAME)  && $(ECHO) "${OK_COLOR}Successfully cleaned $(NAME) ${EOC}"
 
 re: fclean all
 
@@ -304,9 +306,9 @@ rere:
 	@$(RM) $(OBJECTS)
 	@$(RM) -r $(OBJDIR)
 	@$(RM) $(BINDIR)/$(NAME)
-	make all
+	$(MAKE) all
 
 os:
-	@echo $(OS)
+	@$(ECHO) $(OS)
 
 .PHONY: all clean fclean re debug

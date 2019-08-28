@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/12/06 12:53:13 by jmartel           #+#    #+#              #
-#    Updated: 2019/08/28 09:02:27 by jdugoudr         ###   ########.fr        #
+#    Updated: 2019/08/28 09:42:35 by jdugoudr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -234,7 +234,9 @@ HEADERS		= ./ft_printf/ft_printf.h ./libft.h
 
 INCLUDES	= -I . -I ./ft_printf/
 
+AR			= ar -rcs
 CC			= gcc
+ECHO		= echo
 
 OS = $(shell uname -s)
 ifeq ($(OS),Linux)
@@ -249,28 +251,28 @@ ifeq ($(DEBUG), 1)
 endif
 
 all: 
-	@echo "$(FLAGS_COLOR)Compiling with flags $(CFLAGS) $(EOC)"
-	make -C . $(NAME)
+	@$(ECHO) "$(FLAGS_COLOR)Compiling with flags $(CFLAGS) $(EOC)"
+	$(MAKE) -C . $(NAME)
 
 debug:
-	make all DEBUG=1
+	$(MAKE) all DEBUG=1
 
 $(NAME): $(OBJS)
-	@ar -rcs $(NAME) $(OBJS) && echo "${OK_COLOR}Successfully compiled $(NAME) ${EOC}"
+	@$(AR) $(NAME) $(OBJS) && $(ECHO) "${OK_COLOR}Successfully compiled $(NAME) ${EOC}"
 
 $(EXEC): $(NAME) main.c
-	@gcc $(INCLUDE) $(CFLAGS) -o $(EXEC) main.c $(NAME) && echo "${OK_COLOR}Successfully compiled $(EXEC) ${EOC}"
+	@$(CC) $(INCLUDE) $(CFLAGS) -o $(EXEC) main.c $(NAME) && $(ECHO) "${OK_COLOR}Successfully compiled $(EXEC) ${EOC}"
 
 %.o: %.c $(HEADERS)
 	@$(CC) $(CFLAGS) -o $@ -c $<
-	@echo "${COMP_COLOR}$< ${EOC}"
+	@$(ECHO) "${COMP_COLOR}$< ${EOC}"
 
 clean:
-	@$(RM) -f $(OBJS) && echo "${OK_COLOR}Successfully cleaned $(NAME) objects files ${EOC}"
+	@$(RM) -f $(OBJS) && $(ECHO) "${OK_COLOR}Successfully cleaned $(NAME) objects files ${EOC}"
 	@$(RM) -f main.o
 
 fclean: clean
-	@$(RM) -f $(NAME) && echo "${OK_COLOR}Successfully cleaned $(NAME) ${EOC}"
+	@$(RM) -f $(NAME) && $(ECHO) "${OK_COLOR}Successfully cleaned $(NAME) ${EOC}"
 	@$(RM) -f $(EXEC)
 
 re: fclean all
