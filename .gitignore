@@ -33,6 +33,8 @@ tests_scripts/res1.21sh
 tests_scripts/res1.bash
 tests_scripts/res2.21sh
 tests_scripts/res2.bash
+tests_scripts/blt_test_files
+
 sh21
 21sh
 includes/libft.h
