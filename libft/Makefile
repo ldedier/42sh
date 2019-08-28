@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/12/06 12:53:13 by jmartel           #+#    #+#              #
-#    Updated: 2019/07/26 03:48:41 by jmartel          ###   ########.fr        #
+#    Updated: 2019/08/28 09:02:27 by jdugoudr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -266,11 +266,11 @@ $(EXEC): $(NAME) main.c
 	@echo "${COMP_COLOR}$< ${EOC}"
 
 clean:
-	@rm -f $(OBJS) && echo "${OK_COLOR}Successfully cleaned $(NAME) objects files ${EOC}"
-	@rm -f main.o
+	@$(RM) -f $(OBJS) && echo "${OK_COLOR}Successfully cleaned $(NAME) objects files ${EOC}"
+	@$(RM) -f main.o
 
 fclean: clean
-	@rm -f $(NAME) && echo "${OK_COLOR}Successfully cleaned $(NAME) ${EOC}"
-	@rm -f $(EXEC)
+	@$(RM) -f $(NAME) && echo "${OK_COLOR}Successfully cleaned $(NAME) ${EOC}"
+	@$(RM) -f $(EXEC)
 
 re: fclean all
