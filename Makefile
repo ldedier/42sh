@@ -202,6 +202,7 @@ EXP_SRCS_NO_PREFIX =	sh_expansions.c sh_expansions_scan.c\
 						sh_expansions_parameter_tools.c \
 						sh_expansions_tilde.c sh_expansions_tilde_process.c\
 						sh_expansions_variable.c \
+						sh_expansions_field_splitting.c \
 						t_expansion.c
 
 PERROR_SRCS_NO_PREFIX =	sh_perror.c \

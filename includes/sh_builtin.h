@@ -192,9 +192,4 @@ int					sh_builtin_unset(t_context *context);
 */
 int					sh_builtin_verbose(t_context *context);
 
-/*
-** sh_builtin_where.c
-*/
-int					sh_builtin_where(t_context *context);
-
 #endif
