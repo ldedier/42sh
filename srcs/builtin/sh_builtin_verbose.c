@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:19:57 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/22 16:36:28 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/22 19:29:53 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #define VERBOSE_X_OPT			4
 #define VERBOSE_T_OPT			5
 #define VERBOSE_B_OPT			6
+#define VERBOSE_ALL_OPT			7
 
 static int	sh_builtin_verbose_process(t_context *context, t_args args[], char *state)
 {
@@ -36,7 +37,7 @@ static int	sh_builtin_verbose_process(t_context *context, t_args args[], char *s
 		ft_strcpy(value, "");
 	while (args[i].type != E_ARGS_END)
 	{
-		if (args[i].value)
+		if (args[i].value || args[VERBOSE_ALL_OPT].value)
 			if (sh_vars_assign_key_val(NULL, context->vars, (char*)key[i], value))
 				return (FAILURE);
 		i++;
@@ -56,6 +57,7 @@ int			sh_builtin_verbose(t_context *context)
 		{E_ARGS_BOOL, 'x', "expansion", NULL, NULL, 0},
 		{E_ARGS_BOOL, 't', "traverse", NULL, NULL, 0},
 		{E_ARGS_BOOL, 'b', "builtin", NULL, NULL, 0},
+		{E_ARGS_BOOL, '\0', "all", NULL, "Every options activated", 0},
 		{E_ARGS_END, 0, NULL, NULL, NULL, 0},
 	};
 

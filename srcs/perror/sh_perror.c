@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:41:27 by jmartel           #+#    #+#             */
-/*   Updated: 2019/06/11 14:19:04 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/27 15:12:19 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int		sh_perror(const char *error, const char *suffix)
 {
-	if (suffix && *suffix)
-		ft_dprintf(2, "%s%s: %s : %s%s\n", SH_ERR_COLOR,
+	if (suffix)
+		ft_dprintf(2, "%s%s: %s: %s%s\n", SH_ERR_COLOR,
 			SH_NAME, error, suffix, COLOR_END);
 	else
 		ft_dprintf(2, "%s%s: %s%s\n", SH_ERR_COLOR,
