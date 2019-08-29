@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/05 10:59:30 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/28 11:14:09 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/08/29 11:33:38 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,17 +102,32 @@ int			sh_expansions(t_context *context, t_ast_node *node)
 		return (SUCCESS);
 	index = 0;
 	input = &node->token->value;
-	if ((*input)[0] == '~'
-		&& (ret = sh_expansions_process_tilde(
-			input, *input, context)) != SUCCESS)
-	{
-		if (sh_env_update_ret_value_and_question(context->shell, ret))
-			return (FAILURE);
+//<<<<<<< HEAD
+//	if ((*input)[0] == '~'
+//		&& (ret = sh_expansions_process_tilde(
+//			input, *input, context)) != SUCCESS)
+//	{
+//		if (sh_env_update_ret_value_and_question(context->shell, ret))
+//			return (FAILURE);
+//		return (ret);
+//	}
+//	ret = sh_scan_expansions(input, index, context);
+//	if (ret != SUCCESS)
+//		if (sh_env_update_ret_value_and_question(context->shell, ret))
+//			return (FAILURE);
+//	return (ret);
+//=======
+	ret = SUCCESS;
+	if ((*input)[0] == '~')
+		ret = sh_expansions_process_tilde(input, *input, context);
+	if (!ret)
+		ret = sh_scan_expansions(input, index, context);
+	if (ret == ERROR || ret == FAILURE)
+		sh_env_update_ret_value(context->shell, ret);
+	if (sh_env_update_question_mark(context->shell) == FAILURE)
+		return (FAILURE);
+	if (ret)
 		return (ret);
-	}
-	ret = sh_scan_expansions(input, index, context);
-	if (ret != SUCCESS)
-		if (sh_env_update_ret_value_and_question(context->shell, ret))
-			return (FAILURE);
-	return (ret);
+	return (sh_expansions_splitting(node, context));
+//>>>>>>> 1687fa0e723590168a9e38a53c43c82ac40330a4
 }

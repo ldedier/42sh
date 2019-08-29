@@ -6,7 +6,7 @@
 /*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 10:15:48 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/08/07 15:41:51 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/08/29 13:18:38 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,17 +41,17 @@ static int	get_flag(char *str)
 	return (i);
 }
 
-static int	get_stat_cont_1(char *str, int ope, struct stat sb)
+static int	get_stat_cont_1(int ope, struct stat sb)
 {
 	int			ret;
 
 	ret = 0;
-	if (ope == TEST_L)
-	{
-		if (lstat(str, &sb) == -1)
-			return (1);
-		ret = (sb.st_mode & S_IFMT) == S_IFLNK ? 0 : 1;
-	}
+	if (ope == TEST_E)
+		return (0);
+	else if (ope == TEST_F)
+		ret = (sb.st_mode & S_IFMT) == S_IFREG ? 0 : 1;
+	else if (ope == TEST_G)
+		ret = (sb.st_mode & S_ISGID) != 0 ? 0 : 1;
 	else if (ope == TEST_P)
 		ret = (sb.st_mode & S_IFMT) == S_IFIFO ? 0 : 1;
 	else if (ope == TEST_R)
@@ -59,7 +59,7 @@ static int	get_stat_cont_1(char *str, int ope, struct stat sb)
 	else if (ope == TEST_SS)
 		ret = (sb.st_mode & S_IFMT) == S_IFSOCK ? 0 : 1;
 	else if (ope == TEST_S)
-		ret = sb.st_size == 0 ? 0 : 1;
+		ret = sb.st_size != 0 ? 0 : 1;
 	else if (ope == TEST_U)
 		ret = (sb.st_mode & S_ISUID) != 0 ? 0 : 1;
 	else if (ope == TEST_W)
@@ -74,7 +74,13 @@ static int	get_stat(char *str, int ope)
 	struct stat	sb;
 	int			ret;
 
-	if (stat(str, &sb) == -1)
+	if (ope == TEST_L)
+	{
+		if (lstat(str, &sb) == -1)
+			return (1);
+		ret = (sb.st_mode & S_IFMT) == S_IFLNK ? 0 : 1;
+	}
+	else if (stat(str, &sb) == -1)
 		return (1);
 	else if (ope == TEST_B)
 		ret = (sb.st_mode & S_IFMT) == S_IFBLK ? 0 : 1;
@@ -82,14 +88,8 @@ static int	get_stat(char *str, int ope)
 		ret = (sb.st_mode & S_IFMT) == S_IFCHR ? 0 : 1;
 	else if (ope == TEST_D)
 		ret = (sb.st_mode & S_IFMT) == S_IFDIR ? 0 : 1;
-	else if (ope == TEST_E)
-		return (0);
-	else if (ope == TEST_F)
-		ret = (sb.st_mode & S_IFMT) == S_IFREG ? 0 : 1;
-	else if (ope == TEST_G)
-		ret = (sb.st_mode & S_ISGID) != 0 ? 0 : 1;
 	else
-		ret = get_stat_cont_1(str, ope, sb);
+		ret = get_stat_cont_1(ope, sb);
 	return (ret);
 }
 
