@@ -306,7 +306,7 @@ rere:
 	@$(RM) $(OBJECTS)
 	@$(RM) -r $(OBJDIR)
 	@$(RM) $(BINDIR)/$(NAME)
-	$(MAKE) all
+	@$(MAKE) all
 
 os:
 	@$(ECHO) $(OS)

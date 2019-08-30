@@ -252,7 +252,8 @@ endif
 
 all: 
 	@$(ECHO) "$(FLAGS_COLOR)Compiling with flags $(CFLAGS) $(EOC)"
-	$(MAKE) -C . $(NAME)
+	@echo make -C . $(NAME)
+	@$(MAKE) -C . $(NAME)
 
 debug:
 	$(MAKE) all DEBUG=1
