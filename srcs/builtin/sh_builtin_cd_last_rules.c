@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 07:20:20 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/28 14:28:51 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/30 14:36:56 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	sh_builtin_cd_update_pwd(
 	char		*old_pwd;
 	int			ret;
 
-	if (args[CD_L_OPT].value)
+	if (args[CD_L_OPT].priority > args[CD_P_OPT].priority)
 		pwd = curpath;
 	else
 		pwd = sh_builtin_pwd_physical(context->fd[FD_ERR]);
@@ -43,7 +43,7 @@ static int	sh_builtin_cd_update_pwd(
 			context->saved_env, NULL, "OLDPWD", old_pwd);
 	if (!ret)
 		ret = sh_vars_assign_key_val(context->saved_env, NULL, "PWD", pwd);
-	if (args[CD_P_OPT].value)
+	if (args[CD_P_OPT].priority > args[CD_L_OPT].priority)
 		free(pwd);
 	return (ret);
 }

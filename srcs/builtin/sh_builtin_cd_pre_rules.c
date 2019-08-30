@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 14:50:45 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/28 14:33:36 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/30 14:34:51 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,11 @@ int			sh_builtin_cd_parser(t_context *context, t_args *args,
 	if (ft_strequ(argv[*index], "-"))
 		if ((ret = sh_builtin_cd_parser_hyphen(context, args, curpath, *index)))
 			return (ret);
+	if (!args[CD_P_OPT].value)
+	{
+		args[CD_L_OPT].value = &args;
+		args[CD_L_OPT].priority++;
+	}
 	return (SUCCESS);
 }
 
