@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 14:50:45 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/10 11:49:18 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/30 14:07:41 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,23 +44,16 @@ int			sh_builtin_cd_parser(
 {
 	char	**params;
 
-	params = (char**)context->params->tbl;
-	*flag = CD_OPT_LOGIC;
-	while (params[*i])
-	{
-		if (ft_strequ(params[*i], "-P"))
-			*flag = CD_OPT_PHYSIC;
-		else if (ft_strequ(params[*i], "-L"))
-			*flag = CD_OPT_LOGIC;
-		else if (ft_strequ(params[*i], "-"))
-			return (sh_builtin_cd_parser_hyphen(context, flag, curpath, *i));
-		else if (params[*i] && params[*i + 1])
-			return (sh_perror_err_fd(
-				context->fd[FD_ERR], "cd", SH_ERR1_TOO_MANY_ARGS));
-		else
-			return (SUCCESS);
-		*i += 1;
-	}
+	*curpath = NULL;
+	if (sh_builtin_parser(ft_strtab_len(argv), argv, args, index))
+		return (sh_builtin_usage(args, argv[0], CD_USAGE, context));
+	if (argv[*index] && argv[*index + 1])
+		return (sh_perror_err_fd(context->fd[FD_ERR], argv[0], SH_ERR1_TOO_MANY_ARGS));
+	if (ft_strequ(argv[*index], "-"))
+		if ((ret = sh_builtin_cd_parser_hyphen(context, args, curpath, *index)))
+			return (ret);
+	if (!args[CD_P_OPT].value)
+		args[CD_L_OPT].value = &args;
 	return (SUCCESS);
 }
 

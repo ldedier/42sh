@@ -124,10 +124,4 @@ launch "builtin test"
 	test_launch	"test -s /dev/urandom ; echo $?"
 
 	#rm files
-	chmod 777 blt_test_files/a
-	chmod 777 blt_test_files/a/b
-	chmod 777 blt_test_files/c
-	chmod 777 blt_test_files/d
-	chmod 777 blt_test_files/g
-	chmod 777 blt_test_files/dir_no_perm
-	rm -rf blt_test_files
+

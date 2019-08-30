@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 13:33:24 by jmartel           #+#    #+#             */
-/*   Updated: 2019/07/23 07:20:17 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/30 14:07:21 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int			sh_builtin_cd_rule7(t_context *context, char **curpath, char flags)
 {
 	char	*pwd;
 
-	if (flags & CD_OPT_LOGIC)
+	if (!args[CD_P_OPT].value)
 	{
 		if (**curpath != '/')
 		{
@@ -39,18 +39,11 @@ static int	sh_builtin_cd_rule8_2(char **curpath)
 	int		len;
 	char	*find;
 
-	while ((find = ft_strstr(*curpath, ".")))
-	{
-		if (find[1] == '/')
-			ft_strdelchars(find, 0, 2);
-		else
-			ft_strdelchars(find, 0, 1);
-	}
 	while ((find = ft_strstr(*curpath, "//")))
 		ft_strdelchars(find, 0, 1);
 	len = ft_strlen(*curpath);
 	if (len > 1 && (*curpath)[len - 1] == '/')
-		(*curpath)[len - 1] = '\0';
+		ft_strdelchar(*curpath, len - 1);
 	return (SUCCESS);
 }
 
@@ -60,20 +53,31 @@ int			sh_builtin_cd_rule8_1(char **curpath)
 	char	*end;
 	char	*start;
 
-	while ((find = ft_strstr(*curpath, "..")))
+	while ((find = ft_strnstr(*curpath, "./", 2)))
 	{
-		end = find + 2;
-		if (find == *curpath || find - 1 == *curpath)
-			start = find;
+		ft_strdelchars(find, 0, 2);
+		ft_dprintf(2, "curpath (1) : %s\n", *curpath);
+	}
+	while ((find = ft_strstr(*curpath, "/./")))
+	{
+		ft_strdelchars(find, 0, 2);
+		ft_dprintf(2, "curpath (2) : %s\n", *curpath);
+	}
+	while ((find = ft_strstr(*curpath, "/../")) || (find = ft_strrnstr(*curpath, "/..", 3)))
+	{
+		end = find + 3;
+		if (find == *curpath)
+				start = find;
 		else
 		{
-			find[-1] = 0;
-			start = ft_strrchr(*curpath, '/');
-			find[-1] = '/';
-			if (start == *curpath)
-				start++;
+				*find = 0;
+				start = ft_strrchr(*curpath, '/');
+				*find = '/';
+				if (start == *curpath) //is it usefull ?
+					start++;
 		}
 		ft_strdelchars(start, 0, end - start);
+		ft_dprintf(2, "curpath (3) : %s\n", *curpath);
 	}
 	return (sh_builtin_cd_rule8_2(curpath));
 }
