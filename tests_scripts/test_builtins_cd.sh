@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/22 19:04:46 by jmartel           #+#    #+#              #
-#    Updated: 2019/08/30 14:07:57 by jmartel          ###   ########.fr        #
+#    Updated: 2019/08/30 15:03:55 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,10 +40,29 @@ launch "cd"
 	test_launch "OLDPWD=asd" "cd - ; pwd" "cd - ; pwd"
 	test_launch "OLDPWD=asd" "cd .. ; pwd" "cd - ; pwd" "cd - ; pwd"
 
-	launch "parser"
+## Create symlink to test -P option
+# mkdir sandbox ; cd sandbox ; ln -s sandbox link
 
+
+	launch "parser"
+	test_launch 'cd -P sandbox/link/link' 'echo $? ; pwd'
+	test_launch 'cd -P -P -P -L sandbox/link/link' 'echo $? ; pwd'
+	test_launch 'cd -P -P -P -L -- sandbox/link/link' 'echo $? ; pwd'
+	test_launch 'cd -P -P -P -L -- -P sandbox/link/link' 'echo $? ; pwd'
+	test_launch 'cd -P -P -P -L -- -P' 'echo $? ; pwd'
+	test_launch 'cd -P -P -P -L -- -E' 'echo $? ; pwd'
+	test_launch 'cd -P -P -P -E -- sandbox/link' 'echo $? ; pwd'
+	test_launch 'cd --ok sandbox/link' 'echo $? ; pwd'
+	test_launch 'cd --ok sandbox/link/' 'echo $? ; pwd'
 
 	launch "arguments"
+	test_launch 'cd nodir' 'echo $? ; pwd'
+	test_launch 'cd start.sh' 'echo $? ; pwd'
+	test_launch 'cd ../start.sh' 'echo $? ; pwd'
+	test_launch 'cd ./start.sh' 'echo $? ; pwd'
+	test_launch 'cd ////' 'echo $? ; pwd'
+	test_launch 'cd ..../.../..' 'echo $? ; pwd'
+	test_launch 'cd /..../.../..' 'echo $? ; pwd'
 
 	launch "returned value"
 	test_launch "cd nodir" 'ech	o $?'
@@ -56,6 +75,14 @@ launch "cd"
 	test_launch "cd -E 1>&-"
 	test_launch "cd -E 2>&-"
 	test_launch "cd 2>&-"
+	test_launch "cd nofile 1>&-"
+	test_launch "cd nofile 2>&-"
+
+	launch "Old errors"
+	test_launch "cd ././../.." 'echo $?' "pwd"
+	test_launch 'cd -P ././../..' 'echo $?' "pwd"
+	test_launch 'cd ...' 'echo $?' "pwd"
+	test_launch 'cd -P ...' 'echo $?' "pwd"
 
 	launch "Old errors"
 	test_launch "cd ././../.." 'echo $?' "pwd"

@@ -6,14 +6,14 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 14:50:45 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/30 14:07:41 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/30 15:04:31 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-static int	sh_builtin_cd_parser_hyphen(
-	t_context *context, char *flag, char **curpath, int i)
+int			sh_builtin_cd_parser_hyphen(
+	t_context *context, t_args *args, char **curpath, int i)
 {
 	char	*oldpwd;
 
@@ -35,14 +35,14 @@ static int	sh_builtin_cd_parser_hyphen(
 		return (sh_perror_fd(context->fd[FD_ERR],
 			SH_ERR1_MALLOC, "sh_builtin_cd_parser_hyphen"));
 	}
-	*flag += CD_OPT_HYPHEN;
+	args[CD_HYPHEN_OPT].value = args;
 	return (SUCCESS);
 }
 
-int			sh_builtin_cd_parser(
-	t_context *context, int *i, char *flag, char **curpath)
+int			sh_builtin_cd_parser(t_context *context, t_args *args,
+	int *index, char **curpath, char **argv)
 {
-	char	**params;
+	int		ret;
 
 	*curpath = NULL;
 	if (sh_builtin_parser(ft_strtab_len(argv), argv, args, index))
@@ -53,7 +53,10 @@ int			sh_builtin_cd_parser(
 		if ((ret = sh_builtin_cd_parser_hyphen(context, args, curpath, *index)))
 			return (ret);
 	if (!args[CD_P_OPT].value)
+	{
 		args[CD_L_OPT].value = &args;
+		args[CD_L_OPT].priority++;
+	}
 	return (SUCCESS);
 }
 
