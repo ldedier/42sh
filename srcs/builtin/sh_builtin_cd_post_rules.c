@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 13:33:24 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/28 15:04:23 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/30 10:27:53 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,23 +57,31 @@ static int	sh_builtin_cd_rule8_2(char **curpath)
 int			sh_builtin_cd_rule8_1(char **curpath)
 {
 	char	*find;
-	char	*end;
-	char	*start;
 
-	while ((find = ft_strstr(*curpath, "..")))
+	while ((find = ft_strstr(*curpath, "/./")))
 	{
-		end = find + 2;
-		if (find == *curpath || find - 1 == *curpath)
-			start = find;
-		else
-		{
-			find[-1] = 0;
-			start = ft_strrchr(*curpath, '/');
-			find[-1] = '/';
-			if (start == *curpath)
-				start++;
-		}
-		ft_strdelchars(start, 0, end - start);
+		ft_strdelchars(find, 0, 2);
+		ft_dprintf(2, "curpath (2) : %s\n", *curpath);
+	}
+	while ((find = ft_strnstr(*curpath, "/.", 2)))
+	{
+		ft_strdelchars(*curpath, 0, 2);
+		ft_dprintf(2, "curpath (1) : %s\n", *curpath);
+	}
+	// while ((find = ft_strstr(*curpath, "/."))) // at the end only
+	// {
+	// 	ft_strdelchars(find, 0, 2);
+	// 	ft_dprintf(2, "curpath (3) : %s\n", *curpath);
+	// }
+	while ((find = ft_strstr(*curpath, "/../")))
+	{
+		ft_strdelchars(find, 0, 3);
+		ft_dprintf(2, "curpath (3) : %s\n", *curpath);
+	}
+	while ((find = ft_strstr(*curpath, "/.."))) // at the end only
+	{
+		ft_strdelchars(find, 0, 2);
+		ft_dprintf(2, "curpath (3) : %s\n", *curpath);
 	}
 	return (sh_builtin_cd_rule8_2(curpath));
 }
