@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 17:46:46 by jmartel           #+#    #+#             */
-/*   Updated: 2019/06/11 10:27:29 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/28 10:54:23 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ struct	s_expansion
 */
 int		sh_expansions_replace(
 	t_expansion *expansion, char **input, int index);
-int		sh_expansions_init(char *original, t_expansion *exp);
+//int		sh_expansions_init(char *original, t_expansion *exp);
 int		sh_expansions(t_context *context, t_ast_node *node);
 
 /*
@@ -83,7 +83,7 @@ char	*sh_expansions_parameter_get_param(
 char	*sh_expansions_parameter_get_word(t_expansion *exp, char *format);
 
 /*
-** sh_expansions_scan.c
+** sh_scan_expansions.c
 */
 int		sh_scan_expansions(char **input, int index, t_context *context);
 
@@ -103,11 +103,14 @@ int		sh_expansions_process_tilde(
 /*
 ** sh_expansions_variable.c
 */
+int		sh_unquoted_var(char **input, int *index, t_context *context);
 int		sh_expansions_variable_valid_name(char *name);
 int		sh_expansions_variable_detect(char *start);
 int		sh_expansions_variable_fill(t_expansion *exp, char *start);
 int		sh_expansions_variable_process(
 	t_context *context, t_expansion *exp);
+int		sh_expansions_process(
+	char **input, char *original, t_context *context, int *index);
 
 /*
 ** t_expansion.c

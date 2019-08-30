@@ -19,7 +19,7 @@ static int		lexer_quoting_backslash(t_lexer *lexer)
 	else
 	{
 		lexer->backslash = 1;
-		if (lexer->input[lexer->tok_start + lexer->tok_len + 1] == '\0')
+		if (lexer->input[lexer->tok_start + lexer->tok_len + 1] == '\0' && lexer->quoted != '\"')
 		{
 			ft_strdelchar(lexer->input, lexer->tok_start + lexer->tok_len);
 			return (LEX_OK);
