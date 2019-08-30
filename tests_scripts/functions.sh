@@ -12,7 +12,7 @@
 
 del_historic()
 {
-	find ../ -name ".historic" -delete
+	find ../ -name ".historic" -delete 2>/dev/null 1>/dev/null
 }
 
 launch()
