@@ -85,7 +85,7 @@ char	*sh_expansions_parameter_get_word(t_expansion *exp, char *format);
 /*
 ** sh_scan_expansions.c
 */
-int		sh_scan_expansions(char **input, int index, t_context *context);
+int		sh_scan_expansions(char **input, int index, int do_expansion, t_context *context);
 
 /*
 ** sh_expansions_tilde.c

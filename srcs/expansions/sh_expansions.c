@@ -34,26 +34,11 @@ int			sh_expansions(t_context *context, t_ast_node *node)
 		return (SUCCESS);
 	index = 0;
 	input = &node->token->value;
-//<<<<<<< HEAD
-//	if ((*input)[0] == '~'
-//		&& (ret = sh_expansions_process_tilde(
-//			input, *input, context)) != SUCCESS)
-//	{
-//		if (sh_env_update_ret_value_and_question(context->shell, ret))
-//			return (FAILURE);
-//		return (ret);
-//	}
-//	ret = sh_scan_expansions(input, index, context);
-//	if (ret != SUCCESS)
-//		if (sh_env_update_ret_value_and_question(context->shell, ret))
-//			return (FAILURE);
-//	return (ret);
-//=======
 	ret = SUCCESS;
 	if ((*input)[0] == '~')
 		ret = sh_expansions_process_tilde(input, *input, context);
 	if (!ret)
-		ret = sh_scan_expansions(input, index, context);
+		ret = sh_scan_expansions(input, index, 1, context);
 	if (ret == ERROR || ret == FAILURE)
 		sh_env_update_ret_value(context->shell, ret);
 	if (sh_env_update_question_mark(context->shell) == FAILURE)
@@ -61,5 +46,4 @@ int			sh_expansions(t_context *context, t_ast_node *node)
 	if (ret)
 		return (ret);
 	return (sh_expansions_splitting(node, context));
-//>>>>>>> 1687fa0e723590168a9e38a53c43c82ac40330a4
 }

@@ -22,13 +22,28 @@ char			*heredoc_dash(const char *str)
 	return (ft_strdup(&str[i]));
 }
 
-static char		*get_heredoc(t_context *context, char *eof,
+static char		*get_heredoc(t_context *context, char **stop,
 		char *(*heredoc_func)(const char *), int *ret)
 {
+	int 			do_expansion;
+	char 			*str;
+
+	do_expansion = 1;
+	if (ft_strchr(*stop, '\'') || ft_strchr(*stop, '\"') || ft_strchr(*stop, '\\'))
+	{
+		do_expansion = 0;
+		if ((*ret = sh_scan_expansions(stop, 0, do_expansion, context)) != SUCCESS)
+			return (NULL);
+	}
 	if (isatty(0))
-		return (heredoc(context->shell, eof, heredoc_func, ret));
+		str = heredoc(context->shell, *stop, heredoc_func, ret);
+		// return (heredoc(context->shell, *stop, heredoc_func, ret));
 	else
-		return (heredoc_canonical_mode(context->shell, eof, heredoc_func, ret));
+		str = heredoc_canonical_mode(context->shell, *stop, heredoc_func, ret);
+		// return (heredoc_canonical_mode(context->shell, *stop, heredoc_func, ret));
+	if (*ret == SUCCESS && do_expansion)
+		ft_printf("faut appliquer expansion...\n");
+	return (str);
 }
 
 /*
@@ -58,8 +73,7 @@ static int		sh_traverse_io_here_interactive(t_redirection **redirection,
 	int				fds[2];
 
 	first_child = (t_ast_node *)node->children->content;
-	if (!(heredoc_res = get_heredoc(context, first_child->token->value,
-			heredoc_func, &ret)))
+	if (!(heredoc_res = get_heredoc(context, &(first_child->token->value), heredoc_func, &ret)))
 		return (ret);
 	if (ret == CTRL_D)
 		ret = sh_traverse_io_here_interactive_ctrl_d(first_child, context);
