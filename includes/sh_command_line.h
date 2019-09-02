@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/11 17:20:10 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/02 15:33:02 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/02 18:13:22 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@
 
 # define SUCCESS_RSRCH		"failing bck-i-search: "
 # define UNSUCCESS_RSRCH	"bck-i-search: "
+
+# define ELIPTIC_COMMAND_LINE	"<...>"
 
 typedef char *(*t_heredoc_func)(const char *);
 

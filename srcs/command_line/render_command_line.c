@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/22 14:40:58 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/20 15:52:33 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/02 18:53:09 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,52 @@ int		print_after_command_line(t_command_line *command_line,
 }
 
 /*
+** returns the index of the starting character of the command_line to print
+*/
+
+int		get_command_line_starting_index(t_command_line *command_line)
+{
+	int nb_lines;
+	int	j;
+	int res;
+	int len;
+
+	res = 0;
+	nb_lines = 0;
+	len = ft_strlen(g_glob.command_line.dy_str->str);
+	while (nb_lines < command_line->scrolled_lines)
+	{
+		j = 0;
+		while (j < g_glob.winsize.ws_col)
+		{
+			res += get_char_len2(res, len,
+				(unsigned char *)g_glob.command_line.dy_str->str);
+			j++;
+		}
+		nb_lines++;
+	}
+	return (res);
+}
+
+void	print_command_line(t_command_line *command_line)
+{
+	int index;
+	int i;
+	int empty_space;
+
+	index = get_command_line_starting_index(command_line);
+	i = index;
+	if (command_line->scrolled_lines)
+		empty_space = (g_glob.winsize.ws_col * g_glob.winsize.ws_row - 1)
+			+ g_glob.winsize.ws_col - ft_strlen(ELIPTIC_COMMAND_LINE);
+	else
+		empty_space = (g_glob.winsize.ws_col * g_glob.winsize.ws_row - 1)
+			+ g_glob.winsize.ws_col - ft_strlen(g_glob.command_line.prompt);
+	//printf("%*s", ft_strlen_utf8(&command_line->dy_str.str[index]),
+	//	&command_line->dy_str.str[index]);
+}
+
+/*
 ** cursor_inc: tells the cursor movement to execute within the render of the
 ** command_line
 */
@@ -67,8 +113,12 @@ int		render_command_line(t_command_line *command_line,
 	go_up_to_prompt(g_glob.winsize.ws_col, g_glob.cursor);
 	str = tgetstr("cd", NULL);
 	tputs(str, 1, putchar_int);
-	ft_dprintf(command_line->fd, "%s%s%s%s",
-		BOLD, CYAN, g_glob.command_line.prompt, EOC);
+	if (!command_line->scrolled_lines)
+		ft_dprintf(command_line->fd, "%s%s%s%s",
+			BOLD, CYAN, g_glob.command_line.prompt, EOC);
+	else
+		ft_dprintf(command_line->fd, "%s", ELIPTIC_COMMAND_LINE);
+	/*
 	if (command_line->mode == E_MODE_VISUAL)
 		render_command_visual(command_line);
 	else if (command_line->searcher.active
@@ -76,7 +126,8 @@ int		render_command_line(t_command_line *command_line,
 				&& ft_strcmp(command_line->searcher.dy_str->str, ""))
 		render_command_researched(command_line);
 	else
-		ft_dprintf(command_line->fd, "%s", command_line->dy_str->str);
+	*/
+	ft_dprintf(command_line->fd, "%s", command_line->dy_str->str);
 	g_glob.cursor += cursor_inc;
 	replace_cursor_after_render();
 	if (print_after_command_line(command_line, print_choices) != SUCCESS)
