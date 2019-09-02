@@ -10,7 +10,7 @@ static int	loop_expansion(char **str, t_context *context)
 	{
 		if ((*str)[start_expansion] == '\\' && (*str)[start_expansion + 1] == '$')
 		{
-			ft_strcpy(*str, (*str) + 1);
+			ft_strcpy(*str + start_expansion, (*str) + start_expansion + 1);
 			start_expansion++;
 		}
 		if ((*str)[start_expansion] == '$')
@@ -33,21 +33,23 @@ static int	loop_expansion(char **str, t_context *context)
 char		*get_heredoc(t_context *context, char **stop,
 		char *(*heredoc_func)(const char *), int *ret)
 {
-	int 			do_expansion;
 	char 			*str;
+	t_heredoc		heredoc_data;
 
-	do_expansion = 1;
+	heredoc_data.apply_expansion = 1;
+	heredoc_data.func = heredoc_func;
 	if (ft_strchr(*stop, '\'') || ft_strchr(*stop, '\"') || ft_strchr(*stop, '\\'))
 	{
-		do_expansion = 0;
-		if ((*ret = sh_scan_expansions(stop, 0, do_expansion, context)) != SUCCESS)
+		heredoc_data.apply_expansion = 0;
+		if ((*ret = sh_scan_expansions(stop, 0, heredoc_data.apply_expansion, context)) != SUCCESS)
 			return (NULL);
 	}
+	heredoc_data.stop = *stop;
 	if (isatty(0))
-		str = heredoc(context->shell, *stop, heredoc_func, ret);
+		str = heredoc(context->shell, heredoc_data, ret);
 	else
-		str = heredoc_canonical_mode(context->shell, *stop, heredoc_func, ret);
-	if (*ret == SUCCESS && do_expansion)
+		str = heredoc_canonical_mode(context->shell, *stop, heredoc_data, ret);
+	if (*ret == SUCCESS && heredoc_data.apply_expansion)
 		*ret = loop_expansion(&str, context);
 	return (str);
 }

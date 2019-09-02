@@ -43,16 +43,16 @@ int			process_heredoc_new_line(char **res, char *tmp, t_shell *shell,
 }
 
 int			process_heredoc_through_command(char **res, t_shell *shell,
-	t_heredoc_func heredoc_func, t_command_line *command_line)
+	t_heredoc heredoc_data, t_command_line *command_line)
 {
 	char	*tmp;
 	int		ret;
 	int		to_append;
 
 	to_append = 0;
-	if (!(tmp = heredoc_func(command_line->dy_str->str)))
+	if (!(tmp = heredoc_data.func(command_line->dy_str->str)))
 		return (heredoc_ret(shell, command_line, FAILURE));
-	if ((to_append = (refine_heredoc(tmp))) == 0)
+	if ((to_append = (refine_heredoc(tmp, heredoc_data))) == 0)
 	{
 		if ((ret = process_heredoc_new_line(res, tmp, shell, command_line))
 			!= KEEP_READ)
@@ -105,19 +105,18 @@ char		*heredoc_handle_ctrl_d(t_shell *shell,
 	return (heredoc_ret_str(shell, command_line, *res));
 }
 
-char		*heredoc(t_shell *shell, char *stop,
-			t_heredoc_func heredoc_func, int *ret)
+char		*heredoc(t_shell *shell, t_heredoc heredoc, int *ret)
 {
 	char			*res;
 	t_command_line	*command_line;
 
 	command_line = &g_glob.command_line;
-	init_heredoc_command_line(shell, command_line, stop);
+	init_heredoc_command_line(shell, command_line, heredoc.stop);
 	if (!(res = ft_strnew(0)))
 		return (heredoc_ret_str(shell, command_line, NULL));
 	while ((*ret = sh_get_command(shell, command_line)) == SUCCESS)
 	{
-		if (process_heredoc_through_command(&res, shell, heredoc_func,
+		if (process_heredoc_through_command(&res, shell, heredoc,
 			command_line) != 3)
 			return (res);
 	}
@@ -127,7 +126,7 @@ char		*heredoc(t_shell *shell, char *stop,
 		ft_strdel(&command_line->to_append_str);
 	}
 	if (*ret == CTRL_D)
-		return (heredoc_handle_ctrl_d(shell, stop, &res, ret));
+		return (heredoc_handle_ctrl_d(shell, heredoc.stop, &res, ret));
 	else
 	{
 		free(res);

@@ -17,12 +17,14 @@
 ** a single \ and removes it from the string, else returns 0
 */
 
-int			refine_heredoc(char *str)
+int			refine_heredoc(char *str, t_heredoc heredoc_data)
 {
 	int		i;
-	int		n;
+	(void)heredoc_data;
 
 	i = 0;
+	if (heredoc_data.apply_expansion == 0)
+		return (0);
 	while (str[i])
 	{
 		if (!str[i + 1] && str[i] == '\\')
@@ -31,15 +33,7 @@ int			refine_heredoc(char *str)
 			return (1);
 		}
 		if (str[i + 1] == '\\' && str[i] == '\\')
-		{
-			n = 0;
-			while (str[i + n + 1])
-			{
-				str[i + n] = str[i + n + 1];
-				n++;
-			}
-			str[i + n] = '\0';
-		}
+			ft_strcpy(str + i, str + i + 1);
 		i++;
 	}
 	return (0);
