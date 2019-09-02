@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/14 13:19:50 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/02 15:08:28 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/02 15:38:05 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ static int	sh_init_command_line(t_shell *shell, t_command_line *command_line)
 	command_line->autocompletion.scrolled_lines = 0;
 	command_line->pinned_index = -1;
 	command_line->mode = E_MODE_INSERT;
+	command_line->scrolled_lines = 0;
 	command_line->context = E_CONTEXT_STANDARD;
 	if ((command_line->fd = open("/dev/tty", O_RDWR)) < 0)
 		return (sh_perror(SH_ERR1_TTY, "sh_init_command_line (1)"));
