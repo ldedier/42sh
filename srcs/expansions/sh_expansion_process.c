@@ -32,7 +32,6 @@ static int	sh_expansions_init(char *original, t_expansion *exp)
 	exp->original = NULL;
 	exp->process = NULL;
 	exp->res = NULL;
-ft_printf("sh_expansions_process %s\n", original);
 	if (!(start = ft_strpbrk(original, "$")))
 		return (ERROR);
 	if (ft_strnstr(start, "${", 2))
