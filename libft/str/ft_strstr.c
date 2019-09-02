@@ -63,14 +63,14 @@ char	*ft_strrstr(const char *str, const char *find)
 		return ((char*)str);
 	len_str = ft_strlen(str);
 	istr = len_str;
-	while (istr >= 0)
+	while (istr > 0)
 	{
+		istr--;
 		ifind = 0;
 		while (str[istr + ifind] && str[istr + ifind] == find[ifind])
 			ifind++;
 		if (find[ifind] == 0)
 			return ((char*)(str + istr));
-		istr--;
 	}
 	return (NULL);
 }

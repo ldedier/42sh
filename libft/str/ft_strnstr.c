@@ -62,16 +62,16 @@ char	*ft_strrnstr(const char *str, const char *find, size_t len)
 	if (*find == 0)
 		return ((char*)str);
 	len_str = ft_strlen(str);
-	istr = len_str - 1;
-	while (istr >= 0 && len_str - istr <= len)
+	istr = len_str;
+	while (istr > 0 && len_str - istr <= len)
 	{
+		istr--;
 		ifind = 0;
 		while (str[istr + ifind] && str[istr + ifind] == find[ifind]\
 			&& len_str - istr <= len)
 			ifind++;
 		if (find[ifind] == 0 && len_str - istr <= len)
 			return ((char*)(str + istr));
-		istr--;
 	}
 	return (NULL);
 }
