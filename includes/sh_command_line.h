@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/11 17:20:10 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/20 15:51:53 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/02 15:33:02 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,16 +59,23 @@ typedef struct		s_searcher
 }					t_searcher;
 
 /*
-** dy_str : content of the command_line
-** heredoc_eof : current eof of the heredoc
-** prompt : current prompt of the command_line
-** nb_chars : numbers of UTF8 characters in the dy_str
-** current_index : where to insert characters in the command line
-** mode : insert or heredoc
-** clipboard : what got yanked or deleted in visual mode
-** pinned_index: where the visual mode got initiated
-** interrupted : if the command got interrupted by a ctrl D or ctrl C
-** to_append_str : what to append to the string in the case of \\ in heredocs
+** dy_str			: content of the command_line
+** heredoc_eof		: current eof of the heredoc
+** prompt			: current prompt of the command_line
+** nb_chars			: numbers of UTF8 characters in the dy_str
+** current_index	: where to insert characters in the command line
+** scrolled_lines	: number of lines scrolled by the terminal
+**
+** mode				: insert, command, or visual
+** context			: standard, heredoc, quotes, double, quotes, backslashes..
+**
+** clipboard		: what got yanked or deleted in visual mode
+** pinned_index		: where the visual mode got initiated
+**
+** interrupted		: if the command got interrupted by a ctrl D or ctrl C
+** to_append_str	: what to append to the string in the case of \\ in heredocs
+** fd				: fd to print input (open("/fd/tty"));
+**
 */
 typedef struct		s_command_line
 {
@@ -79,6 +86,7 @@ typedef struct		s_command_line
 	char			*prompt;
 	int				nb_chars;
 	int				current_index;
+	int				scrolled_lines;
 	t_mode			mode;
 	int				interrupted;
 	char			*clipboard;

@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/14 13:19:50 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/20 15:53:52 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/02 15:08:28 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,9 +97,10 @@ static int	sh_init_command_line(t_shell *shell, t_command_line *command_line)
 	command_line->pinned_index = -1;
 	command_line->mode = E_MODE_INSERT;
 	command_line->context = E_CONTEXT_STANDARD;
-	command_line->fd = open("/dev/tty", O_RDWR); //to protect !
+	if ((command_line->fd = open("/dev/tty", O_RDWR)) < 0)
+		return (sh_perror(SH_ERR1_TTY, "sh_init_command_line (1)"));
 	if (!(command_line->searcher.dy_str = ft_dy_str_new(63)))
-		return (FAILURE);
+		return (sh_perror(SH_ERR1_MALLOC, "sh_init_command_line (2)"));
 	command_line->searcher.active = 0;
 	command_line->searcher.head = NULL;
 	command_line->searcher.unsuccessful = 0;
@@ -110,7 +111,7 @@ static int	sh_init_command_line(t_shell *shell, t_command_line *command_line)
 		return (FAILURE);
 	command_line->clipboard = NULL;
 	if (!(command_line->dy_str = ft_dy_str_new(63)))
-		return (sh_perror(SH_ERR1_MALLOC, "sh_init_command_line"));
+		return (sh_perror(SH_ERR1_MALLOC, "sh_init_command_line (3)"));
 	return (SUCCESS);
 }
 
@@ -121,6 +122,7 @@ int			sh_init_shell(t_shell *shell, char **env)
 	s = shell->term;
 	ft_bzero(shell, sizeof(t_shell));
 	ft_bzero(&g_glob.command_line, sizeof(t_command_line));
+	g_glob.command_line.fd = -1;
 	if (isatty(0))
 		if (ioctl(0, TIOCGWINSZ, &g_glob.winsize) == -1)
 			return (sh_perror(SH_ERR1_IOCTL, "sh_init_shell"));

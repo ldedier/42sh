@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 14:21:12 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/05 14:26:56 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/02 14:47:09 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,9 @@ static int	process_keys_visual(t_key_buffer *buffer, t_shell *shell,
 int			process_keys_others(t_key_buffer *buffer,
 			t_shell *shell, t_command_line *command_line)
 {
-	if (command_line->mode == E_MODE_COMMAND)
+	if (buffer->buff[0] == 3)
+		return (process_i(shell, command_line, buffer));
+	else if (command_line->mode == E_MODE_COMMAND)
 		return (process_keys_command(buffer, shell, command_line));
 	else if (command_line->mode == E_MODE_VISUAL)
 		return (process_keys_visual(buffer, shell, command_line));
