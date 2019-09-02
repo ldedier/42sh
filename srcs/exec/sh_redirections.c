@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/26 15:16:56 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/01 09:04:41 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/02 16:34:14 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,8 @@ int				sh_process_fd_aggregation(t_redirection_type type,
 		if ((new_fd = get_redirected_fd(type, fd, metadata->redirections))
 			== -2)
 		{
-			ft_dprintf(2, "%s21sh: %d: bad file descriptor\n%s", SH_ERR_COLOR,
-				fd, EOC);
+			ft_dprintf(2, "%s%s: %d: bad file descriptor\n%s", SH_ERR_COLOR,
+			SH_NAME, fd, EOC);
 			metadata->should_exec = 0;
 			return (SUCCESS);
 		}

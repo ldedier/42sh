@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 14:16:12 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/27 14:08:25 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/09/02 16:32:52 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "sh_21.h"
 
-# define SH_NAME		"bash" // need to be changed to 21sh (modified for diff tests)
+# define SH_NAME		"bash" // need to be changed to 42sh (modified for diff tests)
 # define SH_ERR_COLOR	COLOR_PINK
 
 # define SH_ERR1_MALLOC			"Malloc error occured"

@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    test_blt_test.sh                                   :+:      :+:    :+:    #
+#    test_builtins_test.sh                              :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/07 17:02:22 by jdugoudr          #+#    #+#              #
-#    Updated: 2019/08/08 11:53:58 by jdugoudr         ###   ########.fr        #
+#    Updated: 2019/09/02 16:34:53 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -72,7 +72,7 @@ launch "builtin test"
 	test_launch "test  -x blt_test_files/a/b ; echo $?"
 	test_launch "test  -x blt_test_files/dir_no_perm ; echo $?"
 	test_launch "test  -x blt_test_files/a ; echo $?"
-	test_launch "test  -x ../21sh ; echo $?"
+	test_launch "test  -x ../42sh ; echo $?"
 	test_launch "test  -z 'test d une string' ; echo $?"
 	test_launch "test  -z '' ; echo $?"
 	#binary tests

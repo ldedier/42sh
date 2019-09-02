@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 11:19:41 by jmartel           #+#    #+#             */
-/*   Updated: 2019/07/31 19:16:53 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/02 16:35:11 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ static char		*get_heredoc(t_context *context, char *eof,
 static int		sh_traverse_io_here_interactive_ctrl_d(
 	t_ast_node *first_child, t_context *context)
 {
-	ft_dprintf(2, "21sh: warning: here-document delimited by end of file "
-		"(wanted `%s\')\n", first_child->token->value);
+	ft_dprintf(2, "%s: warning: here-document delimited by end of file "
+		"(wanted `%s\')\n", SH_NAME, first_child->token->value);
 	if (sh_env_update_ret_value_and_question(context->shell, SH_RET_ERROR))
 		return (FAILURE);
 	return (SUCCESS);

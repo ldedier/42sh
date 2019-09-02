@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pid=`pgrep 21sh`
+pid=`pgrep 42sh`
 
 if [ -z $pid ] ; then
 	echo "Can't find pid"
