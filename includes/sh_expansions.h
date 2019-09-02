@@ -50,6 +50,12 @@ int		sh_expansions_replace(
 int		sh_expansions(t_context *context, t_ast_node *node);
 
 /*
+** sh_get_heredoc.c
+*/
+char	*get_heredoc(t_context *context, char **stop,
+		char *(*heredoc_func)(const char *), int *ret);
+
+/*
 ** sh_expansions_field_splitting.c
 */
 int		sh_expansions_splitting(t_ast_node *node, t_context *context);

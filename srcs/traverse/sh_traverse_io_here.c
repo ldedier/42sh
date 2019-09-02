@@ -22,30 +22,6 @@ char			*heredoc_dash(const char *str)
 	return (ft_strdup(&str[i]));
 }
 
-static char		*get_heredoc(t_context *context, char **stop,
-		char *(*heredoc_func)(const char *), int *ret)
-{
-	int 			do_expansion;
-	char 			*str;
-
-	do_expansion = 1;
-	if (ft_strchr(*stop, '\'') || ft_strchr(*stop, '\"') || ft_strchr(*stop, '\\'))
-	{
-		do_expansion = 0;
-		if ((*ret = sh_scan_expansions(stop, 0, do_expansion, context)) != SUCCESS)
-			return (NULL);
-	}
-	if (isatty(0))
-		str = heredoc(context->shell, *stop, heredoc_func, ret);
-		// return (heredoc(context->shell, *stop, heredoc_func, ret));
-	else
-		str = heredoc_canonical_mode(context->shell, *stop, heredoc_func, ret);
-		// return (heredoc_canonical_mode(context->shell, *stop, heredoc_func, ret));
-	if (*ret == SUCCESS && do_expansion)
-		ft_printf("faut appliquer expansion...\n");
-	return (str);
-}
-
 /*
 ** available return for heredoc() :
 **		FAILURE (malloc error)

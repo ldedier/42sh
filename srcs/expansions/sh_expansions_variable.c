@@ -112,6 +112,7 @@ int			sh_expansions_variable_fill(t_expansion *exp, char *start)
 {
 	int		i;
 
+ft_printf("sh_expansions_variable_fill %s\n", start);
 	if ((i = sh_expansions_variable_detect(start)) == -1)
 		return (ERROR);
 	if (!(exp->original = ft_strndup(start, i)))

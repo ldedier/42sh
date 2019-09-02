@@ -226,7 +226,7 @@ SRCS			 +=	sh_expansions.c \
 					sh_expansions_variable.c t_expansion.c \
 					sh_expansion_process.c sh_expansion_replace.c \
 					sh_unquoted_var.c sh_expansions_field_splitting.c \
-					sh_scan_expansions.c
+					sh_scan_expansions.c sh_get_heredoc.c
 
 ################################################################
 ########					PERROR						########
