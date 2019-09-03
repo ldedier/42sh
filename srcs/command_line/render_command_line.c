@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/22 14:40:58 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/02 18:53:09 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/03 18:53:51 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,40 +80,55 @@ int		get_command_line_starting_index(t_command_line *command_line)
 	return (res);
 }
 
+void	process_copy_utf8_char(char *str,
+			t_command_line *command_line, int index, t_utf8_copier *c)
+{
+	int tmp;
+
+	tmp = get_char_len2(0, c->len,
+		(unsigned char *)&command_line->dy_str->str[c->i - index]);
+//	ft_dprintf(2, "index: %d\ni:%d\ntmp:%d\n\n", index, i, tmp);
+	ft_strncpy(&str[c->i - index], &command_line->dy_str->str[c->i], tmp);
+	c->len -= tmp;
+	c->i += tmp;
+	c->nb_chars++;
+}
+
 void	process_print_command_line(t_command_line *command_line,
 			int empty_space)
 {
-	char	*str;
-	int		i;
-	int		index;
-	int		len;
-	int		nb_chars;
-	int		tmp;
+	char			*str;
+	int				index;
+	t_utf8_copier	c;
 
 	if (!(str = malloc((4 * g_glob.winsize.ws_row * g_glob.winsize.ws_col) + 1)))
 		return ;
 	index = get_command_line_starting_index(command_line);
-	i = index;
+	c.i = index;
 //	ft_dprintf(2, "%d %d\n", i, index);
-	nb_chars = 0;
-	len = ft_strlen(&command_line->dy_str->str[index]);
-	while (command_line->dy_str->str[i] && nb_chars < empty_space)
+	c.nb_chars = 0;
+	c.len = ft_strlen(&command_line->dy_str->str[index]);
+	while (command_line->dy_str->str[c.i]
+		&& c.nb_chars < empty_space - ft_strlen_utf8(ELIPTIC_COMMAND_LINE))
 	{
-		tmp = get_char_len2(0, len,
-			(unsigned char *)&command_line->dy_str->str[i - index]);
-//		ft_dprintf(2, "index: %d\ni:%d\ntmp:%d\n\n", index, i, tmp);
-		ft_strncpy(&str[i - index], &command_line->dy_str->str[i], tmp);
-		len -= tmp;
-		i += tmp;
-		nb_chars++;
+		process_copy_utf8_char(str, command_line, index, &c);
 	}
-	if (nb_chars >= empty_space)
+	if (ft_strlen_utf8(&command_line->dy_str->str[c.i])
+		<= ft_strlen_utf8(ELIPTIC_COMMAND_LINE))
 	{
-		ft_strcpy(&str[i - index], ELIPTIC_COMMAND_LINE);
-		i += ft_strlen(ELIPTIC_COMMAND_LINE);
+		while (command_line->dy_str->str[c.i])
+		{
+			process_copy_utf8_char(str, command_line, index, &c);
+		}
 	}
-	str[i - index] = 0;
+	else //nb_chars >= empty_space
+	{
+		ft_strcpy(&str[c.i - index], ELIPTIC_COMMAND_LINE);
+		c.i += ft_strlen(ELIPTIC_COMMAND_LINE);
+	}
+	str[c.i - index] = 0;
 	ft_dprintf(command_line->fd, str);
+	free(str);
 }
 
 void	print_command_line(t_command_line *command_line)
@@ -121,36 +136,110 @@ void	print_command_line(t_command_line *command_line)
 	int empty_space;
 
 	if (command_line->scrolled_lines)
-		empty_space = (g_glob.winsize.ws_col * g_glob.winsize.ws_row - 1)
-			+ g_glob.winsize.ws_col - ft_strlen_utf8(ELIPTIC_COMMAND_LINE);
+		empty_space = (g_glob.winsize.ws_col * (g_glob.winsize.ws_row - 1))
+			+ g_glob.winsize.ws_col - ft_strlen_utf8(ELIPTIC_COMMAND_LINE) - 1;
 	else
-		empty_space = (g_glob.winsize.ws_col * g_glob.winsize.ws_row - 1)
-			+ g_glob.winsize.ws_col - ft_strlen_utf8(g_glob.command_line.prompt);
+		empty_space = (g_glob.winsize.ws_col * (g_glob.winsize.ws_row - 1))
+			+ g_glob.winsize.ws_col - ft_strlen_utf8(g_glob.command_line.prompt) - 1;
 	process_print_command_line(command_line, empty_space);
 }
 
-void	sh_scroll_command_line(t_command_line *command_line,
+
+/*
+int		sh_scroll_command_line(t_command_line *command_line,
 			int cursor, int cursor_inc)
 {
 	int true_cursor;
 	int current_screen_line;
 	int target_screen_line;
+	int ret;
 
 	true_cursor = get_true_cursor_pos_prev_prompt(cursor);
 	current_screen_line = (true_cursor / g_glob.winsize.ws_col)
 		- command_line->scrolled_lines;
 	target_screen_line = ((true_cursor + cursor_inc) / g_glob.winsize.ws_col)
 		- command_line->scrolled_lines;
-//	 ft_dprintf(2, "scrolled lines:%d\ntarget:%d (+%d)\ncurrent:%d\nrow:%d\n\n", command_line->scrolled_lines, target_screen_line, cursor_inc, current_screen_line, g_glob.winsize.ws_row);
-	if (target_screen_line >= g_glob.winsize.ws_row)
+
+//	 ft_dprintf(2, "scrolled lines:%d\ntarget:%d (+%d)\ncurrent:%d\nrow:%d\n\n",
+//	  command_line->scrolled_lines, target_screen_line,
+//	  cursor_inc, current_screen_line, g_glob.winsize.ws_row);
+	
+	if (target_screen_line >= g_glob.winsize.ws_row - 1)
 	{
-		command_line->scrolled_lines +=
-			target_screen_line - g_glob.winsize.ws_row + 1;
+		ret = target_screen_line - g_glob.winsize.ws_row + 1;
 	}
+	else if (current_screen_line >= 2 && target_screen_line <= 1
+		&& command_line->scrolled_lines > 0)
+	{
+		ret = target_screen_line;
+	}
+	else
+		return 0;
+	command_line->scrolled_lines
+		= ft_max(0, command_line->scrolled_lines + ret);
+	//ft_dprintf(2, "SCROLLED LINES: %d\n", command_line->scrolled_lines);
+	return (ret);
+}
+*/
+
+int		get_command_line_prefix_len(t_command_line *command_line)
+{
+	if (command_line->scrolled_lines)
+		return (ft_strlen_utf8(ELIPTIC_COMMAND_LINE));
+	else
+		return (ft_strlen_utf8(command_line->prompt));
+}
+
+int		should_elipse_end(t_command_line *command_line)
+{
+	int index;
+	int add;
+
+	index = get_command_line_starting_index(command_line);
+	add = get_command_line_prefix_len(command_line);
+	if (add + ft_strlen_utf8(&command_line->dy_str->str[index]) > (g_glob.winsize.ws_row - 1) * g_glob.winsize.ws_col - 1)
+		return (1);
+	else
+		return (0);
+}
+
+int		sh_scroll_command_line(t_command_line *command_line,
+			int cursor, int cursor_inc)
+{
+	int true_cursor;
+	int current_screen_line;
+	int target_screen_line;
+	int ret;
+
+	true_cursor = get_true_cursor_pos_prev_prompt(cursor);
+	target_screen_line = ((true_cursor + cursor_inc) / g_glob.winsize.ws_col)
+		- command_line->scrolled_lines;
+	current_screen_line = (true_cursor / g_glob.winsize.ws_col)
+		- command_line->scrolled_lines;
+	 ft_dprintf(2, "scrolled lines:%d\ntarget:%d (+%d)\ncurrent:%d\nrow:%d\n\n", command_line->scrolled_lines, target_screen_line, cursor_inc, current_screen_line, g_glob.winsize.ws_row);
+	if (target_screen_line >= g_glob.winsize.ws_row - 1)
+		ret = target_screen_line - g_glob.winsize.ws_row + 1;
 	else if (target_screen_line < 0)
 	{
-		command_line->scrolled_lines += target_screen_line;
+		ret = target_screen_line;
+	//	ft_dprintf(2, "OUAI\n");
 	}
+	else if (target_screen_line == 0 && command_line->scrolled_lines
+		&& current_screen_line > 0)
+	{
+	//	ft_dprintf(2, "WOWO\n");
+		ret = -current_screen_line;
+	}
+	else if (target_screen_line == g_glob.winsize.ws_row
+			&& current_screen_line < g_glob.winsize.ws_row && should_elipse_end(command_line))
+	{
+		ret = 1; //FAUX
+	}
+	else
+		return (0);
+	command_line->scrolled_lines += ret;
+	//ft_dprintf(2, "SCROLLED LINES: %d\n", command_line->scrolled_lines);
+	return (ret);
 }
 
 /*
@@ -162,11 +251,11 @@ int		render_command_line(t_command_line *command_line,
 			int cursor_inc, int print_choices)
 {
 	char	*str;
-
+	int ret;
 	if (!isatty(0) || !command_line)
 		return (SUCCESS);
 	go_up_to_prompt(g_glob.winsize.ws_col, g_glob.cursor);
-	sh_scroll_command_line(command_line, g_glob.cursor, cursor_inc);
+	ret = sh_scroll_command_line(command_line, g_glob.cursor, cursor_inc);
 	str = tgetstr("cd", NULL);
 	tputs(str, 1, putchar_int);
 	if (!command_line->scrolled_lines)

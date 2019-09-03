@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 14:33:21 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/06 11:31:35 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/03 17:15:36 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ int		get_true_cursor_pos_prev_prompt(int cursor)
 	}
 	else
 		ret = (cursor + ft_strlen_utf8(g_glob.command_line.prompt));
-	
 	return (ret);
 }
 

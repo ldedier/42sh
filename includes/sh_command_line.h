@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/11 17:20:10 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/02 18:13:22 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/03 16:55:58 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,13 @@ typedef struct		s_xy
 	int				x;
 	int				y;
 }					t_xy;
+
+typedef struct		s_utf8_copier
+{
+	int				len;
+	int				i;
+	int				nb_chars;
+}					t_utf8_copier;
 
 typedef struct		s_glob
 {
