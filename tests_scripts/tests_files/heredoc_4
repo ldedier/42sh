@@ -1,0 +1,12 @@
+cat << "eof"
+Still some
+test
+
+
+just for
+FUN !!!
+&&
+|
+||
+ls
+eof

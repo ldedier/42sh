@@ -1,0 +1,8 @@
+cat << e\of
+This is
+an other \
+test
+$USER
+\${PWD} $$
+e\of
+eof
