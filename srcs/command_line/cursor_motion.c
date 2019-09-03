@@ -51,7 +51,8 @@ int		go_up_to_prompt(int width, int cursor)
 	str = tgetstr("up", NULL);
 	i = 0;
 	ft_dprintf(0, " ");
-	val = ((get_true_cursor_pos_prev_prompt(cursor)) / width);
+	val = ((get_true_cursor_pos_prev_prompt(cursor)) / width)
+		- g_glob.command_line.scrolled_lines;
 	while (i < val)
 	{
 		tputs(str, 1, putchar_int);

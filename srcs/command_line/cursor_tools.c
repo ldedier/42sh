@@ -71,7 +71,8 @@ void	replace_cursor_on_index(void)
 	int		x;
 	int		y;
 
-	y = (get_true_cursor_pos(g_glob.cursor)) / g_glob.winsize.ws_col;
+	y = ((get_true_cursor_pos(g_glob.cursor)) / g_glob.winsize.ws_col)
+		- g_glob.command_line.scrolled_lines;
 	x = (get_true_cursor_pos(g_glob.cursor)) % g_glob.winsize.ws_col;
 	str = tgetstr("do", NULL);
 	while (y--)

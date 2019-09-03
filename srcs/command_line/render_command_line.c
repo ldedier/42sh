@@ -80,23 +80,53 @@ int		get_command_line_starting_index(t_command_line *command_line)
 	return (res);
 }
 
-void	print_command_line(t_command_line *command_line)
+void	process_print_command_line(t_command_line *command_line,
+			int empty_space)
 {
-	int index;
-	int i;
-	int empty_space;
+	char	*str;
+	int		i;
+	int		index;
+	int		len;
+	int		nb_chars;
+	int		tmp;
 
+	if (!(str = malloc((4 * g_glob.winsize.ws_row * g_glob.winsize.ws_col) + 1)))
+		return ;
 	index = get_command_line_starting_index(command_line);
 	i = index;
+//	ft_dprintf(2, "%d %d\n", i, index);
+	nb_chars = 0;
+	len = ft_strlen(&command_line->dy_str->str[index]);
+	while (command_line->dy_str->str[i] && nb_chars < empty_space)
+	{
+		tmp = get_char_len2(0, len,
+			(unsigned char *)&command_line->dy_str->str[i - index]);
+//		ft_dprintf(2, "index: %d\ni:%d\ntmp:%d\n\n", index, i, tmp);
+		ft_strncpy(&str[i - index], &command_line->dy_str->str[i], tmp);
+		len -= tmp;
+		i += tmp;
+		nb_chars++;
+	}
+	if (nb_chars >= empty_space)
+	{
+		ft_strcpy(&str[i - index], ELIPTIC_COMMAND_LINE);
+		i += ft_strlen(ELIPTIC_COMMAND_LINE);
+	}
+	str[i - index] = 0;
+	ft_dprintf(command_line->fd, str);
+}
+
+void	print_command_line(t_command_line *command_line)
+{
+	int empty_space;
+
 	if (command_line->scrolled_lines)
 		empty_space = (g_glob.winsize.ws_col * g_glob.winsize.ws_row - 1)
-			+ g_glob.winsize.ws_col - ft_strlen(ELIPTIC_COMMAND_LINE);
+			+ g_glob.winsize.ws_col - ft_strlen_utf8(ELIPTIC_COMMAND_LINE);
 	else
 		empty_space = (g_glob.winsize.ws_col * g_glob.winsize.ws_row - 1)
-			+ g_glob.winsize.ws_col - ft_strlen(g_glob.command_line.prompt);
-	ft_dprintf(command_line->fd, "%.*S",
-		ft_min(ft_strlen_utf8(&command_line->dy_str->str[index]), empty_space),
-			&command_line->dy_str->str[index]);
+			+ g_glob.winsize.ws_col - ft_strlen_utf8(g_glob.command_line.prompt);
+	process_print_command_line(command_line, empty_space);
 }
 
 void	sh_scroll_command_line(t_command_line *command_line,
@@ -111,7 +141,7 @@ void	sh_scroll_command_line(t_command_line *command_line,
 		- command_line->scrolled_lines;
 	target_screen_line = ((true_cursor + cursor_inc) / g_glob.winsize.ws_col)
 		- command_line->scrolled_lines;
-	 ft_dprintf(2, "scrolled lines:%d\ntarget:%d (+%d)\ncurrent:%d\nrow:%d\n\n", command_line->scrolled_lines, target_screen_line, cursor_inc, current_screen_line, g_glob.winsize.ws_row);
+//	 ft_dprintf(2, "scrolled lines:%d\ntarget:%d (+%d)\ncurrent:%d\nrow:%d\n\n", command_line->scrolled_lines, target_screen_line, cursor_inc, current_screen_line, g_glob.winsize.ws_row);
 	if (target_screen_line >= g_glob.winsize.ws_row)
 	{
 		command_line->scrolled_lines +=
@@ -135,8 +165,8 @@ int		render_command_line(t_command_line *command_line,
 
 	if (!isatty(0) || !command_line)
 		return (SUCCESS);
-	sh_scroll_command_line(command_line, g_glob.cursor, cursor_inc);
 	go_up_to_prompt(g_glob.winsize.ws_col, g_glob.cursor);
+	sh_scroll_command_line(command_line, g_glob.cursor, cursor_inc);
 	str = tgetstr("cd", NULL);
 	tputs(str, 1, putchar_int);
 	if (!command_line->scrolled_lines)
@@ -153,10 +183,13 @@ int		render_command_line(t_command_line *command_line,
 		render_command_researched(command_line);
 	else
 	*/
-	ft_dprintf(command_line->fd, "%s", command_line->dy_str->str);
+//	ft_dprintf(command_line->fd, "%s", command_line->dy_str->str);
+	//ft_dprintf(command_line->fd, "%s", command_line->dy_str->str);
+	print_command_line(command_line);
 	g_glob.cursor += cursor_inc;
 	replace_cursor_after_render();
-	if (print_after_command_line(command_line, print_choices) != SUCCESS)
-		return (FAILURE);
+	(void)print_choices;
+//	if (print_after_command_line(command_line, print_choices) != SUCCESS)
+//		return (FAILURE);
 	return (SUCCESS);
 }
