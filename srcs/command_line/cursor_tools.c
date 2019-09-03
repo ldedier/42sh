@@ -16,6 +16,8 @@ int		get_true_cursor_pos_prev_prompt(int cursor)
 {
 	int ret;
 
+	if (g_glob.command_line.scrolled_lines)
+		return (cursor + ft_strlen_utf8(ELIPTIC_COMMAND_LINE));
 	if (g_glob.command_line.prev_prompt_len != -1)
 	{
 		ret = cursor + g_glob.command_line.prev_prompt_len;
@@ -23,12 +25,16 @@ int		get_true_cursor_pos_prev_prompt(int cursor)
 	}
 	else
 		ret = (cursor + ft_strlen_utf8(g_glob.command_line.prompt));
+	
 	return (ret);
 }
 
 int		get_true_cursor_pos(int cursor)
 {
-	return (cursor + ft_strlen_utf8(g_glob.command_line.prompt));
+	if (!g_glob.command_line.scrolled_lines)
+		return (cursor + ft_strlen_utf8(g_glob.command_line.prompt));
+	else
+		return (cursor + ft_strlen_utf8(ELIPTIC_COMMAND_LINE));
 }
 
 int		get_down_from_command(t_command_line *command_line)

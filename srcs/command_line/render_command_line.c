@@ -94,8 +94,33 @@ void	print_command_line(t_command_line *command_line)
 	else
 		empty_space = (g_glob.winsize.ws_col * g_glob.winsize.ws_row - 1)
 			+ g_glob.winsize.ws_col - ft_strlen(g_glob.command_line.prompt);
-	//printf("%*s", ft_strlen_utf8(&command_line->dy_str.str[index]),
-	//	&command_line->dy_str.str[index]);
+	ft_dprintf(command_line->fd, "%.*S",
+		ft_min(ft_strlen_utf8(&command_line->dy_str->str[index]), empty_space),
+			&command_line->dy_str->str[index]);
+}
+
+void	sh_scroll_command_line(t_command_line *command_line,
+			int cursor, int cursor_inc)
+{
+	int true_cursor;
+	int current_screen_line;
+	int target_screen_line;
+
+	true_cursor = get_true_cursor_pos_prev_prompt(cursor);
+	current_screen_line = (true_cursor / g_glob.winsize.ws_col)
+		- command_line->scrolled_lines;
+	target_screen_line = ((true_cursor + cursor_inc) / g_glob.winsize.ws_col)
+		- command_line->scrolled_lines;
+	 ft_dprintf(2, "scrolled lines:%d\ntarget:%d (+%d)\ncurrent:%d\nrow:%d\n\n", command_line->scrolled_lines, target_screen_line, cursor_inc, current_screen_line, g_glob.winsize.ws_row);
+	if (target_screen_line >= g_glob.winsize.ws_row)
+	{
+		command_line->scrolled_lines +=
+			target_screen_line - g_glob.winsize.ws_row + 1;
+	}
+	else if (target_screen_line < 0)
+	{
+		command_line->scrolled_lines += target_screen_line;
+	}
 }
 
 /*
@@ -110,6 +135,7 @@ int		render_command_line(t_command_line *command_line,
 
 	if (!isatty(0) || !command_line)
 		return (SUCCESS);
+	sh_scroll_command_line(command_line, g_glob.cursor, cursor_inc);
 	go_up_to_prompt(g_glob.winsize.ws_col, g_glob.cursor);
 	str = tgetstr("cd", NULL);
 	tputs(str, 1, putchar_int);
