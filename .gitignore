@@ -31,9 +31,9 @@ tests_scripts/logs/*
 tests_scripts/tmp_log
 tests_scripts/.my_supp.supp
 tests_scripts/buffer
-tests_scripts/res1.21sh
+tests_scripts/res1.42sh
 tests_scripts/res1.bash
-tests_scripts/res2.21sh
+tests_scripts/res2.42sh
 tests_scripts/res2.bash
 tests_scripts/blt_test_files
 
