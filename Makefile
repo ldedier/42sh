@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/09/04 17:44:43 by jmartel          ###   ########.fr        #
+#    Updated: 2019/09/04 21:50:00 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -208,7 +208,7 @@ SRCS			+=	sh_builtin.c sh_builtin_pwd.c \
 					sh_builtin_cd.c sh_builtin_cd_pre_rules.c \
 					sh_builtin_cd_post_rules.c \
 					sh_builtin_cd_last_rules.c \
-					sh_builtin_type.c sh_builtin_type_path.c \
+					sh_builtin_type.c sh_builtin_type_search_path.c sh_builtin_type_search.c\
 					sh_builtin_verbose.c \
 					sh_builtin_hash.c sh_builtin_set.c sh_builtin_unset.c \
 					sh_builtin_export.c sh_builtin_hash_tools.c \

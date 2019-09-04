@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 19:04:16 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/27 16:39:06 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/09/04 21:35:56 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_builtin_container		*get_builtins(void)
 	return (res);
 }
 
-t_builtin			sh_builtin_find_name(char *name)
+t_builtin				sh_builtin_find_name(char *name)
 {
 	int					i;
 	t_builtin_container	*builtins;
