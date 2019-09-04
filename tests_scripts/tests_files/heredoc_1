@@ -1,0 +1,4 @@
+cat << eof
+hello
+world
+eof

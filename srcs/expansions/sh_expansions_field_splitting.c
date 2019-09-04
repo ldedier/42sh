@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/27 16:47:32 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/04 15:04:14 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/04 17:49:48 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,8 @@ int			sh_expansions_splitting(t_ast_node *node, t_context *context)
 {
 	char	*ifs;
 
+	if (!node)
+		return (SUCCESS); // node is null when called from heredocs
 	ifs = sh_vars_get_value(context->env, context->vars, "IFS");
 	if (!ifs || ft_strequ(ifs, " \t\n"))
 	{

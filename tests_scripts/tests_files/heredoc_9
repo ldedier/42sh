@@ -1,0 +1,6 @@
+cat << eof
+one more
+time
+\${PWD}${PWD}
+\$USER$USER
+eof

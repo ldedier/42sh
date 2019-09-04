@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/09/04 11:21:18 by jdugoudr         ###   ########.fr        #
+#    Updated: 2019/09/04 17:44:43 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -226,7 +226,7 @@ SRCS			 +=	sh_expansions.c \
 					sh_expansions_variable.c t_expansion.c \
 					sh_expansions_process.c sh_expansions_replace.c \
 					sh_expansions_field_splitting.c \
-					sh_expansions_scan.c
+					sh_get_heredoc.c sh_expansions_scan.c
 
 ################################################################
 ########					PERROR						########

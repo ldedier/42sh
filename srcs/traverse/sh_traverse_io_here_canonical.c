@@ -20,14 +20,14 @@ void			populate_command_line(t_command_line *command_line, char *str)
 
 static int		process_heredoc_canonical_mode(t_gnl_info info,
 					char **res, t_shell *shell,
-						char *(*heredoc_func)(const char *))
+						t_heredoc heredoc_data)
 {
 	int			ret;
 
 	if (info.separator != E_SEPARATOR_ZERO)
 	{
 		populate_command_line(&g_glob.command_line, info.line);
-		if ((ret = process_heredoc_through_command(res, shell, heredoc_func,
+		if ((ret = process_heredoc_through_command(res, shell, heredoc_data,
 			&g_glob.command_line)) != 3)
 			return (ret);
 	}
@@ -72,7 +72,7 @@ char			*heredoc_gnl_error(int *ret, char **res)
 }
 
 char			*heredoc_canonical_mode(t_shell *shell, char *eof,
-					char *(*heredoc_func)(const char *), int *ret)
+					t_heredoc heredoc_data, int *ret)
 {
 	int			gnl_ret;
 	t_gnl_info	info;
@@ -84,7 +84,7 @@ char			*heredoc_canonical_mode(t_shell *shell, char *eof,
 	while ((gnl_ret = get_next_line2(0, &info, 1)) == 1)
 	{
 		if ((*ret = process_heredoc_canonical_mode(info,
-				&res, shell, heredoc_func)) != 3)
+				&res, shell, heredoc_data)) != 3)
 		{
 			if (*ret == SUCCESS)
 				return (res);

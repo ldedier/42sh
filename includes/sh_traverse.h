@@ -16,7 +16,15 @@
 # include "sh_21.h"
 
 typedef struct dirent	t_dirent;
+typedef struct s_heredoc t_heredoc;
+typedef char *(*t_heredoc_func)(const char *);
 
+struct			s_heredoc
+{
+	char			*stop;
+	int 			*apply_expansion;
+	t_heredoc_func	func;
+};
 /*
 ********************************************************************************
 */
@@ -97,7 +105,13 @@ void	populate_command_line(t_command_line *command_line, char *str);
 int		heredoc_canonical_mode_eof(char *eof, char **res);
 char	*heredoc_gnl_error(int *ret, char **res);
 char	*heredoc_canonical_mode(
-	t_shell *shell, char *eof, char *(*heredoc_func)(const char *), int *ret);
+	t_shell *shell, char *eof, t_heredoc heredoc_data, int *ret);
+
+/*
+** sh_traverse_io_here_expansion.c
+*/
+int 	sh_traverse_io_here_expansion(
+	char **str, t_context *context, int apply_expansion);
 
 /*
 ** sh_traverse_io_redirect.c

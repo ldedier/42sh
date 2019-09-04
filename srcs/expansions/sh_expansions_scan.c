@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/04 11:17:39 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/09/04 15:16:18 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/04 17:44:01 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,15 @@ static void	backslash(char *input, int *index, int quoted)
 	(*index) += 1;
 }
 
-static int	quote_expansion(
-	char **input, int *index, char c, t_context *context)
+static int	doble_quote_removal(
+	char **input, int *index, int do_expansion, t_context *context)
 {
 	int	ret;
 
 	ft_strdelchars(*input, *index, 1);
-	while ((*input)[*index] != c && (*input)[*index])
+	while ((*input)[*index] != '\"')
 	{
-		if (c == '"' && (*input)[*index] == '$')
+		if ((*input)[*index] == '$' && do_expansion)
 		{
 			if ((ret = sh_expansions_process(
 				input, *input + *index, context, index)) != SUCCESS)
@@ -45,7 +45,7 @@ static int	quote_expansion(
 				return (ret);
 			}
 		}
-		else if (c == '"' && (*input)[*index] == '\\')
+		else if ((*input)[*index] == '\\')
 			backslash(*input, index, 1);
 		else
 			*index += 1;
@@ -71,6 +71,14 @@ static int	unquoted_var(char **input, int *index, t_context *context, t_ast_node
 	return (SUCCESS);
 }
 
+static void	quote_removal(char **input, int *index)
+{
+	ft_strcpy(*input + *index, *input + *index + 1);
+	while ((*input)[*index] != '\'')
+		*index += 1;
+	ft_strcpy(*input + *index, *input + *index + 1);
+}
+
 /*
 ** sh_scan_expansions:
 ** Scan input, starting at index
@@ -84,7 +92,7 @@ static int	unquoted_var(char **input, int *index, t_context *context, t_ast_node
 **	SUCCESS : Successfully processed and repalced expansion by it's result.
 */
 
-int			sh_expansions_scan(char **input, int index, t_context *context, t_ast_node *node)
+int			sh_expansions_scan(char **input, int index, int do_expansion, t_context *context, t_ast_node *node)
 {
 	int	ret;
 
@@ -94,18 +102,20 @@ int			sh_expansions_scan(char **input, int index, t_context *context, t_ast_node
 		index++;
 	if ((*input)[index] == '\0')
 		return (SUCCESS);
-	if ((*input)[index] == '\'' || (*input)[index] == '"')
+	if ((*input)[index] == '\'')
+		quote_removal(input, &index);
+	else if ((*input)[index] == '"')
 	{
-		if ((ret = quote_expansion(
-			input, &index, (*input)[index], context)) != SUCCESS)
+		if ((ret = doble_quote_removal(
+			input, &index, do_expansion, context)) != SUCCESS)
 			return (ret);
 	}
-	else if ((*input)[index] == '$')
+	else if ((*input)[index] == '$' && do_expansion)
 	{
 		if ((ret = unquoted_var(input, &index, context, node)) != SUCCESS)
 			return (ret);
 	}
 	else
 		backslash(*input, &index, 0);
-	return (sh_expansions_scan(input, index, context, node));
+	return (sh_expansions_scan(input, index, do_expansion, context, node));
 }

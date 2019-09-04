@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 17:46:46 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/04 11:32:24 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/04 16:18:20 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,11 @@ int		sh_expansions_replace(
 ** sh_expansions_scan.c
 */
 int		sh_expansions_scan(
-	char **input, int index, t_context *context, t_ast_node *node);
+	char **input,
+	int index,
+	int do_expansion,
+	t_context *context,
+	t_ast_node *node);
 
 /*
 ** sh_expansions_tilde.c
@@ -113,6 +117,12 @@ int		sh_expansions_variable_detect(char *start);
 int		sh_expansions_variable_fill(t_expansion *exp, char *start);
 int		sh_expansions_variable_process(
 	t_context *context, t_expansion *exp);
+
+/*
+** sh_get_heredoc.c
+*/
+char	*get_heredoc(
+	t_context *context, t_heredoc *heredoc_data, int *ret);
 
 /*
 ** t_expansion.c

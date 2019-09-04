@@ -231,22 +231,18 @@ int					process_heredoc_new_line(
 int					process_heredoc_through_command(
 	char **res,
 	t_shell *shell,
-	t_heredoc_func heredoc_func,
+	t_heredoc heredoc_data,
 	t_command_line *command_line);
 void				init_heredoc_command_line(
 	t_shell *shell, t_command_line *command_line, char *stop);
 char				*heredoc_handle_ctrl_d(
 	t_shell *shell, char *stop, char **res, int *ret);
-char				*heredoc(
-	t_shell *shell,
-	char *stop,
-	t_heredoc_func heredoc_func,
-	int *ret);
+char				*heredoc(t_shell *shell, t_heredoc heredoc, int *ret);
 
 /*
 ** heredoc_tools.c
 */
-int					refine_heredoc(char *str);
+int					refine_heredoc(char *str, int apply_expansion);
 int					heredoc_ret(
 	t_shell *shell, t_command_line *command_line, int ret);
 char				*heredoc_ret_str(

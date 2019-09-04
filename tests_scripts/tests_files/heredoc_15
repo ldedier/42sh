@@ -1,0 +1,4 @@
+echo just to have a 0
+ls no ; cat << eof
+$?
+eof
