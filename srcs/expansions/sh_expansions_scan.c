@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/04 11:17:39 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/09/04 17:44:01 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/04 19:19:06 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	backslash(char *input, int *index, int quoted)
 	(*index) += 1;
 }
 
-static int	doble_quote_removal(
+static int	double_quote_removal(
 	char **input, int *index, int do_expansion, t_context *context)
 {
 	int	ret;
@@ -67,8 +67,9 @@ static int	unquoted_var(char **input, int *index, t_context *context, t_ast_node
 			return (FAILURE);
 		return (ret);
 	}
-	(void)node;
+	sh_expansions_splitting(node, context);
 	return (SUCCESS);
+	(void)node;
 }
 
 static void	quote_removal(char **input, int *index)
@@ -82,7 +83,7 @@ static void	quote_removal(char **input, int *index)
 /*
 ** sh_scan_expansions:
 ** Scan input, starting at index
-** Remove quote, doble quote and backslah.
+** Remove quote, double quote and backslah.
 ** Replace variable with looking in context variables.
 **
 ** Returned Values :
@@ -106,7 +107,7 @@ int			sh_expansions_scan(char **input, int index, int do_expansion, t_context *c
 		quote_removal(input, &index);
 	else if ((*input)[index] == '"')
 	{
-		if ((ret = doble_quote_removal(
+		if ((ret = double_quote_removal(
 			input, &index, do_expansion, context)) != SUCCESS)
 			return (ret);
 	}
