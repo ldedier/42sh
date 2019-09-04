@@ -62,6 +62,8 @@ int			sh_expansions_process(
 		ret = sh_expansions_replace(&exp, input, *index);
 	if (ret)
 	{
+		if (ret == ERROR)
+			sh_perror(SH_BAD_EXPANSION, NULL);
 		t_expansion_free_content(&exp);
 		return (ret);
 	}

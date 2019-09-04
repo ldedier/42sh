@@ -155,17 +155,6 @@ struct				s_shell
 */
 
 /*
-** canonical_mode.c
-*/
-int					sh_process_canonical_mode(t_shell *shell, char **env);
-
-/*
-** check_term.c
-*/
-char				**get_operations(void);
-int					sh_check_term(void);
-
-/*
 ** free_all.c
 */
 void				sh_free_binary(t_binary *binary);
@@ -173,25 +162,6 @@ void				sh_free_binary_lst(void *b, size_t dummy);
 void				free_file(t_file *file);
 void				free_file_dlst(void *f, size_t dummy);
 void				sh_free_all(t_shell *shell);
-
-/*
-** hash_binaries.c
-*/
-t_binary			*sh_new_binary(char *path, char *name);
-int					compare_str_to_binary(void *str, void *binary);
-int					sh_update_hash_table(
-	t_shell *shell, char *path, char *name);
-
-/*
-** historic.c
-*/
-int					sh_append_to_historic(t_shell *shell, char *command);
-
-/*
-** home.c
-*/
-char				*get_home_dup(t_shell *shell);
-int					process_subst_home(t_shell *shell, char **str);
 
 /*
 ** index.c
@@ -202,11 +172,6 @@ int					sh_index_2(t_symbol_id id);
 int					sh_index(t_symbol_id id);
 
 /*
-** init.c
-*/
-int					sh_init_shell(t_shell *shell, char **env);
-
-/*
 ** init_tabs.c
 */
 int					sh_update_shell_lvl(t_shell *shell);
@@ -214,25 +179,10 @@ int					sh_main_init_env(t_shell *shell, char **env);
 int					sh_main_init_vars(t_shell *shell);
 
 /*
-** init_term.c
+** check_term.c
 */
-int					sh_init_terminal_database(char **env);
-int					sh_init_terminal(t_shell *shell, char **env);
-
-/*
-** non_canonical_mode.c
-*/
-int					sh_process_command(t_shell *shell, char *command);
-int					sh_process_received_command(
-	t_shell *shell, t_command_line *command_line);
-int					sh_await_command(t_shell *shell);
-int					sh_process_noncanonical_mode(t_shell *shell);
-
-/*
-** set_signals.c
-*/
-void				reset_signals(void);
-void				init_signals(void);
+char				**get_operations(void);
+int					sh_check_term(void);
 
 /*
 ** shell_tools.c
@@ -243,12 +193,29 @@ int					sh_set_shell_back(int ret);
 int					clear_all(void);
 
 /*
-** signal_tools.c
+** set_signals.c
 */
-void				transmit_sig(int signal);
-void				transmit_sig_and_exit(int signal);
-void				handle_stp(int sgnl);
-void				handle_cont(int sgnl);
+void				reset_signals(void);
+void				init_signals(void);
+
+/*
+** init.c
+*/
+int					sh_init_shell(t_shell *shell, char **env);
+
+/*
+** canonical_mode.c
+*/
+int					sh_process_canonical_mode(t_shell *shell, char **env);
+
+/*
+** tools.c
+*/
+int					end_with_char(char *str, char c);
+int					get_file_in_dir(char *filename, char *dirname);
+int					get_path_from_absolute_path(char *str, char **path);
+int					get_path_and_file_from_str(
+	char *str, char **path, char **file);
 
 /*
 ** signals.c
@@ -260,12 +227,45 @@ void				default_sig(int sgnl);
 void				handle_resize(int signal);
 
 /*
-** tools.c
+** init_term.c
 */
-int					end_with_char(char *str, char c);
-int					get_file_in_dir(char *filename, char *dirname);
-int					get_path_from_absolute_path(char *str, char **path);
-int					get_path_and_file_from_str(
-	char *str, char **path, char **file);
+int					sh_init_terminal_database(char **env);
+int					sh_init_terminal(t_shell *shell, char **env);
+
+/*
+** home.c
+*/
+char				*get_home_dup(t_shell *shell);
+int					process_subst_home(t_shell *shell, char **str);
+
+/*
+** non_canonical_mode.c
+*/
+int					sh_process_command(t_shell *shell, char *command);
+int					sh_process_received_command(
+	t_shell *shell, t_command_line *command_line);
+int					sh_await_command(t_shell *shell);
+int					sh_process_noncanonical_mode(t_shell *shell);
+
+/*
+** historic.c
+*/
+int					sh_append_to_historic(t_shell *shell, char *command);
+
+/*
+** hash_binaries.c
+*/
+t_binary			*sh_new_binary(char *path, char *name);
+int					compare_str_to_binary(void *str, void *binary);
+int					sh_update_hash_table(
+	t_shell *shell, char *path, char *name);
+
+/*
+** signal_tools.c
+*/
+void				transmit_sig(int signal);
+void				transmit_sig_and_exit(int signal);
+void				handle_stp(int sgnl);
+void				handle_cont(int sgnl);
 
 #endif

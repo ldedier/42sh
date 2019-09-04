@@ -42,7 +42,7 @@ static int		sh_traverse_io_here_interactive_ctrl_d(
 static int	loop_expansion(char **str, t_context *context)
 {
 	int	start_expansion;
-	int ret;
+	int	ret;
 
 	start_expansion = 0;
 	while ((*str)[start_expansion])
@@ -53,19 +53,26 @@ static int	loop_expansion(char **str, t_context *context)
 			ft_strcpy(*str + start_expansion, (*str) + start_expansion + 1);
 			start_expansion++;
 		}
-		if ((*str)[start_expansion] == '$' && (*str)[start_expansion + 1] != '\n')
+		if ((ret = sh_traverse_io_here_expansion(str, &start_expansion, context)) != SUCCESS)
 		{
-			if ((ret = sh_expansions_process(str, (*str) + start_expansion, context, &start_expansion)) != SUCCESS)
-			{
-				if (sh_env_update_ret_value_and_question(context->shell, ret))
-				{
-					free(*str);
-					return (FAILURE);
-				}
-			}
+			ft_strdel(str);
+			return (ret);
 		}
-		else
-			start_expansion++;
+		// if ((*str)[start_expansion] == '$' && (ft_isalnum((*str)[start_expansion + 1]) || (*str)[start_expansion + 1] == '$' || (*str)[start_expansion + 1] == '?'))
+		// 	// ((*str)[start_expansion + 1] != '\n' && (*str)[start_expansion + 1] != '\\'))
+		// {
+		// 	ft_printf("loop_expansion on rentre ?-%c-\n", (*str)[start_expansion + 1]);
+		// 	if ((ret = sh_expansions_process(str, (*str) + start_expansion, context, &start_expansion)) != SUCCESS)
+		// 	{
+		// 		if (sh_env_update_ret_value_and_question(context->shell, ret))
+		// 		{
+		// 			free(*str);
+		// 			return (FAILURE);
+		// 		}
+		// 	}
+		// }
+		// else
+		// 	start_expansion++;
 	}
 	return (SUCCESS);
 }
@@ -104,6 +111,7 @@ int				sh_traverse_io_here(t_ast_node *node, t_context *context)
 	char			*(*heredoc_func)(const char *);
 	t_redirection	*redirection;
 	int				fds[2];
+	int				ret;
 
 	redirection = &node->metadata.heredoc_metadata.redirection;
 	if (context->phase == E_TRAVERSE_PHASE_INTERACTIVE_REDIRECTIONS)
@@ -131,8 +139,8 @@ int				sh_traverse_io_here(t_ast_node *node, t_context *context)
 		first_child = first_child->children->content;
 		if (first_child->token->apply_heredoc_expansion)
 		{
-			if (loop_expansion(&(first_child->token->value), context) != SUCCESS)
-				return (FAILURE);
+			if ((ret = loop_expansion(&(first_child->token->value), context)) != SUCCESS)
+				return (ret);
 		}	
 		if (pipe(fds))
 			return (sh_perror(SH_ERR1_PIPE, "sh_traverse_io_here_end"));

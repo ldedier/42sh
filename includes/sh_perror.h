@@ -40,14 +40,23 @@
 # define SH_ERR2_INVALID_OPT			"Invalid option"
 # define SH_ERR2_TOO_MANY_SYMLINK		"Too many levels of symbolic links"
 
-# define SH_BLT_UNAREXP			"unary operator expected"
-# define SH_BLT_BINAREXP		"binary operator expected"
-# define SH_BLT_NOTWELLFORM		"sorry your command are not well formatted"
-# define SH_BLT_INTEGER			"integer expression expected"
+# define SH_BLT_UNAREXP			"Unary operator expected"
+# define SH_BLT_BINAREXP		"Binary operator expected"
+# define SH_BLT_NOTWELLFORM		"Sorry your command are not well formatted"
+# define SH_BLT_INTEGER			"Integer expression expected"
+
+# define SH_BAD_EXPANSION		"Bad expansion"
 
 /*
 ********************************************************************************
 */
+
+/*
+** sh_perror_fd.c
+*/
+int		sh_perror2_fd(
+	int fd, const char *error, const char *prefix, const char *suffix);
+int		sh_perror_fd(int fd, const char *error, const char *suffix);
 
 /*
 ** sh_perror.c
@@ -71,12 +80,5 @@ int		sh_perror2_err_fd(
 	int fd, const char *error, const char *prefix, const char *suffix);
 void	*sh_perror2n_fd(
 	int fd, const char *error, const char *prefix, const char *suffix);
-
-/*
-** sh_perror_fd.c
-*/
-int		sh_perror2_fd(
-	int fd, const char *error, const char *prefix, const char *suffix);
-int		sh_perror_fd(int fd, const char *error, const char *suffix);
 
 #endif
