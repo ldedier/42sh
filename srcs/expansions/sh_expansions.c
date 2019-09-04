@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/05 10:59:30 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/04 11:37:08 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/09/04 16:17:32 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int			sh_expansions(t_context *context, t_ast_node *node)
 	input = &node->token->value;
 	ret = SUCCESS;
 	if ((*input)[0] == '~')
-		ret = sh_expansions_process_tilde(input, *input, context);
+		ret = sh_expansions_tilde(input, *input, context);
 	if (!ret)
 		ret = sh_expansions_scan(input, index, 1, context);
 	if (ret == ERROR || ret == FAILURE)
@@ -45,5 +45,6 @@ int			sh_expansions(t_context *context, t_ast_node *node)
 		return (FAILURE);
 	if (ret)
 		return (ret);
+	return (SUCCESS);
 	return (sh_expansions_splitting(node, context));
 }

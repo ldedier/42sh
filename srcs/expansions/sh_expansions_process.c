@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sh_expansion_process.c                             :+:      :+:    :+:   */
+/*   sh_expansions_process.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/03 14:58:45 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/08/03 14:58:49 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/09/04 10:58:38 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,7 @@ static int	sh_expansions_init(char *original, t_expansion *exp)
 {
 	char	*start;
 
-	exp->res = NULL;
-	exp->expansion = NULL;
-	exp->original = NULL;
-	exp->process = NULL;
-	exp->res = NULL;
+	ft_bzero(exp, sizeof(t_expansion));
 	if (!(start = ft_strpbrk(original, "$")))
 		return (ERROR);
 	if (ft_strnstr(start, "${", 2))
@@ -42,6 +38,15 @@ static int	sh_expansions_init(char *original, t_expansion *exp)
 		return (ERROR);
 }
 
+/*
+** sh_expansions_process:
+**	For parameter and variables expansions detection.
+**
+**	Return Value:
+**		FAILURE : malloc error
+**		ERROR : expansion is invalid
+**		SUCCESS : successfully filled expansion
+*/
 int			sh_expansions_process(
 	char **input, char *original, t_context *context, int *index)
 {
