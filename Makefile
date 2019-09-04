@@ -225,7 +225,7 @@ SRCS			 +=	sh_expansions.c \
 					sh_expansions_tilde.c \
 					sh_expansions_variable.c t_expansion.c \
 					sh_expansions_process.c sh_expansions_replace.c \
-					sh_unquoted_var.c sh_expansions_field_splitting.c \
+					sh_expansions_field_splitting.c \
 					sh_expansions_scan.c
 
 ################################################################
