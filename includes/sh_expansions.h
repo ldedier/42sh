@@ -127,7 +127,7 @@ int		sh_expansions_variable_process(
 /*
 ** sh_scan_expansions.c
 */
-int		sh_scan_expansions(char **input, int index, t_context *context);
+// int		sh_scan_expansions(char **input, int index, t_context *context);
 
 /*
 ** sh_unquoted_var.c

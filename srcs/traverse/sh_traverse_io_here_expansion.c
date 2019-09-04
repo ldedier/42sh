@@ -4,41 +4,31 @@
 ** Expansion apply to heredoc
 */
 
-static int	loop_expansion(char **str, t_context *context)
+static int	is_valid_var(char c)
 {
-	int	start_expansion;
-	int ret;
-
-	start_expansion = 0;
-	while ((*str)[start_expansion])
-	{
-		if ((*str)[start_expansion] == '\\' && (*str)[start_expansion + 1] == '$')
-		{
-			ft_strcpy(*str + start_expansion, (*str) + start_expansion + 1);
-			start_expansion++;
-		}
-		if ((*str)[start_expansion] == '$')
-		{
-			if ((ret = sh_expansions_process(str, (*str) + start_expansion, context, &start_expansion)) != SUCCESS)
-			{
-				if (sh_env_update_ret_value_and_question(context->shell, ret))
-				{
-					free(*str);
-					return (FAILURE);
-				}
-			}
-		}
-		else
-			start_expansion++;
-	}
-	return (SUCCESS);
+	if (ft_isalnum(c))
+		return (1);
+	else if (c == '$' || c == '?')
+		return (1);
+	else if (c == '{')
+		return (1);
+	return (0);
 }
 
-int 	sh_traverse_io_here_expansion(char **str, t_context *context, int apply_expansion)
+int 	sh_traverse_io_here_expansion(char **str, int *start_expansion, t_context *context)
 {
-	ft_printf("expansion mon copain !!!!\n");
-	if (apply_expansion == 0)
-		return (SUCCESS);
+	int ret;
+
+	if ((*str)[*start_expansion] == '$' && is_valid_var((*str)[*start_expansion + 1]))
+	{
+		if ((ret = sh_expansions_process(str, (*str) + *start_expansion, context, start_expansion)) != SUCCESS)
+		{
+			if (sh_env_update_ret_value_and_question(context->shell, ret))
+				return (FAILURE);
+			return (ERROR);
+		}
+	}
 	else
-		return (loop_expansion(str, context));
+		(*start_expansion) += 1;
+	return (SUCCESS);
 }

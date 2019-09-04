@@ -31,8 +31,8 @@ int			refine_heredoc(char *str, int apply_expansion)
 			str[i] = '\0';
 			return (1);
 		}
-		if (str[i + 1] == '\\' && str[i] == '\\')
-			ft_strcpy(str + i, str + i + 1);
+		// if (str[i + 1] == '\\' && str[i] == '\\')
+			// ft_strcpy(str + i, str + i + 1);
 		i++;
 	}
 	return (0);

@@ -99,6 +99,11 @@ char	*heredoc_dash(const char *str);
 int		sh_traverse_io_here(t_ast_node *node, t_context *context);
 
 /*
+* sh_traverse_io_here_expansion.c
+*/
+int 	sh_traverse_io_here_expansion(char **str, int *start_expansion, t_context *context);
+
+/*
 ** sh_traverse_io_here_canonical.c
 */
 void	populate_command_line(t_command_line *command_line, char *str);
