@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/07 04:29:57 by ldedier           #+#    #+#             */
-/*   Updated: 2019/07/31 18:47:59 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/02 16:34:28 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ int				heredoc_canonical_mode_eof(char *eof, char **res)
 	{
 		if (ft_strcmp(g_glob.command_line.to_append_str, eof))
 		{
-			ft_dprintf(2, "21sh: warning: here-document "
-					"delimited by end of file (wanted `%s')\n", eof);
+			ft_dprintf(2, "%s: warning: here-document "
+					"delimited by end of file (wanted `%s')\n", SH_NAME, eof);
 			if (!(*res = ft_strjoin_free(*res,
 				g_glob.command_line.to_append_str, 1)))
 			{

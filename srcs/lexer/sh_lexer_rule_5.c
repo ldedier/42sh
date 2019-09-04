@@ -35,7 +35,7 @@ static int		sh_lexer_exp(t_lexer *lexer)
 
 int				sh_lexer_rule5(t_lexer *lexer)
 {
-	if (lexer->quoted == '\'' || lexer->quoted == '\\')
+	if (lexer->quoted == '\'' || lexer->quoted == '\\')// lexer->quoted == '\"' ?
 		return (LEX_CONTINUE);
 	if (lexer->c == '$' || lexer->c == '`' || lexer->c == '~')
 	{

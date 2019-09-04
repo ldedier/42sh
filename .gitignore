@@ -18,8 +18,10 @@ sandbox
 /random/failed_commands*
 /random/buffer
 /random/res1.21sh
+/random/res1.42sh
 /random/res1.bash
 /random/res2.21sh
+/random/res2.42sh
 /random/res2.bash
 /random/tmp_log
 
@@ -33,8 +35,12 @@ tests_scripts/res1.21sh
 tests_scripts/res1.bash
 tests_scripts/res2.21sh
 tests_scripts/res2.bash
+tests_scripts/blt_test_files
+
 sh21
+sh42
 21sh
+42sh
 includes/libft.h
 *.vscode
 

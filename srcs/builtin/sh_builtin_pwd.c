@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 12:05:14 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/22 18:39:38 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/28 13:53:41 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #define PWD_P_OPT			0
 #define PWD_P_OPT_USAGE		"Find pathname without any symlinks"
 #define PWD_L_OPT			1
-#define PWD_L_OPT_USAGE		"Find pathname including symlinks"
+#define PWD_L_OPT_USAGE		"Find pathname including symlinks (default)"
 
 /*
 ** sh_builtin_pwd_physical:

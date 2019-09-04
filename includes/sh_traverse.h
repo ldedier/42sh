@@ -17,7 +17,14 @@
 
 typedef struct dirent	t_dirent;
 typedef struct s_heredoc t_heredoc;
+typedef char *(*t_heredoc_func)(const char *);
 
+struct			s_heredoc
+{
+	char			*stop;
+	int 			*apply_expansion;
+	t_heredoc_func	func;
+};
 /*
 ********************************************************************************
 */

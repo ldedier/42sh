@@ -6,13 +6,13 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/21 15:58:19 by jmartel           #+#    #+#              #
-#    Updated: 2019/07/13 19:10:36 by jmartel          ###   ########.fr        #
+#    Updated: 2019/09/02 16:36:37 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 del_historic()
 {
-	find ../ -name ".historic" -delete
+	find ../ -name ".historic" -delete 2>/dev/null 1>/dev/null
 }
 
 launch()
@@ -59,7 +59,7 @@ valgrind_test()
 		inner_log_dir="${log_dir}/test_${tried}"
 		error_exit_code=247
 		valgrind --leak-check=full --suppressions=$suppressions_file \
-			--error-exitcode=$error_exit_code --log-file=$tmp_log_file ./21sh < buffer >/dev/null 2>&1
+			--error-exitcode=$error_exit_code --log-file=$tmp_log_file ./42sh < buffer >/dev/null 2>&1
 		ret=$?
 		if [ $ret -eq $error_exit_code ] ; then
 			echo -e "${red}valgrind error, tracing logs at ${inner_log_dir}${eoc}"
@@ -93,7 +93,7 @@ check_ret_value()
 
 		if [ "$sh_ret" -ne  "$bash_ret" ] ; then 
 			echo -e "${red}BAD RETURNED VALUE"
-			echo -e "bash : $bash_ret || 21sh : $sh_ret${eoc}"
+			echo -e "bash : $bash_ret || 42sh : $sh_ret${eoc}"
 			echo -e "${yellow}`cat buffer`${eoc}"
 			return 1
 		fi
@@ -110,10 +110,10 @@ test_launch()
 			echo "${i}" >> buffer ; fi;
 	done
 	diff_tried=$((diff_tried+1))
-	touch res1.bash res2.bash res1.21sh res2.21sh
+	touch res1.bash res2.bash res1.42sh res2.42sh
 	<buffer bash 1>res1.bash 2>res2.bash
 	bash_ret=$?
-	<buffer ./${exec} 1>res1.21sh 2>res2.21sh
+	<buffer ./${exec} 1>res1.42sh 2>res2.42sh
 	sh_ret=$?
 
 	check_ret_value sh_ret bash_ret
@@ -121,12 +121,12 @@ test_launch()
 
 # echo "continue (stdout): $continue"
 	if [ 0 -eq "$continue" ] ; then
-		diff_files res1.21sh res1.bash
+		diff_files res1.42sh res1.bash
 		continue=$?
 	fi
 # echo "continue (stderr): $continue"
 	if [ 0 -eq "$continue" ] && [ -n "${test_stderr}" ] ; then
-		diff_files res2.21sh res2.bash
+		diff_files res2.42sh res2.bash
 		continue=$?
 	fi
 # echo "continue (ok): $continue"
@@ -139,8 +139,8 @@ test_launch()
 	fi
 
 	rm -f buffer
-	rm -f res1.bash res1.21sh
-	rm -f res2.bash res2.21sh
+	rm -f res1.bash res1.42sh
+	rm -f res2.bash res2.42sh
 }
 
 test_launch_pipe()
@@ -151,10 +151,10 @@ test_launch_pipe()
 	cp "$1" "buffer"
 
 	diff_tried=$((diff_tried+1))
-	touch res1.bash res2.bash res1.21sh res2.21sh
+	touch res1.bash res2.bash res1.42sh res2.42sh
 	cat "$1" | bash 1>res1.bash 2>res2.bash
 	bash_ret=$?
-	cat "$1" | ./${exec} 1>res1.21sh 2>res2.21sh
+	cat "$1" | ./${exec} 1>res1.42sh 2>res2.42sh
 	sh_ret=$?
 
 	check_ret_value sh_ret bash_ret
@@ -162,12 +162,12 @@ test_launch_pipe()
 
 # echo "continue (stdout): $continue"
 	if [ 0 -eq "$continue" ] ; then
-		diff_files res1.21sh res1.bash
+		diff_files res1.42sh res1.bash
 		continue=$?
 	fi
 # echo "continue (stderr): $continue"
 	if [ 0 -eq "$continue" ] && [ -n "${test_stderr}" ] ; then
-		diff_files res2.21sh res2.bash
+		diff_files res2.42sh res2.bash
 		continue=$?
 	fi
 # echo "continue (ok): $continue"
@@ -180,8 +180,8 @@ test_launch_pipe()
 	fi
 
 	rm -f buffer
-	rm -f res1.bash res1.21sh
-	rm -f res2.bash res2.21sh
+	rm -f res1.bash res1.42sh
+	rm -f res2.bash res2.42sh
 }
 
 
@@ -200,18 +200,18 @@ test_given_res()
 			echo "${i}" >> buffer ; fi;
 	done
 	diff_tried=$((diff_tried+1))
-	touch res1.bash res2.bash res1.21sh res2.21sh
-	<buffer ./${exec} 1>res1.21sh 2>res2.21sh
+	touch res1.bash res2.bash res1.42sh res2.42sh
+	<buffer ./${exec} 1>res1.42sh 2>res2.42sh
 
 	continue=0
 
 	if [ 0 -eq "$continue" ] ; then
-		diff_files res1.21sh res1.bash
+		diff_files res1.42sh res1.bash
 		continue=$?
 	fi
 
 	if [ 0 -eq "$continue" ] && [ -n "${test_stderr}" ] ; then
-		diff_files res2.21sh res2.bash
+		diff_files res2.42sh res2.bash
 		continue=$?
 	fi
 
@@ -224,6 +224,6 @@ test_given_res()
 	fi
 
 	rm -f buffer
-	rm -f res1.bash res1.21sh
-	rm -f res2.bash res2.21sh
+	rm -f res1.bash res1.42sh
+	rm -f res2.bash res2.42sh
 }

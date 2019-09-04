@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sh_expansions_scan.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/09/04 11:32:53 by jdugoudr          #+#    #+#             */
+/*   Updated: 2019/09/04 11:38:23 by jdugoudr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "sh_21.h"
 
 static void	backslash(char *input, int *index, int quoted)
@@ -57,7 +69,7 @@ static void	quote_removal(char **input, int *index)
 ** Replace variable with looking in context variables.
 */
 
-int			sh_scan_expansions(char **input, int index, int do_expansion, t_context *context)
+int			sh_expansions_scan(char **input, int index, int do_expansion, t_context *context)
 {
 	int	ret;
 
@@ -82,5 +94,5 @@ int			sh_scan_expansions(char **input, int index, int do_expansion, t_context *c
 	}
 	else
 		backslash(*input, &index, 0);
-	return (sh_scan_expansions(input, index, do_expansion, context));
+	return (sh_expansions_scan(input, index, do_expansion, context));
 }

@@ -52,7 +52,7 @@ int			process_heredoc_through_command(char **res, t_shell *shell,
 	to_append = 0;
 	if (!(tmp = heredoc_data.func(command_line->dy_str->str)))
 		return (heredoc_ret(shell, command_line, FAILURE));
-	if ((to_append = (refine_heredoc(tmp, heredoc_data))) == 0)
+	if ((to_append = (refine_heredoc(tmp, *(heredoc_data.apply_expansion)))) == 0)
 	{
 		if ((ret = process_heredoc_new_line(res, tmp, shell, command_line))
 			!= KEEP_READ)

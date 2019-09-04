@@ -6,11 +6,11 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/08/29 11:33:06 by jdugoudr         ###   ########.fr        #
+#    Updated: 2019/09/04 11:27:46 by jdugoudr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME	= 21sh
+NAME	= 42sh
 
 CC		= gcc -g3
 
@@ -226,7 +226,7 @@ SRCS			 +=	sh_expansions.c \
 					sh_expansions_variable.c t_expansion.c \
 					sh_expansion_process.c sh_expansion_replace.c \
 					sh_unquoted_var.c sh_expansions_field_splitting.c \
-					sh_scan_expansions.c sh_get_heredoc.c
+					sh_get_heredoc.c sh_expansions_scan.c
 
 ################################################################
 ########					PERROR						########
@@ -307,7 +307,7 @@ rere:
 	@$(RM) $(OBJECTS)
 	@$(RM) -r $(OBJDIR)
 	@$(RM) $(BINDIR)/$(NAME)
-	$(MAKE) all
+	@$(MAKE) all
 
 os:
 	@$(ECHO) $(OS)

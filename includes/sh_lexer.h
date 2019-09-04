@@ -69,6 +69,7 @@ typedef struct		s_token
 	char			expansion;
 	int				index_start;
 	int				index_end;
+	int 			apply_heredoc_expansion;
 }					t_token;
 
 /*

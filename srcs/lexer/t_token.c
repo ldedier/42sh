@@ -41,6 +41,7 @@ t_token	*t_token_new(int id, char *value)
 	token->id = id;
 	token->index = sh_index(id);
 	token->expansion = 0;
+	token->apply_heredoc_expansion = 1;
 	return (token);
 }
 

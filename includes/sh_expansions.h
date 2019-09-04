@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 17:46:46 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/28 10:54:23 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/09/04 11:36:11 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,7 @@ int		sh_expansions(t_context *context, t_ast_node *node);
 /*
 ** sh_get_heredoc.c
 */
-char	*get_heredoc(t_context *context, char **stop,
-		char *(*heredoc_func)(const char *), int *ret);
+char		*get_heredoc(t_context *context, t_heredoc *heredoc_data, int *ret);
 
 /*
 ** sh_expansions_field_splitting.c
@@ -89,9 +88,10 @@ char	*sh_expansions_parameter_get_param(
 char	*sh_expansions_parameter_get_word(t_expansion *exp, char *format);
 
 /*
-** sh_scan_expansions.c
+** sh_expansions_scan.c
 */
-int		sh_scan_expansions(char **input, int index, int do_expansion, t_context *context);
+int		sh_expansions_scan(
+		char **input, int index, int do_expansion, t_context *context);
 
 /*
 ** sh_expansions_tilde.c

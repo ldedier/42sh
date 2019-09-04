@@ -25,7 +25,7 @@
 
 path=".."
 suppressions_file=".my_supp.supp"
-exec="21sh"
+exec="42sh"
 log_dir="logs" # watchout we rm -rf this
 
 

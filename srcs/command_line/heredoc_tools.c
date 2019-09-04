@@ -17,13 +17,12 @@
 ** a single \ and removes it from the string, else returns 0
 */
 
-int			refine_heredoc(char *str, t_heredoc heredoc_data)
+int			refine_heredoc(char *str, int apply_expansion)
 {
 	int		i;
-	(void)heredoc_data;
 
 	i = 0;
-	if (heredoc_data.apply_expansion == 0)
+	if (apply_expansion == 0)
 		return (0);
 	while (str[i])
 	{

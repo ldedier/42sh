@@ -33,13 +33,6 @@
 
 typedef char *(*t_heredoc_func)(const char *);
 
-typedef struct	s_heredoc
-{
-	char			*stop;
-	int 			apply_expansion;
-	t_heredoc_func	func;
-}				t_heredoc;
-
 typedef enum		e_mode
 {
 	E_MODE_INSERT,
@@ -252,7 +245,7 @@ char				*heredoc(
 /*
 ** heredoc_tools.c
 */
-int					refine_heredoc(char *str, t_heredoc heredoc_data);
+int					refine_heredoc(char *str, int apply_expansion);
 int					heredoc_ret(
 	t_shell *shell, t_command_line *command_line, int ret);
 char				*heredoc_ret_str(
