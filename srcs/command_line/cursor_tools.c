@@ -45,13 +45,13 @@ int		get_down_from_command(t_command_line *command_line)
 	int		ret;
 
 	ret = 0;
-	full_y = get_true_cursor_pos(command_line->nb_chars)
-		/ g_glob.winsize.ws_col;
-	cursor_y = get_true_cursor_pos(g_glob.cursor)
-		/ g_glob.winsize.ws_col;
+	full_y = (get_true_cursor_pos(command_line->nb_chars)
+		/ g_glob.winsize.ws_col) - command_line->scrolled_lines;
+	cursor_y = (get_true_cursor_pos(g_glob.cursor)
+		/ g_glob.winsize.ws_col) - command_line->scrolled_lines;
 	str = tgetstr("do", NULL);
 	i = cursor_y;
-	while (i < full_y)
+	while (i < full_y && i < g_glob.winsize.ws_row - 1)
 	{
 		tputs(str, 1, putchar_int);
 		i++;
