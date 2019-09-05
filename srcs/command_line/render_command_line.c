@@ -41,6 +41,7 @@ int		print_after_command_line(t_command_line *command_line,
 		go_up_left(to_go_up);
 		replace_cursor_on_index();
 	}
+	/*
 	else if (command_line->searcher.active)
 	{
 		to_go_up = get_down_from_command(command_line);
@@ -49,6 +50,7 @@ int		print_after_command_line(t_command_line *command_line,
 		go_up_left(to_go_up);
 		replace_cursor_on_index();
 	}
+	*/
 	return (SUCCESS);
 }
 
@@ -302,7 +304,7 @@ int		render_command_line(t_command_line *command_line,
 	g_glob.cursor += cursor_inc;
 	replace_cursor_after_render();
 	(void)print_choices;
-//	if (print_after_command_line(command_line, print_choices) != SUCCESS)
-//		return (FAILURE);
+	if (print_after_command_line(command_line, print_choices) != SUCCESS)
+		return (FAILURE);
 	return (SUCCESS);
 }

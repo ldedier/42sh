@@ -62,9 +62,20 @@ int		substitute_current_index(t_command_line *command_line, t_file *file)
 	return (SUCCESS);
 }
 
-int		command_line_nb_rows(t_command_line *command_line)
+int		command_line_nb_rows(t_command_line *command_line) //outdated
 {
-	return ((ft_strlen_utf8(command_line->dy_str->str) +
-				ft_strlen_utf8(command_line->prompt))
-					/ g_glob.winsize.ws_col + 1);
+	if (command_line->scrolled_lines)
+	{
+		return (ft_min(g_glob.winsize.ws_row,
+			((ft_strlen_utf8(command_line->dy_str->str) +
+				ft_strlen_utf8(ELIPTIC_COMMAND_LINE))
+					/ g_glob.winsize.ws_col + 1)
+						- command_line->scrolled_lines));
+	}
+	else
+	{
+		return ((ft_strlen_utf8(command_line->dy_str->str) +
+			ft_strlen_utf8(command_line->prompt))
+				/ g_glob.winsize.ws_col + 1);
+	}
 }

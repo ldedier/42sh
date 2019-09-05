@@ -54,6 +54,11 @@ int		render_choices(t_command_line *command_line)
 	tbl = update_file_tables(command_line);
 	update_back_nb_cols(command_line);
 	nb_visible_lines = command_line_visible_lines(command_line);
+	ft_dprintf(2, "visible lines: %d\n", nb_visible_lines);
+	ft_dprintf(2, "nb lines: %d\n", command_line->autocompletion.nb_lines);
+	ft_dprintf(2, "nb cols: %d\n\n", command_line->autocompletion.nb_cols);
+	ft_dprintf(2, "screen rows: %d\n\n", g_glob.winsize.ws_row);
+	ft_dprintf(2, "nb_rows commandline: %d\n\n", command_line_nb_rows(command_line));
 	if (!sh_should_render_choices(command_line, nb_visible_lines))
 		return (SUCCESS);
 	if (!(print_buffer = new_print_buffer()))
@@ -61,11 +66,11 @@ int		render_choices(t_command_line *command_line)
 	if (nb_visible_lines + command_line_nb_rows(command_line)
 			> g_glob.winsize.ws_row)
 		fill_buffer_partial_from_tables(command_line,
-			print_buffer, tbl, max_len);
+			print_buffer, tbl, max_len); //check ca.
 	else
 		fill_buffer_from_tables(command_line, print_buffer, tbl, max_len);
 	ft_dprintf(0, print_buffer);
-	go_up_left(nb_visible_lines - 1);
+	go_up_left(nb_visible_lines - 1); // ?
 	free_tbl(tbl, command_line->autocompletion.nb_lines);
 	return (ft_free_turn(print_buffer, SUCCESS));
 }
