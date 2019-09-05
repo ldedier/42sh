@@ -23,7 +23,7 @@ int		sh_perror2_fd(
 int		sh_perror_fd(int fd, const char *error, const char *suffix)
 {
 	if (suffix && *suffix)
-		ft_dprintf(fd, "%s%s: %s : %s%s\n", SH_ERR_COLOR,
+		ft_dprintf(fd, "%s%s: %s: %s%s\n", SH_ERR_COLOR,
 			SH_NAME, error, suffix, COLOR_END);
 	else
 		ft_dprintf(fd, "%s%s: %s%s\n", SH_ERR_COLOR, SH_NAME, error, COLOR_END);
