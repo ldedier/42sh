@@ -39,6 +39,9 @@ obj_dir="./obj"
 ## Directory used to store binaries source code
 src_dir="./srcs"
 
+## Valgrind tests variables
+suppressions_file="${obj_dir}/my_supp.supp"
+error_exit_code=247
 
 ## Options initialisation 
 test_stderr="" verbose="ok" show_error="" test_returned_values="" file=""
@@ -72,7 +75,7 @@ for arg in $@ ; do
 	fi
 done
 
-make -C $path && cp ${path}/${exec} . && cp "${path}/${exec}" . || exit
+make -C $path && cp "${path}/${exec}" . || exit
 
 source ${src_dir}/functions.sh
 
@@ -80,6 +83,9 @@ source ${src_dir}/functions.sh
 del_historic
 compile_executable
 if [ ! -z $valgrind ] ; then init_valgrind ; fi
+
+## Trapping ctrl + c signal to clean before exiting
+trap clean_and_exit 2
 
 ## Call tests files : all or specified one
 if [ -n "$file" ] ; then
@@ -99,6 +105,4 @@ fi
 echo "passed ${diff_passed} diff tests out of ${diff_tried}"
 
 ## Cleaning
-rm ${exec}
-rm -rf "${exec}.dSYM"
-del_historic
+clean_and_exit

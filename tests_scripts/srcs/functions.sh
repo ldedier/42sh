@@ -6,9 +6,18 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/21 15:58:19 by jmartel           #+#    #+#              #
-#    Updated: 2019/09/05 16:07:56 by jmartel          ###   ########.fr        #
+#    Updated: 2019/09/05 17:08:36 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+clean_and_exit()
+{
+	rm ${exec}
+	rm -rf "${exec}.dSYM"
+	del_historic
+	echo "Cleaned and exit"
+	exit
+}
 
 del_historic()
 {
@@ -20,17 +29,16 @@ init_valgrind()
 	empty_binary="${obj_dir}/empty_binary"
 	empty_main="${src_dir}/test_empty.c"
 	supp_script="${src_dir}/supp_getter.perl"
-	supp_file="${obj_dir}/my_supp.supp"
 
-	if [ -f "$supp_file" ] ; then
-		echo -e ${green}"Found valgrind configuration file : ${supp_file}"${eoc}
+	if [ -f "$suppressions_file" ] ; then
+		echo -e ${green}"Found valgrind configuration file : ${supsuppressions_filep_file}"${eoc}
 		echo -e ${green}"Valgrind initialized"${eoc}
 		return
 	fi
 	if [ ! -f "$empty_binary" ] ; then
 			gcc -o $empty_binary $empty_main && echo -e ${green}"Compiled : ${empty_binary}"${eoc} || exit
 	fi
-	valgrind --leak-check=full --gen-suppressions=all "./${empty_binary}" 2>&1 | perl ${supp_script} > $supp_file
+	valgrind --leak-check=full --gen-suppressions=all "./${empty_binary}" 2>&1 | perl ${supp_script} > $suppressions_file
 	rm -rf "${empty_binary}.dSYM"
 	echo -e ${green}"Valgrind initialized"${eoc}
 }
@@ -85,11 +93,11 @@ diff_files()
 valgrind_test()
 {
 		tried=$((tried+1))
-		tmp_log_file="tmp_log"
+		tmp_log_file="${obj_dir}/tmp_log"
 		inner_log_dir="${log_dir}/test_${tried}"
-		error_exit_code=247
+
 		valgrind --leak-check=full --suppressions=$suppressions_file \
-			--error-exitcode=$error_exit_code --log-file=$tmp_log_file ./42sh < ${obj_dir}/buffer >/dev/null 2>&1
+			--error-exitcode=$error_exit_code --log-file=$tmp_log_file ./${exec} < ${obj_dir}/buffer >/dev/null 2>&1
 		ret=$?
 		if [ $ret -eq $error_exit_code ] ; then
 			echo -e "${red}valgrind error, tracing logs at ${inner_log_dir}${eoc}"
@@ -148,7 +156,6 @@ test_launch()
 
 	check_ret_value sh_ret bash_ret
 	continue=$?
-
 # echo "continue (stdout): $continue"
 	if [ 0 -eq "$continue" ] ; then
 		diff_files ${obj_dir}/res1.42sh ${obj_dir}/res1.bash
