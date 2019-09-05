@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 11:19:41 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/02 16:35:11 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/05 12:57:27 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,92 +39,55 @@ static int		sh_traverse_io_here_interactive_ctrl_d(
 	return (SUCCESS);
 }
 
-static int	loop_expansion(char **str, t_context *context)
+static int		sh_traverse_io_here_interactive(t_ast_node *node,
+		t_context *context, char *(*heredoc_func)(const char *))
 {
-	int	start_expansion;
-	int	ret;
-
-	start_expansion = 0;
-	while ((*str)[start_expansion])
-	{
-		if ((*str)[start_expansion] == '\\'
-			&& ((*str)[start_expansion + 1] == '$' || (*str)[start_expansion + 1] == '\\'))
-		{
-			ft_strcpy(*str + start_expansion, (*str) + start_expansion + 1);
-			start_expansion++;
-		}
-		if ((ret = sh_traverse_io_here_expansion(str, &start_expansion, context)) != SUCCESS)
-		{
-			ft_strdel(str);
-			return (ret);
-		}
-		// if ((*str)[start_expansion] == '$' && (ft_isalnum((*str)[start_expansion + 1]) || (*str)[start_expansion + 1] == '$' || (*str)[start_expansion + 1] == '?'))
-		// 	// ((*str)[start_expansion + 1] != '\n' && (*str)[start_expansion + 1] != '\\'))
-		// {
-		// 	ft_printf("loop_expansion on rentre ?-%c-\n", (*str)[start_expansion + 1]);
-		// 	if ((ret = sh_expansions_process(str, (*str) + start_expansion, context, &start_expansion)) != SUCCESS)
-		// 	{
-		// 		if (sh_env_update_ret_value_and_question(context->shell, ret))
-		// 		{
-		// 			free(*str);
-		// 			return (FAILURE);
-		// 		}
-		// 	}
-		// }
-		// else
-		// 	start_expansion++;
-	}
-	return (SUCCESS);
-}
-
-static int		sh_traverse_io_here_interactive(t_redirection **redirection,
-		t_ast_node *node, t_context *context,
-			char *(*heredoc_func)(const char *))
-{
-	t_ast_node		*first_child;
+	t_ast_node		*child;
 	char			*heredoc_res;
 	int				ret;
 	t_heredoc		heredoc_data;
 
-(void)redirection;
-	first_child = (t_ast_node *)node->children->content;
+	child = (t_ast_node *)node->children->content;
 	heredoc_data.func = heredoc_func;
-	heredoc_data.stop = first_child->token->value;
-	heredoc_data.apply_expansion = &(first_child->token->apply_heredoc_expansion);
+	heredoc_data.stop = child->token->value;
+	heredoc_data.apply_expansion = &(child->token->apply_heredoc_expansion);
 	if (!(heredoc_res = get_heredoc(context, &heredoc_data, &ret)))
 		return (ret);
 	if (ret == CTRL_D)
-		ret = sh_traverse_io_here_interactive_ctrl_d(first_child, context);
+		ret = sh_traverse_io_here_interactive_ctrl_d(child, context);
 	if (ret != FAILURE)
 	{
-		free(first_child->token->value);
-		first_child->token->value = heredoc_res;
+		free(child->token->value);
+		child->token->value = heredoc_res;
 	}
 	else
 		free(heredoc_res);
 	return (ret);
 }
 
-int				sh_traverse_io_here(t_ast_node *node, t_context *context)
+static int		sh_traverse_io_here_phase_interactive(
+		t_ast_node *node, t_context *context)
 {
 	t_ast_node		*first_child;
 	char			*(*heredoc_func)(const char *);
+
+	first_child = node->children->content;
+	g_glob.command_line.interrupted = 1;
+	if (first_child->symbol->id == sh_index(LEX_TOK_DLESSDASH))
+		heredoc_func = &heredoc_dash;
+	else
+		heredoc_func = &ft_strdup;
+	return (sh_traverse_io_here_interactive(node->children->next->content,
+				context, heredoc_func));
+}
+
+int				sh_traverse_io_here(t_ast_node *node, t_context *context)
+{
 	t_redirection	*redirection;
-	int				fds[2];
-	int				ret;
 
 	redirection = &node->metadata.heredoc_metadata.redirection;
 	if (context->phase == E_TRAVERSE_PHASE_INTERACTIVE_REDIRECTIONS)
-	{
-		first_child = node->children->content;
-		g_glob.command_line.interrupted = 1;
-		if (first_child->symbol->id == sh_index(LEX_TOK_DLESSDASH))
-			heredoc_func = &heredoc_dash;
-		else
-			heredoc_func = &ft_strdup;
-		return (sh_traverse_io_here_interactive(&redirection,
-				node->children->next->content, context, heredoc_func));
-	}
+		return (sh_traverse_io_here_phase_interactive(node, context));
 	else if (context->phase == E_TRAVERSE_PHASE_REDIRECTIONS)
 	{
 		if (sh_add_redirection(sh_new_redir(redirection->type,
@@ -134,24 +97,7 @@ int				sh_traverse_io_here(t_ast_node *node, t_context *context)
 			return (FAILURE);
 	}
 	else if (context->phase == E_TRAVERSE_PHASE_EXPANSIONS)
-	{
-		first_child = node->children->next->content;
-		first_child = first_child->children->content;
-		if (first_child->token->apply_heredoc_expansion)
-		{
-			if ((ret = loop_expansion(&(first_child->token->value), context)) != SUCCESS)
-				return (ret);
-		}	
-		if (pipe(fds))
-			return (sh_perror(SH_ERR1_PIPE, "sh_traverse_io_here_end"));
-		else
-		{
-			redirection->type = INPUT;
-			redirection->redirected_fd = context->redirected_fd;
-			redirection->fd = fds[0];
-			ft_putstr_fd(first_child->token->value, fds[1]);
-			close(fds[1]);
-		}
-	}
+		return (sh_traverse_io_here_phase_expansion(
+					redirection, node, context));
 	return (SUCCESS);
 }

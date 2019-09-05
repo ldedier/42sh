@@ -6,7 +6,7 @@
 /*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/04 11:32:53 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/09/04 11:38:23 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/09/05 11:05:39 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,8 @@ static void	quote_removal(char **input, int *index)
 ** Replace variable with looking in context variables.
 */
 
-int			sh_expansions_scan(char **input, int index, int do_expansion, t_context *context)
+int			sh_expansions_scan(
+		char **input, int index, int do_expansion, t_context *context)
 {
 	int	ret;
 

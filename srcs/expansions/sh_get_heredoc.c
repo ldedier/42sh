@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sh_get_heredoc.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/09/05 11:03:06 by jdugoudr          #+#    #+#             */
+/*   Updated: 2019/09/05 11:04:06 by jdugoudr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "sh_21.h"
 
-char		*get_heredoc(t_context *context, t_heredoc *heredoc_data, int *ret)
+char	*get_heredoc(t_context *context, t_heredoc *heredoc_data, int *ret)
 {
-	char 			*str;
+	char			*str;
 	char			*stop;
 
 	*(heredoc_data->apply_expansion) = 1;

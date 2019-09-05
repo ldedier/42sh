@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/09/04 11:27:46 by jdugoudr         ###   ########.fr        #
+#    Updated: 2019/09/05 11:39:29 by jdugoudr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -76,7 +76,8 @@ SRCS			+=	sh_traverse.c sh_traverse_default.c \
 					sh_traverse_io_here_canonical.c \
 					sh_traverse_io_file.c sh_traverse_io_file_tools.c \
 					sh_traverse_and_or.c sh_traverse_list.c \
-					sh_traverse_io_here_expansion.c
+					sh_traverse_io_here_expansion.c \
+					sh_traverse_io_here_phase_expansion.c
 
 ################################################################
 ########				COMMAND_LINE					########
