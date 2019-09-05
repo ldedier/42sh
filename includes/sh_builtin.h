@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 11:36:31 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/28 14:18:24 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/05 11:08:43 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@
 # define CD_HYPHEN_OPT		2
 // Do usage is working with empty hyphen arg
 
-enum e_built_test_unary {TEST_B, TEST_C, TEST_D, TEST_E, TEST_F, TEST_G, TEST_L,
-	TEST_P, TEST_R, TEST_SS, TEST_S, TEST_U, TEST_W, TEST_X, TEST_Z};
-enum e_built_test_binary {TEST_EQU, TEST_NOEQU, TEST_EQ, TEST_NE, TEST_GT,
+enum	e_built_test_unary {TEST_B, TEST_C, TEST_D, TEST_E, TEST_F, TEST_G,
+	TEST_L, TEST_P, TEST_R, TEST_SS, TEST_S, TEST_U, TEST_W, TEST_X, TEST_Z};
+enum	e_built_test_binary {TEST_EQU, TEST_NOEQU, TEST_EQ, TEST_NE, TEST_GT,
 	TEST_GE, TEST_LT, TEST_LE};
 
 typedef struct s_binary			t_binary;

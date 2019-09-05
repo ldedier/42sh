@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/03 14:58:45 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/09/04 10:58:38 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/05 13:12:50 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ static int	sh_expansions_init(char *original, t_expansion *exp)
 **		ERROR : expansion is invalid
 **		SUCCESS : successfully filled expansion
 */
+
 int			sh_expansions_process(
 	char **input, char *original, t_context *context, int *index)
 {
@@ -63,7 +64,7 @@ int			sh_expansions_process(
 	if (ret)
 	{
 		if (ret == ERROR)
-			sh_perror(SH_BAD_EXPANSION, NULL);
+			sh_perror(SH_BAD_SUBSTITUTE, NULL);
 		t_expansion_free_content(&exp);
 		return (ret);
 	}

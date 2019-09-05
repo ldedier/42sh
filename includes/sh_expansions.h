@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 17:46:46 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/04 16:18:20 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/09/05 11:12:35 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 typedef struct s_expansion	t_expansion;
 typedef enum e_exp_type		t_exp_type;
 
-enum	e_exp_type
+enum					e_exp_type
 {
 	EXP_VAR = 1,
 	EXP_PARAM,
@@ -28,13 +28,13 @@ enum	e_exp_type
 	EXP_TILDE,
 };
 
-struct	s_expansion
+struct					s_expansion
 {
-	t_dy_str		*res;
-	char			*original;
-	char			*expansion;
-	t_exp_type		type;
-	int				(*process)(t_context *, t_expansion *);
+	t_dy_str			*res;
+	char				*original;
+	char				*expansion;
+	t_exp_type			type;
+	int					(*process)(t_context *, t_expansion *);
 };
 
 /*
@@ -44,19 +44,19 @@ struct	s_expansion
 /*
 ** sh_expansion_process.c
 */
-int		sh_expansions_process(
+int			sh_expansions_process(
 	char **input, char *original, t_context *context, int *index);
 
 /*
 ** sh_expansion_replace.c
 */
-int		sh_expansions_replace(
+int			sh_expansions_replace(
 	t_expansion *expansion, char **input, int index);
 
 /*
 ** sh_expansions.c
 */
-int		sh_expansions(t_context *context, t_ast_node *node);
+int			sh_expansions(t_context *context, t_ast_node *node);
 
 /*
 ** sh_get_heredoc.c
@@ -100,7 +100,7 @@ char	*sh_expansions_parameter_get_word(t_expansion *exp, char *format);
 ** sh_expansions_scan.c
 */
 int		sh_expansions_scan(
-		char **input, int index, int do_expansion, t_context *context);
+	char **input, int index, int do_expansion, t_context *context);
 
 /*
 ** sh_expansions_tilde.c
@@ -123,11 +123,6 @@ int		sh_expansions_variable_detect(char *start);
 int		sh_expansions_variable_fill(t_expansion *exp, char *start);
 int		sh_expansions_variable_process(
 	t_context *context, t_expansion *exp);
-
-/*
-** sh_scan_expansions.c
-*/
-// int		sh_scan_expansions(char **input, int index, t_context *context);
 
 /*
 ** sh_unquoted_var.c

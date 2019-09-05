@@ -1,4 +1,4 @@
-cat eo\
+cat << eo\
 f
 \\$\$
 hoho$USER
