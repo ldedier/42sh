@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 07:20:20 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/30 14:36:56 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/04 21:32:52 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ int			sh_builtin_cd_rule10(
 					context->fd[FD_ERR], param, "cd", "unable to process");
 		if (!ret)
 			sh_builtin_cd_update_pwd(context, args, curpath);
-		if (!ret && args[CD_HYPHEN_OPT].value) // Is this protected ???
+		if (!ret && args[CD_HYPHEN_OPT].value)
 			ft_dprintf(context->fd[FD_OUT],
 				"%s\n", sh_vars_get_value(context->saved_env, NULL, "PWD"));
 	}

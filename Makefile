@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/09/05 11:39:29 by jdugoudr         ###   ########.fr        #
+#    Updated: 2019/09/05 13:49:19 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -209,7 +209,7 @@ SRCS			+=	sh_builtin.c sh_builtin_pwd.c \
 					sh_builtin_cd.c sh_builtin_cd_pre_rules.c \
 					sh_builtin_cd_post_rules.c \
 					sh_builtin_cd_last_rules.c \
-					sh_builtin_type.c sh_builtin_type_path.c \
+					sh_builtin_type.c sh_builtin_type_search_path.c sh_builtin_type_search.c\
 					sh_builtin_verbose.c \
 					sh_builtin_hash.c sh_builtin_set.c sh_builtin_unset.c \
 					sh_builtin_export.c sh_builtin_hash_tools.c \
@@ -227,7 +227,7 @@ SRCS			 +=	sh_expansions.c \
 					sh_expansions_tilde.c \
 					sh_expansions_variable.c t_expansion.c \
 					sh_expansions_process.c sh_expansions_replace.c \
-					sh_unquoted_var.c sh_expansions_field_splitting.c \
+					sh_expansions_field_splitting.c \
 					sh_get_heredoc.c sh_expansions_scan.c
 
 ################################################################

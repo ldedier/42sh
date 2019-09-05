@@ -1,24 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sh_builtin_type_path.c                             :+:      :+:    :+:   */
+/*   sh_builtin_type_search_path.c                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/17 21:44:54 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/04 21:46:10 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
-
-#define TYPE_USAGE			"type [-atp] name [name ...]"
-#define TYPE_A_OPT			0
-#define TYPE_A_OPT_USAGE	"Print all the places that contain an executable named name"
-#define TYPE_P_OPT			1
-#define TYPE_P_OPT_USAGE	"Print the path of the disk file that name would execute."
-#define TYPE_T_OPT			2
-#define TYPE_T_OPT_USAGE	"Print a string describing the file type"
 
 static int	sh_builtin_type_search_in_dir_found(char *path, DIR *dir,
 			t_dirent *dirent, t_context *context)

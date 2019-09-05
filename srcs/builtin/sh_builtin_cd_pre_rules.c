@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 14:50:45 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/30 15:04:31 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/04 21:31:40 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,20 @@ int			sh_builtin_cd_parser_hyphen(
 }
 
 int			sh_builtin_cd_parser(t_context *context, t_args *args,
-	int *index, char **curpath, char **argv)
+	int *index, char **curpath)
 {
 	int		ret;
+	char	**argv;
 
+	argv = (char**)context->params->tbl;
 	*curpath = NULL;
 	if (sh_builtin_parser(ft_strtab_len(argv), argv, args, index))
 		return (sh_builtin_usage(args, argv[0], CD_USAGE, context));
 	if (argv[*index] && argv[*index + 1])
-		return (sh_perror_err_fd(context->fd[FD_ERR], argv[0], SH_ERR1_TOO_MANY_ARGS));
+	{
+		return (sh_perror_err_fd(
+			context->fd[FD_ERR], argv[0], SH_ERR1_TOO_MANY_ARGS));
+	}
 	if (ft_strequ(argv[*index], "-"))
 		if ((ret = sh_builtin_cd_parser_hyphen(context, args, curpath, *index)))
 			return (ret);

@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/15 13:19:47 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/22 19:27:29 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/04 21:44:45 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,8 @@ int		sh_builtin_usage(t_args args[], char *name, char *usage, t_context *context
 			ft_dprintf(fd, "  --%s", args[i].name_long);
 		if (args[i].usage)
 			ft_dprintf(fd, ": %s", args[i].usage);
-		ft_dprintf(fd, "\n");
+		if (args[i].name_short || args[i].name_long || args[i].usage)
+			ft_dprintf(fd, "\n");
 		i++;
 	}
 	ft_dprintf(fd, EOC);
