@@ -34,6 +34,8 @@ launch "Variables"
 	test_launch '=qsda'
 	test_launch 'var=okalm ; echo $var'
 	test_launch 'var=qwe 	&& echo $var'
+	test_launch 'var=qwe 	&& echo $vqr'
+	test_launch 'var=asdqw || echo $var'
 	test_launch 'var=asdqw || echo $vqr'
 	test_launch 'var1=okalmos' 'var2=speculos' 'echo $var1 $var2'
 	test_launch 'var1=okalmos' 'var2=speculos' 'echo $var1$var2'

@@ -18,7 +18,7 @@ launch "cd"
 	test_launch "cd ../../../../../../../../../../" 'echo $?'
 	test_launch "cd -P /var" 'echo $?' "pwd" 'echo $?'
 	test_launch "cd -L /var" 'echo $?' "pwd" 'echo $?'
-	test_launch "mkdir sandbox ; cd sandbox ; echo \$? ; ln -s ../sandbox  ./link" "cd ./link" 'echo $?' "ls -a ; pwd ; cd .. ; rm -r sandbox"
+	test_launch 'mkdir -p sandbox ; cd sandbox ; echo $? ; ln -s ../sandbox  ./link' "cd ./link" 'echo $?' "ls -a ; pwd ; cd ../.. ; rm -r sandbox"
 	test_launch "mkdir dir ; ln -s dir link" 'echo $?' "cd dir ; pwd ; pwd -P" "cd ../link ; pwd ; pwd -P" "cd -P ../link ; pwd ; pwd -P" "cd .. ; rm -r dir link"
 
 	test_launch "cd -" 'echo $?' "pwd"

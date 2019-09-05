@@ -6,13 +6,43 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/21 15:58:19 by jmartel           #+#    #+#              #
-#    Updated: 2019/09/02 16:36:37 by jmartel          ###   ########.fr        #
+#    Updated: 2019/09/05 16:07:56 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 del_historic()
 {
 	find ../ -name ".historic" -delete 2>/dev/null 1>/dev/null
+}
+
+init_valgrind()
+{
+	empty_binary="${obj_dir}/empty_binary"
+	empty_main="${src_dir}/test_empty.c"
+	supp_script="${src_dir}/supp_getter.perl"
+	supp_file="${obj_dir}/my_supp.supp"
+
+	if [ -f "$supp_file" ] ; then
+		echo -e ${green}"Found valgrind configuration file : ${supp_file}"${eoc}
+		echo -e ${green}"Valgrind initialized"${eoc}
+		return
+	fi
+	if [ ! -f "$empty_binary" ] ; then
+			gcc -o $empty_binary $empty_main && echo -e ${green}"Compiled : ${empty_binary}"${eoc} || exit
+	fi
+	valgrind --leak-check=full --gen-suppressions=all "./${empty_binary}" 2>&1 | perl ${supp_script} > $supp_file
+	rm -rf "${empty_binary}.dSYM"
+	echo -e ${green}"Valgrind initialized"${eoc}
+}
+
+compile_executable()
+{
+	mkdir -p "$obj_dir"
+	for bin in "fd_write" "fd_read" "signal" "segfault" ; do
+		if [ ! -f "${obj_dir}/$bin" ] ; then
+			gcc ${src_dir}/${bin}.c -o "${obj_dir}/${bin}" && echo -e ${green}"Compiled ${bin}"${eoc} || exit
+		fi
+	done
 }
 
 launch()
@@ -42,7 +72,7 @@ diff_files()
 	res=`diff $1 $2`
 	if [ -n "$res" ] ; then
 		echo -e "${red}KO${eoc}"
-		echo -e "${yellow}`cat buffer`${eoc}"
+		echo -e "${yellow}`cat ${obj_dir}/buffer`${eoc}"
 		if [ -n "$verbose" ] ; then
 			echo -e "${cyan}" `cat $1` "${eoc}"
 			echo -e "${cyan}" `cat $2` "${eoc}"
@@ -59,13 +89,13 @@ valgrind_test()
 		inner_log_dir="${log_dir}/test_${tried}"
 		error_exit_code=247
 		valgrind --leak-check=full --suppressions=$suppressions_file \
-			--error-exitcode=$error_exit_code --log-file=$tmp_log_file ./42sh < buffer >/dev/null 2>&1
+			--error-exitcode=$error_exit_code --log-file=$tmp_log_file ./42sh < ${obj_dir}/buffer >/dev/null 2>&1
 		ret=$?
 		if [ $ret -eq $error_exit_code ] ; then
 			echo -e "${red}valgrind error, tracing logs at ${inner_log_dir}${eoc}"
-			echo -e "${yellow}`cat buffer`${eoc}"
+			echo -e "${yellow}`cat ${obj_dir}/buffer`${eoc}"
 			mkdir -p $inner_log_dir
-			cat buffer > ${inner_log_dir}/failed_script
+			cat ${obj_dir}/buffer > ${inner_log_dir}/failed_script
 			cat $tmp_log_file > ${inner_log_dir}/valgrind_trace
 			rm -f $tmp_log_file
 		else
@@ -94,7 +124,7 @@ check_ret_value()
 		if [ "$sh_ret" -ne  "$bash_ret" ] ; then 
 			echo -e "${red}BAD RETURNED VALUE"
 			echo -e "bash : $bash_ret || 42sh : $sh_ret${eoc}"
-			echo -e "${yellow}`cat buffer`${eoc}"
+			echo -e "${yellow}`cat ${obj_dir}/buffer`${eoc}"
 			return 1
 		fi
 	fi
@@ -103,17 +133,17 @@ check_ret_value()
 
 test_launch()
 {
-	echo "$1" > buffer
+	echo "$1" > ${obj_dir}/buffer
 	for i in "$2" "$3" "$4" "$5" "$6" "$7" "$8" "$9"
 	do
 		if [ -n "$i" ] ; then 
-			echo "${i}" >> buffer ; fi;
+			echo "${i}" >> ${obj_dir}/buffer ; fi;
 	done
 	diff_tried=$((diff_tried+1))
-	touch res1.bash res2.bash res1.42sh res2.42sh
-	<buffer bash 1>res1.bash 2>res2.bash
+	touch ${obj_dir}/res1.bash ${obj_dir}/res2.bash ${obj_dir}/res1.42sh ${obj_dir}/res2.42sh
+	<${obj_dir}/buffer bash 1>${obj_dir}/res1.bash 2>${obj_dir}/res2.bash
 	bash_ret=$?
-	<buffer ./${exec} 1>res1.42sh 2>res2.42sh
+	<${obj_dir}/buffer ./${exec} 1>${obj_dir}/res1.42sh 2>${obj_dir}/res2.42sh
 	sh_ret=$?
 
 	check_ret_value sh_ret bash_ret
@@ -121,12 +151,12 @@ test_launch()
 
 # echo "continue (stdout): $continue"
 	if [ 0 -eq "$continue" ] ; then
-		diff_files res1.42sh res1.bash
+		diff_files ${obj_dir}/res1.42sh ${obj_dir}/res1.bash
 		continue=$?
 	fi
 # echo "continue (stderr): $continue"
 	if [ 0 -eq "$continue" ] && [ -n "${test_stderr}" ] ; then
-		diff_files res2.42sh res2.bash
+		diff_files ${obj_dir}/res2.42sh ${obj_dir}/res2.bash
 		continue=$?
 	fi
 # echo "continue (ok): $continue"
@@ -138,9 +168,9 @@ test_launch()
 		valgrind_test
 	fi
 
-	rm -f buffer
-	rm -f res1.bash res1.42sh
-	rm -f res2.bash res2.42sh
+	rm -f ${obj_dir}/buffer
+	rm -f ${obj_dir}/res1.bash ${obj_dir}/res1.42sh
+	rm -f ${obj_dir}/res2.bash ${obj_dir}/res2.42sh
 }
 
 test_launch_pipe()
@@ -148,13 +178,13 @@ test_launch_pipe()
 	if [ ! -n "$1" ] ; then echo "test_launch_pipe : No file given" ; fi
 	if [ ! -e "$1" ] ; then echo "test_launch_pipe : can't find $1" ;  return ; fi
 
-	cp "$1" "buffer"
+	cp "$1" "${obj_dir}/buffer"
 
 	diff_tried=$((diff_tried+1))
-	touch res1.bash res2.bash res1.42sh res2.42sh
-	cat "$1" | bash 1>res1.bash 2>res2.bash
+	touch ${obj_dir}/res1.bash ${obj_dir}/res2.bash ${obj_dir}/res1.42sh ${obj_dir}/res2.42sh
+	cat "$1" | bash 1>${obj_dir}/res1.bash 2>${obj_dir}/res2.bash
 	bash_ret=$?
-	cat "$1" | ./${exec} 1>res1.42sh 2>res2.42sh
+	cat "$1" | ./${exec} 1>${obj_dir}/res1.42sh 2>${obj_dir}/res2.42sh
 	sh_ret=$?
 
 	check_ret_value sh_ret bash_ret
@@ -162,12 +192,12 @@ test_launch_pipe()
 
 # echo "continue (stdout): $continue"
 	if [ 0 -eq "$continue" ] ; then
-		diff_files res1.42sh res1.bash
+		diff_files ${obj_dir}/res1.42sh ${obj_dir}/res1.bash
 		continue=$?
 	fi
 # echo "continue (stderr): $continue"
 	if [ 0 -eq "$continue" ] && [ -n "${test_stderr}" ] ; then
-		diff_files res2.42sh res2.bash
+		diff_files ${obj_dir}/res2.42sh ${obj_dir}/res2.bash
 		continue=$?
 	fi
 # echo "continue (ok): $continue"
@@ -179,51 +209,7 @@ test_launch_pipe()
 		valgrind_test
 	fi
 
-	rm -f buffer
-	rm -f res1.bash res1.42sh
-	rm -f res2.bash res2.42sh
-}
-
-
-## Result is given in $1 and $2 (stdin and stderr)
-## No return value comparision is done
-
-test_given_res()
-{
-	echo "$1" > res1.bash
-	echo "$2" > res2.bash
-
-	echo "$3" > buffer
-	for i in "$4" "$5" "$6" "$7" "$8" "$9"
-	do
-		if [ -n "$i" ] ; then 
-			echo "${i}" >> buffer ; fi;
-	done
-	diff_tried=$((diff_tried+1))
-	touch res1.bash res2.bash res1.42sh res2.42sh
-	<buffer ./${exec} 1>res1.42sh 2>res2.42sh
-
-	continue=0
-
-	if [ 0 -eq "$continue" ] ; then
-		diff_files res1.42sh res1.bash
-		continue=$?
-	fi
-
-	if [ 0 -eq "$continue" ] && [ -n "${test_stderr}" ] ; then
-		diff_files res2.42sh res2.bash
-		continue=$?
-	fi
-
-	if [ 0 -eq "$continue" ] ; then
-		echo_ok
-	fi
-
-	if [ -n "$valgrind" ] ; then
-		valgrind_test
-	fi
-
-	rm -f buffer
-	rm -f res1.bash res1.42sh
-	rm -f res2.bash res2.42sh
+	rm -f ${obj_dir}/buffer
+	rm -f ${obj_dir}/res1.bash ${obj_dir}/res1.42sh
+	rm -f ${obj_dir}/res2.bash ${obj_dir}/res2.42sh
 }

@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/21 16:00:41 by jmartel           #+#    #+#              #
-#    Updated: 2019/09/02 16:34:59 by jmartel          ###   ########.fr        #
+#    Updated: 2019/09/05 14:39:10 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,16 +20,12 @@ launch "Shell"
 	test_launch 'env -i TERM=$TERM PATH=/bin ./42sh' 'cd includes ; pwd ; cd - ; pwd'
 
 	launch "segfault"
-	if [ ! -e ".segfault" ] ; then
-		echo -e ${red}"Can't find .segfault executable"${eoc}
-	else
-		test_launch './.segfault ; echo $?'
-		test_launch './.segfault | wc; echo $?'
-		test_launch 'ls | ./.segfault; echo $?'
-		test_launch './.segfault && echo $? ; echo $?'
-		test_launch './.segfault || echo $? ; echo $?'
-		test_launch './.segfault ; echo $? ; echo $?'
-		test_launch './.segfault | wc && echo $? ; echo $?'
-		test_launch 'ls | ./.segfault && echo $?; echo $?'
-	fi
+	test_launch "./${obj_dir}/segfault"       'echo $?'
+	test_launch "./${obj_dir}/segfault | wc;" 'echo $?'
+	test_launch "ls | ./${obj_dir}/segfault"  'echo $?'
+	test_launch "./${obj_dir}/segfault && echo "'$? ; echo $?'
+	test_launch "./${obj_dir}/segfault || echo "'$? ; echo $?'
+	test_launch "./${obj_dir}/segfault ; echo  "'$? ;  echo $?'
+	test_launch "./${obj_dir}/segfault | wc && echo "'$? ; echo $?'
+	test_launch "ls | ./${obj_dir}/segfault && echo "'$? ; echo $?'
 finish

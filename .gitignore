@@ -7,7 +7,6 @@ logs
 log
 sandbox
 /b
-/tests_scripts/b
 
 /signal
 /signal.c
@@ -26,16 +25,22 @@ sandbox
 /random/tmp_log
 
 #tests_scripts directory :
+tests_scripts/obj
 tests_scripts/*.log
-tests_scripts/logs/*
+tests_scripts/logs
 tests_scripts/tmp_log
 tests_scripts/.my_supp.supp
 tests_scripts/buffer
+tests_scripts/b
 tests_scripts/res1.42sh
 tests_scripts/res1.bash
 tests_scripts/res2.42sh
 tests_scripts/res2.bash
 tests_scripts/blt_test_files
+
+tests_scripts/.fd_read
+tests_scripts/.fd_write
+tests_scripts/.signal
 
 sh21
 sh42

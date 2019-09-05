@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/21 16:00:41 by jmartel           #+#    #+#              #
-#    Updated: 2019/07/05 16:39:13 by jmartel          ###   ########.fr        #
+#    Updated: 2019/09/05 16:06:21 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ launch "exec"
 	test_launch 'mkdir dir'  './dir' 'rm -r dir'
 	test_launch 'rm -rf dir'
 	test_launch './nofile'
-	test_launch './functions.sh'
+	test_launch 'touch file ; chmod -x file' './file' 'echo $?' 'rm -f file'
 	test_launch '" ls "' 'echo $?' '"ls "' 'echo $?'
 
 	launch "Permissions"
@@ -32,16 +32,15 @@ launch "exec"
 	test_launch 'echo "#!/bin/bash" >file' 'echo "echo lol" >> file' 'chmod 000 file' './file' 'chmod 777 file ; rm file'
 
 	launch "execve fail"
-	if [ ! -f "execve_fail" ] ; then echo -e ${RED}"CANNOT FIND EXECVE_FAIL BINARY"${EOC}
+	if [ ! -f "${src_dir}/.execve_fail" ] ; then echo -e ${RED}"CANNOT FIND EXECVE_FAIL BINARY"${EOC}
 	else
-		test_launch './execve_fail'
-		test_launch 'PATH=.:/usr/bin' 'execve_fail'
-		test_launch 'env ./execve_fail'
-		test_launch 'PATH=.:/usr/bin' 'env execve_fail'
-		test_launch './execve_fail | wc'
-		test_launch 'PATH=.:/usr/bin' 'execve_fail | wc'
-		test_launch 'env ./execve_fail | wc'
-		test_launch 'PATH=.:/usr/bin' 'env execve_fail | wc'
-
+		test_launch "./${src_dir}/.execve_fail"
+		test_launch "PATH=.:/usr/bin" "${src_dir}/.execve_fail"
+		test_launch "env ./${src_dir}/.execve_fail"
+		test_launch "PATH=.:/usr/bin' 'env ${src_dir}/.execve_fail"
+		test_launch "./${src_dir}/.execve_fail | wc"
+		test_launch "PATH=.:/usr/bin" "${src_dir}/.execve_fail | wc"
+		test_launch "env ./${src_dir}/.execve_fail | wc"
+		test_launch "PATH=.:/usr/bin" "env ${src_dir}/.execve_fail | wc"
 	fi
 finish
