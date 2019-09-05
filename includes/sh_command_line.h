@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/11 17:20:10 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/03 16:55:58 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/05 14:20:06 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,6 +219,7 @@ void				process_suppr(t_command_line *command_line);
 ** render_research.c
 */
 int					render_research(t_command_line *command_line);
+int					get_research_nb_lines(t_command_line *command_line);
 
 /*
 ** sh_process_shift_horizontal.c
@@ -519,5 +520,4 @@ void				process_edit_command_left(
 	t_command_line *command_line);
 void				process_edit_command_right(
 	t_command_line *command_line);
-
 #endif

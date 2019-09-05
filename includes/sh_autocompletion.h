@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/22 14:59:37 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/02 15:33:19 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/05 14:00:31 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,7 +196,7 @@ int					sh_should_render_choices(
 void				update_dimensions(
 	t_command_line *command_line, int max_len);
 void				update_back_nb_cols(t_command_line *command_line);
-int					render_choices(t_command_line *command_line);
+int					render_choices(t_command_line *command_line, int *to_go_up);
 
 /*
 ** arrows_vertical.c

@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 14:33:21 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/03 17:15:36 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/05 17:16:59 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ int		get_down_from_command(t_command_line *command_line)
 	int		i;
 	char	*str;
 	int		ret;
+	int		research_nb_lines;
 
 	ret = 0;
 	full_y = (get_true_cursor_pos(command_line->nb_chars)
@@ -50,8 +51,9 @@ int		get_down_from_command(t_command_line *command_line)
 	cursor_y = (get_true_cursor_pos(g_glob.cursor)
 		/ g_glob.winsize.ws_col) - command_line->scrolled_lines;
 	str = tgetstr("do", NULL);
+	research_nb_lines = get_research_nb_lines(command_line);
 	i = cursor_y;
-	while (i < full_y && i < g_glob.winsize.ws_row - 1)
+	while (i < full_y && i < g_glob.winsize.ws_row - 1 - research_nb_lines)
 	{
 		tputs(str, 1, putchar_int);
 		i++;
@@ -83,6 +85,11 @@ void	replace_cursor_on_index(void)
 
 void	replace_cursor_after_render(void)
 {
+//	ft_dprintf(2, GREEN"LAAALAA\n"EOC);
+//	sleep(4);
+//	ft_dprintf(2, GREEN"WOOPPLAAALAA\n"EOC);
 	go_up_to_prompt(g_glob.winsize.ws_col, g_glob.command_line.nb_chars);
+//	sleep(4);
+//	sleep(1);
 	replace_cursor_on_index();
 }

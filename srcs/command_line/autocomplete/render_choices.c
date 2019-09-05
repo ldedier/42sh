@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 02:33:03 by ldedier           #+#    #+#             */
-/*   Updated: 2019/06/15 16:39:03 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/05 14:44:19 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,12 @@ char	*new_print_buffer(void)
 int		sh_should_render_choices(t_command_line *command_line,
 			int nb_visible_lines)
 {
-	return (command_line->autocompletion.nb_cols != 1
-			|| nb_visible_lines
-				+ command_line_nb_rows(command_line) <= g_glob.winsize.ws_row);
+	int cli_nb_rows;
+
+	cli_nb_rows = command_line_nb_rows(command_line);
+	return ((command_line->autocompletion.nb_cols != 1
+			|| nb_visible_lines + cli_nb_rows <= g_glob.winsize.ws_row)
+			&& cli_nb_rows < g_glob.winsize.ws_row);
 }
 
 void	update_dimensions(t_command_line *command_line, int max_len)
@@ -42,7 +45,7 @@ void	update_back_nb_cols(t_command_line *command_line)
 			/ (double)command_line->autocompletion.nb_lines));
 }
 
-int		render_choices(t_command_line *command_line)
+int		render_choices(t_command_line *command_line, int *to_go_up)
 {
 	char	*print_buffer;
 	int		max_len;
@@ -54,13 +57,14 @@ int		render_choices(t_command_line *command_line)
 	tbl = update_file_tables(command_line);
 	update_back_nb_cols(command_line);
 	nb_visible_lines = command_line_visible_lines(command_line);
-	ft_dprintf(2, "visible lines: %d\n", nb_visible_lines);
-	ft_dprintf(2, "nb lines: %d\n", command_line->autocompletion.nb_lines);
-	ft_dprintf(2, "nb cols: %d\n\n", command_line->autocompletion.nb_cols);
-	ft_dprintf(2, "screen rows: %d\n\n", g_glob.winsize.ws_row);
-	ft_dprintf(2, "nb_rows commandline: %d\n\n", command_line_nb_rows(command_line));
+//	ft_dprintf(2, "visible lines: %d\n", nb_visible_lines);
+//	ft_dprintf(2, "nb lines: %d\n", command_line->autocompletion.nb_lines);
+//	ft_dprintf(2, "nb cols: %d\n\n", command_line->autocompletion.nb_cols);
+//	ft_dprintf(2, "screen rows: %d\n\n", g_glob.winsize.ws_row);
+//	ft_dprintf(2, "nb_rows commandline: %d\n\n", command_line_nb_rows(command_line));
 	if (!sh_should_render_choices(command_line, nb_visible_lines))
 		return (SUCCESS);
+	*to_go_up = get_down_from_command(command_line);
 	if (!(print_buffer = new_print_buffer()))
 		return (sh_perror(SH_ERR1_MALLOC, "render_choices"));
 	if (nb_visible_lines + command_line_nb_rows(command_line)
