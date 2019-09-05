@@ -1,0 +1,8 @@
+<<eof cat ; echo $?
+${var:=default}
+${var}
+eof
+echo $var
+<<eof cat
+$var
+eof
