@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/03 10:58:30 by jdugoudr          #+#    #+#              #
-#    Updated: 2019/09/05 13:43:12 by jmartel          ###   ########.fr        #
+#    Updated: 2019/09/05 13:45:24 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ launch "Heredoc"
 			test_launch_pipe ./tests_files/heredoc_${i}
 		done
 	launch "fd"
-		for i in `seq 41 45` ; do
+		for i in `seq 41 43` ; do
 			test_launch_pipe ./tests_files/heredoc_${i}
 		done
 
