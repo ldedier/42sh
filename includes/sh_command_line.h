@@ -123,7 +123,11 @@ typedef struct		s_utf8_copier
 {
 	int				len;
 	int				i;
+	int				j;
 	int				nb_chars;
+	int				min;
+	int				max;
+	int				to_add;
 }					t_utf8_copier;
 
 typedef struct		s_glob
@@ -505,7 +509,7 @@ int					process_historic_up(
 */
 void				populate_min_max_selection(
 	t_command_line *command_line, int *min, int *max);
-void				render_command_visual(t_command_line *command_line);
+void				print_command_visual(t_command_line *command_line);
 
 /*
 ** edit_command.c

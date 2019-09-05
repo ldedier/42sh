@@ -104,17 +104,37 @@ int		get_command_line_starting_index(t_command_line *command_line)
 	return (res);
 }
 
+void	process_termcaps_through_copy(t_command_line *command_line,
+			t_utf8_copier *c, char *str, char *capability)
+{
+	char *tmp_str;
+
+	tmp_str = tgetstr(capability, NULL);
+	str[c->j] = 0;
+	ft_dprintf(command_line->fd, "%s", str);
+	c->j = 0;
+	tputs(tmp_str, 1, putchar_int);
+}
+
 void	process_copy_utf8_char(char *str,
 			t_command_line *command_line, int index, t_utf8_copier *c)
 {
-	int tmp;
+	int		tmp;
 
+	if (command_line->mode == E_MODE_VISUAL 
+		&& command_line->pinned_index != -1 && c->min != c->max)
+	{
+		if (c->i == c->min)
+			process_termcaps_through_copy(command_line, c, str, "mr");
+		if (c->i == c->max)
+			process_termcaps_through_copy(command_line, c, str, "me");
+	}
 	tmp = get_char_len2(0, c->len,
 		(unsigned char *)&command_line->dy_str->str[c->i - index]);
-//	ft_dprintf(2, "index: %d\ni:%d\ntmp:%d\n\n", index, i, tmp);
-	ft_strncpy(&str[c->i - index], &command_line->dy_str->str[c->i], tmp);
+	ft_strncpy(&str[c->j], &command_line->dy_str->str[c->i], tmp);
 	c->len -= tmp;
 	c->i += tmp;
+	c->j += tmp;
 	c->nb_chars++;
 }
 
@@ -124,14 +144,16 @@ void	process_print_command_line(t_command_line *command_line,
 	char			*str;
 	int				index;
 	t_utf8_copier	c;
+	char			*tmp_str;
 
-	if (!(str = malloc((4 * g_glob.winsize.ws_row * g_glob.winsize.ws_col) + 1)))
+	populate_min_max_selection(command_line, &c.min, &c.max);
+	if (!(str = malloc((4 * g_glob.winsize.ws_row * g_glob.winsize.ws_col) + 1 )))
 		return ;
 	index = get_command_line_starting_index(command_line);
 	c.i = index;
-//	ft_dprintf(2, "%d %d\n", i, index);
 	c.nb_chars = 0;
 	c.len = ft_strlen(&command_line->dy_str->str[index]);
+	c.j = 0;
 	while (command_line->dy_str->str[c.i]
 		&& c.nb_chars < empty_space - ft_strlen_utf8(ELIPTIC_COMMAND_LINE))
 	{
@@ -147,12 +169,14 @@ void	process_print_command_line(t_command_line *command_line,
 	}
 	else //nb_chars >= empty_space
 	{
-		ft_strcpy(&str[c.i - index], ELIPTIC_COMMAND_LINE);
-		c.i += ft_strlen(ELIPTIC_COMMAND_LINE);
+		ft_strcpy(&str[c.j], ELIPTIC_COMMAND_LINE);
+		c.j += ft_strlen(ELIPTIC_COMMAND_LINE);
 	}
-	str[c.i - index] = 0;
+	str[c.j] = 0;
 	ft_dprintf(command_line->fd, str);
 	free(str);
+	tmp_str = tgetstr("me", NULL);
+	tputs(tmp_str, 1, putchar_int);
 }
 
 void	print_command_line(t_command_line *command_line)
@@ -164,7 +188,8 @@ void	print_command_line(t_command_line *command_line)
 			+ g_glob.winsize.ws_col - ft_strlen_utf8(ELIPTIC_COMMAND_LINE) - 1;
 	else
 		empty_space = (g_glob.winsize.ws_col * (g_glob.winsize.ws_row - 1))
-			+ g_glob.winsize.ws_col - ft_strlen_utf8(g_glob.command_line.prompt) - 1;
+			+ g_glob.winsize.ws_col
+				- ft_strlen_utf8(g_glob.command_line.prompt) - 1;
 	process_print_command_line(command_line, empty_space);
 }
 
@@ -183,13 +208,9 @@ int		should_elipse_end(t_command_line *command_line, int scrolled_lines)
 	
 	index = get_command_line_starting_index2(scrolled_lines);
 	add = get_command_line_prefix_len(command_line);
-	if (add + ft_strlen_utf8(&command_line->dy_str->str[index]) > (g_glob.winsize.ws_row) * g_glob.winsize.ws_col - 1)
-	{
-//		ft_dprintf(2, "%d", add + ft_strlen_utf8(&command_line->dy_str->str[index]));
-//		ft_dprintf(2, " > %d\n", (g_glob.winsize.ws_row - 1) * g_glob.winsize.ws_col - 1);
-//		ft_dprintf(2, "WOWOW\n");
+	if (add + ft_strlen_utf8(&command_line->dy_str->str[index])
+		> (g_glob.winsize.ws_row) * g_glob.winsize.ws_col - 1)
 		return (1);
-	}
 	else
 		return (0);
 }
@@ -225,9 +246,27 @@ int		sh_scroll_command_line(t_command_line *command_line,
 	}
 	else
 		return (0);
-//	ft_dprintf(2, RED"%d\n"EOC, ret);
 	command_line->scrolled_lines += ret;
 	return (ret);
+}
+
+void	check_selection(t_command_line *command_line)
+{
+	int		min;
+	int		max;
+	int		index;
+	char	*tmp_str;
+
+	if (command_line->mode == E_MODE_VISUAL && command_line->pinned_index != -1)
+	{
+		index = get_command_line_starting_index(command_line);
+		populate_min_max_selection(command_line, &min, &max);
+		if (min < index)
+		{
+			tmp_str = tgetstr("mr", NULL);
+			tputs(tmp_str, 1, putchar_int);
+		}
+	}
 }
 
 /*
@@ -239,7 +278,8 @@ int		render_command_line(t_command_line *command_line,
 			int cursor_inc, int print_choices)
 {
 	char	*str;
-	int ret;
+	int		ret;
+
 	if (!isatty(0) || !command_line)
 		return (SUCCESS);
 	go_up_to_prompt(g_glob.winsize.ws_col, g_glob.cursor);
@@ -250,19 +290,15 @@ int		render_command_line(t_command_line *command_line,
 		ft_dprintf(command_line->fd, "%s%s%s%s",
 			BOLD, CYAN, g_glob.command_line.prompt, EOC);
 	else
+	{
+		check_selection(command_line);
 		ft_dprintf(command_line->fd, "%s", ELIPTIC_COMMAND_LINE);
-	/*
-	if (command_line->mode == E_MODE_VISUAL)
-		render_command_visual(command_line);
-	else if (command_line->searcher.active
-			&& !command_line->searcher.unsuccessful
-				&& ft_strcmp(command_line->searcher.dy_str->str, ""))
-		render_command_researched(command_line);
-	else
-	*/
-//	ft_dprintf(command_line->fd, "%s", command_line->dy_str->str);
-	//ft_dprintf(command_line->fd, "%s", command_line->dy_str->str);
+	}
 	print_command_line(command_line);
+//	else if (command_line->searcher.active
+//			&& !command_line->searcher.unsuccessful
+//				&& ft_strcmp(command_line->searcher.dy_str->str, ""))
+//		render_command_researched(command_line);
 	g_glob.cursor += cursor_inc;
 	replace_cursor_after_render();
 	(void)print_choices;
