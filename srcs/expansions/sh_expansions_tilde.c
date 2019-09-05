@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 13:56:29 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/04 10:51:33 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/05 11:01:36 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ int			sh_expansions_tilde_detect(char *start)
 **	return SUCESS or FAILURE
 */
 
-static int	sh_expansions_tilde_process_bonus(t_context *context, t_expansion *exp)
+static int	sh_expansions_tilde_process_bonus(
+		t_context *context, t_expansion *exp)
 {
 	char			*buf;
 	struct passwd	*passwd;
@@ -82,13 +83,15 @@ int			sh_expansions_tilde_process(t_context *context, t_expansion *exp)
 {
 	char	*home;
 
-	if (!exp->original[1] || ft_iswhite(exp->original[1]) || exp->original[1] == '/' || exp->original[1] == ':')
+	if (!exp->original[1] || ft_iswhite(exp->original[1])
+			|| exp->original[1] == '/' || exp->original[1] == ':')
 	{
 		if (!(home = sh_vars_get_value(context->env, NULL, "HOME")))
 			return (sh_perror_err(SH_ERR1_ENV_NOT_SET, "HOME"));
 		if (!(exp->res = (t_dy_str *)malloc(sizeof(t_dy_str))))
 			return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_tilde_1 (1)"));
-		if (!(exp->res->str = ft_strrep_pattern_free(exp->original, home, "~", 0)))
+		if (!(exp->res->str = ft_strrep_pattern_free(
+						exp->original, home, "~", 0)))
 			return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_tilde_1 (2)"));
 		return (SUCCESS);
 	}

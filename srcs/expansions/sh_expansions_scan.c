@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/04 11:17:39 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/09/04 19:19:06 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/05 13:50:07 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,8 @@ static void	quote_removal(char **input, int *index)
 **	SUCCESS : Successfully processed and repalced expansion by it's result.
 */
 
-int			sh_expansions_scan(char **input, int index, int do_expansion, t_context *context, t_ast_node *node)
+int			sh_expansions_scan(char **input, int index,
+	int do_expansion, t_context *context, t_ast_node *node)
 {
 	int	ret;
 

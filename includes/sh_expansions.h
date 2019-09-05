@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 17:46:46 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/04 16:18:20 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/09/05 11:12:35 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 typedef struct s_expansion	t_expansion;
 typedef enum e_exp_type		t_exp_type;
 
-enum	e_exp_type
+enum					e_exp_type
 {
 	EXP_VAR = 1,
 	EXP_PARAM,
@@ -28,13 +28,13 @@ enum	e_exp_type
 	EXP_TILDE,
 };
 
-struct	s_expansion
+struct					s_expansion
 {
-	t_dy_str		*res;
-	char			*original;
-	char			*expansion;
-	t_exp_type		type;
-	int				(*process)(t_context *, t_expansion *);
+	t_dy_str			*res;
+	char				*original;
+	char				*expansion;
+	t_exp_type			type;
+	int					(*process)(t_context *, t_expansion *);
 };
 
 /*

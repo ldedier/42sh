@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:35:27 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/20 09:52:03 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/05 11:41:04 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 
 # include "sh_21.h"
 
-typedef struct dirent	t_dirent;
-typedef struct s_heredoc t_heredoc;
+typedef struct dirent		t_dirent;
+typedef struct s_heredoc	t_heredoc;
 typedef char *(*t_heredoc_func)(const char *);
 
-struct			s_heredoc
+struct				s_heredoc
 {
 	char			*stop;
-	int 			*apply_expansion;
+	int				*apply_expansion;
 	t_heredoc_func	func;
 };
 /*
@@ -50,6 +50,12 @@ int		sh_traverse_cmd_word(t_ast_node *node, t_context *context);
 ** sh_traverse_lessgreat.c
 */
 int		sh_traverse_lessgreat(t_ast_node *node, t_context *context);
+
+/*
+** sh_traverse_io_here_phase_expansion.c
+*/
+int		sh_traverse_io_here_phase_expansion(
+	t_redirection *redirection, t_ast_node *node, t_context *context);
 
 /*
 ** sh_traverse_list.c
@@ -116,8 +122,8 @@ int		sh_traverse_cmd_name(t_ast_node *node, t_context *context);
 /*
 ** sh_traverse_io_here_expansion.c
 */
-int 	sh_traverse_io_here_expansion(
-	char **str, int *start_expansion, t_context *context);
+int		sh_traverse_io_here_expansion(
+	char **str, int *cursor, t_context *context);
 
 /*
 ** sh_traverse_io_file_tools.c

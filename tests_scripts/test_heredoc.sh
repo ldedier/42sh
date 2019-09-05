@@ -3,33 +3,42 @@
 #                                                         :::      ::::::::    #
 #    test_heredoc.sh                                    :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/03 10:58:30 by jdugoudr          #+#    #+#              #
-#    Updated: 2019/09/04 17:32:07 by jdugoudr         ###   ########.fr        #
+#    Updated: 2019/09/05 13:45:24 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 launch "Heredoc"
 	launch "Simple heredoc"
-	test_launch_pipe ./tests_files/heredoc_1
-	test_launch_pipe ./tests_files/heredoc_2
-	test_launch_pipe ./tests_files/heredoc_3
-	test_launch_pipe ./tests_files/heredoc_4
-	test_launch_pipe ./tests_files/heredoc_5
-	test_launch_pipe ./tests_files/heredoc_6
+		for i in `seq 1 6`; do
+			test_launch_pipe ./tests_files/heredoc_${i}
+		done
 	launch "Expansion heredoc"
-	test_launch_pipe ./tests_files/heredoc_7
-	test_launch_pipe ./tests_files/heredoc_8
-	test_launch_pipe ./tests_files/heredoc_9
-	test_launch_pipe ./tests_files/heredoc_10
-	test_launch_pipe ./tests_files/heredoc_11
-	test_launch_pipe ./tests_files/heredoc_12
-	test_launch_pipe ./tests_files/heredoc_13
-	test_launch_pipe ./tests_files/heredoc_14
+		for i in `seq 7 14`; do
+			test_launch_pipe ./tests_files/heredoc_${i}
+		done
 	launch "Hard"
-	test_launch_pipe ./tests_files/heredoc_15
-	test_launch_pipe ./tests_files/heredoc_16
-	test_launch_pipe ./tests_files/heredoc_17
-	test_launch_pipe ./tests_files/heredoc_18
-	test_launch_pipe ./tests_files/heredoc_19
+		for i in `seq 15 20`; do
+			test_launch_pipe ./tests_files/heredoc_${i}
+		done
+	launch "Quoting"
+		for i in `seq 21 30` ; do
+			test_launch_pipe ./tests_files/heredoc_${i}
+		done
+	launch "Parameter expansion"
+		for i in `seq 31 35` ; do
+			test_launch_pipe ./tests_files/heredoc_${i}
+		done
+	launch "Tilde"
+		for i in `seq 36 40` ; do
+			test_launch_pipe ./tests_files/heredoc_${i}
+		done
+	launch "fd"
+		for i in `seq 41 43` ; do
+			test_launch_pipe ./tests_files/heredoc_${i}
+		done
+
+
+finish
