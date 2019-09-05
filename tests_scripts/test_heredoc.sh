@@ -6,7 +6,7 @@
 #    By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/03 10:58:30 by jdugoudr          #+#    #+#              #
-#    Updated: 2019/09/04 17:32:07 by jdugoudr         ###   ########.fr        #
+#    Updated: 2019/09/05 10:28:49 by jdugoudr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,3 +33,4 @@ launch "Heredoc"
 	test_launch_pipe ./tests_files/heredoc_17
 	test_launch_pipe ./tests_files/heredoc_18
 	test_launch_pipe ./tests_files/heredoc_19
+	test_launch_pipe ./tests_files/heredoc_20
