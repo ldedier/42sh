@@ -63,7 +63,10 @@ int		render_choices(t_command_line *command_line, int *to_go_up)
 //	ft_dprintf(2, "screen rows: %d\n\n", g_glob.winsize.ws_row);
 //	ft_dprintf(2, "nb_rows commandline: %d\n\n", command_line_nb_rows(command_line));
 	if (!sh_should_render_choices(command_line, nb_visible_lines))
+	{
+//		ft_dprintf(2, RED"OUAI \n"EOC);
 		return (SUCCESS);
+	}
 	*to_go_up = get_down_from_command(command_line);
 	if (!(print_buffer = new_print_buffer()))
 		return (sh_perror(SH_ERR1_MALLOC, "render_choices"));

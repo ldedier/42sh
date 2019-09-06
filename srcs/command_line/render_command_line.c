@@ -34,17 +34,20 @@ int		print_after_command_line(t_command_line *command_line,
 {
 	int to_go_up;
 
+	to_go_up = 0;
 	if (print_choices && command_line->autocompletion.active)
 	{
 		render_choices(command_line, &to_go_up);
 		if (to_go_up > 0)
+		{
 			go_up_left(to_go_up);
-		replace_cursor_on_index();
+			replace_cursor_on_index();
+		}
 	}
 	else if (command_line->searcher.active)
 	{
 		to_go_up = get_down_from_command(command_line);
-		ft_dprintf(2, "togoup: %d\n", to_go_up);
+	//	ft_dprintf(2, "togoup: %d\n", to_go_up);
 		if (render_research(command_line))
 			return (FAILURE);
 		go_up_left(to_go_up);
@@ -210,7 +213,7 @@ void	print_command_line(t_command_line *command_line)
 	if (command_line->searcher.active)
 
 	{
-		ft_dprintf(2, "research nb lines: %d\n", get_research_nb_lines(command_line));
+	//	ft_dprintf(2, "research nb lines: %d\n", get_research_nb_lines(command_line));
 		empty_space -= get_research_nb_lines(command_line) * g_glob.winsize.ws_col;
 	}
 	process_print_command_line(command_line, empty_space);
@@ -248,13 +251,13 @@ int		sh_scroll_command_line(t_command_line *command_line,
 	int	research_nb_lines;
 
 	research_nb_lines = get_research_nb_lines(command_line);
-	ft_dprintf(2, "research_nb_lines: %d\n", research_nb_lines);
+	//ft_dprintf(2, "research_nb_lines: %d\n", research_nb_lines);
 	true_cursor = get_true_cursor_pos_prev_prompt(cursor);
 	target_screen_line = ((true_cursor + cursor_inc) / g_glob.winsize.ws_col)
 		- command_line->scrolled_lines;
 	current_screen_line = (true_cursor / g_glob.winsize.ws_col)
 		- command_line->scrolled_lines;
-	 ft_dprintf(2, "scrolled lines:%d\ntarget:%d (+%d)\ncurrent:%d\nrow:%d\n\n", command_line->scrolled_lines, target_screen_line, cursor_inc, current_screen_line, g_glob.winsize.ws_row);
+	 //ft_dprintf(2, "scrolled lines:%d\ntarget:%d (+%d)\ncurrent:%d\nrow:%d\n\n", command_line->scrolled_lines, target_screen_line, cursor_inc, current_screen_line, g_glob.winsize.ws_row);
 	if (target_screen_line < 1)
 	{
 		if (command_line->scrolled_lines + target_screen_line > 0)
