@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/22 14:40:58 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/05 19:07:03 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/06 16:50:19 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -253,11 +253,26 @@ int		sh_scroll_command_line(t_command_line *command_line,
 	research_nb_lines = get_research_nb_lines(command_line);
 	//ft_dprintf(2, "research_nb_lines: %d\n", research_nb_lines);
 	true_cursor = get_true_cursor_pos_prev_prompt(cursor);
+
+	// ft_dprintf(2, "scrolled lines:%d\ntarget:%d 
+	// (+%d)\ncurrent:%d\nrow:%d\n\n", command_line->scrolled_lines, 
+	// target_screen_line, cursor_inc, current_screen_line, g_glob.winsize.ws_row);
+	
+	//scroll with dimensions first.
+
+	//si ws_row > necessaire et que on est a la fin => nb_scrolled -= chepa
+	while (!should_elipse_end(command_line, command_line->scrolled_lines)
+		&& command_line->scrolled_lines
+		&& g_glob.winsize.ws_row - research_nb_lines
+			> command_line_nb_rows(command_line))
+	{
+		command_line->scrolled_lines--;
+		ft_dprintf(2, "LOLKOL\n");
+	}
 	target_screen_line = ((true_cursor + cursor_inc) / g_glob.winsize.ws_col)
 		- command_line->scrolled_lines;
 	current_screen_line = (true_cursor / g_glob.winsize.ws_col)
 		- command_line->scrolled_lines;
-	 //ft_dprintf(2, "scrolled lines:%d\ntarget:%d (+%d)\ncurrent:%d\nrow:%d\n\n", command_line->scrolled_lines, target_screen_line, cursor_inc, current_screen_line, g_glob.winsize.ws_row);
 	if (target_screen_line < 1)
 	{
 		if (command_line->scrolled_lines + target_screen_line > 0)
@@ -268,7 +283,7 @@ int		sh_scroll_command_line(t_command_line *command_line,
 	else if (target_screen_line >= g_glob.winsize.ws_row - 1 - research_nb_lines)
 	{
 		if (should_elipse_end(command_line, command_line->scrolled_lines +
-			target_screen_line - g_glob.winsize.ws_row - 1 - research_nb_lines))
+			target_screen_line - g_glob.winsize.ws_row + 1 + research_nb_lines))
 			ret = target_screen_line - g_glob.winsize.ws_row + research_nb_lines + 2;
 		else
 			ret = target_screen_line - g_glob.winsize.ws_row + research_nb_lines + 1;
@@ -315,6 +330,11 @@ int		render_command_line(t_command_line *command_line,
 	ret = sh_scroll_command_line(command_line, g_glob.cursor, cursor_inc);
 	str = tgetstr("cd", NULL);
 	tputs(str, 1, putchar_int);
+	if (command_line->scrolled_lines && g_glob.winsize.ws_row <= 2)
+	{
+		ft_dprintf(command_line->fd, "<...>");
+		return (SUCCESS);
+	}
 	if (!command_line->scrolled_lines)
 		ft_dprintf(command_line->fd, "%s%s%s%s",
 			BOLD, CYAN, g_glob.command_line.prompt, EOC);

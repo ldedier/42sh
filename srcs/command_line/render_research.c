@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 19:54:46 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/05 18:53:08 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/06 12:16:36 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ int			render_research(t_command_line *command_line)
 	ft_printf("%s%s_", title, command_line->searcher.dy_str->str);
 	nb_visible_lines = ((ft_strlen_utf8(command_line->searcher.dy_str->str)
 		+ ft_strlen(title) + 1) - 1) / g_glob.winsize.ws_col;
-	ft_dprintf(2, "%d\n", nb_visible_lines);
 	go_up_left(nb_visible_lines);
 	return (SUCCESS);
 }

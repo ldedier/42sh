@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 14:51:35 by ldedier           #+#    #+#             */
-/*   Updated: 2019/06/15 16:43:34 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/06 14:50:56 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,15 +62,16 @@ int		substitute_current_index(t_command_line *command_line, t_file *file)
 	return (SUCCESS);
 }
 
-int		command_line_nb_rows(t_command_line *command_line) //outdated
+int		command_line_nb_rows(t_command_line *command_line)
 {
 	if (command_line->scrolled_lines)
 	{
-		return (ft_min(g_glob.winsize.ws_row,
-			((ft_strlen_utf8(command_line->dy_str->str) +
-				ft_strlen_utf8(ELIPTIC_COMMAND_LINE))
-					/ g_glob.winsize.ws_col + 1)
-						- command_line->scrolled_lines));
+		return (ft_min(g_glob.winsize.ws_row
+			- get_research_nb_lines(command_line),
+				((ft_strlen_utf8(command_line->dy_str->str)
+					+ ft_strlen_utf8(ELIPTIC_COMMAND_LINE))
+						/ g_glob.winsize.ws_col + 1)
+							- command_line->scrolled_lines));
 	}
 	else
 	{
