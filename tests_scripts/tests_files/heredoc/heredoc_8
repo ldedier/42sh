@@ -1,0 +1,6 @@
+cat << eof
+hohoho
+$USER &
+${PWD}
+\${PWD}
+eof

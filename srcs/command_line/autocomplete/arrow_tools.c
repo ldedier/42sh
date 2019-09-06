@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 01:47:50 by ldedier           #+#    #+#             */
-/*   Updated: 2019/06/06 23:26:09 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/08/21 17:55:33 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,18 +58,18 @@ int		substitute_command_str_from_str(t_command_line *command_line,
 	return (SUCCESS);
 }
 
-int		substitute_command_str(t_command_line *command_line, char *str)
+int		substitute_command_str(t_shell *shell ,t_command_line *command_line,
+			char *str)
 {
 	t_word	word;
 
-	if (populate_word_by_index(command_line->dy_str->str,
+	if (populate_parsed_word_by_index(shell, command_line->dy_str->str,
 		command_line->current_index, &word))
 		return (FAILURE);
 	if (process_substitute_command(command_line, str, word, 0))
 	{
-		free(word.str);
 		return (FAILURE);
 	}
-	free(word.str);
-	return (SUCCESS);
+	return (SUCCESS);	
 }
+

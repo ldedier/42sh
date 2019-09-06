@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/05 15:25:49 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/05 15:42:58 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/08/20 15:56:29 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	print_eof_delimiter(void)
 	tputs(res, 1, putchar_int);
 	res = tgetstr("mr", NULL);
 	tputs(res, 1, putchar_int);
-	ft_printf("%%");
+	ft_dprintf(g_glob.command_line.fd, "%%");
 	res = tgetstr("me", NULL);
 	tputs(res, 1, putchar_int);
 }
@@ -36,7 +36,7 @@ int		sh_add_eof(int interrupted)
 		i = 0;
 		while (i < g_glob.winsize.ws_col - 1)
 		{
-			ft_dprintf(0, " ");
+			ft_dprintf(g_glob.command_line.fd, " ");
 			i++;
 		}
 		res = tgetstr("cr", NULL);

@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/05 15:41:50 by ldedier           #+#    #+#             */
-/*   Updated: 2019/07/30 20:12:41 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/21 16:35:22 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,17 @@ int		sh_process_command(t_shell *shell, char *command)
 
 	sh_verbose_update(shell);
 	ret = 0;
-	if (!ret && (ret = sh_lexer(command, &tokens, shell)) != SUCCESS)
+	if ((ret = sh_lexer(command, &tokens, shell)) != SUCCESS)
 	{
 		if (sh_env_update_ret_value_and_question(shell, ret) == FAILURE)
 			ret = FAILURE;
 	}
 	if (!ret && (ret = sh_parser(tokens, shell)))
+	{
+		sh_perror_err("syntax error", NULL);
 		if (sh_env_update_ret_value_and_question(shell, ret) == FAILURE)
 			ret = FAILURE;
+	}
 	if (!ret)
 		ret = sh_process_traverse(shell);
 	sh_clear_parser(&shell->parser);

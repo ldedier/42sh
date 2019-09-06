@@ -6,7 +6,7 @@
 #    By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/08/28 13:37:29 by jmartel          ###   ########.fr        #
+#    Updated: 2019/09/05 13:49:19 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,7 +61,7 @@ SRCS			 =	debug.c first_sets.c grammar.c init_cfg.c \
 					first_sets_tools.c
 
 ################################################################
-########					GRAMMAR						########
+########					TRAVERSE					########
 ################################################################
 SRCS			+=	sh_traverse.c sh_traverse_default.c \
 					sh_traverse_semicol.c sh_traverse_pipe_sequence.c \
@@ -75,7 +75,9 @@ SRCS			+=	sh_traverse.c sh_traverse_default.c \
 					sh_traverse_io_redirect.c sh_traverse_io_here.c \
 					sh_traverse_io_here_canonical.c \
 					sh_traverse_io_file.c sh_traverse_io_file_tools.c \
-					sh_traverse_and_or.c sh_traverse_list.c
+					sh_traverse_and_or.c sh_traverse_list.c \
+					sh_traverse_io_here_expansion.c \
+					sh_traverse_io_here_phase_expansion.c
 
 ################################################################
 ########				COMMAND_LINE					########
@@ -97,7 +99,7 @@ SRCS			+=	keys.c cursor_motion.c edit_command.c \
 					sh_get_cursor_position.c eof_percent.c \
 					update_prompt_cwd.c keys_insert_tools.c keys_flush.c \
 					keys_debug.c screen_tools.c get_char_len.c
-#sh_clipboard.c sh_command_line_tools.c 
+#sh_clipboard.c sh_command_line_tools.c
 #					sh_clipboard_tools.c
 
 ################################################################
@@ -123,10 +125,10 @@ SRCS			+=	parser.c print_ast.c compute_lr_automata.c \
 					compute_lr_tables.c lr_parse.c compute_first_state.c \
 					state.c compute_closure.c compute_transitions.c \
 					init_parsing.c reduce.c reduce_tools.c free_parser.c \
-					transitive_first_sets.c transition_tools.c \
-					closure_tools.c free_node.c free_parser_tools.c \
-					fill_lr_tables.c shift.c compute_closure_tools.c \
-					reduce_pop.c ast_node_tools.c
+					transitive_first_sets.c \
+					free_node.c  \
+					shift.c free_parser_tools.c \
+					reduce_pop.c ast_node_tools.c parser_debug.c
 
 ################################################################
 ########					LEXER						########
@@ -182,7 +184,7 @@ SRCS			+=	add_choices_from_dir.c auto_completion.c \
 					left_arrow.c right_arrow.c arrows_vertical.c \
 					fill_buffer.c render_choices_tools.c file_tables.c \
 					fill_buffer_from_tables.c add_file_tools.c \
-					auto_completion_tools.c
+					auto_completion_tools.c escape.c
 
 ################################################################
 ########						VARS					########
@@ -207,7 +209,7 @@ SRCS			+=	sh_builtin.c sh_builtin_pwd.c \
 					sh_builtin_cd.c sh_builtin_cd_pre_rules.c \
 					sh_builtin_cd_post_rules.c \
 					sh_builtin_cd_last_rules.c \
-					sh_builtin_type.c sh_builtin_type_path.c \
+					sh_builtin_type.c sh_builtin_type_search_path.c sh_builtin_type_search.c\
 					sh_builtin_verbose.c \
 					sh_builtin_hash.c sh_builtin_set.c sh_builtin_unset.c \
 					sh_builtin_export.c sh_builtin_hash_tools.c \
@@ -218,14 +220,15 @@ SRCS			+=	sh_builtin.c sh_builtin_pwd.c \
 ################################################################
 ########						EXPANSION				########
 ################################################################
-SRCS			 +=	sh_expansions.c sh_expansions_scan.c \
+SRCS			 +=	sh_expansions.c \
 					sh_expansions_parameter.c \
 					sh_expansions_parameter_process.c \
 					sh_expansions_parameter_tools.c \
-					sh_expansions_tilde.c sh_expansions_tilde_process.c\
-					sh_expansions_variable.c \
+					sh_expansions_tilde.c \
+					sh_expansions_variable.c t_expansion.c \
+					sh_expansions_process.c sh_expansions_replace.c \
 					sh_expansions_field_splitting.c \
-					t_expansion.c \
+					sh_get_heredoc.c sh_expansions_scan.c
 
 ################################################################
 ########					PERROR						########
@@ -306,7 +309,7 @@ rere:
 	@$(RM) $(OBJECTS)
 	@$(RM) -r $(OBJDIR)
 	@$(RM) $(BINDIR)/$(NAME)
-	$(MAKE) all
+	@$(MAKE) all
 
 os:
 	@$(ECHO) $(OS)

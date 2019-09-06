@@ -1,0 +1,10 @@
+cat << $USER
+Just a little
+more
+hard
+eof
+jdugoudr
+jmartel
+ldedier
+mdaoud
+$USER

@@ -5,39 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/07 09:43:08 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/07 09:59:23 by jmartel          ###   ########.fr       */
+/*   Created: 2019/09/04 11:17:39 by jdugoudr          #+#    #+#             */
+/*   Updated: 2019/09/05 13:50:07 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
-
-static int	sh_expansions_process(
-	char **input, char *original, t_context *context, int *index)
-{
-	t_expansion	exp;
-	int			ret;
-
-	if ((ret = sh_expansions_init(original, &exp)) == ERROR)
-	{
-		*index += ft_strlen(original);
-		return (SUCCESS);
-	}
-	if (sh_verbose_expansion())
-		t_expansion_show(&exp);
-	if (!ret)
-		ret = exp.process(context, &exp);
-	if (!ret)
-		ret = sh_expansions_replace(&exp, input, *index);
-	if (ret)
-	{
-		t_expansion_free_content(&exp);
-		return (ret);
-	}
-	*index += ft_strlen(exp.res->str);
-	t_expansion_free_content(&exp);
-	return (SUCCESS);
-}
 
 static void	backslash(char *input, int *index, int quoted)
 {
@@ -45,47 +18,85 @@ static void	backslash(char *input, int *index, int quoted)
 	{
 		if (input[*index + 1] == '$' || input[*index + 1] == '"'
 			|| input[*index + 1] == '\\')
-			ft_strdelchar(input + *index, 0);
+			ft_strdelchars(input, *index, 1);
+		else if (input[*index + 1] == '\n')
+			ft_strdelchars(input, *index, 2);
 	}
 	else
-		ft_strdelchar(input + *index, 0);
+		ft_strdelchars(input, *index, 1);
 	(*index) += 1;
 }
 
-static int	quote_expansion(
-	char **input, int *index, char c, t_context *context)
+static int	double_quote_removal(
+	char **input, int *index, int do_expansion, t_context *context)
 {
-	int		ret;
+	int	ret;
 
-	ft_strdelchar(*input + *index, 0);
-	while ((*input)[*index] != c)
+	ft_strdelchars(*input, *index, 1);
+	while ((*input)[*index] != '\"')
 	{
-		if (c == '"' && (*input)[*index] == '$')
+		if ((*input)[*index] == '$' && do_expansion)
 		{
-			ret = sh_expansions_process(input, *input + *index, context, index);
-			if (ret != SUCCESS)
+			if ((ret = sh_expansions_process(
+				input, *input + *index, context, index)) != SUCCESS)
+			{
+				if (sh_env_update_ret_value_and_question(context->shell, ret))
+					return (FAILURE);
 				return (ret);
+			}
 		}
-		else if (c == '"' && (*input)[*index] == '\\')
+		else if ((*input)[*index] == '\\')
 			backslash(*input, index, 1);
 		else
 			*index += 1;
 	}
-	ft_strdelchar(*input + *index, 0);
+	if (!(*input)[*index])
+		return (ERROR);
+	ft_strdelchars(*input, *index, 1);
 	return (SUCCESS);
 }
 
-static int	unquote_expansion(char **input, int *index, t_context *context)
+static int	unquoted_var(char **input, int *index, t_context *context, t_ast_node *node)
 {
-	int		ret;
+	int	ret;
 
-	ret = sh_expansions_process(input, *input + *index, context, index);
-	return (ret);
+	if ((ret = sh_expansions_process(
+		input, *input + *index, context, index)) != SUCCESS)
+	{
+		if (sh_env_update_ret_value_and_question(context->shell, ret))
+			return (FAILURE);
+		return (ret);
+	}
+	sh_expansions_splitting(node, context);
+	return (SUCCESS);
+	(void)node;
 }
 
-int			sh_scan_expansions(char **input, int index, t_context *context)
+static void	quote_removal(char **input, int *index)
 {
-	int		ret;
+	ft_strcpy(*input + *index, *input + *index + 1);
+	while ((*input)[*index] != '\'')
+		*index += 1;
+	ft_strcpy(*input + *index, *input + *index + 1);
+}
+
+/*
+** sh_scan_expansions:
+** Scan input, starting at index
+** Remove quote, double quote and backslah.
+** Replace variable with looking in context variables.
+**
+** Returned Values :
+**	ERROR : Bad expansion format detected
+**	FAILURE : Malloc Error
+**	STOP_CMD_LINE : ${?} or ${:?} returned an error => stop current line
+**	SUCCESS : Successfully processed and repalced expansion by it's result.
+*/
+
+int			sh_expansions_scan(char **input, int index,
+	int do_expansion, t_context *context, t_ast_node *node)
+{
+	int	ret;
 
 	while ((*input)[index] != '\'' && (*input)[index] != '"'
 		&& (*input)[index] != '\\' && (*input)[index] != '$'
@@ -93,17 +104,20 @@ int			sh_scan_expansions(char **input, int index, t_context *context)
 		index++;
 	if ((*input)[index] == '\0')
 		return (SUCCESS);
-	if ((*input)[index] == '\'' || (*input)[index] == '"')
+	if ((*input)[index] == '\'')
+		quote_removal(input, &index);
+	else if ((*input)[index] == '"')
 	{
-		if ((ret = quote_expansion(input, &index, (*input)[index], context)))
+		if ((ret = double_quote_removal(
+			input, &index, do_expansion, context)) != SUCCESS)
 			return (ret);
 	}
-	else if ((*input)[index] == '$')
+	else if ((*input)[index] == '$' && do_expansion)
 	{
-		if ((ret = unquote_expansion(input, &index, context)) != SUCCESS)
+		if ((ret = unquoted_var(input, &index, context, node)) != SUCCESS)
 			return (ret);
 	}
 	else
 		backslash(*input, &index, 0);
-	return (sh_scan_expansions(input, index, context));
+	return (sh_expansions_scan(input, index, do_expansion, context, node));
 }

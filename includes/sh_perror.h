@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 14:16:12 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/27 14:08:25 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/09/05 13:11:16 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "sh_21.h"
 
-# define SH_NAME		"bash" // need to be changed to 21sh (modified for diff tests)
+# define SH_NAME		"bash" // need to be changed to 42sh (modified for diff tests)
 # define SH_ERR_COLOR	COLOR_PINK
 
 # define SH_ERR1_MALLOC			"Malloc error occured"
@@ -25,6 +25,7 @@
 # define SH_ERR1_FORK			"Could not fork, too many processes are running"
 # define SH_ERR1_CMD_NOT_FOUND	"Command not found"
 # define SH_ERR1_HISTORIC		"Could not open the historic file"
+# define SH_ERR1_TTY			"Could not open the tty file descriptor"
 # define SH_ERR1_PERM_DENIED	"Permission denied"
 # define SH_ERR1_TOO_MANY_ARGS	"Too many arguments"
 # define SH_ERR1_NOT_A_DIR		"Not a directory"
@@ -40,14 +41,23 @@
 # define SH_ERR2_INVALID_OPT			"Invalid option"
 # define SH_ERR2_TOO_MANY_SYMLINK		"Too many levels of symbolic links"
 
-# define SH_BLT_UNAREXP			"unary operator expected"
-# define SH_BLT_BINAREXP		"binary operator expected"
-# define SH_BLT_NOTWELLFORM		"sorry your command are not well formatted"
-# define SH_BLT_INTEGER			"integer expression expected"
+# define SH_BLT_UNAREXP			"Unary operator expected"
+# define SH_BLT_BINAREXP		"Binary operator expected"
+# define SH_BLT_NOTWELLFORM		"Sorry your command are not well formatted"
+# define SH_BLT_INTEGER			"Integer expression expected"
+
+# define SH_BAD_SUBSTITUTE		"Bad subsitution"
 
 /*
 ********************************************************************************
 */
+
+/*
+** sh_perror_fd.c
+*/
+int		sh_perror2_fd(
+	int fd, const char *error, const char *prefix, const char *suffix);
+int		sh_perror_fd(int fd, const char *error, const char *suffix);
 
 /*
 ** sh_perror.c
@@ -71,12 +81,5 @@ int		sh_perror2_err_fd(
 	int fd, const char *error, const char *prefix, const char *suffix);
 void	*sh_perror2n_fd(
 	int fd, const char *error, const char *prefix, const char *suffix);
-
-/*
-** sh_perror_fd.c
-*/
-int		sh_perror2_fd(
-	int fd, const char *error, const char *prefix, const char *suffix);
-int		sh_perror_fd(int fd, const char *error, const char *suffix);
 
 #endif

@@ -1,0 +1,3 @@
+cat << eof
+\\$USER
+eof

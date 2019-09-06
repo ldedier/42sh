@@ -1,0 +1,7 @@
+<<eof cat ; echo $?
+${var}
+eof
+var=Okalmose
+<<eof cat ; echo $?
+${var}
+eof

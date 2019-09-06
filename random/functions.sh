@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/21 15:58:19 by jmartel           #+#    #+#              #
-#    Updated: 2019/07/13 19:10:36 by jmartel          ###   ########.fr        #
+#    Updated: 2019/09/02 16:33:43 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,7 +43,7 @@ valgrind_test()
 	cat buffer
 
 		valgrind --leak-check=full --suppressions=$suppressions_file \
-			--error-exitcode=$error_exit_code --log-file=$tmp_log_file ./21sh < buffer >/dev/null 2>&1
+			--error-exitcode=$error_exit_code --log-file=$tmp_log_file ./42sh < buffer >/dev/null 2>&1
 		ret=$?
 		if [ $ret -eq $error_exit_code ] ; then
 			echo -e "${red}valgrind error, tracing logs at ${inner_log_dir}${eoc}"
@@ -82,7 +82,7 @@ check_ret_value()
 
 		if [ "$sh_ret" -ne  "$bash_ret" ] ; then 
 			echo -e "${red}BAD RETURNED VALUE"
-			echo -e "bash : $bash_ret || 21sh : $sh_ret${eoc}"
+			echo -e "bash : $bash_ret || 42sh : $sh_ret${eoc}"
 			echo -e "${yellow}`cat buffer`${eoc}"
 			return 1
 		fi
@@ -96,16 +96,16 @@ launch_test()
 	if [ ! -e "$1" ] ; then echo "test_launch_pipe : can't find $1" ;  return ; fi
 
 	diff_tried=$((diff_tried+1))
-	touch res1.bash res2.bash res1.21sh res2.21sh
+	touch res1.bash res2.bash res1.42sh res2.42sh
 	if [ -n "$controlled_env" ] ; then
 		cat "$1" | env -i PATH=$PATH TERM=$TERM PWD="`pwd`" bash 1>res1.bash 2>res2.bash
 		bash_ret=$?
-		cat "$1" | env -i PATH=$PATH TERM=$TERM PWD="`pwd`" ./${exec} 1>res1.21sh 2>res2.21sh
+		cat "$1" | env -i PATH=$PATH TERM=$TERM PWD="`pwd`" ./${exec} 1>res1.42sh 2>res2.42sh
 		sh_ret=$?
 	else
 		cat "$1" | bash 1>res1.bash 2>res2.bash
 		bash_ret=$?
-		cat "$1" | ./${exec} 1>res1.21sh 2>res2.21sh
+		cat "$1" | ./${exec} 1>res1.42sh 2>res2.42sh
 		sh_ret=$?
 	fi
 
@@ -114,12 +114,12 @@ launch_test()
 
 # echo "continue (stdout): $continue"
 	if [ 0 -eq "$continue" ] ; then
-		diff_files res1.21sh res1.bash
+		diff_files res1.42sh res1.bash
 		continue=$?
 	fi
 # echo "continue (stderr): $continue"
 	if [ 0 -eq "$continue" ] && [ -n "${test_stderr}" ] ; then
-		diff_files res2.21sh res2.bash
+		diff_files res2.42sh res2.bash
 		continue=$?
 	fi
 # echo "continue (ok): $continue"
@@ -132,7 +132,7 @@ launch_test()
 		valgrind_test
 	fi
 
-	rm -f res1.bash res1.21sh
-	rm -f res2.bash res2.21sh
+	rm -f res1.bash res1.42sh
+	rm -f res2.bash res2.42sh
 	return $continue
 }

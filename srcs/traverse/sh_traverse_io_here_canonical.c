@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/07 04:29:57 by ldedier           #+#    #+#             */
-/*   Updated: 2019/07/31 18:47:59 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/02 16:34:28 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,14 @@ void			populate_command_line(t_command_line *command_line, char *str)
 
 static int		process_heredoc_canonical_mode(t_gnl_info info,
 					char **res, t_shell *shell,
-						char *(*heredoc_func)(const char *))
+						t_heredoc heredoc_data)
 {
 	int			ret;
 
 	if (info.separator != E_SEPARATOR_ZERO)
 	{
 		populate_command_line(&g_glob.command_line, info.line);
-		if ((ret = process_heredoc_through_command(res, shell, heredoc_func,
+		if ((ret = process_heredoc_through_command(res, shell, heredoc_data,
 			&g_glob.command_line)) != 3)
 			return (ret);
 	}
@@ -46,8 +46,8 @@ int				heredoc_canonical_mode_eof(char *eof, char **res)
 	{
 		if (ft_strcmp(g_glob.command_line.to_append_str, eof))
 		{
-			ft_dprintf(2, "21sh: warning: here-document "
-					"delimited by end of file (wanted `%s')\n", eof);
+			ft_dprintf(2, "%s: warning: here-document "
+					"delimited by end of file (wanted `%s')\n", SH_NAME, eof);
 			if (!(*res = ft_strjoin_free(*res,
 				g_glob.command_line.to_append_str, 1)))
 			{
@@ -72,7 +72,7 @@ char			*heredoc_gnl_error(int *ret, char **res)
 }
 
 char			*heredoc_canonical_mode(t_shell *shell, char *eof,
-					char *(*heredoc_func)(const char *), int *ret)
+					t_heredoc heredoc_data, int *ret)
 {
 	int			gnl_ret;
 	t_gnl_info	info;
@@ -84,7 +84,7 @@ char			*heredoc_canonical_mode(t_shell *shell, char *eof,
 	while ((gnl_ret = get_next_line2(0, &info, 1)) == 1)
 	{
 		if ((*ret = process_heredoc_canonical_mode(info,
-				&res, shell, heredoc_func)) != 3)
+				&res, shell, heredoc_data)) != 3)
 		{
 			if (*ret == SUCCESS)
 				return (res);

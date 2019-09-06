@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/31 16:05:53 by ldedier           #+#    #+#             */
-/*   Updated: 2019/07/31 16:07:00 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/08/20 17:11:26 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,31 @@ void			reset_signals(void)
 		signal(i++, SIG_DFL);
 }
 
+void	sigtstp_handler(int signal)
+{
+	if (g_parent)
+	{
+		kill(g_parent, signal);
+		kill(g_parent, SIGTTIN);
+		kill(g_parent, SIGTTOU);
+	}
+	if (isatty(0) && g_glob.command_line.dy_str)
+	{
+		get_down_from_command(&g_glob.command_line);
+		g_glob.cursor = 0;
+		g_glob.command_line.dy_str->current_size = 0;
+		g_glob.command_line.current_index = 0;
+		ft_bzero(g_glob.command_line.dy_str->str,
+				g_glob.command_line.dy_str->max_size);
+		g_glob.command_line.nb_chars = 0;
+		render_command_line(&g_glob.command_line, 0, 1);
+	}
+}
+
 static void		init_signal2(void (*default_func)(int))
 {
 	signal(SIGURG, transmit_sig_no_motion);
-	signal(SIGTSTP, SIG_IGN);
+	signal(SIGTSTP, sigtstp_handler);
 	signal(SIGSTOP, handle_stp);
 	signal(SIGCONT, handle_cont);
 	signal(SIGCHLD, transmit_sig_no_motion);

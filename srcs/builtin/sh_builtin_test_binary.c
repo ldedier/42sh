@@ -6,7 +6,7 @@
 /*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 16:21:46 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/08/07 15:40:45 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/08/29 13:23:23 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,13 @@ static int		check_params(char **params, intmax_t *nb1, intmax_t *nb2)
 	int	ret;
 
 	*nb1 = ft_a_to_intmax(params[0], &ret);
-	if (ret)
+	if (ret || !params[0][0])
 	{
 		ft_dprintf(2, "%s: test: %s: %s\n", SH_NAME, params[0], SH_BLT_INTEGER);
 		return (BLT_TEST_ERROR);
 	}
 	*nb2 = ft_a_to_intmax(params[2], &ret);
-	if (ret)
+	if (ret || !params[2][0])
 	{
 		ft_dprintf(2, "%s: test: %s: %s\n", SH_NAME, params[2], SH_BLT_INTEGER);
 		return (BLT_TEST_ERROR);

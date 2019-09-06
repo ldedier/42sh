@@ -28,7 +28,7 @@ SRCS	=	./lst/ft_lstnew.c ./lst/ft_lstdelone.c \
 			./lst/ft_lstaddnew_ptr_last.c ./lst/ft_lstnew_value.c\
 			./lst/ft_lstpop.c ./lst/ft_lstpop_ptr.c \
 			./lst/ft_lstdel_value.c ./lst/ft_lstdel_ptr.c\
-			./lst/ft_lstpop_node.c
+			./lst/ft_lstpop_node.c ./lst/ft_lstaddnew_ptr_last_list.c 
 
 SRCS	+=	./math/ft_max.c ./math/ft_min.c ./math/ft_abs.c \
 			./math/ft_pow.c ./math/ft_roundf.c \
@@ -252,7 +252,8 @@ endif
 
 all: 
 	@$(ECHO) "$(FLAGS_COLOR)Compiling with flags $(CFLAGS) $(EOC)"
-	$(MAKE) -C . $(NAME)
+	@echo make -C . $(NAME)
+	@$(MAKE) -C . $(NAME)
 
 debug:
 	$(MAKE) all DEBUG=1

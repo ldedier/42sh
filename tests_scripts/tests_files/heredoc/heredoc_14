@@ -1,0 +1,6 @@
+cat << eof
+
+\\$NOEXIST\
+$STILLNOT
+hey
+eof

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 path=".."
-exec="21sh"
+exec="42sh"
 log_dir="logs" # watchout we rm -rf this
 
 red=\\033[31m

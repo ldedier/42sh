@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/07 10:11:38 by jmartel           #+#    #+#             */
-/*   Updated: 2019/07/27 00:34:04 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/30 10:26:59 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,8 @@ void				ft_lstpop(t_list **list);
 void				ft_lstdel_value(t_list **list);
 void				ft_lstdel_ptr(t_list **list);
 t_list				*ft_lstpop_node(t_list **list);
+int					ft_lstaddnew_ptr_last_list(t_list **list,
+						void *content, size_t size, t_list **last_ptr);
 /*
 ********************************** math  **************************************
 */
@@ -202,7 +204,9 @@ size_t				ft_strlcat(char *dst, const char *src, size_t size);
 char				*ft_strchr(const char *s, int c);
 char				*ft_strrchr(const char *s, int c);
 char				*ft_strstr(const char *str, const char *find);
+char				*ft_strrstr(const char *str, const char *find);
 char				*ft_strnstr(const char *str, const char *find, size_t len);
+char				*ft_strrnstr(const char *str, const char *find, size_t len);
 int					ft_strcmp(const char *s1, const char *s2);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
 char				*ft_strpbrk(const char *s, const char *accept);

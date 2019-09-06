@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 14:47:59 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/14 19:31:27 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/08/21 16:07:47 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,17 +71,28 @@ void	sh_free_token_lst(void *t, size_t dummy)
 **		Else : Address of token correspoding
 */
 
-t_token	*sh_get_token_by_index(t_list *tokens, int index)
+t_token	*sh_get_token_by_index(t_list *tokens, int index, t_list **prev)
 {
 	t_token		*token;
+	t_list		*ptr;
 
-	while (tokens)
+//	static int i = 0;
+	ptr = tokens;
+	*prev = NULL;
+//	ft_printf("####%d: ", index);
+	while (ptr)
 	{
-		token = (t_token*)(tokens->content);
-		if (token->index_start >= index && token->index_end < index)
+		token = (t_token *)(ptr->content);
+		//ft_printf("%d: ", i++);
+		//sh_print_token(token, g_glob.cfg);
+		//ft_printf("%d-%d\n", token->index_start, token->index_end);
+		//ft_printf("\n");
+		if (token->index_start <= index && token->index_end >= index)
 			return (token);
-		else if (token->index_start > index)
+		else if (token->index_end > index)
 			return (NULL);
+		*prev = ptr;
+		ptr = ptr->next;
 	}
 	return (NULL);
 }

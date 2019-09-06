@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/15 17:27:55 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/07 14:59:40 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/02 14:59:27 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,6 @@ int		process_ctrl_d(t_shell *shell, t_command_line *command_line)
 		return (CTRL_D);
 	}
 	else
-		ring_bell();
+		process_suppr(command_line);
 	return (KEEP_READ);
 }

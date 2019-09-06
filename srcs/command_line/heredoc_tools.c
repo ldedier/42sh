@@ -17,28 +17,23 @@
 ** a single \ and removes it from the string, else returns 0
 */
 
-int			refine_heredoc(char *str)
+int			refine_heredoc(char *str, int apply_expansion)
 {
 	int		i;
-	int		n;
 
 	i = 0;
+	if (apply_expansion == 0)
+		return (0);
 	while (str[i])
 	{
-		if (!str[i + 1] && str[i] == '\\')
+		if (str[i] == '\\')
 		{
-			str[i] = '\0';
-			return (1);
-		}
-		if (str[i + 1] == '\\' && str[i] == '\\')
-		{
-			n = 0;
-			while (str[i + n + 1])
+			if (!str[i + 1])
 			{
-				str[i + n] = str[i + n + 1];
-				n++;
+				str[i] = '\0';
+				return (1);
 			}
-			str[i + n] = '\0';
+			i++;
 		}
 		i++;
 	}

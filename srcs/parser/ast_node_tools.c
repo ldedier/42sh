@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 20:10:04 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/07 14:36:51 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/08/13 12:34:17 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_ast_node	*sh_new_ast_node(t_symbol_id id, char *value)
 /*
 ** appends a child to the ast_node node
 **
-** if value is null, the node will be considered a symbol_id token
+** if value is not null, the node will be considered a symbol_id token
 ** of this value
 **
 ** else, it will be a symbol of id symbol_id
@@ -57,5 +57,6 @@ t_ast_node	*sh_add_to_ast_node(t_ast_node *node, t_symbol_id id,
 		sh_free_ast_node(&node, 0);
 		return (sh_perrorn(SH_ERR1_MALLOC, "add_to_ast_node (2)"));
 	}
+	new_node->parent = node;
 	return (new_node);
 }

@@ -1,0 +1,6 @@
+cat << 'eof'
+Same 'thi
+ng \
+just to
+"see'"
+eof

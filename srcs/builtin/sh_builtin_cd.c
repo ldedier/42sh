@@ -6,35 +6,47 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/11 17:43:29 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/10 12:00:06 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/04 21:43:39 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-int		sh_builtin_cd(t_context *context)
+static int	sh_builtin_cd_body(
+	t_context *context, t_args *args, int index, char **curpath)
 {
-	char	*param;
-	char	*curpath;
-	char	flags;
-	int		i;
 	int		ret;
+	char	*param;
 
-	i = 1;
-	curpath = NULL;
-	if ((ret = sh_builtin_cd_parser(context, &i, &flags, &curpath)))
-		return (ret);
-	param = context->params->tbl[i];
-	if ((ret = sh_builtin_cd_pre_rules(context, param, &curpath)))
-		return (ret);
+	param = ((char**)context->params->tbl)[index];
 	if (!param)
-		param = curpath;
-	if (!(flags & CD_OPT_PHYSIC))
+		param = *curpath;
+	if ((ret = sh_builtin_cd_pre_rules(context, param, curpath)))
+		return (ret);
+	if (args[CD_L_OPT].priority > args[CD_P_OPT].priority)
 	{
-		sh_builtin_cd_rule7(context, &curpath, flags);
-		sh_builtin_cd_rule8_1(&curpath);
+		sh_builtin_cd_rule7(context, curpath, args);
+		sh_builtin_cd_rule8(curpath);
 	}
-	ret = sh_builtin_cd_rule10(context, curpath, flags, param);
-	free(curpath);
-	return (ret);
+	index = sh_builtin_cd_rule10(context, *curpath, args, param);
+	if (*curpath)
+		free(*curpath);
+	return (index);
+}
+
+int			sh_builtin_cd(t_context *context)
+{
+	char	*curpath;
+	int		index;
+	int		ret;
+	t_args	args[] = {
+		{E_ARGS_BOOL, 'P', NULL, NULL, CD_P_OPT_USAGE, 0},
+		{E_ARGS_BOOL, 'L', NULL, NULL, CD_L_OPT_USAGE, 0},
+		{E_ARGS_BOOL, 0, NULL, NULL, NULL, 0},
+		{E_ARGS_END, 0, NULL, NULL, NULL, 0},
+	};
+
+	if ((ret = sh_builtin_cd_parser(context, args, &index, &curpath)))
+		return (ret);
+	return (sh_builtin_cd_body(context, args, index, &curpath));
 }
