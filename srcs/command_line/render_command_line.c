@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/22 14:40:58 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/06 16:50:19 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/06 16:54:37 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,12 +261,20 @@ int		sh_scroll_command_line(t_command_line *command_line,
 	//scroll with dimensions first.
 
 	//si ws_row > necessaire et que on est a la fin => nb_scrolled -= chepa
+	
+	/*
 	while (!should_elipse_end(command_line, command_line->scrolled_lines)
 		&& command_line->scrolled_lines
 		&& g_glob.winsize.ws_row - research_nb_lines
 			> command_line_nb_rows(command_line))
+	*/
+	if (!should_elipse_end(command_line, command_line->scrolled_lines)
+		&& command_line->scrolled_lines
+		&& g_glob.winsize.ws_row - research_nb_lines
+			> command_line_nb_rows(command_line))
+
 	{
-		command_line->scrolled_lines--;
+		command_line->scrolled_lines -= g_glob.winsize.ws_row - research_nb_lines - command_line_nb_rows(command_line);
 		ft_dprintf(2, "LOLKOL\n");
 	}
 	target_screen_line = ((true_cursor + cursor_inc) / g_glob.winsize.ws_col)
