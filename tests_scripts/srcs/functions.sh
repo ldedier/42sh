@@ -122,14 +122,14 @@ check_ret_value()
 	sh_ret=$((ret1 & 0xFF))
 	bash_ret=$((ret2 & 0xFF))
 
-	if [ "$sh_ret" -gt 130 -a "$sh_ret" -lt 200 ] ; then 
+	if [ "$sh_ret" -gt 130 -a "$sh_ret" -lt 200 ] ; then
 		echo -e "${red}SEGFAULT OR SIGNAL RECEIVED"
 		echo -e "${sh_ret}${eoc}"
 	fi
 
 	if [ -n "$test_returned_values" ] ; then
 
-		if [ "$sh_ret" -ne  "$bash_ret" ] ; then 
+		if [ "$sh_ret" -ne  "$bash_ret" ] ; then
 			echo -e "${red}BAD RETURNED VALUE"
 			echo -e "bash : $bash_ret || 42sh : $sh_ret${eoc}"
 			echo -e "${yellow}`cat ${obj_dir}/buffer`${eoc}"
@@ -144,7 +144,7 @@ test_launch()
 	echo "$1" > ${obj_dir}/buffer
 	for i in "$2" "$3" "$4" "$5" "$6" "$7" "$8" "$9"
 	do
-		if [ -n "$i" ] ; then 
+		if [ -n "$i" ] ; then
 			echo "${i}" >> ${obj_dir}/buffer ; fi;
 	done
 	diff_tried=$((diff_tried+1))

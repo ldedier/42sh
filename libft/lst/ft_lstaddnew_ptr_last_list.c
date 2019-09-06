@@ -1,29 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   screen_tools.c                                     :+:      :+:    :+:   */
+/*   ft_lstaddnew_ptr_last_list.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/06 11:30:39 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/20 15:51:28 by ldedier          ###   ########.fr       */
+/*   Created: 2019/08/23 21:45:23 by ldedier           #+#    #+#             */
+/*   Updated: 2019/08/23 21:45:23 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "sh_21.h"
+#include "libft.h"
 
-int		putchar_int(int i)
+int		ft_lstaddnew_ptr_last_list(t_list **list,
+				void *content, size_t size, t_list **last_item_ptr)
 {
-	ft_putchar_fd(i, g_glob.command_line.fd);
-	return (0);
-}
+	t_list *node;
 
-int		process_clear(t_command_line *command_line)
-{
-	char *str;
-
-	str = tgetstr("cl", NULL);
-	tputs(str, 1, putchar_int);
-	render_command_line(command_line, 0, 1);
+	if (!(node = ft_lstnew(content, size)))
+		return (1);
+	if (*last_item_ptr)
+		ft_lstadd_last(last_item_ptr, node);
+	else
+		ft_lstadd(list, node);
+	*last_item_ptr = node;
 	return (0);
 }

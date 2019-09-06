@@ -43,6 +43,8 @@ void	sh_free_parser(t_lr_parser *parser)
 	int i;
 
 	sh_clear_parser(parser);
+	sh_free_lr_automata(parser);
+	ft_hash_table_del_ptr(parser->states_by_items);
 	if (parser->lr_tables && parser->nb_states != -1)
 	{
 		i = 0;

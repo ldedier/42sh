@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/11 17:20:10 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/06 19:38:12 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/05 14:20:06 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@
 
 # define SUCCESS_RSRCH		"failing bck-i-search: "
 # define UNSUCCESS_RSRCH	"bck-i-search: "
+
+# define ELIPTIC_COMMAND_LINE	"<...>"
 
 typedef char *(*t_heredoc_func)(const char *);
 
@@ -59,16 +61,23 @@ typedef struct		s_searcher
 }					t_searcher;
 
 /*
-** dy_str : content of the command_line
-** heredoc_eof : current eof of the heredoc
-** prompt : current prompt of the command_line
-** nb_chars : numbers of UTF8 characters in the dy_str
-** current_index : where to insert characters in the command line
-** mode : insert or heredoc
-** clipboard : what got yanked or deleted in visual mode
-** pinned_index: where the visual mode got initiated
-** interrupted : if the command got interrupted by a ctrl D or ctrl C
-** to_append_str : what to append to the string in the case of \\ in heredocs
+** dy_str			: content of the command_line
+** heredoc_eof		: current eof of the heredoc
+** prompt			: current prompt of the command_line
+** nb_chars			: numbers of UTF8 characters in the dy_str
+** current_index	: where to insert characters in the command line
+** scrolled_lines	: number of lines scrolled by the terminal
+**
+** mode				: insert, command, or visual
+** context			: standard, heredoc, quotes, double, quotes, backslashes..
+**
+** clipboard		: what got yanked or deleted in visual mode
+** pinned_index		: where the visual mode got initiated
+**
+** interrupted		: if the command got interrupted by a ctrl D or ctrl C
+** to_append_str	: what to append to the string in the case of \\ in heredocs
+** fd				: fd to print input (open("/fd/tty"));
+**
 */
 typedef struct		s_command_line
 {
@@ -79,6 +88,7 @@ typedef struct		s_command_line
 	char			*prompt;
 	int				nb_chars;
 	int				current_index;
+	int				scrolled_lines;
 	t_mode			mode;
 	int				interrupted;
 	char			*clipboard;
@@ -86,6 +96,7 @@ typedef struct		s_command_line
 	t_cl_context	context;
 	int				prev_prompt_len;
 	char			*to_append_str;
+	int				fd;
 }					t_command_line;
 
 typedef struct		s_historic
@@ -107,6 +118,17 @@ typedef struct		s_xy
 	int				x;
 	int				y;
 }					t_xy;
+
+typedef struct		s_utf8_copier
+{
+	int				len;
+	int				i;
+	int				j;
+	int				nb_chars;
+	int				min;
+	int				max;
+	int				to_add;
+}					t_utf8_copier;
 
 typedef struct		s_glob
 {
@@ -196,6 +218,7 @@ void				process_suppr(t_command_line *command_line);
 /*
 ** render_research.c
 */
+int					get_research_nb_lines(t_command_line *command_line);
 int					render_research(t_command_line *command_line);
 
 /*
@@ -215,6 +238,31 @@ void				render_command_researched(
 	t_command_line *command_line);
 int					print_after_command_line(
 	t_command_line *command_line, int print_choices);
+int					get_command_line_starting_index2(int scrolled_lines);
+int					get_command_line_starting_index(
+	t_command_line *command_line);
+void				process_termcaps_through_copy(
+	t_command_line *command_line,
+	t_utf8_copier *c,
+	char *str,
+	char *capability);
+void				process_termcaps_through_utf8_copy(
+	char *str, t_command_line *command_line, t_utf8_copier *c);
+void				process_copy_utf8_char(
+	char *str,
+	t_command_line *command_line,
+	int index,
+	t_utf8_copier *c);
+void				process_print_command_line(
+	t_command_line *command_line, int empty_space);
+void				print_command_line(t_command_line *command_line);
+int					get_command_line_prefix_len(
+	t_command_line *command_line);
+int					should_elipse_end(
+	t_command_line *command_line, int scrolled_lines);
+int					sh_scroll_command_line(
+	t_command_line *command_line, int cursor, int cursor_inc);
+void				check_selection(t_command_line *command_line);
 int					render_command_line(
 	t_command_line *command_line, int cursor_inc, int print_choices);
 
@@ -386,6 +434,7 @@ int					process_keys_others(
 /*
 ** screen_tools.c
 */
+int					putchar_int(int i);
 int					process_clear(t_command_line *command_line);
 
 /*

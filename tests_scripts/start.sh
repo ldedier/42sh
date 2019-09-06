@@ -12,7 +12,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-## Usage : 
+## Usage :
 ##	./start.sh [-v] [-q] [-2] [-e] [file]
 ##		-v : Activate Valgrind tests
 ##		-2 : Activate comparison on stderr
@@ -43,7 +43,7 @@ src_dir="./srcs"
 suppressions_file="${obj_dir}/my_supp.supp"
 error_exit_code=247
 
-## Options initialisation 
+## Options initialisation
 test_stderr="" verbose="ok" show_error="" test_returned_values="" file=""
 ## Counters initialisation
 passed=0 tried=0 diff_passed=0 diff_tried=0
@@ -52,7 +52,7 @@ passed=0 tried=0 diff_passed=0 diff_tried=0
 for arg in $@ ; do
 	if [ "$arg" = "-v" ] ; then
 		valgrind=true
-		rm -rf "${log_dir}" 
+		rm -rf "${log_dir}"
 		mkdir -p $log_dir
 	fi
 

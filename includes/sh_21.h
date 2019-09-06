@@ -187,7 +187,6 @@ int					sh_check_term(void);
 /*
 ** shell_tools.c
 */
-int					putchar_int(int i);
 int					sh_reset_shell(int ret);
 int					sh_set_shell_back(int ret);
 int					clear_all(void);
@@ -196,6 +195,7 @@ int					clear_all(void);
 ** set_signals.c
 */
 void				reset_signals(void);
+void				sigtstp_handler(int signal);
 void				init_signals(void);
 
 /*

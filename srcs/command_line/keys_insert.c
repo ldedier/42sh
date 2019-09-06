@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 14:17:03 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/05 15:10:34 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/08/13 13:57:42 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ int		process_enter(t_command_line *command_line)
 		return (process_enter_no_autocompletion(command_line));
 	else
 	{
-		substitute_current_index(command_line,
-			command_line->autocompletion.head->content);
+//		substitute_current_index(command_line,
+//			command_line->autocompletion.head->content);
 		command_line->autocompletion.head = NULL;
 		command_line->autocompletion.active = 0;
 		render_command_line(command_line, 0, 1);

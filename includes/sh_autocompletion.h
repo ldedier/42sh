@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/22 14:59:37 by ldedier           #+#    #+#             */
-/*   Updated: 2019/07/03 00:01:48 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/05 14:00:31 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,16 @@ typedef struct s_command_line	t_command_line;
 */
 typedef struct		s_word
 {
+	int				word_index;
 	char			*str;
 	char			*to_compare;
 	int				start_index;
-	int				word_index;
 	int				prev_word_index;
 	int				len;
 	int				utf8_len;
 	int				index_byte_offset;
 	int				index_char_offset;
+	t_token			*token;
 }					t_word;
 
 typedef struct		s_file
@@ -64,6 +65,14 @@ typedef struct		s_auto_complete
 	int				scrolled_lines;
 }					t_auto_complete;
 
+typedef struct		s_dir_chooser
+{
+	char			*transformed_path;
+	char				*path;
+	t_word			*word;
+	int					types;
+}					t_dir_chooser;
+
 /*
 ********************************************************************************
 */
@@ -72,13 +81,13 @@ typedef struct		s_auto_complete
 ** add_choices_from_dir.c
 */
 void				add_node_next_to_node(t_dlist **node, t_dlist *to_add);
+int					sh_pass_filters(t_file *file, int types);
 int					process_add_choices_from_dir(
 	t_shell *shell,
 	t_command_line *command_line,
 	struct dirent *entry,
-	char *prefix);
-int					add_choices_from_dir(
-	t_shell *shell, t_word *word, char *dirname, char *prefix);
+	t_dir_chooser *c);
+int					add_choices_from_dir(t_shell *shell, t_dir_chooser *c);
 
 /*
 ** auto_completion_tools.c
@@ -107,6 +116,16 @@ void				increment_word(
 	int i, int index, t_word *word, char *str);
 int					populate_word_by_index(
 	char *s, int index, t_word *word);
+int					populate_word_from_lexer_no_token(
+	t_list **tokens, t_list **prev, t_word *word);
+void				populate_word_from_token(t_word *word, int index);
+void				populate_word_from_created_token(
+	t_word *word, int index);
+void				print_word(t_word *word);
+int					populate_word_from_lexer(
+	t_list **tokens, int index, t_word *word);
+int					populate_parsed_word_by_index(
+	t_shell *shell, char *command, int index, t_word *word);
 
 /*
 ** add_choices_builtins.c
@@ -123,7 +142,7 @@ int					add_choices_path(
 int					populate_choices_from_binaries(
 	t_shell *shell, t_word *word);
 int					populate_choices_from_folder(
-	t_shell *shell, t_word *word);
+	t_shell *shell, t_word *word, int types);
 int					populate_choices_from_word(
 	t_command_line *command_line, t_shell *shell, t_word *word);
 
@@ -185,13 +204,14 @@ int					sh_should_render_choices(
 void				update_dimensions(
 	t_command_line *command_line, int max_len);
 void				update_back_nb_cols(t_command_line *command_line);
-int					render_choices(t_command_line *command_line);
+int					render_choices(
+	t_command_line *command_line, int *to_go_up);
 
 /*
 ** arrows_vertical.c
 */
 int					process_autocompletion_down(
-	t_command_line *command_line);
+	t_shell *shell, t_command_line *command_line);
 int					process_autocompletion_up(
 	t_command_line *command_line);
 
@@ -216,7 +236,7 @@ void				process_autocompletion_switch(
 int					substitute_command_str_from_str(
 	t_command_line *command_line, char *from, char *str);
 int					substitute_command_str(
-	t_command_line *command_line, char *str);
+	t_shell *shell ,t_command_line *command_line, char *str);
 
 /*
 ** fill_buffer_from_tables.c
@@ -243,6 +263,15 @@ int					populate_file(
 	t_file *file, char *name, char **path, t_shell *shell);
 t_file				*new_file(
 	t_shell *shell, char *name, char *fullname);
+
+/*
+** escape.c
+*/
+int					sh_should_escape(char c);
+int					sh_escaped_len(char *str);
+void				ft_strcat_escaped(char *dest, char *src);
+char				*ft_strdup_escaped(char *str);
+char				*ft_strjoin_escaped(char *s1, char *s2);
 
 /*
 ** preprocess_choice_add.c

@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 02:36:03 by ldedier           #+#    #+#             */
-/*   Updated: 2019/06/04 02:36:03 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/05 13:54:51 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	fill_buffer_partial_from_tables(t_command_line *command_line,
 				fill_buffer_padding(&print_buffer);
 		}
 		i++;
-		if (i != limit + 1)
+		if (i < limit + 1)
 		{
 			ft_strcpy(print_buffer, "\n");
 			print_buffer += 1;

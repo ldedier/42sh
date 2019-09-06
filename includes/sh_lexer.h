@@ -36,6 +36,7 @@
 # define LEX_OPERATORS_CHARS		"|&;<>()\0"
 
 typedef struct s_shell		t_shell;
+typedef struct s_ast_node	t_ast_node;
 
 typedef struct		s_lexer
 {
@@ -70,6 +71,7 @@ typedef struct		s_token
 	int				index_start;
 	int				index_end;
 	int				apply_heredoc_expansion;
+	t_ast_node		*ast_node;
 }					t_token;
 
 /*
@@ -130,7 +132,8 @@ int					sh_lexer_rule8(t_lexer *lexer);
 t_list				*t_token_node_new(int id, char *value);
 void				t_token_free_list(t_list *head);
 void				sh_free_token_lst(void *t, size_t dummy);
-t_token				*sh_get_token_by_index(t_list *tokens, int index);
+t_token				*sh_get_token_by_index(
+	t_list *tokens, int index, t_list **prev);
 
 /*
 ** sh_lexer_rule_1.c

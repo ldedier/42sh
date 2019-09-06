@@ -6,13 +6,13 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 01:47:21 by ldedier           #+#    #+#             */
-/*   Updated: 2019/06/06 23:27:30 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/08/21 17:56:31 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-int		process_autocompletion_down(t_command_line *command_line)
+int		process_autocompletion_down(t_shell *shell, t_command_line *command_line)
 {
 	t_file	*file;
 	t_file	*prev_file;
@@ -23,7 +23,7 @@ int		process_autocompletion_down(t_command_line *command_line)
 			command_line->autocompletion.choices;
 		file = (t_file *)command_line->autocompletion.head->content;
 		prev_file = file;
-		substitute_command_str(command_line, file->fullname);
+		substitute_command_str(shell, command_line, file->fullname);
 		process_autocompletion_switch(command_line, prev_file, file);
 		return (SUCCESS);
 	}

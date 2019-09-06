@@ -145,6 +145,8 @@ void				ft_lstpop(t_list **list);
 void				ft_lstdel_value(t_list **list);
 void				ft_lstdel_ptr(t_list **list);
 t_list				*ft_lstpop_node(t_list **list);
+int					ft_lstaddnew_ptr_last_list(t_list **list,
+						void *content, size_t size, t_list **last_ptr);
 /*
 ********************************** math  **************************************
 */

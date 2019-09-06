@@ -30,7 +30,7 @@ void	ft_hash_table_show_perf(t_hash_table *table)
 			if ((len = ft_lstlen(ptr)) > 1)
 			{
 				nb_collisions++;
-				ft_printf("collision of %d elements\n", len);
+				ft_printf("index #%d:collision of %d elements\n", i, len);
 			}
 			nb_data += len;
 		}

@@ -16,8 +16,11 @@ void			sh_init_ast_node(t_ast_node *node,
 			t_token *token, t_symbol *symbol, t_ast_node *relative)
 {
 	node->children = NULL;
+	node->parent = NULL;
 	node->symbol = symbol;
 	node->token = token;
+	if (token)
+		token->ast_node = node;
 	node->metadata.command_metadata.redirections = NULL;
 	node->relative = relative;
 }
@@ -25,10 +28,10 @@ void			sh_init_ast_node(t_ast_node *node,
 void			sh_init_ast_nodes(t_ast_builder *ast_builder,
 			t_token *token, t_symbol *symbol)
 {
-	sh_init_ast_node(ast_builder->ast_node,
-		token, symbol, ast_builder->cst_node);
 	sh_init_ast_node(ast_builder->cst_node,
 		token, symbol, ast_builder->ast_node);
+	sh_init_ast_node(ast_builder->ast_node,
+		token, symbol, ast_builder->cst_node);
 	ast_builder->ast_node->builder = ast_builder;
 	ast_builder->cst_node->builder = ast_builder;
 }
