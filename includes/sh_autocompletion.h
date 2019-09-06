@@ -65,6 +65,14 @@ typedef struct		s_auto_complete
 	int				scrolled_lines;
 }					t_auto_complete;
 
+typedef struct		s_dir_chooser
+{
+	char			*transformed_path;
+	char			*path;
+	t_word			*word;
+	int				types;
+}					t_dir_chooser;
+
 /*
 ********************************************************************************
 */
@@ -77,9 +85,9 @@ int					process_add_choices_from_dir(
 	t_shell *shell,
 	t_command_line *command_line,
 	struct dirent *entry,
-	char *prefix);
+	t_dir_chooser *c);
 int					add_choices_from_dir(
-	t_shell *shell, t_word *word, char *dirname, char *prefix);
+	t_shell *shell, t_dir_chooser *c);
 
 /*
 ** auto_completion_tools.c
@@ -134,7 +142,7 @@ int					add_choices_path(
 int					populate_choices_from_binaries(
 	t_shell *shell, t_word *word);
 int					populate_choices_from_folder(
-	t_shell *shell, t_word *word);
+	t_shell *shell, t_word *word, int types);
 int					populate_choices_from_word(
 	t_command_line *command_line, t_shell *shell, t_word *word);
 
