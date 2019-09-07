@@ -78,6 +78,13 @@ typedef struct		s_dir_chooser
 */
 
 /*
+** add_choices_builtins.c
+*/
+int					process_add_choices_from_name(
+	t_shell *shell, t_command_line *command_line, char *name);
+int					add_choices_builtins(t_shell *shell, t_word *word);
+
+/*
 ** add_choices_from_dir.c
 */
 void				add_node_next_to_node(t_dlist **node, t_dlist *to_add);
@@ -90,10 +97,61 @@ int					process_add_choices_from_dir(
 int					add_choices_from_dir(t_shell *shell, t_dir_chooser *c);
 
 /*
+** add_file_tools.c
+*/
+void				copy_str_to_res(
+	char *res, char *str, int *i, int to_add);
+int					ft_isprint_only_utf8(char *str);
+char				*ft_str_to_ascii_dup(char *str);
+int					populate_file(
+	t_file *file, char *name, char **path, t_shell *shell);
+t_file				*new_file(
+	t_shell *shell, char *name, char *fullname);
+
+/*
+** arrow_tools.c
+*/
+void				process_autocompletion_switch(
+	t_command_line *command_line, t_file *prev_file, t_file *file);
+int					substitute_command_str_from_str(
+	t_command_line *command_line, char *from, char *str);
+int					substitute_command_str(
+	t_shell *shell ,t_command_line *command_line, char *str);
+
+/*
+** arrows_vertical.c
+*/
+int					process_autocompletion_down(
+	t_shell *shell, t_command_line *command_line);
+int					process_autocompletion_up(
+	t_command_line *command_line);
+
+/*
+** auto_completion.c
+*/
+int					process_advanced_completion(
+	t_command_line *command_line, t_word word);
+int					process_completion_expand(
+	t_command_line *command_line, char *str, t_word word);
+int					process_completion(
+	t_command_line *command_line, t_word word);
+int					process_tab(
+	t_shell *shell, t_command_line *command_line);
+
+/*
 ** auto_completion_tools.c
 */
 char				*get_completion_str_file(t_file *file);
 char				*get_completion_str(t_command_line *command_line);
+
+/*
+** escape.c
+*/
+int					sh_should_escape(char c);
+int					sh_escaped_len(char *str);
+void				ft_strcat_escaped(char *dest, char *src);
+char				*ft_strdup_escaped(char *str);
+char				*ft_strjoin_escaped(char *s1, char *s2);
 
 /*
 ** file_tables.c
@@ -104,6 +162,59 @@ int					init_file_tables(
 	t_command_line *command_line, t_file ****res);
 t_file				***update_file_tables(t_command_line *command_line);
 void				free_tbl(t_file ***tbl, int width);
+
+/*
+** fill_buffer.c
+*/
+void				fill_buffer_padding(char **print_buffer);
+void				process_fill_buffer_folder_suffix(
+	int is_current, char **print_buffer, int *i);
+void				process_fill_buffer_from_file(
+	t_file *file, int is_current, char **print_buffer, int *i);
+void				fill_buffer_from_file(
+	t_command_line *command_line,
+	char **print_buffer,
+	t_file *file,
+	int max_len);
+
+/*
+** fill_buffer_from_tables.c
+*/
+void				fill_buffer_from_tables(
+	t_command_line *command_line,
+	char *print_buffer,
+	t_file ***tbl,
+	int max_len);
+void				fill_buffer_partial_from_tables(
+	t_command_line *command_line,
+	char *print_buffer,
+	t_file ***tbl,
+	int max_len);
+
+/*
+** left_arrow.c
+*/
+int					process_update_autocompletion_head_left(
+	t_command_line *command_line,
+	t_file *file_iter,
+	t_file *file,
+	t_dlist *ptr);
+void				update_autocompletion_head_left(
+	t_command_line *command_line);
+int					process_autocompletion_left(
+	t_command_line *command_line);
+
+/*
+** populate_choices.c
+*/
+int					add_choices_path(
+	t_shell *shell, t_word *word, char *path_str);
+int					populate_choices_from_binaries(
+	t_shell *shell, t_word *word);
+int					populate_choices_from_folder(
+	t_shell *shell, t_word *word, int types);
+int					populate_choices_from_word(
+	t_command_line *command_line, t_shell *shell, t_word *word);
 
 /*
 ** populate_word_by_index.c
@@ -128,72 +239,17 @@ int					populate_parsed_word_by_index(
 	t_shell *shell, char *command, int index, t_word *word);
 
 /*
-** add_choices_builtins.c
+** preprocess_choice_add.c
 */
-int					process_add_choices_from_name(
-	t_shell *shell, t_command_line *command_line, char *name);
-int					add_choices_builtins(t_shell *shell, t_word *word);
-
-/*
-** populate_choices.c
-*/
-int					add_choices_path(
-	t_shell *shell, t_word *word, char *path_str);
-int					populate_choices_from_binaries(
-	t_shell *shell, t_word *word);
-int					populate_choices_from_folder(
-	t_shell *shell, t_word *word, int types);
-int					populate_choices_from_word(
-	t_command_line *command_line, t_shell *shell, t_word *word);
-
-/*
-** left_arrow.c
-*/
-int					process_update_autocompletion_head_left(
+int					str_cmp_len(char *str1, char *str2);
+void				process_dlst_iter(t_dlist **ptr, int *first);
+int					process_preprocess_choice_add(
 	t_command_line *command_line,
-	t_file *file_iter,
-	t_file *file,
-	t_dlist *ptr);
-void				update_autocompletion_head_left(
-	t_command_line *command_line);
-int					process_autocompletion_left(
-	t_command_line *command_line);
-
-/*
-** auto_completion.c
-*/
-int					process_advanced_completion(
-	t_command_line *command_line, t_word word);
-int					process_completion_expand(
-	t_command_line *command_line, char *str, t_word word);
-int					process_completion(
-	t_command_line *command_line, t_word word);
-int					process_tab(
-	t_shell *shell, t_command_line *command_line);
-
-/*
-** render_choices_tools.c
-*/
-int					sh_get_file_len(t_file *file);
-int					sh_get_max_file_len(t_dlist *dlist);
-int					ft_round(float a);
-int					lines_rendered_from_file(t_file *file);
-int					command_line_visible_lines(
-	t_command_line *command_line);
-
-/*
-** fill_buffer.c
-*/
-void				fill_buffer_padding(char **print_buffer);
-void				process_fill_buffer_folder_suffix(
-	int is_current, char **print_buffer, int *i);
-void				process_fill_buffer_from_file(
-	t_file *file, int is_current, char **print_buffer, int *i);
-void				fill_buffer_from_file(
-	t_command_line *command_line,
-	char **print_buffer,
-	t_file *file,
-	int max_len);
+	char *entry,
+	int *to_ret,
+	t_dlist ***to_add);
+int					ft_preprocess_choice_add(
+	t_command_line *command_line, char *entry, t_dlist ***to_add);
 
 /*
 ** render_choices.c
@@ -208,11 +264,13 @@ int					render_choices(
 	t_command_line *command_line, int *to_go_up);
 
 /*
-** arrows_vertical.c
+** render_choices_tools.c
 */
-int					process_autocompletion_down(
-	t_shell *shell, t_command_line *command_line);
-int					process_autocompletion_up(
+int					sh_get_file_len(t_file *file);
+int					sh_get_max_file_len(t_dlist *dlist);
+int					ft_round(float a);
+int					lines_rendered_from_file(t_file *file);
+int					command_line_visible_lines(
 	t_command_line *command_line);
 
 /*
@@ -227,63 +285,5 @@ void				update_autocompletion_head_right(
 	t_command_line *command_line);
 int					process_autocompletion_right(
 	t_command_line *command_line);
-
-/*
-** arrow_tools.c
-*/
-void				process_autocompletion_switch(
-	t_command_line *command_line, t_file *prev_file, t_file *file);
-int					substitute_command_str_from_str(
-	t_command_line *command_line, char *from, char *str);
-int					substitute_command_str(
-	t_shell *shell ,t_command_line *command_line, char *str);
-
-/*
-** fill_buffer_from_tables.c
-*/
-void				fill_buffer_from_tables(
-	t_command_line *command_line,
-	char *print_buffer,
-	t_file ***tbl,
-	int max_len);
-void				fill_buffer_partial_from_tables(
-	t_command_line *command_line,
-	char *print_buffer,
-	t_file ***tbl,
-	int max_len);
-
-/*
-** add_file_tools.c
-*/
-void				copy_str_to_res(
-	char *res, char *str, int *i, int to_add);
-int					ft_isprint_only_utf8(char *str);
-char				*ft_str_to_ascii_dup(char *str);
-int					populate_file(
-	t_file *file, char *name, char **path, t_shell *shell);
-t_file				*new_file(
-	t_shell *shell, char *name, char *fullname);
-
-/*
-** escape.c
-*/
-int					sh_should_escape(char c);
-int					sh_escaped_len(char *str);
-void				ft_strcat_escaped(char *dest, char *src);
-char				*ft_strdup_escaped(char *str);
-char				*ft_strjoin_escaped(char *s1, char *s2);
-
-/*
-** preprocess_choice_add.c
-*/
-int					str_cmp_len(char *str1, char *str2);
-void				process_dlst_iter(t_dlist **ptr, int *first);
-int					process_preprocess_choice_add(
-	t_command_line *command_line,
-	char *entry,
-	int *to_ret,
-	t_dlist ***to_add);
-int					ft_preprocess_choice_add(
-	t_command_line *command_line, char *entry, t_dlist ***to_add);
 
 #endif
