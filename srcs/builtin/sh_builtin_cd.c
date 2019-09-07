@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/11 17:43:29 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/04 21:43:39 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/05 17:45:34 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,18 @@ static int	sh_builtin_cd_body(
 		free(*curpath);
 	return (index);
 }
+
+/*
+** sh_builtin_cd:
+**	The cd builtin shall change the working directory of the current shell.
+**	PWD and OLDPWD are updated. See posix procedure that I followed on :
+**	https://www.unix.com/man-page/posix/1posix/cd/
+**
+** returned Values :
+**		ERROR
+**		FAILURE : malloc error
+**		SUCCESS
+*/
 
 int			sh_builtin_cd(t_context *context)
 {

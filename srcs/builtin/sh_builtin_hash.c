@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 16:18:16 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/22 18:38:20 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/05 17:46:24 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,3 @@ int			sh_builtin_hash(t_context *context)
 		sh_builtin_hash_empty_table(context->shell);
 	return (sh_builtin_hash_process_utilities(context, index));
 }
-
