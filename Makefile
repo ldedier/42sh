@@ -126,7 +126,7 @@ SRCS			+=	parser.c print_ast.c compute_lr_automata.c \
 					state.c compute_closure.c compute_transitions.c \
 					init_parsing.c reduce.c reduce_tools.c free_parser.c \
 					transitive_first_sets.c \
-					free_node.c  \
+					free_node.c  field_splitting_tools.c\
 					shift.c free_parser_tools.c \
 					reduce_pop.c ast_node_tools.c parser_debug.c
 
