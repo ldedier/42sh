@@ -215,11 +215,10 @@ t_state				*sh_new_state(void);
 void				sh_free_state(t_state *state);
 unsigned long		hash_item(void *i);
 unsigned long		hash_item_next(void *i);
+
 /*
 ** field_splitting_tools.c
 */
-int					sh_process_add_new_ast_node(
-	t_list *ptr, t_ast_node *previous_word, t_ast_node **new_node);
 t_ast_node			*sh_add_word_to_ast(
 	t_ast_node *previous_word, char *value);
 void				sh_delete_node_from_parent(t_ast_node *node);

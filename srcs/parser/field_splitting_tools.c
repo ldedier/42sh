@@ -24,7 +24,7 @@ static t_ast_node	*sh_add_word_to_ast_first(t_ast_node *parent,
 	return (*to_add);
 }
 
-int		sh_process_add_new_ast_node(t_list *ptr,
+static int			sh_process_add_new_ast_node(t_list *ptr,
 			t_ast_node *previous_word, t_ast_node **new_node)
 {
 	t_ast_node	*node_ptr;
