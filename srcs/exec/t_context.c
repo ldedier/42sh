@@ -100,3 +100,25 @@ void		t_context_free_content(t_context *context)
 	if (context->path)
 		free(context->path);
 }
+
+/*
+** t_context_reset:
+**	Free and reset content after command execution
+*/
+
+void		t_context_reset(t_context *context)
+{
+	int     i;
+
+	i = 0;
+	while (i < (int)context->params->current_size)
+	{
+		free(context->params->tbl[i]);
+		context->params->tbl[i] = NULL;
+		i++;
+	}
+	context->params->current_size = 0;
+	if (context->path)
+		ft_strdel(&context->path);
+	context->builtin = NULL;
+}

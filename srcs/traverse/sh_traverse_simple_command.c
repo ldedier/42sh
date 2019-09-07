@@ -62,7 +62,7 @@ int		sh_traverse_simple_command_exec(t_ast_node *node, t_context *context)
 		sh_process_execute_close_pipes(context);
 	if (ret == FAILURE)
 		return (FAILURE);
-	sh_traverse_tools_reset_params(context);
+	t_context_reset(context);
 	if (sh_env_update_question_mark(context->shell) == FAILURE)
 		return (FAILURE);
 	if (ret == STOP_CMD_LINE)
@@ -95,7 +95,6 @@ int		sh_traverse_simple_command(t_ast_node *node, t_context *context)
 				return (FAILURE);
 			sh_env_save_delete_exported(context);
 		}
-
 		context->redirections = &node->metadata.command_metadata.redirections;
 		if (context->current_pipe_sequence_node)
 			if (sh_env_update_question_mark(context->shell) == FAILURE)
