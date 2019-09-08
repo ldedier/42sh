@@ -36,7 +36,7 @@ static int	sh_process_traverse_cmd_suffix(
 	return (SUCCESS);
 }
 
-/* JMARTEL TO UNCOMMENT AND AKNOWLEDGE
+/* JMARTEL TO UNCOMMENT AND AKNOWLEDGE (then delete)
 int		test_field_splitting_function(t_ast_node *child, t_list **ptr)
 {
 	int			i;
