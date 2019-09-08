@@ -12,6 +12,12 @@
 
 #include "libft.h"
 
+void	*ft_free_turn_ptr(void *to_free)
+{
+	free(to_free);
+	return (NULL);
+}
+
 int		ft_free_turn_2(void *to_free, void *to_free2, int ret)
 {
 	free(to_free);

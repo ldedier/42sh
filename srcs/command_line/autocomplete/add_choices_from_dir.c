@@ -47,9 +47,30 @@ int			sh_pass_filters(t_file *file, int types)
 	}
 }
 
-int			process_add_choices_from_dir(t_shell *shell,
+char		*get_fullname(t_choice_filler *c, char *entry)
+{
+	char *fullname;
+
+	if (!c->path && !c->suffix && !(fullname = ft_strdup(entry)))
+		return (NULL);
+	else if (c->path && !c->suffix &&
+		!(fullname = ft_strjoin(c->path, entry)))
+		return (NULL);
+	else if (!c->path && c->suffix &&
+		!(fullname = ft_strjoin(entry, c->suffix)))
+		return (NULL);
+	else if (c->path && c->suffix &&
+		!(fullname = ft_strjoin_3(c->path, entry, c->suffix)))
+		return (NULL);
+	
+	//ft_dprintf(2, "%s\n", c->suffix);
+	//ft_dprintf(2, "fullname: %s\n", fullname);
+	return (fullname);
+}
+
+int			process_add_choices_from_choice_filler(t_shell *shell,
 				t_command_line *command_line,
-					struct dirent *entry, t_dir_chooser *c)
+					char *entry, t_choice_filler *c)
 {
 	char			*fullname;
 	t_dlist			**prev_to_add;
@@ -57,15 +78,12 @@ int			process_add_choices_from_dir(t_shell *shell,
 	int				ret;
 	t_file			*file;
 
-	if (!c->path && !(fullname = ft_strdup_escaped(entry->d_name)))
-		return (1);
-	else if (c->path &&
-		!(fullname = ft_strjoin_escaped(c->path, entry->d_name)))
+	if (!(fullname = get_fullname(c, entry)))
 		return (1);
 	if ((ret = ft_preprocess_choice_add(command_line,
 					fullname, &prev_to_add)) != 1)
 	{
-		if (!(file = new_file(shell, entry->d_name, fullname)))
+		if (!(file = new_file(shell, entry, fullname)))
 			return (ft_free_turn(fullname, 1));
 		if (!sh_pass_filters(file, c->types))
 			return (free_file_ret(file, 0));
@@ -79,10 +97,7 @@ int			process_add_choices_from_dir(t_shell *shell,
 	return (0);
 }
 
-//word
-//char *c->transformed_path,
-//		char *prefix)
-int			add_choices_from_dir(t_shell *shell, t_dir_chooser *c)
+int			add_choices_from_dir(t_shell *shell, t_choice_filler *c)
 {
 	DIR				*dir;
 	struct dirent	*entry;
@@ -100,8 +115,8 @@ int			add_choices_from_dir(t_shell *shell, t_dir_chooser *c)
 		if (ft_isprint_only_utf8(entry->d_name)
 				&& !ft_strncmp(entry->d_name, c->word->to_compare, len))
 		{
-			if (process_add_choices_from_dir(shell,
-						&g_glob.command_line, entry, c))
+			if (process_add_choices_from_choice_filler(shell,
+					&g_glob.command_line, entry->d_name, c))
 			{
 				closedir(dir);
 				return (1);

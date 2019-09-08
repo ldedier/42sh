@@ -268,4 +268,10 @@ void				transmit_sig_and_exit(int signal);
 void				handle_stp(int sgnl);
 void				handle_cont(int sgnl);
 
+/*
+** add_choices_from_expansion.c
+*/
+int					populate_choices_from_expansions(t_command_line
+	*command_line, t_shell *shell, t_word *word);
+
 #endif

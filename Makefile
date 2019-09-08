@@ -184,7 +184,8 @@ SRCS			+=	add_choices_from_dir.c auto_completion.c \
 					left_arrow.c right_arrow.c arrows_vertical.c \
 					fill_buffer.c render_choices_tools.c file_tables.c \
 					fill_buffer_from_tables.c add_file_tools.c \
-					auto_completion_tools.c escape.c
+					auto_completion_tools.c escape.c \
+					add_choices_from_expansions.c
 
 ################################################################
 ########						VARS					########
