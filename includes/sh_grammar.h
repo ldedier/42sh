@@ -65,13 +65,6 @@ t_grammar_holder	g_grammar[NB_SYMBOLS];
 */
 
 /*
-** debug.c
-*/
-void				sh_print_symbol(t_symbol *symbol);
-void				sh_print_token(t_token *token, t_cfg *cfg);
-void				sh_print_token_list(t_list *list, t_cfg *cfg);
-
-/*
 ** first_sets.c
 */
 int					sh_add_to_first_sets_by_prod(
@@ -94,5 +87,12 @@ int					sh_add_prod(
 int					init_start_symbol(t_cfg *cfg, t_symbol *symbol);
 void				init_symbol(t_symbol *symbol, int index);
 int					init_context_free_grammar(t_cfg *cfg);
+
+/*
+** debug.c
+*/
+void				sh_print_symbol(t_symbol *symbol);
+void				sh_print_token(t_token *token, t_cfg *cfg);
+void				sh_print_token_list(t_list *list, t_cfg *cfg);
 
 #endif

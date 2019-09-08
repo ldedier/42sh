@@ -105,15 +105,13 @@ typedef struct		s_context
 */
 
 /*
-** sh_debug.c
+** t_context.c
 */
-void				print_redirection(t_redirection *redirection);
-void				print_redirection_list(t_list *list);
-
-/*
-** sh_exec_builtin.c
-*/
-int					sh_exec_builtin(t_context *context);
+void				sh_free_context_dup_lst(void *c, size_t dummy);
+t_context			*t_context_dup(t_context *context);
+int					t_context_init(t_context *context, t_shell *shell);
+void				t_context_free_content(t_context *context);
+void				t_context_reset(t_context *context);
 
 /*
 ** sh_execute.c
@@ -123,12 +121,15 @@ int					sh_add_to_pipe_sequence(t_context *context);
 int					sh_process_execute(t_context *context);
 
 /*
-** sh_execute_pipe_sequence.c
+** sh_execute_tools.c
 */
-void				sh_execute_pipe_sequence_close_pipes_list(
-	t_list *contexts);
-int					sh_execute_pipe_sequence(
+void				sh_close_all_other_contexts(
 	t_context *context, t_list *contexts);
+void				sh_execute_child_builtin(
+	t_context *context, t_list *contexts);
+void				sh_execute_child_binary(
+	t_context *context, t_list *contexts);
+void				sh_execute_child(t_context *context, t_list *contexts);
 
 /*
 ** sh_execute_pipes.c
@@ -148,15 +149,12 @@ int					sh_pre_execution_pipes(t_list *contexts);
 int					sh_post_execution(void);
 
 /*
-** sh_execute_tools.c
+** sh_execute_pipe_sequence.c
 */
-void				sh_close_all_other_contexts(
+void				sh_execute_pipe_sequence_close_pipes_list(
+	t_list *contexts);
+int					sh_execute_pipe_sequence(
 	t_context *context, t_list *contexts);
-void				sh_execute_child_builtin(
-	t_context *context, t_list *contexts);
-void				sh_execute_child_binary(
-	t_context *context, t_list *contexts);
-void				sh_execute_child(t_context *context, t_list *contexts);
 
 /*
 ** sh_redirections.c
@@ -176,12 +174,14 @@ t_redirection		sh_new_redir(
 	t_redirection_type type, int redirected_fd, int fd);
 
 /*
-** t_context.c
+** sh_debug.c
 */
-void				sh_free_context_dup_lst(void *c, size_t dummy);
-t_context			*t_context_dup(t_context *context);
-int					t_context_init(t_context *context, t_shell *shell);
-void				t_context_free_content(t_context *context);
-void				t_context_reset(t_context *context);
+void				print_redirection(t_redirection *redirection);
+void				print_redirection_list(t_list *list);
+
+/*
+** sh_exec_builtin.c
+*/
+int					sh_exec_builtin(t_context *context);
 
 #endif

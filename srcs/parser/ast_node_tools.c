@@ -20,7 +20,7 @@ t_ast_node	*sh_new_ast_node(t_symbol_id id, char *value)
 	token = NULL;
 	if (value)
 	{
-		if (!(token = t_token_new(id, value)))
+		if (!(token = t_token_new_ptr(id, value)))
 			return (sh_perrorn(SH_ERR1_MALLOC, "new_ast_node (1)"));
 	}
 	if (!(res = malloc(sizeof(t_ast_node))))
@@ -54,7 +54,7 @@ t_ast_node	*sh_add_to_ast_node(t_ast_node *node, t_symbol_id id,
 	if (ft_lstaddnew_ptr_last(&node->children, new_node,
 		sizeof(t_ast_node *)))
 	{
-		sh_free_ast_node(&node, 0);
+		sh_free_ast_node(&new_node, 0);
 		return (sh_perrorn(SH_ERR1_MALLOC, "add_to_ast_node (2)"));
 	}
 	new_node->parent = node;

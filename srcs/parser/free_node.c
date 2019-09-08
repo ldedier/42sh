@@ -48,6 +48,11 @@ void	sh_free_ast_node_meta(t_ast_node **node)
 			sh_free_context_dup_lst);
 }
 
+/*
+** free a node and update the builder if it should to indicate that
+** the data has already been freed
+*/
+
 void	sh_free_ast_node(t_ast_node **node, int update)
 {
 	t_ast_node		*child;

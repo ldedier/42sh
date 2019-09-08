@@ -105,13 +105,19 @@ t_file		*new_file(t_shell *shell, char *name, char *fullname)
 		return (NULL);
 	res->x = 0;
 	res->y = 0;
-	res->fullname = fullname;
+	if (!(res->fullname = ft_strdup_escaped(fullname)))
+		return (ft_free_turn_ptr(res));
 	if (populate_file(res, name, &path, shell))
+	{
+		free(res->fullname);
+		free(res);
 		return (NULL);
-	if (stat(path, &res->st) == -1)
+	}
+	if (stat(fullname, &res->st) == -1)
 		res->unstatable = 1;
 	else
 		res->unstatable = 0;
 	free(path);
+	free(fullname);
 	return (res);
 }

@@ -70,16 +70,37 @@ int		process_completion(t_command_line *command_line, t_word word)
 	return (ft_free_turn(str, 0));
 }
 
+void	print_dy_tab(t_dy_tab *dtab)
+{
+	int i;
+
+	i = 0;
+	while (i < (int)dtab->current_size)
+	{
+		ft_printf("%s\n", dtab->tbl[i]);
+		i++;
+	}
+}
+
+void	print_exp(t_shell *shell)
+{
+	print_dy_tab(shell->vars);
+	print_dy_tab(shell->env);
+	exit(sh_reset_shell(0));
+}
+
 int		process_tab(t_shell *shell, t_command_line *command_line)
 {
 	t_word	word;
 	int		ret;
 
+//	print_exp(shell);
 	ret = 0;
 	command_line->autocompletion.choices_common_len = -1;
 	if ((ret = populate_parsed_word_by_index(shell, command_line->dy_str->str,
 		command_line->current_index, &word)))
 		return (ret == FAILURE);
+//	ft_dprintf(2, "\n\n%s\n", word.token->value);
 	if (!command_line->autocompletion.active)
 	{
 		ft_dlstdel(&command_line->autocompletion.choices, &free_file_dlst);

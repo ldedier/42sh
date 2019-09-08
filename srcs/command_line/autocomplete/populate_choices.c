@@ -16,7 +16,7 @@ int		add_choices_path(t_shell *shell, t_word *word, char *path_str)
 {
 	char			**path_split;
 	int				i;
-	t_dir_chooser	c;
+	t_choice_filler	c;
 
 
 	if (!(path_split = ft_strsplit(path_str, ':')))
@@ -25,6 +25,7 @@ int		add_choices_path(t_shell *shell, t_word *word, char *path_str)
 	c.word = word;
 	c.types = -1;
 	c.path = NULL;
+	c.suffix = NULL;
 	while (path_split[i])
 	{
 		c.transformed_path = path_split[i];
@@ -60,10 +61,11 @@ int		populate_choices_from_binaries(t_shell *shell, t_word *word)
 int		populate_choices_from_folder(t_shell *shell, t_word *word, int types)
 {
 	char			*file;
-	t_dir_chooser	c;
+	t_choice_filler	c;
 
 	c.word = word;
 	c.types = types;
+	c.suffix = NULL;
 	if (get_path_and_file_from_str(c.word->str,
 			&c.transformed_path, &file))
 		return (1);
@@ -90,6 +92,7 @@ int		populate_choices_from_word(t_command_line *command_line,
 //	ft_printf("%d, %d\n", symbol->id, CMD_NAME);
 //	ft_printf("%d, %d\n", word->token->id, LEX_TOK_ASSIGNMENT_WORD);
 //	sh_print_ast(word->token->ast_node->parent, 0);
+	
 	if (symbol->id == sh_index(CMD_NAME))
 	{
 		if (populate_choices_from_binaries(shell, word))
@@ -107,8 +110,7 @@ int		populate_choices_from_word(t_command_line *command_line,
 	}
 	else if (populate_choices_from_folder(shell, word, -1))
 		return (1);
-	(void)command_line;
-	(void)shell;
-	(void)word;
+	if (populate_choices_from_expansions(command_line, shell, word))
+		return (1);
 	return (0);
 }
