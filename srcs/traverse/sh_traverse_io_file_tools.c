@@ -24,6 +24,8 @@ int		sh_process_file_output(char *filename,
 	int			fd;
 
 	fd = 42;
+	if (ft_strlen(filename) > MAX_FILENAME_LEN)
+		fd = sh_perror_err(SH_ERR1_FILENAME_LEN, filename);
 	if (stat(filename, &st) != -1)
 	{
 		if (S_ISDIR(st.st_mode))
@@ -54,6 +56,11 @@ int		sh_process_file_input(char *filename,
 	int			fd;
 
 	fd = 42;
+	if (ft_strlen(filename) > MAX_FILENAME_LEN)
+	{
+		set_failed_command(context);
+		return (sh_perror_err(SH_ERR1_FILENAME_LEN, filename));
+	}
 	if (access(filename, F_OK))
 		fd = sh_perror(SH_ERR2_NO_SUCH_FILE_OR_DIR, filename);
 	if (stat(filename, &st) == -1)

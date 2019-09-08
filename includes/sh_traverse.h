@@ -15,6 +15,8 @@
 
 # include "sh_21.h"
 
+# define MAX_FILENAME_LEN	255
+
 typedef struct dirent		t_dirent;
 typedef struct s_heredoc	t_heredoc;
 typedef char *(*t_heredoc_func)(const char *);
