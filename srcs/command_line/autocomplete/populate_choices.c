@@ -92,6 +92,7 @@ int		populate_choices_from_word(t_command_line *command_line,
 //	ft_printf("%d, %d\n", symbol->id, CMD_NAME);
 //	ft_printf("%d, %d\n", word->token->id, LEX_TOK_ASSIGNMENT_WORD);
 //	sh_print_ast(word->token->ast_node->parent, 0);
+//	sh_print_ast(shell->parser.ast_root, 0);
 	
 	if (symbol->id == sh_index(CMD_NAME))
 	{
