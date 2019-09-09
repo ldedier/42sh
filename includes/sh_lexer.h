@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 11:08:27 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/05 11:13:26 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/09/09 18:37:18 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,12 @@
 typedef struct s_shell		t_shell;
 typedef struct s_ast_node	t_ast_node;
 
+typedef enum		e_lex_mode
+{
+	E_LEX_STANDARD,
+	E_LEX_AUTOCOMPLETION,
+}					t_lex_mode;
+
 typedef struct		s_lexer
 {
 	char			c;
@@ -52,6 +58,7 @@ typedef struct		s_lexer
 	t_dy_tab		*env;
 	t_dy_tab		*vars;
 	t_shell			*shell;
+	t_lex_mode		mode;
 }					t_lexer;
 
 typedef struct		s_token_union
@@ -154,7 +161,8 @@ int					sh_lexer_rule5(t_lexer *lexer);
 /*
 ** sh_lexer.c
 */
-int					sh_lexer(char *input, t_list **tokens, t_shell *shell);
+int					sh_lexer(
+	char *input, t_list **tokens, t_shell *shell, t_lex_mode mode);
 
 /*
 ** sh_lexer_rule_4.c

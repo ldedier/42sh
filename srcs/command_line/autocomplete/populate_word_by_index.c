@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 12:04:02 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/21 17:59:12 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/09 18:38:15 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,11 +179,14 @@ int		populate_parsed_word_by_index(t_shell *shell, char *command,
 	t_list	*tokens;
 
 	tokens = NULL;
-	if ((ret = sh_lexer(command, &tokens, shell)) != SUCCESS)
-		return ret;
+	if ((ret = sh_lexer(command, &tokens,
+		shell, E_LEX_AUTOCOMPLETION)) != SUCCESS)
+	{
+		return (ret);
+	}
 	if ((ret = populate_word_from_lexer(&tokens, index, word)))
 		return (FAILURE);
 	if ((ret = sh_parser(tokens, shell)))
-		return ret;
+		return (ret);
 	return (ret);
 }
