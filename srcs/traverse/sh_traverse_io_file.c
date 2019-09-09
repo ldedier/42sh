@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 11:19:41 by jmartel           #+#    #+#             */
-/*   Updated: 2019/07/30 16:03:17 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/09 11:53:20 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,14 @@ static int	sh_process_file_greatand(char *filename, t_context *context)
 
 	if (!ft_strcmp(filename, "-"))
 	{
-		if (sh_add_redirection(sh_new_redir(OUTPUT, context->redirected_fd, -1),
+		if (sh_add_redirection(OUTPUT, context->redirected_fd, -1,
 		&context->current_command_node->metadata.command_metadata.redirections))
 			return (FAILURE);
 		return (SUCCESS);
 	}
 	else if ((fd = get_fd(filename)) >= 0)
 	{
-		return ((sh_process_fd_aggregation)(OUTPUT, context->redirected_fd, fd,
+		return (sh_add_fd_aggregation(OUTPUT, context->redirected_fd, fd,
 			&context->current_command_node->
 				metadata.command_metadata));
 	}
@@ -59,14 +59,14 @@ static int	sh_process_file_lessand(char *filename, t_context *context)
 
 	if (!ft_strcmp(filename, "-"))
 	{
-		if (sh_add_redirection(sh_new_redir(INPUT, context->redirected_fd, -1),
+		if (sh_add_redirection(INPUT, context->redirected_fd, -1,
 			&context->current_command_node->
 				metadata.command_metadata.redirections))
 			return (FAILURE);
 		return (SUCCESS);
 	}
 	else if ((fd = get_fd(filename)) >= 0)
-		return (sh_process_fd_aggregation(INPUT, context->redirected_fd, fd,
+		return (sh_add_fd_aggregation(INPUT, context->redirected_fd, fd,
 			&context->current_command_node->
 				metadata.command_metadata));
 	else
@@ -82,7 +82,7 @@ static int	sh_process_file_lessand(char *filename, t_context *context)
 	}
 }
 
-int			get_io_file_return(t_ast_node *redir_child,
+static int			get_io_file_return(t_ast_node *redir_child,
 			char *filename, t_context *context)
 {
 	if (context->current_command_node->metadata.command_metadata.should_exec)

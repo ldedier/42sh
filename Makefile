@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/09/05 13:49:19 by jmartel          ###   ########.fr        #
+#    Updated: 2019/09/09 11:52:09 by jdugoudr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,6 +43,7 @@ VPATH		= $(INCLUDESDIR) \
 			  $(SRCDIR)/perror \
 			  $(SRCDIR)/traverse \
 			  $(SRCDIR)/traverse_tools \
+			  $(SRCDIR)/redirection \
 			  $(SRCDIR)/vars
 
 SPEED = -j1
@@ -200,7 +201,12 @@ SRCS			+=	sh_vars_tools_1.c sh_vars_tools_2.c \
 SRCS			+=	sh_execute.c sh_execute_pipes.c \
 					sh_execute_pipe_sequence.c sh_execute_tools.c \
 					sh_exec_builtin.c sh_execute_prefix_postfix.c \
-					t_context.c sh_redirections.c sh_debug.c
+					t_context.c sh_debug.c
+
+################################################################
+########					REDIRECTION					########
+################################################################
+SRCS			+=	sh_add_fd_aggregation.c sh_add_redirection.c
 
 ################################################################
 ########						BUILTIN					########

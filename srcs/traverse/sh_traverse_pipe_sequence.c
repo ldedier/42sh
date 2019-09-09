@@ -6,32 +6,48 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/06 18:00:07 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/09 10:54:46 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
+//sh_add_pipe_rediretion only for pipe
 static int		sh_add_pipe_redirections(t_ast_node *from, t_ast_node *to)
 {
 	int				fds[2];
-	t_redirection	redir;
+	/*t_redirection	redir;*/
 
 	if (pipe(fds))
 		return (sh_perror(SH_ERR1_PIPE, "add_pipe_redirections"));
-	redir.type = OUTPUT;
-	redir.redirected_fd = 1;
-	redir.closed = 0;
-	redir.fd = fds[PIPE_IN];
-	if (sh_add_redirection(redir,
-		&from->metadata.command_metadata.redirections))
+	/*
+	 *redir.type = OUTPUT;
+	 *redir.redirected_fd = 1;
+	 *redir.closed = 0;
+	 *redir.fd = fds[PIPE_IN];
+	 */
+	//add a t_pipe et non a redirection
+	if (sh_add_redirection(OUTPUT, 1, fds[PIPE_IN],
+				&from->metadata.command_metadata.redirections))
 		return (FAILURE);
-	redir.closed = 0;
-	redir.type = INPUT;
-	redir.redirected_fd = 0;
-	redir.fd = fds[PIPE_OUT];
-	if (sh_add_redirection(redir, &to->metadata.command_metadata.redirections))
+	/*
+	 *if (sh_add_redirection(redir,
+	 *    &from->metadata.command_metadata.redirections))
+	 *    return (FAILURE);
+	 */
+	/*
+	 *redir.closed = 0;
+	 *redir.type = INPUT;
+	 *redir.redirected_fd = 0;
+	 *redir.fd = fds[PIPE_OUT];
+	 */
+	if (sh_add_redirection(INPUT, 0, fds[PIPE_OUT],
+				&to->metadata.command_metadata.redirections))
 		return (FAILURE);
+	/*
+	 *if (sh_add_redirection(redir, &to->metadata.command_metadata.redirections))
+	 *    return (FAILURE);
+	 */
 	return (SUCCESS);
 }
 
@@ -53,6 +69,7 @@ static void		sh_init_command_redirections_list(t_ast_node *node)
 	}
 }
 
+//here we skip what is not a pipe
 static int		sh_process_pipe_redirections(t_ast_node *node)
 {
 	t_list		*ptr;

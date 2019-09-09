@@ -46,9 +46,10 @@ typedef struct		s_redirection
 	t_redirection_type	type;
 	int					redirected_fd;
 	int					fd;
+	int					saved_fd;
 	int					closed;
 }					t_redirection;
-
+//add une structure t_pipe
 typedef struct		s_pipe_metadata
 {
 	t_list			*contexts;
@@ -159,19 +160,22 @@ int					sh_execute_pipe_sequence(
 /*
 ** sh_redirections.c
 */
-t_redirection		*get_redirection(
-	t_redirection_type type, int redirected_fd, t_list *list);
-int					sh_add_redirection(
-	t_redirection redirection, t_list **list);
-int					get_redirected_fd(
-	t_redirection_type type, int fd, t_list *redirections);
-int					sh_process_fd_aggregation(
+// t_redirection		*get_redirection(
+	// t_redirection_type type, int redirected_fd, t_list *list);
+// int					sh_add_redirection(
+	// t_redirection redirection, t_list **list);
+int					sh_add_redirection(t_redirection_type type, int redirected_fd,
+			int fd, t_list **list);
+
+// int					get_redirected_fd(
+	// t_redirection_type type, int fd, t_list *redirections);
+int					sh_add_fd_aggregation(
 	t_redirection_type type,
 	int redirected_fd,
 	int fd,
 	t_command_metadata *metadata);
-t_redirection		sh_new_redir(
-	t_redirection_type type, int redirected_fd, int fd);
+// t_redirection		sh_new_redir(
+	// t_redirection_type type, int redirected_fd, int fd);
 
 /*
 ** sh_debug.c

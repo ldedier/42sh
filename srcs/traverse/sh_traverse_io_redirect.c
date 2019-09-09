@@ -20,6 +20,8 @@
 **	Then call childrens
 */
 
+
+//we don't go here for pipe. for > >> < <<
 int		sh_traverse_io_redirect(t_ast_node *node, t_context *context)
 {
 	t_ast_node	*child;

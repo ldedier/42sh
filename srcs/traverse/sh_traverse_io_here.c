@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 11:19:41 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/05 12:57:27 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/09/09 10:56:17 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,8 @@ int				sh_traverse_io_here(t_ast_node *node, t_context *context)
 		return (sh_traverse_io_here_phase_interactive(node, context));
 	else if (context->phase == E_TRAVERSE_PHASE_REDIRECTIONS)
 	{
-		if (sh_add_redirection(sh_new_redir(redirection->type,
-				redirection->redirected_fd, redirection->fd),
+		if (sh_add_redirection(redirection->type,
+				redirection->redirected_fd, redirection->fd,
 					&context->current_command_node
 						->metadata.command_metadata.redirections))
 			return (FAILURE);

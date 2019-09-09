@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/07 04:55:29 by ldedier           #+#    #+#             */
-/*   Updated: 2019/07/20 14:38:09 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/09 10:59:47 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int		sh_process_file_output(char *filename,
 		set_failed_command(context);
 		return (sh_perror_err("Can't create file", filename));
 	}
-	if (sh_add_redirection(sh_new_redir(OUTPUT, context->redirected_fd, fd),
+	if (sh_add_redirection(OUTPUT, context->redirected_fd, fd,
 		&context->current_command_node->metadata.command_metadata.redirections))
 		return (FAILURE);
 	return (SUCCESS);
@@ -70,7 +70,7 @@ int		sh_process_file_input(char *filename,
 	}
 	if ((fd = open(filename, options)) < 0)
 		return (sh_perror("Can't open file", filename));
-	if (sh_add_redirection(sh_new_redir(INPUT, context->redirected_fd, fd),
+	if (sh_add_redirection(INPUT, context->redirected_fd, fd,
 		&context->current_command_node->metadata.command_metadata.redirections))
 		return (FAILURE);
 	return (SUCCESS);

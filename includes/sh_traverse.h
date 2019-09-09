@@ -85,8 +85,8 @@ int		sh_traverse_simple_command(t_ast_node *node, t_context *context);
 /*
 ** sh_traverse_io_file.c
 */
-int		get_io_file_return(
-	t_ast_node *redir_child, char *filename, t_context *context);
+// int		get_io_file_return(
+	// t_ast_node *redir_child, char *filename, t_context *context);
 int		sh_traverse_io_file(t_ast_node *node, t_context *context);
 
 /*

@@ -45,6 +45,7 @@ int			sh_process_execute_dup_pipes(t_context *context)
 	head = *(context->redirections);
 	while (head)
 	{
+		//on vient pour both pipe et redirection
 		redir = (t_redirection*)head->content;
 		if (sh_process_process_execute_dup_pipes(redir))
 			return (FAILURE);
@@ -76,6 +77,7 @@ int			sh_process_execute_close_pipes(t_context *context)
 	head = *(context->redirections);
 	while (head)
 	{
+		//on vient pour both pipe et redirection
 		redir = (t_redirection*)head->content;
 		sh_process_process_execute_close_pipes(redir);
 		head = head->next;
