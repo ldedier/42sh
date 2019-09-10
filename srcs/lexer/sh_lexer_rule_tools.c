@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 14:47:05 by jmartel           #+#    #+#             */
-/*   Updated: 2019/06/10 14:56:35 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/10 14:47:53 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,9 @@ int		sh_lexer_is_operator(int op)
 	|| op == LEX_TOK_LESS
 	|| op == LEX_TOK_GREAT
 	|| op == LEX_TOK_OPN_PAR
-	|| op == LEX_TOK_CLS_PAR)
+	|| op == LEX_TOK_CLS_PAR
+	|| op == LEX_TOK_LBRACE
+	|| op == LEX_TOK_RBRACE)
 		return (1);
 	return (0);
 }
