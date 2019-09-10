@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 13:06:44 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/10 16:26:58 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/10 16:38:53 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ static void	t_token_show_id_4(int i)
 		ft_dprintf(2, "RBRACE");
 	else if (i == LEX_TOK_LBRACE)
 		ft_dprintf(2, "LBRACE");
+	else if (i == LEX_TOK_BANG)
+		ft_dprintf(2, "BANG");
 	else
 		ft_dprintf(2, COLOR_RED"Undefined Token (%d)"COLOR_END, i);
 }

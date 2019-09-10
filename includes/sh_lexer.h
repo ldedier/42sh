@@ -96,8 +96,6 @@ int					sh_lexer_rule10(t_lexer *lexer);
 /*
 ** sh_lexer_rule_2.c
 */
-int					sh_lexer_is_operator_char(int c);
-int					sh_lexer_check_operator(t_lexer *lexer);
 int					sh_lexer_rule2(t_lexer *lexer);
 
 /*
@@ -139,7 +137,8 @@ int					sh_lexer_rule9(t_lexer *lexer);
 /*
 ** sh_lexer_rule_tools.c
 */
-int					sh_lexer_is_operator(int op);
+int					sh_lexer_is_operator_char(int c);
+int					sh_lexer_check_operator(t_lexer *lexer);
 
 /*
 ** t_lexer.c
