@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/27 16:47:32 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/04 20:08:05 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/10 16:21:36 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,7 +192,7 @@ static int	sh_splitting_white_ifs(t_ast_node *node, t_context *context)
 
 int			sh_expansions_splitting(t_ast_node *node, t_context *context)
 {
-
+	return (SUCCESS);
 	if (!node)
 		return (SUCCESS); // node is null when called from heredocs
 	if (!context->current_command_node)
