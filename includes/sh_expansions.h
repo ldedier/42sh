@@ -42,55 +42,9 @@ struct					s_expansion
 */
 
 /*
-** t_expansion.c
-*/
-void	t_expansion_free_content(t_expansion *expansion);
-void	t_expansion_show(t_expansion *exp);
-void	t_expansion_show_type(t_expansion *exp);
-
-/*
-** sh_expansions_variable.c
-*/
-int		sh_expansions_variable_valid_name(char *name);
-int		sh_expansions_variable_detect(char *start);
-int		sh_expansions_variable_fill(t_expansion *exp, char *start);
-int		sh_expansions_variable_process(
-	t_context *context, t_expansion *exp);
-
-/*
 ** sh_expansions.c
 */
 int		sh_expansions(t_context *context, t_ast_node *node);
-
-/*
-** sh_get_heredoc.c
-*/
-char	*get_heredoc(
-	t_context *context, t_heredoc *heredoc_data, int *ret);
-
-/*
-** sh_expansions_tilde.c
-*/
-int		sh_expansions_tilde_detect(char *start);
-int		sh_expansions_tilde_process(t_context *context, t_expansion *exp);
-int		sh_expansions_tilde(
-	char **input, char *original, t_context *context);
-
-/*
-** sh_expansions_scan.c
-*/
-int		sh_expansions_scan(
-	char **input,
-	int index,
-	int do_expansion,
-	t_context *context,
-	t_ast_node *node);
-
-/*
-** sh_expansions_process.c
-*/
-int		sh_expansions_process(
-	char **input, char *original, t_context *context, int *index);
 
 /*
 ** sh_expansions_field_splitting.c
@@ -98,18 +52,12 @@ int		sh_expansions_process(
 int		sh_expansions_splitting(t_ast_node *node, t_context *context);
 
 /*
-** sh_expansions_replace.c
+** sh_expansions_parameter.c
 */
-int		sh_expansions_replace(
-	t_expansion *expansion, char **input, int index);
-
-/*
-** sh_expansions_parameter_tools.c
-*/
-int		sh_expansions_parameter_format(t_expansion *exp, char *format);
-char	*sh_expansions_parameter_get_param(
+int		sh_expansions_parameter_detect(char *start);
+int		sh_expansions_parameter_fill(t_expansion *exp, char *start);
+int		sh_expansions_parameter_process(
 	t_context *context, t_expansion *exp);
-char	*sh_expansions_parameter_get_word(t_expansion *exp, char *format);
 
 /*
 ** sh_expansions_parameter_process.c
@@ -124,11 +72,63 @@ int		sh_expansions_parameter_plus(
 	t_context *context, t_expansion *exp, char *format);
 
 /*
-** sh_expansions_parameter.c
+** sh_expansions_parameter_tools.c
 */
-int		sh_expansions_parameter_detect(char *start);
-int		sh_expansions_parameter_fill(t_expansion *exp, char *start);
-int		sh_expansions_parameter_process(
+int		sh_expansions_parameter_format(t_expansion *exp, char *format);
+char	*sh_expansions_parameter_get_param(
 	t_context *context, t_expansion *exp);
+char	*sh_expansions_parameter_get_word(t_expansion *exp, char *format);
+
+/*
+** sh_expansions_process.c
+*/
+int		sh_expansions_process(
+	char **input, char *original, t_context *context, int *index);
+
+/*
+** sh_expansions_replace.c
+*/
+int		sh_expansions_replace(
+	t_expansion *expansion, char **input, int index);
+
+/*
+** sh_expansions_scan.c
+*/
+int		sh_expansions_scan(
+	char **input,
+	int index,
+	int do_expansion,
+	t_context *context,
+	t_ast_node *node);
+
+/*
+** sh_expansions_tilde.c
+*/
+int		sh_expansions_tilde_detect(char *start);
+int		sh_expansions_tilde_process(t_context *context, t_expansion *exp);
+int		sh_expansions_tilde(
+	char **input, char *original, t_context *context);
+
+/*
+** sh_expansions_variable.c
+*/
+int		sh_expansions_variable_valid_name(char *name);
+int		sh_expansions_variable_detect(char *start);
+int		sh_expansions_variable_fill(t_expansion *exp, char *start);
+int		sh_expansions_variable_process(
+	t_context *context, t_expansion *exp);
+
+/*
+** sh_get_heredoc.c
+*/
+char	*get_heredoc(
+	t_context *context, t_heredoc *heredoc_data, int *ret);
+
+/*
+** t_expansion.c
+*/
+void	t_expansion_free_content(t_expansion *expansion);
+void	t_expansion_show(t_expansion *exp);
+void	t_expansion_show_type(t_expansion *exp);
 
 #endif
