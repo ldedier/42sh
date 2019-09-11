@@ -15,6 +15,8 @@
 
 # include "sh_21.h"
 
+# define MAX_FILENAME_LEN	255
+
 typedef struct dirent		t_dirent;
 typedef struct s_heredoc	t_heredoc;
 typedef char *(*t_heredoc_func)(const char *);
@@ -79,8 +81,8 @@ int		sh_traverse_simple_command_exec(
 	t_ast_node *node, t_context *context);
 int		sh_traverse_simple_command_no_exec(
 	t_ast_node *node, t_context *context);
-int		sh_traverse_simple_command(t_ast_node *node, t_context *context);
 int		sh_traverse_sc_no_slash_cmd(t_context *context);
+int		sh_traverse_simple_command(t_ast_node *node, t_context *context);
 
 /*
 ** sh_traverse_io_file.c
@@ -102,6 +104,7 @@ int		sh_traverse_cmd_prefix(t_ast_node *node, t_context *context);
 /*
 ** sh_traverse_cmd_suffix.c
 */
+int		test_field_splitting_function(t_ast_node *child, t_list **ptr);
 int		sh_traverse_cmd_suffix(t_ast_node *node, t_context *context);
 
 /*

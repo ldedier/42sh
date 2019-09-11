@@ -36,6 +36,7 @@
 # define SH_ERR1_IOCTL			"Ioctl error"
 # define SH_ERR1_READ			"Read error"
 # define SH_ERR1_EXECVE_FAIL	"Cannot execute binary file: Exec format error"
+# define SH_ERR1_FILENAME_LEN	"File name too long"
 
 # define SH_ERR2_NO_SUCH_FILE_OR_DIR	"No such file or directory"
 # define SH_ERR2_INVALID_OPT			"Invalid option"

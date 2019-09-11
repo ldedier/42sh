@@ -12,6 +12,7 @@
 
 #include "sh_21.h"
 
+/*
 void	sh_traverse_tools_reset_context(t_context *context)
 {
 	sh_traverse_tools_reset_params(context);
@@ -31,5 +32,6 @@ void	sh_traverse_tools_reset_params(t_context *context)
 	context->params->current_size = 0;
 	if (context->path)
 		ft_strdel(&context->path);
-	return ;
+	context->builtin = NULL;
 }
+*/

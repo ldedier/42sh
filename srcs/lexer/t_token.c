@@ -23,6 +23,23 @@ void	t_token_update_id(int id, t_token *token)
 	token->index = sh_index(id);
 }
 
+t_token	*t_token_new_ptr(int id, char *value)
+{
+	t_token		*token;
+
+	if (!(token = malloc(sizeof(*token))))
+		return (NULL);
+	token->value = NULL;
+	if (value)
+		token->value = value;
+	token->id = id;
+	token->index = sh_index(id);
+	token->ast_node = NULL;
+	token->expansion = 0;
+	token->apply_heredoc_expansion = 1;
+	return (token);
+}
+
 t_token	*t_token_new(int id, char *value)
 {
 	t_token		*token;

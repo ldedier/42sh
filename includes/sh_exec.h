@@ -111,6 +111,7 @@ void				sh_free_context_dup_lst(void *c, size_t dummy);
 t_context			*t_context_dup(t_context *context);
 int					t_context_init(t_context *context, t_shell *shell);
 void				t_context_free_content(t_context *context);
+void				t_context_reset(t_context *context);
 
 /*
 ** sh_execute.c

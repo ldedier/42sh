@@ -65,13 +65,14 @@ typedef struct		s_auto_complete
 	int				scrolled_lines;
 }					t_auto_complete;
 
-typedef struct		s_dir_chooser
+typedef struct		t_choice_filler
 {
 	char			*transformed_path;
-	char				*path;
+	char			*path;
+	char			*suffix;
 	t_word			*word;
-	int					types;
-}					t_dir_chooser;
+	int				types;
+}					t_choice_filler;
 
 /*
 ********************************************************************************
@@ -82,12 +83,14 @@ typedef struct		s_dir_chooser
 */
 void				add_node_next_to_node(t_dlist **node, t_dlist *to_add);
 int					sh_pass_filters(t_file *file, int types);
-int					process_add_choices_from_dir(
+char				*get_fullname(t_choice_filler *c, char *entry);
+int					process_add_choices_from_choice_filler(
 	t_shell *shell,
 	t_command_line *command_line,
-	struct dirent *entry,
-	t_dir_chooser *c);
-int					add_choices_from_dir(t_shell *shell, t_dir_chooser *c);
+	char *entry,
+	t_choice_filler *c);
+int					add_choices_from_dir(
+	t_shell *shell, t_choice_filler *c);
 
 /*
 ** auto_completion_tools.c
@@ -147,17 +150,13 @@ int					populate_choices_from_word(
 	t_command_line *command_line, t_shell *shell, t_word *word);
 
 /*
-** left_arrow.c
+** escape.c
 */
-int					process_update_autocompletion_head_left(
-	t_command_line *command_line,
-	t_file *file_iter,
-	t_file *file,
-	t_dlist *ptr);
-void				update_autocompletion_head_left(
-	t_command_line *command_line);
-int					process_autocompletion_left(
-	t_command_line *command_line);
+int					sh_should_escape(char c);
+int					sh_escaped_len(char *str);
+void				ft_strcat_escaped(char *dest, char *src);
+char				*ft_strdup_escaped(char *str);
+char				*ft_strjoin_escaped(char *s1, char *s2);
 
 /*
 ** auto_completion.c
@@ -168,6 +167,8 @@ int					process_completion_expand(
 	t_command_line *command_line, char *str, t_word word);
 int					process_completion(
 	t_command_line *command_line, t_word word);
+void				print_dy_tab(t_dy_tab *dtab);
+void				print_exp(t_shell *shell);
 int					process_tab(
 	t_shell *shell, t_command_line *command_line);
 
@@ -180,6 +181,18 @@ int					ft_round(float a);
 int					lines_rendered_from_file(t_file *file);
 int					command_line_visible_lines(
 	t_command_line *command_line);
+
+/*
+** render_choices.c
+*/
+char				*new_print_buffer(void);
+int					sh_should_render_choices(
+	t_command_line *command_line, int nb_visible_lines);
+void				update_dimensions(
+	t_command_line *command_line, int max_len);
+void				update_back_nb_cols(t_command_line *command_line);
+int					render_choices(
+	t_command_line *command_line, int *to_go_up);
 
 /*
 ** fill_buffer.c
@@ -196,16 +209,17 @@ void				fill_buffer_from_file(
 	int max_len);
 
 /*
-** render_choices.c
+** left_arrow.c
 */
-char				*new_print_buffer(void);
-int					sh_should_render_choices(
-	t_command_line *command_line, int nb_visible_lines);
-void				update_dimensions(
-	t_command_line *command_line, int max_len);
-void				update_back_nb_cols(t_command_line *command_line);
-int					render_choices(
-	t_command_line *command_line, int *to_go_up);
+int					process_update_autocompletion_head_left(
+	t_command_line *command_line,
+	t_file *file_iter,
+	t_file *file,
+	t_dlist *ptr);
+void				update_autocompletion_head_left(
+	t_command_line *command_line);
+int					process_autocompletion_left(
+	t_command_line *command_line);
 
 /*
 ** arrows_vertical.c
@@ -265,13 +279,20 @@ t_file				*new_file(
 	t_shell *shell, char *name, char *fullname);
 
 /*
-** escape.c
+** add_choices_from_expansions.c
 */
-int					sh_should_escape(char c);
-int					sh_escaped_len(char *str);
-void				ft_strcat_escaped(char *dest, char *src);
-char				*ft_strdup_escaped(char *str);
-char				*ft_strjoin_escaped(char *s1, char *s2);
+int					sh_match_key(
+	char *entry, char *to_compare, int *equal_index);
+int					populate_keys_from_dy_tab(
+	t_dy_tab *dtab, t_shell *shell, t_choice_filler *c);
+int					get_end_index(char *str, int index);
+int					process_fill_choice_filler_expansion(
+	t_choice_filler *c, int *last_dollar_index, int exp_braced);
+int					fill_choice_filler_expansion(
+	t_choice_filler *c, int *last_dollar_index);
+int					free_turn_choice_filler(t_choice_filler *c, int ret);
+int					populate_choices_from_expansions(
+	t_command_line *command_line, t_shell *shell, t_word *word);
 
 /*
 ** preprocess_choice_add.c

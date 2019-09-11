@@ -348,6 +348,7 @@ int					ft_free_turn_2(
 						void *to_free, void *to_free2, int ret);
 int					ft_free_turn_3(
 						void *to_free, void *to_free2, void *to_free3, int ret);
+void				*ft_free_turn_ptr(void *to_free);
 
 /*
 ******************************** get_next_line  *******************************

@@ -62,7 +62,7 @@ int		sh_traverse_simple_command_exec(t_ast_node *node, t_context *context)
 		sh_process_execute_close_pipes(context);
 	if (ret == FAILURE)
 		return (FAILURE);
-	sh_traverse_tools_reset_params(context);
+	t_context_reset(context);
 	if (sh_env_update_question_mark(context->shell) == FAILURE)
 		return (FAILURE);
 	if (ret == STOP_CMD_LINE)
@@ -80,39 +80,6 @@ int		sh_traverse_simple_command_no_exec(t_ast_node *node,
 	return (SUCCESS);
 }
 
-int		sh_traverse_simple_command(t_ast_node *node, t_context *context)
-{
-	int		ret;
-
-	if (context->phase == E_TRAVERSE_PHASE_EXECUTE)
-	{
-		sh_traverse_tools_show_traverse_start(node, context);
-		if (sh_traverse_tools_search(node, 87) == ERROR && sh_traverse_tools_search(node, 88) == ERROR)
-			return (sh_traverse_tools_browse(node, context));
-		if (!context->current_pipe_sequence_node)
-		{
-			if (sh_env_save(context) == FAILURE)
-				return (FAILURE);
-			sh_env_save_delete_exported(context);
-		}
-
-		context->redirections = &node->metadata.command_metadata.redirections;
-		if (context->current_pipe_sequence_node)
-			if (sh_env_update_question_mark(context->shell) == FAILURE)
-				return (FAILURE);
-		if (node->metadata.command_metadata.should_exec)
-			ret = sh_traverse_simple_command_exec(node, context);
-		else
-			ret = sh_traverse_simple_command_no_exec(node, context);
-		sh_traverse_tools_show_traverse_ret_value(node, context, ret);
-		if (!context->current_pipe_sequence_node && ret != FAILURE)
-			if (sh_env_save_restore(context) == FAILURE)
-				return (FAILURE);
-		return (ret);
-	}
-	else
-		return (sh_traverse_tools_browse(node, context));
-}
 
 /*
 ** sh_traverse_sc_no_slash_cmd:
@@ -154,4 +121,38 @@ int		sh_traverse_sc_no_slash_cmd(t_context *context)
 			sh_env_update_ret_value(context->shell, SH_RET_CMD_NOT_FOUND);
 		return (ERROR);
 	}
+}
+
+int		sh_traverse_simple_command(t_ast_node *node, t_context *context)
+{
+	int		ret;
+
+	if (context->phase == E_TRAVERSE_PHASE_EXECUTE)
+	{
+		sh_traverse_tools_show_traverse_start(node, context);
+		if (sh_traverse_tools_search(node, 87) == ERROR
+			&& sh_traverse_tools_search(node, 88) == ERROR)
+			return (sh_traverse_tools_browse(node, context));
+		if (!context->current_pipe_sequence_node)
+		{
+			if (sh_env_save(context) == FAILURE)
+				return (FAILURE);
+			sh_env_save_delete_exported(context);
+		}
+		context->redirections = &node->metadata.command_metadata.redirections;
+		if (context->current_pipe_sequence_node)
+			if (sh_env_update_question_mark(context->shell) == FAILURE)
+				return (FAILURE);
+		if (node->metadata.command_metadata.should_exec)
+			ret = sh_traverse_simple_command_exec(node, context);
+		else
+			ret = sh_traverse_simple_command_no_exec(node, context);
+		sh_traverse_tools_show_traverse_ret_value(node, context, ret);
+		if (!context->current_pipe_sequence_node && ret != FAILURE)
+			if (sh_env_save_restore(context) == FAILURE)
+				return (FAILURE);
+		return (ret);
+	}
+	else
+		return (sh_traverse_tools_browse(node, context));
 }

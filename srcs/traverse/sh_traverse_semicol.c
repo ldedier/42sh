@@ -14,6 +14,6 @@
 
 int		sh_traverse_semicol(t_ast_node *node, t_context *context)
 {
-	sh_traverse_tools_reset_context(context);
+	t_context_reset(context);
 	return (sh_traverse_tools_browse(node, context));
 }

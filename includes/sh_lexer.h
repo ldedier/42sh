@@ -165,6 +165,7 @@ int					sh_lexer_rule4(t_lexer *lexer);
 ** t_token.c
 */
 void				t_token_update_id(int id, t_token *token);
+t_token				*t_token_new_ptr(int id, char *value);
 t_token				*t_token_new(int id, char *value);
 void				t_token_free(t_token *token);
 
