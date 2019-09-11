@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/27 16:47:32 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/11 04:13:12 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/11 07:07:59 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,46 +150,6 @@
 // 	(void)context;
 // }
 
-static int	sh_splitting_white_ifs(t_ast_node *node, t_context *context)
-{
-	const char	ifs[] = " \t\n";
-	char		*input;
-	int			i;
-	int			start;
-
-
-	i = 0;
-	input = node->token->value;
-	while (input[i])
-	{
-		while (input[i] && ft_strchr(ifs, input[i]))
-			i++;
-		start = i;
-		while (input[i] && !ft_strchr(ifs, input[i]))
-			i++;
-		if (start == i) // To try : ignore empty tokens
-			continue ; // To try
-		if (!input[i])
-		{
-			if (!sh_add_to_ast_node(context->current_command_node, LEX_TOK_WORD, input + start))
-				return (FAILURE);
-			ft_dprintf(2, "splitted (last) : %s\n", input + start);
-			break ;
-		}
-		input[i] = '\0';
-		ft_dprintf(2, "splitted : %s\n", input + start);
-		if (!sh_add_to_ast_node(context->current_command_node, LEX_TOK_WORD, input + start))
-			return (FAILURE);
-		input[i] = ' ';
-		i++;
-	}
-	sh_print_token_list(context->shell->parser.tokens, &context->shell->parser.cfg);
-	sh_print_ast(node, 0);
-	sh_print_ast(context->shell->parser.ast_root, 0);
-	return (SUCCESS);
-	(void)context;
-}
-
 static void	field_splitting_pass_quotes(char *str, int *i)
 {
 	char		quote;
@@ -206,45 +166,66 @@ static void	field_splitting_pass_quotes(char *str, int *i)
 	(*i) += 1;
 }
 
-int			sh_expansions_field_splitting(t_context *context, t_ast_node *node)
+
+
+int			sh_expansions_splitting(t_context *context, t_ast_node *node)
 {
 	int			i;
 	int			start;
-	char		*str;
-	const char	ifs = "\n\t \0";
+	char		*input;
+	const char	*ifs = "\n\t \0";
+	const char	*quotes = "\"\'\\\0";
+	t_ast_node	*original_node;
 
 	if (!node)
 		return (SUCCESS);  // node is null when called from heredocs
-	if (!ft_strpbrk(node->token->value, " \t\n"))
+	if (!ft_strpbrk(node->token->value, ifs))
 		return (SUCCESS);
-	i = 0;
-	str = node->token->value;
-	while (str[i])
-	{
-		if (str[i] == '\"' || str[i] == '\'' || str[i] == '\\')
-			field_splitting_pass_quotes(str, &i);
-		if (ft_strchr(ifs, str[i]))
-		{
-			start = i;
-			i++;
-			while (!ft_strchr(ifs, str[i]))
-				i++;
-			if (start == i)
-				continue ;
-			if (!str[i])
-			{
-				if (!sh_add_word_to_ast(node, str + start))
-					return (FAILURE);
-				ft_dprintf(2, "splitted (last) : %s\n", str + start);
-				break ;
-			}
-			str[i] = '\0';
-			ft_dprintf(2, "splitted : %s\n", str + start);
-			if (!sh_add_to_ast_node(context->current_command_node, LEX_TOK_WORD, str + start))
-				return (FAILURE);
-			str[i] = ' ';
-			i++;
+	input = node->token->value;
+	original_node = node;
 
+	i = 0;
+	start = -2;
+	while (input[i])
+	{
+		// ft_dprintf(2, "%c : %s\n", input[i], input + i);
+		if (ft_strchr(quotes, input[i]))
+		{
+			field_splitting_pass_quotes(input, &i);
+			// ft_dprintf(2, "going threw quotes\n");
 		}
+		else if (ft_strchr(ifs, input[i]))
+		{
+			if (start == -2)
+			{
+				input[i] = 0;
+				i++;
+				start = -1;
+				// ft_dprintf(2, "adding first node : %s|\n", input);
+			}
+			else
+			{
+				// ft_dprintf(2, "adding node : %s\n", ft_strndup(input + start, i - start));
+				if (!(node = sh_add_word_to_ast(node, ft_strndup(input + start, i - start)))) //protect
+					return (FAILURE);
+			}
+			while (input[i] && ft_strchr(ifs, input[i]))
+				i++;
+			start = i;
+			// ft_dprintf(2, "new start : %d (%c)\n", i, input[i]);
+			i--;
+		}
+		i++;
 	}
+	if (start >= 0)
+	{
+		// ft_dprintf(2, "adding last node : %s\n", ft_strndup(input + start, i - start));
+		if (!(node = sh_add_word_to_ast(node, ft_strndup(input + start, i - start)))) //protect
+			return (FAILURE);
+	}
+	// sh_print_token_list(context->shell->parser.tokens, &context->shell->parser.cfg);
+	// sh_print_ast(node, 0);
+	// sh_print_ast(context->shell->parser.ast_root, 0);
+	return (SUCCESS);
+	(void)context;
 }

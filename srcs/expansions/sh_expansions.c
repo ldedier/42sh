@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/05 10:59:30 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/11 01:16:52 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/11 04:24:42 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,10 @@ int			sh_expansions(t_context *context, t_ast_node *node)
 		ret = sh_expansions_tilde(input, *input, context);
 	if (!ret)
 		ret = sh_expansions_scan(input, index, 1, context, node);
-	if (ret != FAILURE) // ?????
-		sh_expansions_quote_removal(context, *input); // Check ret value ?
+	if (!ret)
+		ret = sh_expansions_splitting(context, node);
+	if (!ret)
+		ret = sh_expansions_quote_removal(context, *input);
 	if (ret == ERROR || ret == FAILURE)
 		sh_env_update_ret_value(context->shell, ret);
 	if (sh_env_update_question_mark(context->shell) == FAILURE)

@@ -49,7 +49,7 @@ int		sh_expansions(t_context *context, t_ast_node *node);
 /*
 ** sh_expansions_field_splitting.c
 */
-int		sh_expansions_splitting(t_ast_node *node, t_context *context);
+int		sh_expansions_splitting(t_context *context, t_ast_node *node);
 
 /*
 ** sh_expansions_parameter.c
