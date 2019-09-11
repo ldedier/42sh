@@ -90,10 +90,12 @@ trap clean_and_exit 2
 ## Call tests files : all or specified one
 if [ -n "$file" ] ; then
 	for f in $file ; do
+		echo -e ${blue}${f}${eoc}
 		source $f
 	done
 else
 	for file in `ls tests/test_*.sh` ; do
+		echo -e ${blue}${file}${eoc}
 		source $file
 	done
 fi
