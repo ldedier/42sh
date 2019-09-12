@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:35:27 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/05 11:41:04 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/09/12 04:55:25 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ int		sh_traverse_cmd_prefix(t_ast_node *node, t_context *context);
 /*
 ** sh_traverse_cmd_suffix.c
 */
-int		test_field_splitting_function(t_ast_node *child, t_list **ptr);
 int		sh_traverse_cmd_suffix(t_ast_node *node, t_context *context);
 
 /*
@@ -98,7 +97,6 @@ int		sh_process_file_input(
 /*
 ** sh_traverse_io_here.c
 */
-char	*heredoc_dash(const char *str);
 int		sh_traverse_io_here(t_ast_node *node, t_context *context);
 
 /*
