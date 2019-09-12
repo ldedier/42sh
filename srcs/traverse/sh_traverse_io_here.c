@@ -6,13 +6,13 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 11:19:41 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/05 12:57:27 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/09/12 04:54:14 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-char			*heredoc_dash(const char *str)
+static char		*heredoc_dash(const char *str)
 {
 	int i;
 
@@ -49,8 +49,14 @@ static int		sh_traverse_io_here_interactive(t_ast_node *node,
 
 	child = (t_ast_node *)node->children->content;
 	heredoc_data.func = heredoc_func;
-	heredoc_data.stop = child->token->value;
 	heredoc_data.apply_expansion = &(child->token->apply_heredoc_expansion);
+	if (ft_strpbrk(child->token->value, "\"\'\\"))
+	{
+		if (sh_expansions_quote_removal(context, child->token->value))
+			return (ERROR);
+		(*heredoc_data.apply_expansion) = 0;
+	}
+	heredoc_data.stop = child->token->value;
 	if (!(heredoc_res = get_heredoc(context, &heredoc_data, &ret)))
 		return (ret);
 	if (ret == CTRL_D)
