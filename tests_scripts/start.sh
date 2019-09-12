@@ -52,18 +52,15 @@ passed=0 tried=0 diff_passed=0 diff_tried=0 logging=0
 for arg in $@ ; do
 	if [ "$arg" = "-v" ] ; then
 		valgrind=true
-		rm -rf "${log_dir}"
-		mkdir -p $log_dir
+		rm -rf "${log_dir}/valgrind"
+		mkdir -p "$log_dir/valgrind"
 	fi
 
 	if [ "$arg" = "-2" ] ; then
 		test_stderr="ok" ; fi
 
 	if [ "$arg" = "-l" ] ; then
-		logging="ok"
-		rm -rf "${log_dir}"
-		mkdir -p $log_dir ; fi
-
+		logging="ok" ; fi
 
 	if [ "$arg" = "-q" ] ; then
 		verbose="" ; fi
