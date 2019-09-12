@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/04 11:17:39 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/09/11 00:52:58 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/12 02:19:42 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int	double_quote(
 	int	ret;
 
 	(*index) += 1;
-	while ((*input)[*index] != '\"')
+	while ((*input)[*index] && (*input)[*index] != '\"')
 	{
 		if ((*input)[*index] == '$' && do_expansion)
 		{
