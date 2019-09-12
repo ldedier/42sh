@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/27 16:47:32 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/11 19:57:43 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/12 03:18:34 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,8 @@ static void	field_splitting_pass_quotes(char *str, int *i)
 	(*i) += 1;
 	while (str[*i] && str[*i] != quote)
 		(*i) += 1;
-	(*i) += 1;
+	if (str[*i] == quote)
+		(*i) += 1;
 }
 
 
@@ -193,6 +194,7 @@ int			sh_expansions_splitting(t_context *context, t_ast_node *node)
 		{
 			field_splitting_pass_quotes(input, &i);
 			// ft_dprintf(2, "going threw quotes\n");
+			continue ;
 		}
 		else if (ft_strchr(ifs, input[i]))
 		{
