@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/21 15:58:19 by jmartel           #+#    #+#              #
-#    Updated: 2019/09/12 23:33:46 by jmartel          ###   ########.fr        #
+#    Updated: 2019/09/12 23:40:40 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -209,6 +209,8 @@ test_launch()
 	if [ -n "$valgrind" ] ; then
 		valgrind_test
 	fi
+
+	if [ 0 -eq "$continue" ] ; then rm -f ${logging_file} ; fi
 
 	rm -f ${buffer}
 	rm -f ${res1_bash} ${res1_42sh}
