@@ -1,0 +1,7 @@
+IFS=\"\'\ 
+
+var="\"\"Sa      ta\'\'nas"
+echo $var
+
+var="Oka  lmos''''S''''pec   '   '   ulos"
+echo $var
