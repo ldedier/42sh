@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/27 16:47:32 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/12 03:18:34 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/12 06:56:46 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,12 +162,14 @@ static void	field_splitting_pass_quotes(char *str, int *i)
 	quote = str[*i];
 	(*i) += 1;
 	while (str[*i] && str[*i] != quote)
+	{
+		if (str[*i] == '\\' && quote == '"')
+			(*i) += 1;
 		(*i) += 1;
+	}
 	if (str[*i] == quote)
 		(*i) += 1;
 }
-
-
 
 int			sh_expansions_splitting(t_context *context, t_ast_node *node)
 {
@@ -189,11 +191,13 @@ int			sh_expansions_splitting(t_context *context, t_ast_node *node)
 	start = -2;
 	while (input[i])
 	{
-		// ft_dprintf(2, "%c : %s\n", input[i], input + i);
+		if (sh_verbose_expansion())
+			ft_dprintf(2, "input [i] : %c (%s)\n", input[i], input + i);
 		if (ft_strchr(quotes, input[i]))
 		{
 			field_splitting_pass_quotes(input, &i);
-			// ft_dprintf(2, "going threw quotes\n");
+			if (sh_verbose_expansion())
+				ft_dprintf(2, "going threw quotes\n");
 			continue ;
 		}
 		else if (ft_strchr(ifs, input[i]))
@@ -203,31 +207,37 @@ int			sh_expansions_splitting(t_context *context, t_ast_node *node)
 				input[i] = 0;
 				i++;
 				start = -1;
-				// ft_dprintf(2, "adding first node : %s|\n", input);
+				if (sh_verbose_expansion())
+					ft_dprintf(2, "adding first node : %s|\n", input);
 			}
 			else
 			{
-				// ft_dprintf(2, "adding node : %s\n", ft_strndup(input + start, i - start));
+				if (sh_verbose_expansion())
+					ft_dprintf(2, "adding node : %s\n", ft_strndup(input + start, i - start));
 				if (!(node = sh_add_word_to_ast(node, ft_strndup(input + start, i - start)))) //protect
 					return (FAILURE);
 			}
 			while (input[i] && ft_strchr(ifs, input[i]))
 				i++;
 			start = i;
-			// ft_dprintf(2, "new start : %d (%c)\n", i, input[i]);
+			if (sh_verbose_expansion())
+				ft_dprintf(2, "new start : %d (%c)\n", i, input[i]);
 			i--;
 		}
 		i++;
 	}
 	if (start >= 0)
 	{
-		// ft_dprintf(2, "adding last node : %s\n", ft_strndup(input + start, i - start));
+		if (sh_verbose_expansion())
+			ft_dprintf(2, "adding last node : %s\n", ft_strndup(input + start, i - start));
 		if (!(node = sh_add_word_to_ast(node, ft_strndup(input + start, i - start)))) //protect
 			return (FAILURE);
 	}
-	// sh_print_token_list(context->shell->parser.tokens, &context->shell->parser.cfg);
-	// sh_print_ast(node, 0);
-	// sh_print_ast(context->shell->parser.ast_root, 0);
+	if (sh_verbose_expansion())
+	{
+		sh_print_token_list(context->shell->parser.tokens, &context->shell->parser.cfg);
+		sh_print_ast(node, 0);
+		sh_print_ast(context->shell->parser.ast_root, 0);
+	}	
 	return (SUCCESS);
-	(void)context;
 }
