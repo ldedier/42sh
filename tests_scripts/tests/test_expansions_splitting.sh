@@ -6,16 +6,17 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/06/06 16:09:28 by jmartel           #+#    #+#              #
-#    Updated: 2019/09/12 09:44:12 by jmartel          ###   ########.fr        #
+#    Updated: 2019/09/12 23:48:11 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 launch "Field splitting"
 	launch "simple"
 		test_launch 'var="Okalmose speculos"' 'echo $var'
-		test_launch 'var="-l -A"' 'ls $var'
-		test_launch 'var="ls -l"' '$var -A'
-		test_launch 'var="ls -l -A"' '$var'
+		test_launch 'var="-n pwd"' 'echo $var'
+		test_launch 'var="echo -n"' '$var Okalmos'
+		test_launch 'var="ls -NOOPT"' '$var .'
+		test_launch 'var="echo -n okalmos speculos"' '$var'
 		test_launch 'IFS="-"' 'var="ls -l -A"' '$var'
 		test_launch 'IFS="- "' 'var="ls -l -A"' '$var'
 		test_launch 'var="Okalmos     Specul     os"' 'echo $var'
@@ -25,6 +26,7 @@ launch "Field splitting"
 		test_launch 'IFS=A''var=AAAAA' 'echo $var'
 		test_launch 'IFS=ABC''var=BAC' 'echo $var'
 		test_launch 'IFS=ABC''var=B   A      C' 'echo $var'
+		test_launch 'var="echo tamer | cat -e"' '$var'
 
 	launch "hard"
 		for i in `seq 1 5` ; do

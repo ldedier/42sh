@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/21 15:58:19 by jmartel           #+#    #+#              #
-#    Updated: 2019/09/12 23:40:40 by jmartel          ###   ########.fr        #
+#    Updated: 2019/09/13 00:02:44 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -80,8 +80,8 @@ diff_files()
 	res=`diff $1 $2`
 	if [ -n "$res" ] ; then
 		echo -e "${red}KO${eoc}"
-		echo -e "${yellow}`cat ${buffer}`${eoc}"
 		if [ -n "$verbose" ] ; then
+			echo -e "${yellow}`cat ${buffer}`${eoc}"
 			echo -e "${cyan}" `cat $1` "${eoc}"
 			echo -e "${cyan}" `cat $2` "${eoc}"
 		fi
@@ -133,23 +133,28 @@ check_ret_value()
 		echo -e "${red}SEGFAULT OR SIGNAL RECEIVED"
 		echo -e "${sh_ret}${eoc}"
 		if [ -n "$logging" ] ; then
-			echo -e "$SEGFAULT OR SIGNAL RECEIVED" >> ${logging_file}
+			echo -e `cat ${buffer}` >> ${logging_file}
+			echo -e "SEGFAULT OR SIGNAL RECEIVED" >> ${logging_file}
 			echo -e "${sh_ret}" >> ${logging_file}
 			echo -e "" >> ${logging_file}
 		fi
-
 	fi
 
 	if [ -n "$test_returned_values" ] ; then
 
 		if [ "$sh_ret" -ne  "$bash_ret" ] ; then
-			echo -e "${red}BAD RETURNED VALUE"
-			echo -e "bash : $bash_ret || 42sh : $sh_ret${eoc}"
-			echo -e "${yellow}`cat ${buffer}`${eoc}"
+			if [ -n "$verbose" ] ; then
+				echo -e "${red}BAD RETURNED VALUE"
+				echo -e "bash : $bash_ret || 42sh : $sh_ret${eoc}"
+				echo -e "${yellow}`cat ${buffer}`${eoc}"
+			else
+				echo -e "${red}KO${eoc}"
+			fi
+
 			if [ -n "$logging" ] ; then
+				echo -e `cat ${buffer}` >> ${logging_file}
 				echo -e "BAD RETURNED VALUE" >> ${logging_file}
 				echo -e "bash : $bash_ret || 42sh : $sh_ret" >> ${logging_file}
-				echo -e "`cat ${buffer}`" >> ${logging_file}
 				echo -e "" >> ${logging_file}
 			fi
 			return 1
@@ -176,6 +181,8 @@ test_launch()
 
 	buffer="${obj_dir}/${sha}"
 	logging_file="${log_dir}/${sha}"
+	rm -f ${logging_file}
+
 	echo "$1" > ${buffer}
 	for i in "$2" "$3" "$4" "$5" "$6" "$7" "$8" "$9"
 	do
@@ -210,8 +217,6 @@ test_launch()
 		valgrind_test
 	fi
 
-	if [ 0 -eq "$continue" ] ; then rm -f ${logging_file} ; fi
-
 	rm -f ${buffer}
 	rm -f ${res1_bash} ${res1_42sh}
 	rm -f ${res2_bash} ${res2_42sh}
@@ -222,13 +227,26 @@ test_launch_pipe()
 	if [ ! -n "$1" ] ; then echo "test_launch_pipe : No file given" ; fi
 	if [ ! -e "$1" ] ; then echo "test_launch_pipe : can't find $1" ;  return ; fi
 
-	cp "$1" "${obj_dir}/buffer"
+
+	str="`cat ${1}`"
+	sha="`<<<$str shasum | cut -d\  -f1`"
+
+	res1_42sh="${obj_dir}/res1_42sh_${sha}"
+	res2_42sh="${obj_dir}/res2_42sh_${sha}"
+	res1_bash="${obj_dir}/res1_bash_${sha}"
+	res2_bash="${obj_dir}/res2_bash_${sha}"
+
+	buffer="${obj_dir}/${sha}"
+	logging_file="${log_dir}/${sha}"
+	rm -f ${logging_file}
+
+	cp "$1" "${buffer}"
 
 	diff_tried=$((diff_tried+1))
-	touch ${obj_dir}/res1.bash ${obj_dir}/res2.bash ${obj_dir}/res1.42sh ${obj_dir}/res2.42sh
-	cat "$1" | bash 1>${obj_dir}/res1.bash 2>${obj_dir}/res2.bash
+	touch ${res1_bash} ${res2_bash} ${res1_42sh} ${res2_42sh}
+	cat "$1" | bash 1>${res1_bash} 2>${res2_bash}
 	bash_ret=$?
-	cat "$1" | ./${exec} 1>${obj_dir}/res1.42sh 2>${obj_dir}/res2.42sh
+	cat "$1" | ./${exec} 1>${res1_42sh} 2>${res2_42sh}
 	sh_ret=$?
 
 	check_ret_value sh_ret bash_ret
@@ -236,12 +254,12 @@ test_launch_pipe()
 
 # echo "continue (stdout): $continue"
 	if [ 0 -eq "$continue" ] ; then
-		diff_files ${obj_dir}/res1.42sh ${obj_dir}/res1.bash
+		diff_files ${res1_42sh} ${res1_bash}
 		continue=$?
 	fi
 # echo "continue (stderr): $continue"
 	if [ 0 -eq "$continue" ] && [ -n "${test_stderr}" ] ; then
-		diff_files ${obj_dir}/res2.42sh ${obj_dir}/res2.bash
+		diff_files ${res2_42sh} ${res2_bash}
 		continue=$?
 	fi
 # echo "continue (ok): $continue"
@@ -253,7 +271,7 @@ test_launch_pipe()
 		valgrind_test
 	fi
 
-	rm -f ${obj_dir}/buffer
-	rm -f ${obj_dir}/res1.bash ${obj_dir}/res1.42sh
-	rm -f ${obj_dir}/res2.bash ${obj_dir}/res2.42sh
+	rm -f ${buffer}
+	rm -f ${res1_bash} ${res1_42sh}
+	rm -f ${res2_bash} ${res2_42sh}
 }
