@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/21 15:58:19 by jmartel           #+#    #+#              #
-#    Updated: 2019/09/06 14:32:57 by jmartel          ###   ########.fr        #
+#    Updated: 2019/09/12 23:40:40 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -80,10 +80,17 @@ diff_files()
 	res=`diff $1 $2`
 	if [ -n "$res" ] ; then
 		echo -e "${red}KO${eoc}"
-		echo -e "${yellow}`cat ${obj_dir}/buffer`${eoc}"
+		echo -e "${yellow}`cat ${buffer}`${eoc}"
 		if [ -n "$verbose" ] ; then
 			echo -e "${cyan}" `cat $1` "${eoc}"
 			echo -e "${cyan}" `cat $2` "${eoc}"
+		fi
+		if [ -n "$logging" ] ; then
+			echo -e "KO" >> ${logging_file}
+			echo -e `cat ${buffer}` >> ${logging_file}
+			echo -e `cat $1` >> ${logging_file}
+			echo -e `cat $2` >> ${logging_file}
+			echo -e "" >> ${logging_file}
 		fi
 		return 1
 	fi
@@ -94,16 +101,16 @@ valgrind_test()
 {
 		tried=$((tried+1))
 		tmp_log_file="${obj_dir}/tmp_log"
-		inner_log_dir="${log_dir}/test_${tried}"
+		inner_log_dir="${log_dir}/valgrind/test_${tried}"
 
 		valgrind --leak-check=full --suppressions=$suppressions_file \
-			--error-exitcode=$error_exit_code --log-file=$tmp_log_file ./${exec} < ${obj_dir}/buffer >/dev/null 2>&1
+			--error-exitcode=$error_exit_code --log-file=$tmp_log_file ./${exec} < ${buffer} >/dev/null 2>&1
 		ret=$?
 		if [ $ret -eq $error_exit_code ] ; then
 			echo -e "${red}valgrind error, tracing logs at ${inner_log_dir}${eoc}"
-			echo -e "${yellow}`cat ${obj_dir}/buffer`${eoc}"
+			echo -e "${yellow}`cat ${buffer}`${eoc}"
 			mkdir -p $inner_log_dir
-			cat ${obj_dir}/buffer > ${inner_log_dir}/failed_script
+			cat ${buffer} > ${inner_log_dir}/failed_script
 			cat $tmp_log_file > ${inner_log_dir}/valgrind_trace
 			rm -f $tmp_log_file
 		else
@@ -125,6 +132,12 @@ check_ret_value()
 	if [ "$sh_ret" -gt 130 -a "$sh_ret" -lt 200 ] ; then
 		echo -e "${red}SEGFAULT OR SIGNAL RECEIVED"
 		echo -e "${sh_ret}${eoc}"
+		if [ -n "$logging" ] ; then
+			echo -e "$SEGFAULT OR SIGNAL RECEIVED" >> ${logging_file}
+			echo -e "${sh_ret}" >> ${logging_file}
+			echo -e "" >> ${logging_file}
+		fi
+
 	fi
 
 	if [ -n "$test_returned_values" ] ; then
@@ -132,7 +145,13 @@ check_ret_value()
 		if [ "$sh_ret" -ne  "$bash_ret" ] ; then
 			echo -e "${red}BAD RETURNED VALUE"
 			echo -e "bash : $bash_ret || 42sh : $sh_ret${eoc}"
-			echo -e "${yellow}`cat ${obj_dir}/buffer`${eoc}"
+			echo -e "${yellow}`cat ${buffer}`${eoc}"
+			if [ -n "$logging" ] ; then
+				echo -e "BAD RETURNED VALUE" >> ${logging_file}
+				echo -e "bash : $bash_ret || 42sh : $sh_ret" >> ${logging_file}
+				echo -e "`cat ${buffer}`" >> ${logging_file}
+				echo -e "" >> ${logging_file}
+			fi
 			return 1
 		fi
 	fi
@@ -141,29 +160,45 @@ check_ret_value()
 
 test_launch()
 {
-	echo "$1" > ${obj_dir}/buffer
+	str=""
+	for i in "$1" "$2" "$3" "$4" "$5" "$6" "$7" "$8" "$9"
+	do
+		if [ -n "$i" ] ; then
+			str="${str} ${i}"
+		fi
+	done
+	sha="`<<<$str shasum | cut -d\  -f1`"
+
+	res1_42sh="${obj_dir}/res1_42sh_${sha}"
+	res2_42sh="${obj_dir}/res2_42sh_${sha}"
+	res1_bash="${obj_dir}/res1_bash_${sha}"
+	res2_bash="${obj_dir}/res2_bash_${sha}"
+
+	buffer="${obj_dir}/${sha}"
+	logging_file="${log_dir}/${sha}"
+	echo "$1" > ${buffer}
 	for i in "$2" "$3" "$4" "$5" "$6" "$7" "$8" "$9"
 	do
 		if [ -n "$i" ] ; then
-			echo "${i}" >> ${obj_dir}/buffer ; fi;
+			echo "${i}" >> ${buffer} ; fi;
 	done
+
 	diff_tried=$((diff_tried+1))
-	touch ${obj_dir}/res1.bash ${obj_dir}/res2.bash ${obj_dir}/res1.42sh ${obj_dir}/res2.42sh
-	<${obj_dir}/buffer bash 1>${obj_dir}/res1.bash 2>${obj_dir}/res2.bash
+	<${buffer} bash 1>${res1_bash} 2>${res2_bash}
 	bash_ret=$?
-	<${obj_dir}/buffer ./${exec} 1>${obj_dir}/res1.42sh 2>${obj_dir}/res2.42sh
+	<${buffer} ./${exec} 1>${res1_42sh} 2>${res2_42sh}
 	sh_ret=$?
 
 	check_ret_value sh_ret bash_ret
 	continue=$?
 # echo "continue (stdout): $continue"
 	if [ 0 -eq "$continue" ] ; then
-		diff_files ${obj_dir}/res1.42sh ${obj_dir}/res1.bash
+		diff_files ${res1_42sh} ${res1_bash}
 		continue=$?
 	fi
 # echo "continue (stderr): $continue"
 	if [ 0 -eq "$continue" ] && [ -n "${test_stderr}" ] ; then
-		diff_files ${obj_dir}/res2.42sh ${obj_dir}/res2.bash
+		diff_files ${res2_42sh} ${res2_bash}
 		continue=$?
 	fi
 # echo "continue (ok): $continue"
@@ -175,9 +210,11 @@ test_launch()
 		valgrind_test
 	fi
 
-	rm -f ${obj_dir}/buffer
-	rm -f ${obj_dir}/res1.bash ${obj_dir}/res1.42sh
-	rm -f ${obj_dir}/res2.bash ${obj_dir}/res2.42sh
+	if [ 0 -eq "$continue" ] ; then rm -f ${logging_file} ; fi
+
+	rm -f ${buffer}
+	rm -f ${res1_bash} ${res1_42sh}
+	rm -f ${res2_bash} ${res2_42sh}
 }
 
 test_launch_pipe()
