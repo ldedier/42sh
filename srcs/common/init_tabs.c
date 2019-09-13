@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/05 15:37:31 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/27 17:52:13 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/13 03:05:06 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,8 +159,5 @@ int			sh_main_init_vars(t_shell *shell)
 			return (sh_perror(SH_ERR1_MALLOC, "sh_main_init_vars (4)"));
 		free(buff);
 	}
-	if (sh_vars_get_index(shell->env, "IFS") == -1)
-		if (sh_vars_assign_key_val(NULL, shell->vars, "IFS", " \t\n") == FAILURE)
-			return (FAILURE);
 	return (SUCCESS);
 }
