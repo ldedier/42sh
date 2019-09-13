@@ -1,0 +1,7 @@
+When a process in a background job tries to read from its controlling terminal,
+the process group is usually sent a SIGTTIN signal.
+This normally causes all of the processes in that group to stop
+(unless they handle the signal and don’t stop themselves).
+However, if the reading process is ignoring or blocking this signal,
+then read fails with an EIO error instead.
+-------------------------------------------------------------------------------
