@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_traverse_assignment_word.c                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/05 11:20:39 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/09/05 11:20:55 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/09/13 04:04:40 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ int		sh_traverse_assignment_word(t_ast_node *node, t_context *context)
 		if (!ret && node && node->token && node->token->value
 			&& sh_verbose_exec())
 			ft_dprintf(2, "assigned : %s\n", node->token->value);
-		sh_env_update_ret_value_and_question(context->shell, ret);
+		if (sh_env_update_ret_value_and_question(context->shell, ret))
+			return (FAILURE);
 		sh_traverse_tools_show_traverse_ret_value(node, context, ret);
 		return (ret);
 	}
