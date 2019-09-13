@@ -25,8 +25,28 @@ launch "Field splitting"
 		test_launch 'IFS=AAAAAA''var=AAAAA' 'echo $var'
 		test_launch 'IFS=A''var=AAAAA' 'echo $var'
 		test_launch 'IFS=ABC''var=BAC' 'echo $var'
+		test_launch 'var="OkAAAlmos speculAs" IFS=A\ ' 'echo $var'
 		test_launch 'IFS=ABC''var=B   A      C' 'echo $var'
 		test_launch 'var="echo tamer | cat -e"' '$var'
+
+	launch "IFS unset"
+		test_launch 'unset IFS' 'var="Okalmos   speculos 		L "' 'echo $var'
+		test_launch 'unset IFS' 'var="Okalmos   speculos 		L "' 'echo "$var"'
+		test_launch 'unset IFS' 'var="		    	ASD			   	 	sda qwe"' 'echo $var'
+		test_launch 'unset IFS' 'var="		    	ASD			   	 	sda qwe"' 'echo "$var"'
+		test_launch 'unset IFS' 'v="   asdqwe    " a="qqwe     qwe     asd"' 'echo $v$a${v}    $a$v'
+		test_launch 'unset IFS' 'v="   asdqwe    " a="qqwe     qwe     asd"' 'echo "$v"$a"${v}""    $a$v'
+		test_launch 'unset IFS' 'v="   asdqwe    " a="qqwe     qwe     asd"' 'echo $v"$a"${v}    "$a$v"'
+		test_launch 'unset IFS' 'v="   asdqwe    " a="qqwe     qwe     asd"' 'echo "$v$a${v}    $a$v"'
+		test_launch 'unset IFS' 'v="   asdqwe    " a="qqwe     qwe     asd"' 'echo "$v$a${v}"    $a$v'
+		test_launch 'unset IFS' 'c="Okalms asd  " v="A    SDQWE"' 'echo $c$v$v$c   $c$c$v$v'
+		test_launch 'unset IFS' 'ok="   Je   suis   Okalm   " var="echo -n $ok"' '$var'
+		test_launch 'unset IFS' 'ok="   Je   suis   Okalm   " var="echo -n $ok"' '"$var"'
+		test_launch 'unset IFS' '' 'echo $var'
+		test_launch 'unset IFS' '' 'echo $var'
+		test_launch 'unset IFS' '' 'echo $var'
+		test_launch 'unset IFS' '' 'echo $var'
+		test_launch 'unset IFS' '' 'echo $var'
 
 	launch "hard"
 		for i in `seq 1 5` ; do
