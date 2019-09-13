@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/27 16:47:32 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/12 09:25:44 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/13 23:31:15 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,69 +67,70 @@ static int	sh_splitting_non_white_ifs(t_ast_node *node, t_context *context, char
 {
 	char		ws[100];
 	char		nws[100];
-	const char	*quotes = "\"\'\\\0";
 	int			i;
 	int			start;
+	char		*str;
 	int			first;
 
 	if (sh_splitting_parse_ifs(ws, nws, ifs))
 		return (ERROR);
 	i = 0;
 	if (sh_verbose_expansion())
-		ft_dprintf(2, RED"non_default IFS\n"EOC);
+		ft_dprintf(2, "ifs : non white : %s && white : %s\n", nws, ws);
 	while (input[i] && ft_strchr(ws, input[i]))
-	{
-		if (sh_verbose_expansion())
-			ft_dprintf(2, "ignoring white spaces at begining\n");
 		i++;
-	}
+	start = i;
 	first = 1;
 	while (input[i])
 	{
-		if (ft_strchr(quotes, input[i]))
+		if (sh_verbose_expansion())
+			ft_dprintf(2, "non white ifs : running %d (%c)\n", i, input[i]);
+		if (ft_strchr(nws, input[i]) || ft_strchr(ws, input[i]))
 		{
-			field_splitting_pass_quotes(input, &i);
-			if (sh_verbose_expansion())
-				ft_dprintf(2, "going threw quotes\n");
-			continue ;
+			if (first)
+			{
+				input[i] = 0;
+				first = 0;
+				i++;
+				start = i;
+				if (sh_verbose_expansion())
+					ft_dprintf(2, "non white ifs : Added first node : %s\n", input);
+				continue ;
+			}
+			else
+			{
+				if (!(str = ft_strndup(input + start, i - start)))
+					return (sh_perror_fd(context->fd[FD_ERR], SH_ERR1_MALLOC, "sh_splitting_non_white_ifs (1)"));
+				else if (!(node = sh_add_word_to_ast(node, str)))
+					return (sh_perror_fd(context->fd[FD_ERR], SH_ERR1_MALLOC, "sh_splitting_non_white_ifs (2)"));
+				if (sh_verbose_expansion())
+					ft_dprintf(2, "non white ifs : Added node : start : %d, i : %d\n", start, i);
+				i++;
+				if (sh_verbose_expansion())
+					ft_dprintf(2, "non white ifs : Added node : %s\n", str);
+			}
+			start = i;
+			if (ft_strchr(ws, input[i]))
+			{
+				while (input[i] && ft_strchr(ws, input[i]))
+					i++;
+				// i--;
+				start = i;
+			}
 		}
-		if (ft_strchr(ws, input[i]) || ft_strchr(nws, input[i]))
-		{
-			ft_dprintf(2, "found ifs char\n");
-			while (input[i] && ft_strchr(ws, input[i]))
-				i++;
-			while (input[i] && ft_strchr(nws, input[i])) // Is it if or while (occurence mean one or at least one in rule b)
-				i++;
-			while (input[i] && ft_strchr(ws, input[i]))
-				i++;
-		}
-		start = i;
-		ft_dprintf(2, "new start : %d (%s)\n", start, input + i);
-		while (input[i] && !ft_strchr(ws, input[i]) && !ft_strchr(nws, input[i]) && !ft_strchr(quotes, input[i]))
+		else
 			i++;
-		if (first)
-		{
-			first = 0;
-			input[i] = 0;
-			i++;
-			continue ;
-		}
-		if (!input[i])
-		{
-			if (i != start) // Is it usefull ??
-				if (!(node = sh_add_word_to_ast(node, ft_strndup(input + start, i - start)))) //protect
-					return (FAILURE);
-			ft_dprintf(2, "last split : %s\n", input + start);
-			break ;
-		}
-		if (i != start) // Is it usefull ??
-			if (!(node = sh_add_word_to_ast(node, ft_strndup(input + start, i - start)))) //protect
-				return (FAILURE);
-		ft_dprintf(2, "split : %s\n", input + start);
-		i++;
+	}
+	if (start != i)
+	{
+		if (!(str = ft_strndup(input + start, i - start)))
+			return (sh_perror_fd(context->fd[FD_ERR], SH_ERR1_MALLOC, "sh_splitting_non_white_ifs (1)"));
+		else if (!(node = sh_add_word_to_ast(node, str)))
+			return (sh_perror_fd(context->fd[FD_ERR], SH_ERR1_MALLOC, "sh_splitting_non_white_ifs (2)"));
+		if (sh_verbose_expansion())
+			ft_dprintf(2, "non white ifs : Added last node : %s\n", str);
 	}
 	return (SUCCESS);
-	(void)context;
 }
 
 static int	sh_expansions_splitting_default(t_context *context, t_ast_node *node)
@@ -182,12 +183,14 @@ static int	sh_expansions_splitting_default(t_context *context, t_ast_node *node)
 		}
 		i++;
 	}
-	if (start >= 0)
+	if (start != i && start >= 0)
 	{
 		if (sh_verbose_expansion())
 			ft_dprintf(2, "adding last node : %s\n", ft_strndup(input + start, i - start));
 		if (!(node = sh_add_word_to_ast(node, ft_strndup(input + start, i - start)))) //protect
 			return (FAILURE);
+		if (sh_verbose_expansion())
+			ft_dprintf(2, "last node added : start : %d, i : %d\n", start, i);
 	}
 	return (SUCCESS);
 	(void)context;

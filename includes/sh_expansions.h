@@ -88,7 +88,7 @@ int		sh_expansions_process(
 /*
 ** sh_expansions_quote_removal.c
 */
-int		sh_expansions_quote_removal(t_context *context, char *input);
+int		sh_expansions_quote_removal(t_context *context, t_ast_node *node);
 
 /*
 ** sh_expansions_replace.c
