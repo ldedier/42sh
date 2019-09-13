@@ -6,28 +6,11 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/04 11:17:39 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/09/12 02:19:42 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/13 19:15:00 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
-
-static void	backslash(char *input, int *index, int quoted)
-{
-	if (quoted)
-	{
-		if (input[*index + 1] == '$' || input[*index + 1] == '"'
-			|| input[*index + 1] == '\\')
-			(*index) += 2;
-		else if (input[*index + 1] == '\n')
-		{
-			ft_strdelchars(input, *index, 2);
-			(*index) += 1;
-		}
-	}
-	else
-		(*index) += 2;
-}
 
 static int	double_quote(
 	char **input, int *index, int do_expansion, t_context *context)
@@ -48,7 +31,7 @@ static int	double_quote(
 			}
 		}
 		else if ((*input)[*index] == '\\')
-			backslash(*input, index, 1);
+			(*index) += 2;
 		else
 			*index += 1;
 	}
@@ -119,6 +102,6 @@ int			sh_expansions_scan(char **input, int index,
 			return (ret);
 	}
 	else
-		backslash(*input, &index, 0);
+		index += 2;
 	return (sh_expansions_scan(input, index, do_expansion, context, node));
 }
