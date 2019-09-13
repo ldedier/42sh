@@ -12,7 +12,7 @@
 
 #include "sh_21.h"
 
-void	sh_free_token(t_ast_node *node, t_token **token)
+static void	sh_free_token(t_ast_node *node, t_token **token)
 {
 	if (*token)
 	{
@@ -36,7 +36,7 @@ void	sh_free_redirection(void *red, size_t dummy)
 	free(redirection);
 }
 
-void	sh_free_ast_node_meta(t_ast_node **node)
+static void	sh_free_ast_node_meta(t_ast_node **node)
 {
 	if ((*node)->symbol->id == sh_index(SIMPLE_COMMAND))
 	{

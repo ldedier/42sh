@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/19 11:14:49 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/21 21:29:14 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/09 18:46:10 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void		sh_execute_child_builtin(t_context *context, t_list *contexts)
 {
 	int ret;
 
-	sh_process_execute_dup_pipes(context);
+	sh_process_execute_dup(context);
 	reset_signals();
 	sh_close_all_other_contexts(context, contexts);
 	ret = context->builtin(context);
@@ -43,7 +43,7 @@ void		sh_execute_child_builtin(t_context *context, t_list *contexts)
 
 void		sh_execute_child_binary(t_context *context, t_list *contexts)
 {
-	sh_process_execute_dup_pipes(context);
+	// sh_process_execute_dup(context);
 	reset_signals();
 	sh_close_all_other_contexts(context, contexts);
 	execve(context->path, (char **)context->params->tbl,
@@ -55,6 +55,11 @@ void		sh_execute_child_binary(t_context *context, t_list *contexts)
 
 void		sh_execute_child(t_context *context, t_list *contexts)
 {
+	if (contexts == NULL)
+	{
+		ft_printf("test execute child\n");
+		sh_traverse_cmd_name(context->current_command_node, context);
+	}
 	if (context->builtin)
 		sh_execute_child_builtin(context, contexts);
 	else

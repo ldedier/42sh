@@ -12,7 +12,14 @@
 
 #include "sh_21.h"
 
-static t_redirection	*get_redirection(t_redirection_type type,
+/*
+ * Check if the fd to redirect (left fd) already exist for the same type (I/O)
+ * to overwrite the destination fd (right fd) and multiply redirection.
+ *
+ * Return t_redirection * on the existing element redirection
+ * Otherwise return NULL
+*/
+static t_redirection	*is_redirection_already_exist(t_redirection_type type,
 					int redirected_fd, t_list *list)
 {
 	t_list			*ptr;
@@ -36,11 +43,29 @@ static t_redirection	sh_new_redir(t_redirection_type type, int redirected_fd, in
 
 	redir.type = type;
 	redir.closed = 0;
-	redir.redirected_fd = redirected_fd;
 	redir.fd = fd;
+	if (redirected_fd == -1)
+	{
+		if (type == INPUT)
+			redir.redirected_fd = 0;
+		else
+			redir.redirected_fd = 1;
+	}
+	else
+		redir.redirected_fd = redirected_fd;
 	return (redir);
 }
 
+/*
+ * Create and add redirection in the redirection list
+ * We check if the redirection already exist
+ * before create a new one.
+ * The redirection is considerate aleardy existing if the redirected_fd (left)
+ * and the type (input or output) are the same.
+ *
+ * If it already exist and the redirect fd (right fd) was closed, we have to
+ * re-close it.
+*/
 int				sh_add_redirection(t_redirection_type type, int redirected_fd,
 			int fd, t_list **list)
 {
@@ -48,14 +73,7 @@ int				sh_add_redirection(t_redirection_type type, int redirected_fd,
 	t_redirection	redirection;
 
 	redirection = sh_new_redir(type, redirected_fd, fd);
-	if (redirection.redirected_fd == -1)
-	{
-		if (redirection.type == INPUT)
-			redirection.redirected_fd = 0;
-		else
-			redirection.redirected_fd = 1;
-	}
-	if (!(found = get_redirection(redirection.type,
+	if (!(found = is_redirection_already_exist(redirection.type,
 		redirection.redirected_fd, *list)))
 	{
 		if (ft_lstaddnew_last(list, &redirection, sizeof(t_redirection)))

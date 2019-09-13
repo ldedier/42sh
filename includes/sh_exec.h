@@ -41,15 +41,16 @@ typedef enum		e_redirection_type
 	OUTPUT
 }					t_redirection_type;
 
-typedef struct		s_redirection
+typedef struct			s_redirection
 {
 	t_redirection_type	type;
-	int					redirected_fd;
-	int					fd;
-	int					saved_fd;
-	int					closed;
-}					t_redirection;
-//add une structure t_pipe
+	int					redirected_fd;//left fd
+	int					fd;//right fd
+	int					saved_fd;//save left fd
+	int					closed;//used to know if fd is already closed. Use full if an error
+	//appear and we need to reset all... I  guess...
+}						t_redirection;
+
 typedef struct		s_pipe_metadata
 {
 	t_list			*contexts;
@@ -77,6 +78,7 @@ typedef union		u_metadata
 typedef enum		e_phase
 {
 	E_TRAVERSE_PHASE_INTERACTIVE_REDIRECTIONS,
+	E_TRAVERSE_PHASE_PIPE,
 	E_TRAVERSE_PHASE_EXPANSIONS,
 	E_TRAVERSE_PHASE_REDIRECTIONS,
 	E_TRAVERSE_PHASE_EXECUTE
@@ -97,7 +99,7 @@ typedef struct		s_context
 	t_phase			phase;
 	t_ast_node		*current_command_node;
 	t_ast_node		*current_pipe_sequence_node;
-	t_list			**redirections;
+	t_list			*redirections;
 	pid_t			pid;
 }					t_context;
 
@@ -117,9 +119,10 @@ void				t_context_reset(t_context *context);
 /*
 ** sh_execute.c
 */
-int					sh_process_process_execute(t_context *context);
+// int					sh_process_process_execute(t_context *context);
 int					sh_add_to_pipe_sequence(t_context *context);
 int					sh_process_execute(t_context *context);
+int 				sh_execute_simple_command(t_context *context);
 
 /*
 ** sh_execute_tools.c
@@ -135,9 +138,9 @@ void				sh_execute_child(t_context *context, t_list *contexts);
 /*
 ** sh_execute_pipes.c
 */
-int					sh_process_process_execute_dup_pipes(
-	t_redirection *redir);
-int					sh_process_execute_dup_pipes(t_context *context);
+// int					sh_process_process_execute_dup_pipes(
+	// t_redirection *redir);
+int					sh_process_execute_dup(t_context *context);
 int					sh_process_execute_close_pipes(t_context *context);
 
 /*
@@ -173,7 +176,8 @@ int					sh_add_fd_aggregation(
 	t_redirection_type type,
 	int redirected_fd,
 	int fd,
-	t_command_metadata *metadata);
+	t_list **redirections);
+	// t_command_metadata *metadata);
 // t_redirection		sh_new_redir(
 	// t_redirection_type type, int redirected_fd, int fd);
 

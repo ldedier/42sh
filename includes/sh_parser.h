@@ -326,9 +326,9 @@ int					sh_process_shift(t_state *state, t_lr_parser *parser);
 /*
 ** free_node.c
 */
-void				sh_free_token(t_ast_node *node, t_token **token);
+// void				sh_free_token(t_ast_node *node, t_token **token);
 void				sh_free_redirection(void *red, size_t dummy);
-void				sh_free_ast_node_meta(t_ast_node **node);
+// void				sh_free_ast_node_meta(t_ast_node **node);
 void				sh_free_ast_node(t_ast_node **node, int update);
 void				sh_free_ast_builder(t_ast_builder *ast_builder);
 

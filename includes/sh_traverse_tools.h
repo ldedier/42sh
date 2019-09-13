@@ -21,6 +21,8 @@
 ** sh_traverse_tools_browse.c
 */
 int		sh_traverse_tools_browse(t_ast_node *node, t_context *context);
+// int		sh_traverse_tools_browse(
+	// t_ast_node *node, t_context *context, int (*func)(t_ast_node *, t_context *));
 int		sh_traverse_tools_search(t_ast_node *node, int searched_symbol_id);
 
 /*

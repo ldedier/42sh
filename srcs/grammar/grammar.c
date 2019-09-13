@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 14:19:01 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/20 10:45:51 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/13 14:02:50 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ t_grammar_holder g_grammar[NB_SYMBOLS] = {
 	{"AND_OR", 1, 1, &sh_init_prod_and_or, &sh_traverse_and_or},
 	{"PIPELINE", 0, 1, &sh_init_prod_pipeline, &sh_traverse_default},
 	{"PIPE_SEQUENCE", 1, 1, &sh_init_prod_pipe_sequence,
-		&sh_traverse_pipe_sequence},
+		&sh_traverse_pipeline},
 	{"COMMAND", 0, 1, &sh_init_prod_command, &sh_traverse_default},
 	{"COMPOUND_COMMAND", 0, 1, &sh_init_prod_compound_command,
 		&sh_traverse_default},

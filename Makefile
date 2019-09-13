@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/09/09 11:52:09 by jdugoudr         ###   ########.fr        #
+#    Updated: 2019/09/13 14:11:35 by jdugoudr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -69,17 +69,18 @@ SRCS			+=	sh_traverse.c sh_traverse_default.c \
 					sh_traverse_assignment_word.c \
 					sh_traverse_pipe_sequence_execute.c \
 					sh_traverse_simple_command.c \
-					sh_traverse_simple_command_tools.c \
+					new_io_file.c sh_traverse_simple_command_tools.c \
 					sh_traverse_simple_command_check_perm.c \
 					sh_traverse_cmd_name.c sh_traverse_cmd_word.c \
 					sh_traverse_cmd_suffix.c sh_traverse_cmd_prefix.c \
 					sh_traverse_io_redirect.c sh_traverse_io_here.c \
 					sh_traverse_io_here_canonical.c \
-					sh_traverse_io_file.c sh_traverse_io_file_tools.c \
+					sh_traverse_io_file_tools.c \
 					sh_traverse_and_or.c sh_traverse_list.c \
 					sh_traverse_io_here_expansion.c \
-					sh_traverse_io_here_phase_expansion.c
-
+					sh_traverse_io_here_phase_expansion.c \
+					sh_traverse_command.c
+#sh_traverse_io_file.c 
 ################################################################
 ########				COMMAND_LINE					########
 ################################################################
@@ -201,7 +202,7 @@ SRCS			+=	sh_vars_tools_1.c sh_vars_tools_2.c \
 SRCS			+=	sh_execute.c sh_execute_pipes.c \
 					sh_execute_pipe_sequence.c sh_execute_tools.c \
 					sh_exec_builtin.c sh_execute_prefix_postfix.c \
-					t_context.c sh_debug.c
+					t_context.c sh_debug.c new_exec.c
 
 ################################################################
 ########					REDIRECTION					########
@@ -256,6 +257,7 @@ INCLUDES			=	sh_21.h \
 					sh_autocompletion.h \
 					sh_exec.h\
 					sh_builtin.h \
+					sh_traverse.h \
 					sh_expansions.h \
 					sh_perror.h
 

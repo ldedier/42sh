@@ -25,7 +25,7 @@ static int	sh_process_traverse_cmd_suffix(
 	}
 	if (context->phase == E_TRAVERSE_PHASE_EXECUTE && child->token)
 	{
-		if (!(!*child->token->value && child->token->expansion))
+		// if (!(!*child->token->value && child->token->expansion))
 			if (ft_dy_tab_add_str(context->params, child->token->value))
 				return (sh_perror(SH_ERR1_MALLOC,
 							"sh_traverse_cmd_suffix"));

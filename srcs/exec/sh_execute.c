@@ -15,7 +15,7 @@
 /*
 ** case: simple command (no pipes, no builtins)
 */
-int			sh_process_process_execute(t_context *context)
+static int	sh_process_process_execute(t_context *context)
 {
 	int			res;
 

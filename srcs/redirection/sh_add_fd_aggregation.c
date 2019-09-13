@@ -38,23 +38,24 @@ static int				get_redirected_fd(t_redirection_type type,
 }
 
 int				sh_add_fd_aggregation(t_redirection_type type,
-					int redirected_fd, int fd, t_command_metadata *metadata)
+					int redirected_fd, int fd, t_list **redirections)
 {
 	int new_fd;
 
 	if (fd != redirected_fd)
 	{
-		if ((new_fd = get_redirected_fd(type, fd, metadata->redirections))
+		if ((new_fd = get_redirected_fd(type, fd, *redirections))
 			== -2)
 		{
 			ft_dprintf(2, "%s%s: %d: bad file descriptor\n%s", SH_ERR_COLOR,
 			SH_NAME, fd, EOC);
-			metadata->should_exec = 0;
+			// metadata->should_exec = 0;
 			return (SUCCESS);
 		}
 		else
 			return (sh_add_redirection(type, redirected_fd, new_fd,
-						&metadata->redirections));
+						redirections));
+						// &metadata->redirections));
 	}
 	else
 		return (SUCCESS);
