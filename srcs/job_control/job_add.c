@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 00:09:20 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/14 18:45:00 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/14 21:21:58 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int			job_add(void)
 	t_job	*j;
 	t_job	*it;
 
+	ft_printf("%sADDING JOB: %d%s\n", COLOR_RED, g_job_count, COLOR_END);
 	if ((j = malloc(sizeof(t_job))) == NULL)
 		return (FAILURE);
 	j->number = g_job_count;

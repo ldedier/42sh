@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   sh_execute.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 00:39:53 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/10 11:42:10 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/14 22:16:49 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
+#include "job_control.h"
 
 /*
 ** case: simple command (no pipes, no builtins)
@@ -21,6 +22,7 @@ int			sh_process_process_execute(t_context *context)
 
 	if (sh_pre_execution(context) != SUCCESS)
 		return (FAILURE);
+	process_add(context, 0);
 	if ((g_parent = fork()) == -1)
 		return (sh_perror(SH_ERR1_FORK, "sh_process_process_execute"));
 	if (g_parent == 0)

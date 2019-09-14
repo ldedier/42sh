@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_traverse_simple_command.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/27 15:11:02 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/14 22:26:53 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,8 @@ int		sh_traverse_simple_command_no_exec(t_ast_node *node,
 /*
 ** sh_traverse_sc_no_slash_cmd:
 **	Function launching the execution of a process if context->params->tbl[0]
-**	do not contain a path (does not contain a '/' character)
-**	It try to launch any builtin, then look in $PATH env variable.
+**	does not contain a path (does not contain a '/' character)
+**	It tries to launch any builtin, then looks in $PATH env variable.
 **	If any command was found it is launched
 **	(Final else return SUCCESS to let cmd || cmd works)
 **

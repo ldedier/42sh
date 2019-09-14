@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 00:24:19 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/14 02:10:03 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/14 21:46:52 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,17 @@ void			job_print(void)
 	{
 		ft_printf("%sjob: %d%s\n", COLOR_YELLOW, j->number, COLOR_END);
 		p = j->first_process;
+		i = 1;
 		while (p != NULL)
 		{
-			ft_printf("Process pid: %d, pgid: %d\t\t", p->pid,j->pgid);
+			ft_printf("Process #%d\tpid: %d, pgid: %d\t\t",i++, p->pid,j->pgid);
 			ft_printf("%s", COLOR_CYAN);
-			print_tab(p->argv);
-			ft_printf("%s=========================================================\n", COLOR_GREEN);
-			ft_printf("%s", COLOR_END);
+			str_tab_print(p->argv);
+			ft_printf("%s\n", COLOR_END);
 			p = p->next;
 		}
+		ft_printf("\n%s=========================================================\n", COLOR_GREEN);
+		ft_printf("%s", COLOR_END);
 		j = j->next;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 17:45:00 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/14 18:45:51 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/14 21:57:27 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ struct	s_job
 
 t_job			*g_first_job;	//	don't init here
 int				g_job_count; //	don't init here
-pid_t			g_shell_pgid;
 char			g_lock;
 pid_t			shell_pgid;
 
@@ -55,4 +54,5 @@ int				job_completed(t_job *j);
 int				job_add(void);
 void			job_print(void);
 int				process_add(t_context *context, pid_t pid);
-void			print_tab(char **char_tab);
+void			str_tab_print(char **char_tab);
+char			**str_tab_duplicate(char **from);

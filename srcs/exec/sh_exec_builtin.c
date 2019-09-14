@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   sh_exec_builtin.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 15:06:13 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/19 19:12:14 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/14 22:27:40 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
+#include "job_control.h"
 
 /*
 ** sh_exec_builtin_fill_fd:
@@ -60,6 +61,7 @@ int			sh_exec_builtin(t_context *context)
 {
 	int		res;
 
+	process_add(context, 0);
 	sh_exec_builtin_fill_fd(context);
 	if (isatty(0) && sh_reset_shell(0) == -1)
 	{
