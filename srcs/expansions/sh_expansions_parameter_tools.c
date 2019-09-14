@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 16:35:24 by jmartel           #+#    #+#             */
-/*   Updated: 2019/07/03 11:08:12 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/14 03:28:33 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int			sh_expansions_parameter_format(t_expansion *exp, char *format)
 		head++;
 	}
 	if (!ft_isalpha(*head) && *head != '_')
-		return (sh_perror_err(exp->original, "bad substitution"));
+		return (sh_perror_err(exp->original, SH_BAD_SUBSTITUTE));
 	head++;
 	while (ft_isalnum((int)*head) || *head == '_')
 		head++;
@@ -65,8 +65,10 @@ int			sh_expansions_parameter_format(t_expansion *exp, char *format)
 		sh_expansions_parameter_fill_format(head, format + i, 2);
 	else if (ft_strnstr(head, "##", 2) || ft_strnstr(head, "%%", 2))
 		sh_expansions_parameter_fill_format(head, format + i, 2);
+	else if (*head == '#' || *head == '%')
+		sh_expansions_parameter_fill_format(head, format + i, 1);
 	else
-		return (sh_perror_err(exp->original, "bad substitution"));
+		return (sh_perror_err(exp->original, SH_BAD_SUBSTITUTE));
 	return (SUCCESS);
 }
 
@@ -110,7 +112,7 @@ char		*sh_expansions_parameter_get_word(t_expansion *exp, char *format)
 	char	*start;
 
 	start = ft_strstr(exp->expansion, format);
-	if (*format == '#')
+	if (exp->expansion[0] == '#')
 		format++;
 	start += ft_strlen(format);
 	return (start);
