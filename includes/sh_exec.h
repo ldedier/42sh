@@ -127,13 +127,13 @@ int 				sh_execute_simple_command(t_context *context);
 /*
 ** sh_execute_tools.c
 */
-void				sh_close_all_other_contexts(
-	t_context *context, t_list *contexts);
-void				sh_execute_child_builtin(
-	t_context *context, t_list *contexts);
+// void				sh_close_all_other_contexts(
+	// t_context *context, t_list *contexts);
+// void				sh_execute_child_builtin(
+	// t_context *context, t_list *contexts);
 void				sh_execute_child_binary(
 	t_context *context, t_list *contexts);
-void				sh_execute_child(t_context *context, t_list *contexts);
+// void				sh_execute_child(t_context *context, t_list *contexts);
 
 /*
 ** sh_execute_pipes.c

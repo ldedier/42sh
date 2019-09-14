@@ -200,9 +200,10 @@ SRCS			+=	sh_vars_tools_1.c sh_vars_tools_2.c \
 ########						EXEC					########
 ################################################################
 SRCS			+=	sh_execute.c sh_execute_pipes.c \
-					sh_execute_pipe_sequence.c sh_execute_tools.c \
+					sh_execute_tools.c \
 					sh_exec_builtin.c sh_execute_prefix_postfix.c \
 					t_context.c sh_debug.c new_exec.c
+					#sh_execute_pipe_sequence.c 
 
 ################################################################
 ########					REDIRECTION					########

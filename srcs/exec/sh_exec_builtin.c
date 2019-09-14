@@ -63,7 +63,7 @@ int			sh_exec_builtin(t_context *context)
 	// sh_exec_builtin_fill_fd(context);
 	if (isatty(0) && sh_reset_shell(0) == -1)
 	{
-		sh_process_execute_close_pipes(context);
+		// sh_process_execute_close_pipes(context);//done in his calling function sh_execute_simple_command
 		return (FAILURE);
 	}
 	res = context->builtin(context);
