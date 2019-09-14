@@ -12,7 +12,7 @@
 
 #include "sh_21.h"
 
-void		sh_execute_pipe_sequence_close_pipes_list(t_list *contexts)
+static void		sh_execute_pipe_sequence_close_pipes_list(t_list *contexts)
 {
 	t_list		*ptr;
 	t_context	*context;

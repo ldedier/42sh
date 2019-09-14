@@ -26,7 +26,6 @@ int		sh_traverse_tools_browse(t_ast_node *node, t_context *context)
 
 	ptr = node->children;
 	ret = SUCCESS;
-// printf("traverse tools %d!\n", context->phase);
 	while (ptr != NULL)
 	{
 		child = (t_ast_node *)ptr->content;
@@ -38,27 +37,6 @@ int		sh_traverse_tools_browse(t_ast_node *node, t_context *context)
 	}
 	return (ret);
 }
-// int		sh_traverse_tools_browse(
-// 	t_ast_node *node, t_context *context, int (*func)(t_ast_node *, t_context *))
-// {
-// 	t_list		*ptr;
-// 	t_ast_node	*child;
-// 	int			ret;
-
-// 	ptr = node->children;
-// 	ret = SUCCESS;
-// // printf("traverse tools %d!\n", context->phase);
-// 	while (ptr != NULL)
-// 	{
-// 		child = (t_ast_node *)ptr->content;
-// 		if (child->children && (ret = sh_traverse_tools_browse(child, context, func)))
-// 			break ;
-// 		if ((ret = func(child, context)))
-// 			break ;
-// 		ptr = ptr->next;
-// 	}
-// 	return (ret);
-// }
 
 int		sh_traverse_tools_search(t_ast_node *node, int searched_symbol_id)
 {

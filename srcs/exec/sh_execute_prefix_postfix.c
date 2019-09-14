@@ -12,12 +12,12 @@
 
 #include "sh_21.h"
 
-void	sh_reset_signals_pre_exec(void)
+static void	sh_reset_signals_pre_exec(void)
 {
 	signal(SIGWINCH, SIG_DFL);
 }
 
-void	sh_reset_signals_post_exec(void)
+static void	sh_reset_signals_post_exec(void)
 {
 	signal(SIGWINCH, handle_resize);
 }

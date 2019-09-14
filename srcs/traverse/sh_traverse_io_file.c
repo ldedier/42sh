@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 11:19:41 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/09 11:53:20 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/09/12 14:56:33 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,14 @@ static int	sh_process_file_greatand(char *filename, t_context *context)
 	if (!ft_strcmp(filename, "-"))
 	{
 		if (sh_add_redirection(OUTPUT, context->redirected_fd, -1,
-		&context->current_command_node->metadata.command_metadata.redirections))
+		&(context->redirections)))
 			return (FAILURE);
 		return (SUCCESS);
 	}
 	else if ((fd = get_fd(filename)) >= 0)
 	{
 		return (sh_add_fd_aggregation(OUTPUT, context->redirected_fd, fd,
-			&context->current_command_node->
-				metadata.command_metadata));
+			&(context->redirections)));
 	}
 	if (fd == -1)
 		return (sh_process_file_output(filename, context, GREAT_OPT));
@@ -60,15 +59,13 @@ static int	sh_process_file_lessand(char *filename, t_context *context)
 	if (!ft_strcmp(filename, "-"))
 	{
 		if (sh_add_redirection(INPUT, context->redirected_fd, -1,
-			&context->current_command_node->
-				metadata.command_metadata.redirections))
+			&(context->redirections)))
 			return (FAILURE);
 		return (SUCCESS);
 	}
 	else if ((fd = get_fd(filename)) >= 0)
 		return (sh_add_fd_aggregation(INPUT, context->redirected_fd, fd,
-			&context->current_command_node->
-				metadata.command_metadata));
+			&(context->redirections)));
 	else
 	{
 		if (fd == -1)
@@ -82,25 +79,20 @@ static int	sh_process_file_lessand(char *filename, t_context *context)
 	}
 }
 
-static int			get_io_file_return(t_ast_node *redir_child,
+static int	get_io_file_return(t_ast_node *redir_child,
 			char *filename, t_context *context)
 {
-	if (context->current_command_node->metadata.command_metadata.should_exec)
-	{
-		if (redir_child->symbol->id == sh_index(LEX_TOK_LESS))
-			return (sh_process_file_input(filename, context, O_RDONLY));
-		else if (redir_child->symbol->id == sh_index(LEX_TOK_DGREAT)
-				|| redir_child->symbol->id == sh_index(LEX_TOK_CLOBBER))
-			return (sh_process_file_output(filename, context, DGREAT_OPT));
-		else if (redir_child->symbol->id == sh_index(LEX_TOK_GREAT))
-			return (sh_process_file_output(filename, context, GREAT_OPT));
-		else if (redir_child->symbol->id == sh_index(LEX_TOK_GREATAND))
-			return (sh_process_file_greatand(filename, context));
-		else if (redir_child->symbol->id == sh_index(LEX_TOK_LESSAND))
-			return (sh_process_file_lessand(filename, context));
-		else
-			return (SUCCESS);
-	}
+	if (redir_child->symbol->id == sh_index(LEX_TOK_LESS))
+		return (sh_process_file_input(filename, context, O_RDONLY));
+	else if (redir_child->symbol->id == sh_index(LEX_TOK_DGREAT)
+			|| redir_child->symbol->id == sh_index(LEX_TOK_CLOBBER))
+		return (sh_process_file_output(filename, context, DGREAT_OPT));
+	else if (redir_child->symbol->id == sh_index(LEX_TOK_GREAT))
+		return (sh_process_file_output(filename, context, GREAT_OPT));
+	else if (redir_child->symbol->id == sh_index(LEX_TOK_GREATAND))
+		return (sh_process_file_greatand(filename, context));
+	else if (redir_child->symbol->id == sh_index(LEX_TOK_LESSAND))
+		return (sh_process_file_lessand(filename, context));
 	else
 		return (SUCCESS);
 }
@@ -123,5 +115,5 @@ int			sh_traverse_io_file(t_ast_node *node, t_context *context)
 			sh_env_update_ret_value(context->shell, ret);
 		return (ret);
 	}
-	return (sh_traverse_tools_browse(node, context));
+	return (SUCCESS);
 }
