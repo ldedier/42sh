@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 14:16:12 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/05 13:11:16 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/09/14 02:42:42 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@
 # define SH_BLT_NOTWELLFORM		"Sorry your command are not well formatted"
 # define SH_BLT_INTEGER			"Integer expression expected"
 
-# define SH_BAD_SUBSTITUTE		"Bad subsitution"
+# define SH_BAD_SUBSTITUTE		"bad substitution"
 
 /*
 ********************************************************************************

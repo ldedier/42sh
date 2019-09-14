@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/03 14:58:45 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/09/05 13:12:50 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/09/14 02:45:46 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,6 @@ int			sh_expansions_process(
 		ret = sh_expansions_replace(&exp, input, *index);
 	if (ret)
 	{
-		if (ret == ERROR)
-			sh_perror(SH_BAD_SUBSTITUTE, NULL);
 		t_expansion_free_content(&exp);
 		return (ret);
 	}
