@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 00:39:53 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/14 22:16:49 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/14 23:08:52 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,30 @@
 /*
 ** case: simple command (no pipes, no builtins)
 */
+int			sh_process_process_execute(t_context *context)
+{
+	// int			res;
+
+	if (sh_pre_execution(context) != SUCCESS)
+		return (FAILURE);
+	process_add(context, 0);
+	// if ((g_parent = fork()) == -1)
+	// 	return (sh_perror(SH_ERR1_FORK, "sh_process_process_execute"));
+	// if (g_parent == 0)
+	// 	sh_execute_child_binary(context, NULL);
+	// else
+	// {
+	// 	wait(&res);
+		// g_parent = 0;
+		// sh_env_update_ret_value_wait_result(context, res);
+		// sh_process_execute_close_pipes(context);
+		// if (sh_post_execution() != SUCCESS)
+			// return (FAILURE);
+		// g_glob.command_line.interrupted = WIFSIGNALED(res);
+	// }
+	return (SUCCESS);
+}
+/*
 int			sh_process_process_execute(t_context *context)
 {
 	int			res;
@@ -39,7 +63,7 @@ int			sh_process_process_execute(t_context *context)
 	}
 	return (SUCCESS);
 }
-
+*/
 int			sh_add_to_pipe_sequence(t_context *context)
 {
 	t_context	*context_dup;

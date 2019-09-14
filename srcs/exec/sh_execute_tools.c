@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/19 11:14:49 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/14 22:16:32 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/14 22:57:21 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ void		sh_execute_child_builtin(t_context *context, t_list *contexts)
 {
 	int ret;
 
-	// process_add(context, 0);
-	// ft_printf("Executing builtin: %s, pid: %d, ppid: %d, pgid: %d\n", context->path, getpid(), getppid(),getpgid(getpid()));
 	sh_process_execute_dup_pipes(context);
 	reset_signals();
 	sh_close_all_other_contexts(context, contexts);

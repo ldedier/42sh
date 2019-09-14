@@ -6,7 +6,7 @@
 #    By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/09/14 21:49:08 by mdaoud           ###   ########.fr        #
+#    Updated: 2019/09/15 00:02:14 by mdaoud           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -249,7 +249,11 @@ SRCS			+=	find_job_by_pgid.c \
 					job_print.c \
 					process_add.c \
 					str_tab_print.c \
-					str_tab_duplicate.c
+					str_tab_duplicate.c \
+					init_job_control.c \
+					job_start.c \
+					j_process_start.c \
+					job_exec.c
 
 ################################################################
 ########					INCLUDES					########

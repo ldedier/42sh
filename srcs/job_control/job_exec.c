@@ -1,27 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   find_job_by_pgid.c                                 :+:      :+:    :+:   */
+/*   job_exec.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/11 17:52:14 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/14 23:46:03 by mdaoud           ###   ########.fr       */
+/*   Created: 2019/09/14 23:55:06 by mdaoud            #+#    #+#             */
+/*   Updated: 2019/09/15 00:04:08 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "sh_21.h"
 #include "job_control.h"
 
-t_job		*find_job_by_pgid(pid_t pgid)
+int			job_exec(void)
 {
-	t_job *curr_job;
+	t_job	*j;
 
-	curr_job = g_job_control->first_job;
-	while (curr_job != NULL)
+	j = g_job_control->first_job;
+	while (j != NULL)
 	{
-		if (curr_job->pgid == pgid)
-			return curr_job;
-		curr_job = curr_job->next;
+		job_start(j, 1);
+		j = j->next;
 	}
-	return NULL;
+	return (SUCCESS);	//	change this of course...
 }

@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/19 10:45:00 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/14 21:46:52 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/15 00:14:43 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,42 +43,36 @@ static int	sh_execute_pipe_sequence_exec_forks(t_list *contexts)
 	return (SUCCESS);
 }
 
-/*
-execute_pipe_sequence_exec_forks(t_list *contexts)
-{
-	t_list		*ptr;
-	t_context	*context_iter;
-	pid_t		child_pid;
+// static int		sh_execute_pipe_sequence_exec_forks(t_list *contexts)
+// {
+// 	t_list		*ptr;
+// 	t_context	*context_iter;
+// 	pid_t		child_pid;
 
-	ptr = contexts;
-	// ft_printf("job#%d\n", g_job_count);
-	while (ptr != NULL)
-	{
-		context_iter = (t_context *)ptr->content;
-		if ((context_iter->pid = fork()) == -1)
-		{
-			sh_execute_pipe_sequence_close_pipes_list(contexts);
-			return (sh_perror(SH_ERR1_FORK,
-				"sh_execute_pipe_sequence_exec_forks"));
-		}
-		if (context_iter->pid == 0)
-		{
-			ft_printf("Forked with pid: %d and ", getpid());
-			ft_printf("context: ");
-			str_tab_print((char**)context_iter->params->tbl);
-			process_add(context_iter, child_pid);
-			sh_execute_child(context_iter, contexts);
-		}
-		else
-		{
-			// process_add(context_iter, context_iter->pid);
-			g_parent = context_iter->pid;
-			ptr = ptr->next;
-		}
-	}
-	return (SUCCESS);
-}
-*/
+// 	ptr = contexts;
+// 	while (ptr != NULL)
+// 	{
+// 		context_iter = (t_context *)ptr->content;
+// 		process_add(context_iter, 0);
+// 		if ((context_iter->pid = fork()) == -1)
+// 		{
+// 			sh_execute_pipe_sequence_close_pipes_list(contexts);
+// 			return (sh_perror(SH_ERR1_FORK,
+// 				"sh_execute_pipe_sequence_exec_forks"));
+// 		}
+// 		if (context_iter->pid == 0)
+// 		{
+// 			str_tab_print((char**)context_iter->params->tbl);
+// 			sh_execute_child(context_iter, contexts);
+// 		}
+// 		else
+// 		{
+// 			g_parent = context_iter->pid;
+// 			ptr = ptr->next;
+// 		}
+// 	}
+// 	return (SUCCESS);
+// }
 
 static int	sh_execute_pipe_sequence_waits(t_context *context, int *res_save)
 {

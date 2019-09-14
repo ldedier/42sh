@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 00:24:19 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/14 21:46:52 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/14 23:45:46 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@ void			job_print(void)
 	t_process	*p;
 	int			i;
 
-	if (g_first_job == NULL)
+	if (g_job_control->first_job == NULL)
 	{
 		ft_printf("%sNO JOBS AVAILABLE%s\n", COLOR_GREEN, COLOR_END);
 		return ;
 	}
 	ft_printf("\t\t\t%sPRINTING JOBS%s\n", COLOR_GREEN, COLOR_END);
-	j = g_first_job;
+	j = g_job_control->first_job;
 	while (j != NULL)
 	{
 		ft_printf("%sjob: %d%s\n", COLOR_YELLOW, j->number, COLOR_END);
@@ -40,7 +40,7 @@ void			job_print(void)
 			ft_printf("%s\n", COLOR_END);
 			p = p->next;
 		}
-		ft_printf("\n%s=========================================================\n", COLOR_GREEN);
+		ft_printf("%s=========================================================\n", COLOR_GREEN);
 		ft_printf("%s", COLOR_END);
 		j = j->next;
 	}

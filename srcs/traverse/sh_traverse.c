@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 21:45:25 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/14 22:07:50 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/14 23:44:30 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 static int	init_jobs(void)
 {
-	g_first_job = NULL;	//free old g_first_job
-	g_job_count = 1;
+	g_job_control->first_job = NULL;	//free old first_job
+	g_job_control->job_count = 1;
 }
 
 int			sh_process_traverse(t_shell *shell)
