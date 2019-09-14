@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   sh_execute_pipe_sequence.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/19 10:45:00 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/01 08:35:19 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/14 02:40:19 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
+#include "job_control.h"
 
 void		sh_execute_pipe_sequence_close_pipes_list(t_list *contexts)
 {
@@ -30,8 +31,10 @@ static int	sh_execute_pipe_sequence_exec_forks(t_list *contexts)
 {
 	t_list		*ptr;
 	t_context	*context_iter;
+	pid_t		child_pid;
 
 	ptr = contexts;
+	// ft_printf("job#%d\n", g_job_count);
 	while (ptr != NULL)
 	{
 		context_iter = (t_context *)ptr->content;
@@ -42,9 +45,23 @@ static int	sh_execute_pipe_sequence_exec_forks(t_list *contexts)
 				"sh_execute_pipe_sequence_exec_forks"));
 		}
 		if (context_iter->pid == 0)
+		{
+			ft_printf("Forked with pid: %d and ", getpid());
+			ft_printf("context: ");
+			print_tab((char**)context_iter->params->tbl);
+			// ft_printf("Printing exsiting jobs\n");
+			// job_print();
+			// child_pid = getpid();
+			// if ((process_add(context_iter, child_pid)) == FAILURE)
+				// ft_printf("FAILURE to add process\n");
+			process_add(context_iter, child_pid);
+			// g_lock = JOB_ACCESS_UNLOCKED;
+			// job_print();
 			sh_execute_child(context_iter, contexts);
+		}
 		else
 		{
+			// process_add(context_iter, context_iter->pid);
 			g_parent = context_iter->pid;
 			ptr = ptr->next;
 		}

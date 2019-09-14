@@ -1,27 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   find_job_by_pgid.c                                 :+:      :+:    :+:   */
+/*   print_tab.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/11 17:52:14 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/14 00:59:16 by mdaoud           ###   ########.fr       */
+/*   Created: 2019/09/14 01:20:44 by mdaoud            #+#    #+#             */
+/*   Updated: 2019/09/14 01:24:01 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "job_control.h"
+#include "libft.h"
 
-t_job		*find_job_by_pgid(pid_t pgid)
+/*
+** Dummy function to print a **array (like argv)
+** To be deleted or added to the libft
+*/
+
+void			print_tab(char **char_tab)
 {
-	t_job *curr_job;
+	int	i;
 
-	curr_job = g_first_job;
-	while (curr_job != NULL)
+	i = 0;
+	while (char_tab[i])
 	{
-		if (curr_job->pgid == pgid)
-			return curr_job;
-		curr_job = curr_job->next;
+		ft_printf("%s ", char_tab[i]);
+		i++;
 	}
-	return NULL;
+	ft_printf("\n");
 }

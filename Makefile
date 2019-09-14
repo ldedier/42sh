@@ -6,7 +6,7 @@
 #    By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/09/05 13:49:19 by jmartel          ###   ########.fr        #
+#    Updated: 2019/09/14 01:22:18 by mdaoud           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,7 @@ VPATH		= $(INCLUDESDIR) \
 			  $(SRCDIR)/exec \
 			  $(SRCDIR)/expansions \
 			  $(SRCDIR)/grammar \
+			  $(SRCDIR)/job_control \
 			  $(SRCDIR)/lexer \
 			  $(SRCDIR)/parser \
 			  $(SRCDIR)/parser/productions \
@@ -234,9 +235,20 @@ SRCS			 +=	sh_expansions.c \
 ################################################################
 ########					PERROR						########
 ################################################################
-SRCS			 +=	sh_perror.c \
+SRCS			+=	sh_perror.c \
 					sh_perror2.c \
 					sh_perror_fd.c
+
+################################################################
+########					JOB_CONTROL					########
+################################################################
+SRCS			+=	find_job_by_pgid.c \
+					job_stopped_completed.c \
+					job_completed.c \
+					job_add.c \
+					job_print.c \
+					process_add.c \
+					print_tab.c
 
 ################################################################
 ########					INCLUDES					########

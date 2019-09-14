@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   sh_execute_tools.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/19 11:14:49 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/21 21:29:14 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/14 02:36:38 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
+#include "job_control.h"
 
 void		sh_close_all_other_contexts(t_context *context, t_list *contexts)
 {
@@ -31,6 +32,7 @@ void		sh_execute_child_builtin(t_context *context, t_list *contexts)
 {
 	int ret;
 
+	// ft_printf("Executing builtin: %s, pid: %d, ppid: %d, pgid: %d\n", context->path, getpid(), getppid(),getpgid(getpid()));
 	sh_process_execute_dup_pipes(context);
 	reset_signals();
 	sh_close_all_other_contexts(context, contexts);
@@ -43,6 +45,9 @@ void		sh_execute_child_builtin(t_context *context, t_list *contexts)
 
 void		sh_execute_child_binary(t_context *context, t_list *contexts)
 {
+	ft_printf("Executing binary: %s, pid: %d, ppid: %d, pgid: %d\n", context->path, getpid(), getppid(),getpgid(getpid()));
+	// ft_printf("Job number: %d\n", g_job_count - 1);
+	// ft_printf("cmd: %s\n", context->shell->parser.);
 	sh_process_execute_dup_pipes(context);
 	reset_signals();
 	sh_close_all_other_contexts(context, contexts);

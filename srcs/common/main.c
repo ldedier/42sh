@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 17:59:53 by jmartel           #+#    #+#             */
-/*   Updated: 2019/07/30 11:58:41 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/14 02:32:03 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
+#include "job_control.h"
 
 static int	main_exit_value(t_shell *shell, int ret)
 {
@@ -30,6 +31,21 @@ static int	main_exit_value(t_shell *shell, int ret)
 	return (ret);
 }
 
+static int	sh_init_job_control_attr(void)
+{
+	g_job_count = 1;
+	g_lock = JOB_ACCESS_UNLOCKED;
+	g_first_job = NULL;
+	g_shell_pgid = getpid();
+	if (setpgid (g_shell_pgid, g_shell_pgid) < 0)
+	{
+		ft_dprintf(STDERR_FILENO, "setpgid\n");
+		exit (FAILURE);
+	}
+	// ft_printf("Shell_pid: %d\n", g_shell_pgid);
+	return (SUCCESS);
+}
+
 int			main(int argc, char **argv, char **env)
 {
 	t_shell		shell;
@@ -44,7 +60,8 @@ int			main(int argc, char **argv, char **env)
 	{
 		if (sh_init_terminal(&shell, env) != SUCCESS)
 			return (FAILURE);
-		if (sh_init_shell(&shell, env) != SUCCESS)
+		if (sh_init_shell(&shell, env) != SUCCESS ||
+			sh_init_job_control_attr() != SUCCESS)
 		{
 			sh_free_all(&shell);
 			return (sh_reset_shell(FAILURE));
