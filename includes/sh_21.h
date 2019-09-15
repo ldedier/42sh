@@ -49,6 +49,7 @@
 # include "sh_command_line.h"
 # include "sh_expansions.h"
 # include "sh_vars.h"
+# include "sh_history.h"
 
 # define SUCCESS		0
 # define ERROR			1
@@ -62,9 +63,6 @@
 
 # define KEEP_READ		7
 
-# define HISTORIC_FILE	".historic"
-
-# define MAX_LEN_HISTORIC_ENTRY	5000
 # define MAX_YANK				2000
 # define BINARIES_TABLE_SIZE	200
 
@@ -140,7 +138,7 @@ typedef struct s_shell		t_shell;
 struct				s_shell
 {
 	t_lr_parser		parser;
-	t_historic		historic;
+	t_history		history;
 	t_dy_tab		*env;
 	t_dy_tab		*vars;
 	t_hash_table	*binaries;
@@ -185,11 +183,9 @@ char				**get_operations(void);
 int					sh_check_term(void);
 
 /*
-** shell_tools.c
+** init.c
 */
-int					sh_reset_shell(int ret);
-int					sh_set_shell_back(int ret);
-int					clear_all(void);
+int					sh_init_shell(t_shell *shell, char **env);
 
 /*
 ** set_signals.c
@@ -199,9 +195,9 @@ void				sigtstp_handler(int signal);
 void				init_signals(void);
 
 /*
-** init.c
+** execute_command.c
 */
-int					sh_init_shell(t_shell *shell, char **env);
+int					execute_command(t_shell *shell, char *command);
 
 /*
 ** canonical_mode.c
@@ -227,6 +223,13 @@ void				default_sig(int sgnl);
 void				handle_resize(int signal);
 
 /*
+** shell_tools.c
+*/
+int					sh_reset_shell(int ret);
+int					sh_set_shell_back(int ret);
+int					clear_all(void);
+
+/*
 ** init_term.c
 */
 int					sh_init_terminal_database(char **env);
@@ -239,18 +242,16 @@ char				*get_home_dup(t_shell *shell);
 int					process_subst_home(t_shell *shell, char **str);
 
 /*
-** non_canonical_mode.c
+** t_entry.c
 */
-int					sh_process_command(t_shell *shell, char *command);
-int					sh_process_received_command(
-	t_shell *shell, t_command_line *command_line);
-int					sh_await_command(t_shell *shell);
-int					sh_process_noncanonical_mode(t_shell *shell);
+t_entry				*t_entry_new(int number, char *command);
+void				t_entry_free(t_entry *entry);
+void				t_entry_print(t_entry *entry, int print_number);
 
 /*
-** historic.c
+** non_canonical_mode.c
 */
-int					sh_append_to_historic(t_shell *shell, char *command);
+int					sh_process_noncanonical_mode(t_shell *shell);
 
 /*
 ** hash_binaries.c
@@ -267,5 +268,11 @@ void				transmit_sig(int signal);
 void				transmit_sig_and_exit(int signal);
 void				handle_stp(int sgnl);
 void				handle_cont(int sgnl);
+
+/*
+** history.c
+*/
+int					sh_append_to_history(
+	t_history *history, char *command, int append_file);
 
 #endif

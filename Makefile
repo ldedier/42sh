@@ -89,8 +89,8 @@ SRCS			+=	keys.c cursor_motion.c edit_command.c \
 					xy.c copy_paste_delete.c update_prompt.c \
 					update_prompt_tools.c keys_insert.c \
 					keys_others.c keys_ctrl.c cursor_tools.c \
-					selection.c sh_process_historic.c \
-					heredoc.c research_historic.c \
+					selection.c sh_process_history.c \
+					heredoc.c research_history.c \
 					render_research.c heredoc_tools.c \
 					free_command_line.c sh_delete_command.c \
 					sh_process_shift_vertical.c \
@@ -114,9 +114,10 @@ SRCS			+=	sh_traverse_tools_browse.c \
 ################################################################
 SRCS			+=	main.c index.c init.c shell_tools.c \
 					free_all.c init_term.c signals.c \
-					set_signals.c canonical_mode.c historic.c home.c \
+					set_signals.c canonical_mode.c history.c home.c \
 					init_tabs.c non_canonical_mode.c hash_binaries.c \
-					check_term.c signal_tools.c
+					check_term.c signal_tools.c execute_command.c \
+					t_entry.c
 
 ################################################################
 ########					PARSER						########
@@ -210,13 +211,18 @@ SRCS			+=	sh_builtin.c sh_builtin_pwd.c \
 					sh_builtin_cd.c sh_builtin_cd_pre_rules.c \
 					sh_builtin_cd_post_rules.c \
 					sh_builtin_cd_last_rules.c \
-					sh_builtin_type.c sh_builtin_type_search_path.c sh_builtin_type_search.c\
+					sh_builtin_type.c sh_builtin_type_search_path.c \
+					sh_builtin_type_search.c\
 					sh_builtin_verbose.c \
 					sh_builtin_hash.c sh_builtin_set.c sh_builtin_unset.c \
 					sh_builtin_export.c sh_builtin_hash_tools.c \
 					sh_builtin_bonus.c sh_builtin_parser.c \
 					sh_builtin_test.c sh_builtin_test_unary.c \
-					sh_builtin_test_binary.c
+					sh_builtin_test_binary.c \
+					sh_builtin_fc.c \
+					sh_builtin_fc_l_synopsis.c \
+					sh_builtin_fc_s_synopsis.c \
+					sh_builtin_fc_default_synopsis.c
 
 ################################################################
 ########						EXPANSION				########
@@ -248,6 +254,7 @@ INCLUDES			=	sh_21.h \
 					sh_grammar.h \
 				  	sh_command_line.h \
 					sh_autocompletion.h \
+					sh_history.h \
 					sh_exec.h\
 					sh_builtin.h \
 					sh_expansions.h \

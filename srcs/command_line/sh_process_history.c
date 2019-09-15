@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sh_process_historic.c                              :+:      :+:    :+:   */
+/*   sh_process_history.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/16 16:44:48 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/07 18:18:48 by ldedier          ###   ########.fr       */
+/*   Created: 2019/09/15 15:39:14 by ldedier           #+#    #+#             */
+/*   Updated: 2019/09/15 15:39:14 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,15 @@ static void	update_command_line(t_command_line *command_line)
 	command_line->nb_chars = ft_strlen_utf8(command_line->dy_str->str);
 }
 
-int			process_historic_down(t_shell *shell, t_command_line *command_line)
+int			process_history_down(t_shell *shell, t_command_line *command_line)
 {
 	char *str;
 
-	if (!shell->historic.head->prev)
+	if (!shell->history.head->prev)
 		return (SUCCESS);
-	if (shell->historic.head == shell->historic.commands)
+	if (shell->history.head == shell->history.commands)
 	{
-		shell->historic.head = &shell->historic.head_start;
+		shell->history.head = &shell->history.head_start;
 		if (ft_strcmp(command_line->dy_str->str, ""))
 		{
 			flush_command_line(command_line);
@@ -36,8 +36,8 @@ int			process_historic_down(t_shell *shell, t_command_line *command_line)
 		}
 		return (SUCCESS);
 	}
-	shell->historic.head = shell->historic.head->prev;
-	str = (char *)shell->historic.head->content;
+	shell->history.head = shell->history.head->prev;
+	str = ((t_entry *)shell->history.head->content)->command;
 	flush_command_line(command_line);
 	if (ft_dy_str_cpy_str(command_line->dy_str, str))
 		return (FAILURE);
@@ -47,17 +47,17 @@ int			process_historic_down(t_shell *shell, t_command_line *command_line)
 	return (SUCCESS);
 }
 
-int			process_historic_up(t_shell *shell, t_command_line *command_line)
+int			process_history_up(t_shell *shell, t_command_line *command_line)
 {
 	char *str;
 
-	if (!shell->historic.commands)
+	if (!shell->history.commands)
 		return (SUCCESS);
-	if (shell->historic.head->next == shell->historic.commands
-		&& shell->historic.head != &shell->historic.head_start)
+	if (shell->history.head->next == shell->history.commands
+		&& shell->history.head != &shell->history.head_start)
 		return (SUCCESS);
-	shell->historic.head = shell->historic.head->next;
-	str = (char *)shell->historic.head->content;
+	shell->history.head = shell->history.head->next;
+	str = ((t_entry *)shell->history.head->content)->command;
 	flush_command_line(command_line);
 	if (ft_dy_str_cpy_str(command_line->dy_str, str))
 		return (FAILURE);

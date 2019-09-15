@@ -83,7 +83,7 @@ int		process_key_insert_printable_utf8(t_key_buffer *buffer,
 		c = 0;
 		if (sh_add_to_dy_str(command_line->searcher.dy_str, &c, 1))
 			return (FAILURE);
-		update_research_historic(command_line, shell, 0);
+		update_research_history(command_line, shell, 0);
 	}
 	else
 	{
@@ -115,7 +115,7 @@ int		process_keys_insert(t_key_buffer *buffer,
 		process_down(shell, command_line);
 	else if (buffer->buff[0] == 18)
 	{
-		if (process_research_historic(command_line, shell))
+		if (process_research_history(command_line, shell))
 			return (FAILURE);
 	}
 	else

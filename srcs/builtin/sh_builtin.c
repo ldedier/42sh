@@ -27,6 +27,7 @@ t_builtin_container		*get_builtins(void)
 		{ "unset", sh_builtin_unset },
 		{ "export", sh_builtin_unset },
 		{ "test", sh_builtin_test },
+		{ "fc", sh_builtin_fc },
 #if __APPLE__ && __MACH__
 		{ "🐑", sh_builtin_🐑 }
 #endif

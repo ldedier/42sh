@@ -19,7 +19,7 @@ int		process_down(t_shell *shell, t_command_line *command_line)
 	else
 	{
 		command_line->autocompletion.active = 0;
-		return (process_historic_down(shell, command_line));
+		return (process_history_down(shell, command_line));
 	}
 }
 
@@ -30,7 +30,7 @@ int		process_up(t_shell *shell, t_command_line *command_line)
 	else
 	{
 		command_line->autocompletion.active = 0;
-		return (process_historic_up(shell, command_line));
+		return (process_history_up(shell, command_line));
 	}
 }
 

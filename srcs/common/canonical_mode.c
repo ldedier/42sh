@@ -18,16 +18,10 @@ static int		sh_process_read_canonical_gnl(t_shell *shell, t_gnl_info *info)
 
 	if (info->separator != E_SEPARATOR_ZERO)
 	{
-		ret = sh_process_command(shell, info->line);
-		if (ret == FAILURE)
+		if ((ret = execute_command(shell, info->line)))
 		{
 			free(info->line);
 			return (ret);
-		}
-		if (sh_append_to_historic(shell, info->line) != SUCCESS)
-		{
-			free(info->line);
-			return (FAILURE);
 		}
 	}
 	else
@@ -50,9 +44,7 @@ static int		sh_process_read_canonical_mode(t_shell *shell)
 	while (shell->running && (gnl_ret = get_next_line2(0, &info, 1)) == 1)
 	{
 		if ((ret = sh_process_read_canonical_gnl(shell, &info)))
-		{
 			return (ret);
-		}
 	}
 	if (shell->running && gnl_ret == -1)
 		return (sh_perror("get_next_line error", "sh_process_read_canonical"));

@@ -14,14 +14,14 @@ clean_and_exit()
 {
 	rm ${exec}
 	rm -rf "${exec}.dSYM"
-	del_historic
+	del_history
 	echo "Cleaned and exit"
 	exit
 }
 
-del_historic()
+del_history()
 {
-	find ../ -name ".historic" -delete 2>/dev/null 1>/dev/null
+	find ../ -name ".history" -delete 2>/dev/null 1>/dev/null
 }
 
 init_valgrind()

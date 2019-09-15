@@ -43,7 +43,7 @@ int		sh_add_to_command(t_command_line *command_line,
 
 int		reset_command_line(t_shell *shell, t_command_line *command_line)
 {
-	shell->historic.head = &shell->historic.head_start;
+	shell->history.head = &shell->history.head_start;
 	command_line->autocompletion.head = NULL;
 	g_glob.cursor = 0;
 	flush_command_line(command_line);

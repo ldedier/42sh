@@ -99,13 +99,6 @@ typedef struct		s_command_line
 	int				fd;
 }					t_command_line;
 
-typedef struct		s_historic
-{
-	t_dlist			*head;
-	t_dlist			*commands;
-	t_dlist			head_start;
-}					t_historic;
-
 typedef struct		s_key_buffer
 {
 	unsigned char	buff[READ_BUFF_SIZE];
@@ -274,6 +267,14 @@ int					sh_process_process_quoted(
 int					sh_process_quoted(t_lexer *lexer);
 
 /*
+** sh_process_history.c
+*/
+int					process_history_down(
+	t_shell *shell, t_command_line *command_line);
+int					process_history_up(
+	t_shell *shell, t_command_line *command_line);
+
+/*
 ** xy.c
 */
 t_xy				get_position(int cursor);
@@ -359,18 +360,6 @@ char				*heredoc_handle_ctrl_d(
 char				*heredoc(t_shell *shell, t_heredoc heredoc, int *ret);
 
 /*
-** research_historic.c
-*/
-int					process_find_in_historic(
-	t_command_line *command_line, char *to_search_in, char *found);
-int					progress_process_research_historic(
-	t_command_line *command_line, t_shell *shell);
-int					update_research_historic(
-	t_command_line *command_line, t_shell *shell, int reset);
-int					process_research_historic(
-	t_command_line *command_line, t_shell *shell);
-
-/*
 ** cursor_motion.c
 */
 void				go_right(int right);
@@ -392,6 +381,18 @@ int					reset_command_line(
 	t_shell *shell, t_command_line *command_line);
 int					sh_get_command(
 	t_shell *shell, t_command_line *command_line);
+
+/*
+** research_history.c
+*/
+int					process_find_in_history(
+	t_command_line *command_line, char *to_search_in, char *found);
+int					progress_process_research_history(
+	t_command_line *command_line, t_shell *shell);
+int					update_research_history(
+	t_command_line *command_line, t_shell *shell, int reset);
+int					process_research_history(
+	t_command_line *command_line, t_shell *shell);
 
 /*
 ** update_prompt_keys.c
@@ -517,14 +518,6 @@ int					update_prompt_from_quote(
 	t_command_line *command_line,
 	char quote,
 	int backslash);
-
-/*
-** sh_process_historic.c
-*/
-int					process_historic_down(
-	t_shell *shell, t_command_line *command_line);
-int					process_historic_up(
-	t_shell *shell, t_command_line *command_line);
 
 /*
 ** selection.c

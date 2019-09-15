@@ -12,47 +12,14 @@
 
 #include "sh_21.h"
 
-int		sh_process_command(t_shell *shell, char *command)
-{
-	t_list	*tokens;
-	int		ret;
-
-	sh_verbose_update(shell);
-	ret = 0;
-	if ((ret = sh_lexer(command, &tokens, shell, E_LEX_STANDARD)) != SUCCESS)
-	{
-		if (sh_env_update_ret_value_and_question(shell, ret) == FAILURE)
-			ret = FAILURE;
-	}
-	if (!ret && (ret = sh_parser(tokens, shell)))
-	{
-		sh_perror_err("syntax error", NULL);
-		if (sh_env_update_ret_value_and_question(shell, ret) == FAILURE)
-			ret = FAILURE;
-	}
-	if (!ret)
-		ret = sh_process_traverse(shell);
-	sh_clear_parser(&shell->parser);
-	return (ret);
-}
-
-int		sh_process_received_command(t_shell *shell,
-			t_command_line *command_line)
-{
-	if (sh_append_to_historic(shell,
-			command_line->dy_str->str) != SUCCESS)
-		return (FAILURE);
-	return (sh_process_command(shell, command_line->dy_str->str));
-}
-
-int		sh_await_command(t_shell *shell)
+static int		sh_await_command(t_shell *shell)
 {
 	int		ret;
 
 	if ((ret = sh_get_command(shell, &g_glob.command_line)) != SUCCESS)
 		return (ret);
-	return (sh_process_received_command(shell,
-		&g_glob.command_line));
+	return (execute_command(shell,
+		g_glob.command_line.dy_str->str));
 }
 
 int		sh_process_noncanonical_mode(t_shell *shell)
