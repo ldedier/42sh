@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 23:16:21 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/15 00:02:41 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/15 22:19:02 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int		job_start(t_job *j, int foreground)
 		pid = fork ();
 		if (pid == 0)
 		/* This is the child process.  */
-		j_process_start(p, j->pgid, foreground);	//To be implemented
+		j_process_start(p, j->pgid, foreground);
 		else if (pid < 0)
 		{
 			/* The fork failed.  */

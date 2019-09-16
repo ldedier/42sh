@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/13 17:37:47 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/15 00:03:40 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/15 22:19:59 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ int		j_process_start(t_process *p, pid_t pgid, int foreground)
 		This has to be done both by the shell and in the individual
 		child processes because of potential race conditions. */
 		pid = getpid ();
-		if (pgid == 0) pgid = pid;
+		if (pgid == 0)
+			pgid = pid;
 		setpgid (pid, pgid);
 		if (foreground)
 			tcsetpgrp (g_job_control->term_fd, pgid);

@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 23:24:10 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/14 23:53:37 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/15 22:39:54 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int		init_job_control(t_shell *shell)
 		return (FAILURE);
 	g_job_control->job_count = 1;
 	g_job_control->first_job = NULL;
+	g_job_control->current_job = NULL;
 	g_job_control->shell_is_interactive = 1;
 	if (g_job_control->shell_is_interactive)
 	{

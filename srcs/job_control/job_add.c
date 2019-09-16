@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 00:09:20 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/14 23:45:57 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/15 22:39:31 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int			job_add(void)
 	j->pgid = 0;
 	j->command = NULL;	//	Fill it with the command
 	g_job_control->job_count = g_job_control->job_count + 1;
+	g_job_control->current_job = j;
 	if (g_job_control->first_job == NULL)
 	{
 		g_job_control->first_job = j;

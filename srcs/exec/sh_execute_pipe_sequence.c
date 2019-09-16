@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/19 10:45:00 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/15 00:14:43 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/15 22:51:43 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,23 +27,7 @@ void		sh_execute_pipe_sequence_close_pipes_list(t_list *contexts)
 	}
 }
 
-static int	sh_execute_pipe_sequence_exec_forks(t_list *contexts)
-{
-	t_list		*ptr;
-	t_context	*context_iter;
-	pid_t		child_pid;
-
-	ptr = contexts;
-	while (ptr != NULL)
-	{
-		context_iter = (t_context *)ptr->content;
-		process_add(context_iter, 0);
-		ptr = ptr->next;
-	}
-	return (SUCCESS);
-}
-
-// static int		sh_execute_pipe_sequence_exec_forks(t_list *contexts)
+// static int	sh_execute_pipe_sequence_exec_forks(t_list *contexts)
 // {
 // 	t_list		*ptr;
 // 	t_context	*context_iter;
@@ -54,25 +38,50 @@ static int	sh_execute_pipe_sequence_exec_forks(t_list *contexts)
 // 	{
 // 		context_iter = (t_context *)ptr->content;
 // 		process_add(context_iter, 0);
-// 		if ((context_iter->pid = fork()) == -1)
-// 		{
-// 			sh_execute_pipe_sequence_close_pipes_list(contexts);
-// 			return (sh_perror(SH_ERR1_FORK,
-// 				"sh_execute_pipe_sequence_exec_forks"));
-// 		}
-// 		if (context_iter->pid == 0)
-// 		{
-// 			str_tab_print((char**)context_iter->params->tbl);
-// 			sh_execute_child(context_iter, contexts);
-// 		}
-// 		else
-// 		{
-// 			g_parent = context_iter->pid;
-// 			ptr = ptr->next;
-// 		}
+// 		sh_execute_child(context_iter, contexts);
+// 		ptr = ptr->next;
 // 	}
 // 	return (SUCCESS);
 // }
+
+static int		sh_execute_pipe_sequence_exec_forks(t_list *contexts)
+{
+	t_list		*ptr;
+	t_context	*context_iter;
+	pid_t		child_pid;
+
+	ptr = contexts;
+	while (ptr != NULL)
+	{
+		context_iter = (t_context *)ptr->content;
+		// process_add(context_iter, 0);
+		if ((context_iter->pid = fork()) == -1)
+		{
+			sh_execute_pipe_sequence_close_pipes_list(contexts);
+			return (sh_perror(SH_ERR1_FORK,
+				"sh_execute_pipe_sequence_exec_forks"));
+		}
+		if (context_iter->pid == 0)
+		{
+			str_tab_print((char**)context_iter->params->tbl);
+			child_pid = getpid();
+			if (g_job_control->current_job->pgid == 0)
+				g_job_control->current_job->pgid = child_pid;
+			setpgid(child_pid, g_job_control->current_job->pgid);
+			sh_execute_child(context_iter, contexts);
+		}
+		else
+		{
+			child_pid = context_iter->pid;
+			if (g_job_control->current_job->pgid == 0)
+				g_job_control->current_job->pgid = child_pid;
+			setpgid(child_pid, g_job_control->current_job->pgid);
+			g_parent = context_iter->pid;
+			ptr = ptr->next;
+		}
+	}
+	return (SUCCESS);
+}
 
 static int	sh_execute_pipe_sequence_waits(t_context *context, int *res_save)
 {

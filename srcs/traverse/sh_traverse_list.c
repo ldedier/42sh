@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/28 16:49:38 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/15 00:04:36 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/15 22:52:15 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int	sh_traverse_list_redir_exec(t_ast_node *node, t_context *context)
 		ret = g_grammar[child->symbol->id].traverse(child, context);
 		sh_traverse_tools_show_traverse_ret_value(node, context, ret);
 		job_print();
-		job_exec();
+		// job_exec();
 		if (ret == FAILURE)
 			return (FAILURE);
 		else if (ret == STOP_CMD_LINE)

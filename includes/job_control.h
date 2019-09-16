@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 17:45:00 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/15 00:01:59 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/15 22:39:01 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ struct	s_job_control
 	char			shell_is_interactive;
 	int				job_count;
 	t_job			*first_job;
+	t_job			*current_job;
 	pid_t			shell_pgid;
 };
 
