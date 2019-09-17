@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   non_canonical_mode.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/05 15:41:50 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/21 16:35:22 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/17 00:20:12 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int		sh_process_command(t_shell *shell, char *command)
 		if (sh_env_update_ret_value_and_question(shell, ret) == FAILURE)
 			ret = FAILURE;
 	}
+	ft_printf("shell attributes:  pid: %d\tppid: %d\tpgid: %d\n", getpid(), getppid(), getpgid(getpid()));
 	if (!ret)
 		ret = sh_process_traverse(shell);
 	sh_clear_parser(&shell->parser);

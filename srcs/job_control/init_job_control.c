@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 23:24:10 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/15 22:39:54 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/17 01:46:31 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ int		init_job_control(t_shell *shell)
 		// 	kill (- g_job_control->shell_pgid, SIGTTIN);
 
 		/* Ignore interactive and job-control signals. */
-		signal (SIGINT, SIG_IGN);
+		// signal (SIGINT, SIG_IGN);
 		signal (SIGQUIT, SIG_IGN);
-		signal (SIGTSTP, SIG_IGN);
+		// signal (SIGTSTP, SIG_IGN);
 		signal (SIGTTIN, SIG_IGN);
 		signal (SIGTTOU, SIG_IGN);
 		signal (SIGCHLD, SIG_IGN);
@@ -50,6 +50,6 @@ int		init_job_control(t_shell *shell)
 		}
 
 		/* Grab control of the terminal.  */
-		// tcsetpgrp (g_job_control->term_fd, g_job_control->shell_pgid);
+		tcsetpgrp(g_job_control->term_fd, g_job_control->shell_pgid);
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_21.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/30 15:48:56 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/27 16:05:13 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/09/17 02:16:46 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,6 +234,7 @@ int					sh_process_noncanonical_mode(t_shell *shell);
 void				reset_signals(void);
 void				sigtstp_handler(int signal);
 void				init_signals(void);
+void				handler_sigint_process(int signo);
 
 /*
 ** shell_tools.c

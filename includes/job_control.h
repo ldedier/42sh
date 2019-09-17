@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 17:45:00 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/15 22:39:01 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/17 00:13:11 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,11 @@ struct	s_job
 	t_job			*next;			/* next active job */
 	int				number;
 	char			*command;		/* command line, used for messages */
+	char			foreground;		/* true if job is running in foreground */
 	t_process		*first_process;	/* list of processes in this job */
 	pid_t			pgid;			/* process group ID */
 	char			notified;		/* true if user told about stopped job */
 	char			empty_process;	/* true if no processes are in the job */
-	// t_term			tmodes;			/* saved terminal modes */
-	// int stdin, stdout, stderr;	/* standard i/o channels */
 };
 
 struct	s_job_control

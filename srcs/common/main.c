@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 17:59:53 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/14 23:46:47 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/17 00:34:50 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,22 +31,6 @@ static int	main_exit_value(t_shell *shell, int ret)
 	return (ret);
 }
 
-static int	sh_init_job_control_attr(t_shell *shell)
-{
-	// g_job_control = malloc(sizeof(t_job_control));
-	// if (g_job_control == NULL)
-	// 	return (FAILURE);
-	// g_job_control->job_count = 1;
-	// g_job_control->first_job = NULL;
-	// if (setpgid (g_job_control->shell_pgid, g_job_control->shell_pgid) < 0)
-	// {
-	// 	ft_dprintf(STDERR_FILENO, "setpgid\n");	//sh_perror
-	// 	exit (FAILURE);
-	// }
-	return (init_job_control(shell));
-	// return (SUCCESS);
-}
-
 int			main(int argc, char **argv, char **env)
 {
 	t_shell		shell;
@@ -62,7 +46,7 @@ int			main(int argc, char **argv, char **env)
 		if (sh_init_terminal(&shell, env) != SUCCESS)
 			return (FAILURE);
 		if (sh_init_shell(&shell, env) != SUCCESS ||
-			sh_init_job_control_attr(&shell) != SUCCESS)
+			init_job_control(&shell) != SUCCESS)
 		{
 			sh_free_all(&shell);
 			return (sh_reset_shell(FAILURE));
