@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 14:16:12 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/05 13:11:16 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/09/17 21:10:26 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@
 # define SH_BLT_NOTWELLFORM		"Sorry your command are not well formatted"
 # define SH_BLT_INTEGER			"Integer expression expected"
 # define SH_BLT_HISTORY_RANGE	"fc: history specification out of range"
+# define SH_BLT_NO_CMD_FOUND	"fc: no command found"
 
 # define SH_BAD_SUBSTITUTE		"Bad subsitution"
 /*
