@@ -47,9 +47,6 @@ int			t_context_init(t_context *context, t_shell *shell)
 	context->saved_env = NULL;
 	context->vars = shell->vars;
 	context->term = &shell->term;
-	context->fd[0] = 0;
-	context->fd[1] = 1;
-	context->fd[2] = 2;
 	context->builtin = NULL;
 	context->current_command_node = NULL;
 	context->current_pipe_sequence_node = NULL;

@@ -14,7 +14,7 @@
 
 /*
  * Check if the fd to redirect (left fd) already exist for the same type (I/O)
- * to overwrite the destination fd (right fd) and multiply redirection.
+ * to overwrite the destination fd (right fd) and not multiply redirection.
  *
  * Return t_redirection * on the existing element redirection
  * Otherwise return NULL
@@ -37,19 +37,21 @@ static t_redirection	*is_redirection_already_exist(t_redirection_type type,
 	return (NULL);
 }
 
-static t_redirection	sh_new_redir(t_redirection_type type, int redirected_fd, int fd)
+static t_redirection		sh_new_redir(
+	t_redirection_type type, int redirected_fd, int fd)
 {
 	t_redirection redir;
 
 	redir.type = type;
-	redir.closed = 0;
+	// redir.closed = 0;
 	redir.fd = fd;
+	redir.was_apply = 0;
 	if (redirected_fd == -1)
 	{
 		if (type == INPUT)
-			redir.redirected_fd = 0;
+			redir.redirected_fd = STDIN_FILENO;
 		else
-			redir.redirected_fd = 1;
+			redir.redirected_fd = STDOUT_FILENO;
 	}
 	else
 		redir.redirected_fd = redirected_fd;
@@ -77,7 +79,10 @@ int				sh_add_redirection(t_redirection_type type, int redirected_fd,
 		redirection.redirected_fd, *list)))
 	{
 		if (ft_lstaddnew_last(list, &redirection, sizeof(t_redirection)))
-			return (sh_perror(SH_ERR1_MALLOC, "sh_add_redirection"));
+		{
+			sh_perror(SH_ERR1_MALLOC, "sh_add_redirection");
+			return (ERROR);
+		}
 	}
 	else
 	{

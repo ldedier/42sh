@@ -88,6 +88,9 @@ int				sh_traverse_io_here(t_ast_node *node, t_context *context)
 	redirection = &node->metadata.heredoc_metadata.redirection;
 	if (context->phase == E_TRAVERSE_PHASE_INTERACTIVE_REDIRECTIONS)
 		return (sh_traverse_io_here_phase_interactive(node, context));
+	else if (context->phase == E_TRAVERSE_PHASE_EXPANSIONS)
+		return (sh_traverse_io_here_phase_expansion(
+					redirection, node, context));
 	else if (context->phase == E_TRAVERSE_PHASE_REDIRECTIONS)
 	{
 		if (sh_add_redirection(redirection->type,
@@ -96,8 +99,5 @@ int				sh_traverse_io_here(t_ast_node *node, t_context *context)
 						->metadata.command_metadata.redirections))
 			return (FAILURE);
 	}
-	else if (context->phase == E_TRAVERSE_PHASE_EXPANSIONS)
-		return (sh_traverse_io_here_phase_expansion(
-					redirection, node, context));
 	return (SUCCESS);
 }

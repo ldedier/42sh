@@ -20,6 +20,7 @@ static int	apply_expansion_to_children(t_ast_node *child, t_context *context)
  * This is the dispatcher of command (grammar) node
  * Just check what type of command we have and call the
  * right traverse.
+ * If we have compound_command (like subshell), we can have some pipe to apply here.
 */
 int	sh_traverse_command(t_ast_node *node, t_context *context)
 {

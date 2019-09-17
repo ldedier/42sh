@@ -63,12 +63,6 @@ int		sh_expansions_variable_process(
 int		sh_expansions(t_context *context, t_ast_node *node);
 
 /*
-** sh_get_heredoc.c
-*/
-char	*get_heredoc(
-	t_context *context, t_heredoc *heredoc_data, int *ret);
-
-/*
 ** sh_expansions_tilde.c
 */
 int		sh_expansions_tilde_detect(char *start);

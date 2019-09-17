@@ -46,9 +46,10 @@ typedef struct			s_redirection
 	t_redirection_type	type;
 	int					redirected_fd;//left fd
 	int					fd;//right fd
-	int					saved_fd;//save left fd
-	int					closed;//used to know if fd is already closed. Use full if an error
+	int					backup;//save left fd
+	// int					closed;//used to know if fd is already closed. Use full if an error
 	//appear and we need to reset all... I  guess...
+	int					was_apply;//if we have an error maybe all redirections wasn't done before we have to reset all
 }						t_redirection;
 
 typedef struct		s_pipe_metadata
@@ -95,7 +96,7 @@ typedef struct		s_context
 	t_dy_tab		*params;
 	int				(*builtin)(struct s_context *);
 	int				redirected_fd;
-	int				fd[3];
+	// int				fd[3];
 	t_phase			phase;
 	t_ast_node		*current_command_node;
 	t_ast_node		*current_pipe_sequence_node;
@@ -133,7 +134,7 @@ int					sh_execute_builtin(t_context *context);
 /*
 ** sh_execute_pipes.c
 */
-int					sh_process_execute_close_pipes(t_context *context);
+// int					sh_process_execute_close_pipes(t_context *context);
 
 /*
 ** sh_execute_pipe.c
@@ -143,15 +144,15 @@ int				sh_execute_pipe(t_ast_node *node, t_context *context);
 /*
 ** sh_execute_prefix_postfix.c
 */
-int					sh_pre_execution(t_context *context);
+int					sh_pre_execution();
 int					sh_pre_execution_pipes(t_list *contexts);
 int					sh_post_execution(void);
 
 /*
 ** sh_execute_pipe_sequence.c
 */
-int					sh_execute_pipe_sequence(
-	t_context *context, t_list *contexts);
+// int					sh_execute_pipe_sequence(
+	// t_context *context, t_list *contexts);
 
 /*
 ** sh_redirections.c
@@ -163,7 +164,20 @@ int					sh_add_fd_aggregation(
 	int redirected_fd,
 	int fd,
 	t_list **redirections);
+/*
+** sh_reset_redirection.c
+*/
+int					sh_reset_redirection(t_list **lst);
 
+/*
+** sh_execute_redirection.c
+*/
+int 				sh_execute_redirection(t_context *context);
+
+/*
+** sh_check_open_fd.c
+*/
+int					sh_check_open_fd(t_redirection_type type, int fd);
 /*
 ** sh_debug.c
 */

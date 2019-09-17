@@ -21,13 +21,13 @@ static int	sh_env_save_dup(t_context *context)
 
 	len = context->env->current_size;
 	if (!(save = ft_dy_tab_new(len)))
-		return (sh_perror_fd(context->fd[FD_ERR], SH_ERR1_MALLOC, "sh_env_save_dup (1)"));
+		return (sh_perror_fd(FD_ERR, SH_ERR1_MALLOC, "sh_env_save_dup (1)"));
 	i = 0;
 	env = (char**)context->env->tbl;
 	while (i < len)
 	{
 		if (ft_dy_tab_add_str(save, env[i]))
-			return (sh_perror_fd(context->fd[FD_ERR], SH_ERR1_MALLOC, "sh_env_save_dup (2)"));
+			return (sh_perror_fd(FD_ERR, SH_ERR1_MALLOC, "sh_env_save_dup (2)"));
 		i++;
 	}
 	context->saved_env = save;

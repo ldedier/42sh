@@ -17,5 +17,4 @@ int		sh_traverse_default(t_ast_node *node, t_context *context)
 	(void)node;
 	(void)context;
 	return (SUCCESS);
-	//return (sh_traverse_tools_browse(node, context));
 }

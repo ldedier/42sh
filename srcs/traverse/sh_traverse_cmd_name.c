@@ -20,19 +20,15 @@ int			sh_traverse_cmd_name(t_ast_node *node, t_context *context)
 	child = (t_ast_node *)node->children->content;
 	if (context->phase == E_TRAVERSE_PHASE_EXPANSIONS)
 	{
-		// context->current_command_node = node;
-		// child = (t_ast_node *)node->children->content;
 		if (child && child->token)
 		{
 			ret = sh_expansions(context, child);
-			// context->current_command_node = NULL;
 			return (ret);
 		}
 		return (SUCCESS);
 	}
 	else if (context->phase == E_TRAVERSE_PHASE_EXECUTE)
 	{
-		// child = (t_ast_node *)node->children->content;
 		if (child == NULL)
 			return (SUCCESS);
 		if (ft_dy_tab_add_str(context->params, child->token->value))

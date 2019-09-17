@@ -71,9 +71,9 @@
 /*
 ** Macros of fdin, fdout and fderr in context->fd
 */
-# define FD_IN		0
-# define FD_OUT		1
-# define FD_ERR		2
+# define FD_IN		STDIN_FILENO
+# define FD_OUT		STDOUT_FILENO
+# define FD_ERR		STDERR_FILENO
 
 # define CWD_LEN		1000
 # define NB_OPERATIONS	12

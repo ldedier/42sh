@@ -43,7 +43,6 @@ int		sh_process_file_output(char *filename,
 	}
 	if (sh_add_redirection(OUTPUT, context->redirected_fd, fd,
 		&context->redirections))
-		// &context->current_command_node->metadata.command_metadata.redirections))
 		return (FAILURE);
 	return (SUCCESS);
 }
@@ -73,7 +72,6 @@ int		sh_process_file_input(char *filename,
 		return (sh_perror("Can't open file", filename));
 	if (sh_add_redirection(INPUT, context->redirected_fd, fd,
 		&context->redirections))
-		// &context->current_command_node->metadata.command_metadata.redirections))
 		return (FAILURE);
 	return (SUCCESS);
 }

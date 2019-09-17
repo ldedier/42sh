@@ -108,11 +108,11 @@ int			sh_builtin_type_search_in_path(t_context *context, char *name, t_args args
 		{
 			found++;
 			if (args[TYPE_P_OPT].value && args[TYPE_P_OPT].priority > args[TYPE_T_OPT].priority)
-				ft_dprintf(context->fd[FD_OUT], "%s\n", context->path);
+				ft_dprintf(FD_OUT, "%s\n", context->path);
 			else if (args[TYPE_T_OPT].value)
-				ft_dprintf(context->fd[FD_OUT], "file\n");
+				ft_dprintf(FD_OUT, "file\n");
 			else
-				ft_dprintf(context->fd[FD_OUT], "%s is %s\n", name, context->path);
+				ft_dprintf(FD_OUT, "%s is %s\n", name, context->path);
 			if (args[TYPE_A_OPT].value)
 				continue ;
 			else

@@ -179,10 +179,8 @@ int					sh_builtin_verbose(t_context *context);
 /*
 ** sh_builtin_type_search.c
 */
-int					sh_builtin_type_search_reserved(
-	t_context *context, char *name, t_args args[]);
-int					sh_builtin_type_search_builtin(
-	t_context *context, char *name, t_args args[]);
+int					sh_builtin_type_search_reserved(char *name, t_args args[]);
+int					sh_builtin_type_search_builtin(char *name, t_args args[]);
 int					sh_builtin_type_search_hash(
 	t_context *context, char *name, t_args args[]);
 
@@ -197,8 +195,7 @@ int					sh_builtin_exit(t_context *context);
 int					sh_builtin_hash_add_utility(
 	t_context *context, char *utility);
 void				sh_builtin_hash_empty_table(t_shell *shell);
-int					sh_builtin_hash_show(
-	t_context *context, t_shell *shell);
+int					sh_builtin_hash_show(t_shell *shell);
 void				sh_builtin_hash_update_stats(
 	t_hash_table *table, t_binary_stats *stats);
 

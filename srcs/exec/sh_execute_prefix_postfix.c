@@ -22,11 +22,11 @@ static void	sh_reset_signals_post_exec(void)
 	signal(SIGWINCH, handle_resize);
 }
 
-int		sh_pre_execution(t_context *context)
+int		sh_pre_execution()
 {
 	if (isatty(0) && sh_reset_shell(0) == ATTR_ERROR)
 	{
-		sh_process_execute_close_pipes(context);
+		// sh_process_execute_close_pipes(context);
 		return (FAILURE);
 	}
 	sh_reset_signals_pre_exec();

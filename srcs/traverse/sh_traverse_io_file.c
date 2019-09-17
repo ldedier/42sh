@@ -79,6 +79,11 @@ static int	sh_process_file_lessand(char *filename, t_context *context)
 	}
 }
 
+/*
+ * get_io_file_return
+ * dispatch to right function follow
+ * input/output with file/agregation redirection
+*/
 static int	get_io_file_return(t_ast_node *redir_child,
 			char *filename, t_context *context)
 {
@@ -97,6 +102,12 @@ static int	get_io_file_return(t_ast_node *redir_child,
 		return (SUCCESS);
 }
 
+/*
+ * sh_traverse_io_file
+ * We get here file and aggregation redirection and
+ * add the given id or the created file fd to the list
+ * of redirection we will run.
+*/
 int			sh_traverse_io_file(t_ast_node *node, t_context *context)
 {
 	t_ast_node	*redir_child;

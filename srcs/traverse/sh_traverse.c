@@ -56,7 +56,7 @@ static t_ast_node	*go_to_list(t_ast_node *node)
 	t_ast_node *test;
 
 	test = node;
-	while (test->symbol->id != 58)//58 est le id de LIST mais je sais pas d'ou ca sort...
+	while (test->symbol->id != sh_index(LIST))
 	{
 		if (test->children == NULL)
 			return (NULL);

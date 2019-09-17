@@ -13,29 +13,23 @@
 #include "sh_21.h"
 
 /*
-** returns the destination fd (right), (-1 if closed) or
-** -2 if the fd specified is not open
+** returns the destination fd (right)
+** -1 if the fd specified is not open
 */
-
-static int				get_redirected_fd(t_redirection_type type,
-					int fd, t_list *redirections)
-{
-	t_list			*ptr;
-	t_redirection	*redir;
-
-	ptr = redirections;
-	while (ptr != NULL)
-	{
-		redir = (t_redirection *)ptr->content;
-		if (redir->type == type && redir->redirected_fd == fd)
-			return (redir->fd);
-		ptr = ptr->next;
-	}
-	if (fd >= 0 && fd <= 2)
-		return (fd);
-	else
-		return (-2);
-}
+// static int				get_redirected_fd(t_redirection_type type, int fd)
+// {
+// 	if (type == OUTPUT)
+// 	{
+// 		if (write(fd, "", 0) == 0)
+// 			return (fd);
+// 	}
+// 	else
+// 	{
+// 		if (read(fd, "", 0) == 0)
+// 			return (fd);
+// 	}
+// 	return (-1);
+// }
 
 int				sh_add_fd_aggregation(t_redirection_type type,
 					int redirected_fd, int fd, t_list **redirections)
@@ -44,18 +38,16 @@ int				sh_add_fd_aggregation(t_redirection_type type,
 
 	if (fd != redirected_fd)
 	{
-		if ((new_fd = get_redirected_fd(type, fd, *redirections))
-			== -2)
+		// if ((new_fd = get_redirected_fd(type, fd)) == -1)
+		if ((new_fd = sh_check_open_fd(type, fd)) == -1)
 		{
 			ft_dprintf(2, "%s%s: %d: bad file descriptor\n%s", SH_ERR_COLOR,
 			SH_NAME, fd, EOC);
-			// metadata->should_exec = 0;
-			return (SUCCESS);
+			return (STOP_CMD_LINE);
 		}
 		else
 			return (sh_add_redirection(type, redirected_fd, new_fd,
 						redirections));
-						// &metadata->redirections));
 	}
 	else
 		return (SUCCESS);

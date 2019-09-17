@@ -75,10 +75,7 @@ SRCS			+=	sh_traverse.c sh_traverse_default.c \
 					sh_traverse_cmd_suffix.c sh_traverse_cmd_prefix.c \
 					sh_traverse_io_redirect.c sh_traverse_io_here.c \
 					sh_traverse_io_here_canonical.c \
-					sh_traverse_io_file_tools.c \
 					sh_traverse_and_or.c sh_traverse_list.c \
-					sh_traverse_io_here_expansion.c \
-					sh_traverse_io_here_phase_expansion.c \
 					sh_traverse_command.c
 
 ################################################################
@@ -101,15 +98,16 @@ SRCS			+=	keys.c cursor_motion.c edit_command.c \
 					sh_get_cursor_position.c eof_percent.c \
 					update_prompt_cwd.c keys_insert_tools.c keys_flush.c \
 					keys_debug.c screen_tools.c get_char_len.c
-#sh_clipboard.c sh_command_line_tools.c
-#					sh_clipboard_tools.c
 
 ################################################################
 ########				TRAVERSE_TOOLS					########
 ################################################################
 SRCS			+=	sh_traverse_tools_browse.c \
 					sh_traverse_tools_reset.c \
-					sh_traverse_tools_debug.c
+					sh_traverse_tools_debug.c \
+					sh_traverse_tools_io_file.c \
+					sh_traverse_io_here_expansion.c \
+					sh_traverse_tools_get_heredoc.c 
 
 ################################################################
 ########					COMMON						########
@@ -199,18 +197,19 @@ SRCS			+=	sh_vars_tools_1.c sh_vars_tools_2.c \
 ################################################################
 ########						EXEC					########
 ################################################################
-SRCS			+=	sh_execute.c sh_execute_pipes.c \
+SRCS			+=	sh_execute.c \
 					sh_execute_binary.c \
 					sh_execute_builtin.c \
 					sh_execute_pipe.c \
 					sh_execute_prefix_postfix.c \
-					t_context.c sh_debug.c
-					#sh_execute_pipe_sequence.c 
+					t_context.c sh_debug.c \
+					sh_execute_redirection.c
 
 ################################################################
 ########					REDIRECTION					########
 ################################################################
-SRCS			+=	sh_add_fd_aggregation.c sh_add_redirection.c
+SRCS			+=	sh_add_fd_aggregation.c sh_add_redirection.c \
+					sh_reset_redirection.c sh_check_open_fd.c
 
 ################################################################
 ########						BUILTIN					########
@@ -239,7 +238,7 @@ SRCS			 +=	sh_expansions.c \
 					sh_expansions_variable.c t_expansion.c \
 					sh_expansions_process.c sh_expansions_replace.c \
 					sh_expansions_field_splitting.c \
-					sh_get_heredoc.c sh_expansions_scan.c
+					sh_expansions_scan.c
 
 ################################################################
 ########					PERROR						########

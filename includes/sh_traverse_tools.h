@@ -41,4 +41,31 @@ void	sh_traverse_tools_show_traverse_start(
 void	sh_traverse_tools_show_traverse_ret_value(
 	t_ast_node *node, t_context *context, int ret);
 
+/*
+** sh_traverse_tools_io_file.c
+*/
+void	set_failed_command(t_context *context);
+int		sh_process_file_output(
+	char *filename, t_context *context, int options);
+int		sh_process_file_input(
+	char *filename, t_context *context, int options);
+
+/*
+** sh_traverse_tools_get_heredoc.c
+*/
+char	*get_heredoc(
+	t_context *context, t_heredoc *heredoc_data, int *ret);
+
+/*
+** sh_traverse_simple_command_check_perm.c
+*/
+int		sh_traverse_sc_check_perm_quiet(char *path);
+int		sh_traverse_sc_check_perm(
+	t_context *context, char *path, char *command_name);
+
+/*
+** sh_traverse_simple_command_tools.c
+*/
+int		sh_traverse_sc_search_in_hash(t_context *context);
+int		sh_traverse_sc_search_in_path(t_context *context);
 #endif

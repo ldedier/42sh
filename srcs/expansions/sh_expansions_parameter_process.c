@@ -103,14 +103,14 @@ static int	sh_expansions_parameter_quest_msg(
 	buf = ft_strpbrk(expansion, ":?");
 	*buf = 0;
 	if (word && *word)
-		sh_perror_fd(context->fd[FD_ERR], expansion, word);
+		sh_perror_fd(FD_ERR, expansion, word);
 	else
 	{
 		if (ft_strchr(format, ':'))
-			sh_perror_fd(context->fd[FD_ERR], expansion,
+			sh_perror_fd(FD_ERR, expansion,
 			"parameter null or not set");
 		else
-			sh_perror_fd(context->fd[FD_ERR], expansion, "parameter not set");
+			sh_perror_fd(FD_ERR, expansion, "parameter not set");
 	}
 	if (!isatty(0))
 	{

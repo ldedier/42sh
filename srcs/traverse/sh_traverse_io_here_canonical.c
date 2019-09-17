@@ -12,7 +12,7 @@
 
 #include "sh_21.h"
 
-void			populate_command_line(t_command_line *command_line, char *str)
+static void		populate_command_line(t_command_line *command_line, char *str)
 {
 	ft_strdel(&command_line->dy_str->str);
 	command_line->dy_str->str = str;
@@ -40,7 +40,7 @@ static int		process_heredoc_canonical_mode(t_gnl_info info,
 	return (3);
 }
 
-int				heredoc_canonical_mode_eof(char *eof, char **res)
+static int		heredoc_canonical_mode_eof(char *eof, char **res)
 {
 	if (g_glob.command_line.to_append_str)
 	{
@@ -64,7 +64,7 @@ int				heredoc_canonical_mode_eof(char *eof, char **res)
 	return (0);
 }
 
-char			*heredoc_gnl_error(int *ret, char **res)
+static char		*heredoc_gnl_error(int *ret, char **res)
 {
 	*ret = -2;
 	ft_strdel(&g_glob.command_line.to_append_str);

@@ -36,7 +36,7 @@ static int		sh_builtin_exit_treat_first_arg(t_context *context, int *ret)
 {
 	if (!sh_builtin_exit_is_numeric_value(context->params->tbl[1]))
 	{
-		sh_perror2_fd(context->fd[FD_ERR], context->params->tbl[1],
+		sh_perror2_fd(FD_ERR, context->params->tbl[1],
 		"exit", "numeric argument required");
 		sh_env_update_ret_value(context->shell, 2);
 		context->shell->running = 0;
@@ -57,7 +57,7 @@ int				sh_builtin_exit(t_context *context)
 			return (ERROR);
 	if (context->params->tbl[1] && context->params->tbl[2])
 	{
-		sh_perror_err_fd(context->fd[FD_ERR],
+		sh_perror_err_fd(FD_ERR,
 			context->params->tbl[0], SH_ERR1_TOO_MANY_ARGS);
 		sh_env_update_ret_value(context->shell, SH_RET_ERROR);
 		return (STOP_CMD_LINE);
@@ -66,7 +66,7 @@ int				sh_builtin_exit(t_context *context)
 		ret = context->shell->ret_value;
 	if (sh_verbose_builtin())
 		ft_dprintf(
-			context->fd[FD_ERR], "exit: exit value setted to : %d\n", ret);
+			FD_ERR, "exit: exit value setted to : %d\n", ret);
 	sh_env_update_ret_value(context->shell, ret);
 	context->shell->running = 0;
 	return (SUCCESS);

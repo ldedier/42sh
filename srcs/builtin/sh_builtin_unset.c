@@ -38,7 +38,7 @@ int			sh_builtin_unset(t_context *context)
 	while (argv[index])
 	{
 		if (!sh_expansions_variable_valid_name(argv[index]) || ft_strchr(argv[index], '='))
-			ret = sh_perror2_err_fd(context->fd[FD_ERR], argv[index], "unset", "not a valid identifier");
+			ret = sh_perror2_err_fd(FD_ERR, argv[index], "unset", "not a valid identifier");
 		if (sh_vars_get_index(context->vars, argv[index]) >= 0)
 			sh_vars_del_key(context->vars, argv[index]);
 		else if (sh_vars_get_index(context->saved_env, argv[index]) >= 0)

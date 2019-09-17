@@ -19,20 +19,20 @@ int			sh_builtin_cd_parser_hyphen(
 
 	if (!(oldpwd = sh_vars_get_value(context->env, NULL, "OLDPWD")))
 	{
-		sh_perror_err_fd(context->fd[FD_ERR], SH_ERR1_ENV_NOT_SET, "OLDPWD");
+		sh_perror_err_fd(FD_ERR, SH_ERR1_ENV_NOT_SET, "OLDPWD");
 		return (ERROR);
 	}
 	if (!(*curpath = ft_strdup(oldpwd)))
 	{
 		sh_perror_fd(
-			context->fd[FD_ERR], SH_ERR1_MALLOC, "sh_builtin_cd_parser_hyphen");
+			FD_ERR, SH_ERR1_MALLOC, "sh_builtin_cd_parser_hyphen");
 		return (FAILURE);
 	}
 	free(context->params->tbl[i]);
 	if (!(context->params->tbl[i] = ft_strdup(*curpath)))
 	{
 		ft_strdel(curpath);
-		return (sh_perror_fd(context->fd[FD_ERR],
+		return (sh_perror_fd(FD_ERR,
 			SH_ERR1_MALLOC, "sh_builtin_cd_parser_hyphen"));
 	}
 	args[CD_HYPHEN_OPT].value = args;
@@ -52,7 +52,7 @@ int			sh_builtin_cd_parser(t_context *context, t_args *args,
 	if (argv[*index] && argv[*index + 1])
 	{
 		return (sh_perror_err_fd(
-			context->fd[FD_ERR], argv[0], SH_ERR1_TOO_MANY_ARGS));
+			FD_ERR, argv[0], SH_ERR1_TOO_MANY_ARGS));
 	}
 	if (ft_strequ(argv[*index], "-"))
 		if ((ret = sh_builtin_cd_parser_hyphen(context, args, curpath, *index)))
@@ -76,7 +76,7 @@ int			sh_builtin_cd_pre_rules(
 		;
 	else if ((!param) && (!home || !*home))
 		return (sh_perror_err_fd(
-			context->fd[FD_ERR], SH_ERR1_ENV_NOT_SET, "HOME"));
+			FD_ERR, SH_ERR1_ENV_NOT_SET, "HOME"));
 	else if (!param)
 		*curpath = ft_strdup(home);
 	else if (*param == '/')
@@ -88,7 +88,7 @@ int			sh_builtin_cd_pre_rules(
 	if (!*curpath)
 	{
 		sh_perror_fd(
-			context->fd[FD_ERR], SH_ERR1_MALLOC, "sh_builtin_cd_pre_rules");
+			FD_ERR, SH_ERR1_MALLOC, "sh_builtin_cd_pre_rules");
 		return (FAILURE);
 	}
 	return (SUCCESS);
@@ -105,11 +105,11 @@ int			sh_builtin_cd_rule5(t_context *context, char **curpath, char *param)
 		if (!curpath)
 		{
 			sh_perror_fd(
-				context->fd[FD_ERR], SH_ERR1_MALLOC, "sh_builtin_cd_rule5");
+				FD_ERR, SH_ERR1_MALLOC, "sh_builtin_cd_rule5");
 			return (FAILURE);
 		}
 		return (SUCCESS);
 	}
-	sh_perror_fd(context->fd[FD_ERR], "CD_PATH", "not implemented yet");
+	sh_perror_fd(FD_ERR, "CD_PATH", "not implemented yet");
 	return (ERROR);
 }

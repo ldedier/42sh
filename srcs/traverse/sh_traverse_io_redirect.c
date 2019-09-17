@@ -20,19 +20,20 @@
 **	Then call childrens
 */
 
-
-//we don't go here for pipe. for > >> < <<
 int		sh_traverse_io_redirect(t_ast_node *node, t_context *context)
 {
 	t_ast_node	*child;
 	int			ret;
 
-	child = (t_ast_node*)node->children->content;
-	context->redirected_fd = -1;
 	ret = SUCCESS;
-	if (child->symbol->id == sh_index(LEX_TOK_IO_NUMBER))
-		context->redirected_fd = ft_atoi(child->token->value);
-//	ret = sh_traverse_tools_browse(node, context);
-	sh_traverse_tools_show_traverse_ret_value(node, context, ret);
+	if (context->phase == E_TRAVERSE_PHASE_REDIRECTIONS)
+	{
+		child = (t_ast_node*)node->children->content;
+		context->redirected_fd = -1;
+		ret = SUCCESS;
+		if (child->symbol->id == sh_index(LEX_TOK_IO_NUMBER))
+			context->redirected_fd = ft_atoi(child->token->value);
+		sh_traverse_tools_show_traverse_ret_value(node, context, ret);
+	}
 	return (ret);
 }

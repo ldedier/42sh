@@ -12,8 +12,7 @@
 
 #include "sh_21.h"
 
-int			sh_builtin_type_search_reserved(
-	t_context *context, char *name, t_args args[])
+int			sh_builtin_type_search_reserved(char *name, t_args args[])
 {
 	int			i;
 	const char	*key_words[] = { "!", "{", "}", "[[", "]]", "case", "do",
@@ -29,11 +28,10 @@ int			sh_builtin_type_search_reserved(
 				&& args[TYPE_P_OPT].priority > args[TYPE_T_OPT].priority)
 				return (SUCCESS);
 			else if (args[TYPE_T_OPT].value)
-				ft_dprintf(context->fd[FD_OUT], "keyword\n");
+				ft_dprintf(FD_OUT, "keyword\n");
 			else
 			{
-				ft_dprintf(
-					context->fd[FD_OUT], "%s is a shell keyword\n", name);
+				ft_dprintf(FD_OUT, "%s is a shell keyword\n", name);
 			}
 			return (SUCCESS);
 		}
@@ -42,8 +40,7 @@ int			sh_builtin_type_search_reserved(
 	return (ERROR);
 }
 
-int			sh_builtin_type_search_builtin(
-	t_context *context, char *name, t_args args[])
+int			sh_builtin_type_search_builtin(char *name, t_args args[])
 {
 	if (sh_builtin_find_name(name))
 	{
@@ -51,9 +48,9 @@ int			sh_builtin_type_search_builtin(
 			&& args[TYPE_P_OPT].priority > args[TYPE_T_OPT].priority)
 			return (SUCCESS);
 		else if (args[TYPE_T_OPT].value)
-			ft_dprintf(context->fd[FD_OUT], "builtin\n");
+			ft_dprintf(FD_OUT, "builtin\n");
 		else
-			ft_dprintf(context->fd[FD_OUT], "%s is a shell builtin\n", name);
+			ft_dprintf(FD_OUT, "%s is a shell builtin\n", name);
 		return (SUCCESS);
 	}
 	return (ERROR);
@@ -72,12 +69,12 @@ int			sh_builtin_type_search_hash(
 		binary = (t_binary *)finder.content;
 		if (args[TYPE_P_OPT].value
 			&& args[TYPE_P_OPT].priority > args[TYPE_T_OPT].priority)
-			ft_dprintf(context->fd[FD_OUT], "%s\n", binary->path);
+			ft_dprintf(FD_OUT, "%s\n", binary->path);
 		else if (args[TYPE_T_OPT].value)
-			ft_dprintf(context->fd[FD_OUT], "file\n");
+			ft_dprintf(FD_OUT, "file\n");
 		else
 		{
-			ft_dprintf(context->fd[FD_OUT],
+			ft_dprintf(FD_OUT,
 			"%s is hashed (%s)\n", name, binary->path);
 		}
 		return (SUCCESS);
