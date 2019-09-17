@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/06 18:00:07 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/12 14:37:24 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ static int		sh_traverse_pipe_sequences_redirections(t_ast_node *node,
 	while (ptr != NULL)
 	{
 		from = (t_ast_node *)(ptr->content);
-		simple_command_node = from->children->content;
+		simple_command_node = from->children->content; //not always a simple command node now
 		context->current_command_node = simple_command_node;
 		if ((ret = g_grammar[from->symbol->id].traverse(from, context)))
 			return (ret);

@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/22 14:40:58 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/09 14:05:16 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/12 19:18:38 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int		get_command_line_starting_index2(int scrolled_lines)
 	int	j;
 	int res;
 	int len;
+	int	tmp;
 
 	res = 0;
 	nb_lines = 0;
@@ -71,8 +72,11 @@ int		get_command_line_starting_index2(int scrolled_lines)
 		j = 0;
 		while (j < g_glob.winsize.ws_col)
 		{
-			res += get_char_len2(res, len,
+			tmp = get_char_len2(res, len,
 				(unsigned char *)g_glob.command_line.dy_str->str);
+			if (tmp == -1)
+				break ;
+			res += tmp;
 			j++;
 		}
 		nb_lines++;

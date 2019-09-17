@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/16 04:49:32 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/16 04:49:32 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/17 19:40:08 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,20 @@ static t_dlist		*get_entry_from_number(t_history *history, int number)
 
 static t_dlist		*get_entry_from_substring(t_history *history, char *str)
 {
-	(void)history;
-	(void)str;
+	t_dlist *ptr;
+	int		first;
+	t_entry *entry;
+
+	ptr = history->commands;
+	first = 1;
+	while ((ptr != history->commands || first) && ptr != NULL)
+	{
+		entry = (t_entry *)ptr->content;
+		if (!ft_strncmp(entry->command, str, ft_strlen(str)))
+			return (ptr);
+		first = 0;
+		ptr = ptr->next;
+	}
 	return (NULL);
 }
 

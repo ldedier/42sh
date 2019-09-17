@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 17:42:22 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/14 17:42:22 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/17 20:07:37 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	sh_builtin_fc_list(t_history *history, t_dlist *from,
 		t_entry_print(ptr->content, !opt_n);
 }
 
-void static print_fc_operand(t_fc_operand *op)
+void print_fc_operand(t_fc_operand *op)
 {
 	if (op->type == E_FC_STRING)
 	{
@@ -69,6 +69,18 @@ void static print_fc_operand(t_fc_operand *op)
 	}
 	else
 		ft_printf("int: %d\n", op->un.integer);
+}
+
+void	swap_entries(t_history *history, t_dlist **from, t_dlist **to)
+{
+	t_dlist *tmp;
+
+	if (get_listing_way(history, *from, *to) > 0)
+	{
+		tmp = *from;
+		*from = *to;
+		*to = tmp;
+	}
 }
 
 int		sh_builtin_fc_l_synopsis(t_context *context, t_fc_options *opts)
@@ -88,12 +100,11 @@ int		sh_builtin_fc_l_synopsis(t_context *context, t_fc_options *opts)
 		opts->to.un.integer = -1;
 		opts->to.type = E_FC_INTEGER;
 	}
-
 //	ft_printf("HISTORY:\n");
 //	print_history(&context->shell->history);
 //	ft_printf("000000000000000000000000\n");
-	print_fc_operand(&opts->from);
-	print_fc_operand(&opts->to);
+//	print_fc_operand(&opts->from);
+//	print_fc_operand(&opts->to);
 	
 	if (!(from = get_entry_from_fc_operand(&context->shell->history, &opts->from)))
 		return (sh_perror_err(SH_BLT_HISTORY_RANGE, NULL));
@@ -103,8 +114,7 @@ int		sh_builtin_fc_l_synopsis(t_context *context, t_fc_options *opts)
 //	ft_printf("FROM: %p\n", from->content);
 //	ft_printf("TO: %p\n", to->content);	
 	if (opts->opt_r)
-		sh_builtin_fc_list(&context->shell->history, to, from, opts->opt_n);
-	else
-		sh_builtin_fc_list(&context->shell->history, from, to, opts->opt_n);
+		swap_entries(&context->shell->history, &from, &to);
+	sh_builtin_fc_list(&context->shell->history, from, to, opts->opt_n);
 	return (SUCCESS);
 }
