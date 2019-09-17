@@ -69,8 +69,6 @@ SRCS			+=	sh_traverse.c sh_traverse_default.c \
 					sh_traverse_assignment_word.c \
 					sh_traverse_simple_command.c \
 					sh_traverse_io_file.c \
-					sh_traverse_simple_command_tools.c \
-					sh_traverse_simple_command_check_perm.c \
 					sh_traverse_cmd_name.c sh_traverse_cmd_word.c \
 					sh_traverse_cmd_suffix.c sh_traverse_cmd_prefix.c \
 					sh_traverse_io_redirect.c sh_traverse_io_here.c \
@@ -106,7 +104,9 @@ SRCS			+=	sh_traverse_tools_browse.c \
 					sh_traverse_tools_reset.c \
 					sh_traverse_tools_debug.c \
 					sh_traverse_tools_io_file.c \
-					sh_traverse_io_here_expansion.c \
+					sh_traverse_tools_io_here_expansion.c \
+					sh_traverse_tools_simple_command.c \
+					sh_traverse_tools_simple_command_check_perm.c \
 					sh_traverse_tools_get_heredoc.c 
 
 ################################################################
