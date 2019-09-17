@@ -92,7 +92,6 @@ int				sh_execute_pipe(t_ast_node *node,
 	t_list		*lst_psequences;
 	int 		ret;
 
-	node->metadata.pipe_metadata.contexts = NULL;//bientot inutil
 	lst_psequences = node->children;
 	ret = loop_pipe_exec(lst_psequences->content, lst_psequences, context);
 	sh_env_update_ret_value_wait_result(context, ret);

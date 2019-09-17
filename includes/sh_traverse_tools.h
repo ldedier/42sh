@@ -57,15 +57,28 @@ char	*get_heredoc(
 	t_context *context, t_heredoc *heredoc_data, int *ret);
 
 /*
-** sh_traverse_simple_command_check_perm.c
+** sh_traverse_tools_simple_command_check_perm.c
 */
 int		sh_traverse_sc_check_perm_quiet(char *path);
 int		sh_traverse_sc_check_perm(
 	t_context *context, char *path, char *command_name);
 
 /*
-** sh_traverse_simple_command_tools.c
+** sh_traverse_tools_simple_command.c
 */
 int		sh_traverse_sc_search_in_hash(t_context *context);
 int		sh_traverse_sc_search_in_path(t_context *context);
+
+/*
+** sh_traverse_tools_io_here_expansion.c
+*/
+int		sh_traverse_io_here_phase_expansion(
+			t_ast_node *node, t_context *context);
+
+/*
+** sh_traverse_tools_io_here_redirection.c
+*/
+int 	sh_traverse_tools_io_here_redirection(
+	t_ast_node *node, t_context *context);
+
 #endif

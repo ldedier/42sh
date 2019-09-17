@@ -104,7 +104,7 @@ static int		sh_traverse_and_or_launch_phase(
 int				sh_traverse_and_or(t_ast_node *node, t_context *context)
 {
 	int		ret;
-
+	
 	sh_traverse_tools_show_traverse_start(node, context);
 	ret = sh_traverse_and_or_launch_phase(node, context);
 	sh_traverse_tools_show_traverse_ret_value(node, context, ret);

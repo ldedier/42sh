@@ -14,7 +14,8 @@
 
 void	set_failed_command(t_context *context)
 {
-	context->current_command_node->metadata.command_metadata.should_exec = 0;
+	(void)context;
+	// context->current_command_node->metadata.command_metadata.should_exec = 0;
 }
 
 int		sh_process_file_output(char *filename,

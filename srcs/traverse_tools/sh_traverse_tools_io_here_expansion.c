@@ -71,10 +71,9 @@ static int	loop_expansion(char **str, t_context *context)
 }
 
 int			sh_traverse_io_here_phase_expansion(
-		t_redirection *redirection, t_ast_node *node, t_context *context)
+				t_ast_node *node, t_context *context)
 {
 	t_ast_node		*first_child;
-	int				fds[2];
 	int				ret;
 
 	first_child = node->children->next->content;
@@ -83,16 +82,6 @@ int			sh_traverse_io_here_phase_expansion(
 	{
 		if ((ret = loop_expansion(&(first_child->token->value), context)))
 			return (ret);
-	}
-	if (pipe(fds))
-		return (sh_perror(SH_ERR1_PIPE, "sh_traverse_io_here_end"));
-	else
-	{
-		redirection->type = INPUT;
-		redirection->redirected_fd = context->redirected_fd;
-		redirection->fd = fds[0];
-		ft_putstr_fd(first_child->token->value, fds[1]);
-		close(fds[1]);
 	}
 	return (SUCCESS);
 }

@@ -107,7 +107,8 @@ SRCS			+=	sh_traverse_tools_browse.c \
 					sh_traverse_tools_io_here_expansion.c \
 					sh_traverse_tools_simple_command.c \
 					sh_traverse_tools_simple_command_check_perm.c \
-					sh_traverse_tools_get_heredoc.c 
+					sh_traverse_tools_get_heredoc.c \
+					sh_traverse_tools_io_here_redirection.c
 
 ################################################################
 ########					COMMON						########
@@ -260,6 +261,7 @@ INCLUDES			=	sh_21.h \
 					sh_exec.h\
 					sh_builtin.h \
 					sh_traverse.h \
+					sh_traverse_tools.h \
 					sh_expansions.h \
 					sh_perror.h
 

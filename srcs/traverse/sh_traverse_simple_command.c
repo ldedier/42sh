@@ -26,11 +26,6 @@
 **	any value returned by a builtin executed or a process launched
 */
 
-void print_list(t_list *content)
-{
-	t_redirection *el = content->content;
-	ft_printf("aff ===> %d %d\n", el->redirected_fd, el->backup);
-}
 int		sh_traverse_simple_command(t_ast_node *node, t_context *context)
 {
 	int		ret = SUCCESS;

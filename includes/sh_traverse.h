@@ -97,14 +97,6 @@ int		sh_traverse_io_redirect(t_ast_node *node, t_context *context);
 int		sh_traverse_cmd_name(t_ast_node *node, t_context *context);
 
 /*
-** sh_traverse_io_here_expansion.c
-*/
-// int		sh_traverse_io_here_expansion(
-	// char **str, int *cursor, t_context *context);
-int		sh_traverse_io_here_phase_expansion(
-	t_redirection *redirection, t_ast_node *node, t_context *context);
-
-/*
 ** sh_traverse.c
 */
 int		sh_process_traverse(t_shell *shell);

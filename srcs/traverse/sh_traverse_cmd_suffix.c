@@ -71,6 +71,9 @@ int			sh_traverse_cmd_suffix(t_ast_node *node, t_context *context)
 */
 	ptr = node->children;
 	ret = SUCCESS;
+	if (context->phase != E_TRAVERSE_PHASE_EXPANSIONS 
+		&& context->phase != E_TRAVERSE_PHASE_EXECUTE)
+		return (SUCCESS);
 	sh_traverse_tools_show_traverse_start(node, context);
 	while (ptr != NULL)
 	{
