@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/19 11:14:49 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/17 18:44:00 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/17 19:06:59 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ void		sh_execute_child_binary(t_context *context, t_list *contexts)
 		getpid(), getppid(), getpgid(getpid()));
 	tcsetpgrp (g_job_control->term_fd, g_job_control->current_job->pgid);
 	pid_t grp = tcgetpgrp(0);
-	ft_printf("CONTROLLING GROUP: %d\n", grp);
+	ft_printf("CONTROLLING GROUP: %d (%d)\n",
+		g_job_control->current_job->pgid, grp);
 	execve(context->path, (char **)context->params->tbl,
 			(char **)context->env->tbl);
 	sh_perror(((char**)context->params->tbl)[0], SH_ERR1_EXECVE_FAIL);

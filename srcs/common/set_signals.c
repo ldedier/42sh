@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/31 16:05:53 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/17 18:29:53 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/17 19:01:12 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ void			handler_sigstop_process(int signo)
 	if (signo == SIGSTOP || signo == SIGTSTP)
 	{
 		ft_printf("HANDLER_SIGINT_PROCESS : pid: %d pgid: %d\n", getpid(), getpgid(getpid()));
-		kill(0, SIGINT);
-		tcsetpgrp(g_job_control->term_fd, g_job_control->shell_pgid);
+		// kill(0, SIGINT);
+		// tcsetpgrp(g_job_control->term_fd, g_job_control->shell_pgid);
 	}
 }
 
@@ -72,6 +72,7 @@ static void		init_signal2(void (*default_func)(int))
 	signal(SIGURG, transmit_sig_no_motion);
 	signal(SIGTSTP, handler_sigstop);
 	signal(SIGSTOP, handler_sigstop);	//SIGSTOP OR SIGTSP
+	signal(SIGINT, transmit_sig);
 	signal(SIGCONT, handle_cont);
 	signal(SIGCHLD, transmit_sig_no_motion);
 	signal(SIGTTIN, transmit_sig_no_motion);
@@ -97,7 +98,6 @@ void			init_signals(void)
 	signal(SIGWINCH, handle_resize);
 	signal(SIGQUIT, transmit_sig_no_motion);
 	signal(SIGKILL, default_func);
-	signal(SIGINT, transmit_sig);
 	signal(SIGHUP, default_func);
 	signal(SIGABRT, default_func);
 	signal(SIGILL, default_func);
