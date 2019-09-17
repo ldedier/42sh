@@ -40,14 +40,13 @@ static void	process_parse_fc_operand(t_fc_operand *operand,
 	int error;
 
 	operand->un.integer = sh_atoi_fc(str, &error);
-	ft_printf("\n\nop: %s, error: %d\n\n", str, error);
 	if (error)
-		operand->type = E_FC_STRING;
-	else
 	{
-		operand->type = E_FC_INTEGER;
+		operand->type = E_FC_STRING;
 		operand->un.string = str;
 	}
+	else
+		operand->type = E_FC_INTEGER;
 	operand->parsed = 1;
 }
 

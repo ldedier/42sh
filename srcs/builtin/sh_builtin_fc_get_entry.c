@@ -49,10 +49,10 @@ static t_dlist		*get_entry_from_number(t_history *history, int number)
 	if (number <= 0)
 	{
 		i = -1;
-		ptr = history->commands->prev;
-		while (i > number && ptr->prev != history->commands)
+		ptr = history->commands;
+		while (i > number && ptr != history->commands->prev)
 		{
-			ptr = ptr->prev;
+			ptr = ptr->next;
 			i--;
 		}
 		return (ptr);
