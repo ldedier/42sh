@@ -12,6 +12,28 @@
 
 #include "sh_21.h"
 
+void			print_history(t_history *history)
+{
+	t_dlist *ptr;
+	int		first;
+	t_entry	*entry;
+
+	if (!history->commands)
+		return ;
+	ptr = history->commands->prev;
+	first = 1;
+	ft_printf("--------------------------------\n");
+	while ((ptr != history->commands->prev && ptr != NULL)
+		|| (first && ptr != NULL))
+	{
+		entry = (t_entry *)ptr->content;
+		t_entry_print(entry, 1);
+		ptr = ptr->prev;
+		first = 0;
+	}
+	ft_printf("--------------------------------\n");
+}
+
 static int		sh_too_big_to_append_to_history(char *command)
 {
 	int i;
@@ -38,7 +60,8 @@ static int		sh_append_entry(t_history *history, char *command)
 {
 	t_entry *entry;
 
-	if (history->nb_entries <= ft_min(10, HISTSIZE))
+	//if (history->nb_entries <= ft_max(32767, HISTSIZE))
+	if (history->nb_entries <= 10)
 	{
 		history->from = 1;
 		history->to = ++history->nb_entries;
@@ -47,6 +70,8 @@ static int		sh_append_entry(t_history *history, char *command)
 			free(command);
 			return (sh_perror(SH_ERR1_MALLOC, "sh_append_entry (1)"));
 		}
+	//	t_entry_print(entry, 1);
+		print_history(history);
 		if (ft_add_to_dlist_ptr(&history->commands, entry, sizeof(entry)))
 		{
 			t_entry_free(entry);

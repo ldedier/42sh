@@ -37,7 +37,7 @@ static int	parse_fc_boolean_options(char c, t_fc_options *opts)
 		opts->opt_s = 1;
 	else if (c == 'l')
 		opts->opt_l = 1;
-	else if (c == 'r')
+	else if (c == 'n')
 		opts->opt_n = 1;
 	else if (c == 'r')
 		opts->opt_r = 1;
@@ -73,53 +73,24 @@ static int	parse_fc_options(t_context *context, int *index, t_fc_options *opts)
 	return (SUCCESS);
 }
 
-static int sh_atoi_infinite(char *str, int *error)
+static int describe_number(char *str)
 {
-	int		res;
-	int		i;
+	int i;
 
-	res = 0;
-	*error = 0;
 	i = 0;
-	if (str[i] == '+' || str[i] == '-')
-		i++;
-	if (ft_isdigit(str[i]))
-		*error = 1;
-	while (str[i] && ft_isdigit(str[i]))
+	if (str[i] == '\0'
+			|| (str[i] != '-' && str[i] != '+' && !ft_isdigit(str[i])))
 	{
-		res = res * 10 +  str[i] - '0';
-		if (res > HISTSIZE)
-			return (str[0] == '-' ? -res : res);
+		return (0);
+	}
+	i++;
+	while (str[i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (0);
 		i++;
 	}
-	return (str[0] == '-' ? -res : res);
-}
-
-static void	process_parse_fc_operand(t_fc_operand *operand, char *str)
-{
-	int error;
-
-	operand->un.integer = sh_atoi_infinite(str, &error);
-	if (error)
-		operand->type = E_FC_STRING;
-	else
-	{
-		operand->type = E_FC_INTEGER;
-		operand->un.string = str;
-	}
-	operand->parsed = 1;
-}
-
-static int	parse_fc_operands(t_context *context, int index, t_fc_options *options)
-{
-	t_fc_operand *operand;
-
-	if (options->from.parsed)
-		operand = &options->to;
-	else
-		operand = &options->from;
-	process_parse_fc_operand(operand, context->params->tbl[index]);
-	return (SUCCESS);
+	return (1);
 }
 
 static int parse_fc_params(t_context *context, t_fc_options *opts)
@@ -128,7 +99,9 @@ static int parse_fc_params(t_context *context, t_fc_options *opts)
 
 	i = 1;
 	while (i < (int)context->params->current_size
-		&& ((char *)context->params->tbl[i])[0] == '-')
+		&& ((char *)context->params->tbl[i])[0] == '-'
+		&& !describe_number(((char *)context->params->tbl[i]))
+		&& ft_strlen(((char *)context->params->tbl[i])) > 1)
 	{
 		if (!ft_strcmp("--", (char *)context->params->tbl[i]))
 		{

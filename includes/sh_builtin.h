@@ -43,6 +43,7 @@ enum	e_built_test_binary {TEST_EQU, TEST_NOEQU, TEST_EQ, TEST_NE, TEST_GT,
 	TEST_GE, TEST_LT, TEST_LE};
 
 typedef struct s_binary			t_binary;
+typedef struct s_history		t_history;
 typedef struct s_binary_stats	t_binary_stats;
 typedef	int	(*t_builtin)(t_context *);
 
@@ -165,6 +166,12 @@ char				*sh_builtin_pwd_logical(t_dy_tab *env, int fd_err);
 int					sh_builtin_pwd(t_context *context);
 
 /*
+** sh_builtin_fc_parse_operands.c
+*/
+int					parse_fc_operands(
+	t_context *context, int index, t_fc_options *options);
+
+/*
 ** sh_builtin_test.c
 */
 int					sh_builtin_test(t_context *context);
@@ -189,6 +196,12 @@ int					sh_builtin_hash_show(
 	t_context *context, t_shell *shell);
 void				sh_builtin_hash_update_stats(
 	t_hash_table *table, t_binary_stats *stats);
+
+/*
+** sh_builtin_fc_get_entry.c
+*/
+t_dlist				*get_entry_from_fc_operand(
+	t_history *history, t_fc_operand *op);
 
 /*
 ** sh_builtin_verbose.c

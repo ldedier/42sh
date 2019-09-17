@@ -159,6 +159,7 @@ void				sh_free_binary(t_binary *binary);
 void				sh_free_binary_lst(void *b, size_t dummy);
 void				free_file(t_file *file);
 void				free_file_dlst(void *f, size_t dummy);
+void				free_entry_dlst(void *e, size_t dummy);
 void				sh_free_all(t_shell *shell);
 
 /*
@@ -272,6 +273,7 @@ void				handle_cont(int sgnl);
 /*
 ** history.c
 */
+void				print_history(t_history *history);
 int					sh_append_to_history(
 	t_history *history, char *command, int append_file);
 

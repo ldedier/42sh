@@ -117,7 +117,7 @@ SRCS			+=	main.c index.c init.c shell_tools.c \
 					set_signals.c canonical_mode.c history.c home.c \
 					init_tabs.c non_canonical_mode.c hash_binaries.c \
 					check_term.c signal_tools.c execute_command.c \
-					t_entry.c
+					t_entry.c 
 
 ################################################################
 ########					PARSER						########
@@ -222,7 +222,9 @@ SRCS			+=	sh_builtin.c sh_builtin_pwd.c \
 					sh_builtin_fc.c \
 					sh_builtin_fc_l_synopsis.c \
 					sh_builtin_fc_s_synopsis.c \
-					sh_builtin_fc_default_synopsis.c
+					sh_builtin_fc_default_synopsis.c \
+					sh_builtin_fc_parse_operands.c \
+					sh_builtin_fc_get_entry.c
 
 ################################################################
 ########						EXPANSION				########

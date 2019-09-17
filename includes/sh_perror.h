@@ -46,9 +46,9 @@
 # define SH_BLT_BINAREXP		"Binary operator expected"
 # define SH_BLT_NOTWELLFORM		"Sorry your command are not well formatted"
 # define SH_BLT_INTEGER			"Integer expression expected"
+# define SH_BLT_HISTORY_RANGE	"fc: history specification out of range"
 
 # define SH_BAD_SUBSTITUTE		"Bad subsitution"
-
 /*
 ********************************************************************************
 */
