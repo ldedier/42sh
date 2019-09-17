@@ -11,6 +11,22 @@
 # **************************************************************************** #
 
 launch "cd"
+	launch "cdpath"
+	test_launch 'unset CDPATH' 'pwd' 'cd tmp ; echo $? ; pwd' 'cd ; pwd' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
+	test_launch 'unset CDPATH' 'cd ~ pwd' ' cd - ; pwd' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
+	test_launch 'unset CDPATH' 'cd srcs ; echo $? ; pwd' 'cd objs ; echo $? ; pwd' 'cd logs ; echo $? ; pwd' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
+	test_launch 'CDPATH=""' 'cd tmp ; echo $? ; pwd' 'cd ~/ ; pwd' 'cd $HOME ; pwd' 'cd Desktop' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
+	test_launch 'CDPATH=""' 'cd srcs ; echo $? ; pwd' 'cd objs ; echo $? ; pwd' 'cd logs ; echo $? ; pwd' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
+	test_launch 'CDPATH=""' 'cd ~ pwd' ' cd - ; pwd' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
+	test_launch 'CDPATH="/"'    'cd srcs ; echo $? ; pwd' 'cd Desktop ; echo $? ; pwd' 'cd tmp ; echo $? ; pwd' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
+	test_launch 'CDPATH="$HOME' 'cd srcs ; echo $? ; pwd' 'cd Desktop ; echo $? ; pwd' 'cd tmp ; echo $? ; pwd' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
+	test_launch 'CDPATH=":$HOME:/' 'cd srcs ; echo $? ; pwd' 'cd Desktop ; echo $? ; pwd' 'cd tmp ; echo $? ; pwd' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
+	test_launch 'CDPATH=":::::$HOME:/' 'cd srcs ; echo $? ; pwd' 'cd Desktop ; echo $? ; pwd' 'cd tmp ; echo $? ; pwd' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
+	test_launch 'CDPATH="/:$HOME' 'cd srcs ; echo $? ; pwd' 'cd Desktop ; echo $? ; pwd' 'cd tmp ; echo $? ; pwd' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
+	test_launch 'CDPATH="/:$HOME:' 'cd srcs ; echo $? ; pwd' 'cd Desktop ; echo $? ; pwd' 'cd tmp ; echo $? ; pwd' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
+	test_launch 'CDPATH="/:$HOME:::::' 'cd srcs ; echo $? ; pwd' 'cd Desktop ; echo $? ; pwd' 'cd tmp ; echo $? ; pwd' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
+
+
 	launch "simple"
 	test_launch "cd" 'echo $?' "pwd"
 	test_launch "cd ~/" 'echo $?' "pwd" "cd .. ; pwd"

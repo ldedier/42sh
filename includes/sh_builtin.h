@@ -130,9 +130,9 @@ int					sh_builtin_cd_parser_hyphen(
 int					sh_builtin_cd_parser(
 	t_context *context, t_args *args, int *index, char **curpath);
 int					sh_builtin_cd_pre_rules(
-	t_context *context, char *param, char **curpath);
+	t_context *context, char *param, char **curpath, t_args *args);
 int					sh_builtin_cd_rule5(
-	t_context *context, char **curpath, char *param);
+	t_context *context, char **curpath, char *param, t_args *args);
 
 /*
 ** sh_builtin_echo.c

@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 14:50:45 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/04 21:31:40 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/17 19:33:09 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,9 @@ int			sh_builtin_cd_parser(t_context *context, t_args *args,
 }
 
 int			sh_builtin_cd_pre_rules(
-	t_context *context, char *param, char **curpath)
+	t_context *context, char *param, char **curpath, t_args *args)
 {
 	char	*home;
-	int		ret;
 
 	home = sh_vars_get_value(context->env, NULL, "HOME");
 	if (*curpath)
@@ -83,8 +82,8 @@ int			sh_builtin_cd_pre_rules(
 		*curpath = ft_strdup(param);
 	else if (*param == '.' || ft_strnstr(param, "..", 2))
 		*curpath = ft_strdup(param);
-	else if ((ret = sh_builtin_cd_rule5(context, curpath, param)) != SUCCESS)
-		return (ret);
+	else
+		return (sh_builtin_cd_rule5(context, curpath, param, args));
 	if (!*curpath)
 	{
 		sh_perror_fd(
@@ -94,11 +93,48 @@ int			sh_builtin_cd_pre_rules(
 	return (SUCCESS);
 }
 
-int			sh_builtin_cd_rule5(t_context *context, char **curpath, char *param)
+static int	sh_builtin_cd_cdpath(
+	t_context *context, char **curpath, char *param, t_args *args)
+{
+	char	*cdpath;
+	char	**split;
+	int		i;
+	char	*path;
+	struct stat	st;
+	
+	if (!(cdpath = sh_vars_get_value(context->env, context->vars, "CDPATH")))
+		return (SUCCESS);
+	if (!(split = ft_strsplit(cdpath, ':')))
+		return (sh_perror(SH_ERR1_MALLOC, "sh_builtin_cd_cdpath"));
+	i = 0;
+	path = NULL;
+	while (split[i])
+	{
+		i++;
+		if (path)
+			ft_strdel(&path);
+		if (!split[i - 1] && !*split[i - 1])
+			continue ;
+		if (!(path = ft_strjoin_path(split[i - 1], param)))
+			return (sh_perror(SH_ERR1_MALLOC, "sh_builtin_cd_cdpath"));
+		if ((stat(path, &st)))
+			continue ;
+		if (!S_ISDIR(st.st_mode))
+			continue ;
+		*curpath = path;
+		args[CD_HYPHEN_OPT].value = &args;
+		return (SUCCESS);
+	}
+	if (!((*curpath) = ft_strdup(param)))
+		return (sh_perror(SH_ERR1_MALLOC, "sh_builtin_cd_cdpath"));
+	return (SUCCESS);
+}
+
+int			sh_builtin_cd_rule5(t_context *context, char **curpath, char *param, t_args *args)
 {
 	char	*cdpath;
 
-	cdpath = sh_vars_get_value(context->env, NULL, "CDPATH");
+	cdpath = sh_vars_get_value(context->env, context->vars, "CDPATH");
 	if (!cdpath || !*cdpath)
 	{
 		*curpath = ft_strjoin_path(".", param);
@@ -110,6 +146,5 @@ int			sh_builtin_cd_rule5(t_context *context, char **curpath, char *param)
 		}
 		return (SUCCESS);
 	}
-	sh_perror_fd(context->fd[FD_ERR], "CD_PATH", "not implemented yet");
-	return (ERROR);
+	return (sh_builtin_cd_cdpath(context, curpath, param, args));
 }
