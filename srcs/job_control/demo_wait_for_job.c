@@ -1,37 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shell_tools.c                                      :+:      :+:    :+:   */
+/*   demo_wait_for_job.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/14 13:59:30 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/17 18:44:21 by mdaoud           ###   ########.fr       */
+/*   Created: 2019/09/17 18:50:16 by mdaoud            #+#    #+#             */
+/*   Updated: 2019/09/17 18:50:16 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "sh_21.h"
-
-int		sh_reset_shell(int ret)
+void
+wait_for_job (job *j)
 {
-	if (tcsetattr(0, TCSADRAIN, &g_glob.term_init) == -1)
-		return (ATTR_ERROR);
-	return (ret);
-}
+  int status;
+  pid_t pid;
 
-int		sh_set_shell_back(int ret)
-{
-	if (tcsetattr(0, TCSADRAIN, &g_glob.term) == -1)
-		return (ATTR_ERROR);
-	return (ret);
-}
-
-int		clear_all(void)
-{
-	char *res;
-
-	if (!(res = tgetstr("cl", NULL)))
-		return (-1);
-	tputs(res, 1, putchar_int);
-	return (0);
+  do
+    pid = waitpid (WAIT_ANY, &status, WUNTRACED);
+  while (!mark_process_status (pid, status)
+         && !job_is_stopped (j)
+         && !job_is_completed (j));
 }

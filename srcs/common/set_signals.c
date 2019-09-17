@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/31 16:05:53 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/17 02:46:56 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/17 18:29:53 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,19 @@ void			handler_sigstop_process(int signo)
 {
 	if (signo == SIGSTOP || signo == SIGTSTP)
 	{
-		ft_printf("HANDLER_PROCESS : pid: %d pgid: %d\n", getpid(), getpgid(getpid()));
+		ft_printf("HANDLER_SIGINT_PROCESS : pid: %d pgid: %d\n", getpid(), getpgid(getpid()));
 		kill(0, SIGINT);
 		tcsetpgrp(g_job_control->term_fd, g_job_control->shell_pgid);
+	}
+}
+
+void			handler_sigint_process(int signo)
+{
+	if (signo == SIGINT)
+	{
+		ft_printf("HANDLER_PROCESS_SIGINT : pid: %d pgid: %d\n", getpid(), getpgid(getpid()));
+		kill(0, SIGINT);
+		// tcsetpgrp(g_job_control->term_fd, g_job_control->shell_pgid);
 	}
 }
 
@@ -28,17 +38,19 @@ void			handler_sigstop(int signo)
 	if (signo == SIGSTOP || signo == SIGTSTP)
 	{
 		ft_printf("RECEIVED SIGSTOP FROM : pid: %d pgid: %d\n", getpid(), getpgid(getpid()));
-		// if (isatty(0) && g_glob.command_line.dy_str)
-		// {
-		// 	get_down_from_command(&g_glob.command_line);
-		// 	g_glob.cursor = 0;
-		// 	g_glob.command_line.dy_str->current_size = 0;
-		// 	g_glob.command_line.current_index = 0;
-		// 	ft_bzero(g_glob.command_line.dy_str->str,
-		// 			g_glob.command_line.dy_str->max_size);
-		// 	g_glob.command_line.nb_chars = 0;
-		// 	render_command_line(&g_glob.command_line, 0, 1);
-		// }
+
+		if (isatty(0) && g_glob.command_line.dy_str)
+		{
+			get_down_from_command(&g_glob.command_line);
+			g_glob.cursor = 0;
+			g_glob.command_line.dy_str->current_size = 0;
+			g_glob.command_line.current_index = 0;
+			ft_bzero(g_glob.command_line.dy_str->str,
+					g_glob.command_line.dy_str->max_size);
+			g_glob.command_line.nb_chars = 0;
+			render_command_line(&g_glob.command_line, 0, 1);
+		}
+		tcsetpgrp(g_job_control->term_fd, g_job_control->shell_pgid);
 	}
 }
 
@@ -46,11 +58,13 @@ void			reset_signals(void)
 {
 	int i;
 
+	ft_printf("RESETTING SIGNALS\n");
 	i = 1;
 	while (i <= SIGUSR2)
 		signal(i++, SIG_DFL);
 	signal(SIGTSTP, handler_sigstop_process);
 	signal(SIGSTOP, handler_sigstop_process);
+	signal(SIGINT, handler_sigint_process);
 }
 
 static void		init_signal2(void (*default_func)(int))

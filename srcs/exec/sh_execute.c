@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 00:39:53 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/17 02:53:51 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/17 18:51:43 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,33 +23,33 @@ int			sh_process_process_execute(t_context *context)
 
 	if (sh_pre_execution(context) != SUCCESS)
 		return (FAILURE);
-	reset_signals();
 	if ((g_parent = fork()) == -1)
 		return (sh_perror(SH_ERR1_FORK, "sh_process_process_execute"));
 	if (g_parent == 0)
 	{
+		// reset_signals();
 		child_pid = getpid();
 		if (g_job_control->current_job->pgid == 0)
-			g_job_control->current_job->pgid = child_pid;
-		setpgid(child_pid, g_job_control->current_job->pgid);
+		g_job_control->current_job->pgid = child_pid;
 		sh_execute_child_binary(context, NULL);
 	}
 	else
 	{
-		// child_pid = g_parent;
-		// 	if (g_job_control->current_job->pgid == 0)
-		// 		g_job_control->current_job->pgid = child_pid;
-		// 	setpgid(child_pid, g_job_control->current_job->pgid);
+		child_pid = g_parent;
+		if (g_job_control->current_job->pgid == 0)
+			g_job_control->current_job->pgid = child_pid;
+	}
+		setpgid(child_pid, g_job_control->current_job->pgid);
 		wait(&res);
 		tcsetpgrp (g_job_control->term_fd, g_job_control->shell_pgid);
+		ft_printf("\t\tSHELL CONTROLLING TERMINAL\n");
 		g_parent = 0;
 		sh_env_update_ret_value_wait_result(context, res);
 		sh_process_execute_close_pipes(context);
 		if (sh_post_execution() != SUCCESS)
 			return (FAILURE);
-		// init_signals();
 		g_glob.command_line.interrupted = WIFSIGNALED(res);
-	}
+	// tcsetpgrp (g_job_control->term_fd, g_job_control->shell_pgid);
 	return (SUCCESS);
 }
 /*

@@ -1,37 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shell_tools.c                                      :+:      :+:    :+:   */
+/*   demo_put_job_in_background.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/14 13:59:30 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/17 18:44:21 by mdaoud           ###   ########.fr       */
+/*   Created: 2019/09/17 18:48:14 by mdaoud            #+#    #+#             */
+/*   Updated: 2019/09/17 18:48:15 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "sh_21.h"
+/* Put a job in the background.  If the cont argument is true, send
+   the process group a SIGCONT signal to wake it up.  */
 
-int		sh_reset_shell(int ret)
+void
+put_job_in_background (job *j, int cont)
 {
-	if (tcsetattr(0, TCSADRAIN, &g_glob.term_init) == -1)
-		return (ATTR_ERROR);
-	return (ret);
-}
-
-int		sh_set_shell_back(int ret)
-{
-	if (tcsetattr(0, TCSADRAIN, &g_glob.term) == -1)
-		return (ATTR_ERROR);
-	return (ret);
-}
-
-int		clear_all(void)
-{
-	char *res;
-
-	if (!(res = tgetstr("cl", NULL)))
-		return (-1);
-	tputs(res, 1, putchar_int);
-	return (0);
+  /* Send the job a continue signal, if necessary.  */
+  if (cont)
+    if (kill (-j->pgid, SIGCONT) < 0)
+      perror ("kill (SIGCONT)");
 }

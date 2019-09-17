@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/19 10:45:00 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/17 02:40:27 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/17 18:56:53 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,10 @@ static int		sh_execute_pipe_sequence_exec_forks(t_list *contexts)
 		}
 		else
 		{
-			// child_pid = context_iter->pid;
-			// if (g_job_control->current_job->pgid == 0)
-			// 	g_job_control->current_job->pgid = child_pid;
-			// setpgid(child_pid, g_job_control->current_job->pgid);
+			child_pid = context_iter->pid;
+			if (g_job_control->current_job->pgid == 0)
+				g_job_control->current_job->pgid = child_pid;
+			setpgid(child_pid, g_job_control->current_job->pgid);
 			g_parent = context_iter->pid;
 			ptr = ptr->next;
 		}
