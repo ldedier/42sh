@@ -44,7 +44,6 @@ void	sh_traverse_tools_show_traverse_ret_value(
 /*
 ** sh_traverse_tools_io_file.c
 */
-void	set_failed_command(t_context *context);
 int		sh_process_file_output(
 	char *filename, t_context *context, int options);
 int		sh_process_file_input(

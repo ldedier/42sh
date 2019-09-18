@@ -60,10 +60,7 @@ static int		sh_traverse_and_or_process_phase(
 	if (ret == KEEP_READ || ret == STOP_CMD_LINE || ret == FAILURE)
 		return (ret);
 	if (ret == ERROR)
-	{
-		set_failed_command(context);
 		return (KEEP_READ);
-	}
 	return (KEEP_READ);
 }
 
