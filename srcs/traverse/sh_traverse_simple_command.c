@@ -28,7 +28,7 @@
 
 int		sh_traverse_simple_command(t_ast_node *node, t_context *context)
 {
-	int		ret = SUCCESS;
+	int		ret;
 
 	context->phase = E_TRAVERSE_PHASE_REDIRECTIONS;
 	sh_traverse_tools_show_traverse_start(node, context);
@@ -44,7 +44,8 @@ int		sh_traverse_simple_command(t_ast_node *node, t_context *context)
 	if ((ret = sh_execute_redirection(context)) != SUCCESS)
 		return (ret);
 	ret = sh_execute_simple_command(context);
-	ret = sh_reset_redirection(&(context->redirections));
+	if (sh_reset_redirection(&(context->redirections)) != SUCCESS)
+		return (FAILURE);
 	if (sh_env_save_restore(context) == FAILURE)
 		return (FAILURE);
 	sh_traverse_tools_show_traverse_ret_value(node, context, ret);
