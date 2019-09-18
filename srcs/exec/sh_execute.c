@@ -72,7 +72,6 @@ int 	sh_execute_simple_command(t_context *context)
 			ret = sh_execute_builtin(context);
 		else
 			ret = sh_exec_binaire(context);
-
 	}
 	return (ret);
 }
