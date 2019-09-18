@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 11:47:31 by jmartel           #+#    #+#             */
-/*   Updated: 2019/07/28 17:51:15 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/18 08:28:20 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,7 @@
 ** sh_traverse_tools_browse.c
 */
 int		sh_traverse_tools_browse(t_ast_node *node, t_context *context);
-// int		sh_traverse_tools_browse(
-	// t_ast_node *node, t_context *context, int (*func)(t_ast_node *, t_context *));
 int		sh_traverse_tools_search(t_ast_node *node, int searched_symbol_id);
-
-/*
-** sh_traverse_tools_reset.c
-*/
-void	sh_traverse_tools_reset_context(t_context *context);
-void	sh_traverse_tools_reset_params(t_context *context);
 
 /*
 ** sh_traverse_tools_debug.c
@@ -79,5 +71,10 @@ int		sh_traverse_io_here_phase_expansion(
 */
 int 	sh_traverse_tools_io_here_redirection(
 	t_ast_node *node, t_context *context);
+/*
+** sh_traverse_tools_reset.c
+*/
+// void	sh_traverse_tools_reset_context(t_context *context);
+// void	sh_traverse_tools_reset_params(t_context *context);
 
 #endif

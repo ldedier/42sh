@@ -12,7 +12,7 @@
 
 #include "sh_21.h"
 
-int			sh_builtin_cd_parser_hyphen(
+static int	sh_builtin_cd_parser_hyphen(
 	t_context *context, t_args *args, char **curpath, int i)
 {
 	char	*oldpwd;
@@ -65,6 +65,26 @@ int			sh_builtin_cd_parser(t_context *context, t_args *args,
 	return (SUCCESS);
 }
 
+static int	sh_builtin_cd_rule5(t_context *context, char **curpath, char *param)
+{
+	char	*cdpath;
+
+	cdpath = sh_vars_get_value(context->env, NULL, "CDPATH");
+	if (!cdpath || !*cdpath)
+	{
+		*curpath = ft_strjoin_path(".", param);
+		if (!curpath)
+		{
+			sh_perror_fd(
+				FD_ERR, SH_ERR1_MALLOC, "sh_builtin_cd_rule5");
+			return (FAILURE);
+		}
+		return (SUCCESS);
+	}
+	sh_perror_fd(FD_ERR, "CD_PATH", "not implemented yet");
+	return (ERROR);
+}
+
 int			sh_builtin_cd_pre_rules(
 	t_context *context, char *param, char **curpath)
 {
@@ -92,24 +112,4 @@ int			sh_builtin_cd_pre_rules(
 		return (FAILURE);
 	}
 	return (SUCCESS);
-}
-
-int			sh_builtin_cd_rule5(t_context *context, char **curpath, char *param)
-{
-	char	*cdpath;
-
-	cdpath = sh_vars_get_value(context->env, NULL, "CDPATH");
-	if (!cdpath || !*cdpath)
-	{
-		*curpath = ft_strjoin_path(".", param);
-		if (!curpath)
-		{
-			sh_perror_fd(
-				FD_ERR, SH_ERR1_MALLOC, "sh_builtin_cd_rule5");
-			return (FAILURE);
-		}
-		return (SUCCESS);
-	}
-	sh_perror_fd(FD_ERR, "CD_PATH", "not implemented yet");
-	return (ERROR);
 }

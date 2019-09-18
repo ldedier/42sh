@@ -12,25 +12,6 @@
 
 #include "sh_21.h"
 
-/*
-** returns the destination fd (right)
-** -1 if the fd specified is not open
-*/
-// static int				get_redirected_fd(t_redirection_type type, int fd)
-// {
-// 	if (type == OUTPUT)
-// 	{
-// 		if (write(fd, "", 0) == 0)
-// 			return (fd);
-// 	}
-// 	else
-// 	{
-// 		if (read(fd, "", 0) == 0)
-// 			return (fd);
-// 	}
-// 	return (-1);
-// }
-
 int				sh_add_fd_aggregation(t_redirection_type type,
 					int redirected_fd, int fd, t_list **redirections)
 {

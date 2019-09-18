@@ -60,7 +60,6 @@ int 	sh_execute_simple_command(t_context *context)
 	int 	ret;
 
 	ret = SUCCESS;
-	// sh_process_execute_dup(context);
 	if (!context->params->tbl || !context->params->tbl[0])
 		return (SUCCESS);
 	if (!ft_strchr(context->params->tbl[0], '/'))

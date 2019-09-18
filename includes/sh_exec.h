@@ -109,12 +109,10 @@ typedef struct		s_context
 */
 
 /*
-** t_context.c
+** sh_debug.c
 */
-void				sh_free_context_dup_lst(void *c, size_t dummy);
-int					t_context_init(t_context *context, t_shell *shell);
-void				t_context_free_content(t_context *context);
-void				t_context_reset(t_context *context);
+void				print_redirection(t_redirection *redirection);
+void				print_redirection_list(t_list *list);
 
 /*
 ** sh_execute.c
@@ -132,14 +130,9 @@ void				sh_execute_binary(t_context *context);
 int					sh_execute_builtin(t_context *context);
 
 /*
-** sh_execute_pipes.c
-*/
-// int					sh_process_execute_close_pipes(t_context *context);
-
-/*
 ** sh_execute_pipe.c
 */
-int				sh_execute_pipe(t_ast_node *node, t_context *context);
+int					sh_execute_pipe(t_ast_node *node, t_context *context);
 
 /*
 ** sh_execute_prefix_postfix.c
@@ -149,21 +142,13 @@ int					sh_pre_execution_pipes(t_list *contexts);
 int					sh_post_execution(void);
 
 /*
-** sh_execute_pipe_sequence.c
-*/
-// int					sh_execute_pipe_sequence(
-	// t_context *context, t_list *contexts);
-
-/*
 ** sh_redirections.c
 */
-int					sh_add_redirection(t_redirection_type type, int redirected_fd,
-			int fd, t_list **list);
+int					sh_add_redirection(
+	t_redirection_type type, int redirected_fd, int fd, t_list **list);
 int					sh_add_fd_aggregation(
-	t_redirection_type type,
-	int redirected_fd,
-	int fd,
-	t_list **redirections);
+	t_redirection_type type, int redirected_fd, int fd, t_list **redirections);
+
 /*
 ** sh_reset_redirection.c
 */
@@ -178,11 +163,13 @@ int 				sh_execute_redirection(t_context *context);
 ** sh_check_open_fd.c
 */
 int					sh_check_open_fd(t_redirection_type type, int fd);
-/*
-** sh_debug.c
-*/
-void				print_redirection(t_redirection *redirection);
-void				print_redirection_list(t_list *list);
 
+/*
+** t_context.c
+*/
+// void				sh_free_context_dup_lst(void *c, size_t dummy);
+int					t_context_init(t_context *context, t_shell *shell);
+void				t_context_free_content(t_context *context);
+void				t_context_reset(t_context *context);
 
 #endif

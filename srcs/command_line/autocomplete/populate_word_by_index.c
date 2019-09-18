@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "sh_21.h"
+
 int		get_word_len(char *s, int index)
 {
 	int i;
@@ -96,16 +97,10 @@ int		populate_word_from_lexer_no_token(t_list **tokens, t_list **prev,
 		t_word *word)
 {
 	t_list	*token_ptr;
-	char	*value;
 	t_list	*next;
 
-	if (!(value = ft_strdup("")))
-		return (sh_perror(SH_ERR1_MALLOC, "get_token_from_lexer_no_token (1)"));
-	if (!(token_ptr = t_token_node_new(LEX_TOK_WORD, value)))
-	{
-		free(value);
+	if (!(token_ptr = t_token_node_new(LEX_TOK_WORD, "")))
 		return (sh_perror(SH_ERR1_MALLOC, "get_token_from_lexer (2)"));
-	}
 	if (*prev == NULL)
 	{
 		token_ptr->next = *tokens;
@@ -174,7 +169,6 @@ int		populate_word_from_lexer(t_list **tokens, int index, t_word *word)
 		word->token = token;
 		populate_word_from_token(word, index);
 	}
-//	print_word(word);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/22 14:40:58 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/06 16:54:37 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/09 14:05:16 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,7 +193,7 @@ void	process_print_command_line(t_command_line *command_line,
 		c.j += ft_strlen(ELIPTIC_COMMAND_LINE);
 	}
 	str[c.j] = 0;
-	ft_dprintf(command_line->fd, str);
+	ft_dprintf(command_line->fd, "%s", str);
 	free(str);
 	tmp_str = tgetstr("me", NULL);
 	tputs(tmp_str, 1, putchar_int);

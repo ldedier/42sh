@@ -54,7 +54,7 @@ static int	sh_builtin_export_show_min(char **min, char **env)
 	return (SUCCESS);
 }
 
-int			sh_builtin_export_show(t_context *context)
+static int	sh_builtin_export_show(t_context *context)
 {
 	char	**tbl;
 	char	*min;

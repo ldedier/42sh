@@ -17,18 +17,18 @@
 **	Free a t_context object. Function is used with ft_lstdel.
 */
 
-void		sh_free_context_dup_lst(void *c, size_t dummy)
-{
-	t_context	*context;
+// void		sh_free_context_dup_lst(void *c, size_t dummy)
+// {
+// 	t_context	*context;
 
-	context = (t_context *)c;
-	if (context->path)
-		ft_strdel(&context->path);
-	ft_dy_tab_del(context->params);
-	ft_dy_tab_del(context->saved_env);
-	free(context);
-	(void)dummy;
-}
+// 	context = (t_context *)c;
+// 	if (context->path)
+// 		ft_strdel(&context->path);
+// 	ft_dy_tab_del(context->params);
+// 	ft_dy_tab_del(context->saved_env);
+// 	free(context);
+// 	(void)dummy;
+// }
 
 /*
 ** t_context_init:

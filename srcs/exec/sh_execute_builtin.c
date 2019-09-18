@@ -34,6 +34,5 @@ int			sh_execute_builtin(t_context *context)
 		sh_env_update_ret_value(context->shell, SH_RET_ERROR);
 	if (isatty(0) && sh_set_shell_back(0) == ATTR_ERROR)
 		return (sh_perror("Could not modify this terminal attributes", NULL));
-	// sh_process_execute_close_pipes(context);
 	return (res);
 }

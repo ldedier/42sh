@@ -33,7 +33,7 @@ path=".."
 ## Executable name
 exec="42sh"
 ## Directory for valgrind logs
-log_dir="./logs" # watchout we rm -rf this
+log_dir="./logs/" # watchout we rm -rf this
 ## Directory used to store local configurtation and binaries
 obj_dir="./obj"
 ## Directory used to store binaries source code
@@ -46,18 +46,21 @@ error_exit_code=247
 ## Options initialisation
 test_stderr="" verbose="ok" show_error="" test_returned_values="" file=""
 ## Counters initialisation
-passed=0 tried=0 diff_passed=0 diff_tried=0
+passed=0 tried=0 diff_passed=0 diff_tried=0 logging=0
 
 ## Parse options given as arguments
 for arg in $@ ; do
 	if [ "$arg" = "-v" ] ; then
 		valgrind=true
-		rm -rf "${log_dir}"
-		mkdir -p $log_dir
+		rm -rf "${log_dir}/valgrind"
+		mkdir -p "$log_dir/valgrind"
 	fi
 
 	if [ "$arg" = "-2" ] ; then
 		test_stderr="ok" ; fi
+
+	if [ "$arg" = "-l" ] ; then
+		logging="ok" ; fi
 
 	if [ "$arg" = "-q" ] ; then
 		verbose="" ; fi

@@ -70,7 +70,7 @@ def format_dir_datas(dir_data, tab_offset):
     if (max_tabs == 0):
         max_tabs = 2
     ## Determine maximum number of tabs to add
-    for file in dir_data:
+    for file in sorted(dir_data.keys()):
         for function in dir_data[file]:
             length = len(function["type"])
             tabs = length // 4
@@ -81,7 +81,7 @@ def format_dir_datas(dir_data, tab_offset):
 
     ## Create every file list of prototypes
     tabs = "\t" * max_tabs
-    for file in dir_data:
+    for file in sorted(dir_data.keys()):
         res += "/*\n** " + file + "\n*/\n"
         for function in dir_data[file]:
             str = function["type"]

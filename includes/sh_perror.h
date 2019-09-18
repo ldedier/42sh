@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 14:16:12 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/05 13:11:16 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/09/14 02:42:42 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@
 # define SH_ERR1_IOCTL			"Ioctl error"
 # define SH_ERR1_READ			"Read error"
 # define SH_ERR1_EXECVE_FAIL	"Cannot execute binary file: Exec format error"
+# define SH_ERR1_FILENAME_LEN	"File name too long"
 
 # define SH_ERR2_NO_SUCH_FILE_OR_DIR	"No such file or directory"
 # define SH_ERR2_INVALID_OPT			"Invalid option"
@@ -46,18 +47,11 @@
 # define SH_BLT_NOTWELLFORM		"Sorry your command are not well formatted"
 # define SH_BLT_INTEGER			"Integer expression expected"
 
-# define SH_BAD_SUBSTITUTE		"Bad subsitution"
+# define SH_BAD_SUBSTITUTE		"bad substitution"
 
 /*
 ********************************************************************************
 */
-
-/*
-** sh_perror_fd.c
-*/
-int		sh_perror2_fd(
-	int fd, const char *error, const char *prefix, const char *suffix);
-int		sh_perror_fd(int fd, const char *error, const char *suffix);
 
 /*
 ** sh_perror.c
@@ -81,5 +75,12 @@ int		sh_perror2_err_fd(
 	int fd, const char *error, const char *prefix, const char *suffix);
 void	*sh_perror2n_fd(
 	int fd, const char *error, const char *prefix, const char *suffix);
+
+/*
+** sh_perror_fd.c
+*/
+int		sh_perror2_fd(
+	int fd, const char *error, const char *prefix, const char *suffix);
+int		sh_perror_fd(int fd, const char *error, const char *suffix);
 
 #endif

@@ -39,13 +39,8 @@ int		process_completion_expand(t_command_line *command_line,
 	else
 	{
 		command_line->autocompletion.active = 1;
-		if (word.word_index == 0)
-		{
-			if (process_substitute_command(command_line, str, word, 1))
-				return (FAILURE);
-		}
-		else
-			render_command_line(command_line, 0, 1);
+		if (process_substitute_command(command_line, str, word, 1))
+			return (FAILURE);
 	}
 	return (SUCCESS);
 }

@@ -1,6 +1,6 @@
 #include "sh_21.h"
 
-int 	sh_reset_redirection(t_list **lst)//versioin avec gestion d'erreur
+int 	sh_reset_redirection(t_list **lst)
 {
 	t_redirection	*el;
 	t_list			*del;
