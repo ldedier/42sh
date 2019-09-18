@@ -12,7 +12,7 @@
 
 #include "sh_21.h"
 
-int		sh_process_traverse(t_shell *shell)
+int		sh_process_traverse(t_shell *shell, t_ast_node *ast_root)
 {
 	t_context	context;
 	int			ret;
@@ -20,15 +20,15 @@ int		sh_process_traverse(t_shell *shell)
 	if (t_context_init(&context, shell) == FAILURE)
 		return (FAILURE);
 	context.phase = E_TRAVERSE_PHASE_INTERACTIVE_REDIRECTIONS;
-	if ((ret = g_grammar[shell->parser.ast_root->symbol->id].
-		traverse(shell->parser.ast_root, &context)))
+	if ((ret = g_grammar[ast_root->symbol->id].
+		traverse(ast_root, &context)))
 	{
 		ft_dy_tab_del(context.params);
 		return (ret);
 	}
 	context.phase = E_TRAVERSE_PHASE_EXPANSIONS;
-	ret = g_grammar[shell->parser.ast_root->symbol->id].
-		traverse(shell->parser.ast_root, &context);
+	ret = g_grammar[ast_root->symbol->id].
+		traverse(ast_root, &context);
 	t_context_free_content(&context);
 	return (ret);
 }

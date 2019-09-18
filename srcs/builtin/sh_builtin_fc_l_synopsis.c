@@ -61,7 +61,7 @@ void	sh_builtin_fc_list(t_history *history, t_dlist *from,
 		t_entry_print(ptr->content, !opt_n);
 }
 
-void print_fc_operand(t_fc_operand *op)
+void	print_fc_operand(t_fc_operand *op)
 {
 	if (op->type == E_FC_STRING)
 	{

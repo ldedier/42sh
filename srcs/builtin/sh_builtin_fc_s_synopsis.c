@@ -35,13 +35,66 @@ static void	fill_finder(t_fc_operand **finder,
 		*finder = &opts->from;
 }
 
+static int		ft_substitute_occurences_len(char *str,
+	char *to_replace, char *replacement)
+{
+	int		nb_replacement;
+	char	*str_ptr;
+	int		to_replace_len;
+	int		replacement_len;
+	int		str_len;
+
+	to_replace_len = ft_strlen(to_replace);
+	replacement_len = ft_strlen(replacement);
+	str_len = ft_strlen(str);
+	if (to_replace_len == replacement_len)
+		return (str_len);
+	str_ptr = str;
+	nb_replacement = 0;
+	while ((str_ptr = ft_strstr(str_ptr, to_replace)))
+	{
+		str_ptr += to_replace_len;
+		nb_replacement++;
+	}
+	return (str_len + nb_replacement
+		* (replacement_len - to_replace_len));
+}
+
+static int		ft_memcpy_ret(char *dest, char *src, int n)
+{
+	ft_memcpy(dest, src, n);
+	return (n);
+}
+
 char	*ft_substitute_occurences(char *str,
 	char *to_replace, char *replacement)
 {
-	(void)str;
-	(void)to_replace;
-	(void)replacement;
-	return (NULL);
+	char	*res;
+	int		i;
+	char	*str_ptr;
+	char	*str_ptr_prev;
+	int		to_replace_len;
+
+	if (!(res = ft_strnew(ft_substitute_occurences_len(str,
+		to_replace, replacement))))
+	{
+		return (NULL);
+	}
+	i = 0;
+	str_ptr_prev = str;
+	str_ptr = str;
+	to_replace_len = ft_strlen(to_replace);
+	while ((str_ptr = ft_strstr(str_ptr, to_replace)))
+	{
+		i += ft_memcpy_ret(&res[i], str_ptr_prev, str_ptr - str_ptr_prev);
+		i += ft_memcpy_ret(&res[i], replacement, ft_strlen(replacement));
+		str_ptr += to_replace_len;
+		str_ptr_prev = str_ptr;
+	}
+	i += ft_memcpy_ret(&res[i], str_ptr_prev, ft_strlen(str_ptr_prev));
+	res[i] = '\0';
+	return (res);
+
 }
 
 char	*get_command_to_execute_fc(char *command, char *substitution_str)
@@ -88,7 +141,10 @@ int		sh_builtin_fc_s_synopsis(t_context *context, t_fc_options *opts)
 	entry = entry_ptr->content;
 	if (!(res = get_command_to_execute_fc(entry->command, substitution_str)))
 		return (sh_perror(SH_ERR1_MALLOC, "sh_builtin_fc_s_synopsis"));
-	ft_printf("RES: %s\n", res);
+	ft_printf("%s\n", res);
+//	execute command res
+//	t_context_reset(context);
+	execute_command(context->shell, res);
 	free(res);
 	return (SUCCESS);
 }

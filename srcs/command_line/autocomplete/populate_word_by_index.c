@@ -173,20 +173,21 @@ int		populate_word_from_lexer(t_list **tokens, int index, t_word *word)
 }
 
 int		populate_parsed_word_by_index(t_shell *shell, char *command,
-		int index, t_word *word)
+		int index, t_exec *exec)
 {
-	int		ret;
-	t_list	*tokens;
+	int			ret;
 
-	tokens = NULL;
-	if ((ret = sh_lexer(command, &tokens,
+	exec->ast_root = NULL;
+	exec->cst_root = NULL;
+	exec->tokens = NULL;
+	if ((ret = sh_lexer(command, &exec->tokens,
 		shell, E_LEX_AUTOCOMPLETION)) != SUCCESS)
 	{
 		return (ret);
 	}
-	if ((ret = populate_word_from_lexer(&tokens, index, word)))
-		return (FAILURE);
-	if ((ret = sh_parser(tokens, shell)))
-		return (ret);
+	if (!ret)
+		ret = populate_word_from_lexer(&exec->tokens, index, &exec->word);
+	if (!ret)
+		ret = sh_parser(shell, &exec->tokens, &exec->ast_root, &exec->cst_root);
 	return (ret);
 }

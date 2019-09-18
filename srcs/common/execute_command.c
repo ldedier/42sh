@@ -12,11 +12,23 @@
 
 #include "sh_21.h"
 
+void	free_execution_tools(t_list **tokens, t_ast_node **ast_root,
+		t_ast_node **cst_root)
+{
+	sh_free_ast_node(ast_root, 0);
+	sh_free_ast_node(cst_root, 0);
+	ft_lstdel(tokens, sh_free_token_lst);
+}
+
 static int	sh_process_command(t_shell *shell, char *command)
 {
-	t_list  *tokens;
-	int     ret;
+	t_list		*tokens;
+	int			ret;
+	t_ast_node	*ast_root;
+	t_ast_node	*cst_root;
 
+	ast_root = NULL;
+	cst_root = NULL;
 	sh_verbose_update(shell);
 	ret = 0;
 	if ((ret = sh_lexer(command, &tokens, shell, E_LEX_STANDARD)) != SUCCESS)
@@ -24,15 +36,15 @@ static int	sh_process_command(t_shell *shell, char *command)
 		if (sh_env_update_ret_value_and_question(shell, ret) == FAILURE)
 			ret = FAILURE;
 	}
-	if (!ret && (ret = sh_parser(tokens, shell)))
+	if (!ret && (ret = sh_parser(shell, &tokens, &ast_root, &cst_root)))
 	{
 		sh_perror_err("syntax error", NULL);
 		if (sh_env_update_ret_value_and_question(shell, ret) == FAILURE)
 			ret = FAILURE;
 	}
 	if (!ret)
-		ret = sh_process_traverse(shell);
-	sh_clear_parser(&shell->parser);
+		ret = sh_process_traverse(shell, ast_root);
+	free_execution_tools(&tokens, &ast_root, &cst_root);
 	return (ret);
 }
 

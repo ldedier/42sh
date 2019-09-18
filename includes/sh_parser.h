@@ -111,10 +111,10 @@ typedef struct		s_lr_parser
 	t_hash_table	*states_by_items;
 	t_action		**lr_tables;
 	t_cfg			cfg;
-	t_list			*tokens;
 	t_list			*stack;
-	t_ast_node		*ast_root;
-	t_ast_node		*cst_root;
+	t_ast_node		**tmp_ast_root;
+	t_ast_node		**tmp_cst_root;
+	t_list			**tmp_tokens;
 	int				nb_states;
 	int				index;
 }					t_lr_parser;
@@ -154,7 +154,8 @@ void				sh_print_state(t_state *state, int depth);
 void				sh_print_lr_table(t_lr_parser *parser);
 void				sh_print_automata(t_lr_parser *parser, int depth);
 void				sh_print_stack_item(t_stack_item *stack_item);
-void				sh_print_parser_state(t_lr_parser *parser);
+void				sh_print_parser_state(
+	t_lr_parser *parser, t_list *tokens);
 void				sh_print_cfg(t_cfg *cfg);
 void				sh_print_ast_parser(t_lr_parser *parser);
 void				sh_print_parser(t_lr_parser *parser, int depth);
@@ -169,7 +170,10 @@ int					sh_process_reduce_add_to_ast(
 	t_production *production,
 	t_lr_parser *parser);
 int					sh_process_reduce(
-	t_production *production, t_lr_parser *parser);
+	t_production *production,
+	t_lr_parser *parser,
+	t_ast_node **ast_root,
+	t_ast_node **cst_root);
 
 /*
 ** lr_parse.c
@@ -177,9 +181,20 @@ int					sh_process_reduce(
 t_stack_item		*new_stack_item(
 	t_ast_builder *ast_builder, t_state *state);
 int					process_lr_parser_ret(
-	t_lr_parser *parser, t_action action);
-int					process_lr_parse(t_lr_parser *parser);
-int					sh_lr_parse(t_lr_parser *parser);
+	t_lr_parser *parser,
+	t_action action,
+	t_ast_node **ast_root,
+	t_ast_node **cst_root);
+int					process_lr_parse(
+	t_lr_parser *parser,
+	t_list **tokens,
+	t_ast_node **ast_root,
+	t_ast_node **cst_root);
+int					sh_lr_parse(
+	t_lr_parser *parser,
+	t_list **tokens,
+	t_ast_node **ast_root,
+	t_ast_node **cst_root);
 
 /*
 ** print_ast.c
@@ -261,8 +276,16 @@ int					sh_compute_transitions(
 int					sh_is_term(t_symbol *symbol);
 void				sh_populate_token(
 	t_token *token, t_symbol_id id, int val);
-int					sh_parse_token_list(t_lr_parser *parser);
-int					sh_parser(t_list *tokens, t_shell *shell);
+int					sh_parse_token_list(
+	t_lr_parser *parser,
+	t_list **tokens,
+	t_ast_node **ast_root,
+	t_ast_node **cst_root);
+int					sh_parser(
+	t_shell *shell,
+	t_list **tokens,
+	t_ast_node **ast_root,
+	t_ast_node **cst_root);
 
 /*
 ** ast_node_tools.c
@@ -307,6 +330,7 @@ int					sh_is_replacing(t_ast_builder *ast_builder);
 ** free_parser_tools.c
 */
 void				sh_free_stack_item(t_stack_item *stack_item);
+void				sh_free_stack_item(t_stack_item *stack_item);
 void				sh_free_stack_item_lst(void *si, size_t dummy);
 void				free_state_lst(void *s, size_t dummy);
 void				sh_free_lr_automata(t_lr_parser *parser);
@@ -321,7 +345,8 @@ int					sh_process_shift_adds_stack_item(
 	t_stack_item *stack_item_state);
 int					sh_process_shift_adds(
 	t_lr_parser *parser, t_ast_builder *ast_builder, t_state *state);
-int					sh_process_shift(t_state *state, t_lr_parser *parser);
+int					sh_process_shift(
+	t_list **tokens, t_state *state, t_lr_parser *parser);
 
 /*
 ** free_node.c

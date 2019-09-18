@@ -211,6 +211,10 @@ int					sh_builtin_verbose(t_context *context);
 /*
 ** sh_builtin_fc_s_synopsis.c
 */
+char				*ft_substitute_occurences(
+	char *str, char *to_replace, char *replacement);
+char				*get_command_to_execute_fc(
+	char *command, char *substitution_str);
 int					sh_builtin_fc_s_synopsis(
 	t_context *context, t_fc_options *opts);
 
@@ -229,6 +233,14 @@ int					sh_builtin_hash(t_context *context);
 /*
 ** sh_builtin_fc_l_synopsis.c
 */
+int					get_true_rank(t_history *history, int number);
+int					get_listing_way(
+	t_history *history, t_dlist *from, t_dlist *to);
+void				sh_builtin_fc_list(
+	t_history *history, t_dlist *from, t_dlist *to, int opt_n);
+void				print_fc_operand(t_fc_operand *op);
+void				swap_entries(
+	t_history *history, t_dlist **from, t_dlist **to);
 int					sh_builtin_fc_l_synopsis(
 	t_context *context, t_fc_options *opts);
 

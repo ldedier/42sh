@@ -113,9 +113,9 @@ static int	sh_splitting_white_ifs(t_ast_node *node, t_context *context)
 		input[i] = ' ';
 		i++;
 	}
-	sh_print_token_list(context->shell->parser.tokens, &context->shell->parser.cfg);
+	sh_print_token_list(*context->shell->parser.tmp_tokens, &context->shell->parser.cfg);
 	sh_print_ast(node, 0);
-	sh_print_ast(context->shell->parser.ast_root, 0);
+	sh_print_ast(*context->shell->parser.tmp_ast_root, 0);
 	return (SUCCESS);
 	(void)context;
 }

@@ -21,6 +21,7 @@
 
 typedef struct s_shell			t_shell;
 typedef struct s_command_line	t_command_line;
+typedef struct s_ast_node		t_ast_node;
 
 /*
 ** str:					word content
@@ -64,6 +65,14 @@ typedef struct		s_auto_complete
 	int				nb_lines;
 	int				scrolled_lines;
 }					t_auto_complete;
+
+typedef struct		s_exec
+{
+	t_word			word;
+	t_list			*tokens;
+	t_ast_node		*ast_root;
+	t_ast_node		*cst_root;
+}					t_exec;
 
 typedef struct		t_choice_filler
 {
@@ -128,7 +137,7 @@ void				print_word(t_word *word);
 int					populate_word_from_lexer(
 	t_list **tokens, int index, t_word *word);
 int					populate_parsed_word_by_index(
-	t_shell *shell, char *command, int index, t_word *word);
+	t_shell *shell, char *command, int index, t_exec *exec);
 
 /*
 ** add_choices_builtins.c
@@ -168,7 +177,7 @@ int					process_completion_expand(
 int					process_completion(
 	t_command_line *command_line, t_word word);
 void				print_dy_tab(t_dy_tab *dtab);
-void				print_exp(t_shell *shell);
+int					sh_free_turn_exec(t_exec *exec, int ret);
 int					process_tab(
 	t_shell *shell, t_command_line *command_line);
 
