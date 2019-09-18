@@ -117,6 +117,10 @@ int			sh_expansions_scan(char **input, int index,
 		if ((ret = unquoted_var(input, &index, context, node)) != SUCCESS)
 			return (ret);
 	}
+	else if ((*input)[index] == '!' && do_expansion)
+	{
+
+	}
 	else
 		backslash(*input, &index, 0);
 	return (sh_expansions_scan(input, index, do_expansion, context, node));

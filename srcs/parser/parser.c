@@ -68,7 +68,6 @@ int		sh_parser(t_shell *shell, t_list **tokens,
 		ast_root, cst_root)) != SUCCESS)
 	{
 		sh_env_update_ret_value(shell, SH_RET_SYNTAX_ERROR);
-//		sh_perror_err("syntax error", NULL);
 	}
 	return (ret);
 }

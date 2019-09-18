@@ -19,7 +19,7 @@ static int		sh_await_command(t_shell *shell)
 	if ((ret = sh_get_command(shell, &g_glob.command_line)) != SUCCESS)
 		return (ret);
 	return (execute_command(shell,
-		g_glob.command_line.dy_str->str));
+		g_glob.command_line.dy_str->str, 1));
 }
 
 int		sh_process_noncanonical_mode(t_shell *shell)

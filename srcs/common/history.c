@@ -60,8 +60,8 @@ static int		sh_append_entry(t_history *history, char *command)
 {
 	t_entry *entry;
 
-	//if (history->nb_entries <= ft_max(32767, HISTSIZE))
-	if (history->nb_entries <= 10)
+	//if (history->nb_entries <= 10)
+	if (history->nb_entries <= ft_max(32767, HISTSIZE))
 	{
 		history->from = 1;
 		history->to = ++history->nb_entries;
@@ -70,8 +70,6 @@ static int		sh_append_entry(t_history *history, char *command)
 			free(command);
 			return (sh_perror(SH_ERR1_MALLOC, "sh_append_entry (1)"));
 		}
-	//	t_entry_print(entry, 1);
-		print_history(history);
 		if (ft_add_to_dlist_ptr(&history->commands, entry, sizeof(entry)))
 		{
 			t_entry_free(entry);

@@ -48,11 +48,11 @@ static int	sh_process_command(t_shell *shell, char *command)
 	return (ret);
 }
 
-int		execute_command(t_shell *shell, char *command)
+int		execute_command(t_shell *shell, char *command, int should_add)
 {
 	int ret;
 
-	shell->history.should_add = 1;
+	shell->history.should_add = should_add;
 	ret = sh_process_command(shell, command);
 	if (ret == SUCCESS && shell->history.should_add)
 		return (sh_append_to_history(&shell->history, command, 1));

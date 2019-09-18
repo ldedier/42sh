@@ -200,7 +200,8 @@ void				init_signals(void);
 */
 void				free_execution_tools(
 	t_list **tokens, t_ast_node **ast_root, t_ast_node **cst_root);
-int					execute_command(t_shell *shell, char *command);
+int					execute_command(
+	t_shell *shell, char *command, int should_add);
 
 /*
 ** canonical_mode.c

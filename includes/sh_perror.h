@@ -25,6 +25,7 @@
 # define SH_ERR1_FORK			"Could not fork, too many processes are running"
 # define SH_ERR1_CMD_NOT_FOUND	"Command not found"
 # define SH_ERR1_HISTORY		"Could not open the history file"
+# define SH_ERR1_EDIT			"Could not open the edit file"
 # define SH_ERR1_TTY			"Could not open the tty file descriptor"
 # define SH_ERR1_PERM_DENIED	"Permission denied"
 # define SH_ERR1_TOO_MANY_ARGS	"Too many arguments"

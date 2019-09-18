@@ -18,6 +18,7 @@
 # define HISTORY_FILE			".history"
 # define MAX_LEN_HISTORY_ENTRY	5000
 # define HISTSIZE				32767
+# define EDIT_FILE				".__42sh_edit__"
 
 typedef struct		s_entry
 {

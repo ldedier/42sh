@@ -144,7 +144,7 @@ int		sh_builtin_fc_s_synopsis(t_context *context, t_fc_options *opts)
 	ft_printf("%s\n", res);
 //	execute command res
 //	t_context_reset(context);
-	execute_command(context->shell, res);
+	execute_command(context->shell, res, 1);
 	free(res);
 	return (SUCCESS);
 }
