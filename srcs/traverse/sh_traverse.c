@@ -74,7 +74,10 @@ int		sh_process_traverse(t_shell *shell)
 	if (t_context_init(&context, shell) == FAILURE)
 		return (FAILURE);
 	if ((list_node = go_to_list(shell->parser.ast_root)) == NULL)
+	{
+		t_context_free_content(&context);
 		return (SUCCESS);
+	}
 	context.phase = E_TRAVERSE_PHASE_INTERACTIVE_REDIRECTIONS;
 	if ((ret = sh_traverse_tools_browse(list_node, &context)) == SUCCESS)
 		ret = sh_traverse_list(list_node, &context);
