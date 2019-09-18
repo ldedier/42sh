@@ -22,7 +22,7 @@ int 	sh_traverse_tools_io_here_redirection(t_ast_node *node, t_context *context)
 	t_redirection 	redir;
 
 	if ((ret = sh_redirection_for_heredoc(node->token->value, &redir, context)) == SUCCESS)
-		ret = sh_add_redirection(redir.type,
-			context->redirected_fd, redir.fd, &(context->redirections));
+		ret = sh_add_redirection_file(
+			redir.type, context->redirected_fd, redir.fd, &context->redirections);
 	return (ret);
 }

@@ -209,8 +209,9 @@ SRCS			+=	sh_execute.c \
 ################################################################
 ########					REDIRECTION					########
 ################################################################
-SRCS			+=	sh_add_fd_aggregation.c sh_add_redirection.c \
-					sh_reset_redirection.c sh_check_open_fd.c
+SRCS			+=	sh_add_redirection.c \
+					sh_reset_redirection.c \
+					sh_check_open_fd.c
 
 ################################################################
 ########						BUILTIN					########

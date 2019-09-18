@@ -49,7 +49,7 @@ typedef struct			s_redirection
 	int					backup;//save left fd
 	// int					closed;//used to know if fd is already closed. Use full if an error
 	//appear and we need to reset all... I  guess...
-	int					was_apply;//if we have an error maybe all redirections wasn't done before we have to reset all
+	int					was_closed;//if fd was closed
 }						t_redirection;
 
 typedef struct		s_pipe_metadata
@@ -144,10 +144,12 @@ int					sh_post_execution(void);
 /*
 ** sh_redirections.c
 */
-int					sh_add_redirection(
+// int					sh_add_redirection(
+// 	t_redirection_type type, int redirected_fd, int fd, t_list **list);
+int 				sh_add_redirection_file(
+	t_redirection_type, int redirected_fd, int fd, t_list **list);
+int					sh_add_redirection_aggreg(
 	t_redirection_type type, int redirected_fd, int fd, t_list **list);
-int					sh_add_fd_aggregation(
-	t_redirection_type type, int redirected_fd, int fd, t_list **redirections);
 
 /*
 ** sh_reset_redirection.c
@@ -157,12 +159,16 @@ int					sh_reset_redirection(t_list **lst);
 /*
 ** sh_execute_redirection.c
 */
-int 				sh_execute_redirection(t_context *context);
+int 				sh_execute_redirection(t_list *lst, t_redirection *el);
+// int 				sh_execute_redirection(t_context *context);
 
 /*
 ** sh_check_open_fd.c
 */
 int					sh_check_open_fd(t_redirection_type type, int fd);
+int 				sh_check_src_fd(t_list *lst, t_redirection *curr_redir);
+int					sh_check_dst_fd(
+	t_list *lst, t_redirection_type type, int fd);
 
 /*
 ** t_context.c

@@ -35,14 +35,14 @@ static int	sh_process_file_greatand(char *filename, t_context *context)
 
 	if (!ft_strcmp(filename, "-"))
 	{
-		if (sh_add_redirection(OUTPUT, context->redirected_fd, -1,
+		if (sh_add_redirection_file(OUTPUT, context->redirected_fd, -1,
 		&(context->redirections)))
 			return (FAILURE);
 		return (SUCCESS);
 	}
 	else if ((fd = get_fd(filename)) >= 0)
 	{
-		return (sh_add_fd_aggregation(OUTPUT, context->redirected_fd, fd,
+		return (sh_add_redirection_aggreg(OUTPUT, context->redirected_fd, fd,
 			&(context->redirections)));
 	}
 	if (fd == -1)
@@ -58,13 +58,13 @@ static int	sh_process_file_lessand(char *filename, t_context *context)
 
 	if (!ft_strcmp(filename, "-"))
 	{
-		if (sh_add_redirection(INPUT, context->redirected_fd, -1,
+		if (sh_add_redirection_file(INPUT, context->redirected_fd, -1,
 			&(context->redirections)))
 			return (FAILURE);
 		return (SUCCESS);
 	}
 	else if ((fd = get_fd(filename)) >= 0)
-		return (sh_add_fd_aggregation(INPUT, context->redirected_fd, fd,
+		return (sh_add_redirection_aggreg(INPUT, context->redirected_fd, fd,
 			&(context->redirections)));
 	else
 	{

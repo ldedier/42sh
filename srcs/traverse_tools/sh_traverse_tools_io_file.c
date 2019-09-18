@@ -32,7 +32,7 @@ int		sh_process_file_output(char *filename,
 		return (ERROR);
 	if ((fd = open(filename, options, 0644)) < 0)
 		return (sh_perror_err("Can't create file", filename));
-	if (sh_add_redirection(OUTPUT, context->redirected_fd, fd,
+	if (sh_add_redirection_file(OUTPUT, context->redirected_fd, fd,
 		&context->redirections))
 		return (FAILURE);
 	return (SUCCESS);
@@ -59,7 +59,7 @@ int		sh_process_file_input(char *filename,
 		return (ERROR);
 	if ((fd = open(filename, options)) < 0)
 		return (sh_perror("Can't open file", filename));
-	if (sh_add_redirection(INPUT, context->redirected_fd, fd,
+	if (sh_add_redirection_file(INPUT, context->redirected_fd, fd,
 		&context->redirections))
 		return (FAILURE);
 	return (SUCCESS);

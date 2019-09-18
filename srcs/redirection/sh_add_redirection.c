@@ -12,40 +12,15 @@
 
 #include "sh_21.h"
 
-/*
- * Check if the fd to redirect (left fd) already exist for the same type (I/O)
- * to overwrite the destination fd (right fd) and not multiply redirection.
- *
- * Return t_redirection * on the existing element redirection
- * Otherwise return NULL
-*/
-static t_redirection	*is_redirection_already_exist(t_redirection_type type,
-					int redirected_fd, t_list *list)
-{
-	t_list			*ptr;
-	t_redirection	*redirection;
-
-	ptr = list;
-	while (ptr != NULL)
-	{
-		redirection = ptr->content;
-		if (redirection->type == type
-				&& redirection->redirected_fd == redirected_fd)
-			return (redirection);
-		ptr = ptr->next;
-	}
-	return (NULL);
-}
-
-static t_redirection		sh_new_redir(
+static t_redirection	sh_new_redir(
 	t_redirection_type type, int redirected_fd, int fd)
 {
 	t_redirection redir;
 
 	redir.type = type;
-	// redir.closed = 0;
+	redir.backup = -1;
 	redir.fd = fd;
-	redir.was_apply = 0;
+	redir.was_closed = -1;
 	if (redirected_fd == -1)
 	{
 		if (type == INPUT)
@@ -58,6 +33,20 @@ static t_redirection		sh_new_redir(
 	return (redir);
 }
 
+static int			sh_process_redirection(
+	t_redirection redirection, t_list **list)
+{
+
+	if (sh_execute_redirection(*list, &redirection) != SUCCESS)
+		return (STOP_CMD_LINE);
+	if (ft_lstaddnew(list, &redirection, sizeof(t_redirection)))
+	{
+		sh_perror(SH_ERR1_MALLOC, "sh_add_redirection");
+		return (ERROR);
+	}
+	return (SUCCESS);
+}
+
 /*
  * Create and add redirection in the redirection list
  * We check if the redirection already exist
@@ -68,27 +57,48 @@ static t_redirection		sh_new_redir(
  * If it already exist and the redirect fd (right fd) was closed, we have to
  * re-close it.
 */
-int				sh_add_redirection(t_redirection_type type, int redirected_fd,
-			int fd, t_list **list)
+// static int			sh_add_redirection(
+// 	t_redirection_type type, int redirected_fd, int fd, t_list **list)
+static int			sh_add_redirection(
+	t_redirection redirection, /*int redirected_fd, int fd,*/ t_list **list)
 {
-	t_redirection	*found;
+	// t_redirection	redirection;
+
+	// redirection = sh_new_redir(type, redirected_fd, fd);
+	if (redirection.fd >= 0
+		&& sh_check_dst_fd(*list, redirection.type, redirection.fd) == -1)
+	{
+		ft_dprintf(2, "%s%s: %d: bad file descriptor\n%s", SH_ERR_COLOR,
+		SH_NAME, redirection.fd, EOC);
+		return (ERROR);
+	}
+	else if (sh_check_src_fd(*list, &redirection) == -1)
+	{
+		sh_perror(SH_ERR1_INTERN_ERR, "Error to apply redirection");
+		return (STOP_CMD_LINE);
+	}
+	if (redirection.was_closed == -1)
+		redirection.was_closed = 0;
+	return (sh_process_redirection(redirection, list));
+}
+
+int 				sh_add_redirection_file(
+	t_redirection_type type, int redirected_fd, int fd, t_list **list)
+{
 	t_redirection	redirection;
 
 	redirection = sh_new_redir(type, redirected_fd, fd);
-	if (!(found = is_redirection_already_exist(redirection.type,
-		redirection.redirected_fd, *list)))
-	{
-		if (ft_lstaddnew_last(list, &redirection, sizeof(t_redirection)))
-		{
-			sh_perror(SH_ERR1_MALLOC, "sh_add_redirection");
-			return (ERROR);
-		}
-	}
-	else
-	{
-		if (found->fd > 2)
-			close(found->fd);
-		found->fd = redirection.fd;
-	}
-	return (SUCCESS);
+	redirection.was_closed = 1;
+	return (sh_add_redirection(redirection, list));
+}
+
+int					sh_add_redirection_aggreg(
+	t_redirection_type type, int redirected_fd, int fd, t_list **list)
+{
+	t_redirection	redirection;
+
+	if (redirected_fd == fd)
+		return (SUCCESS);
+	redirection = sh_new_redir(type, redirected_fd, fd);
+	return (sh_add_redirection(redirection, list));
 }
