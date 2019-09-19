@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 16:41:00 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/14 03:09:48 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/19 17:53:52 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ int			sh_expansions_parameter_minus(
 
 	param = sh_expansions_parameter_get_param(context, exp);
 	word = sh_expansions_parameter_get_word(exp, format);
+	if (sh_verbose_expansion())
+		ft_dprintf(2, "param : %s <> word : %s\n", param, word);
 	if (!param)
 		exp->res = ft_dy_str_new_str(word);
 	else if (!*param)
@@ -67,6 +69,8 @@ int			sh_expansions_parameter_equal(
 
 	param = sh_expansions_parameter_get_param(context, exp);
 	word = sh_expansions_parameter_get_word(exp, format);
+	if (sh_verbose_expansion())
+		ft_dprintf(2, "param : %s <> word : %s\n", param, word);
 	if (!param || (!(*param) && ft_strchr(format, ':')))
 	{
 		param = ft_strstr(exp->expansion, format);
@@ -145,6 +149,8 @@ int			sh_expansions_parameter_quest(
 
 	param = sh_expansions_parameter_get_param(context, exp);
 	word = sh_expansions_parameter_get_word(exp, format);
+	if (sh_verbose_expansion())
+		ft_dprintf(2, "param : %s <> word : %s\n", param, word);
 	if (!param)
 		return (sh_expansions_parameter_quest_msg(format,
 			context, exp->expansion, word));
@@ -182,6 +188,8 @@ int			sh_expansions_parameter_plus(
 
 	param = sh_expansions_parameter_get_param(context, exp);
 	word = sh_expansions_parameter_get_word(exp, format);
+	if (sh_verbose_expansion())
+		ft_dprintf(2, "param : %s <> word : %s\n", param, word);
 	if (!param)
 		exp->res = ft_dy_str_new_str("");
 	else if (!*param)
@@ -207,7 +215,8 @@ int			sh_expansions_parameter_hash(
 
 	param = sh_expansions_parameter_get_param(context, exp);
 	word = sh_expansions_parameter_get_word(exp, format);
-	ft_dprintf(2, "param : %s <> word : %s <> format : %s\n", param, word, format);
+	if (sh_verbose_expansion())
+		ft_dprintf(2, "param : %s <> word : %s <> format : %s\n", param, word, format);
 	if (!param)
 		exp->res = ft_dy_str_new_str("");
 	else if (!word || !*word)
@@ -235,7 +244,8 @@ int			sh_expansions_parameter_percent(
 
 	param = sh_expansions_parameter_get_param(context, exp);
 	word = sh_expansions_parameter_get_word(exp, format);
-	ft_dprintf(2, "param : %s <> word : %s\n", param, word);
+	if (sh_verbose_expansion())
+		ft_dprintf(2, "param : %s <> word : %s\n", param, word);
 	if (!param)
 		exp->res = ft_dy_str_new_str("");
 	else if (!word || !*word)
