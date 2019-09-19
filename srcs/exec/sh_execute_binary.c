@@ -17,7 +17,5 @@ void		sh_execute_binary(t_context *context)
 	reset_signals();
 	execve(context->path, (char **)context->params->tbl,
 			(char **)context->env->tbl);
-	// sh_perror(((char**)context->params->tbl)[0], SH_ERR1_EXECVE_FAIL);
-	// exit(SH_RET_NOT_EXECUTABLE);
 	exit(SUCCESS);
 }

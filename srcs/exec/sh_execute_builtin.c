@@ -30,6 +30,8 @@ int			sh_execute_builtin(t_context *context)
 	res = context->builtin(context);
 	if (res == SUCCESS)
 		sh_env_update_ret_value(context->shell, SH_RET_SUCCESS);
+	else if (res == BLT_TEST_ERROR)
+		sh_env_update_ret_value(context->shell, BLT_TEST_ERROR);
 	else
 		sh_env_update_ret_value(context->shell, SH_RET_ERROR);
 	if (isatty(0) && sh_set_shell_back(0) == ATTR_ERROR)

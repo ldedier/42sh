@@ -71,10 +71,5 @@ int		sh_traverse_io_here_phase_expansion(
 */
 int 	sh_traverse_tools_io_here_redirection(
 	t_ast_node *node, t_context *context);
-/*
-** sh_traverse_tools_reset.c
-*/
-// void	sh_traverse_tools_reset_context(t_context *context);
-// void	sh_traverse_tools_reset_params(t_context *context);
 
 #endif

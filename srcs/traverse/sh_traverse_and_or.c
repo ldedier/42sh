@@ -34,8 +34,11 @@ static int		sh_traverse_and_or_call_sons_exec(t_ast_node *node,
 		return (SUCCESS);
 	child = (t_ast_node*)(node->children->content);
 	ret = sh_traverse_pipeline(child, context);
-	if (ret == BLT_TEST_ERROR)
-		context->shell->ret_value = 2;
+	if (ret == BLT_TEST_ERROR || context->shell->ret_value == BLT_TEST_ERROR)
+	{
+		context->shell->ret_value_set = 0;
+		sh_env_update_ret_value(context->shell, 2);
+	}
 	if (ret == FAILURE || ret == STOP_CMD_LINE)
 		return (ret);
 	if (!context->shell->running)
@@ -56,7 +59,7 @@ static int		sh_traverse_and_or_process_phase(
 
 	child = (t_ast_node*)ptr->content;
 	ret = sh_traverse_and_or_call_sons_exec(child, &prev_symbol, context);
-	if (ret && sh_env_update_question_mark(context->shell) == FAILURE)
+	if (sh_env_update_question_mark(context->shell) == FAILURE)
 		return (FAILURE);
 	if (ret == KEEP_READ || ret == STOP_CMD_LINE || ret == FAILURE)
 		return (ret);

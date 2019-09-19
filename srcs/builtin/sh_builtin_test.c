@@ -96,8 +96,7 @@ int			sh_builtin_test(t_context *context)
 	else if (i == 3)
 		ret = three_params((char **)context->params->tbl + 1);
 	else
-		ret = four_params((char **)context->params->tbl + 1);
-	if (ret > 1)
-		sh_env_update_ret_value(context->shell, 2);
+		ret = four_params((char **)context->params->tbl + 1);	// if (ret > 1)
+	// 	sh_env_update_ret_value(context->shell, 2);
 	return (ret);
 }

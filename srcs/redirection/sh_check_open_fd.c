@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sh_check_open_fd.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/09/19 15:06:52 by jdugoudr          #+#    #+#             */
+/*   Updated: 2019/09/19 15:10:22 by jdugoudr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "sh_21.h"
 
 static int	is_saved(t_list *lst_redir, int fd)
 {
-	t_redirection 	*redir;
+	t_redirection	*redir;
 
 	while (lst_redir)
 	{
@@ -25,6 +37,7 @@ static int	is_saved(t_list *lst_redir, int fd)
  * closed this fd. So we re-do a dup until we
  * find a "non-used" fd.
 */
+
 static int	save_fd(t_list *lst, t_redirection_type type, int fd)
 {
 	int 			backup;
@@ -67,6 +80,7 @@ int			sh_check_open_fd(t_redirection_type type, int fd)
  * If fd and one backup are egual means fd it's.
  * Because backup can only took on close fd.
 */
+
 int			sh_check_dst_fd(t_list *lst, t_redirection_type type, int fd)
 {
 	t_redirection	*el;
@@ -91,6 +105,7 @@ int			sh_check_dst_fd(t_list *lst, t_redirection_type type, int fd)
  * return -1 if error
  * otherwise 0
 */
+
 int 		sh_check_src_fd(t_list *head, t_redirection *curr_redir)
 {
 	t_redirection		*el;

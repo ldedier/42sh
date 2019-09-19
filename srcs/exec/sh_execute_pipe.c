@@ -41,7 +41,8 @@ static int 		father_exec(
 	close(pds[OUTPUT]);
 	close(STDOUT_FILENO);
 	waitpid(child, &ret, 0);
-	return (ret);
+	return (SH_RET_VALUE_EXIT_STATUS(ret));
+	// return (ret);
 }
 
 /*
@@ -54,13 +55,14 @@ static int 		loop_pipe_exec(
 {
 	pid_t		child;
 	int			pds[2];
-	// int 		ret;
+	int 		ret;
 
 	if (lst_sequences->next == NULL)
 	{
-		sh_traverse_simple_command(curr_sequence, context);
+		ret = sh_traverse_simple_command(curr_sequence, context);
+		if (ret == FAILURE)
+			return (ret);
 		return (context->shell->ret_value);
-		// return (sh_traverse_command(curr_sequence, context));
 	}
 	else if (((t_ast_node *)(lst_sequences->content))->symbol->id
 		!= sh_index(LEX_TOK_PIPE))
@@ -74,12 +76,10 @@ static int 		loop_pipe_exec(
 		if (dup2(pds[INPUT], STDIN_FILENO) < 0)
 			exit(STOP_CMD_LINE);
 		close(pds[OUTPUT]);
-		// ret = loop_pipe_exec(
-		context->shell->ret_value = loop_pipe_exec(
+		ret = loop_pipe_exec(
 			lst_sequences->next->content, lst_sequences->next, context);
 		close(pds[INPUT]);
-		// exit(ret);
-		exit(context->shell->ret_value);
+		exit(ret);
 	}
 }
 
@@ -100,6 +100,5 @@ int				sh_execute_pipe(t_ast_node *node,
 
 	lst_psequences = node->children;
 	ret = loop_pipe_exec(lst_psequences->content, lst_psequences, context);
-	sh_env_update_ret_value_wait_result(context, ret);
-	return (ret >> 8);
+	return (ret);
 }

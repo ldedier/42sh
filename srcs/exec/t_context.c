@@ -73,4 +73,5 @@ void		t_context_reset(t_context *context)
 	if (context->path)
 		ft_strdel(&context->path);
 	context->builtin = NULL;
+	context->shell->ret_value_set = 0;
 }

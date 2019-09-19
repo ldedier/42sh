@@ -15,11 +15,10 @@ static int	sh_exec_binaire(t_context *context)
 	{
 		waitpid(child, &res, 0);
 		sh_env_update_ret_value_wait_result(context, res);
-		// sh_process_execute_close_pipes(context);
 		if (sh_post_execution() != SUCCESS)
 			return (FAILURE);
 		g_glob.command_line.interrupted = WIFSIGNALED(res);
-		return (res >> 8);
+		return (res);
 	}
 	return (SUCCESS);
 }
@@ -45,10 +44,7 @@ static int		sh_no_slash_cmd(t_context *context)
 static int		sh_slash_cmd(t_context *context)
 {
 	if (!(context->path = ft_strdup(context->params->tbl[0])))
-	{
-		// sh_process_execute_close_pipes(context);
 		return (sh_perror(SH_ERR1_MALLOC, "traverse_simple_command"));
-	}
 	if (sh_traverse_sc_check_perm(context,
 				context->params->tbl[0], context->params->tbl[0]) != SUCCESS)
 		return (SH_RET_NO_PERM);

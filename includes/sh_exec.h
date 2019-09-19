@@ -45,37 +45,11 @@ typedef enum		e_redirection_type
 typedef struct			s_redirection
 {
 	t_redirection_type	type;
-	int					redirected_fd;//left fd
-	int					fd;//right fd
-	int					backup;//save left fd
-	// int					closed;//used to know if fd is already closed. Use full if an error
-	//appear and we need to reset all... I  guess...
-	int					was_closed;//if fd was closed
+	int					redirected_fd;
+	int					fd;
+	int					backup;
+	int					was_closed;
 }						t_redirection;
-
-typedef struct		s_pipe_metadata
-{
-	t_list			*contexts;
-	int				last_ret_value;
-}					t_pipe_metadata;
-
-typedef struct		s_command_metadata
-{
-	t_list			*redirections;
-	int				should_exec;
-}					t_command_metadata;
-
-typedef struct		s_heredoc_metadata
-{
-	t_redirection		redirection;
-}					t_heredoc_metadata;
-
-typedef union		u_metadata
-{
-	t_command_metadata	command_metadata;
-	t_pipe_metadata		pipe_metadata;
-	t_heredoc_metadata	heredoc_metadata;
-}					t_metadata;
 
 typedef enum		e_phase
 {
@@ -97,7 +71,6 @@ typedef struct		s_context
 	t_dy_tab		*params;
 	int				(*builtin)(struct s_context *);
 	int				redirected_fd;
-	// int				fd[3];
 	t_phase			phase;
 	t_ast_node		*current_command_node;
 	t_ast_node		*current_pipe_sequence_node;
