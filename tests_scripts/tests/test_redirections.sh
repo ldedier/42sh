@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/21 16:00:50 by jmartel           #+#    #+#              #
-#    Updated: 2019/07/30 18:39:55 by ldedier          ###   ########.fr        #
+#    Updated: 2019/09/19 08:39:44 by jdugoudr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,7 @@ launch "Redirections"
 ## Closing fd
 	test_launch "echo lol 1>&-" "ls -a"
 	test_launch "ls nofile 2>&-"
+	test_launch "nocmd 2>&-"
 
 ## Duplicationg fd
 	test_launch 'ls nowhere 2>&1 ; echo $?'
@@ -91,4 +92,6 @@ launch "Redirections"
 	test_launch "echo lol > testmdr 4<&4 > testmdr2 ; ls ; rm testmdr testmdr2"
 	test_launch "echo lol > testmdr 2<&4 > testmdr2 ; ls ; rm testmdr testmdr2"
 	test_launch "echo dodo 12>&1 4>&12"
+	test_launch "echo dodo 12>&12"
+	test_launch "echo dodo 12>&12 4>&12"
 finish
