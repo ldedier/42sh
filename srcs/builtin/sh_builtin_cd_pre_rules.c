@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 14:50:45 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/19 17:23:09 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/19 18:03:51 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,8 +125,10 @@ static int	sh_builtin_cd_cdpath(
 			continue ;
 		*curpath = path;
 		args[CD_HYPHEN_OPT].value = &args;
+		ft_strtab_free(split);
 		return (SUCCESS);
 	}
+	ft_strtab_free(split);
 	if (path)
 		ft_strdel(&path);
 	if (!((*curpath) = ft_strdup(param)))
