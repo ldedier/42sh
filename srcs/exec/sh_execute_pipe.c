@@ -54,10 +54,14 @@ static int 		loop_pipe_exec(
 {
 	pid_t		child;
 	int			pds[2];
-	int 		ret;
+	// int 		ret;
 
 	if (lst_sequences->next == NULL)
-		return (sh_traverse_command(curr_sequence, context));
+	{
+		sh_traverse_simple_command(curr_sequence, context);
+		return (context->shell->ret_value);
+		// return (sh_traverse_command(curr_sequence, context));
+	}
 	else if (((t_ast_node *)(lst_sequences->content))->symbol->id
 		!= sh_index(LEX_TOK_PIPE))
 		return (loop_pipe_exec(curr_sequence, lst_sequences->next, context));
@@ -70,10 +74,12 @@ static int 		loop_pipe_exec(
 		if (dup2(pds[INPUT], STDIN_FILENO) < 0)
 			exit(STOP_CMD_LINE);
 		close(pds[OUTPUT]);
-		ret = loop_pipe_exec(
+		// ret = loop_pipe_exec(
+		context->shell->ret_value = loop_pipe_exec(
 			lst_sequences->next->content, lst_sequences->next, context);
 		close(pds[INPUT]);
-		exit(ret);
+		// exit(ret);
+		exit(context->shell->ret_value);
 	}
 }
 

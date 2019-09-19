@@ -36,8 +36,6 @@ static int		sh_traverse_and_or_call_sons_exec(t_ast_node *node,
 	ret = sh_traverse_pipeline(child, context);
 	if (ret == BLT_TEST_ERROR)
 		context->shell->ret_value = 2;
-	else
-		context->shell->ret_value = ret;
 	if (ret == FAILURE || ret == STOP_CMD_LINE)
 		return (ret);
 	if (!context->shell->running)

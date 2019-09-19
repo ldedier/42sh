@@ -91,10 +91,12 @@ int			sh_check_dst_fd(t_list *lst, t_redirection_type type, int fd)
  * return -1 if error
  * otherwise 0
 */
-int 		sh_check_src_fd(t_list *lst, t_redirection *curr_redir)
+int 		sh_check_src_fd(t_list *head, t_redirection *curr_redir)
 {
 	t_redirection		*el;
+	t_list				*lst;
 
+	lst = head;
 	while (lst)
 	{
 		el = lst->content;
@@ -110,7 +112,7 @@ int 		sh_check_src_fd(t_list *lst, t_redirection *curr_redir)
 	}
 	if (sh_check_open_fd(curr_redir->type, curr_redir->redirected_fd) != -1)
 		if ((curr_redir->backup = save_fd(
-			lst, curr_redir->type, curr_redir->redirected_fd)) < 0)
+			head, curr_redir->type, curr_redir->redirected_fd)) < 0)
 			return (-1);
 	return (0);
 }

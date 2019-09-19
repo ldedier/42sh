@@ -23,6 +23,7 @@
 # define SH_RET_SUCCESS			0
 # define SH_RET_ERROR			1
 # define SH_RET_SYNTAX_ERROR	2
+# define SH_RET_NO_PERM			126
 # define SH_RET_NOT_EXECUTABLE	126
 # define SH_RET_CMD_NOT_FOUND	127
 # define SH_RET_SIG_RECEIVED	128
@@ -166,7 +167,7 @@ int 				sh_execute_redirection(t_list *lst, t_redirection *el);
 ** sh_check_open_fd.c
 */
 int					sh_check_open_fd(t_redirection_type type, int fd);
-int 				sh_check_src_fd(t_list *lst, t_redirection *curr_redir);
+int 				sh_check_src_fd(t_list *head, t_redirection *curr_redir);
 int					sh_check_dst_fd(
 	t_list *lst, t_redirection_type type, int fd);
 

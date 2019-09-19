@@ -55,7 +55,7 @@ int				sh_traverse_pipeline(t_ast_node *node, t_context *context)
 		ret = pipe_to_do(node, context);
 	else
 		ret = sh_traverse_command(node->children->content, context);
-	sh_env_update_ret_value(context->shell, ret);
+	// sh_env_update_ret_value(context->shell, ret);
 	sh_traverse_tools_show_traverse_ret_value(node, context, ret);
 	return (ret);
 }

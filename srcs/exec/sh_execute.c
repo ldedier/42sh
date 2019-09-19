@@ -51,7 +51,7 @@ static int		sh_slash_cmd(t_context *context)
 	}
 	if (sh_traverse_sc_check_perm(context,
 				context->params->tbl[0], context->params->tbl[0]) != SUCCESS)
-		return (ERROR);
+		return (SH_RET_NO_PERM);
 	return (SUCCESS);
 }
 
