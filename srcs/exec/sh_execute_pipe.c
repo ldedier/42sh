@@ -59,7 +59,7 @@ static int 		loop_pipe_exec(
 
 	if (lst_sequences->next == NULL)
 	{
-		ret = sh_traverse_simple_command(curr_sequence, context);
+		ret = sh_traverse_command(curr_sequence, context);
 		if (ret != SUCCESS)
 			return (ret);
 		return (context->shell->ret_value);
