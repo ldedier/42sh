@@ -22,7 +22,8 @@
 # define QUOTE_PROMPT		"quote"
 # define DQUOTE_PROMPT		"dquote"
 
-# define COMMAND_PROMPT	"(command)"
+# define COMMAND_PROMPT	"(vi"
+# define COUNT_PROMPT	"(arg:"
 # define VISUAL_PROMPT	"(visual)"
 # define HEREDOC_PROMPT	"heredoc"
 # define PROMPT_SUFFIX	"> "

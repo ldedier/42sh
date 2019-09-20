@@ -75,6 +75,9 @@ static int	process_keys_command(t_key_buffer *buffer, t_shell *shell,
 		|| command_line->buffer.buff[0] != '0'))
 	{
 		add_digit(&command_line->count, command_line->buffer.buff[0]);
+		if (update_prompt(command_line->shell, command_line))
+			return (FAILURE);
+		render_command_line(command_line, 0, 1);
 		//ft_printf("wip: %d\n", command_line->count.tmp_value);
 		flush_keys(buffer);
 		return (SUCCESS);

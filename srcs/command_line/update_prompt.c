@@ -42,6 +42,32 @@ int		update_prompt_context(t_shell *shell, t_command_line *command_line,
 	return (SUCCESS);
 }
 
+int		fill_prompt_command_mode(char **new_prompt, t_command_line *command_line)
+{
+	char *count_str;
+
+	if (!(*new_prompt = ft_strjoin_free(*new_prompt, COMMAND_PROMPT, 1)))
+		return (sh_perror(SH_ERR1_MALLOC, "fill_prompt_command_mode"));
+	if (command_line->count.active)
+	{
+		if (!(*new_prompt = ft_strjoin_free(*new_prompt, COUNT_PROMPT, 1)))
+			return (sh_perror(SH_ERR1_MALLOC, "fill_prompt_command_mode"));
+		if (!(count_str = ft_itoa(command_line->count.tmp_value)))
+			return (sh_perror(SH_ERR1_MALLOC, "fill_prompt_command_mode"));
+		if (!(*new_prompt = ft_strjoin_free(*new_prompt, count_str, 1)))
+		{
+			free(count_str);
+			return (sh_perror(SH_ERR1_MALLOC, "fill_prompt_command_mode"));
+		}
+		free(count_str);
+		if (!(*new_prompt = ft_strjoin_free(*new_prompt, ")", 1)))
+			return (sh_perror(SH_ERR1_MALLOC, "fill_prompt_command_mode"));
+	}
+	if (!(*new_prompt = ft_strjoin_free(*new_prompt, ")", 1)))
+		return (sh_perror(SH_ERR1_MALLOC, "fill_prompt_command_mode"));
+	return (SUCCESS);
+}
+
 int		update_prompt(t_shell *shell, t_command_line *command_line)
 {
 	char *new_prompt;
@@ -57,8 +83,8 @@ int		update_prompt(t_shell *shell, t_command_line *command_line)
 	}
 	else if (command_line->mode == E_MODE_COMMAND)
 	{
-		if (!(new_prompt = ft_strjoin_free(new_prompt, COMMAND_PROMPT, 1)))
-			return (sh_perror(SH_ERR1_MALLOC, "update_prompt"));
+		if (fill_prompt_command_mode(&new_prompt, command_line) != SUCCESS)
+			return (FAILURE);
 	}
 	if (command_line->context != E_CONTEXT_STANDARD)
 	{
