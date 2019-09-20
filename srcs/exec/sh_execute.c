@@ -34,6 +34,7 @@ static int	sh_exec_binaire(t_context *context)
 	}
 	else
 	{
+		process_add(context, cpid);
 		if (g_job_ctrl->curr_job->pgid == 0)
 			g_job_ctrl->curr_job->pgid = cpid;
 		setpgid(cpid, g_job_ctrl->curr_job->pgid);
@@ -43,8 +44,7 @@ static int	sh_exec_binaire(t_context *context)
 			ft_printf("Process in fg\n");
 			tcsetpgrp(g_job_ctrl->term_fd, g_job_ctrl->curr_job->pgid);
 			// Wait for the job to finish/be stopped
-			// waitpid(cpid, &res, 0);
-			wait(&res);
+			waitpid(-1, &res, WUNTRACED);
 			if (WIFSIGNALED(res))
 				ft_printf("Was terminated by a signal\n");
 			// Give back the control of the terminal to the shell
@@ -59,7 +59,7 @@ static int	sh_exec_binaire(t_context *context)
 		if (sh_post_execution() != SUCCESS)
 			return (FAILURE);
 		g_glob.command_line.interrupted = WIFSIGNALED(res);
-		return (res);
+		return (context->shell->ret_value);
 	}
 	return (SUCCESS);
 }

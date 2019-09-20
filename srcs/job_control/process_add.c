@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 00:38:06 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/20 15:51:04 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/20 20:10:55 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,16 +61,13 @@ int			process_add(t_context *context, pid_t pid)
 	if ((new_p = process_create(context, pid)) == NULL)
 		return (FAILURE);
 	// iterate to the last job created (current job)
-	j = g_job_ctrl->first_job;
-	while (j->next != NULL)
-		j = j->next;
+	j = g_job_ctrl->curr_job;
 	ft_printf("to the job number: %d\n", j->number);
 	// if it's the first process in the current job, make it the process group leader
 	if (j->first_process == NULL)
 	{
-		ft_printf("making the process \"");
+		ft_printf("First process\n");
 		str_tab_print((char **)context->params->tbl);
-		ft_printf("\" the group leader\n");
 		j->first_process = new_p;
 		// job_print();
 		return (SUCCESS);
