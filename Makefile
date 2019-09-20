@@ -49,12 +49,6 @@ VPATH		= $(INCLUDESDIR) \
 SPEED = -j1
 LIBFT = $(LIBFTDIR)/libft.a
 
-OK_COLOR = \x1b[32;01m
-#COMP_COLOR = \x1b[34;01m
-FLAGS_COLOR = \x1b[34;01m
-COMP_COLOR =
-EOC = \033[0m
-
 ################################################################
 ########					GRAMMAR						########
 ################################################################
@@ -269,10 +263,18 @@ INCLUDES			=	sh_21.h \
 OBJECTS			=	$(addprefix $(OBJDIR), $(SRCS:.c=.o))
 INC 			=	-I $(INCLUDESDIR) -I $(LIBFTDIR) -I $(LIBFTDIR)/$(PRINTFDIR)
 
+EOC = \033[0m
 ifeq ($(OS),Linux)
 	CFLAGS = -DPATH=$(PWD) $(INC)
+	OK_COLOR = \033[1;32m
+	FLAGS_COLOR = \033[1;34m
+	#COMP_COLOR =
 else
 	CFLAGS = -DPATH=$(PWD) $(INC) -Wall -Werror -Wextra
+	OK_COLOR = \x1b[32;01m
+	#COMP_COLOR = \x1b[34;01m
+	FLAGS_COLOR = \x1b[34;01m
+#	COMP_COLOR =
 endif
 
 LFLAGS =	-L $(LIBFTDIR) -lft -ltermcap
