@@ -36,7 +36,15 @@ static int	sh_exec_binaire(t_context *context)
 		process_add(context, cpid);
 		set_child_pgid(cpid);
 		if (g_job_ctrl->curr_job->foreground == 1)
-			job_put_in_fg(g_job_ctrl->curr_job, 0);
+		{
+			if (tcsetpgrp(g_job_ctrl->term_fd, g_job_ctrl->curr_job->pgid) < 0)
+				return (ERROR);
+			waitpid(-1, &res, WUNTRACED);
+			if (WIFSIGNALED(res))
+				ft_printf("Was terminated by a signal\n");
+			if (tcsetpgrp(g_job_ctrl->term_fd, g_job_ctrl->shell_pgid) < 0)
+				return (ERROR);
+		}
 		else
 			waitpid(cpid, &res, WNOHANG);
 		sh_env_update_ret_value_wait_result(context, res);
@@ -44,6 +52,7 @@ static int	sh_exec_binaire(t_context *context)
 			return (FAILURE);
 		g_glob.command_line.interrupted = WIFSIGNALED(res);
 		return(context->shell->ret_value);
+		return (parent_handle_job(cpid, context));
 	}
 	return (SUCCESS);
 }

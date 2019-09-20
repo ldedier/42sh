@@ -59,12 +59,6 @@ struct	s_job_control
 
 t_job_control	*g_job_ctrl;
 
-// t_job			*find_job_by_pgid(pid_t pgid);
-// int				job_stopped_completed(t_job *j);
-// int				job_completed(t_job *j);
-// int				job_start(t_job *j, int foreground);
-// int				job_exec(void);
-// int				j_process_start(t_process *p, pid_t pgid, int foreground);
 int				jobs_add(void);
 void			jobs_print(void);
 int				process_add(t_context *context, pid_t pid);
@@ -72,5 +66,13 @@ void			str_tab_print(char **char_tab);		//put in libft
 char			**str_tab_duplicate(char **from);	//put in libft
 int				jobs_init(t_shell *shell);
 int				jobs_reset(void);
+int				set_child_pgid(pid_t cpid);
+void			job_wait(t_job *j);
+int				job_put_in_bg(t_job *j, int cont);
+int				job_put_in_fg(t_job *j, int cont);
+int				job_is_completed(t_job *j);
+int				job_is_stopped(t_job *j);
+int				job_check_process_changes(pid_t cpid, int status);
+void			job_free(t_job *j);
 
 #endif

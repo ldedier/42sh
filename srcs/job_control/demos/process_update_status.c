@@ -1,28 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   jobs_reset.c                                       :+:      :+:    :+:   */
+/*   process_update_status.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/20 15:54:13 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/21 00:24:50 by mdaoud           ###   ########.fr       */
+/*   Created: 2019/09/21 00:32:56 by mdaoud            #+#    #+#             */
+/*   Updated: 2019/09/21 00:33:43 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_job_control.h"
 #include "sh_21.h"
 
-/*
-** For each commandline input.
-** Reset the jobs structure
-** No frees are implemented yet
-*/
-
-int			jobs_reset(void)
+void		process_update_status(void)
 {
-	// g_job_ctrl->job_count = 1;
-	// g_job_ctrl->curr_job = NULL;
-	// g_job_ctrl->first_job = NULL;
-	return (SUCCESS);
+	int status;
+	pid_t pid;
+
+	do
+		pid = waitpid (-1, &status, WUNTRACED|WNOHANG);
+	while (!mark_process_status (pid, status));
 }

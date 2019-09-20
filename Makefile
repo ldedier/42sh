@@ -6,7 +6,7 @@
 #    By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/09/20 15:57:02 by mdaoud           ###   ########.fr        #
+#    Updated: 2019/09/21 01:19:13 by mdaoud           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -253,7 +253,15 @@ SRCS			+=	jobs_init.c \
 					jobs_reset.c \
 					process_add.c \
 					str_tab_duplicate.c \
-					str_tab_print.c
+					str_tab_print.c \
+					set_child_pgid.c \
+					job_wait.c \
+					job_put_in_bg.c \
+					job_put_in_fg.c \
+					job_is_completed.c \
+					job_is_stopped.c \
+					job_check_process_changes.c \
+					job_free.c
 
 ################################################################
 ########					INCLUDES					########

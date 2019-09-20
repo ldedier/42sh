@@ -1,28 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   jobs_reset.c                                       :+:      :+:    :+:   */
+/*   job_free.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/20 15:54:13 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/21 00:24:50 by mdaoud           ###   ########.fr       */
+/*   Created: 2019/09/21 01:15:12 by mdaoud            #+#    #+#             */
+/*   Updated: 2019/09/21 01:18:59 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "sh_job_control.h"
 #include "sh_21.h"
+#include "sh_job_control.h"
 
-/*
-** For each commandline input.
-** Reset the jobs structure
-** No frees are implemented yet
-*/
-
-int			jobs_reset(void)
+void			job_free(t_job *j)
 {
-	// g_job_ctrl->job_count = 1;
-	// g_job_ctrl->curr_job = NULL;
-	// g_job_ctrl->first_job = NULL;
-	return (SUCCESS);
+	t_process	*p;
+	t_process	*p_next;
+
+
+	if (j == NULL)
+		return ;
+	p = j->first_process;
+	while (p != NULL)
+	{
+		p_next = p->next;
+		free(p);	//free_whole_process.
+		p = p->next;
+	}
+	//free command.
+	free(j);
 }
