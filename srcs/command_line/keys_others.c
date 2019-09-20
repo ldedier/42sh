@@ -118,15 +118,45 @@ static int	process_keys_visual(t_key_buffer *buffer, t_shell *shell,
 	return (SUCCESS);
 }
 
+int			replace_command_line(t_key_buffer *buffer,
+				t_command_line *command_line)
+{
+	int len;
+
+	if (is_printable_utf8(buffer->buff, buffer->progress))
+	{
+		if (command_line->current_index ==
+			(int)command_line->dy_str->current_size)
+		{
+			if (sh_add_to_command(command_line, buffer->buff, buffer->progress))
+				return (FAILURE);
+			render_command_line(command_line, 1, 1);
+		}
+		else
+		{
+			len = get_char_len_unprotected(command_line->current_index,
+				(unsigned char *)command_line->dy_str->str);
+			buffer->buff[buffer->progress] = 0;
+			if (ft_substitute_dy_str(command_line->dy_str, (char *)buffer->buff,
+				command_line->current_index, len))
+				return (FAILURE);
+			render_command_line(command_line, 1, 1);
+			command_line->current_index += len;
+		}
+		flush_keys(buffer);
+	}
+	return (SUCCESS);
+}
+
 int			process_keys_others(t_key_buffer *buffer,
 			t_shell *shell, t_command_line *command_line)
 {
-//	if (buffer->buff[0] == 3)
-//		return (process_i(shell, command_line, buffer));
 	if (command_line->mode == E_MODE_COMMAND)
 		return (process_keys_command(buffer, shell, command_line));
 	else if (command_line->mode == E_MODE_VISUAL)
 		return (process_keys_visual(buffer, shell, command_line));
+	else if (command_line->mode == E_MODE_REPLACE)
+		return (replace_command_line(buffer, command_line));
 	else
 		return (SUCCESS);
 }

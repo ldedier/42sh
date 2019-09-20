@@ -27,7 +27,7 @@ int		sh_vshortcut_p(t_command_line *command_line, int dummy, int dummy_2)
 	if (!command_line->clipboard)
 		return (SUCCESS);
 	if (ft_substitute_dy_str(command_line->dy_str,
-		 command_line->clipboard, ft_min(command_line->current_index + 1, command_line->dy_str->current_size), 0))
+		 command_line->clipboard, ft_min(command_line->current_index + 1, command_line->dy_str->current_size), 0)) //tofix
 	{
 		return (FAILURE);
 	}

@@ -21,6 +21,5 @@
 int		sh_vs_motion_l(t_command_line *command_line, char dummy)
 {
 	(void)dummy;
-	(void)command_line;
 	return (sh_vs_motion_space(command_line, dummy));
 }

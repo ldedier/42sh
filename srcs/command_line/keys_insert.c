@@ -97,6 +97,7 @@ int		process_keys_insert(t_key_buffer *buffer,
 		t_shell *shell, t_command_line *command_line)
 {
 	cancel_autocompletion(buffer, command_line);
+//	ft_printf("TOTO: %d\n", buffer->progress);
 	if (is_printable_utf8(buffer->buff, buffer->progress))
 	{
 		if (process_key_insert_printable_utf8(buffer,

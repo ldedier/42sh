@@ -15,13 +15,29 @@
 /*
 ** sh_vshortcut_y.c
 **	
-**	
+**	yank all characters between the current index and the motion returned index
 */
 
 int		sh_vshortcut_y(t_command_line *command_line, int index, int special)
 {
-	(void)index;
-	(void)special;
-	(void)command_line;
-	return (0);
+	int min;
+	int max;
+
+	if (special)
+	{
+		if (command_line_copy_all(command_line) != SUCCESS)
+			return (FAILURE);
+	}
+	else
+	{
+		if (index == command_line->current_index)
+			return (SUCCESS);
+		ft_strdel(&command_line->clipboard);
+		min = ft_min(index, command_line->current_index);
+		max = ft_max(index, command_line->current_index);
+		if (!(command_line->clipboard =
+					ft_strndup(&command_line->dy_str->str[min], max - min)))
+			return (sh_perror(SH_ERR1_MALLOC, "sh_vshortcut_d"));
+	}
+	return (SUCCESS);
 }

@@ -85,6 +85,7 @@ static int      sh_process_read_canonical_gnl(t_shell *shell, t_gnl_info *info)
 
 	if (info->separator != E_SEPARATOR_ZERO)
 	{
+		ft_printf("%s\n", info->line);
 		if ((ret = execute_command(shell, info->line, 1)))
 		{
 			free(info->line);

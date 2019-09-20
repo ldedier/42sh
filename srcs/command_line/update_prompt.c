@@ -86,6 +86,11 @@ int		update_prompt(t_shell *shell, t_command_line *command_line)
 		if (fill_prompt_command_mode(&new_prompt, command_line) != SUCCESS)
 			return (FAILURE);
 	}
+	else if (command_line->mode == E_MODE_REPLACE)
+	{
+		if (!(new_prompt = ft_strjoin_free(new_prompt, REPLACE_PROMPT, 1)))
+			return (sh_perror(SH_ERR1_MALLOC, "update_prompt"));
+	}
 	if (command_line->context != E_CONTEXT_STANDARD)
 	{
 		if (!(new_prompt = ft_strjoin_free(new_prompt, PROMPT_SUFFIX, 1)))

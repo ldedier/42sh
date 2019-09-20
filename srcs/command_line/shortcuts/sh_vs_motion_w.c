@@ -17,7 +17,7 @@ char	get_char_type_word(t_command_line *command_line, int index)
 	char starting_char;
   
 	starting_char = command_line->dy_str->str[index];
-	if (ft_iswhite(starting_char))
+	if (ft_iswhite(starting_char) || starting_char == '\0')
 		starting_char = ' ';
 	else if (ft_isalnum(starting_char) || starting_char == '_')
 		starting_char = 'a';
@@ -56,5 +56,5 @@ int		sh_vs_motion_w(t_command_line *command_line, char dummy)
 		prev_type = new_type;
 		i++;
 	}
-	return (command_line->dy_str->current_size);
+	return (command_line->dy_str->current_size - 1);
 }

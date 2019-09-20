@@ -44,7 +44,7 @@ static t_vshortcut	g_vshortcuts_arr[0xff] =
 	['r'] = {sh_vshortcut_r, NULL, E_VSHORTCUT_AWAIT_CHAR},
 	['R'] = {sh_vshortcut_r_maj, NULL, E_VSHORTCUT_STANDARD},
 	['c'] = {sh_vshortcut_c, NULL, E_VSHORTCUT_AWAIT_MOTION},
-	['C'] = {sh_vshortcut_C_maj, NULL, E_VSHORTCUT_STANDARD},
+	['C'] = {sh_vshortcut_c_maj, NULL, E_VSHORTCUT_STANDARD},
 	['S'] = {sh_vshortcut_s_maj, NULL, E_VSHORTCUT_STANDARD},
 	['x'] = {sh_vshortcut_x, NULL, E_VSHORTCUT_STANDARD},
 	['X'] = {sh_vshortcut_x_maj, NULL, E_VSHORTCUT_STANDARD},
@@ -147,7 +147,7 @@ int			execute_motion_awaiting_shortcut(t_command_line *command_line,
 	{
 		return (SUCCESS);
 	}
-	if (vshortcut->type == E_VSHORTCUT_STANDARD)
+	if (motion_shortcut->type == E_VSHORTCUT_STANDARD)
 		motion_res = motion_shortcut->motion(command_line, 0);
 	else
 	{

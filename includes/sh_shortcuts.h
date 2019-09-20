@@ -99,6 +99,12 @@ int					sh_vshortcut_i_maj(
 	t_command_line *command_line, int dummy, int dummy_2);
 
 /*
+** sh_vshortcut_c_maj.c
+*/
+int					sh_vshortcut_c_maj(
+	t_command_line *command_line, int dummy, int dummy_2);
+
+/*
 ** sh_vshortcut_u.c
 */
 int					sh_vshortcut_u(
@@ -295,12 +301,6 @@ int					sh_vs_motion_semicol(
 */
 int					sh_vs_motion_0(
 	t_command_line *command_line, char dummy);
-
-/*
-** sh_vshortcut_C_maj.c
-*/
-int					sh_vshortcut_C_maj(
-	t_command_line *command_line, int dummy, int dummy_2);
 
 /*
 ** sh_vshortcut_c.c

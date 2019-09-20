@@ -20,6 +20,11 @@
 
 int		sh_vs_motion_h(t_command_line *command_line, char dummy)
 {
+	int len;
+	int index;
+	int nb_chars;
+
 	(void)dummy;
-	return (command_line->current_index - command_line->count.value);
+	go_back_count_characters(command_line, &index, &len, &nb_chars);
+	return (index);
 }

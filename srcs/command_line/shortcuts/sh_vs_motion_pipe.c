@@ -18,9 +18,8 @@
 **	go to the counth character (starting from 1)
 */
 
-int		sh_vs_motion_pipe(t_command_line *command_line, char dummy)
+int		sh_vs_motion_pipe(t_command_line *command_line, char dummy) //utf8
 {
 	(void)dummy;
-	(void)command_line;
 	return (command_line->count.value - 1);
 }

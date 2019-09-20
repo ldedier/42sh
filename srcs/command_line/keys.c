@@ -136,7 +136,7 @@ int		get_keys(t_shell *shell, t_command_line *command_line)
 		{
 			return (sh_perror(SH_ERR1_READ, "get_keys"));
 		}
-//		sh_print_buffer(buffer);
+	//	sh_print_buffer(command_line->buffer);
 		if ((res = process_get_keys(&command_line->buffer, shell, command_line)) != KEEP_READ)
 			return (res);
 		if (command_line->buffer.progress >= READ_BUFF_SIZE

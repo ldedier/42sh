@@ -15,7 +15,7 @@
 /*
 ** sh_vshortcut_r_maj.c
 **	
-**	
+**	get into replace mode
 */
 
 int		sh_vshortcut_r_maj(t_command_line *command_line, int dummy, int dummy_2)
@@ -23,5 +23,9 @@ int		sh_vshortcut_r_maj(t_command_line *command_line, int dummy, int dummy_2)
 	(void)dummy;
 	(void)dummy_2;
 	(void)command_line;
+	command_line->mode = E_MODE_REPLACE;
+	if (update_prompt(command_line->shell, command_line))
+		return (FAILURE);
+	render_command_line(command_line, 0, 1);
 	return (0);
 }

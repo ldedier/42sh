@@ -15,13 +15,13 @@
 /*
 ** sh_vshortcut_y_maj.c
 **	
-**	
+**	equivalent of y$
 */
 
 int		sh_vshortcut_y_maj(t_command_line *command_line, int dummy, int dummy_2)
 {
 	(void)dummy;
 	(void)dummy_2;
-	(void)command_line;
-	return (0);
+	return (sh_vshortcut_y(command_line,
+		command_line->dy_str->current_size, 0));
 }

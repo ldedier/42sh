@@ -15,13 +15,17 @@
 /*
 ** sh_vshortcut_c.c
 **	
-**	
+**	delete the characters between the current index and the motion
+**	returned index, then get into insert mode before the deletion
+**
 */
 
 int		sh_vshortcut_c(t_command_line *command_line, int index, int special)
 {
-	(void)index;
-	(void)special;
-	(void)command_line;
-	return (0);
+	if (index == command_line->current_index && !special)
+		return (SUCCESS);
+	command_line->mode = E_MODE_INSERT;
+	if (update_prompt(command_line->shell, command_line))
+		return (FAILURE);
+	return (sh_vshortcut_d(command_line, index, special));
 }

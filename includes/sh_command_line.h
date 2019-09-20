@@ -24,6 +24,7 @@
 
 # define COMMAND_PROMPT	"(vi"
 # define COUNT_PROMPT	"(arg:"
+# define REPLACE_PROMPT	"(replace)"
 # define VISUAL_PROMPT	"(visual)"
 # define HEREDOC_PROMPT	"heredoc"
 # define PROMPT_SUFFIX	"> "
@@ -40,7 +41,8 @@ typedef enum		e_mode
 {
 	E_MODE_INSERT,
 	E_MODE_VISUAL,
-	E_MODE_COMMAND
+	E_MODE_COMMAND,
+	E_MODE_REPLACE
 }					t_mode;
 
 typedef enum		e_cl_context
@@ -211,6 +213,8 @@ int					update_prompt_cwd(t_shell *shell, char **new_prompt);
 /*
 ** get_char_len.c
 */
+int					get_char_len_unprotected(
+	int index, unsigned char *entry);
 int					get_char_len2(
 	int index, int len, unsigned char *entry);
 int					get_char_len(int index, unsigned char *entry);
@@ -464,6 +468,8 @@ void				replace_cursor_after_render(void);
 /*
 ** keys_others.c
 */
+int					replace_command_line(
+	t_key_buffer *buffer, t_command_line *command_line);
 int					process_keys_others(
 	t_key_buffer *buffer,
 	t_shell *shell,

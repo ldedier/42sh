@@ -224,7 +224,7 @@ SRCS			+=	vshortcuts.c \
 					sh_vshortcut_r.c \
 					sh_vshortcut_r_maj.c \
 					sh_vshortcut_c.c \
-					sh_vshortcut_C_maj.c \
+					sh_vshortcut_c_maj.c \
 					sh_vshortcut_s_maj.c \
 					sh_vshortcut_x.c \
 					sh_vshortcut_x_maj.c \

@@ -42,6 +42,7 @@ int		advance_count_characters(t_command_line *command_line,
 	return (SUCCESS);
 }
 
+
 int		sh_vshortcut_x(t_command_line *command_line, int dummy, int dummy_2)
 {
 	int     i;
