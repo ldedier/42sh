@@ -18,8 +18,6 @@ int		process_enter(t_command_line *command_line)
 		return (process_enter_no_autocompletion(command_line));
 	else
 	{
-//		substitute_current_index(command_line,
-//			command_line->autocompletion.head->content);
 		command_line->autocompletion.head = NULL;
 		command_line->autocompletion.active = 0;
 		render_command_line(command_line, 0, 1);

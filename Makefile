@@ -33,6 +33,7 @@ VPATH		= $(INCLUDESDIR) \
 			  $(SRCDIR)/builtin \
 			  $(SRCDIR)/command_line \
 			  $(SRCDIR)/command_line/autocomplete \
+			  $(SRCDIR)/command_line/shortcuts \
 			  $(SRCDIR)/common \
 			  $(SRCDIR)/exec \
 			  $(SRCDIR)/expansions \
@@ -44,6 +45,7 @@ VPATH		= $(INCLUDESDIR) \
 			  $(SRCDIR)/traverse \
 			  $(SRCDIR)/traverse_tools \
 			  $(SRCDIR)/vars
+
 
 SPEED = -j1
 LIBFT = $(LIBFTDIR)/libft.a
@@ -189,6 +191,53 @@ SRCS			+=	add_choices_from_dir.c auto_completion.c \
 					add_choices_from_expansions.c
 
 ################################################################
+########					SHORTCUTS					########
+################################################################
+SRCS			+=	vshortcuts.c \
+					sh_vshortcut_hashtag.c \
+					sh_vs_motion_space.c \
+					sh_vshortcut_v.c \
+					sh_vshortcut_j.c \
+					sh_vshortcut_k.c \
+					sh_vs_motion_l.c \
+					sh_vs_motion_h.c \
+					sh_vs_motion_w.c \
+					sh_vs_motion_w_maj.c \
+					sh_vs_motion_e.c \
+					sh_vs_motion_e_maj.c \
+					sh_vs_motion_b.c \
+					sh_vs_motion_b_maj.c \
+					sh_vs_motion_caret.c \
+					sh_vs_motion_dollar.c \
+					sh_vs_motion_0.c \
+					sh_vs_motion_pipe.c \
+					sh_vs_motion_f.c \
+					sh_vs_motion_f_maj.c \
+					sh_vs_motion_t.c \
+					sh_vs_motion_t_maj.c \
+					sh_vs_motion_semicol.c \
+					sh_vs_motion_comma.c \
+					sh_vshortcut_a.c \
+					sh_vshortcut_a_maj.c \
+					sh_vshortcut_i.c \
+					sh_vshortcut_i_maj.c \
+					sh_vshortcut_r.c \
+					sh_vshortcut_r_maj.c \
+					sh_vshortcut_c.c \
+					sh_vshortcut_C_maj.c \
+					sh_vshortcut_s_maj.c \
+					sh_vshortcut_x.c \
+					sh_vshortcut_x_maj.c \
+					sh_vshortcut_d.c \
+					sh_vshortcut_d_maj.c \
+					sh_vshortcut_y.c \
+					sh_vshortcut_y_maj.c \
+					sh_vshortcut_p.c \
+					sh_vshortcut_p_maj.c \
+					sh_vshortcut_u.c \
+					sh_vshortcut_u_maj.c
+
+################################################################
 ########						VARS					########
 ################################################################
 SRCS			+=	sh_vars_tools_1.c sh_vars_tools_2.c \
@@ -256,11 +305,13 @@ INCLUDES			=	sh_21.h \
 					sh_grammar.h \
 				  	sh_command_line.h \
 					sh_autocompletion.h \
+					sh_expansions.h \
 					sh_history.h \
 					sh_exec.h\
 					sh_builtin.h \
 					sh_expansions.h \
-					sh_perror.h
+					sh_perror.h \
+					sh_shortcuts.h 
 
 OBJECTS			=	$(addprefix $(OBJDIR), $(SRCS:.c=.o))
 INC 			=	-I $(INCLUDESDIR) -I $(LIBFTDIR) -I $(LIBFTDIR)/$(PRINTFDIR)

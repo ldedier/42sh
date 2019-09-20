@@ -60,6 +60,28 @@ typedef struct		s_searcher
 	int				unsuccessful;
 }					t_searcher;
 
+
+typedef struct		s_key_buffer
+{
+	unsigned char	buff[READ_BUFF_SIZE];
+	int				progress;
+	int				last_char_input;
+}					t_key_buffer;
+
+typedef struct		s_ft_command
+{
+	char			c;
+	int				(*motion)(t_command_line *command_line, char c);
+	int				locked;
+}					t_ft_command;
+
+typedef struct		s_command_count
+{
+	int				active;
+	int				tmp_value;
+	int				value;
+}					t_command_count;
+
 /*
 ** dy_str			: content of the command_line
 ** heredoc_eof		: current eof of the heredoc
@@ -81,6 +103,7 @@ typedef struct		s_searcher
 */
 typedef struct		s_command_line
 {
+	t_shell			*shell;
 	t_auto_complete	autocompletion;
 	t_searcher		searcher;
 	t_dy_str		*dy_str;
@@ -97,14 +120,10 @@ typedef struct		s_command_line
 	int				prev_prompt_len;
 	char			*to_append_str;
 	int				fd;
+	t_key_buffer	buffer;
+	t_command_count	count;
+	t_ft_command	last_ft_command;
 }					t_command_line;
-
-typedef struct		s_key_buffer
-{
-	unsigned char	buff[READ_BUFF_SIZE];
-	int				progress;
-	int				last_char_input;
-}					t_key_buffer;
 
 typedef struct		s_xy
 {
@@ -330,6 +349,7 @@ int					process_escape_sequence(
 	t_key_buffer *buffer);
 int					process_shift(
 	t_key_buffer *buffer, t_command_line *command_line);
+int					await_stream(int fd);
 int					process_keys(
 	t_key_buffer *buffer,
 	t_shell *shell,
@@ -399,7 +419,9 @@ int					process_research_history(
 */
 int					update_prompt_cwd_home(char **new_prompt);
 int					process_escape(
-	t_shell *shell, t_command_line *command_line);
+	t_shell *shell,
+	t_command_line *command_line,
+	t_key_buffer *buffer);
 int					process_i(
 	t_shell *shell,
 	t_command_line *command_line,

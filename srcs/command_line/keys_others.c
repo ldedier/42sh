@@ -12,6 +12,7 @@
 
 #include "sh_21.h"
 
+/*
 static int	process_p(t_command_line *command_line,
 			t_key_buffer *buffer)
 {
@@ -21,10 +22,28 @@ static int	process_p(t_command_line *command_line,
 	flush_keys(buffer);
 	return (SUCCESS);
 }
+*/
+
+static void	add_digit(t_command_count *count, char c)
+{
+	int n;
+
+	n = c - '0';
+	if (!count->active || count->tmp_value >= 10000)
+		count->tmp_value = n;
+	else
+		count->tmp_value = count->tmp_value * 10 + c - '0';
+	count->active = 1;
+}
 
 static int	process_keys_command(t_key_buffer *buffer, t_shell *shell,
 			t_command_line *command_line)
 {
+	int ret;
+
+	(void)shell;
+	// old way olalala	
+	/* 
 	if (buffer->buff[0] == 'p')
 		return (process_p(command_line, buffer));
 	else if (buffer->buff[0] == 'i')
@@ -46,7 +65,26 @@ static int	process_keys_command(t_key_buffer *buffer, t_shell *shell,
 			return (FAILURE);
 		flush_keys(buffer);
 	}
-	return (SUCCESS);
+	*/
+
+//	ft_printf("progress: %d\n", buffer->progress);
+//	ft_printf("char: %d (%c)\n", buffer->buff[0], buffer->buff[0]);
+
+	if (ft_isdigit(command_line->buffer.buff[0])
+		&& (command_line->count.active
+		|| command_line->buffer.buff[0] != '0'))
+	{
+		add_digit(&command_line->count, command_line->buffer.buff[0]);
+		//ft_printf("wip: %d\n", command_line->count.tmp_value);
+		flush_keys(buffer);
+		return (SUCCESS);
+	}
+	//ft_printf("sent: %d\n", command_line->count.tmp_value);
+	command_line->count.value = command_line->count.tmp_value;
+	command_line->count.tmp_value = 1;
+	ret = execute_vim_command(command_line, buffer->buff[0]);
+	command_line->count.active = 0;
+	return (ret);
 }
 
 static int	process_keys_visual(t_key_buffer *buffer, t_shell *shell,
@@ -77,9 +115,9 @@ static int	process_keys_visual(t_key_buffer *buffer, t_shell *shell,
 int			process_keys_others(t_key_buffer *buffer,
 			t_shell *shell, t_command_line *command_line)
 {
-	if (buffer->buff[0] == 3)
-		return (process_i(shell, command_line, buffer));
-	else if (command_line->mode == E_MODE_COMMAND)
+//	if (buffer->buff[0] == 3)
+//		return (process_i(shell, command_line, buffer));
+	if (command_line->mode == E_MODE_COMMAND)
 		return (process_keys_command(buffer, shell, command_line));
 	else if (command_line->mode == E_MODE_VISUAL)
 		return (process_keys_visual(buffer, shell, command_line));

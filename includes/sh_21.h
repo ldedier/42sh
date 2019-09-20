@@ -49,6 +49,7 @@
 # include "sh_command_line.h"
 # include "sh_expansions.h"
 # include "sh_vars.h"
+# include "sh_shortcuts.h"
 # include "sh_history.h"
 
 # define SUCCESS		0
