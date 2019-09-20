@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/14 13:41:08 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/17 17:08:10 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/20 14:49:48 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int		sh_init_terminal(t_shell *shell, char **env)
 	shell->term.c_lflag &= ~(ICANON);
 	shell->term.c_lflag &= ~(ECHO);
 	// shell->term.c_lflag &= ~(ISIG);
-	shell->term.c_lflag |= (ISIG);
+	shell->term.c_lflag |= ISIG;
 	shell->term.c_cc[VMIN] = 1;
 	shell->term.c_cc[VTIME] = 0;
 	if (tcsetattr(0, TCSADRAIN, &shell->term) == -1)
