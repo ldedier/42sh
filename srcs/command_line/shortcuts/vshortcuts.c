@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 22:23:57 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/18 22:23:57 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/20 07:28:11 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,24 +88,22 @@ int			execute_motion(t_command_line *command_line, int index)
 	int char_diff;
 	int max;
 	int ret;
+	int len;
 
 	char_diff = 0;
 	
-	index = ft_clamp(0, index, command_line->dy_str->current_size -1);
-
+	index = ft_clamp(0, index, command_line->dy_str->current_size - 1);
 	i = ft_min(index, command_line->current_index);
 	max = ft_max(index, command_line->current_index);
-	while (i < max 
+	len = ft_strlen(&command_line->dy_str->str[i]);
+	while (i < max
 		&& ((size_t)i < command_line->dy_str->current_size - 1 || index != max))
 	{
-		if ((ret = get_char_len(i,
-			(unsigned char *)command_line->dy_str->str)) == -1)
-		{
-		//	ft_printf("OLALALAL\n");
-		//	return (FAILURE);
+		if ((ret = get_char_len2(0, len,
+			(unsigned char *)&command_line->dy_str->str[i])) == -1)
 			break ;
-		}
 		i += ret;
+		len -= ret;
 		char_diff++;
 	}
 	char_diff = (index == max ? char_diff : - char_diff);

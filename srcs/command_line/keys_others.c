@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 14:21:12 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/02 14:47:09 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/20 07:18:06 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,9 @@ static int	process_keys_command(t_key_buffer *buffer, t_shell *shell,
 	command_line->count.tmp_value = 1;
 	ret = execute_vim_command(command_line, buffer->buff[0]);
 	command_line->count.active = 0;
+	if (update_prompt(command_line->shell, command_line))
+		return (FAILURE);
+	render_command_line(command_line, 0, 1);
 	return (ret);
 }
 

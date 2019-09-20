@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/11 17:20:10 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/05 14:20:06 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/20 10:27:41 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,10 @@ typedef struct		s_command_count
 ** interrupted		: if the command got interrupted by a ctrl D or ctrl C
 ** to_append_str	: what to append to the string in the case of \\ in heredocs
 ** fd				: fd to print input (open("/fd/tty"));
+** key_buffer		: read characters
+** count			: vim arguments
+** last_ft_command	: last f, F , t, or T command executed by the shell
+** edit_line		: dup from the command_line to retrieve from history
 **
 */
 typedef struct		s_command_line
@@ -124,6 +128,7 @@ typedef struct		s_command_line
 	t_key_buffer	buffer;
 	t_command_count	count;
 	t_ft_command	last_ft_command;
+	char			*edit_line;
 }					t_command_line;
 
 typedef struct		s_xy
@@ -290,9 +295,15 @@ int					sh_process_quoted(t_lexer *lexer);
 ** sh_process_history.c
 */
 int					process_history_down(
-	t_shell *shell, t_command_line *command_line);
+	t_shell *shell,
+	t_command_line *command_line,
+	int count,
+	int replace_cursor);
 int					process_history_up(
-	t_shell *shell, t_command_line *command_line);
+	t_shell *shell,
+	t_command_line *command_line,
+	int count,
+	int replace_cursor);
 
 /*
 ** xy.c
@@ -534,6 +545,8 @@ int					append_to_str(char **str, char *to_append);
 */
 int					update_prompt_context(
 	t_shell *shell, t_command_line *command_line, char **new_prompt);
+int					fill_prompt_command_mode(
+	char **new_prompt, t_command_line *command_line);
 int					update_prompt(
 	t_shell *shell, t_command_line *command_line);
 int					update_prompt_from_quote(

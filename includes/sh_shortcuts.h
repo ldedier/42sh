@@ -154,6 +154,8 @@ int					sh_vshortcut_hashtag(
 /*
 ** sh_vs_motion_w_maj.c
 */
+char				get_char_type_bword(
+	t_command_line *command_line, int index);
 int					sh_vs_motion_w_maj(
 	t_command_line *command_line, char dummy);
 
@@ -232,6 +234,8 @@ int					execute_vim_command(
 /*
 ** sh_vs_motion_w.c
 */
+char				get_char_type_word(
+	t_command_line *command_line, int index);
 int					sh_vs_motion_w(
 	t_command_line *command_line, char dummy);
 
@@ -255,6 +259,11 @@ int					sh_vshortcut_x(
 /*
 ** sh_vshortcut_x_maj.c
 */
+void				go_back_count_characters(
+	t_command_line *command_line,
+	int *index,
+	int *len,
+	int *nb_chars);
 int					sh_vshortcut_x_maj(
 	t_command_line *command_line, int dummy, int dummy_2);
 

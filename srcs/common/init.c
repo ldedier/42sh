@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/14 13:19:50 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/02 15:38:05 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/20 10:28:40 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ static int	sh_init_history(t_history *history)
 static int	sh_init_command_line(t_shell *shell, t_command_line *command_line)
 {
 	command_line->shell = shell;
+	command_line->edit_line = NULL;
 	command_line->count.active = 0;
 	command_line->count.tmp_value = 1;
 	command_line->last_ft_command.motion = NULL;
