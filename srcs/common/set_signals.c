@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/31 16:05:53 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/17 19:01:12 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/19 15:45:30 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 void			handler_sigstop_process(int signo)
 {
-	if (signo == SIGSTOP || signo == SIGTSTP)
+	if (signo == SIGTSTP)
 	{
 		ft_printf("HANDLER_SIGINT_PROCESS : pid: %d pgid: %d\n", getpid(), getpgid(getpid()));
 		// kill(0, SIGINT);
@@ -35,7 +35,7 @@ void			handler_sigint_process(int signo)
 
 void			handler_sigstop(int signo)
 {
-	if (signo == SIGSTOP || signo == SIGTSTP)
+	if (signo == SIGTSTP)
 	{
 		ft_printf("RECEIVED SIGSTOP FROM : pid: %d pgid: %d\n", getpid(), getpgid(getpid()));
 
@@ -60,18 +60,18 @@ void			reset_signals(void)
 
 	ft_printf("RESETTING SIGNALS\n");
 	i = 1;
-	while (i <= SIGUSR2)
-		signal(i++, SIG_DFL);
-	signal(SIGTSTP, handler_sigstop_process);
-	signal(SIGSTOP, handler_sigstop_process);
+	// while (i <= SIGUSR2)
+	// 	signal(i++, SIG_DFL);
 	signal(SIGINT, handler_sigint_process);
+	signal(SIGTSTP, handler_sigstop_process);
+	// signal(SIGSTOP, handler_sigstop_process);
 }
 
 static void		init_signal2(void (*default_func)(int))
 {
 	signal(SIGURG, transmit_sig_no_motion);
 	signal(SIGTSTP, handler_sigstop);
-	signal(SIGSTOP, handler_sigstop);	//SIGSTOP OR SIGTSP
+	// signal(SIGSTOP, handler_sigstop);	//SIGSTOP OR SIGTSP
 	signal(SIGINT, transmit_sig);
 	signal(SIGCONT, handle_cont);
 	signal(SIGCHLD, transmit_sig_no_motion);
@@ -97,7 +97,7 @@ void			init_signals(void)
 		default_func = default_sig;
 	signal(SIGWINCH, handle_resize);
 	signal(SIGQUIT, transmit_sig_no_motion);
-	signal(SIGKILL, default_func);
+	// signal(SIGKILL, default_func);
 	signal(SIGHUP, default_func);
 	signal(SIGABRT, default_func);
 	signal(SIGILL, default_func);
