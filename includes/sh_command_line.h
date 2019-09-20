@@ -294,16 +294,19 @@ int					sh_process_quoted(t_lexer *lexer);
 /*
 ** sh_process_history.c
 */
+int					restore_edit_line(t_command_line *command_line);
+int					reached_history_bottom(t_shell *shell);
 int					process_history_down(
 	t_shell *shell,
 	t_command_line *command_line,
 	int count,
-	int replace_cursor);
+	int start);
+int					reached_history_end(t_shell *shell);
 int					process_history_up(
 	t_shell *shell,
 	t_command_line *command_line,
 	int count,
-	int replace_cursor);
+	int start);
 
 /*
 ** xy.c

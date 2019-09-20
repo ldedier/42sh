@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 11:02:58 by ldedier           #+#    #+#             */
-/*   Updated: 2019/03/28 11:02:58 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/20 13:01:00 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,44 @@
 /*
 ** sh_vshortcut_v.c
 **	
-**	
+**	copy the content of the command_line in a temp file, open it with vim
+**	then execute the content of it
 */
+
+static char	*get_to_edit(t_command_line *command_line)
+{
+	t_fc_operand fc;
+	(void)fc;
+	(void)command_line;
+/*
+	if (command_line->count.active)
+	{
+		fc.
+	}
+	*/
+	return (NULL);
+}
 
 int		sh_vshortcut_v(t_command_line *command_line, int dummy, int dummy_2)
 {
+	int		fd;
+	int		ret;
+	char	*to_edit;
+
 	(void)dummy;
 	(void)dummy_2;
-	(void)command_line;
-	return (0);
+
+	if (!(to_edit = get_to_edit(command_line)))
+		return (ERROR);
+	if ((fd = open(EDIT_FILE, O_CREAT | O_WRONLY | O_TRUNC, S_IRWXU)) == -1)
+	   	return (sh_perror(SH_ERR1_EDIT, "sh_builtin_fc_fill_text"));
+	ft_dprintf(fd, "%s\n", command_line->dy_str->str);
+	if (sh_execute_editor("vim", command_line->shell) != SUCCESS)
+		return (FAILURE);
+	render_command_line(command_line, 0, 1);
+	get_down_from_command(command_line);
+	ret = sh_execute_commands_from_file(command_line->shell, EDIT_FILE);
+	flush_command_line(command_line);
+	render_command_line(command_line, -g_glob.cursor, 1);
+	return (ret);
 }

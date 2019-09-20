@@ -143,8 +143,9 @@ int					sh_builtin_fc_fill_text(
 	t_history *history, t_dlist *from, t_dlist *to);
 char				*sh_get_editor(char *editor, t_shell *shell);
 void				fill_default_opts_default_synopsis(t_fc_options *opts);
-int					sh_execute_editor(char *editor, t_context *context);
-int					sh_execute_commands_from_edit_file(t_shell *shell);
+int					sh_execute_editor(char *editor, t_shell *shell);
+int					sh_execute_commands_from_file(
+	t_shell *shell, char *filename);
 int					sh_builtin_fc_default_synopsis(
 	t_context *context, t_fc_options *opts);
 

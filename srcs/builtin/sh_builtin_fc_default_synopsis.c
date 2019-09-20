@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 16:47:47 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/18 16:47:47 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/20 12:48:46 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,17 +67,13 @@ void	fill_default_opts_default_synopsis(t_fc_options *opts)
 	}
 }
 
-int		sh_execute_editor(char *editor, t_context *context)
+int		sh_execute_editor(char *editor, t_shell *shell)
 {
 	char *command;
 
 	if (!(command = ft_strjoin_3(editor, " ", EDIT_FILE)))
-	{
-		free(editor);
 		return (FAILURE);
-	}
-	free(editor);
-	if (execute_command(context->shell, command, 0) == FAILURE)
+	if (execute_command(shell, command, 0) == FAILURE)
 		return (FAILURE);
 	return (SUCCESS);
 }
@@ -105,14 +101,14 @@ static int      sh_process_read_canonical_gnl(t_shell *shell, t_gnl_info *info)
 	return (ret);
 }
 
-int		sh_execute_commands_from_edit_file(t_shell *shell)
+int		sh_execute_commands_from_file(t_shell *shell, char *filename)
 {
 	int         gnl_ret;
 	t_gnl_info  info;
 	int         ret;
 	int			fd;
 
-	if ((fd = open(EDIT_FILE, O_RDONLY)) == -1)
+	if ((fd = open(filename, O_RDONLY)) == -1)
 		return (sh_perror(SH_ERR1_EDIT, "sh_execute_commands_from_edit_file"));
 	ret = SUCCESS;
 	while (shell->running && (gnl_ret = get_next_line2(fd, &info, 1)) == 1)
@@ -152,7 +148,11 @@ int		sh_builtin_fc_default_synopsis(t_context *context, t_fc_options *opts)
 		return (FAILURE);
 	if (!(opts->editor = sh_get_editor(opts->editor, context->shell)))
 		return (sh_perror(SH_ERR1_MALLOC, "sh_builtin_fc_default_synopsis"));
-	if (sh_execute_editor(opts->editor, context) != SUCCESS)
+	if (sh_execute_editor(opts->editor, context->shell) != SUCCESS)
+	{
+		free(opts->editor);
 		return (FAILURE);
-	return (sh_execute_commands_from_edit_file(context->shell));
+	}
+	free(opts->editor);
+	return (sh_execute_commands_from_file(context->shell, EDIT_FILE));
 }
