@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_execute_pipe.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/07/31 18:32:26 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/20 17:09:05 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ static int 		father_exec(
 		return (STOP_CMD_LINE);
 	close(pds[INPUT]);
 	sh_traverse_command(node_to_execute, context);
+	ft_printf("CHECK 1\n");
 	close(pds[OUTPUT]);
 	close(STDOUT_FILENO);
 	waitpid(child, &ret, 0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_21.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/30 15:48:56 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/27 16:05:13 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/09/20 15:06:49 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,7 +245,7 @@ int					clear_all(void);
 /*
 ** signal_tools.c
 */
-void				transmit_sig(int signal);
+void				handler_sigint(int signal);
 void				transmit_sig_and_exit(int signal);
 void				handle_stp(int sgnl);
 void				handle_cont(int sgnl);

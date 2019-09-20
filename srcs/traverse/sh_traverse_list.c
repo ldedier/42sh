@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   sh_traverse_list.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/28 16:49:38 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/12 15:02:18 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/09/20 16:45:46 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
+#include "sh_job_control.h"
 
 /*
  * get_separator_op :
@@ -19,20 +20,20 @@
  * and_or node.
  * semi column separator : just execute the and_or
  * and (&) separator : probably we need to fork at this time and execute
- * and_or node in back_ground.
+ * and_or node in background.
 */
 static int 	get_separator_op(
 	t_ast_node *to_execute, t_ast_node *separator, t_context *context)
 {
 	//need to send to_execute to the good separator
-	(void)separator;
-	if (separator->symbol->id == sh_index(LEX_TOK_SEMICOL))
-		return (sh_traverse_semicol(to_execute, context));
 	if (separator->symbol->id == sh_index(LEX_TOK_AND))
 	{
-		ft_dprintf(STDERR_FILENO, "sh_traverse_list: sorry & is not yet implement\n");
-		return (ERROR);
+		ft_printf("Job %d is in the background\n", g_job_ctrl->curr_job->number);
+		g_job_ctrl->curr_job->foreground = 0;
+		return (sh_traverse_semicol(to_execute, context));
 	}
+	else if (separator->symbol->id == sh_index(LEX_TOK_SEMICOL))
+		return (sh_traverse_semicol(to_execute, context));
 	return (FAILURE);
 }
 
@@ -46,6 +47,7 @@ static int 	get_separator_op(
  * If they are no separator, we just call the next level on the ast,
  * and_or browser (sh_traverse_and_or)
 */
+
 static int 	get_node_to_exec(t_ast_node *node, t_context *context)
 {
 	t_list 		*lst;
@@ -56,11 +58,14 @@ static int 	get_node_to_exec(t_ast_node *node, t_context *context)
 	lst = node->children;
 	node_to_exec = NULL;
 	ret = SUCCESS;
+	jobs_reset();
+	ft_printf("Shell pgid: %d\n", g_job_ctrl->shell_pgid);
 	while (lst)
 	{
 		curr_node = lst->content;
 		if (curr_node->symbol->id == sh_index(SEPARATOR_OP))
 		{
+			jobs_add();
 			if ((ret = get_separator_op(
 				node_to_exec, curr_node->children->content, context)))
 				return (ret);
@@ -70,6 +75,7 @@ static int 	get_node_to_exec(t_ast_node *node, t_context *context)
 			node_to_exec = curr_node;
 		lst = lst->next;
 	}
+	jobs_add();
 	if (node_to_exec && ret == SUCCESS)
 		ret = sh_traverse_and_or(node_to_exec, context);
 	return (ret);

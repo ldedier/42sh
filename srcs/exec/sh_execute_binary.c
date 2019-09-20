@@ -14,8 +14,11 @@
 
 void		sh_execute_binary(t_context *context)
 {
-	reset_signals();
+	// reset_signals();
+	ft_printf("Executing \"%s\"\t\tpid: %d, pgid: %d\n",
+		context->path, getpid(), getpgid(getpid()));
 	execve(context->path, (char **)context->params->tbl,
 			(char **)context->env->tbl);
+	// sleep (10);
 	exit(SUCCESS);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_signals.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/31 16:05:53 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/20 17:11:26 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/20 16:43:34 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 void			reset_signals(void)
 {
-	int i;
+	// int i;
 
-	i = 1;
-	while (i <= SIGUSR2)
-		signal(i++, SIG_DFL);
+	// i = 1;
+	// while (i <= SIGUSR2)
+	// 	signal(i++, SIG_DFL);
 }
 
 void	sigtstp_handler(int signal)
@@ -72,7 +72,7 @@ void			init_signals(void)
 	signal(SIGWINCH, handle_resize);
 	signal(SIGQUIT, transmit_sig_no_motion);
 	signal(SIGKILL, default_func);
-	signal(SIGINT, transmit_sig);
+	signal(SIGINT, handler_sigint);
 	signal(SIGHUP, default_func);
 	signal(SIGABRT, default_func);
 	signal(SIGILL, default_func);

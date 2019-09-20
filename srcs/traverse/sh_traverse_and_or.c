@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_traverse_and_or.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 15:54:02 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/07 09:37:19 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/20 17:13:12 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ static int		sh_traverse_and_or_call_sons_exec(t_ast_node *node,
 		context->shell->ret_value_set = 0;
 		sh_env_update_ret_value(context->shell, 2);
 	}
+	// ft_printf("ret: %d\n", ret);
 	if (ret == FAILURE || ret == STOP_CMD_LINE)
 		return (ret);
 	if (!context->shell->running)
@@ -98,14 +99,14 @@ static int		sh_traverse_and_or_launch_phase(
  * We execute a and_or node, check it return value and
  * execute or not the next and_or node follow the found token
  * AND_IF or OR_IF.
- * 
+ *
  * We also call the function sh_env_update_question_mark to be sur
- * that at this time, the return value is set in the env variable 
+ * that at this time, the return value is set in the env variable
 */
 int				sh_traverse_and_or(t_ast_node *node, t_context *context)
 {
 	int		ret;
-	
+
 	sh_traverse_tools_show_traverse_start(node, context);
 	ret = sh_traverse_and_or_launch_phase(node, context);
 	sh_traverse_tools_show_traverse_ret_value(node, context, ret);

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
+#    By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/09/13 14:11:35 by jdugoudr         ###   ########.fr        #
+#    Updated: 2019/09/20 15:57:02 by mdaoud           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,7 @@ VPATH		= $(INCLUDESDIR) \
 			  $(SRCDIR)/exec \
 			  $(SRCDIR)/expansions \
 			  $(SRCDIR)/grammar \
+			  $(SRCDIR)/job_control \
 			  $(SRCDIR)/lexer \
 			  $(SRCDIR)/parser \
 			  $(SRCDIR)/parser/productions \
@@ -244,9 +245,21 @@ SRCS			 +=	sh_perror.c \
 					sh_perror_fd.c
 
 ################################################################
+########				JOB_CONTROL						########
+################################################################
+SRCS			+=	jobs_init.c \
+					jobs_add.c \
+					jobs_print.c \
+					jobs_reset.c \
+					process_add.c \
+					str_tab_duplicate.c \
+					str_tab_print.c
+
+################################################################
 ########					INCLUDES					########
 ################################################################
-INCLUDES			=	sh_21.h \
+INCLUDES		=	sh_21.h \
+					sh_job_control.h \
 					sh_lexer.h \
 					sh_tokens.h \
 					sh_parser.h \

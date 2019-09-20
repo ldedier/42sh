@@ -1,19 +1,60 @@
 #include "sh_21.h"
+#include "sh_job_control.h"
+
+/*
+** For each process in the current job-
+**	We add that process to the current job group.
+** Current job is designated by the g_job_ctrl->curr_job.
+** This needs to be done by both the child and the parent processe-
+** 	in order to avoid any possible race-conditions.
+** First process of each job is appointed as the group leader.
+** Example: ls | wc ; echo done
+** "ls" and "wc" are in the same process group (with "ls" as the leader)
+** "echo" is in another process group (and it's its leader).
+*/
 
 static int	sh_exec_binaire(t_context *context)
 {
 	int			res;
-	pid_t		child;
+	pid_t		cpid;
 
 	if (sh_pre_execution() != SUCCESS)
 		return (FAILURE);
-	if ((child = fork()) == -1)
+	if ((cpid = fork()) == -1)
 		return (sh_perror(SH_ERR1_FORK, "sh_process_process_execute"));
-	if (child == 0)
+	if (cpid == 0)
+	{
+		// Put the child process in its own process group
+		// The first process of each job is the process group leader
+		cpid = getpid();
+		if (g_job_ctrl->curr_job->pgid == 0)
+			g_job_ctrl->curr_job->pgid = cpid;
+		setpgid(cpid, g_job_ctrl->curr_job->pgid);
 		sh_execute_binary(context);
+	}
 	else
 	{
-		waitpid(child, &res, 0);
+		if (g_job_ctrl->curr_job->pgid == 0)
+			g_job_ctrl->curr_job->pgid = cpid;
+		setpgid(cpid, g_job_ctrl->curr_job->pgid);
+		// if the job is in the fg, give it the control of the terminal
+		if (g_job_ctrl->curr_job->foreground == 1)
+		{
+			ft_printf("Process in fg\n");
+			tcsetpgrp(g_job_ctrl->term_fd, g_job_ctrl->curr_job->pgid);
+			// Wait for the job to finish/be stopped
+			// waitpid(cpid, &res, 0);
+			wait(&res);
+			if (WIFSIGNALED(res))
+				ft_printf("Was terminated by a signal\n");
+			// Give back the control of the terminal to the shell
+			tcsetpgrp(g_job_ctrl->term_fd, g_job_ctrl->shell_pgid);
+		}
+		else
+		{
+			waitpid(cpid, &res, WNOHANG);
+		}
+		// waitpid(cpid, &res, 0);
 		sh_env_update_ret_value_wait_result(context, res);
 		if (sh_post_execution() != SUCCESS)
 			return (FAILURE);

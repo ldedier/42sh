@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 17:59:53 by jmartel           #+#    #+#             */
-/*   Updated: 2019/07/30 11:58:41 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/20 15:46:26 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
+#include "sh_job_control.h"
 
 static int	main_exit_value(t_shell *shell, int ret)
 {
@@ -44,7 +45,7 @@ int			main(int argc, char **argv, char **env)
 	{
 		if (sh_init_terminal(&shell, env) != SUCCESS)
 			return (FAILURE);
-		if (sh_init_shell(&shell, env) != SUCCESS)
+		if (sh_init_shell(&shell, env) != SUCCESS || jobs_init(&shell))
 		{
 			sh_free_all(&shell);
 			return (sh_reset_shell(FAILURE));
