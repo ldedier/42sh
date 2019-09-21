@@ -230,7 +230,8 @@ SRCS			 +=	sh_expansions.c \
 					sh_expansions_process.c sh_expansions_replace.c \
 					sh_expansions_field_splitting.c \
 					sh_expansions_quote_removal.c \
-					sh_get_heredoc.c sh_expansions_scan.c
+					sh_get_heredoc.c sh_expansions_scan.c \
+					t_quote.c
 
 ################################################################
 ########					PERROR						########

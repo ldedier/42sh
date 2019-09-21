@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 11:19:41 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/13 20:02:24 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/20 18:17:15 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,9 @@ static int		sh_traverse_io_here_interactive_ctrl_d(
 	return (SUCCESS);
 }
 
+// Unactivated quote removal for expansion rework
+// Need to use previous quote removal version in that case
+
 static int		sh_traverse_io_here_interactive(t_ast_node *node,
 		t_context *context, char *(*heredoc_func)(const char *))
 {
@@ -52,8 +55,8 @@ static int		sh_traverse_io_here_interactive(t_ast_node *node,
 	heredoc_data.apply_expansion = &(child->token->apply_heredoc_expansion);
 	if (ft_strpbrk(child->token->value, "\"\'\\"))
 	{
-		if (sh_expansions_quote_removal(context, child))
-			return (ERROR);
+		// if (sh_expansions_quote_removal(context, child))
+		// 	return (ERROR);
 		(*heredoc_data.apply_expansion) = 0;
 	}
 	heredoc_data.stop = child->token->value;

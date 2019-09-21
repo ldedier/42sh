@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 17:46:46 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/05 11:12:35 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/09/19 12:11:50 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,12 @@ enum					e_exp_type
 	EXP_ARITH,
 	EXP_TILDE,
 };
+
+typedef struct			s_quote
+{
+	int		index;
+	char	*c;
+}						t_quote;
 
 struct					s_expansion
 {
@@ -49,7 +55,8 @@ int		sh_expansions(t_context *context, t_ast_node *node);
 /*
 ** sh_expansions_field_splitting.c
 */
-int		sh_expansions_splitting(t_context *context, t_ast_node *node);
+int		sh_expansions_splitting(
+	t_context *context, t_ast_node *node, t_dy_tab *quotes);
 
 /*
 ** sh_expansions_parameter.c
@@ -83,18 +90,22 @@ char	*sh_expansions_parameter_get_word(t_expansion *exp, char *format);
 ** sh_expansions_process.c
 */
 int		sh_expansions_process(
-	char **input, char *original, t_context *context, int *index);
+	char **input,
+	char *original,
+	t_context *context,
+	int *index,
+	t_dy_tab *quotes);
 
 /*
 ** sh_expansions_quote_removal.c
 */
-int		sh_expansions_quote_removal(t_context *context, t_ast_node *node);
+int		sh_expansions_quote_removal(t_quote **quotes);
 
 /*
 ** sh_expansions_replace.c
 */
 int		sh_expansions_replace(
-	t_expansion *expansion, char **input, int index);
+	t_expansion *exp, char **input, int index, t_quote **quotes);
 
 /*
 ** sh_expansions_scan.c
@@ -104,7 +115,7 @@ int		sh_expansions_scan(
 	int index,
 	int do_expansion,
 	t_context *context,
-	t_ast_node *node);
+	t_dy_tab *quotes);
 
 /*
 ** sh_expansions_tilde.c
@@ -112,7 +123,7 @@ int		sh_expansions_scan(
 int		sh_expansions_tilde_detect(char *start);
 int		sh_expansions_tilde_process(t_context *context, t_expansion *exp);
 int		sh_expansions_tilde(
-	char **input, char *original, t_context *context);
+	char **input, char *original, t_context *context, t_dy_tab *quotes);
 
 /*
 ** sh_expansions_variable.c
@@ -135,5 +146,14 @@ char	*get_heredoc(
 void	t_expansion_free_content(t_expansion *expansion);
 void	t_expansion_show(t_expansion *exp);
 void	t_expansion_show_type(t_expansion *exp);
+
+/*
+** t_quote.c
+*/
+t_quote	*t_quote_new(int index, char *c);
+int		t_quote_add_new(t_dy_tab *quotes, int index, char *c);
+void	t_quote_show_tab(t_quote **quotes);
+int		t_quote_is_original_quote(int i, t_quote **quotes);
+int		t_quote_get_offset(int i, t_quote **quotes);
 
 #endif

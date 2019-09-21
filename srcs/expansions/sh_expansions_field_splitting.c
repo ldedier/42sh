@@ -6,31 +6,26 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/27 16:47:32 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/13 23:31:15 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/21 16:09:31 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-static void	field_splitting_pass_quotes(char *str, int *i)
+static void	update_quotes(t_quote **quotes, int i, int start, t_ast_node *node)
 {
-	char		quote;
+	int		q;
 
-	if (str[*i] == '\\')
+	q = 0;
+	while (quotes[q] && quotes[q]->index < start)
+		q++;
+	while (quotes[q] && quotes[q]->index < i)
 	{
-		(*i) += 2;
-		return ;
+		quotes[q]->c = node->token->value + quotes[q]->index - start;
+		quotes[q]->index = -1;
+		q++;
 	}
-	quote = str[*i];
-	(*i) += 1;
-	while (str[*i] && str[*i] != quote)
-	{
-		if (str[*i] == '\\' && quote == '"')
-			(*i) += 1;
-		(*i) += 1;
-	}
-	if (str[*i] == quote)
-		(*i) += 1;
+	return ;
 }
 
 static int	sh_splitting_parse_ifs(char *ws, char *nws, char *ifs)
@@ -63,7 +58,7 @@ static int	sh_splitting_parse_ifs(char *ws, char *nws, char *ifs)
 	return (SUCCESS);
 }
 
-static int	sh_splitting_non_white_ifs(t_ast_node *node, t_context *context, char *ifs, char *input)
+static int	sh_splitting_non_white_ifs(t_ast_node *node, t_context *context, char *ifs, char *input, t_dy_tab *quotes)
 {
 	char		ws[100];
 	char		nws[100];
@@ -103,6 +98,7 @@ static int	sh_splitting_non_white_ifs(t_ast_node *node, t_context *context, char
 					return (sh_perror_fd(context->fd[FD_ERR], SH_ERR1_MALLOC, "sh_splitting_non_white_ifs (1)"));
 				else if (!(node = sh_add_word_to_ast(node, str)))
 					return (sh_perror_fd(context->fd[FD_ERR], SH_ERR1_MALLOC, "sh_splitting_non_white_ifs (2)"));
+				update_quotes((t_quote**)quotes->tbl, i, start, node);
 				if (sh_verbose_expansion())
 					ft_dprintf(2, "non white ifs : Added node : start : %d, i : %d\n", start, i);
 				i++;
@@ -127,19 +123,19 @@ static int	sh_splitting_non_white_ifs(t_ast_node *node, t_context *context, char
 			return (sh_perror_fd(context->fd[FD_ERR], SH_ERR1_MALLOC, "sh_splitting_non_white_ifs (1)"));
 		else if (!(node = sh_add_word_to_ast(node, str)))
 			return (sh_perror_fd(context->fd[FD_ERR], SH_ERR1_MALLOC, "sh_splitting_non_white_ifs (2)"));
+		update_quotes((t_quote**)quotes->tbl, i, start, node);
 		if (sh_verbose_expansion())
 			ft_dprintf(2, "non white ifs : Added last node : %s\n", str);
 	}
 	return (SUCCESS);
 }
 
-static int	sh_expansions_splitting_default(t_context *context, t_ast_node *node)
+static int	sh_expansions_splitting_default(t_context *context, t_ast_node *node, t_dy_tab *quotes)
 {
 	int			i;
 	int			start;
 	char		*input;
 	const char	*ifs = "\n\t \0";
-	const char	*quotes = "\"\'\\\0";
 
 	input = node->token->value;
 	i = 0;
@@ -149,13 +145,13 @@ static int	sh_expansions_splitting_default(t_context *context, t_ast_node *node)
 	while (input[i])
 	{
 		if (sh_verbose_expansion())
-			ft_dprintf(2, "input [i] : %c (%s)\n", input[i], input + i);
-		if (ft_strchr(quotes, input[i]))
+			ft_dprintf(2, "input [%d] : %c (%s)\n", i, input[i], input + i);
+		if (t_quote_is_original_quote(i, (t_quote**)quotes->tbl))
 		{
-			field_splitting_pass_quotes(input, &i);
 			if (sh_verbose_expansion())
 				ft_dprintf(2, "going threw quotes\n");
-			continue ;
+			if (t_quote_get_offset(i, (t_quote**)quotes->tbl) != -1)
+				i = t_quote_get_offset(i, (t_quote**)quotes->tbl);
 		}
 		else if (ft_strchr(ifs, input[i]))
 		{
@@ -173,6 +169,7 @@ static int	sh_expansions_splitting_default(t_context *context, t_ast_node *node)
 					ft_dprintf(2, "adding node : %s\n", ft_strndup(input + start, i - start));
 				if (!(node = sh_add_word_to_ast(node, ft_strndup(input + start, i - start)))) //protect
 					return (FAILURE);
+				update_quotes((t_quote**)quotes->tbl, i, start, node);
 			}
 			while (input[i] && ft_strchr(ifs, input[i]))
 				i++;
@@ -189,14 +186,16 @@ static int	sh_expansions_splitting_default(t_context *context, t_ast_node *node)
 			ft_dprintf(2, "adding last node : %s\n", ft_strndup(input + start, i - start));
 		if (!(node = sh_add_word_to_ast(node, ft_strndup(input + start, i - start)))) //protect
 			return (FAILURE);
+		update_quotes((t_quote**)quotes->tbl, i, start, node);
 		if (sh_verbose_expansion())
 			ft_dprintf(2, "last node added : start : %d, i : %d\n", start, i);
 	}
 	return (SUCCESS);
 	(void)context;
+	(void)quotes;
 }
 
-int			sh_expansions_splitting(t_context *context, t_ast_node *node)
+int			sh_expansions_splitting(t_context *context, t_ast_node *node, t_dy_tab *quotes)
 {
 	char	*ifs;
 	int		ret;
@@ -208,7 +207,7 @@ int			sh_expansions_splitting(t_context *context, t_ast_node *node)
 	{
 		if (!ft_strpbrk(node->token->value, " \t\n"))
 			return (SUCCESS);
-		ret = sh_expansions_splitting_default(context, node);
+		ret = sh_expansions_splitting_default(context, node, quotes);
 	}
 	else if (!*ifs)
 		return (SUCCESS);
@@ -216,7 +215,7 @@ int			sh_expansions_splitting(t_context *context, t_ast_node *node)
 	{
 		if (!ft_strpbrk(node->token->value, ifs)) // Need to keep ??
 			return (SUCCESS);
-		ret = sh_splitting_non_white_ifs(node, context, ifs, node->token->value);
+		ret = sh_splitting_non_white_ifs(node, context, ifs, node->token->value, quotes);
 	}
 	if (sh_verbose_expansion())
 	{

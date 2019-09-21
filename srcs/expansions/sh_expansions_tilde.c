@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 13:56:29 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/05 11:01:36 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/09/19 12:11:22 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ static int	sh_expansions_init_tilde(char *original, t_expansion *exp)
 */
 
 int			sh_expansions_tilde(
-	char **input, char *original, t_context *context)
+	char **input, char *original, t_context *context, t_dy_tab *quotes)
 {
 	t_expansion	exp;
 	int			ret;
@@ -157,7 +157,7 @@ int			sh_expansions_tilde(
 		t_expansion_show(&exp);
 	ret = sh_expansions_tilde_process(context, &exp);
 	if (!ret)
-		ret = sh_expansions_replace(&exp, input, 0);
+		ret = sh_expansions_replace(&exp, input, 0 , (t_quote**)quotes->tbl);
 	t_expansion_free_content(&exp);
 	return (ret);
 }
