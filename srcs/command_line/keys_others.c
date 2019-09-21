@@ -29,11 +29,21 @@ static void	add_digit(t_command_count *count, char c)
 	int n;
 
 	n = c - '0';
-	if (!count->active || count->tmp_value >= 10000)
+	if (!count->active)
+	{
 		count->tmp_value = n;
+		count->active = 1;
+	}
+	else if (count->tmp_value >= 10000)
+	{
+		count->active = 0;
+		count->tmp_value = 1;
+	}
 	else
+	{
 		count->tmp_value = count->tmp_value * 10 + c - '0';
-	count->active = 1;
+		count->active = 1;
+	}
 }
 
 static int	process_keys_command(t_key_buffer *buffer, t_shell *shell,

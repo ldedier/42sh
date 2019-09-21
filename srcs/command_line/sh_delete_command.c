@@ -41,6 +41,7 @@ void	process_process_delete(t_command_line *command_line)
 	command_line->dy_str->current_size -= diff;
 	command_line->nb_chars--;
 	render_command_line(command_line, -1, 1);
+	sh_process_edit_counter(command_line, 1);
 }
 
 void	process_delete(t_command_line *command_line, t_shell *shell)
@@ -84,5 +85,6 @@ void	process_suppr(t_command_line *command_line)
 		command_line->dy_str->current_size -= diff;
 		command_line->nb_chars--;
 		render_command_line(command_line, 0, 1);
+		sh_process_edit_counter(command_line, 1);
 	}
 }

@@ -20,8 +20,13 @@
 
 int		sh_vshortcut_j(t_command_line *command_line, int dummy, int dummy_2)
 {
+	int ret;
+
 	(void)dummy;
 	(void)dummy_2;
-	return (process_history_down(command_line->shell, command_line,
-		command_line->count.value, 1));
+	if ((ret = process_history_down(command_line->shell, command_line,
+		command_line->count.value, 1)) == FAILURE)
+		return (FAILURE);
+	replace_cursor_vim_legal(command_line);
+	return (ret);
 }

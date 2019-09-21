@@ -23,7 +23,7 @@ int		sh_vshortcut_y(t_command_line *command_line, int index, int special)
 	int min;
 	int max;
 
-	if (special)
+	if (special == E_MOTION_SPECIAL)
 	{
 		if (command_line_copy_all(command_line) != SUCCESS)
 			return (FAILURE);
@@ -33,6 +33,11 @@ int		sh_vshortcut_y(t_command_line *command_line, int index, int special)
 		if (index == command_line->current_index)
 			return (SUCCESS);
 		ft_strdel(&command_line->clipboard);
+		if (special == E_MOTION_IN)
+		{
+			if (index > command_line->current_index)
+				index = ft_min(index + 1, command_line->dy_str->current_size);
+		}
 		min = ft_min(index, command_line->current_index);
 		max = ft_max(index, command_line->current_index);
 		if (!(command_line->clipboard =

@@ -137,7 +137,7 @@ int					sh_lexer_rule8(t_lexer *lexer);
 ** t_token_list.c
 */
 t_list				*t_token_node_new(int id, char *value);
-void				t_token_free_list(t_list *head);
+void				t_token_free_list(t_list **head);
 void				sh_free_token_lst(void *t, size_t dummy);
 t_token				*sh_get_token_by_index(
 	t_list *tokens, int index, t_list **prev);

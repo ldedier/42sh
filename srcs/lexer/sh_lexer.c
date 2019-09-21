@@ -87,7 +87,7 @@ int				sh_lexer(char *input, t_list **tokens, t_shell *shell,
 	free(lexer.input);
 	if (ret != LEX_END)
 	{
-		t_token_free_list(lexer.list);
+		t_token_free_list(&lexer.list);
 		return (ret);
 	}
 	ret = sh_lexer_final_check(&lexer);

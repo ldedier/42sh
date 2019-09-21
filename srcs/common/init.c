@@ -98,6 +98,8 @@ static int	sh_init_command_line(t_shell *shell, t_command_line *command_line)
 {
 	command_line->shell = shell;
 	command_line->edit_line = NULL;
+	command_line->edit_counter = 0;
+	command_line->saves_stack = NULL;
 	command_line->count.active = 0;
 	command_line->count.tmp_value = 1;
 	command_line->last_ft_command.motion = NULL;

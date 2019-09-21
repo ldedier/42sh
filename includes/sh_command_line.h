@@ -104,7 +104,7 @@ typedef struct		s_command_count
 ** fd				: fd to print input (open("/fd/tty"));
 ** key_buffer		: read characters
 ** count			: vim arguments
-** last_ft_command	: last f, F , t, or T command executed by the shell
+** last_ft_command	: last f, F, t, or T command executed by the shell
 ** edit_line		: dup from the command_line to retrieve from history
 **
 */
@@ -131,6 +131,8 @@ typedef struct		s_command_line
 	t_command_count	count;
 	t_ft_command	last_ft_command;
 	char			*edit_line;
+	t_list			*saves_stack;
+	int				edit_counter;
 }					t_command_line;
 
 typedef struct		s_xy
@@ -298,7 +300,8 @@ int					sh_process_quoted(t_lexer *lexer);
 /*
 ** sh_process_history.c
 */
-int					restore_edit_line(t_command_line *command_line);
+int					switch_command_line(
+	t_command_line *command_line, char *str);
 int					reached_history_bottom(t_shell *shell);
 int					process_history_down(
 	t_shell *shell,
@@ -528,6 +531,15 @@ void				cancel_autocompletion(
 */
 int					process_shift_up(t_command_line *command_line);
 int					process_shift_down(t_command_line *command_line);
+
+/*
+** saves.c
+*/
+int					sh_save_command_line(t_command_line *command_line);
+int					sh_restore_save(t_command_line *command_line);
+int					sh_process_edit_counter(
+	t_command_line *command_line, int inc);
+int					sh_reset_saves(t_command_line *command_line);
 
 /*
 ** utf8_tools.c

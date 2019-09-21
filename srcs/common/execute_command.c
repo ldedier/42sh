@@ -29,6 +29,7 @@ static int	sh_process_command(t_shell *shell, char *command)
 
 	ast_root = NULL;
 	cst_root = NULL;
+	tokens = NULL;
 	sh_verbose_update(shell);
 	ret = 0;
 	if ((ret = sh_lexer(command, &tokens, shell, E_LEX_STANDARD)) != SUCCESS)

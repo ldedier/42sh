@@ -35,12 +35,13 @@ static void	update_command_line(t_command_line *command_line, int start)
 		update_command_line_end(command_line);
 }
 
-int			restore_edit_line(t_command_line *command_line)
+int			switch_command_line(t_command_line *command_line, char *str)
 {
 	flush_command_line(command_line);
-	if (ft_dy_str_cpy_str(command_line->dy_str, command_line->edit_line))
-		return (sh_perror(SH_ERR1_MALLOC, "restore_edit_line"));
+	if (ft_dy_str_cpy_str(command_line->dy_str, str))
+		return (sh_perror(SH_ERR1_MALLOC, "restore_command_line"));
 	update_command_line_end(command_line);
+	replace_cursor_vim_legal(command_line);
 	return (SUCCESS);
 }
 
@@ -71,7 +72,7 @@ int			process_history_down(t_shell *shell, t_command_line *command_line,
 		if (i < count - 1)
 			ring_bell();
 		shell->history.head = &shell->history.head_start;
-		return (restore_edit_line(command_line));
+		return (switch_command_line(command_line, command_line->edit_line));
 	}
 	str = ((t_entry *)shell->history.head->content)->command;
 	flush_command_line(command_line);

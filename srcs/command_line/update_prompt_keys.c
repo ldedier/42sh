@@ -32,7 +32,8 @@ int		process_escape(t_shell *shell, t_command_line *command_line,
 		flush_keys(buffer);
 		return (FAILURE);
 	}
-	render_command_line(command_line, 0, 1);
+	if (!replace_cursor_vim_legal(command_line))
+		render_command_line(command_line, 0, 1);
 	flush_keys(buffer);
 	return (SUCCESS);
 }
