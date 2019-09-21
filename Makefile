@@ -6,7 +6,7 @@
 #    By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/09/21 01:19:13 by mdaoud           ###   ########.fr        #
+#    Updated: 2019/09/21 16:22:38 by mdaoud           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -261,7 +261,9 @@ SRCS			+=	jobs_init.c \
 					job_is_completed.c \
 					job_is_stopped.c \
 					job_check_process_changes.c \
-					job_free.c
+					job_free.c \
+					job_print_status.c \
+					job_notify.c
 
 ################################################################
 ########					INCLUDES					########

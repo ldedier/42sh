@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 11:36:31 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/21 01:01:56 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/21 16:13:34 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 # define SH_BUILTIN_H
 
 # if __APPLE__ && __MACH__
-#  define NB_BUILTINS	14
-# else
 #  define NB_BUILTINS	13
+# else
+#  define NB_BUILTINS	12
 # endif
 
 # define NB_FLAG_UNARY	15

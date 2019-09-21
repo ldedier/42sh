@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   non_canonical_mode.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/05 15:41:50 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/21 16:35:22 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/21 16:55:28 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
+#include "sh_job_control.h"
 
 int		sh_process_command(t_shell *shell, char *command)
 {
@@ -51,6 +52,7 @@ int		sh_await_command(t_shell *shell)
 
 	if ((ret = sh_get_command(shell, &g_glob.command_line)) != SUCCESS)
 		return (ret);
+	// ft_printf("HI\n");
 	return (sh_process_received_command(shell,
 		&g_glob.command_line));
 }
@@ -64,6 +66,7 @@ int		sh_process_noncanonical_mode(t_shell *shell)
 			sh_free_all(shell);
 			return (sh_reset_shell(FAILURE));
 		}
+		job_notify();
 	}
 	sh_free_all(shell);
 	return (sh_reset_shell(SUCCESS));

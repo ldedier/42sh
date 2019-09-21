@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_builtin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 19:04:16 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/04 21:35:56 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/21 16:11:25 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ t_builtin				sh_builtin_find(t_context *context)
 	int					i;
 	t_builtin_container	*builtins;
 
+	ft_printf("CHECK %s\n", context->params->tbl[0]);
 	builtins = get_builtins();
 	i = 0;
 	while (i < NB_BUILTINS)

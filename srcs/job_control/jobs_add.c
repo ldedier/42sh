@@ -6,22 +6,45 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 00:09:20 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/20 15:51:18 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/21 16:09:13 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_job_control.h"
 #include "sh_21.h"
 
+int			find_available_job_number(void)
+{
+	int		i;
+
+	i = 1;
+	while (i < MAX_JOBS)
+	{
+		if (g_job_ctrl->job_num[i] == 0)
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
 int			jobs_add(void)
 {
 	t_job	*j;
 	t_job	*it;
+	int		n;
 
-	ft_printf("%sADDING JOB: %d%s\n", COLOR_RED, g_job_ctrl->job_count, COLOR_END);
+	n = find_available_job_number();
+	if (n < 0)
+	{
+		ft_dprintf(STDERR_FILENO, "Max number of jobs exceded\n");
+		return (-1);
+	}
+	ft_printf("%sADDING JOB: %d%s\n", COLOR_RED, n, COLOR_END);
 	if ((j = malloc(sizeof(t_job))) == NULL)
 		return (FAILURE);
-	j->number = g_job_ctrl->job_count;
+	j->number = n;
+	// j->number = g_job_ctrl->job_count;
+	g_job_ctrl->job_num[n] = 1;
 	j->first_process = NULL;
 	j->next = NULL;
 	j->notified = 0;
@@ -29,7 +52,7 @@ int			jobs_add(void)
 	j->pgid = 0;
 	j->foreground = 1;
 	j->command = NULL;	//	Fill it with the command
-	g_job_ctrl->job_count = g_job_ctrl->job_count + 1;
+	// g_job_ctrl->job_count = g_job_ctrl->job_count + 1;
 	g_job_ctrl->curr_job = j;
 	if (g_job_ctrl->first_job == NULL)
 	{

@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/28 16:49:38 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/21 00:43:33 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/21 16:15:39 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,8 @@ static int 	get_node_to_exec(t_ast_node *node, t_context *context)
 			node_to_exec = curr_node;
 		lst = lst->next;
 	}
-	jobs_add();
+	if (jobs_add() < 0)
+		return (ERROR);	//	check
 	if (node_to_exec && ret == SUCCESS)
 		ret = sh_traverse_and_or(node_to_exec, context);
 	jobs_print();

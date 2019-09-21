@@ -36,7 +36,7 @@ static int	sh_exec_binaire(t_context *context)
 		process_add(context, cpid);
 		set_child_pgid(cpid);
 		if (g_job_ctrl->curr_job->foreground == 1)
-			job_put_in_fg(g_job_ctrl->curr_job, 0);
+			job_put_in_fg(g_job_ctrl->curr_job, 0, &res);
 		else
 			waitpid(cpid, &res, WNOHANG);
 		sh_env_update_ret_value_wait_result(context, res);

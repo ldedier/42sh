@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 00:24:19 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/21 00:58:59 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/21 16:17:07 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void			jobs_print(void)
 	j = g_job_ctrl->first_job;
 	while (j != NULL)
 	{
-		ft_printf("%sjob: %d%s\n", COLOR_YELLOW, g_job_ctrl->job_count, COLOR_END);
+		ft_printf("%sjob: %d%s\n", COLOR_YELLOW, j->number, COLOR_END);
 		p = j->first_process;
 		i = 1;
 		while (p != NULL)
