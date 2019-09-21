@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/05 15:41:50 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/21 16:55:28 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/21 23:46:17 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,17 @@ int		sh_await_command(t_shell *shell)
 	int		ret;
 
 	if ((ret = sh_get_command(shell, &g_glob.command_line)) != SUCCESS)
+	{
+
+		job_notify();
 		return (ret);
-	// ft_printf("HI\n");
-	return (sh_process_received_command(shell,
-		&g_glob.command_line));
+	}
+	ret = sh_process_received_command(shell, &g_glob.command_line);
+	job_notify();
+	return (ret);
+
+	// return (sh_process_received_command(shell,
+	// 	&g_glob.command_line));
 }
 
 int		sh_process_noncanonical_mode(t_shell *shell)
@@ -66,7 +73,6 @@ int		sh_process_noncanonical_mode(t_shell *shell)
 			sh_free_all(shell);
 			return (sh_reset_shell(FAILURE));
 		}
-		job_notify();
 	}
 	sh_free_all(shell);
 	return (sh_reset_shell(SUCCESS));

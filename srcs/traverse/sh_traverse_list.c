@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/28 16:49:38 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/21 16:15:39 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/22 01:36:20 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ static int 	get_separator_op(
 	//need to send to_execute to the good separator
 	if (separator->symbol->id == sh_index(LEX_TOK_AND))
 	{
-		ft_printf("Job %d is in the background\n", g_job_ctrl->curr_job->number);
 		g_job_ctrl->curr_job->foreground = 0;
 		return (sh_traverse_semicol(to_execute, context));
 	}
@@ -58,8 +57,6 @@ static int 	get_node_to_exec(t_ast_node *node, t_context *context)
 	lst = node->children;
 	node_to_exec = NULL;
 	ret = SUCCESS;
-	jobs_reset();
-	ft_printf("Shell pgid: %d\n", g_job_ctrl->shell_pgid);
 	while (lst)
 	{
 		curr_node = lst->content;
@@ -79,7 +76,6 @@ static int 	get_node_to_exec(t_ast_node *node, t_context *context)
 		return (ERROR);	//	check
 	if (node_to_exec && ret == SUCCESS)
 		ret = sh_traverse_and_or(node_to_exec, context);
-	jobs_print();
 	return (ret);
 }
 

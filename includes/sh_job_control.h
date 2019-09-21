@@ -25,24 +25,24 @@ typedef struct termios			t_term;
 
 struct	s_process
 {
-	t_process		*next;			/* next process in pipeline */
-	char			**argv;			/* for exec */
-	pid_t			pid;			/* process ID */
-	char			completed;		/* true if process has completed */
-	char			stopped;		/* true if process has stopped */
-	int				status;			/* reported status value */
+	t_process		*next;
+	char			**argv;
+	pid_t			pid;
+	int				terminated;
+	char			completed;
+	char			stopped;
+	int				status;
 };
 
 struct	s_job
 {
-	t_job			*next;			/* next active job */
+	t_job			*next;
 	int				number;
-	char			*command;		/* command line, used for messages */
-	char			foreground;		/* true if job is running in foreground */
-	t_process		*first_process;	/* list of processes in this job */
-	pid_t			pgid;			/* process group ID */
-	char			notified;		/* true if user told about stopped job */
-	char			empty_process;	/* true if no processes are in the job */
+	char			*command;
+	char			foreground;
+	t_process		*first_process;
+	pid_t			pgid;
+	char			notified;
 };
 
 struct	s_job_control
@@ -65,16 +65,16 @@ int				process_add(t_context *context, pid_t pid);
 void			str_tab_print(char **char_tab);		//put in libft
 char			**str_tab_duplicate(char **from);	//put in libft
 int				jobs_init(t_shell *shell);
-int				jobs_reset(void);
 int				set_child_pgid(pid_t cpid);
 void			job_wait(t_job *j, int *res);
 int				job_put_in_bg(t_job *j, int cont);
 int				job_put_in_fg(t_job *j, int cont, int *res);
 int				job_is_completed(t_job *j);
 int				job_is_stopped(t_job *j);
-int				job_check_process_changes(pid_t cpid, int status);
+int				job_check_changes(pid_t cpid, int status);
 void			job_free(t_job *j);
 void			job_print_status(t_job *j, const char *new_status);
 void			job_notify(void);
+t_job			*get_active_job(void);
 
 #endif

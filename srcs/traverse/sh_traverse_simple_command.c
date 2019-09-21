@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/20 17:07:16 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/21 17:02:35 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 ** sh_traverse_sc_no_slash_cmd:
 **	Function launching the execution of a process if context->params->tbl[0]
 **	do not contain a path (does not contain a '/' character)
-**	It try to launch any builtin, then look in $PATH env variable.
+**	It tries to launch any builtin, then look in $PATH env variable.
 **	If any command was found it is launched
 **	(Final else return SUCCESS to let cmd || cmd works)
 **

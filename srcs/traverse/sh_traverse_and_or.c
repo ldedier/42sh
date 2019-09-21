@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 15:54:02 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/20 17:13:12 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/22 01:37:31 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ static int		sh_traverse_and_or_call_sons_exec(t_ast_node *node,
 		context->shell->ret_value_set = 0;
 		sh_env_update_ret_value(context->shell, 2);
 	}
-	// ft_printf("ret: %d\n", ret);
 	if (ret == FAILURE || ret == STOP_CMD_LINE)
 		return (ret);
 	if (!context->shell->running)

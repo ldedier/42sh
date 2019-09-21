@@ -1,27 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   job_wait.c                                         :+:      :+:    :+:   */
+/*   sh_builtin_fg.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/20 23:10:38 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/22 00:41:45 by mdaoud           ###   ########.fr       */
+/*   Created: 2019/09/21 17:04:13 by mdaoud            #+#    #+#             */
+/*   Updated: 2019/09/21 18:12:54 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "sh_21.h"
 #include "sh_job_control.h"
+#include "sh_21.h"
+#include "sh_builtin.h"
 
-void		job_wait(t_job *j, int *res)
+
+int			sh_builtin_fg(t_context *context)
 {
-	int		status;
-	pid_t	pid;
+	t_job	*active_job;
+	int		res;
 
-
-	pid = waitpid(-1, &status, WUNTRACED);
-	while (!job_check_changes(pid, status) && !job_is_stopped(j)
-			&& !job_is_completed(j))
-		pid = waitpid(-1, &status, WUNTRACED);
-	*res = status;
+	active_job = get_active_job();
+	ft_printf("sending sigcont to %d %d\n", active_job->number, active_job->pgid);
+	if (active_job == NULL)
+		return (ERROR);
+	return (job_put_in_fg(active_job, 1, &res));
 }

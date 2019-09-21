@@ -1,49 +1,52 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   jobs_print.c                                       :+:      :+:    :+:   */
+/*   sh_builtin_jobs.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/14 00:24:19 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/21 17:59:40 by mdaoud           ###   ########.fr       */
+/*   Created: 2019/09/21 17:04:13 by mdaoud            #+#    #+#             */
+/*   Updated: 2019/09/22 01:34:05 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "sh_job_control.h"
 #include "sh_21.h"
+#include "sh_builtin.h"
 
-void			jobs_print(void)
+static void		print_job_status(t_job *j)
 {
-	t_job		*j;
-	t_process	*p;
-	int			i;
+	if (job_is_completed(j))
+		ft_printf("completed");
+	else if (job_is_stopped(j))
+		ft_printf("stopped");
+	else
+		ft_printf("running");
+	ft_printf("  ");
+}
 
-	g_job_ctrl->job_count = 1;
+int				sh_builtin_jobs(t_context *context)
+{
+	t_job	*j;
+	t_process	*p;
+
+	ft_printf("Shell pgid: %d\n", g_job_ctrl->shell_pgid);
 	if (g_job_ctrl->first_job == NULL)
-	{
-		ft_printf("%sNO JOBS AVAILABLE%s\n", COLOR_GREEN, COLOR_END);
-		return ;
-	}
-	ft_printf("\t\t\t%sPRINTING JOBS%s\n", COLOR_GREEN, COLOR_END);
+		return (SUCCESS);
 	j = g_job_ctrl->first_job;
 	while (j != NULL && !job_is_completed(j))
 	{
-		ft_printf("%sjob: %d%s\n", COLOR_YELLOW, j->number, COLOR_END);
+		ft_printf("[%d]\t", j->number);
+		print_job_status(j);
 		p = j->first_process;
-		i = 1;
 		while (p != NULL)
 		{
-			ft_printf("Process #%d\tpid: %d, pgid: %d\t\t",i++, p->pid,j->pgid);
-			ft_printf("%s", COLOR_CYAN);
+			ft_printf("%d\t", p->pid);
 			str_tab_print(p->argv);
-			ft_printf("%s\n", COLOR_END);
+			ft_printf("\n");
 			p = p->next;
 		}
-		ft_printf("%s=========================================================\n", COLOR_GREEN);
-		ft_printf("%s", COLOR_END);
 		j = j->next;
-		g_job_ctrl->job_count++;
 	}
+	return (0);
 }

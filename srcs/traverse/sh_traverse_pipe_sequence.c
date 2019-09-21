@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/20 17:10:40 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/22 01:40:43 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ static int		pipe_to_do(t_ast_node *node, t_context *context)
 	}
 	else
 	{
+		child = getpid();
+		ft_printf("Forked for the pipe, %d %d\n", child, getpgid(child));
 		ret = sh_execute_pipe(node, context);
 		exit(ret);
 	}

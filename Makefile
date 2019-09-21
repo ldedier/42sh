@@ -6,7 +6,7 @@
 #    By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/09/21 16:22:38 by mdaoud           ###   ########.fr        #
+#    Updated: 2019/09/22 01:34:48 by mdaoud           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -222,7 +222,8 @@ SRCS			+=	sh_builtin.c sh_builtin_pwd.c \
 					sh_builtin_export.c sh_builtin_hash_tools.c \
 					sh_builtin_bonus.c sh_builtin_parser.c \
 					sh_builtin_test.c sh_builtin_test_unary.c \
-					sh_builtin_test_binary.c
+					sh_builtin_test_binary.c sh_builtin_jobs.c \
+					sh_builtin_fg.c sh_builtin_bg.c
 
 ################################################################
 ########						EXPANSION				########
@@ -250,7 +251,6 @@ SRCS			 +=	sh_perror.c \
 SRCS			+=	jobs_init.c \
 					jobs_add.c \
 					jobs_print.c \
-					jobs_reset.c \
 					process_add.c \
 					str_tab_duplicate.c \
 					str_tab_print.c \
@@ -260,10 +260,11 @@ SRCS			+=	jobs_init.c \
 					job_put_in_fg.c \
 					job_is_completed.c \
 					job_is_stopped.c \
-					job_check_process_changes.c \
+					job_check_changes.c \
 					job_free.c \
 					job_print_status.c \
-					job_notify.c
+					job_notify.c \
+					get_active_job.c
 
 ################################################################
 ########					INCLUDES					########

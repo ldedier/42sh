@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 11:36:31 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/21 16:13:34 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/21 23:24:36 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,14 @@
 # define SH_BUILTIN_H
 
 # if __APPLE__ && __MACH__
-#  define NB_BUILTINS	13
+#  define NB_BUILTINS	16
 # else
-#  define NB_BUILTINS	12
+#  define NB_BUILTINS	15
 # endif
+
+# include "sh_grammar.h"
+# include "sh_21.h"
+# include "sh_job_control.h"
 
 # define NB_FLAG_UNARY	15
 # define NB_FLAG_BINARY	8
@@ -234,5 +238,12 @@ int					sh_builtin_type_search_in_path(
 ** sh_builtin_verbose.c
 */
 int					sh_builtin_verbose(t_context *context);
+
+/*
+** sh_builtin_jobs
+*/
+int					sh_builtin_jobs(t_context *context);
+int					sh_builtin_fg(t_context *context);
+int					sh_builtin_bg(t_context *context);
 
 #endif

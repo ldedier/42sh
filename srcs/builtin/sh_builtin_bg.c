@@ -1,27 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   job_wait.c                                         :+:      :+:    :+:   */
+/*   sh_builtin_bg.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/20 23:10:38 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/22 00:41:45 by mdaoud           ###   ########.fr       */
+/*   Created: 2019/09/21 17:04:13 by mdaoud            #+#    #+#             */
+/*   Updated: 2019/09/22 01:14:51 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "sh_21.h"
 #include "sh_job_control.h"
+#include "sh_21.h"
+#include "sh_builtin.h"
 
-void		job_wait(t_job *j, int *res)
+
+int			sh_builtin_bg(t_context *context)
 {
-	int		status;
-	pid_t	pid;
+	t_job	*active_job;
+	int		res;
 
-
-	pid = waitpid(-1, &status, WUNTRACED);
-	while (!job_check_changes(pid, status) && !job_is_stopped(j)
-			&& !job_is_completed(j))
-		pid = waitpid(-1, &status, WUNTRACED);
-	*res = status;
+	active_job = get_active_job();
+	if (active_job == NULL)
+		return (ERROR);
+	if (kill (- active_job->pgid, SIGCONT) < 0)
+	{
+		ft_dprintf(STDERR_FILENO, "kill SIGCONT\n");
+		return (ERROR);
+	}
+	job_print_status(active_job, "continued");
+	return(SUCCESS);
 }

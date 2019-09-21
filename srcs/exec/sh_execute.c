@@ -33,6 +33,7 @@ static int	sh_exec_binaire(t_context *context)
 	}
 	else
 	{
+		ft_printf("Adding process: %d %s\n", cpid, context->path);
 		process_add(context, cpid);
 		set_child_pgid(cpid);
 		if (g_job_ctrl->curr_job->foreground == 1)

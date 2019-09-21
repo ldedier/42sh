@@ -6,31 +6,34 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 01:05:04 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/21 16:55:09 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/22 00:41:45 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 #include "sh_job_control.h"
 
-void		job_check_updates_nohang(void)
+static void		job_check_updates_nohang(void)
 {
 	int		status;
 	pid_t	pid;
-	t_job	*j;
 
-	j = g_job_ctrl->first_job;
-	while (j != NULL)
-	{
-		pid = waitpid(-1, &status, WUNTRACED | WNOHANG);
-		while (!job_check_process_changes(pid, status) && !job_is_stopped(j)
-				&& !job_is_completed(j))
-			pid = waitpid(-1, &status, WUNTRACED);
-		j = j->next;
-	}
+	pid = waitpid(-1, &status, WUNTRACED | WNOHANG);
+	while (!job_check_changes(pid, status))
+		pid = waitpid(-1, &status, WUNTRACED);
 }
 
+static void		report_completed_or_terminated(t_job *j)
+{
+	t_process	*p;
 
+	p = j->first_process;
+	if (p && p->next == NULL && (p->terminated == 1))
+		job_print_status(j, "Done");
+	else
+		job_print_status(j, "Terminated");
+
+}
 void			job_notify(void)
 {
 	t_job	*j;
@@ -38,7 +41,7 @@ void			job_notify(void)
 	t_job	*tmp;
 
 
-	// job_check_updates_nohang();
+	job_check_updates_nohang();
 	j = g_job_ctrl->first_job;
 	tmp = NULL;
 	while (j != NULL)
@@ -48,12 +51,14 @@ void			job_notify(void)
 		if (job_is_completed(j))
 		{
 			if (j->foreground == 0)
-				job_print_status(j, "completed");
+				job_print_status(j, "Done");
 			if (tmp)
 				tmp->next = j_next;
 			else
+			{
 				g_job_ctrl->first_job = j_next;
-			// job_free(j);
+				// job_free(j);
+			}
 			g_job_ctrl->job_num[j->number] = 0;
 		}
 		/* Notify the user about stopped jobs,

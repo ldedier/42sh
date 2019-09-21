@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/20 17:09:05 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/22 01:44:25 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static pid_t 		fork_for_pipe(int *pds)
 	return (child);
 }
 
-static int 		father_exec(
+static int 		parent_exec(
 	pid_t child, int *pds, t_ast_node *node_to_execute, t_context *context)
 {
 	int 		ret;
@@ -38,18 +38,16 @@ static int 		father_exec(
 		return (STOP_CMD_LINE);
 	close(pds[INPUT]);
 	sh_traverse_command(node_to_execute, context);
-	ft_printf("CHECK 1\n");
 	close(pds[OUTPUT]);
 	close(STDOUT_FILENO);
 	waitpid(child, &ret, 0);
 	return (SH_RET_VALUE_EXIT_STATUS(ret));
-	// return (ret);
 }
 
 /*
  * loop_pipe_exec
- * This function look over the t_list pipe_sequece (grammar)
- * fork and execute in the father process the current pipe sequence.
+ * This function look at t_list pipe_sequence (grammar)
+ * forks and executes in the parent process the current pipe sequence.
 */
 static int 		loop_pipe_exec(
 	t_ast_node *curr_sequence, t_list *lst_sequences, t_context *context)
@@ -73,7 +71,7 @@ static int 		loop_pipe_exec(
 		if ((child = fork_for_pipe(pds)) < 0)
 			return (STOP_CMD_LINE);
 		else if (child)
-			return (father_exec(child, pds, curr_sequence, context));
+			return (parent_exec(child, pds, curr_sequence, context));
 		if (dup2(pds[INPUT], STDIN_FILENO) < 0)
 			exit(STOP_CMD_LINE);
 		close(pds[OUTPUT]);
@@ -90,7 +88,7 @@ static int 		loop_pipe_exec(
  * We scan the list of pipeline and apply a pipe
  * (fork, pipe, dup2...) for each pipe separator we find.
  *
- * Father process and the last child call the next level on the ast
+ * parent process and the last child call the next level on the ast
  * sh_traverse_simple_command
 */
 int				sh_execute_pipe(t_ast_node *node,
