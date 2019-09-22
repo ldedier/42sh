@@ -20,11 +20,13 @@ t_entry		*t_entry_new(int number, char *command)
 		return (NULL);
 	res->number = number;
 	res->command = command;
+	res->saves_stack = NULL;
 	return (res);
 }
 
 void		t_entry_free(t_entry *entry)
 {
+	ft_lstdel_value(&entry->saves_stack);
 	free(entry->command);
 	free(entry);
 }

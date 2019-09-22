@@ -15,13 +15,12 @@
 /*
 ** sh_vshortcut_u_maj.c
 **	
-**	
+**	undo all modifications to the current edit line
 */
 
 int		sh_vshortcut_u_maj(t_command_line *command_line, int dummy, int dummy_2)
 {
 	(void)dummy;
 	(void)dummy_2;
-	(void)command_line;
-	return (0);
+	return (sh_restore_all_save(command_line));
 }

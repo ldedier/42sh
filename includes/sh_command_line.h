@@ -36,6 +36,7 @@
 # define ELIPTIC_COMMAND_LINE	"<...>"
 
 typedef char *(*t_heredoc_func)(const char *);
+typedef struct s_entry		t_entry;
 
 typedef enum		e_mode
 {
@@ -302,7 +303,6 @@ int					sh_process_quoted(t_lexer *lexer);
 */
 int					switch_command_line(
 	t_command_line *command_line, char *str);
-int					reached_history_bottom(t_shell *shell);
 int					process_history_down(
 	t_shell *shell,
 	t_command_line *command_line,
@@ -535,11 +535,17 @@ int					process_shift_down(t_command_line *command_line);
 /*
 ** saves.c
 */
+t_list				**get_current_saves_stack(
+	t_command_line *command_line, t_entry **entry);
 int					sh_save_command_line(t_command_line *command_line);
+int					process_restore_save(
+	t_command_line *command_line, char *save, int *ret);
 int					sh_restore_save(t_command_line *command_line);
+int					sh_restore_all_save(t_command_line *command_line);
 int					sh_process_edit_counter(
 	t_command_line *command_line, int inc);
 int					sh_reset_saves(t_command_line *command_line);
+int					sh_init_entry_saves(t_entry *entry);
 
 /*
 ** utf8_tools.c

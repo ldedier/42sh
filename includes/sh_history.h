@@ -24,6 +24,7 @@ typedef struct		s_entry
 {
 	int				number;
 	char			*command;
+	t_list			*saves_stack;
 }					t_entry;
 
 typedef struct      s_history
