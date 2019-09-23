@@ -77,32 +77,30 @@ void	print_dy_tab(t_dy_tab *dtab)
 	}
 }
 
-void	print_exp(t_shell *shell)
+int		sh_free_turn_exec(t_exec *exec, int ret)
 {
-	print_dy_tab(shell->vars);
-	print_dy_tab(shell->env);
-	exit(sh_reset_shell(0));
+	free_execution_tools(&exec->tokens, &exec->ast_root, &exec->cst_root);
+	return (ret);
 }
 
 int		process_tab(t_shell *shell, t_command_line *command_line)
 {
-	t_word	word;
 	int		ret;
+	t_exec	exec;
 
-//	print_exp(shell);
 	ret = 0;
 	command_line->autocompletion.choices_common_len = -1;
-	if ((ret = populate_parsed_word_by_index(shell, command_line->dy_str->str,
-		command_line->current_index, &word)))
-		return (ret == FAILURE);
-//	ft_dprintf(2, "\n\n%s\n", word.token->value);
 	if (!command_line->autocompletion.active)
 	{
+		if ((ret = populate_parsed_word_by_index(shell,
+			command_line->dy_str->str, command_line->current_index, &exec)))
+			return (sh_free_turn_exec(&exec, ret == FAILURE));
 		ft_dlstdel(&command_line->autocompletion.choices, &free_file_dlst);
-		if (populate_choices_from_word(command_line, shell, &word))
-			return (1);
+		if (populate_choices_from_word(command_line, shell, &exec.word))
+			return (sh_free_turn_exec(&exec, 1));
 		if (command_line->autocompletion.choices != NULL)
-			ret = process_completion(command_line, word);
+			ret = process_completion(command_line, exec.word);
+		sh_free_turn_exec(&exec, ret == FAILURE);
 	}
 	else
 		process_autocompletion_down(shell, command_line);

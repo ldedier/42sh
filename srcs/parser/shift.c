@@ -53,12 +53,12 @@ int		sh_process_shift_adds(t_lr_parser *parser,
 		stack_item_state));
 }
 
-int		sh_process_shift(t_state *state, t_lr_parser *parser)
+int		sh_process_shift(t_list **tokens, t_state *state, t_lr_parser *parser)
 {
 	t_token			*token;
 	t_ast_builder	*ast_builder;
 
-	token = ft_lstpop_ptr(&parser->tokens);
+	token = ft_lstpop_ptr(tokens);
 	if (!(ast_builder = sh_new_ast_builder(token,
 			&parser->cfg.symbols[token->index])))
 	{

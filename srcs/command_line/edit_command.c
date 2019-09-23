@@ -33,7 +33,13 @@ void	process_edit_command_left(t_command_line *command_line)
 
 void	process_edit_command_right(t_command_line *command_line)
 {
-	if (command_line->current_index < (int)command_line->dy_str->current_size)
+	int limit;
+
+	if (command_line->mode != E_MODE_COMMAND)
+		limit = command_line->dy_str->current_size;
+	else
+		limit = command_line->dy_str->current_size - 1;
+	if (command_line->current_index < limit)
 	{
 		command_line->current_index = get_right_w_char_index(command_line);
 		render_command_line(command_line, 1, 1);

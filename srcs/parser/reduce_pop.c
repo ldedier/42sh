@@ -64,13 +64,13 @@ static int	sh_process_process_reduce(t_lr_parser *parser,
 	child_ast_builder = stack_item->stack_union.ast_builder;
 	child_ast_builder->cst_node->builder = NULL;
 	child_ast_builder->ast_node->builder = NULL;
-	if (ft_lstaddnew_ptr(&parser->cst_root->children,
+	if (ft_lstaddnew_ptr(&(*parser->tmp_cst_root)->children,
 				child_ast_builder->cst_node, sizeof(t_ast_node *)))
 	{
 		free(stack_item);
 		return (sh_perror(SH_ERR1_MALLOC, "sh_process_reduce_pop"));
 	}
-	child_ast_builder->cst_node->parent = parser->cst_root;
+	child_ast_builder->cst_node->parent = *parser->tmp_cst_root;
 	if (sh_treat_relevance_in_reduce(child_ast_builder,
 				production, replacing_ast_node, ast_builder_list))
 	{

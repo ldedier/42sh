@@ -71,6 +71,6 @@ t_token	*t_token_new(int id, char *value)
 void	t_token_free(t_token *token)
 {
 	if (token->value)
-		free(token->value);
+		ft_strdel(&token->value);
 	free(token);
 }

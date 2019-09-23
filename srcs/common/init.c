@@ -6,13 +6,13 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/14 13:19:50 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/02 15:38:05 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/20 10:28:40 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-static char	*refine_historic_entry(char *entry)
+static char	*refine_history_entry(char *entry)
 {
 	int		len;
 	char	*new;
@@ -22,7 +22,7 @@ static char	*refine_historic_entry(char *entry)
 	i = 0;
 	len = ft_strlen(entry);
 	if (!(new = ft_strnew(len)))
-		return (sh_perrorn(SH_ERR1_MALLOC, "refine_historic_entry"));
+		return (sh_perrorn(SH_ERR1_MALLOC, "refine_history_entry"));
 	while (entry[i])
 	{
 		if ((char_len = get_char_len2(i, len, (unsigned char *)entry)) == -1)
@@ -39,65 +39,81 @@ static char	*refine_historic_entry(char *entry)
 	return (new);
 }
 
-static int	process_read_historic(t_historic *historic, t_gnl_info info)
+static int	process_read_history(t_history *history, t_gnl_info info)
 {
 	char *res;
 
 	if (info.separator == E_SEPARATOR_NL || info.separator == E_SEPARATOR_EOF)
 	{
-		if (!(res = refine_historic_entry(info.line)))
+		if (!(res = refine_history_entry(info.line)))
 		{
 			free(info.line);
 			return (FAILURE);
 		}
 		free(info.line);
-		if (ft_add_to_dlist_ptr(&historic->commands, res, sizeof(res)))
-			return (sh_perror(SH_ERR1_MALLOC, "sh_init_historic"));
+		if (sh_append_to_history(history, res, 0))
+		{
+			free(res);
+			return (FAILURE);
+		}
+		free(res);
 		return (SUCCESS);
 	}
 	else
 	{
 		free(info.line);
-		return (sh_perror(SH_ERR1_UNEXPECTED_EOF, "sh_init_historic (2)"));
+		return (sh_perror(SH_ERR1_UNEXPECTED_EOF, "sh_init_history (2)"));
 	}
 }
 
-static int	sh_init_historic(t_historic *historic)
+static int	sh_init_history(t_history *history)
 {
 	int			fd;
 	int			ret;
 	t_gnl_info	info;
 
-	historic->commands = NULL;
-	if ((fd = open(PATH"/"HISTORIC_FILE, O_CREAT | O_RDWR
+	history->commands = NULL;
+	history->nb_entries = 0;
+	history->from = -1;
+	history->to = -1;
+	if ((fd = open(PATH"/"HISTORY_FILE, O_CREAT | O_RDWR
 		| O_NOFOLLOW, S_IRWXU)) == -1)
-		return (sh_perror(SH_ERR1_HISTORIC, "sh_init_historic (2)"));
+		return (sh_perror(SH_ERR1_HISTORY, "sh_init_history (2)"));
 	while ((ret = get_next_line2(fd, &info, BUFF_SIZE)) == 1)
 	{
-		if (process_read_historic(historic, info) != SUCCESS)
+		if (process_read_history(history, info) != SUCCESS)
 			return (FAILURE);
 	}
 	if (ret == -1)
 		return (FAILURE);
 	free(info.line);
-	historic->head_start.next = historic->commands;
-	historic->head_start.prev = NULL;
-	historic->head = &historic->head_start;
+	history->head_start.next = history->commands;
+	history->head_start.prev = NULL;
+	history->head = &history->head_start;
 	close(fd);
 	return (SUCCESS);
 }
 
 static int	sh_init_command_line(t_shell *shell, t_command_line *command_line)
 {
+	command_line->shell = shell;
+	command_line->edit_line = NULL;
+	command_line->edit_counter = 0;
+	command_line->saves_stack = NULL;
+	command_line->count.active = 0;
+	command_line->count.tmp_value = 1;
+	command_line->last_ft_command.motion = NULL;
+	command_line->last_ft_command.locked = 0;
 	command_line->autocompletion.choices = NULL;
 	command_line->autocompletion.head = NULL;
 	command_line->autocompletion.active = 0;
 	command_line->interrupted = 0;
 	command_line->autocompletion.scrolled_lines = 0;
 	command_line->pinned_index = -1;
-	command_line->mode = E_MODE_INSERT;
 	command_line->scrolled_lines = 0;
 	command_line->context = E_CONTEXT_STANDARD;
+	command_line->edit_style = E_EDIT_STYLE_READLINE;
+	command_line->mode = E_MODE_INSERT;
 	if ((command_line->fd = open("/dev/tty", O_RDWR)) < 0)
 		return (sh_perror(SH_ERR1_TTY, "sh_init_command_line (1)"));
 	if (!(command_line->searcher.dy_str = ft_dy_str_new(63)))
@@ -139,7 +155,7 @@ int			sh_init_shell(t_shell *shell, char **env)
 	shell->running = 1;
 	if (sh_init_parsing(&shell->parser) != SUCCESS)
 		return (FAILURE);
-	if ((sh_init_historic(&shell->historic)) != SUCCESS)
+	if ((sh_init_history(&shell->history)) != SUCCESS)
 		return (FAILURE);
 	if (!(shell->binaries = ft_hash_table_new(BINARIES_TABLE_SIZE)))
 		return (FAILURE);

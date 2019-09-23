@@ -37,14 +37,14 @@ t_list	*t_token_node_new(int id, char *value)
 **	Free a t_token encpsuled in a t_list.
 */
 
-void	t_token_free_list(t_list *head)
+void	t_token_free_list(t_list **head)
 {
 	t_list	*buf;
 
-	while (head)
+	while (*head)
 	{
-		buf = head;
-		head = head->next;
+		buf = *head;
+		*head = (*head)->next;
 		t_token_free(buf->content);
 		free(buf);
 	}
