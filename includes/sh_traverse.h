@@ -34,7 +34,7 @@ struct				s_heredoc
 /*
 ** sh_traverse.c
 */
-int		sh_process_traverse(t_shell *shell);
+int		sh_process_traverse(t_shell *shell, t_ast_node *ast_root);
 
 /*
 ** sh_traverse_and_or.c

@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 19:54:46 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/06 12:16:36 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/09 14:11:17 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ static char	*get_research_title(t_command_line *command_line)
 
 int			get_research_nb_lines(t_command_line *command_line)
 {
-	//	&& ft_strcmp(command_line->searcher.dy_str->str, ""))
 	if (command_line->searcher.active)
 		return ((((ft_strlen_utf8(command_line->searcher.dy_str->str)
 			+ ft_strlen(get_research_title(command_line))

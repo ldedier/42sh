@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/27 16:47:32 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/23 15:37:01 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/23 20:43:36 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ static int	sh_splitting_non_white_ifs(t_ast_node *node, char *ifs, char *input, 
 	return (SUCCESS);
 }
 
-static int	sh_expansions_splitting_default(t_context *context, t_ast_node *node, t_dy_tab *quotes)
+static int	sh_expansions_splitting_default(t_ast_node *node, t_dy_tab *quotes)
 {
 	int			i;
 	int			start;
@@ -191,7 +191,6 @@ static int	sh_expansions_splitting_default(t_context *context, t_ast_node *node,
 			ft_dprintf(2, "last node added : start : %d, i : %d\n", start, i);
 	}
 	return (SUCCESS);
-	(void)context;
 	(void)quotes;
 }
 
@@ -207,7 +206,7 @@ int			sh_expansions_splitting(t_context *context, t_ast_node *node, t_dy_tab *qu
 	{
 		if (!ft_strpbrk(node->token->value, " \t\n"))
 			return (SUCCESS);
-		ret = sh_expansions_splitting_default(context, node, quotes);
+		ret = sh_expansions_splitting_default(node, quotes);
 	}
 	else if (!*ifs)
 		return (SUCCESS);

@@ -38,11 +38,17 @@ void	free_file_dlst(void *f, size_t dummy)
 	free_file((t_file *)f);
 }
 
+void	free_entry_dlst(void *e, size_t dummy)
+{
+	(void)dummy;
+	t_entry_free((t_entry *)e);
+}
+
 void	sh_free_all(t_shell *shell)
 {
 	sh_free_parser(&shell->parser);
 	sh_free_command_line(&g_glob.command_line);
-	ft_dlstdel_value(&shell->historic.commands);
+	ft_dlstdel(&shell->history.commands, free_entry_dlst);
 	if (shell->vars)
 		ft_dy_tab_del(shell->vars);
 	if (shell->env)

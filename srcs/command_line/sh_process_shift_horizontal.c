@@ -47,9 +47,13 @@ int		process_shift_right(t_command_line *c_line)
 
 	index = c_line->current_index + 1;
 	if ((ret = process_process_shift_right(c_line, &word, &index)) != 3)
+	{
+		replace_cursor_vim_legal(c_line);
 		return (ret);
+	}
 	render_command_line(c_line, index - c_line->current_index - 1, 1);
 	c_line->current_index = index - 1;
+	replace_cursor_vim_legal(c_line);
 	return (ft_del_turn_char(&word.str, SUCCESS));
 }
 

@@ -31,17 +31,24 @@ t_stack_item	*new_stack_item(t_ast_builder *ast_builder, t_state *state)
 	return (res);
 }
 
-int				process_lr_parser_ret(t_lr_parser *parser, t_action action)
+int				process_lr_parser_ret(t_lr_parser *parser,
+	t_action action, t_ast_node **ast_root, t_ast_node **cst_root)
 {
 	if (action.action_enum == E_ACTION_SHIFT)
 	{
-		if (sh_process_shift(action.action_union.state, parser))
+		if (sh_process_shift(parser->tmp_tokens,
+			action.action_union.state, parser))
+		{
 			return (FAILURE);
+		}
 	}
 	else if (action.action_enum == E_ACTION_REDUCE)
 	{
-		if (sh_process_reduce(action.action_union.production, parser))
+		if (sh_process_reduce(action.action_union.production, parser,
+			ast_root, cst_root))
+		{
 			return (FAILURE);
+		}
 	}
 	else if (action.action_enum == E_ACTION_ACCEPT)
 		return (SUCCESS);
@@ -50,7 +57,8 @@ int				process_lr_parser_ret(t_lr_parser *parser, t_action action)
 	return (3);
 }
 
-int				process_lr_parse(t_lr_parser *parser)
+int				process_lr_parse(t_lr_parser *parser, t_list **tokens,
+		t_ast_node **ast_root, t_ast_node **cst_root)
 {
 	t_action		action;
 	t_stack_item	*stack_item;
@@ -64,11 +72,11 @@ int				process_lr_parse(t_lr_parser *parser)
 		return (ERROR);
 	else
 		state = stack_item->stack_union.state;
-	token = (t_token *)parser->tokens->content;
+	token = (t_token *)(*tokens)->content;
 //	ft_printf("CURRENT TOKEN: ");
 //	sh_print_token(token, g_glob.cfg);
 	action = parser->lr_tables[state->index][token->index];
-	return (process_lr_parser_ret(parser, action));
+	return (process_lr_parser_ret(parser, action, ast_root, cst_root));
 }
 
 /*
@@ -78,12 +86,14 @@ int				process_lr_parse(t_lr_parser *parser)
 ** FAILURE	-> malloc error
 */
 
-int				sh_lr_parse(t_lr_parser *parser)
+int				sh_lr_parse(t_lr_parser *parser, t_list **tokens,
+	t_ast_node **ast_root, t_ast_node **cst_root)
 {
 	t_stack_item	*stack_item;
 	int				ret;
 
-	ft_lstdel(&parser->stack, sh_free_stack_item_lst);
+//	ft_lstdel(&parser->stack, sh_free_stack_item_lst);
+	parser->tmp_tokens = tokens;
 	if (!(stack_item = new_stack_item(NULL, parser->states->content)))
 		return (FAILURE);
 	if (ft_lstaddnew_ptr(&parser->stack, stack_item, sizeof(t_stack_item *)))
@@ -91,9 +101,13 @@ int				sh_lr_parse(t_lr_parser *parser)
 		sh_free_stack_item(stack_item);
 		return (sh_perror(SH_ERR1_MALLOC, "sh_lr_parse"));
 	}
-	while (parser->tokens)
+	while (*tokens)
 	{
-		ret = process_lr_parse(parser);
+		ret = process_lr_parse(parser, tokens, ast_root, cst_root);
+//		ft_printf("\nAST:\n");
+//		sh_print_ast(*ast_root, 0);
+//		ft_printf("\nCST:\n");
+//		sh_print_ast(*cst_root, 0);
 		if (ret != 3)
 			return (ret);
 //		sh_print_parser_state(parser);

@@ -26,7 +26,7 @@ static t_ast_node	*go_to_list(t_ast_node *node)
 	return (test);
 }
 
-int		sh_process_traverse(t_shell *shell)
+int		sh_process_traverse(t_shell *shell, t_ast_node *ast_root)
 {
 	t_context	context;
 	t_ast_node	*list_node;
@@ -34,7 +34,7 @@ int		sh_process_traverse(t_shell *shell)
 
 	if (t_context_init(&context, shell) == FAILURE)
 		return (FAILURE);
-	if ((list_node = go_to_list(shell->parser.ast_root)) == NULL)
+	if ((list_node = go_to_list(ast_root)) == NULL)
 	{
 		t_context_free_content(&context);
 		return (SUCCESS);

@@ -24,7 +24,8 @@
 # define SH_ERR1_INTERN_ERR		"System internal error"
 # define SH_ERR1_FORK			"Could not fork, too many processes are running"
 # define SH_ERR1_CMD_NOT_FOUND	"Command not found"
-# define SH_ERR1_HISTORIC		"Could not open the historic file"
+# define SH_ERR1_HISTORY		"Could not open the history file"
+# define SH_ERR1_EDIT			"Could not open the edit file"
 # define SH_ERR1_TTY			"Could not open the tty file descriptor"
 # define SH_ERR1_PERM_DENIED	"Permission denied"
 # define SH_ERR1_TOO_MANY_ARGS	"Too many arguments"
@@ -46,9 +47,10 @@
 # define SH_BLT_BINAREXP		"Binary operator expected"
 # define SH_BLT_NOTWELLFORM		"Sorry your command are not well formatted"
 # define SH_BLT_INTEGER			"Integer expression expected"
+# define SH_BLT_HISTORY_RANGE	"fc: history specification out of range"
+# define SH_BLT_NO_CMD_FOUND	"fc: no command found"
 
-# define SH_BAD_SUBSTITUTE		"bad substitution"
-
+# define SH_BAD_SUBSTITUTE		"Bad subsitution"
 /*
 ********************************************************************************
 */

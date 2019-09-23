@@ -15,8 +15,6 @@
 
 # include "sh_21.h"
 
-# define DGREAT_OPT						(O_WRONLY | O_APPEND | O_CREAT)
-# define GREAT_OPT						(O_WRONLY | O_TRUNC | O_CREAT)
 # define SH_RET_VALUE_EXIT_STATUS(res)	res >> 8
 # define SH_RET_VALUE_SIG_RECEIVED(res)	res & 0xff
 
@@ -36,21 +34,7 @@
 
 extern pid_t g_parent;
 
-typedef enum		e_redirection_type
-{
-	INPUT,
-	OUTPUT
-}					t_redirection_type;
-
-typedef struct			s_redirection
-{
-	t_redirection_type	type;
-	int					redirected_fd;
-	int					fd;
-	int					backup;
-	int					was_closed;
-}						t_redirection;
-
+typedef struct		s_redirection t_redirection;
 typedef enum		e_phase
 {
 	E_TRAVERSE_PHASE_INTERACTIVE_REDIRECTIONS,

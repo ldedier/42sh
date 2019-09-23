@@ -6,11 +6,27 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 18:13:55 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/07 18:18:26 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/12 19:10:43 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
+
+int		get_char_len_unprotected(int index, unsigned char *entry)
+{
+	int i;
+	int j;
+
+	i = index;
+	j = 1;
+	while (j <= 4)
+	{
+		if (is_printable_utf8(&entry[i], j))
+			return (j);
+		j++;
+	}
+	return (-1);
+}
 
 int		get_char_len2(int index, int len, unsigned char *entry)
 {

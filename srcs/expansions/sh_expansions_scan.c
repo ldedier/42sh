@@ -113,6 +113,10 @@ int			sh_expansions_scan(char **input, int index,
 		if ((ret = unquoted_var(input, &index, context, quotes)) != SUCCESS)
 			return (ret);
 	}
+	else if ((*input)[index] == '!' && do_expansion)
+	{
+
+	}
 	else
 	{
 		if (t_quote_add_new(quotes, index, (*input) + index))

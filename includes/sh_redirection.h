@@ -6,12 +6,31 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 14:58:00 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/23 14:58:37 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/23 20:42:20 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SH_REDIRECTION_H
 # define SH_REDIRECTION_H
+
+# define DGREAT_OPT					(O_WRONLY | O_APPEND | O_CREAT)
+# define GREAT_OPT					(O_WRONLY | O_TRUNC | O_CREAT)
+
+typedef enum		e_redirection_type
+{
+	INPUT,
+	OUTPUT
+}					t_redirection_type;
+
+typedef struct			s_redirection
+{
+	t_redirection_type	type;
+	int					redirected_fd;
+	int					fd;
+	int					backup;
+	int					was_closed;
+}						t_redirection;
+
 
 /*
 ********************************************************************************

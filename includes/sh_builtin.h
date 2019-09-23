@@ -14,9 +14,9 @@
 # define SH_BUILTIN_H
 
 # if __APPLE__ && __MACH__
-#  define NB_BUILTINS	13
+#  define NB_BUILTINS	14
 # else
-#  define NB_BUILTINS	12
+#  define NB_BUILTINS	13
 # endif
 
 # define NB_FLAG_UNARY	15
@@ -29,13 +29,13 @@
 # define CD_L_OPT_USAGE		"Resolve pathname including symlinks (default)"
 # define CD_HYPHEN_OPT		2
 
-#define TYPE_USAGE			"[-atp] name [name ...]"
-#define TYPE_A_OPT			0
-#define TYPE_A_OPT_USAGE	"Print all places that contain valid executable"
-#define TYPE_P_OPT			1
-#define TYPE_P_OPT_USAGE	"Print path that name would execute"
-#define TYPE_T_OPT			2
-#define TYPE_T_OPT_USAGE	"Print a string describing the file type"
+# define TYPE_USAGE			"[-atp] name [name ...]"
+# define TYPE_A_OPT			0
+# define TYPE_A_OPT_USAGE	"Print all places that contain valid executable"
+# define TYPE_P_OPT			1
+# define TYPE_P_OPT_USAGE	"Print path that name would execute"
+# define TYPE_T_OPT			2
+# define TYPE_T_OPT_USAGE	"Print a string describing the file type"
 
 enum	e_built_test_unary {TEST_B, TEST_C, TEST_D, TEST_E, TEST_F, TEST_G,
 	TEST_L, TEST_P, TEST_R, TEST_SS, TEST_S, TEST_U, TEST_W, TEST_X, TEST_Z};
@@ -43,6 +43,7 @@ enum	e_built_test_binary {TEST_EQU, TEST_NOEQU, TEST_EQ, TEST_NE, TEST_GT,
 	TEST_GE, TEST_LT, TEST_LE};
 
 typedef struct s_binary			t_binary;
+typedef struct s_history		t_history;
 typedef struct s_binary_stats	t_binary_stats;
 typedef	int	(*t_builtin)(t_context *);
 
@@ -59,6 +60,37 @@ struct				s_binary_stats
 	int				max_name_len;
 	int				max_hits_str_len;
 };
+
+typedef enum		e_fc_op_type
+{
+	E_FC_STRING,
+	E_FC_INTEGER
+}					t_fc_op_type;
+
+typedef union		u_fc_op_union
+{
+	int				integer;
+	char			*string;
+}					t_fc_op_union;
+
+typedef struct		s_fc_operand
+{
+	t_fc_op_type	type;
+	t_fc_op_union	un;
+	char			parsed : 1;
+}					t_fc_operand;
+
+typedef struct		s_fc_options
+{
+	t_fc_operand	from;
+	t_fc_operand	to;
+	char			opt_s : 1;
+	char			opt_l : 1;
+	char			opt_n : 1;
+	char			opt_r : 1;
+	char			*editor;
+
+}					t_fc_options;
 
 typedef struct		s_builtin_container
 {
@@ -148,6 +180,61 @@ int					sh_builtin_export_assign(
 int					sh_builtin_export(t_context *context);
 
 /*
+** sh_builtin_fc.c
+*/
+int					invalid_argument(char *str, char c);
+int					sh_builtin_fc(t_context *context);
+
+/*
+** sh_builtin_fc_default_synopsis.c
+*/
+int					sh_builtin_fc_fill_text(
+	t_history *history, t_dlist *from, t_dlist *to);
+char				*sh_get_editor(char *editor, t_shell *shell);
+void				fill_default_opts_default_synopsis(t_fc_options *opts);
+int					sh_execute_editor(char *editor, t_shell *shell);
+int					sh_execute_commands_from_file(
+	t_shell *shell, char *filename);
+int					sh_builtin_fc_default_synopsis(
+	t_context *context, t_fc_options *opts);
+
+/*
+** sh_builtin_fc_get_entry.c
+*/
+t_dlist				*get_entry_from_fc_operand(
+	t_history *history, t_fc_operand *op);
+
+/*
+** sh_builtin_fc_l_synopsis.c
+*/
+int					get_true_rank(t_history *history, int number);
+int					get_listing_way(
+	t_history *history, t_dlist *from, t_dlist *to);
+void				sh_builtin_fc_list(
+	t_history *history, t_dlist *from, t_dlist *to, int opt_n);
+void				print_fc_operand(t_fc_operand *op);
+void				swap_entries(
+	t_history *history, t_dlist **from, t_dlist **to);
+int					sh_builtin_fc_l_synopsis(
+	t_context *context, t_fc_options *opts);
+
+/*
+** sh_builtin_fc_parse_operands.c
+*/
+int					parse_fc_operands(
+	t_context *context, int index, t_fc_options *options);
+
+/*
+** sh_builtin_fc_s_synopsis.c
+*/
+char				*ft_substitute_occurences(
+	char *str, char *to_replace, char *replacement);
+char				*get_command_to_execute_fc(
+	char *command, char *substitution_str);
+int					sh_builtin_fc_s_synopsis(
+	t_context *context, t_fc_options *opts);
+
+/*
 ** sh_builtin_hash.c
 */
 int					sh_builtin_hash(t_context *context);
@@ -182,6 +269,8 @@ int					sh_builtin_pwd(t_context *context);
 /*
 ** sh_builtin_set.c
 */
+int					sh_builtin_set_args(t_context *context);
+int					sh_builtin_set_print_all(t_context *context);
 int					sh_builtin_set(t_context *context);
 
 /*

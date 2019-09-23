@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   research_historic.c                                :+:      :+:    :+:   */
+/*   research_history.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/20 19:29:29 by ldedier           #+#    #+#             */
-/*   Updated: 2019/07/27 16:56:59 by jmartel          ###   ########.fr       */
+/*   Created: 2019/09/15 15:38:34 by ldedier           #+#    #+#             */
+/*   Updated: 2019/09/15 15:38:34 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-int		process_find_in_historic(t_command_line *command_line,
+int		process_find_in_history(t_command_line *command_line,
 			char *to_search_in, char *found)
 {
 	int			new_len;
@@ -28,41 +28,41 @@ int		process_find_in_historic(t_command_line *command_line,
 	return (SUCCESS);
 }
 
-int		progress_process_research_historic(t_command_line *command_line,
+int		progress_process_research_history(t_command_line *command_line,
 		t_shell *shell)
 {
 	char		*to_search_in;
 	char		*found;
 
-	to_search_in = (char *)command_line->searcher.head->content;
+	to_search_in = ((t_entry *)command_line->searcher.head->content)->command;
 	if ((found = ft_strstr(&(to_search_in[command_line->searcher.
 			match_index + 1]), command_line->searcher.dy_str->str))
 				&& ((ft_strcmp(to_search_in, command_line->dy_str->str)
 					|| found - to_search_in != command_line->searcher.
 							match_index + 1)))
 	{
-		return (process_find_in_historic(command_line,
+		return (process_find_in_history(command_line,
 			to_search_in, found));
 	}
 	command_line->searcher.match_index = -1;
 	if ((command_line->searcher.head = command_line->searcher.head->next)
-			== shell->historic.commands)
+			== shell->history.commands)
 		return (FAILURE);
 	else
-		return (progress_process_research_historic(command_line, shell));
+		return (progress_process_research_history(command_line, shell));
 }
 
-int		update_research_historic(t_command_line *command_line, t_shell *shell,
+int		update_research_history(t_command_line *command_line, t_shell *shell,
 			int reset)
 {
 	command_line->searcher.match_index = -1;
-	command_line->searcher.head = shell->historic.commands;
+	command_line->searcher.head = shell->history.commands;
 	if (reset)
 		command_line->searcher.unsuccessful = 0;
-	return (process_research_historic(command_line, shell));
+	return (process_research_history(command_line, shell));
 }
 
-int		process_research_historic(t_command_line *command_line, t_shell *shell)
+int		process_research_history(t_command_line *command_line, t_shell *shell)
 {
 	if (command_line->searcher.active)
 	{
@@ -70,7 +70,7 @@ int		process_research_historic(t_command_line *command_line, t_shell *shell)
 				&& ft_strcmp(command_line->searcher.dy_str->str, ""))
 		{
 			if ((command_line->searcher.unsuccessful =
-				progress_process_research_historic(command_line, shell)))
+				progress_process_research_history(command_line, shell)))
 				render_command_line(command_line, 0, 1);
 		}
 		else
@@ -84,7 +84,7 @@ int		process_research_historic(t_command_line *command_line, t_shell *shell)
 			command_line->searcher.dy_str->max_size);
 		command_line->searcher.match_index = -1;
 		render_command_line(command_line, 0, 0);
-		command_line->searcher.head = shell->historic.commands;
+		command_line->searcher.head = shell->history.commands;
 	}
 	return (SUCCESS);
 }

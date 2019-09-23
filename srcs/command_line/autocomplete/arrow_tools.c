@@ -61,15 +61,14 @@ int		substitute_command_str_from_str(t_command_line *command_line,
 int		substitute_command_str(t_shell *shell ,t_command_line *command_line,
 			char *str)
 {
-	t_word	word;
+	t_exec	exec;
 
 	if (populate_parsed_word_by_index(shell, command_line->dy_str->str,
-		command_line->current_index, &word))
-		return (FAILURE);
-	if (process_substitute_command(command_line, str, word, 0))
-	{
-		return (FAILURE);
-	}
+		command_line->current_index, &exec))
+		return (sh_free_turn_exec(&exec, FAILURE));
+	if (process_substitute_command(command_line, str, exec.word, 0))
+		return (sh_free_turn_exec(&exec, FAILURE));
+	sh_free_turn_exec(&exec, FAILURE);
 	return (SUCCESS);	
 }
 

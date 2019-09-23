@@ -279,12 +279,13 @@ void	sh_print_stack_item(t_stack_item *stack_item)
 	}
 }
 
-void	sh_print_parser_state(t_lr_parser *parser)
+
+void	sh_print_parser_state(t_lr_parser *parser, t_list *tokens)
 {
 	t_list			*ptr;
 
 	ft_printf("input tokens:\n");
-	sh_print_token_list(parser->tokens, &parser->cfg);
+	sh_print_token_list(tokens, &parser->cfg);
 	ft_printf("PDA stack:\n");
 	ptr = parser->stack;
 	while (ptr != NULL)
@@ -303,12 +304,14 @@ void	sh_print_cfg(t_cfg *cfg)
 	print_follow_sets(cfg);
 }
 
+/*
 void	sh_print_ast_parser(t_lr_parser *parser)
 {
 	ft_printf(GREEN"//////////START AST///////////\n"EOC);
 	sh_print_ast(parser->ast_root, 0);
 	ft_printf(RED"//////////END AST///////////\n"EOC);
 }
+*/
 
 void	sh_print_parser(t_lr_parser *parser, int depth)
 {
