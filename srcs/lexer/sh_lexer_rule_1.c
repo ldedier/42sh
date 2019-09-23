@@ -18,7 +18,7 @@ static int	sh_lexer_rule1_process_quoted_start(t_lexer *lexer, int reading)
 	{
 		if (lexer->mode == E_LEX_AUTOCOMPLETION)
 			return (LEX_ERR);
-		else
+		else if (lexer->quoted)
 		{
 			ft_dprintf(2, SH_ERR_COLOR
 			"unexpected EOF while looking for matching %c\n"EOC, lexer->quoted);
