@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/05 12:43:22 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/09/23 15:16:38 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/23 23:21:40 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,30 @@ static int	is_valid_var(char c)
 	else if (c == '{')
 		return (1);
 	return (0);
+}
+
+static int	sh_traverse_io_here_expansion(
+		char **str, int *cursor, t_context *context)
+{
+	int ret;
+	t_dy_tab	*quotes;
+
+	if ((*str)[*cursor] == '$' && is_valid_var((*str)[*cursor + 1]))
+	{
+		if (!(quotes = ft_dy_tab_new(1)))
+			return (sh_perror(SH_ERR1_MALLOC, "sh_traverse_io_here_expansion"));
+		if ((ret = sh_expansions_process(
+						str, (*str) + *cursor, context, cursor, quotes)))
+		{
+			if (sh_env_update_ret_value_and_question(context->shell, ret))
+				return (FAILURE);
+			return (ret);
+		}
+		sh_expansions_quote_removal_in_str(*str); // needed ??
+	}
+	else
+		(*cursor) += 1;
+	return (SUCCESS);
 }
 
 static int	loop_expansion(char **str, t_context *context)
@@ -63,28 +87,5 @@ int			sh_traverse_io_here_phase_expansion(
 		if ((ret = loop_expansion(&(first_child->token->value), context)))
 			return (ret);
 	}
-	return (SUCCESS);
-}
-
-int			sh_traverse_io_here_expansion(
-		char **str, int *cursor, t_context *context)
-{
-	int ret;
-	t_dy_tab	*quotes;
-
-	if ((*str)[*cursor] == '$' && is_valid_var((*str)[*cursor + 1]))
-	{
-		if (!(quotes = ft_dy_tab_new(1)))
-			return (sh_perror(SH_ERR1_MALLOC, "sh_traverse_io_here_expansion"));
-		if ((ret = sh_expansions_process(
-						str, (*str) + *cursor, context, cursor, quotes)))
-		{
-			if (sh_env_update_ret_value_and_question(context->shell, ret))
-				return (FAILURE);
-			return (ERROR);
-		}
-	}
-	else
-		(*cursor) += 1;
 	return (SUCCESS);
 }
