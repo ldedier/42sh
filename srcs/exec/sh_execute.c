@@ -18,7 +18,7 @@ static int	sh_exec_binaire(t_context *context)
 		if (sh_post_execution() != SUCCESS)
 			return (FAILURE);
 		g_glob.command_line.interrupted = WIFSIGNALED(res);
-		return (res);
+		return (SUCCESS);
 	}
 	return (SUCCESS);
 }
