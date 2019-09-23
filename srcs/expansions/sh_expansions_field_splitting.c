@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/27 16:47:32 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/23 20:43:36 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/23 22:29:56 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,9 +218,9 @@ int			sh_expansions_splitting(t_context *context, t_ast_node *node, t_dy_tab *qu
 	}
 	if (sh_verbose_expansion())
 	{
-		sh_print_token_list(context->shell->parser.tokens, &context->shell->parser.cfg);
-		sh_print_ast(node, 0);
-		sh_print_ast(context->shell->parser.ast_root, 0);
+		// sh_print_token_list(context->shell->parser.tokens, &context->shell->parser.cfg);
+		// sh_print_ast(node, 0);
+		// sh_print_ast(context->shell->parser.ast_root, 0);
 	}	
 	return (ret);
 	(void)node;

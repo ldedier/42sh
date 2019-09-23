@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 11:19:41 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/23 14:52:05 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/24 00:49:00 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,7 @@ static int		sh_traverse_io_here_interactive(t_ast_node *node,
 	heredoc_data.apply_expansion = &(child->token->apply_heredoc_expansion);
 	if (ft_strpbrk(child->token->value, "\"\'\\"))
 	{
-		// if (sh_expansions_quote_removal(context, child))
-		// 	return (ERROR);
+		sh_expansions_quote_removal_in_str(child->token->value);
 		(*heredoc_data.apply_expansion) = 0;
 	}
 	heredoc_data.stop = child->token->value;
@@ -96,20 +95,25 @@ int				sh_traverse_io_here(t_ast_node *node, t_context *context)
 {
 	// t_redirection	*redirection;
 	t_ast_node 		*first_child;
+	int				ret;
 
 	// redirection = NULL;
+	sh_traverse_tools_show_traverse_start(node, context);
 	if (context->phase == E_TRAVERSE_PHASE_INTERACTIVE_REDIRECTIONS)
-		return (sh_traverse_io_here_phase_interactive(node, context));
+		ret = sh_traverse_io_here_phase_interactive(node, context);
 	else if (context->phase == E_TRAVERSE_PHASE_EXPANSIONS)
 	{
-		return (sh_traverse_io_here_phase_expansion(
-					/*redirection,*/ node, context));
+		ret = sh_traverse_io_here_phase_expansion(
+					/*redirection,*/ node, context);
 	}
 	else if (context->phase == E_TRAVERSE_PHASE_REDIRECTIONS)
 	{
 		first_child = node->children->next->content;
 		first_child = first_child->children->content;
-		return (sh_traverse_tools_io_here_redirection(first_child, context));
+		ret = sh_traverse_tools_io_here_redirection(first_child, context);
 	}
-	return (SUCCESS);
+	else
+		ret = sh_traverse_tools_browse(node, context);
+	sh_traverse_tools_show_traverse_ret_value(node, context, ret);
+	return (ret);
 }
