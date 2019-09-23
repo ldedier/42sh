@@ -38,6 +38,12 @@
 typedef char *(*t_heredoc_func)(const char *);
 typedef struct s_entry		t_entry;
 
+typedef enum		e_edit_style
+{
+	E_EDIT_STYLE_READLINE,
+	E_EDIT_STYLE_VIM,
+}					t_edit_style;
+
 typedef enum		e_mode
 {
 	E_MODE_INSERT,
@@ -120,11 +126,12 @@ typedef struct		s_command_line
 	int				nb_chars;
 	int				current_index;
 	int				scrolled_lines;
-	t_mode			mode;
 	int				interrupted;
 	char			*clipboard;
 	int				pinned_index;
+	t_mode			mode;
 	t_cl_context	context;
+	t_edit_style	edit_style;
 	int				prev_prompt_len;
 	char			*to_append_str;
 	int				fd;

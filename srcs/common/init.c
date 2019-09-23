@@ -110,9 +110,10 @@ static int	sh_init_command_line(t_shell *shell, t_command_line *command_line)
 	command_line->interrupted = 0;
 	command_line->autocompletion.scrolled_lines = 0;
 	command_line->pinned_index = -1;
-	command_line->mode = E_MODE_INSERT;
 	command_line->scrolled_lines = 0;
 	command_line->context = E_CONTEXT_STANDARD;
+	command_line->edit_style = E_EDIT_STYLE_READLINE;
+	command_line->mode = E_MODE_INSERT;
 	if ((command_line->fd = open("/dev/tty", O_RDWR)) < 0)
 		return (sh_perror(SH_ERR1_TTY, "sh_init_command_line (1)"));
 	if (!(command_line->searcher.dy_str = ft_dy_str_new(63)))

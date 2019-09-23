@@ -34,7 +34,7 @@ int		progress_process_research_history(t_command_line *command_line,
 	char		*to_search_in;
 	char		*found;
 
-	to_search_in = (char *)command_line->searcher.head->content;
+	to_search_in = ((t_entry *)command_line->searcher.head->content)->command;
 	if ((found = ft_strstr(&(to_search_in[command_line->searcher.
 			match_index + 1]), command_line->searcher.dy_str->str))
 				&& ((ft_strcmp(to_search_in, command_line->dy_str->str)

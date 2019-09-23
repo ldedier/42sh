@@ -87,7 +87,8 @@ int		process_keys(t_key_buffer *buffer, t_shell *shell,
 	}
 	else if (buffer->buff[0] == 12)
 		process_clear(command_line);
-	else if (buffer->buff[0] == 127)
+	else if (buffer->buff[0] == 127
+		&& command_line->edit_style == E_EDIT_STYLE_READLINE)
 		process_delete(command_line, shell);
 	else if (buffer->buff[0] == 1)
 		process_start(command_line);
