@@ -1,0 +1,7 @@
+var=TAMER
+1<<eof ./obj/fd_read 1
+Write on 1
+$novar 
+$var$var
+$variable
+eof
