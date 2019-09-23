@@ -12,8 +12,16 @@
 
 #include "sh_21.h"
 
-int		sh_traverse_semicol(t_ast_node *node, t_context *context)
+/*
+ * sh_traverse_semicol :
+ * This function it's called when we find a semi_col in 
+ * the t_list LIST (grammar)
+ * It take the context and the and_or node to execute.
+*/
+int		sh_traverse_semicol(t_ast_node *node_to_execute, t_context *context)
 {
-	t_context_reset(context);
-	return (sh_traverse_tools_browse(node, context));
+	int 	ret;
+	
+	ret = sh_traverse_and_or(node_to_execute, context);
+	return (ret);
 }

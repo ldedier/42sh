@@ -85,16 +85,16 @@ int			sh_builtin_pwd(t_context *context)
 	argv = (char**)context->params->tbl;
 	if (sh_builtin_parser(ft_strtab_len(argv), argv, args, &index))
 		return (sh_builtin_usage(args, argv[0], PWD_USAGE, context));
-	if (write(context->fd[FD_OUT], NULL, 0))
-		return (sh_perror2_err_fd(context->fd[FD_ERR], "write error",
+	if (write(FD_OUT, NULL, 0))
+		return (sh_perror2_err_fd(FD_ERR, "write error",
 			"export", SH_ERR1_BAD_FD));
 	if (args[PWD_P_OPT].value && args[PWD_P_OPT].priority > args[PWD_L_OPT].priority)
-		pwd = sh_builtin_pwd_physical(context->fd[FD_ERR]);
+		pwd = sh_builtin_pwd_physical(FD_ERR);
 	else
-		pwd = sh_builtin_pwd_logical(context->env, context->fd[FD_ERR]);
+		pwd = sh_builtin_pwd_logical(context->env, FD_ERR);
 	if (!pwd)
 		return (FAILURE);
-	ft_dprintf(context->fd[FD_OUT], "%s\n", pwd);
+	ft_dprintf(FD_OUT, "%s\n", pwd);
 	free(pwd);
 	return (SUCCESS);
 }

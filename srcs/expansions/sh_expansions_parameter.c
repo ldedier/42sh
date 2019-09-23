@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 13:52:11 by jmartel           #+#    #+#             */
-/*   Updated: 2019/07/22 11:44:46 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/14 03:29:03 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,12 +120,12 @@ int			sh_expansions_parameter_process(t_context *context,
 
 	if (sh_expansions_parameter_detect_special_var(exp))
 		return (sh_expansions_variable_process(context, exp));
-	if (!ft_strpbrk(exp->expansion, ":-=?+%"))
+	if (!ft_strpbrk(exp->expansion, ":-=?+%") && !ft_strchr(exp->expansion + 1, '#'))
 	{
 		if (exp->expansion[0] == '#')
 			return (sh_expansions_variable_process(context, exp));
 		if (sh_expansions_variable_detect(exp->expansion) == -1)
-			return (sh_perror_err(exp->original, "bad substitution"));
+			return (sh_perror_err(exp->original, SH_BAD_SUBSTITUTE));
 		return (sh_expansions_variable_process(context, exp));
 	}
 	if (sh_expansions_parameter_format(exp, format) != SUCCESS)
@@ -138,7 +138,11 @@ int			sh_expansions_parameter_process(t_context *context,
 		return (sh_expansions_parameter_quest(context, exp, format));
 	else if (ft_strstr(":+", format) || ft_strstr("+", format))
 		return (sh_expansions_parameter_plus(context, exp, format));
+	else if (ft_strstr("#", format) || ft_strstr("##", format))
+		return (sh_expansions_parameter_hash(context, exp, format));
+	else if (ft_strstr("%", format) || ft_strstr("%%", format))
+		return (sh_expansions_parameter_percent(context, exp, format));
 	else
-		return (sh_perror_err(exp->original, "bad substitution"));
+		return (sh_perror_err(exp->original, SH_BAD_SUBSTITUTE));
 	return (SUCCESS);
 }

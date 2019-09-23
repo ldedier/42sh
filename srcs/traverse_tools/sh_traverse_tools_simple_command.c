@@ -12,7 +12,7 @@
 
 #include "sh_21.h"
 
-int			sh_found_sc_search_in_hash(t_context *context, t_binary *binary,
+static int	sh_found_sc_search_in_hash(t_context *context, t_binary *binary,
 			t_hash_finder finder)
 {
 	binary->hits++;
@@ -84,7 +84,7 @@ static int	sh_traverse_sc_search_in_dir_found(char *path, DIR *dir,
 **		SUCCESS : any error occur
 */
 
-int			sh_traverse_sc_search_in_dir(
+static int	sh_traverse_sc_search_in_dir(
 	char *path, DIR *dir, t_context *context)
 {
 	t_dirent	*dirent;

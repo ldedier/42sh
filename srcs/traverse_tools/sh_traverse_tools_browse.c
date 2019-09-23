@@ -31,6 +31,8 @@ int		sh_traverse_tools_browse(t_ast_node *node, t_context *context)
 		child = (t_ast_node *)ptr->content;
 		if ((ret = g_grammar[child->symbol->id].traverse(child, context)))
 			break ;
+		if (child->children && (ret = sh_traverse_tools_browse(child, context)))
+			break ;
 		ptr = ptr->next;
 	}
 	return (ret);

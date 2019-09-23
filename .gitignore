@@ -75,6 +75,10 @@ includes/libft.h
 *.la
 *.lo
 
+# Editore files
+*.swp
+*.swo
+
 # Shared objects (inc. Windows DLLs)
 *.dll
 *.so

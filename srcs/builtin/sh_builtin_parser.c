@@ -145,7 +145,7 @@ int		sh_builtin_usage(t_args args[], char *name, char *usage, t_context *context
 	int		i;
 	int		fd;
 
-	fd = context->fd[FD_ERR];
+	fd = FD_ERR;
 	ft_dprintf(fd, SH_ERR_COLOR);
 	ft_dprintf(fd, "Usage: %s %s\n", name, usage);
 	i = 0;

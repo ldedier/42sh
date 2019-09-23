@@ -77,6 +77,10 @@ int		sh_expansions_parameter_quest(
 	t_context *context, t_expansion *exp, char *format);
 int		sh_expansions_parameter_plus(
 	t_context *context, t_expansion *exp, char *format);
+int		sh_expansions_parameter_hash(
+	t_context *context, t_expansion *exp, char *format);
+int		sh_expansions_parameter_percent(
+	t_context *context, t_expansion *exp, char *format);
 
 /*
 ** sh_expansions_parameter_tools.c
@@ -133,12 +137,6 @@ int		sh_expansions_variable_detect(char *start);
 int		sh_expansions_variable_fill(t_expansion *exp, char *start);
 int		sh_expansions_variable_process(
 	t_context *context, t_expansion *exp);
-
-/*
-** sh_get_heredoc.c
-*/
-char	*get_heredoc(
-	t_context *context, t_heredoc *heredoc_data, int *ret);
 
 /*
 ** t_expansion.c

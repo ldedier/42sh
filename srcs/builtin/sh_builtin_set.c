@@ -19,13 +19,13 @@ int			sh_builtin_set(t_context *context)
 	i = 0;
 	while (context->env->tbl[i])
 	{
-		ft_putstr_fd(context->env->tbl[i], context->fd[FD_OUT]);
-		ft_putchar_fd('\n', context->fd[FD_OUT]);
+		ft_putstr_fd(context->env->tbl[i], FD_OUT);
+		ft_putchar_fd('\n', FD_OUT);
 		i++;
 	}
 	i = 0;
-	if (write(context->fd[FD_OUT], NULL, 0))
-		return (sh_perror2_err_fd(context->fd[FD_ERR], "write error",
+	if (write(FD_OUT, NULL, 0))
+		return (sh_perror2_err_fd(FD_ERR, "write error",
 			context->params->tbl[0], SH_ERR1_BAD_FD));
 	while (context->vars->tbl[i])
 	{
@@ -33,8 +33,8 @@ int			sh_builtin_set(t_context *context)
 			|| *(char*)(context->vars->tbl[i]) == '$'
 			|| *(char*)(context->vars->tbl[i]) == '#'))
 		{
-			ft_putstr_fd(context->vars->tbl[i], context->fd[FD_OUT]);
-			ft_putchar_fd('\n', context->fd[FD_OUT]);
+			ft_putstr_fd(context->vars->tbl[i], FD_OUT);
+			ft_putchar_fd('\n', FD_OUT);
 		}
 		i++;
 	}

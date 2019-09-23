@@ -1,3 +1,4 @@
+
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -33,7 +34,7 @@ static int	sh_builtin_cd_update_pwd(
 	if (args[CD_L_OPT].priority > args[CD_P_OPT].priority)
 		pwd = curpath;
 	else
-		pwd = sh_builtin_pwd_physical(context->fd[FD_ERR]);
+		pwd = sh_builtin_pwd_physical(FD_ERR);
 	if (!pwd)
 		return (ERROR);
 	old_pwd = sh_vars_get_value(context->env, NULL, "PWD");
@@ -67,13 +68,13 @@ static int	sh_builtin_cd_rule10_check_perms(
 	ret = SUCCESS;
 	if (stat(curpath, &st) == -1)
 		ret = sh_perror_err_fd(
-			context->fd[FD_ERR], param, SH_ERR2_NO_SUCH_FILE_OR_DIR);
+			FD_ERR, param, SH_ERR2_NO_SUCH_FILE_OR_DIR);
 	else if (!S_ISDIR(st.st_mode))
 		ret = sh_perror2_err_fd(
-			context->fd[FD_ERR], SH_ERR1_NOT_A_DIR, "cd", param);
+			FD_ERR, SH_ERR1_NOT_A_DIR, "cd", param);
 	else if (access(curpath, X_OK))
 		ret = sh_perror2_err_fd(
-			context->fd[FD_ERR], SH_ERR1_PERM_DENIED, "cd", param);
+			FD_ERR, SH_ERR1_PERM_DENIED, "cd", param);
 	if (ret)
 		sh_env_update_ret_value(context->shell, SH_RET_ERROR);
 	return (ret);
@@ -112,11 +113,11 @@ int			sh_builtin_cd_rule10(
 		if (!ret && curpath && *curpath)
 			if (chdir(curpath) == -1)
 				ret = sh_perror2_fd(
-					context->fd[FD_ERR], param, "cd", "unable to process");
+					FD_ERR, param, "cd", "unable to process");
 		if (!ret)
 			sh_builtin_cd_update_pwd(context, args, curpath);
 		if (!ret && args[CD_HYPHEN_OPT].value)
-			ft_dprintf(context->fd[FD_OUT],
+			ft_dprintf(FD_OUT,
 				"%s\n", sh_vars_get_value(context->saved_env, NULL, "PWD"));
 	}
 	return (ret);

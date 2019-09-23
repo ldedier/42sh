@@ -16,12 +16,13 @@
 
 int		sh_builtin_🐑(t_context *context)
 {
-	if (write(context->fd[FD_OUT], NULL, 0))
+	(void)context;
+	if (write(FD_OUT, NULL, 0))
 	{
-		return (sh_perror2_err_fd(context->fd[FD_ERR], "write error",
+		return (sh_perror2_err_fd(FD_ERR, "write error",
 			"export", SH_ERR1_BAD_FD));
 	}
-	ft_dprintf(context->fd[FD_OUT], "behhhh\n");
+	ft_dprintf(FD_OUT, "behhhh\n");
 	return (SUCCESS);
 }
 

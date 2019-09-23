@@ -12,23 +12,36 @@
 
 #include "sh_21.h"
 
+static t_ast_node	*go_to_list(t_ast_node *node)
+{
+	t_ast_node *test;
+
+	test = node;
+	while (test->symbol->id != sh_index(LIST))
+	{
+		if (test->children == NULL)
+			return (NULL);
+		test = test->children->content;
+	}
+	return (test);
+}
+
 int		sh_process_traverse(t_shell *shell)
 {
 	t_context	context;
+	t_ast_node	*list_node;
 	int			ret;
 
 	if (t_context_init(&context, shell) == FAILURE)
 		return (FAILURE);
-	context.phase = E_TRAVERSE_PHASE_INTERACTIVE_REDIRECTIONS;
-	if ((ret = g_grammar[shell->parser.ast_root->symbol->id].
-		traverse(shell->parser.ast_root, &context)))
+	if ((list_node = go_to_list(shell->parser.ast_root)) == NULL)
 	{
-		ft_dy_tab_del(context.params);
-		return (ret);
+		t_context_free_content(&context);
+		return (SUCCESS);
 	}
-	context.phase = E_TRAVERSE_PHASE_EXPANSIONS;
-	ret = g_grammar[shell->parser.ast_root->symbol->id].
-		traverse(shell->parser.ast_root, &context);
+	context.phase = E_TRAVERSE_PHASE_INTERACTIVE_REDIRECTIONS;
+	if ((ret = sh_traverse_tools_browse(list_node, &context)) == SUCCESS)
+		ret = sh_traverse_list(list_node, &context);
 	t_context_free_content(&context);
 	return (ret);
 }

@@ -78,7 +78,7 @@ struct				s_ast_node
 {
 	t_token			*token;
 	t_symbol		*symbol;
-	t_metadata		metadata;
+	// t_metadata		metadata;
 	t_list			*children;
 	t_ast_node		*relative;
 	t_ast_node		*parent;
@@ -218,9 +218,6 @@ void				sh_delete_node_from_parent(t_ast_node *node);
 /*
 ** free_node.c
 */
-void				sh_free_token(t_ast_node *node, t_token **token);
-void				sh_free_redirection(void *red, size_t dummy);
-void				sh_free_ast_node_meta(t_ast_node **node);
 void				sh_free_ast_node(t_ast_node **node, int update);
 void				sh_free_ast_builder(t_ast_builder *ast_builder);
 

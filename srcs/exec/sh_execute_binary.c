@@ -1,20 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sh_traverse_dgreat.c                               :+:      :+:    :+:   */
+/*   sh_execute_binary.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/19 11:19:41 by jmartel           #+#    #+#             */
-/*   Updated: 2019/06/07 14:55:44 by jmartel          ###   ########.fr       */
+/*   Created: 2019/07/19 11:14:49 by ldedier           #+#    #+#             */
+/*   Updated: 2019/09/23 13:30:56 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-int			sh_traverse_dgreat(t_ast_node *node, t_context *context)
+void		sh_execute_binary(t_context *context)
 {
-	(void)node;
-	(void)context;
-	return (SUCCESS);
+	reset_signals();
+	execve(context->path, (char **)context->params->tbl,
+			(char **)context->env->tbl);
+	sh_perror(((char **)context->params->tbl)[0], SH_ERR1_EXECVE_FAIL);
+	exit(SH_RET_NOT_EXECUTABLE);
 }

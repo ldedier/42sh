@@ -53,7 +53,7 @@ int			sh_builtin_hash(t_context *context)
 	if (sh_builtin_parser(ft_strtab_len(argv), argv, args, &index))
 		return (sh_builtin_usage(args, argv[0], HASH_USAGE, context));
 	if (!args[HASH_R_OPT].value && !argv[index])
-		return (sh_builtin_hash_show(context, context->shell));
+		return (sh_builtin_hash_show(context->shell));
 	if (args[HASH_R_OPT].value)
 		sh_builtin_hash_empty_table(context->shell);
 	return (sh_builtin_hash_process_utilities(context, index));

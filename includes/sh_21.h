@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/30 15:48:56 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/27 16:05:13 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/09/23 14:59:19 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@
 # include "sh_command_line.h"
 # include "sh_expansions.h"
 # include "sh_vars.h"
+# include "sh_redirection.h"
 
 # define SUCCESS		0
 # define ERROR			1
@@ -71,9 +72,9 @@
 /*
 ** Macros of fdin, fdout and fderr in context->fd
 */
-# define FD_IN		0
-# define FD_OUT		1
-# define FD_ERR		2
+# define FD_IN		STDIN_FILENO
+# define FD_OUT		STDOUT_FILENO
+# define FD_ERR		STDERR_FILENO
 
 # define CWD_LEN		1000
 # define NB_OPERATIONS	12

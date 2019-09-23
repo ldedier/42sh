@@ -125,14 +125,10 @@ void				sh_builtin_cd_rule8(char **curpath);
 /*
 ** sh_builtin_cd_pre_rules.c
 */
-int					sh_builtin_cd_parser_hyphen(
-	t_context *context, t_args *args, char **curpath, int i);
 int					sh_builtin_cd_parser(
 	t_context *context, t_args *args, int *index, char **curpath);
 int					sh_builtin_cd_pre_rules(
 	t_context *context, char *param, char **curpath, t_args *args);
-int					sh_builtin_cd_rule5(
-	t_context *context, char **curpath, char *param, t_args *args);
 
 /*
 ** sh_builtin_echo.c
@@ -147,7 +143,6 @@ int					sh_builtin_exit(t_context *context);
 /*
 ** sh_builtin_export.c
 */
-int					sh_builtin_export_show(t_context *context);
 int					sh_builtin_export_assign(
 	t_context *context, char *arg);
 int					sh_builtin_export(t_context *context);
@@ -163,8 +158,7 @@ int					sh_builtin_hash(t_context *context);
 int					sh_builtin_hash_add_utility(
 	t_context *context, char *utility);
 void				sh_builtin_hash_empty_table(t_shell *shell);
-int					sh_builtin_hash_show(
-	t_context *context, t_shell *shell);
+int					sh_builtin_hash_show(t_shell *shell);
 void				sh_builtin_hash_update_stats(
 	t_hash_table *table, t_binary_stats *stats);
 
@@ -214,9 +208,9 @@ int					sh_builtin_type(t_context *context);
 ** sh_builtin_type_search.c
 */
 int					sh_builtin_type_search_reserved(
-	t_context *context, char *name, t_args args[]);
+	char *name, t_args args[]);
 int					sh_builtin_type_search_builtin(
-	t_context *context, char *name, t_args args[]);
+	char *name, t_args args[]);
 int					sh_builtin_type_search_hash(
 	t_context *context, char *name, t_args args[]);
 

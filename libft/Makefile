@@ -13,12 +13,6 @@
 NAME	= libft.a
 EXEC	= exec
 
-OK_COLOR = \x1b[32;01m
-FLAGS_COLOR = \x1b[34;01m
-#COMP_COLOR = \x1b[34;01m
-COM_COLOR = 
-EOC = \033[0m
-
 SRCS	=	./lst/ft_lstnew.c ./lst/ft_lstdelone.c \
 			./lst/ft_lstdel.c ./lst/ft_lstadd.c \
 			./lst/ft_lstiter.c ./lst/ft_lstmap.c \
@@ -239,10 +233,18 @@ CC			= gcc
 ECHO		= echo
 
 OS = $(shell uname -s)
+EOC = \033[0m
 ifeq ($(OS),Linux)
 	CFLAGS		= $(INCLUDES)
+	OK_COLOR = \033[1;32m
+	FLAGS_COLOR = \033[1;34m
+	#COMP_COLOR =
 else
 	CFLAGS		= -Wall -Werror -Wextra $(INCLUDES)
+	OK_COLOR = \x1b[32;01m
+	#COMP_COLOR = \x1b[34;01m
+	FLAGS_COLOR = \x1b[34;01m
+#	COMP_COLOR =
 endif
 
 ifeq ($(DEBUG), 1)

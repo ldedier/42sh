@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/27 16:47:32 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/21 16:09:31 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/23 15:37:01 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static int	sh_splitting_parse_ifs(char *ws, char *nws, char *ifs)
 	return (SUCCESS);
 }
 
-static int	sh_splitting_non_white_ifs(t_ast_node *node, t_context *context, char *ifs, char *input, t_dy_tab *quotes)
+static int	sh_splitting_non_white_ifs(t_ast_node *node, char *ifs, char *input, t_dy_tab *quotes)
 {
 	char		ws[100];
 	char		nws[100];
@@ -95,9 +95,9 @@ static int	sh_splitting_non_white_ifs(t_ast_node *node, t_context *context, char
 			else
 			{
 				if (!(str = ft_strndup(input + start, i - start)))
-					return (sh_perror_fd(context->fd[FD_ERR], SH_ERR1_MALLOC, "sh_splitting_non_white_ifs (1)"));
+					return (sh_perror(SH_ERR1_MALLOC, "sh_splitting_non_white_ifs (1)"));
 				else if (!(node = sh_add_word_to_ast(node, str)))
-					return (sh_perror_fd(context->fd[FD_ERR], SH_ERR1_MALLOC, "sh_splitting_non_white_ifs (2)"));
+					return (sh_perror(SH_ERR1_MALLOC, "sh_splitting_non_white_ifs (2)"));
 				update_quotes((t_quote**)quotes->tbl, i, start, node);
 				if (sh_verbose_expansion())
 					ft_dprintf(2, "non white ifs : Added node : start : %d, i : %d\n", start, i);
@@ -120,9 +120,9 @@ static int	sh_splitting_non_white_ifs(t_ast_node *node, t_context *context, char
 	if (start != i)
 	{
 		if (!(str = ft_strndup(input + start, i - start)))
-			return (sh_perror_fd(context->fd[FD_ERR], SH_ERR1_MALLOC, "sh_splitting_non_white_ifs (1)"));
+			return (sh_perror(SH_ERR1_MALLOC, "sh_splitting_non_white_ifs (1)"));
 		else if (!(node = sh_add_word_to_ast(node, str)))
-			return (sh_perror_fd(context->fd[FD_ERR], SH_ERR1_MALLOC, "sh_splitting_non_white_ifs (2)"));
+			return (sh_perror(SH_ERR1_MALLOC, "sh_splitting_non_white_ifs (2)"));
 		update_quotes((t_quote**)quotes->tbl, i, start, node);
 		if (sh_verbose_expansion())
 			ft_dprintf(2, "non white ifs : Added last node : %s\n", str);
@@ -215,7 +215,7 @@ int			sh_expansions_splitting(t_context *context, t_ast_node *node, t_dy_tab *qu
 	{
 		if (!ft_strpbrk(node->token->value, ifs)) // Need to keep ??
 			return (SUCCESS);
-		ret = sh_splitting_non_white_ifs(node, context, ifs, node->token->value, quotes);
+		ret = sh_splitting_non_white_ifs(node, ifs, node->token->value, quotes);
 	}
 	if (sh_verbose_expansion())
 	{
@@ -225,5 +225,4 @@ int			sh_expansions_splitting(t_context *context, t_ast_node *node, t_dy_tab *qu
 	}	
 	return (ret);
 	(void)node;
-	(void)context;
 }

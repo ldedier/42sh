@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:31:30 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/11 20:17:36 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/23 20:27:38 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	sh_process_traverse_cmd_suffix(
 	}
 	if (context->phase == E_TRAVERSE_PHASE_EXECUTE && child->token)
 	{
-		if (!(!*child->token->value && child->token->expansion))
+		if (!(child->token->expansion && !*child->token->value))
 			if (ft_dy_tab_add_str(context->params, child->token->value))
 				return (sh_perror(SH_ERR1_MALLOC,
 							"sh_traverse_cmd_suffix"));
@@ -45,6 +45,9 @@ int			sh_traverse_cmd_suffix(t_ast_node *node, t_context *context)
 
 	ptr = node->children;
 	ret = SUCCESS;
+	if (context->phase != E_TRAVERSE_PHASE_EXPANSIONS 
+		&& context->phase != E_TRAVERSE_PHASE_EXECUTE)
+		return (SUCCESS);
 	sh_traverse_tools_show_traverse_start(node, context);
 	while (ptr != NULL)
 	{

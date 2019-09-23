@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 11:19:41 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/20 18:17:15 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/23 14:52:05 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,23 +90,26 @@ static int		sh_traverse_io_here_phase_interactive(
 				context, heredoc_func));
 }
 
+//si on rentre dans E_TRAVERSE_PHASE_REDIRECTION on est au niveau de simple command. On peux set un redirection
+//dans context
 int				sh_traverse_io_here(t_ast_node *node, t_context *context)
 {
-	t_redirection	*redirection;
+	// t_redirection	*redirection;
+	t_ast_node 		*first_child;
 
-	redirection = &node->metadata.heredoc_metadata.redirection;
+	// redirection = NULL;
 	if (context->phase == E_TRAVERSE_PHASE_INTERACTIVE_REDIRECTIONS)
 		return (sh_traverse_io_here_phase_interactive(node, context));
+	else if (context->phase == E_TRAVERSE_PHASE_EXPANSIONS)
+	{
+		return (sh_traverse_io_here_phase_expansion(
+					/*redirection,*/ node, context));
+	}
 	else if (context->phase == E_TRAVERSE_PHASE_REDIRECTIONS)
 	{
-		if (sh_add_redirection(sh_new_redir(redirection->type,
-				redirection->redirected_fd, redirection->fd),
-					&context->current_command_node
-						->metadata.command_metadata.redirections))
-			return (FAILURE);
+		first_child = node->children->next->content;
+		first_child = first_child->children->content;
+		return (sh_traverse_tools_io_here_redirection(first_child, context));
 	}
-	else if (context->phase == E_TRAVERSE_PHASE_EXPANSIONS)
-		return (sh_traverse_io_here_phase_expansion(
-					redirection, node, context));
 	return (SUCCESS);
 }

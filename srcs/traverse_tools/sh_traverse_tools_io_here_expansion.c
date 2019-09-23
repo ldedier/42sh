@@ -1,16 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sh_traverse_io_here_phase_expansion.c              :+:      :+:    :+:   */
+/*   sh_traverse_tools_io_here_expansion.c              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/05 11:28:42 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/09/05 12:42:59 by jdugoudr         ###   ########.fr       */
+/*   Created: 2019/09/05 12:43:22 by jdugoudr          #+#    #+#             */
+/*   Updated: 2019/09/23 15:16:38 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
+
+/*
+** Expansion apply to heredoc
+*/
+
+static int	is_valid_var(char c)
+{
+	if (ft_isalnum(c))
+		return (1);
+	else if (c == '$' || c == '?')
+		return (1);
+	else if (c == '{')
+		return (1);
+	return (0);
+}
 
 static int	loop_expansion(char **str, t_context *context)
 {
@@ -36,10 +51,9 @@ static int	loop_expansion(char **str, t_context *context)
 }
 
 int			sh_traverse_io_here_phase_expansion(
-		t_redirection *redirection, t_ast_node *node, t_context *context)
+				t_ast_node *node, t_context *context)
 {
 	t_ast_node		*first_child;
-	int				fds[2];
 	int				ret;
 
 	first_child = node->children->next->content;
@@ -49,15 +63,28 @@ int			sh_traverse_io_here_phase_expansion(
 		if ((ret = loop_expansion(&(first_child->token->value), context)))
 			return (ret);
 	}
-	if (pipe(fds))
-		return (sh_perror(SH_ERR1_PIPE, "sh_traverse_io_here_end"));
-	else
+	return (SUCCESS);
+}
+
+int			sh_traverse_io_here_expansion(
+		char **str, int *cursor, t_context *context)
+{
+	int ret;
+	t_dy_tab	*quotes;
+
+	if ((*str)[*cursor] == '$' && is_valid_var((*str)[*cursor + 1]))
 	{
-		redirection->type = INPUT;
-		redirection->redirected_fd = context->redirected_fd;
-		redirection->fd = fds[0];
-		ft_putstr_fd(first_child->token->value, fds[1]);
-		close(fds[1]);
+		if (!(quotes = ft_dy_tab_new(1)))
+			return (sh_perror(SH_ERR1_MALLOC, "sh_traverse_io_here_expansion"));
+		if ((ret = sh_expansions_process(
+						str, (*str) + *cursor, context, cursor, quotes)))
+		{
+			if (sh_env_update_ret_value_and_question(context->shell, ret))
+				return (FAILURE);
+			return (ERROR);
+		}
 	}
+	else
+		(*cursor) += 1;
 	return (SUCCESS);
 }

@@ -12,21 +12,21 @@
 
 #include "sh_21.h"
 
-void	sh_reset_signals_pre_exec(void)
+static void	sh_reset_signals_pre_exec(void)
 {
 	signal(SIGWINCH, SIG_DFL);
 }
 
-void	sh_reset_signals_post_exec(void)
+static void	sh_reset_signals_post_exec(void)
 {
 	signal(SIGWINCH, handle_resize);
 }
 
-int		sh_pre_execution(t_context *context)
+int		sh_pre_execution()
 {
 	if (isatty(0) && sh_reset_shell(0) == ATTR_ERROR)
 	{
-		sh_process_execute_close_pipes(context);
+		// sh_process_execute_close_pipes(context);
 		return (FAILURE);
 	}
 	sh_reset_signals_pre_exec();
@@ -35,9 +35,10 @@ int		sh_pre_execution(t_context *context)
 
 int		sh_pre_execution_pipes(t_list *contexts)
 {
+	(void)contexts;
 	if (isatty(0) && sh_reset_shell(0) == ATTR_ERROR)
 	{
-		sh_execute_pipe_sequence_close_pipes_list(contexts);
+		// sh_execute_pipe_sequence_close_pipes_list(contexts); //need to close pipe here in case of troubles!
 		return (FAILURE);
 	}
 	sh_reset_signals_pre_exec();

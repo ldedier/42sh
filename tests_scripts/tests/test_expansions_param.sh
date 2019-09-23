@@ -6,11 +6,11 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/21 16:00:50 by jmartel           #+#    #+#              #
-#    Updated: 2019/08/06 13:12:07 by jmartel          ###   ########.fr        #
+#    Updated: 2019/09/14 03:29:47 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-## Redirections tests
+# Redirections tests
 launch "Parameter expansion"
 	launch "General"
 	test_launch 'foo=okalm bar=tamer' 'echo ${foo}' 'echo ${bar}' 'echo ${foo}${bar}'
@@ -115,6 +115,65 @@ launch "Parameter expansion"
 	test_launch 'echo ${+asd}'
 	test_launch 'echo ${:+asd}'
 
+
+	launch "# and ##"
+	test_launch 'param="Okalmos Speculos"' 'echo ${param#}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${#}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${#os}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${#param}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param#param}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param#s}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param# Speculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param#Okalmos Speculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param#kalmos Speculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param#kamos Speculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param#Oka}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param#Okalmos Speculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param#OkalmosSpeculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${var#Okalmos Speculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param##}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${##}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param##param}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param##s}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param## Speculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param##Okalmos Speculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param##kalmos Speculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param##kamos Speculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param##Oka}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param##Okalmos Speculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param##OkalmosSpeculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${var##Okalmos Speculos}'
+
+	launch "% and %%"
+	test_launch 'param="Okalmos Speculos"' 'echo ${param%}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${%}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${%os}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${%param}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param%param}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param%s}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param% Speculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param%Okalmos Speculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param%kalmos Speculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param%kamos Speculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param%Oka}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param%Okalmos Speculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param%OkalmosSpeculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${var%Okalmos Speculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param%%}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${%%}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${%%os}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${%%param}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param%%param}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param%%s}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param%% Speculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param%%Okalmos Speculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param%%kalmos Speculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param%%kamos Speculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param%%Oka}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param%%Okalmos Speculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param%%OkalmosSpeculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${var%%Okalmos Speculos}'
+
 	launch "Quoting tests"
 	test_launch 'echo ${""}'
 	test_launch 'echo ${\}ls:=sd}'
@@ -123,11 +182,9 @@ launch "Parameter expansion"
 	test_launch 'echo ${"wd"sd:+okalm}'
 
 	launch "Random"
-	## Invalid tests
 	test_launch 'echo ${=:}' 'echo ${?:}' 'echo ${-:}' 'echo ${+:}'
 	test_launch 'echo ${::}' 'echo ${:==}'  'echo ${=:::+}'  'echo ${+::=}'  'echo ${=::-}' 
 	test_launch 'echo ${}'
-	# test_launch 'echo ${'
 	test_launch 'echo \$}'
 	test_launch 'echo ${()}'
 	test_launch 'echo ${asdw+}'
@@ -135,7 +192,6 @@ launch "Parameter expansion"
 	test_launch 'echo ${:}'
 	test_launch 'echo ${s:}'
 	test_launch 'echo ${{{{}'
-	# test_launch 'echo ${{{{'
 	test_launch 'echo ${?}'
 
 	test_launch 'echo ${X:=abc}'
@@ -148,6 +204,21 @@ launch "Parameter expansion"
 	test_launch 'ls ~/${}'
 	test_launch 'ls ~/$'
 
+	test_launch 'echo ${'
+	test_launch 'echo ${{{{'
+
+
+	launch "Field splitting Errors"
+		test_launch 'param="Okalmos Speculos"' 'echo ${param#Speculos}'
+		test_launch 'param="Okalmos Speculos"' 'echo ${param#Okalmos}'
+		test_launch 'param="Okalmos Speculos"' 'echo ${param##Speculos}'
+		test_launch 'param="Okalmos Speculos"' 'echo ${param##Okalmos}'
+		test_launch 'param="Okalmos Speculos"' 'echo ${param%Speculos}'
+		test_launch 'param="Okalmos Speculos"' 'echo ${param%Okalmos}'
+		test_launch 'param="Okalmos Speculos"' 'echo ${param%%Speculos}'
+		test_launch 'param="Okalmos Speculos"' 'echo ${param%%Okalmos}'
+
+
 	# launch "Deprecated"
 	# test_launch 'echo $}}}}'
 	# test_launch 'echo ${#?}'
@@ -155,5 +226,7 @@ launch "Parameter expansion"
 	# test_launch 'echo ${$}'
 	# test_launch 'echo ${#$}'
 	# test_launch 'echo ${$$}'
+	# test_launch 'param="Okalmos Speculos"' 'echo ${##param}'
+	# test_launch 'param="Okalmos Speculos"' 'echo ${##os}'
 
 finish

@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/09/05 13:49:19 by jmartel          ###   ########.fr        #
+#    Updated: 2019/09/23 15:39:35 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,16 +43,11 @@ VPATH		= $(INCLUDESDIR) \
 			  $(SRCDIR)/perror \
 			  $(SRCDIR)/traverse \
 			  $(SRCDIR)/traverse_tools \
+			  $(SRCDIR)/redirection \
 			  $(SRCDIR)/vars
 
 SPEED = -j1
 LIBFT = $(LIBFTDIR)/libft.a
-
-OK_COLOR = \x1b[32;01m
-#COMP_COLOR = \x1b[34;01m
-FLAGS_COLOR = \x1b[34;01m
-COMP_COLOR =
-EOC = \033[0m
 
 ################################################################
 ########					GRAMMAR						########
@@ -66,18 +61,14 @@ SRCS			 =	debug.c first_sets.c grammar.c init_cfg.c \
 SRCS			+=	sh_traverse.c sh_traverse_default.c \
 					sh_traverse_semicol.c sh_traverse_pipe_sequence.c \
 					sh_traverse_assignment_word.c \
-					sh_traverse_pipe_sequence_execute.c \
 					sh_traverse_simple_command.c \
-					sh_traverse_simple_command_tools.c \
-					sh_traverse_simple_command_check_perm.c \
+					sh_traverse_io_file.c \
 					sh_traverse_cmd_name.c sh_traverse_cmd_word.c \
 					sh_traverse_cmd_suffix.c sh_traverse_cmd_prefix.c \
 					sh_traverse_io_redirect.c sh_traverse_io_here.c \
 					sh_traverse_io_here_canonical.c \
-					sh_traverse_io_file.c sh_traverse_io_file_tools.c \
 					sh_traverse_and_or.c sh_traverse_list.c \
-					sh_traverse_io_here_expansion.c \
-					sh_traverse_io_here_phase_expansion.c
+					sh_traverse_command.c
 
 ################################################################
 ########				COMMAND_LINE					########
@@ -99,15 +90,19 @@ SRCS			+=	keys.c cursor_motion.c edit_command.c \
 					sh_get_cursor_position.c eof_percent.c \
 					update_prompt_cwd.c keys_insert_tools.c keys_flush.c \
 					keys_debug.c screen_tools.c get_char_len.c
-#sh_clipboard.c sh_command_line_tools.c
-#					sh_clipboard_tools.c
 
 ################################################################
 ########				TRAVERSE_TOOLS					########
 ################################################################
 SRCS			+=	sh_traverse_tools_browse.c \
 					sh_traverse_tools_reset.c \
-					sh_traverse_tools_debug.c
+					sh_traverse_tools_debug.c \
+					sh_traverse_tools_io_file.c \
+					sh_traverse_tools_io_here_expansion.c \
+					sh_traverse_tools_simple_command.c \
+					sh_traverse_tools_simple_command_check_perm.c \
+					sh_traverse_tools_get_heredoc.c \
+					sh_traverse_tools_io_here_redirection.c
 
 ################################################################
 ########					COMMON						########
@@ -197,10 +192,20 @@ SRCS			+=	sh_vars_tools_1.c sh_vars_tools_2.c \
 ################################################################
 ########						EXEC					########
 ################################################################
-SRCS			+=	sh_execute.c sh_execute_pipes.c \
-					sh_execute_pipe_sequence.c sh_execute_tools.c \
-					sh_exec_builtin.c sh_execute_prefix_postfix.c \
-					t_context.c sh_redirections.c sh_debug.c
+SRCS			+=	sh_execute.c \
+					sh_execute_binary.c \
+					sh_execute_builtin.c \
+					sh_execute_pipe.c \
+					sh_execute_prefix_postfix.c \
+					t_context.c sh_debug.c \
+					sh_execute_redirection.c
+
+################################################################
+########					REDIRECTION					########
+################################################################
+SRCS			+=	sh_add_redirection.c \
+					sh_reset_redirection.c \
+					sh_check_open_fd.c
 
 ################################################################
 ########						BUILTIN					########
@@ -230,7 +235,7 @@ SRCS			 +=	sh_expansions.c \
 					sh_expansions_process.c sh_expansions_replace.c \
 					sh_expansions_field_splitting.c \
 					sh_expansions_quote_removal.c \
-					sh_get_heredoc.c sh_expansions_scan.c \
+					sh_expansions_scan.c \
 					t_quote.c
 
 ################################################################
@@ -252,16 +257,26 @@ INCLUDES			=	sh_21.h \
 					sh_autocompletion.h \
 					sh_exec.h\
 					sh_builtin.h \
+					sh_traverse.h \
+					sh_traverse_tools.h \
 					sh_expansions.h \
 					sh_perror.h
 
 OBJECTS			=	$(addprefix $(OBJDIR), $(SRCS:.c=.o))
 INC 			=	-I $(INCLUDESDIR) -I $(LIBFTDIR) -I $(LIBFTDIR)/$(PRINTFDIR)
 
+EOC = \033[0m
 ifeq ($(OS),Linux)
 	CFLAGS = -DPATH=$(PWD) $(INC)
+	OK_COLOR = \033[1;32m
+	FLAGS_COLOR = \033[1;34m
+	#COMP_COLOR =
 else
 	CFLAGS = -DPATH=$(PWD) $(INC) -Wall -Werror -Wextra
+	OK_COLOR = \x1b[32;01m
+	#COMP_COLOR = \x1b[34;01m
+	FLAGS_COLOR = \x1b[34;01m
+#	COMP_COLOR =
 endif
 
 LFLAGS =	-L $(LIBFTDIR) -lft -ltermcap

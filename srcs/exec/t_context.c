@@ -13,51 +13,6 @@
 #include "sh_21.h"
 
 /*
-** sh_free_context_dup_lst:
-**	Free a t_context object. Function is used with ft_lstdel.
-*/
-
-void		sh_free_context_dup_lst(void *c, size_t dummy)
-{
-	t_context	*context;
-
-	context = (t_context *)c;
-	if (context->path)
-		ft_strdel(&context->path);
-	ft_dy_tab_del(context->params);
-	ft_dy_tab_del(context->saved_env);
-	free(context);
-	(void)dummy;
-}
-
-t_context	*t_context_dup(t_context *context)
-{
-	t_context *res;
-
-	if (!(res = (t_context *)malloc(sizeof(t_context))))
-		return (NULL);
-	ft_memcpy(res, context, sizeof(t_context));
-	if (context->path && (!(res->path = ft_strdup(context->path))))
-	{
-		free(res);
-		return (NULL);
-	}
-	if (!(res->params = ft_dy_tab_cpy_str(context->params)))
-	{
-		ft_strdel(&res->path);
-		free(res);
-		return (NULL);
-	}
-	if (!(res->saved_env = ft_dy_tab_cpy_str(context->env)))
-	{
-		ft_strdel(&res->path);
-		free(res);
-		return (NULL);
-	}
-	return (res);
-}
-
-/*
 ** t_context_init:
 **	take a t_context* in parameter and set every values to it's default value
 **
@@ -74,9 +29,6 @@ int			t_context_init(t_context *context, t_shell *shell)
 	context->saved_env = NULL;
 	context->vars = shell->vars;
 	context->term = &shell->term;
-	context->fd[0] = 0;
-	context->fd[1] = 1;
-	context->fd[2] = 2;
 	context->builtin = NULL;
 	context->current_command_node = NULL;
 	context->current_pipe_sequence_node = NULL;
@@ -121,4 +73,5 @@ void		t_context_reset(t_context *context)
 	if (context->path)
 		ft_strdel(&context->path);
 	context->builtin = NULL;
+	context->shell->ret_value_set = 0;
 }
