@@ -104,6 +104,7 @@ int		sh_expansions_process(
 ** sh_expansions_quote_removal.c
 */
 int		sh_expansions_quote_removal(t_quote **quotes);
+void	sh_expansions_quote_removal_in_str(char *input);
 
 /*
 ** sh_expansions_replace.c

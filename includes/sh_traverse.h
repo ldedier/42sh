@@ -93,12 +93,6 @@ char	*heredoc_canonical_mode(
 	t_shell *shell, char *eof, t_heredoc heredoc_data, int *ret);
 
 /*
-** sh_traverse_io_here_expansion.c
-*/
-int		sh_traverse_io_here_expansion(
-	char **str, int *cursor, t_context *context);
-
-/*
 ** sh_traverse_io_redirect.c
 */
 int		sh_traverse_io_redirect(t_ast_node *node, t_context *context);
