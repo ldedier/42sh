@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/15 16:08:40 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/15 16:08:40 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/24 16:57:59 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,13 @@ static int	sh_process_command(t_shell *shell, char *command)
 	if ((ret = sh_lexer(command, &tokens, shell, E_LEX_STANDARD)) != SUCCESS)
 	{
 		if (sh_env_update_ret_value_and_question(shell, ret) == FAILURE)
-			ret = FAILURE;
+			ret = sh_perror(SH_ERR1_MALLOC, "sh_process_command (1)");
 	}
 	if (!ret && (ret = sh_parser(shell, &tokens, &ast_root, &cst_root)))
 	{
 		sh_perror_err("syntax error", NULL);
 		if (sh_env_update_ret_value_and_question(shell, ret) == FAILURE)
-			ret = FAILURE;
+			ret = sh_perror(SH_ERR1_MALLOC, "sh_process_command (2)");
 	}
 	if (!ret)
 		ret = sh_process_traverse(shell, ast_root);
