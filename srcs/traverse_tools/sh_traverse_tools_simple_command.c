@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/07/25 18:56:03 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/24 12:01:20 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ int			sh_traverse_sc_search_in_path(t_context *context)
 
 	if (!(buffer = sh_vars_get_value(context->env, context->vars, "PATH")))
 		return (ERROR);
-	if (!(split = ft_strsplit(buffer, ':')))
+	if (!(split = sh_split_path(buffer)))
 		return (FAILURE);
 	i = 0;
 	while (split[i])

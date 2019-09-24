@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/30 15:48:56 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/27 16:05:13 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/09/24 10:13:10 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -281,5 +281,10 @@ int					get_file_in_dir(char *filename, char *dirname);
 int					get_path_from_absolute_path(char *str, char **path);
 int					get_path_and_file_from_str(
 	char *str, char **path, char **file);
+
+/*
+** sh_split_path.c
+*/
+char				**sh_split_path(char const *path);
 
 #endif
