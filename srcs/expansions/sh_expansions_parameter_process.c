@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 16:41:00 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/07 09:42:21 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/23 15:59:19 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ int			sh_expansions_parameter_minus(
 
 	param = sh_expansions_parameter_get_param(context, exp);
 	word = sh_expansions_parameter_get_word(exp, format);
+	if (sh_verbose_expansion())
+		ft_dprintf(2, "param : %s <> word : %s\n", param, word);
 	if (!param)
 		exp->res = ft_dy_str_new_str(word);
 	else if (!*param)
@@ -67,6 +69,8 @@ int			sh_expansions_parameter_equal(
 
 	param = sh_expansions_parameter_get_param(context, exp);
 	word = sh_expansions_parameter_get_word(exp, format);
+	if (sh_verbose_expansion())
+		ft_dprintf(2, "param : %s <> word : %s\n", param, word);
 	if (!param || (!(*param) && ft_strchr(format, ':')))
 	{
 		param = ft_strstr(exp->expansion, format);
@@ -103,26 +107,19 @@ static int	sh_expansions_parameter_quest_msg(
 	buf = ft_strpbrk(expansion, ":?");
 	*buf = 0;
 	if (word && *word)
-		sh_perror_fd(context->fd[FD_ERR], expansion, word);
+		sh_perror_fd(FD_ERR, expansion, word);
 	else
 	{
 		if (ft_strchr(format, ':'))
-			sh_perror_fd(context->fd[FD_ERR], expansion,
+			sh_perror_fd(FD_ERR, expansion,
 			"parameter null or not set");
 		else
-			sh_perror_fd(context->fd[FD_ERR], expansion, "parameter not set");
+			sh_perror_fd(FD_ERR, expansion, "parameter not set");
 	}
 	if (!isatty(0))
-	{
 		context->shell->running = 0;
-		sh_env_update_ret_value(context->shell, ERROR);
-		return (STOP_CMD_LINE);
-	}
-	else
-	{
-		sh_env_update_ret_value(context->shell, ERROR);
-		return (STOP_CMD_LINE);
-	}
+	sh_env_update_ret_value(context->shell, ERROR);
+	return (STOP_CMD_LINE);
 }
 
 /*
@@ -145,6 +142,8 @@ int			sh_expansions_parameter_quest(
 
 	param = sh_expansions_parameter_get_param(context, exp);
 	word = sh_expansions_parameter_get_word(exp, format);
+	if (sh_verbose_expansion())
+		ft_dprintf(2, "param : %s <> word : %s\n", param, word);
 	if (!param)
 		return (sh_expansions_parameter_quest_msg(format,
 			context, exp->expansion, word));
@@ -182,6 +181,8 @@ int			sh_expansions_parameter_plus(
 
 	param = sh_expansions_parameter_get_param(context, exp);
 	word = sh_expansions_parameter_get_word(exp, format);
+	if (sh_verbose_expansion())
+		ft_dprintf(2, "param : %s <> word : %s\n", param, word);
 	if (!param)
 		exp->res = ft_dy_str_new_str("");
 	else if (!*param)
@@ -195,5 +196,67 @@ int			sh_expansions_parameter_plus(
 		exp->res = ft_dy_str_new_str(word);
 	if (!exp->res)
 		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_"));
+	return (SUCCESS);
+}
+
+int			sh_expansions_parameter_hash(
+	t_context *context, t_expansion *exp, char *format)
+{
+	char	*param;
+	char	*word;
+	char	*end;
+
+	param = sh_expansions_parameter_get_param(context, exp);
+	word = sh_expansions_parameter_get_word(exp, format);
+	if (sh_verbose_expansion())
+		ft_dprintf(2, "param : %s <> word : %s <> format : %s\n", param, word, format);
+	if (!param)
+		exp->res = ft_dy_str_new_str("");
+	else if (!word || !*word)
+		exp->res = ft_dy_str_new_str(param);
+	else
+	{
+		end = ft_strnstr(param, word, ft_strlen(word));
+		if (!end)
+			exp->res = ft_dy_str_new_str(param);
+		else
+			exp->res = ft_dy_str_new_str(param + ft_strlen(word));
+	}
+	if (!exp->res)
+		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_parameter_hash"));
+	return (SUCCESS);
+}
+
+int			sh_expansions_parameter_percent(
+	t_context *context, t_expansion *exp, char *format)
+{
+	char	*param;
+	char	*word;
+	char	*end;
+	char	save;
+
+	param = sh_expansions_parameter_get_param(context, exp);
+	word = sh_expansions_parameter_get_word(exp, format);
+	if (sh_verbose_expansion())
+		ft_dprintf(2, "param : %s <> word : %s\n", param, word);
+	if (!param)
+		exp->res = ft_dy_str_new_str("");
+	else if (!word || !*word)
+		exp->res = ft_dy_str_new_str(param);
+	else
+	{
+		end = ft_strrnstr(param, word, ft_strlen(word));
+		if (!end)
+			exp->res = ft_dy_str_new_str(param);
+		else
+		{
+			save = *end;
+			*end = 0;
+			exp->res = ft_dy_str_new_str(param);
+			*end = save;
+		}
+	}
+	if (!exp->res)
+		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_parameter_hash"));
 	return (SUCCESS);
 }

@@ -21,7 +21,7 @@ void	process_delete_searcher(t_command_line *command_line, t_shell *shell)
 	index = get_left_w_char_index_dy_str(command_line->searcher.dy_str, len);
 	command_line->searcher.dy_str->str[index] = '\0';
 	render_command_line(command_line, 0, 0);
-	update_research_historic(command_line, shell, 1);
+	update_research_history(command_line, shell, 1);
 }
 
 void	process_process_delete(t_command_line *command_line)
@@ -41,6 +41,7 @@ void	process_process_delete(t_command_line *command_line)
 	command_line->dy_str->current_size -= diff;
 	command_line->nb_chars--;
 	render_command_line(command_line, -1, 1);
+	sh_process_edit_counter(command_line, 1);
 }
 
 void	process_delete(t_command_line *command_line, t_shell *shell)
@@ -84,5 +85,6 @@ void	process_suppr(t_command_line *command_line)
 		command_line->dy_str->current_size -= diff;
 		command_line->nb_chars--;
 		render_command_line(command_line, 0, 1);
+		sh_process_edit_counter(command_line, 1);
 	}
 }

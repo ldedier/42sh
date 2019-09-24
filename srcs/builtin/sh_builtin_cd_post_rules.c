@@ -34,15 +34,15 @@ int			sh_builtin_cd_rule7(
 	{
 		if (**curpath != '/')
 		{
-			pwd = sh_builtin_pwd_logical(context->env, context->fd[FD_ERR]);
+			pwd = sh_builtin_pwd_logical(context->env, FD_ERR);
 			if (!pwd)
 			{
 				free(*curpath);
 				return (ERROR);
 			}
 			if (!(*curpath = ft_strjoin_path_free(pwd, *curpath, 0x01 + 0x02)))
-				return (sh_perror_fd(context->fd[FD_ERR],
-					SH_ERR1_MALLOC, "sh_builtin_cd_rule7"));
+				return (sh_perror_fd(
+					FD_ERR, SH_ERR1_MALLOC, "sh_builtin_cd_rule7"));
 		}
 	}
 	return (SUCCESS);

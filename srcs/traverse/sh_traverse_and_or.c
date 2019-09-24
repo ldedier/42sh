@@ -12,6 +12,12 @@
 
 #include "sh_21.h"
 
+/*
+ * sh_traverse_and_or_call_sons_exec :
+ * Following return value of the preview execution,
+ * this function execute or not the next level in the ast,
+ * pipe sequence (sh_traverse_pipe_sequence).
+*/
 static int		sh_traverse_and_or_call_sons_exec(t_ast_node *node,
 		int *prev_symbol, t_context *context)
 {
@@ -27,7 +33,12 @@ static int		sh_traverse_and_or_call_sons_exec(t_ast_node *node,
 		&& !context->shell->ret_value)
 		return (SUCCESS);
 	child = (t_ast_node*)(node->children->content);
-	ret = g_grammar[child->symbol->id].traverse(child, context);
+	ret = sh_traverse_pipeline(child, context);
+	if (ret == BLT_TEST_ERROR || context->shell->ret_value == BLT_TEST_ERROR)
+	{
+		context->shell->ret_value_set = 0;
+		sh_env_update_ret_value(context->shell, 2);
+	}
 	if (ret == FAILURE || ret == STOP_CMD_LINE)
 		return (ret);
 	if (!context->shell->running)
@@ -35,91 +46,68 @@ static int		sh_traverse_and_or_call_sons_exec(t_ast_node *node,
 	return (SUCCESS);
 }
 
-static int		sh_traverse_and_or_call_sons(
-	t_ast_node *node, t_context *context, t_phase phase)
-{
-	int			ret;
-
-	context->phase = phase;
-	ret = g_grammar[node->symbol->id].traverse(node, context);
-	if (!context->shell->running)
-		return (ret);
-	if (ret)
-	{
-		if (sh_env_update_question_mark(context->shell) == FAILURE)
-			return (FAILURE);
-		return (ret);
-	}
-	if (ret == ERROR)
-		return (ERROR);
-	return (KEEP_READ);
-}
-
+/*
+ * sh_traverse_and_or_process_phase :
+ * This function set the env variable with the return value of the
+ * and_or node execution.
+*/
 static int		sh_traverse_and_or_process_phase(
-	t_context *context, t_phase *phase, int prev_symbol, t_list *ptr)
+	t_context *context, int prev_symbol, t_list *ptr)
 {
 	int			ret;
 	t_ast_node	*child;
 
 	child = (t_ast_node*)ptr->content;
-	context->phase = *phase;
-	if (*phase == E_TRAVERSE_PHASE_EXECUTE)
-		ret = sh_traverse_and_or_call_sons_exec(child, &prev_symbol, context);
-	else
-		ret = sh_traverse_and_or_call_sons(child, context, *phase);
-	(*phase)++;
+	ret = sh_traverse_and_or_call_sons_exec(child, &prev_symbol, context);
+	if (sh_env_update_question_mark(context->shell) == FAILURE)
+		return (FAILURE);
 	if (ret == KEEP_READ || ret == STOP_CMD_LINE || ret == FAILURE)
 		return (ret);
 	if (ret == ERROR)
-	{
-		if (*phase - 1 == E_TRAVERSE_PHASE_EXPANSIONS)
-			return (SUCCESS);
-		set_failed_command(context);
 		return (KEEP_READ);
-	}
 	return (KEEP_READ);
 }
 
-int				sh_traverse_and_or_launch_phase(
+static int		sh_traverse_and_or_launch_phase(
 	t_ast_node *node, t_context *context)
 {
 	t_list		*ptr;
 	int			ret;
-	t_phase		phase;
 	int			prev_symbol;
 
 	ptr = node->children;
 	prev_symbol = -1;
 	while (ptr != NULL && context->shell->running)
 	{
-		phase = E_TRAVERSE_PHASE_EXPANSIONS;
-		while (phase <= E_TRAVERSE_PHASE_EXECUTE)
-		{
-			if ((ret = sh_traverse_and_or_process_phase(
-				context, &phase, prev_symbol, ptr)) == KEEP_READ)
-				continue ;
+		if ((ret = sh_traverse_and_or_process_phase(
+			context, prev_symbol, ptr)) != KEEP_READ)
 			return (ret);
-		}
 		if ((ptr = (ptr)->next))
 		{
 			prev_symbol = ((t_ast_node*)ptr->content)->symbol->id;
 			ptr = (ptr)->next;
 		}
+		t_context_reset(context);
 	}
 	return (SUCCESS);
 }
 
+/*
+ * sh_traverse_and_or :
+ * This is the browser of the t_list and_or (grammar)
+ * We execute a and_or node, check it return value and
+ * execute or not the next and_or node follow the found token
+ * AND_IF or OR_IF.
+ * 
+ * We also call the function sh_env_update_question_mark to be sur
+ * that at this time, the return value is set in the env variable 
+*/
 int				sh_traverse_and_or(t_ast_node *node, t_context *context)
 {
 	int		ret;
-
+	
 	sh_traverse_tools_show_traverse_start(node, context);
-	if (context->phase == E_TRAVERSE_PHASE_INTERACTIVE_REDIRECTIONS)
-		ret = sh_traverse_tools_browse(node, context);
-	else if (context->phase == E_TRAVERSE_PHASE_EXPANSIONS)
-		ret = sh_traverse_and_or_launch_phase(node, context);
-	else
-		ret = sh_traverse_tools_browse(node, context);
+	ret = sh_traverse_and_or_launch_phase(node, context);
 	sh_traverse_tools_show_traverse_ret_value(node, context, ret);
 	return (ret);
 }

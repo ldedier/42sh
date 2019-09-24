@@ -54,6 +54,10 @@ launch "Field splitting"
 		done
 
 
+	launch "Old failed tests"
+		test_launch 'v="Oka        Lmos" ; echo "$v"$a"$r"'
+		test_launch 'v="Oka        Lmos" ; echo $v"$a""$r"'
+
 # TESTS with specialchars (quotes, ...) in IFS var
 
 finish

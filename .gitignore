@@ -7,6 +7,7 @@ logs
 log
 sandbox
 /b
+.historic
 
 /signal
 /signal.c
@@ -49,7 +50,7 @@ sh42
 includes/libft.h
 *.vscode
 
-.historic
+.history
 
 # Prerequisites
 *.d
@@ -74,6 +75,10 @@ includes/libft.h
 *.a
 *.la
 *.lo
+
+# Editore files
+*.swp
+*.swo
 
 # Shared objects (inc. Windows DLLs)
 *.dll

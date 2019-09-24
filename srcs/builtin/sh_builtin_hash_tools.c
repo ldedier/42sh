@@ -31,7 +31,7 @@ int			sh_builtin_hash_add_utility(t_context *context, char *utility)
 			ret = sh_traverse_sc_search_in_path(&new_context);
 		if (!ret && !new_context.builtin && !new_context.path)
 			ret = sh_perror2_err_fd(
-				context->fd[FD_ERR], utility, "hash", "not found");
+				FD_ERR, utility, "hash", "not found");
 		t_context_free_content(&new_context);
 		return (ret);
 	}
@@ -65,7 +65,7 @@ static void	sh_builtin_hash_show_binary(t_binary *binary,
 		stats->max_name_len, binary->name, stats->max_path_len, binary->path);
 }
 
-int			sh_builtin_hash_show(t_context *context, t_shell *shell)
+int			sh_builtin_hash_show(t_shell *shell)
 {
 	t_hash_table	*table;
 	unsigned long	i;
@@ -89,7 +89,7 @@ int			sh_builtin_hash_show(t_context *context, t_shell *shell)
 		i++;
 	}
 	if (empty)
-		ft_dprintf(context->fd[FD_OUT], "hash: hash table empty\n");
+		ft_dprintf(FD_OUT, "hash: hash table empty\n");
 	return (SUCCESS);
 }
 

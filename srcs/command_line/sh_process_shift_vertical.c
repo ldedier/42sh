@@ -50,9 +50,11 @@ int		process_shift_down(t_command_line *command_line)
 		if (xy_iter.x == xy.x && xy_iter.y == xy.y + 1)
 		{
 			render_command_line(command_line, cursor - g_glob.cursor, 1);
+			replace_cursor_vim_legal(command_line);
 			return (SUCCESS);
 		}
 	}
 	render_command_line(command_line, cursor - g_glob.cursor, 1);
+	replace_cursor_vim_legal(command_line);
 	return (SUCCESS);
 }

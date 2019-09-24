@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_term.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/14 13:41:08 by ldedier           #+#    #+#             */
-/*   Updated: 2019/07/30 14:22:40 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/20 17:15:14 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,20 @@ int		sh_init_terminal_database(char **env)
 	return (SUCCESS);
 }
 
+int		sh_set_term_sig(int value)
+{
+	if (!value)
+		g_glob.term.c_lflag &= ~(ISIG);
+	else
+		g_glob.term.c_lflag |= ISIG;
+		if (tcsetattr(0, TCSADRAIN, &g_glob.term) == -1)
+	{
+		return (sh_perror("Could not modify this terminal attributes",
+			"sh_init_terminal"));
+	}
+	return (SUCCESS);
+}
+
 int		sh_init_terminal(t_shell *shell, char **env)
 {
 	if (sh_init_terminal_database(env))
@@ -51,7 +65,8 @@ int		sh_init_terminal(t_shell *shell, char **env)
 		return (sh_perror(SH_ERR1_TERM_CPY, "sh_init_terminal"));
 	shell->term.c_lflag &= ~(ICANON);
 	shell->term.c_lflag &= ~(ECHO);
-	shell->term.c_lflag &= ~(ISIG);
+	// shell->term.c_lflag &= ~(ISIG);
+	shell->term.c_lflag |= ISIG;
 	shell->term.c_cc[VMIN] = 1;
 	shell->term.c_cc[VTIME] = 0;
 	if (tcsetattr(0, TCSADRAIN, &shell->term) == -1)

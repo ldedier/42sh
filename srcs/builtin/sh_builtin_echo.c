@@ -12,17 +12,17 @@
 
 #include "sh_21.h"
 
-static int	sh_builtin_echo_write(t_context *context, char *str)
+static int	sh_builtin_echo_write(char *str)
 {
 	int		len;
 	int		ret;
 
 	if ((len = ft_strlen(str)) == 0)
 		return (SUCCESS);
-	ret = write(context->fd[FD_OUT], str, len);
+	ret = write(FD_OUT, str, len);
 	if (ret == -1)
 	{
-		return (sh_perror2_err_fd(context->fd[FD_ERR], "echo", "write error",
+		return (sh_perror2_err_fd(FD_ERR, "echo", "write error",
 			SH_ERR1_BAD_FD));
 	}
 	return (SUCCESS);
@@ -34,23 +34,23 @@ int			sh_builtin_echo(t_context *context)
 	int		ret;
 
 	if (!context->params->tbl[1])
-		return (sh_builtin_echo_write(context, "\n"));
+		return (sh_builtin_echo_write("\n"));
 	i = 1;
 	while (context->params->tbl[i] && ft_strequ(context->params->tbl[i], "-n"))
 		i++;
 	ret = 0;
 	while (!ret && context->params->tbl[i] && context->params->tbl[i + 1])
 	{
-		ret = sh_builtin_echo_write(context, context->params->tbl[i]);
+		ret = sh_builtin_echo_write(context->params->tbl[i]);
 		if (!ret)
-			ret = sh_builtin_echo_write(context, " ");
+			ret = sh_builtin_echo_write(" ");
 		i++;
 	}
 	if (ret)
 		return (ERROR);
-	if (sh_builtin_echo_write(context, context->params->tbl[i]) == ERROR)
+	if (sh_builtin_echo_write(context->params->tbl[i]) == ERROR)
 		return (ERROR);
 	if (!ft_strequ(context->params->tbl[1], "-n"))
-		return (sh_builtin_echo_write(context, "\n"));
+		return (sh_builtin_echo_write("\n"));
 	return (SUCCESS);
 }

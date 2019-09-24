@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/03 14:58:45 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/09/05 13:12:50 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/09/23 14:47:00 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static int	sh_expansions_init(char *original, t_expansion *exp)
 */
 
 int			sh_expansions_process(
-	char **input, char *original, t_context *context, int *index)
+	char **input, char *original, t_context *context, int *index, t_dy_tab *quotes)
 {
 	t_expansion	exp;
 	int			ret;
@@ -60,11 +60,9 @@ int			sh_expansions_process(
 	if (!ret)
 		ret = exp.process(context, &exp);
 	if (!ret)
-		ret = sh_expansions_replace(&exp, input, *index);
+		ret = sh_expansions_replace(&exp, input, *index, (t_quote**)quotes->tbl);
 	if (ret)
 	{
-		if (ret == ERROR)
-			sh_perror(SH_BAD_SUBSTITUTE, NULL);
 		t_expansion_free_content(&exp);
 		return (ret);
 	}

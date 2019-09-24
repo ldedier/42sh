@@ -1,0 +1,7 @@
+var=Okalms
+2<<eof ./fd_read 2
+Je lis des vaches
+""""
+"$var"
+'$var'
+eof

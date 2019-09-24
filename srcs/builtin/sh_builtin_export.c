@@ -54,28 +54,28 @@ static int	sh_builtin_export_show_min(char **min, char **env)
 	return (SUCCESS);
 }
 
-int			sh_builtin_export_show(t_context *context)
+static int	sh_builtin_export_show(t_context *context)
 {
 	char	**tbl;
 	char	*min;
 	char	*equal;
 
-	if (write(context->fd[FD_OUT], NULL, 0))
-		return (sh_perror2_err_fd(context->fd[FD_ERR], "write error", "export", SH_ERR1_BAD_FD));
+	if (write(FD_OUT, NULL, 0))
+		return (sh_perror2_err_fd(FD_ERR, "write error", "export", SH_ERR1_BAD_FD));
 	tbl = (char**)(context->saved_env->tbl);
 	min = NULL;
 	sh_builtin_export_show_min(&min, tbl);
 	while (min)
 	{
 		if (!(equal = ft_strchr(min, '=')))
-			ft_dprintf(context->fd[FD_OUT], "%s %s\n", EXPORT_MSG, min);
+			ft_dprintf(FD_OUT, "%s %s\n", EXPORT_MSG, min);
 		else
 		{
 			*equal = '\0';
-			ft_dprintf(context->fd[FD_OUT], "%s %s=", EXPORT_MSG, min);
+			ft_dprintf(FD_OUT, "%s %s=", EXPORT_MSG, min);
 			if (equal[1])
-				ft_dprintf(context->fd[FD_OUT], "\"%s\"", equal + 1);
-			ft_dprintf(context->fd[FD_OUT], "\n", min);
+				ft_dprintf(FD_OUT, "\"%s\"", equal + 1);
+			ft_dprintf(FD_OUT, "\n", min);
 			*equal = '=';
 		}
 		sh_builtin_export_show_min(&min, tbl);
@@ -89,7 +89,7 @@ int			sh_builtin_export_assign(t_context *context, char *arg)
 	int		index;
 
 	if (!sh_expansions_variable_valid_name(arg))
-		return (sh_perror2_err_fd(context->fd[FD_ERR], arg, "export", "not a valid identifier"));
+		return (sh_perror2_err_fd(FD_ERR, arg, "export", "not a valid identifier"));
 	if ((equal = ft_strchr(arg, '=')))
 	{
 		*equal = 0;

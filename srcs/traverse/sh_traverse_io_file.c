@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 11:19:41 by jmartel           #+#    #+#             */
-/*   Updated: 2019/07/30 16:03:17 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/12 14:56:33 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,16 +35,15 @@ static int	sh_process_file_greatand(char *filename, t_context *context)
 
 	if (!ft_strcmp(filename, "-"))
 	{
-		if (sh_add_redirection(sh_new_redir(OUTPUT, context->redirected_fd, -1),
-		&context->current_command_node->metadata.command_metadata.redirections))
+		if (sh_add_redirection_file(OUTPUT, context->redirected_fd, -1,
+		&(context->redirections)))
 			return (FAILURE);
 		return (SUCCESS);
 	}
 	else if ((fd = get_fd(filename)) >= 0)
 	{
-		return ((sh_process_fd_aggregation)(OUTPUT, context->redirected_fd, fd,
-			&context->current_command_node->
-				metadata.command_metadata));
+		return (sh_add_redirection_aggreg(OUTPUT, context->redirected_fd, fd,
+			&(context->redirections)));
 	}
 	if (fd == -1)
 		return (sh_process_file_output(filename, context, GREAT_OPT));
@@ -59,16 +58,14 @@ static int	sh_process_file_lessand(char *filename, t_context *context)
 
 	if (!ft_strcmp(filename, "-"))
 	{
-		if (sh_add_redirection(sh_new_redir(INPUT, context->redirected_fd, -1),
-			&context->current_command_node->
-				metadata.command_metadata.redirections))
+		if (sh_add_redirection_file(INPUT, context->redirected_fd, -1,
+			&(context->redirections)))
 			return (FAILURE);
 		return (SUCCESS);
 	}
 	else if ((fd = get_fd(filename)) >= 0)
-		return (sh_process_fd_aggregation(INPUT, context->redirected_fd, fd,
-			&context->current_command_node->
-				metadata.command_metadata));
+		return (sh_add_redirection_aggreg(INPUT, context->redirected_fd, fd,
+			&(context->redirections)));
 	else
 	{
 		if (fd == -1)
@@ -82,29 +79,35 @@ static int	sh_process_file_lessand(char *filename, t_context *context)
 	}
 }
 
-int			get_io_file_return(t_ast_node *redir_child,
+/*
+ * get_io_file_return
+ * dispatch to right function follow
+ * input/output with file/agregation redirection
+*/
+static int	get_io_file_return(t_ast_node *redir_child,
 			char *filename, t_context *context)
 {
-	if (context->current_command_node->metadata.command_metadata.should_exec)
-	{
-		if (redir_child->symbol->id == sh_index(LEX_TOK_LESS))
-			return (sh_process_file_input(filename, context, O_RDONLY));
-		else if (redir_child->symbol->id == sh_index(LEX_TOK_DGREAT)
-				|| redir_child->symbol->id == sh_index(LEX_TOK_CLOBBER))
-			return (sh_process_file_output(filename, context, DGREAT_OPT));
-		else if (redir_child->symbol->id == sh_index(LEX_TOK_GREAT))
-			return (sh_process_file_output(filename, context, GREAT_OPT));
-		else if (redir_child->symbol->id == sh_index(LEX_TOK_GREATAND))
-			return (sh_process_file_greatand(filename, context));
-		else if (redir_child->symbol->id == sh_index(LEX_TOK_LESSAND))
-			return (sh_process_file_lessand(filename, context));
-		else
-			return (SUCCESS);
-	}
+	if (redir_child->symbol->id == sh_index(LEX_TOK_LESS))
+		return (sh_process_file_input(filename, context, O_RDONLY));
+	else if (redir_child->symbol->id == sh_index(LEX_TOK_DGREAT)
+			|| redir_child->symbol->id == sh_index(LEX_TOK_CLOBBER))
+		return (sh_process_file_output(filename, context, DGREAT_OPT));
+	else if (redir_child->symbol->id == sh_index(LEX_TOK_GREAT))
+		return (sh_process_file_output(filename, context, GREAT_OPT));
+	else if (redir_child->symbol->id == sh_index(LEX_TOK_GREATAND))
+		return (sh_process_file_greatand(filename, context));
+	else if (redir_child->symbol->id == sh_index(LEX_TOK_LESSAND))
+		return (sh_process_file_lessand(filename, context));
 	else
 		return (SUCCESS);
 }
 
+/*
+ * sh_traverse_io_file
+ * We get here file and aggregation redirection and
+ * add the given id or the created file fd to the list
+ * of redirection we will run.
+*/
 int			sh_traverse_io_file(t_ast_node *node, t_context *context)
 {
 	t_ast_node	*redir_child;
@@ -123,5 +126,5 @@ int			sh_traverse_io_file(t_ast_node *node, t_context *context)
 			sh_env_update_ret_value(context->shell, ret);
 		return (ret);
 	}
-	return (sh_traverse_tools_browse(node, context));
+	return (SUCCESS);
 }

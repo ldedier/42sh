@@ -33,7 +33,8 @@ int		should_flush_buffer(t_key_buffer buffer, t_command_line *command_line)
 	if (buffer.progress > 1 && buffer.buff[0] == 27
 		&& buffer.buff[1] != 91 && buffer.buff[1] != 79)
 		return (1);
-	if (command_line->mode == E_MODE_INSERT)
+	if (command_line->mode == E_MODE_INSERT
+		|| command_line->mode == E_MODE_REPLACE)
 	{
 		if (buffer.buff[0] < 32 && buffer.buff[0] != 27)
 			return (1);

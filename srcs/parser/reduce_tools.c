@@ -21,7 +21,7 @@ void			sh_init_ast_node(t_ast_node *node,
 	node->token = token;
 	if (token)
 		token->ast_node = node;
-	node->metadata.command_metadata.redirections = NULL;
+	// node->metadata.command_metadata.redirections = NULL;
 	node->relative = relative;
 }
 

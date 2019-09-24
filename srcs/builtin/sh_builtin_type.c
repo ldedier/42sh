@@ -21,9 +21,9 @@ static int	sh_builtin_type_default(
 	ret = SUCCESS;
 	while (argv[i++])
 	{
-		if (!sh_builtin_type_search_reserved(context, argv[i - 1], args))
+		if (!sh_builtin_type_search_reserved(argv[i - 1], args))
 			continue ;
-		if (!sh_builtin_type_search_builtin(context, argv[i - 1], args))
+		if (!sh_builtin_type_search_builtin(argv[i - 1], args))
 			continue ;
 		if (!sh_builtin_type_search_hash(context, argv[i - 1], args))
 			continue ;
@@ -34,7 +34,7 @@ static int	sh_builtin_type_default(
 			continue ;
 		if (!args[TYPE_T_OPT].value && !args[TYPE_P_OPT].value)
 		{
-			ft_dprintf(context->fd[FD_ERR], "%s: type: %s: not found\n",
+			ft_dprintf(FD_ERR, "%s: type: %s: not found\n",
 				SH_NAME, argv[i - 1]);
 		}
 		ret = ERROR;
@@ -53,8 +53,8 @@ static int	sh_builtin_type_all(
 	while (argv[i++])
 	{
 		found = 0;
-		found += !sh_builtin_type_search_reserved(context, argv[i - 1], args);
-		found += !sh_builtin_type_search_builtin(context, argv[i - 1], args);
+		found += !sh_builtin_type_search_reserved(argv[i - 1], args);
+		found += !sh_builtin_type_search_builtin(argv[i - 1], args);
 		buffer = sh_builtin_type_search_in_path(context, argv[i - 1], args);
 		if (buffer == FAILURE)
 			return (FAILURE);
@@ -63,8 +63,8 @@ static int	sh_builtin_type_all(
 			continue ;
 		if (!args[TYPE_T_OPT].value && !args[TYPE_P_OPT].value)
 		{
-			ft_dprintf(context->fd[FD_ERR],
-			"%s: type: %s: not found\n", SH_NAME, argv[i - 1]);
+			ft_dprintf(
+				FD_ERR, "%s: type: %s: not found\n", SH_NAME, argv[i - 1]);
 		}
 		ret = ERROR;
 	}
@@ -85,9 +85,9 @@ int			sh_builtin_type(t_context *context)
 	argv = (char**)context->params->tbl;
 	if (sh_builtin_parser(ft_strtab_len(argv), argv, args, &index))
 		return (sh_builtin_usage(args, argv[0], TYPE_USAGE, context));
-	if (argv[index] && write(context->fd[FD_OUT], NULL, 0))
+	if (argv[index] && write(FD_OUT, NULL, 0))
 	{
-		return (sh_perror2_err_fd(context->fd[FD_ERR], "write error",
+		return (sh_perror2_err_fd(FD_ERR, "write error",
 			context->params->tbl[0], SH_ERR1_BAD_FD));
 	}
 	if (args[TYPE_A_OPT].value)

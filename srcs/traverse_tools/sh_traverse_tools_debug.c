@@ -20,6 +20,8 @@ char	*t_phase_name(t_phase phase)
 		return ("expansions");
 	else if (phase == E_TRAVERSE_PHASE_REDIRECTIONS)
 		return ("redirections");
+	else if (phase == E_TRAVERSE_PHASE_PIPE)
+		return ("pipe");
 	else if (phase == E_TRAVERSE_PHASE_INTERACTIVE_REDIRECTIONS)
 		return ("here docs");
 	return ("");

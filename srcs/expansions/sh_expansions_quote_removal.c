@@ -6,11 +6,27 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 00:53:16 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/13 23:28:46 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/23 22:45:04 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
+
+int			sh_expansions_quote_removal(t_quote **quotes)
+{
+	int		i;
+
+	i = 0;
+	while(quotes[i])
+		i++;
+	i--;
+	while (i >= 0)
+	{
+		ft_strdelchar(quotes[i]->c, 0);
+		i--;
+	}
+	return (SUCCESS);
+}
 
 static void	remove_simple_quote(char *input, int *i)
 {
@@ -34,12 +50,10 @@ static void	remove_double_quote(char *input, int *i)
 		ft_strdelchar(input, *i);
 }
 
-int			sh_expansions_quote_removal(t_context *context, t_ast_node *node)
+void		sh_expansions_quote_removal_in_str(char *input)
 {
 	int			i;
-	char		*input;
 
-	input = node->token->value;
 	i = 0;
 	if (sh_verbose_expansion())
 		ft_dprintf(2, "quote removal : %s||\n", input);
@@ -59,6 +73,4 @@ int			sh_expansions_quote_removal(t_context *context, t_ast_node *node)
 	}
 	if (sh_verbose_expansion())
 		ft_dprintf(2, "quote removal (end) : %s||\n", input);
-	return (SUCCESS);
-	(void)context;
 }
