@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-launch "builtin test"
+launch "test"
 	#initilisation
 	blt_test_files="${obj_dir}/blt_test_file"
 	mkdir ${blt_test_files} ${blt_test_files}/a ${blt_test_files}/dir_no_perm

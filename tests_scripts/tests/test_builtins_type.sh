@@ -10,8 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-launch "Builtins (2)"
-	launch_show "type"
+launch "type"
 	# launch "parser"
 	# test_launch 'type -q '
 	# test_launch 'type -z -q -r'

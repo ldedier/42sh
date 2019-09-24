@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/21 15:58:19 by jmartel           #+#    #+#              #
-#    Updated: 2019/09/24 23:25:32 by jmartel          ###   ########.fr        #
+#    Updated: 2019/09/25 00:34:34 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -106,9 +106,14 @@ diff_files()
 		fi
 		if [ -n "$logging" ] ; then
 			create_logging_file
-			echo -e "KO" >> "${logging_file}"
+			echo -e "Script :" >> "${logging_file}"
 			echo -e `cat ${buffer}` >> "${logging_file}"
+			echo -e "" >> "${logging_file}"
+			echo -e "KO" >> "${logging_file}"
+			echo -e "42sh :" >> "${logging_file}"
 			echo -e `cat $1` >> "${logging_file}"
+			echo -e "" >> "${logging_file}"
+			echo -e "bash :" >> "${logging_file}"
 			echo -e `cat $2` >> "${logging_file}"
 			echo -e "" >> "${logging_file}"
 		fi
@@ -154,7 +159,9 @@ check_ret_value()
 		echo -e "${sh_ret}${eoc}"
 		if [ -n "$logging" ] ; then
 			create_logging_file
-			echo -e `cat ${buffer}` >> ${logging_file}
+			echo -e "Script :" >> "${logging_file}"
+			echo -e `cat ${buffer}` >> "${logging_file}"
+			echo -e "" >> "${logging_file}"
 			echo -e "SEGFAULT OR SIGNAL RECEIVED" >> ${logging_file}
 			echo -e "${sh_ret}" >> ${logging_file}
 			echo -e "" >> ${logging_file}
@@ -174,10 +181,12 @@ check_ret_value()
 
 			if [ -n "$logging" ] ; then
 				create_logging_file
+				echo -e "Script :" >> "${logging_file}"
 				echo -e `cat ${buffer}` >> "${logging_file}"
+				echo -e "" >> "${logging_file}"
 				echo -e "BAD RETURNED VALUE" >> "${logging_file}"
 				echo -e "bash : $bash_ret || 42sh : $sh_ret" >> "${logging_file}"
-				echo -e "" >> ${logging_file}
+				echo -e "" >> "${logging_file}"
 			fi
 			return 1
 		fi

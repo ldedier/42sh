@@ -45,9 +45,9 @@ suppressions_file="${obj_dir}/my_supp.supp"
 error_exit_code=247
 
 ## Options initialisation
-test_stderr="" verbose="ok" show_error="" test_returned_values="" file=""
+test_stderr="" verbose="ok" show_error="" test_returned_values="" file="" logging="ok"
 ## Counters initialisation
-passed=0 tried=0 diff_passed=0 diff_tried=0 logging=0
+passed=0 tried=0 diff_passed=0 diff_tried=0 
 
 ## Parse options given as arguments
 for arg in $@ ; do
@@ -59,9 +59,6 @@ for arg in $@ ; do
 
 	if [ "$arg" = "-2" ] ; then
 		test_stderr="ok" ; fi
-
-	if [ "$arg" = "-l" ] ; then
-		logging="ok" ; fi
 
 	if [ "$arg" = "-q" ] ; then
 		verbose="" ; fi
