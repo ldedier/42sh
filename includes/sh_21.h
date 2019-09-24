@@ -228,6 +228,7 @@ int					sh_main_init_vars(t_shell *shell);
 ** init_term.c
 */
 int					sh_init_terminal_database(char **env);
+int					sh_set_term_sig(int value);
 int					sh_init_terminal(t_shell *shell, char **env);
 
 /*

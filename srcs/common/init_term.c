@@ -41,6 +41,20 @@ int		sh_init_terminal_database(char **env)
 	return (SUCCESS);
 }
 
+int		sh_set_term_sig(int value)
+{
+	if (!value)
+		g_glob.term.c_lflag &= ~(ISIG);
+	else
+		g_glob.term.c_lflag |= ISIG;
+		if (tcsetattr(0, TCSADRAIN, &g_glob.term) == -1)
+	{
+		return (sh_perror("Could not modify this terminal attributes",
+			"sh_init_terminal"));
+	}
+	return (SUCCESS);
+}
+
 int		sh_init_terminal(t_shell *shell, char **env)
 {
 	if (sh_init_terminal_database(env))
