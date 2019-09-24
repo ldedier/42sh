@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/19 09:45:53 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/22 16:56:12 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/24 14:50:06 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,8 @@ int			sh_builtin_export_assign(t_context *context, char *arg)
 		*equal = '=';
 		if (sh_vars_assignment(context->saved_env, NULL, arg))
 			return (FAILURE); // perror
+		if (ft_strnstr(arg, "PATH", 4))
+			sh_builtin_hash_empty_table(context->shell);
 	}
 	else
 	{
