@@ -83,7 +83,7 @@ make -C $path && cp "${path}/${exec}" . || exit
 source ${src_dir}/functions.sh
 
 ## Call initialisation functions
-del_historic
+del_history
 compile_executable
 if [ ! -z $valgrind ] ; then init_valgrind ; fi
 

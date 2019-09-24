@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 14:25:15 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/06 16:11:45 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/09 19:07:30 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,16 @@
 
 static int	sh_lexer_rule1_process_quoted_start(t_lexer *lexer, int reading)
 {
-	if (!reading)
+	if (!reading || E_LEX_AUTOCOMPLETION)
 	{
-		ft_dprintf(2, SH_ERR_COLOR
-		"unexpected EOF while looking for matching %c\n"EOC, lexer->quoted);
-		return (LEX_FAIL);
+		if (lexer->mode == E_LEX_AUTOCOMPLETION)
+			return (LEX_ERR);
+		else if (lexer->quoted)
+		{
+			ft_dprintf(2, SH_ERR_COLOR
+			"unexpected EOF while looking for matching %c\n"EOC, lexer->quoted);
+			return (LEX_FAIL);
+		}
 	}
 	if (lexer->quoted == '\"' || lexer->quoted == '\'')
 	{
@@ -62,10 +67,12 @@ int			sh_lexer_rule1(t_lexer *lexer)
 	{
 		if (lexer->quoted > 0 || lexer->backslash)
 		{
-			if (!isatty(0))
+			if (!isatty(0) || lexer->mode == E_LEX_AUTOCOMPLETION)
 				return (sh_lexer_rule1_process_quoted(lexer));
 			else
+			{
 				return (sh_process_quoted(lexer));
+			}
 		}
 		t_lexer_add_token(lexer);
 		return (LEX_END);

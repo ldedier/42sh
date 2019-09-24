@@ -15,8 +15,6 @@
 
 # include "sh_21.h"
 
-# define DGREAT_OPT						(O_WRONLY | O_APPEND | O_CREAT)
-# define GREAT_OPT						(O_WRONLY | O_TRUNC | O_CREAT)
 # define SH_RET_VALUE_EXIT_STATUS(res)	res >> 8
 # define SH_RET_VALUE_SIG_RECEIVED(res)	res & 0xff
 
@@ -36,21 +34,7 @@
 
 extern pid_t g_parent;
 
-typedef enum		e_redirection_type
-{
-	INPUT,
-	OUTPUT
-}					t_redirection_type;
-
-typedef struct			s_redirection
-{
-	t_redirection_type	type;
-	int					redirected_fd;
-	int					fd;
-	int					backup;
-	int					was_closed;
-}						t_redirection;
-
+typedef struct		s_redirection t_redirection;
 typedef enum		e_phase
 {
 	E_TRAVERSE_PHASE_INTERACTIVE_REDIRECTIONS,
@@ -116,38 +100,13 @@ int					sh_pre_execution_pipes(t_list *contexts);
 int					sh_post_execution(void);
 
 /*
-** sh_redirections.c
-*/
-// int					sh_add_redirection(
-// 	t_redirection_type type, int redirected_fd, int fd, t_list **list);
-int 				sh_add_redirection_file(
-	t_redirection_type, int redirected_fd, int fd, t_list **list);
-int					sh_add_redirection_aggreg(
-	t_redirection_type type, int redirected_fd, int fd, t_list **list);
-
-/*
-** sh_reset_redirection.c
-*/
-int					sh_reset_redirection(t_list **lst);
-
-/*
 ** sh_execute_redirection.c
 */
 int 				sh_execute_redirection(t_list *lst, t_redirection *el);
-// int 				sh_execute_redirection(t_context *context);
-
-/*
-** sh_check_open_fd.c
-*/
-int					sh_check_open_fd(t_redirection_type type, int fd);
-int 				sh_check_src_fd(t_list *head, t_redirection *curr_redir);
-int					sh_check_dst_fd(
-	t_list *lst, t_redirection_type type, int fd);
 
 /*
 ** t_context.c
 */
-// void				sh_free_context_dup_lst(void *c, size_t dummy);
 int					t_context_init(t_context *context, t_shell *shell);
 void				t_context_free_content(t_context *context);
 void				t_context_reset(t_context *context);

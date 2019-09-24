@@ -25,7 +25,7 @@ int		sh_add_to_dy_str(t_dy_str *dy_str,
 }
 
 int		sh_add_to_command(t_command_line *command_line,
-		unsigned char buffer[READ_BUFF_SIZE], int nb_bytes)
+			unsigned char buffer[READ_BUFF_SIZE], int nb_bytes)
 {
 	int i;
 
@@ -38,15 +38,17 @@ int		sh_add_to_command(t_command_line *command_line,
 		i++;
 	}
 	command_line->nb_chars++;
-	return (0);
+	return (sh_process_edit_counter(command_line, 1));
 }
 
 int		reset_command_line(t_shell *shell, t_command_line *command_line)
 {
-	shell->historic.head = &shell->historic.head_start;
+	shell->history.head = &shell->history.head_start;
 	command_line->autocompletion.head = NULL;
 	g_glob.cursor = 0;
 	flush_command_line(command_line);
+	if (sh_reset_saves(command_line))
+		return (FAILURE);
 	if (update_prompt(shell, command_line) == FAILURE)
 		return (FAILURE);
 	return (SUCCESS);
@@ -59,5 +61,6 @@ int		sh_get_command(t_shell *shell, t_command_line *command_line)
 	if (reset_command_line(shell, command_line) == FAILURE)
 		return (FAILURE);
 	render_command_line(command_line, 0, 1);
+
 	return (get_keys(shell, command_line));
 }

@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/11 17:20:10 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/05 14:20:06 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/20 10:27:41 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,9 @@
 # define QUOTE_PROMPT		"quote"
 # define DQUOTE_PROMPT		"dquote"
 
-# define COMMAND_PROMPT	"(command)"
+# define COMMAND_PROMPT	"(vi"
+# define COUNT_PROMPT	"(arg:"
+# define REPLACE_PROMPT	"(replace)"
 # define VISUAL_PROMPT	"(visual)"
 # define HEREDOC_PROMPT	"heredoc"
 # define PROMPT_SUFFIX	"> "
@@ -34,12 +36,20 @@
 # define ELIPTIC_COMMAND_LINE	"<...>"
 
 typedef char *(*t_heredoc_func)(const char *);
+typedef struct s_entry		t_entry;
+
+typedef enum		e_edit_style
+{
+	E_EDIT_STYLE_READLINE,
+	E_EDIT_STYLE_VIM,
+}					t_edit_style;
 
 typedef enum		e_mode
 {
 	E_MODE_INSERT,
 	E_MODE_VISUAL,
-	E_MODE_COMMAND
+	E_MODE_COMMAND,
+	E_MODE_REPLACE
 }					t_mode;
 
 typedef enum		e_cl_context
@@ -60,6 +70,28 @@ typedef struct		s_searcher
 	int				unsuccessful;
 }					t_searcher;
 
+
+typedef struct		s_key_buffer
+{
+	unsigned char	buff[READ_BUFF_SIZE];
+	int				progress;
+	int				last_char_input;
+}					t_key_buffer;
+
+typedef struct		s_ft_command
+{
+	char			c;
+	int				(*motion)(t_command_line *command_line, char c);
+	int				locked;
+}					t_ft_command;
+
+typedef struct		s_command_count
+{
+	int				active;
+	int				tmp_value;
+	int				value;
+}					t_command_count;
+
 /*
 ** dy_str			: content of the command_line
 ** heredoc_eof		: current eof of the heredoc
@@ -77,10 +109,15 @@ typedef struct		s_searcher
 ** interrupted		: if the command got interrupted by a ctrl D or ctrl C
 ** to_append_str	: what to append to the string in the case of \\ in heredocs
 ** fd				: fd to print input (open("/fd/tty"));
+** key_buffer		: read characters
+** count			: vim arguments
+** last_ft_command	: last f, F, t, or T command executed by the shell
+** edit_line		: dup from the command_line to retrieve from history
 **
 */
 typedef struct		s_command_line
 {
+	t_shell			*shell;
 	t_auto_complete	autocompletion;
 	t_searcher		searcher;
 	t_dy_str		*dy_str;
@@ -89,29 +126,22 @@ typedef struct		s_command_line
 	int				nb_chars;
 	int				current_index;
 	int				scrolled_lines;
-	t_mode			mode;
 	int				interrupted;
 	char			*clipboard;
 	int				pinned_index;
+	t_mode			mode;
 	t_cl_context	context;
+	t_edit_style	edit_style;
 	int				prev_prompt_len;
 	char			*to_append_str;
 	int				fd;
+	t_key_buffer	buffer;
+	t_command_count	count;
+	t_ft_command	last_ft_command;
+	char			*edit_line;
+	t_list			*saves_stack;
+	int				edit_counter;
 }					t_command_line;
-
-typedef struct		s_historic
-{
-	t_dlist			*head;
-	t_dlist			*commands;
-	t_dlist			head_start;
-}					t_historic;
-
-typedef struct		s_key_buffer
-{
-	unsigned char	buff[READ_BUFF_SIZE];
-	int				progress;
-	int				last_char_input;
-}					t_key_buffer;
 
 typedef struct		s_xy
 {
@@ -222,6 +252,8 @@ void				sh_free_command_line(t_command_line *command_line);
 /*
 ** get_char_len.c
 */
+int					get_char_len_unprotected(
+	int index, unsigned char *entry);
 int					get_char_len2(
 	int index, int len, unsigned char *entry);
 int					get_char_len(int index, unsigned char *entry);
@@ -296,6 +328,7 @@ int					process_escape_sequence(
 	t_key_buffer *buffer);
 int					process_shift(
 	t_key_buffer *buffer, t_command_line *command_line);
+int					await_stream(int fd);
 int					process_keys(
 	t_key_buffer *buffer,
 	t_shell *shell,
@@ -361,6 +394,8 @@ void				cancel_autocompletion(
 /*
 ** keys_others.c
 */
+int					replace_command_line(
+	t_key_buffer *buffer, t_command_line *command_line);
 int					process_keys_others(
 	t_key_buffer *buffer,
 	t_shell *shell,
@@ -408,16 +443,31 @@ int					get_research_nb_lines(t_command_line *command_line);
 int					render_research(t_command_line *command_line);
 
 /*
-** research_historic.c
+** research_history.c
 */
-int					process_find_in_historic(
+int					process_find_in_history(
 	t_command_line *command_line, char *to_search_in, char *found);
-int					progress_process_research_historic(
+int					progress_process_research_history(
 	t_command_line *command_line, t_shell *shell);
-int					update_research_historic(
+int					update_research_history(
 	t_command_line *command_line, t_shell *shell, int reset);
-int					process_research_historic(
+int					process_research_history(
 	t_command_line *command_line, t_shell *shell);
+
+/*
+** saves.c
+*/
+t_list				**get_current_saves_stack(
+	t_command_line *command_line, t_entry **entry);
+int					sh_save_command_line(t_command_line *command_line);
+int					process_restore_save(
+	t_command_line *command_line, char *save, int *ret);
+int					sh_restore_save(t_command_line *command_line);
+int					sh_restore_all_save(t_command_line *command_line);
+int					sh_process_edit_counter(
+	t_command_line *command_line, int inc);
+int					sh_reset_saves(t_command_line *command_line);
+int					sh_init_entry_saves(t_entry *entry);
 
 /*
 ** screen_tools.c
@@ -450,12 +500,21 @@ int					process_read_cursor_position(
 int					sh_get_cursor_position(int *x, int *y);
 
 /*
-** sh_process_historic.c
+** sh_process_history.c
 */
-int					process_historic_down(
-	t_shell *shell, t_command_line *command_line);
-int					process_historic_up(
-	t_shell *shell, t_command_line *command_line);
+int					switch_command_line(
+	t_command_line *command_line, char *str);
+int					process_history_down(
+	t_shell *shell,
+	t_command_line *command_line,
+	int count,
+	int start);
+int					reached_history_end(t_shell *shell);
+int					process_history_up(
+	t_shell *shell,
+	t_command_line *command_line,
+	int count,
+	int start);
 
 /*
 ** sh_process_quoted.c
@@ -485,6 +544,8 @@ int					process_shift_down(t_command_line *command_line);
 */
 int					update_prompt_context(
 	t_shell *shell, t_command_line *command_line, char **new_prompt);
+int					fill_prompt_command_mode(
+	char **new_prompt, t_command_line *command_line);
 int					update_prompt(
 	t_shell *shell, t_command_line *command_line);
 int					update_prompt_from_quote(
@@ -507,7 +568,9 @@ int					update_prompt_cwd(t_shell *shell, char **new_prompt);
 */
 int					update_prompt_cwd_home(char **new_prompt);
 int					process_escape(
-	t_shell *shell, t_command_line *command_line);
+	t_shell *shell,
+	t_command_line *command_line,
+	t_key_buffer *buffer);
 int					process_i(
 	t_shell *shell,
 	t_command_line *command_line,
