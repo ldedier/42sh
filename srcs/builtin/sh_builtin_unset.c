@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/19 12:19:24 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/22 16:36:20 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/24 14:03:28 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ int			sh_builtin_unset(t_context *context)
 			sh_vars_del_key(context->vars, argv[index]);
 		else if (sh_vars_get_index(context->saved_env, argv[index]) >= 0)
 			sh_vars_del_key(context->saved_env, argv[index]);
+		if (ft_strnstr(argv[index], "PATH", 4))
+			sh_builtin_hash_empty_table(context->shell);
 		index++;
 	}
 	return (ret);

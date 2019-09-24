@@ -6,7 +6,7 @@
 /*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 15:06:52 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/09/19 15:10:22 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/09/23 17:33:08 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ int 		sh_check_src_fd(t_list *head, t_redirection *curr_redir)
 		if (el->backup == curr_redir->redirected_fd)
 		{
 			if ((el->backup = save_fd(
-				lst, curr_redir->type, curr_redir->redirected_fd)) == -1)
+				head, curr_redir->type, curr_redir->redirected_fd)) == -1)
 				return (-1);
 			close (curr_redir->redirected_fd);
 			break ;
@@ -126,8 +126,10 @@ int 		sh_check_src_fd(t_list *head, t_redirection *curr_redir)
 		lst = lst->next;
 	}
 	if (sh_check_open_fd(curr_redir->type, curr_redir->redirected_fd) != -1)
+	{
 		if ((curr_redir->backup = save_fd(
 			head, curr_redir->type, curr_redir->redirected_fd)) < 0)
 			return (-1);
+	}
 	return (0);
 }
