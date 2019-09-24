@@ -28,7 +28,7 @@ int		process_enter(t_command_line *command_line)
 int		process_process_keys_ret(t_key_buffer *buffer,
 			t_shell *shell, t_command_line *command_line)
 {
-	int ret;
+//	int ret;
 
 	if (buffer->buff[0] == 10)
 	{
@@ -46,11 +46,11 @@ int		process_process_keys_ret(t_key_buffer *buffer,
 			return (FAILURE);
 		flush_keys(buffer);
 	}
-	else if (buffer->buff[0] == 3)
-	{
-		ret = (process_ctrl_c(shell, command_line));
-		return (flush_keys_ret(buffer, ret));
-	}
+//	else if (buffer->buff[0] == 3)
+//	{
+//		ret = (process_ctrl_c(shell, command_line));
+//		return (flush_keys_ret(buffer, ret));
+//	}
 	return (KEEP_READ);
 }
 

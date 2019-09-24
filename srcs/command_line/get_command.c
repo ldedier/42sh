@@ -44,7 +44,8 @@ int		sh_add_to_command(t_command_line *command_line,
 int		reset_command_line(t_shell *shell, t_command_line *command_line)
 {
 	shell->history.head = &shell->history.head_start;
-	command_line->autocompletion.head = NULL;
+	process_cancel_autocompletion(command_line);
+	command_line->searcher.active = 0;
 	g_glob.cursor = 0;
 	flush_command_line(command_line);
 	if (sh_reset_saves(command_line))
