@@ -11,13 +11,13 @@
 # **************************************************************************** #
 
 launch "Builtins (2)"
-	launch "type"
+	launch_show "type"
 	# launch "parser"
 	# test_launch 'type -q '
 	# test_launch 'type -z -q -r'
 	# test_launch 'type -v -e -l'
 
-	launch "Simple tests"
+	launch_show "Simple tests"
 	test_launch 'type ; echo $?'
 	test_launch 'type [['
 	test_launch 'type { }'
@@ -56,7 +56,7 @@ launch "Builtins (2)"
 	test_launch 'ls' 'type -a -p -t cd ls brew  type while'
 	test_launch 'ls' 'type -a -t -p cd ls brewe type while'
 
-	launch "write"
+	launch_show "write"
 	test_launch "type 1>&-"
 	test_launch "type ls 1>&-"
 	test_launch "type nothing 1>&-"

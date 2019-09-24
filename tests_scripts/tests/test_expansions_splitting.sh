@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 launch "Field splitting"
-	launch "simple"
+	launch_show "simple"
 		test_launch 'var="Okalmose speculos"' 'echo $var'
 		test_launch 'var="-n pwd"' 'echo $var'
 		test_launch 'var="echo -n"' '$var Okalmos'
@@ -29,7 +29,7 @@ launch "Field splitting"
 		test_launch 'IFS=ABC''var=B   A      C' 'echo $var'
 		test_launch 'var="echo tamer | cat -e"' '$var'
 
-	launch "IFS unset"
+	launch_show "IFS unset"
 		test_launch 'unset IFS' 'var="Okalmos   speculos 		L "' 'echo $var'
 		test_launch 'unset IFS' 'var="Okalmos   speculos 		L "' 'echo "$var"'
 		test_launch 'unset IFS' 'var="		    	ASD			   	 	sda qwe"' 'echo $var'
@@ -48,13 +48,13 @@ launch "Field splitting"
 		test_launch 'unset IFS' '' 'echo $var'
 		test_launch 'unset IFS' '' 'echo $var'
 
-	launch "hard"
+	launch_show "hard"
 		for i in `seq 1 5` ; do
 			test_launch_pipe ./tests_files/splitting/splitting_${i}
 		done
 
 
-	launch "Old failed tests"
+	launch_show "Old failed tests"
 		test_launch 'v="Oka        Lmos" ; echo "$v"$a"$r"'
 		test_launch 'v="Oka        Lmos" ; echo $v"$a""$r"'
 

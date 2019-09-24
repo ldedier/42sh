@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 launch "Lexer"
-	launch "Quotes"
+	launch_show "Quotes"
 	test_launch '"e"c"h"o lol' 'ls'
 	test_launch '"echo" lol' 'ls'
 	test_launch '""echo""  "" lol' 'ls'
@@ -28,14 +28,14 @@ launch "Lexer"
 	echo "2'''  '\ \ \ \ \'\'\'\'\"\"\"\"\ \"        \"ls" > file
 	test_launch_pipe file
 
-	launch "lexer on expansion"
+	launch_show "lexer on expansion"
 	test_launch '\ls \$HOME'
 	test_launch '\ls $\H\O\M\E'
 	test_launch 'l\s $HOME\'
 	test_launch '""'
 	test_launch '"\\\""\\ls'
 	
-	launch "multiple lines"
+	launch_show "multiple lines"
 	test_launch '"var=pwe" echo $var ; echo $var'
 
 	test_launch '\ls "
@@ -48,7 +48,7 @@ launch "Lexer"
 	echo "ls \\" > file ; echo "-a" >>file
 	test_launch_pipe file
 
-	launch "Solo quotes"
+	launch_show "Solo quotes"
 	test_launch '"'
 	test_launch "'"
 	test_launch '\'
@@ -64,7 +64,7 @@ launch "Lexer"
 	echo \\ > file ; for i in 1 2 3 4 ; do echo ls >> file ; done ; echo -n \" >> file ; test_launch file
 	echo ls > file ; for i in 1 2 3 4 ; do echo " \\" >> file ; done ; echo -n -la >> file ; test_launch file
 
-	launch "Random"
+	launch_show "Random"
 	test_launch '"var=pwe"'
 	test_launch 'ls ""'
 

@@ -24,7 +24,7 @@ launch "builtin test"
 	chmod 000 ${blt_test_files}/dir_no_perm
 	chmod g+s ${blt_test_files}/dir_no_perm
 
-	#unary test
+	launch_show "unary test"
 	test_launch	"test" 'echo $?'
 	test_launch	"test ''" 'echo $?'
 	test_launch	"test hey" 'echo $?'
@@ -77,7 +77,7 @@ launch "builtin test"
 	test_launch "test  -z 'test d une string'" 'echo $?'
 	test_launch "test  -z ''" 'echo $?'
 	
-	launch "binary"
+	launch_show "binary"
 	test_launch "test  -z = ''" 'echo $?'
 	test_launch 'test  $USER = ${USER}' 'echo $?'
 	test_launch 'test  $USER = hohoho' 'echo $?'
@@ -101,7 +101,7 @@ launch "builtin test"
 	test_launch "test  ! +5 -le 5" 'echo $?'
 	test_launch "test  ! -83749537 -le +38475295" 'echo $?'
 
-	launch "errors"
+	launch_show "errors"
 	test_launch	"test '(' hey ! ')'" 'echo $?'
 	test_launch	"test '(' hey ')' ho" 'echo $?'
 	test_launch	"test '(' =  ho ')'" 'echo $?'
@@ -117,7 +117,7 @@ launch "builtin test"
 	test_launch "test  8475348593 -ne 38473h43495 8374238" 'echo $?'
 	test_launch "test  8475348593 -ne 38473h43495.8374238" 'echo $?'
 
-	launch "random"
+	launch_show "random"
 	test_launch	"test -p /dev/fd/0" 'echo $?'
 	test_launch	"test -S /dev/fd/0" 'echo $?'
 	test_launch	"test -s /dev/fd/0" 'echo $?'

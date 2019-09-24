@@ -32,8 +32,9 @@ pink=\\033[35m cyan=\\033[36m grey=\\033[37m eoc=\\033[0m
 path=".."
 ## Executable name
 exec="42sh"
-## Directory for valgrind logs
-log_dir="./logs/" # watchout we rm -rf this
+## Directory for logs
+initial_log_dir="./logs/" # watchout we rm -rf this
+log_dir=${initial_log_dir}
 ## Directory used to store local configurtation and binaries
 obj_dir="./obj"
 ## Directory used to store binaries source code

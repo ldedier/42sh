@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 launch "cd"
-	launch "cdpath"
+	launch_show "cdpath"
 	test_launch 'unset CDPATH' 'pwd' 'cd tmp ; echo $? ; pwd' 'cd ; pwd' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
 	test_launch 'unset CDPATH' 'cd ~ pwd' ' cd - ; pwd' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
 	test_launch 'unset CDPATH' 'cd srcs ; echo $? ; pwd' 'cd objs ; echo $? ; pwd' 'cd logs ; echo $? ; pwd' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
@@ -27,7 +27,7 @@ launch "cd"
 	test_launch 'CDPATH="/:$HOME:::::' 'cd srcs ; echo $? ; pwd' 'cd Desktop ; echo $? ; pwd' 'cd tmp ; echo $? ; pwd' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
 
 
-	launch "simple"
+	launch_show "simple"
 	test_launch "cd" 'echo $?' "pwd"
 	test_launch "cd ~/" 'echo $?' "pwd" "cd .. ; pwd"
 	test_launch "cd /" 'echo $?' "cd ../.." 'echo $?' "pwd" 'echo $?'
@@ -42,7 +42,7 @@ launch "cd"
 	test_launch "mkdir dir ; chmod 666 dir ; cd dir && pwd && cd .. ; chmod 777 dir ; rm -r dir" "rm -rf dir"
 	test_launch "mkdir dir ; chmod 667 dir ; cd dir && pwd && cd .. ; chmod 777 dir ; rm -r dir" "rm -rf dir"
 
-	launch "harder"
+	launch_show "harder"
 	test_launch "cd -" 'echo $?' "pwd"
 	test_launch "cd '' '' && pwd"
 	test_launch "cd '' '' || pwd"
@@ -57,7 +57,7 @@ launch "cd"
 	test_launch "OLDPWD=asd" "cd - ; pwd" "cd - ; pwd"
 	test_launch "OLDPWD=asd" "cd .. ; pwd" "cd - ; pwd" "cd - ; pwd"
 
-	launch "parser"
+	launch_show "parser"
 	test_launch 'mkdir -p sandbox ; cd sandbox ; rm -f link ; ln -s sandbox link'
 	test_launch 'cd -P sandbox/link/link' 'echo $? ; pwd'
 	test_launch 'cd -P -P -P -L sandbox/link/link' 'echo $? ; pwd'
@@ -70,7 +70,7 @@ launch "cd"
 	test_launch 'cd --ok sandbox/link/' 'echo $? ; pwd'
 	test_launch 'rm -rf sandbox'
 
-	launch "arguments"
+	launch_show "arguments"
 	test_launch 'cd nodir' 'echo $? ; pwd'
 	test_launch 'cd start.sh' 'echo $? ; pwd'
 	test_launch 'cd ../start.sh' 'echo $? ; pwd'
@@ -79,13 +79,13 @@ launch "cd"
 	test_launch 'cd ..../.../..' 'echo $? ; pwd'
 	test_launch 'cd /..../.../..' 'echo $? ; pwd'
 
-	launch "returned value"
+	launch_show "returned value"
 	test_launch "cd nodir" 'ech	o $?'
 	test_launch "ln -s nowhere link"  "cd link" 'echo $?'
 	test_launch "rm link" "cd .." 'echo $?'
 	test_launch "cd" 'echo $?'
 
-	launch "write"
+	launch_show "write"
 	test_launch "cd 1>&-"
 	test_launch "cd -E 1>&-"
 	test_launch "cd -E 2>&-"
@@ -93,19 +93,19 @@ launch "cd"
 	test_launch "cd nofile 1>&-"
 	test_launch "cd nofile 2>&-"
 
-	launch "Old errors"
+	launch_show "Old errors"
 	test_launch "cd ././../.." 'echo $?' "pwd"
 	test_launch 'cd -P ././../..' 'echo $?' "pwd"
 	test_launch 'cd ...' 'echo $?' "pwd"
 	test_launch 'cd -P ...' 'echo $?' "pwd"
 
-	launch "Old errors"
+	launch_show "Old errors"
 	test_launch "cd ././../.." 'echo $?' "pwd"
 	test_launch 'cd -P ././../..' 'echo $?' "pwd"
 	test_launch 'cd ...' 'echo $?' "pwd"
 	test_launch 'cd -P ...' 'echo $?' "pwd"
 
-#	launch "Deprecated"
+#	launch_show "Deprecated"
 	# test_launch "PWD=" "OLDPWD=" "cd -" "cd -"
 	# test_launch "PWD=/ OLDPWD=/var cd - ; cd -"
 	# test_launch "PWD=/ OLDPWD=/var cd -" "cd -"

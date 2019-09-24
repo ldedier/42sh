@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/21 15:58:19 by jmartel           #+#    #+#              #
-#    Updated: 2019/09/13 00:02:44 by jmartel          ###   ########.fr        #
+#    Updated: 2019/09/24 23:25:32 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,11 +53,20 @@ compile_executable()
 	done
 }
 
+## Difference between launch and launch_show : 
+##		Use launch once at begining of the file : launch is used to set the directory where logs would be stored
+##		It also show the name of the test routine, as launch_show do.
+launch_show()
+{
+	if [ ! -n "$show_error" ] ; then
+		echo -e "${pink}$1 tests :${eoc}" ; fi
+}
 launch()
 {
 	if [ ! -n "$show_error" ] ; then
-		echo -e "${pink}$1 tests :${eoc}"
-	fi
+		echo -e "${pink}$1 tests :${eoc}" ; fi
+	log_dir="${initial_log_dir}/$1"
+	if [ -d "${log_dir}" ] ; then  rm -r "${log_dir}" ; fi
 }
 
 finish()
@@ -75,6 +84,16 @@ echo_ok()
 	diff_passed=$((diff_passed+1))
 }
 
+create_logging_file()
+{
+	if [ -f "${logging_file}" ] ; then
+		rm -f "${logging_file}"
+	elif [ ! -d "`dirname "${logging_file}"`" ] ; then
+		mkdir -p "`dirname "${logging_file}"`"
+	fi
+	touch "${logging_file}"
+}
+
 diff_files()
 {
 	res=`diff $1 $2`
@@ -86,11 +105,12 @@ diff_files()
 			echo -e "${cyan}" `cat $2` "${eoc}"
 		fi
 		if [ -n "$logging" ] ; then
-			echo -e "KO" >> ${logging_file}
-			echo -e `cat ${buffer}` >> ${logging_file}
-			echo -e `cat $1` >> ${logging_file}
-			echo -e `cat $2` >> ${logging_file}
-			echo -e "" >> ${logging_file}
+			create_logging_file
+			echo -e "KO" >> "${logging_file}"
+			echo -e `cat ${buffer}` >> "${logging_file}"
+			echo -e `cat $1` >> "${logging_file}"
+			echo -e `cat $2` >> "${logging_file}"
+			echo -e "" >> "${logging_file}"
 		fi
 		return 1
 	fi
@@ -133,6 +153,7 @@ check_ret_value()
 		echo -e "${red}SEGFAULT OR SIGNAL RECEIVED"
 		echo -e "${sh_ret}${eoc}"
 		if [ -n "$logging" ] ; then
+			create_logging_file
 			echo -e `cat ${buffer}` >> ${logging_file}
 			echo -e "SEGFAULT OR SIGNAL RECEIVED" >> ${logging_file}
 			echo -e "${sh_ret}" >> ${logging_file}
@@ -152,9 +173,10 @@ check_ret_value()
 			fi
 
 			if [ -n "$logging" ] ; then
-				echo -e `cat ${buffer}` >> ${logging_file}
-				echo -e "BAD RETURNED VALUE" >> ${logging_file}
-				echo -e "bash : $bash_ret || 42sh : $sh_ret" >> ${logging_file}
+				create_logging_file
+				echo -e `cat ${buffer}` >> "${logging_file}"
+				echo -e "BAD RETURNED VALUE" >> "${logging_file}"
+				echo -e "bash : $bash_ret || 42sh : $sh_ret" >> "${logging_file}"
 				echo -e "" >> ${logging_file}
 			fi
 			return 1
@@ -165,23 +187,13 @@ check_ret_value()
 
 test_launch()
 {
-	str=""
-	for i in "$1" "$2" "$3" "$4" "$5" "$6" "$7" "$8" "$9"
-	do
-		if [ -n "$i" ] ; then
-			str="${str} ${i}"
-		fi
-	done
-	sha="`<<<$str shasum | cut -d\  -f1`"
+	res1_42sh="${obj_dir}/res1_42sh_${diff_tried}"
+	res2_42sh="${obj_dir}/res2_42sh_${diff_tried}"
+	res1_bash="${obj_dir}/res1_bash_${diff_tried}"
+	res2_bash="${obj_dir}/res2_bash_${diff_tried}"
 
-	res1_42sh="${obj_dir}/res1_42sh_${sha}"
-	res2_42sh="${obj_dir}/res2_42sh_${sha}"
-	res1_bash="${obj_dir}/res1_bash_${sha}"
-	res2_bash="${obj_dir}/res2_bash_${sha}"
-
-	buffer="${obj_dir}/${sha}"
-	logging_file="${log_dir}/${sha}"
-	rm -f ${logging_file}
+	buffer="${obj_dir}/${diff_tried}"
+	logging_file="${log_dir}/${diff_tried}"
 
 	echo "$1" > ${buffer}
 	for i in "$2" "$3" "$4" "$5" "$6" "$7" "$8" "$9"
@@ -216,10 +228,6 @@ test_launch()
 	if [ -n "$valgrind" ] ; then
 		valgrind_test
 	fi
-
-	rm -f ${buffer}
-	rm -f ${res1_bash} ${res1_42sh}
-	rm -f ${res2_bash} ${res2_42sh}
 }
 
 test_launch_pipe()
@@ -227,18 +235,12 @@ test_launch_pipe()
 	if [ ! -n "$1" ] ; then echo "test_launch_pipe : No file given" ; fi
 	if [ ! -e "$1" ] ; then echo "test_launch_pipe : can't find $1" ;  return ; fi
 
-
-	str="`cat ${1}`"
-	sha="`<<<$str shasum | cut -d\  -f1`"
-
-	res1_42sh="${obj_dir}/res1_42sh_${sha}"
-	res2_42sh="${obj_dir}/res2_42sh_${sha}"
-	res1_bash="${obj_dir}/res1_bash_${sha}"
-	res2_bash="${obj_dir}/res2_bash_${sha}"
-
-	buffer="${obj_dir}/${sha}"
-	logging_file="${log_dir}/${sha}"
-	rm -f ${logging_file}
+	res1_42sh="${obj_dir}/res1_42sh_${diff_tried}"
+	res2_42sh="${obj_dir}/res2_42sh_${diff_tried}"
+	res1_bash="${obj_dir}/res1_bash_${diff_tried}"
+	res2_bash="${obj_dir}/res2_bash_${diff_tried}"
+	buffer="${obj_dir}/${diff_tried}"
+	logging_file="${log_dir}/${diff_tried}"
 
 	cp "$1" "${buffer}"
 
@@ -270,8 +272,4 @@ test_launch_pipe()
 	if [ -n "$valgrind" ] ; then
 		valgrind_test
 	fi
-
-	rm -f ${buffer}
-	rm -f ${res1_bash} ${res1_42sh}
-	rm -f ${res2_bash} ${res2_42sh}
 }
