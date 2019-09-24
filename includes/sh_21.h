@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/30 15:48:56 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/23 20:41:44 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/24 16:10:23 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,6 +241,11 @@ int					sh_process_noncanonical_mode(t_shell *shell);
 void				reset_signals(void);
 void				sigtstp_handler(int signal);
 void				init_signals(void);
+
+/*
+** sh_split_path.c
+*/
+char				**sh_split_path(char const *path);
 
 /*
 ** shell_tools.c

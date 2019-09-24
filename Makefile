@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/09/23 15:39:35 by jmartel          ###   ########.fr        #
+#    Updated: 2019/09/24 16:10:30 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -117,7 +117,7 @@ SRCS			+=	main.c index.c init.c shell_tools.c \
 					set_signals.c canonical_mode.c history.c home.c \
 					init_tabs.c non_canonical_mode.c hash_binaries.c \
 					check_term.c signal_tools.c execute_command.c \
-					t_entry.c
+					t_entry.c sh_split_path.c
 
 ################################################################
 ########					PARSER						########
