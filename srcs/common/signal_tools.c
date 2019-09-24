@@ -17,11 +17,13 @@ void	transmit_sig(int signal)
 	(void)signal;
 	if (isatty(0) && g_glob.command_line.dy_str)
 	{
-		get_down_from_command(&g_glob.command_line);
-		reset_command_line(g_glob.command_line.shell, &g_glob.command_line);
-		sh_env_update_ret_value_and_question(g_glob.command_line.shell,
-			SH_RET_CTRL_C);
-		render_command_line(&g_glob.command_line, 0, 1);
+//		get_down_from_command(&g_glob.command_line);
+//		reset_command_line(g_glob.command_line.shell, &g_glob.command_line);
+//		sh_env_update_ret_value_and_question(g_glob.command_line.shell,
+//			SH_RET_CTRL_C);
+//		render_command_line(&g_glob.command_line, 0, 1);
+		sh_set_term_sig(0);
+		ioctl(0, TIOCSTI, "\x03");
 	}
 }
 

@@ -12,7 +12,6 @@
 
 #include "sh_21.h"
 
-/*
 int		process_ctrl_c(t_shell *shell, t_command_line *command_line)
 {
 	process_cancel_autocompletion(command_line);
@@ -27,7 +26,6 @@ int		process_ctrl_c(t_shell *shell, t_command_line *command_line)
 	render_command_line(command_line, 0, 1);
 	return (CTRL_C);
 }
-*/
 
 int		process_ctrl_d(t_shell *shell, t_command_line *command_line)
 {

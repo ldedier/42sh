@@ -228,6 +228,7 @@ int					sh_main_init_vars(t_shell *shell);
 ** init_term.c
 */
 int					sh_init_terminal_database(char **env);
+int					sh_set_term_sig(int value);
 int					sh_init_terminal(t_shell *shell, char **env);
 
 /*
@@ -241,6 +242,11 @@ int					sh_process_noncanonical_mode(t_shell *shell);
 void				reset_signals(void);
 void				sigtstp_handler(int signal);
 void				init_signals(void);
+
+/*
+** sh_split_path.c
+*/
+char				**sh_split_path(char const *path);
 
 /*
 ** shell_tools.c
@@ -281,10 +287,5 @@ int					get_file_in_dir(char *filename, char *dirname);
 int					get_path_from_absolute_path(char *str, char **path);
 int					get_path_and_file_from_str(
 	char *str, char **path, char **file);
-
-/*
-** sh_split_path.c
-*/
-char				**sh_split_path(char const *path);
 
 #endif

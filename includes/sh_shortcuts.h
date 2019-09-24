@@ -203,12 +203,6 @@ int					sh_vs_motion_w_maj(
 	t_command_line *command_line, char dummy);
 
 /*
-** sh_vshortcut_C_maj.c
-*/
-int					sh_vshortcut_c_maj(
-	t_command_line *command_line, int dummy, int dummy_2);
-
-/*
 ** sh_vshortcut_a.c
 */
 int					sh_vshortcut_a(
@@ -225,6 +219,12 @@ int					sh_vshortcut_a_maj(
 */
 int					sh_vshortcut_c(
 	t_command_line *command_line, int index, int special);
+
+/*
+** sh_vshortcut_c_maj.c
+*/
+int					sh_vshortcut_c_maj(
+	t_command_line *command_line, int dummy, int dummy_2);
 
 /*
 ** sh_vshortcut_d.c
