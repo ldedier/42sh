@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 16:35:24 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/14 03:28:33 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/25 02:41:50 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,14 +106,27 @@ char		*sh_expansions_parameter_get_param(
 **	Returned Values:
 **		Starting char of the null terminated string word.
 */
+// Need to update comment
 
-char		*sh_expansions_parameter_get_word(t_expansion *exp, char *format)
+char		*sh_expansions_parameter_get_word(
+	t_context *context, t_expansion *exp, char *format)
 {
-	char	*start;
+	char		*start;
+	char		*word;
+	t_dy_tab	*quotes;
 
 	start = ft_strstr(exp->expansion, format);
 	if (exp->expansion[0] == '#')
 		format++;
 	start += ft_strlen(format);
-	return (start);
+	if (!(word = ft_strdup(start)))
+		return (sh_perrorn(SH_ERR1_MALLOC, "sh_expansions_parameter_get_word_expand"));
+	if (!(quotes = ft_dy_tab_new(5)))
+		return (sh_perrorn(SH_ERR1_MALLOC, "sh_expansions"));
+	sh_expansions_tilde(&word, word, context, quotes); // cehck ret
+	sh_expansions_scan(&word, 0, 1, context, quotes); // check ret
+	sh_expansions_quote_removal((t_quote**)quotes->tbl);
+	if (sh_verbose_expansion())
+		ft_dprintf(2, BLUE"word after expansions : %s\n"EOC, word);
+	return (word);
 }
