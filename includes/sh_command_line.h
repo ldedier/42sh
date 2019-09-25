@@ -93,6 +93,12 @@ typedef struct		s_command_count
 	int				value;
 }					t_command_count;
 
+typedef struct		s_save
+{
+	int				current_index;
+	char			*str;
+}					t_save;
+
 /*
 ** dy_str			: content of the command_line
 ** heredoc_eof		: current eof of the heredoc
@@ -214,11 +220,6 @@ int					paste_current_index(
 	t_command_line *command_line, char *to_paste);
 int					delete_command_line_selection(
 	t_command_line *command_line);
-
-/*
-** ctrl_t.c
-*/
-void				process_ctrl_t(t_command_line *command_line);
 
 /*
 ** cursor_motion.c
@@ -411,13 +412,6 @@ int					process_keys_others(
 /*
 ** keys_readline.c
 */
-int					process_ctrl_u(t_command_line *command_line);
-int					process_ctrl_k(t_command_line *command_line);
-int					process_ctrl_w(t_command_line *command_line);
-int					process_alt_f(t_command_line *command_line);
-int					process_alt_b(t_command_line *command_line);
-int					process_alt_d(t_command_line *command_line);
-void				process_ctrl_x_x(t_command_line *command_line);
 int					process_keys_readline(
 	t_key_buffer *buffer,
 	t_shell *shell,
@@ -481,9 +475,12 @@ int					process_research_history(
 */
 t_list				**get_current_saves_stack(
 	t_command_line *command_line, t_entry **entry);
+t_save				*t_save_new(char *str, int index);
 int					sh_save_command_line(t_command_line *command_line);
 int					process_restore_save(
-	t_command_line *command_line, char *save, int *ret);
+	t_command_line *command_line, t_save *save, int *ret);
+void				t_save_free(t_save *save);
+void				t_save_free_list(void *s, size_t dummy);
 int					sh_restore_save(t_command_line *command_line);
 int					sh_restore_all_save(t_command_line *command_line);
 int					sh_process_edit_counter(
@@ -525,7 +522,9 @@ int					sh_get_cursor_position(int *x, int *y);
 ** sh_process_history.c
 */
 int					switch_command_line(
-	t_command_line *command_line, char *str);
+	t_command_line *command_line, char *str, int start);
+int					switch_command_line_index(
+	t_command_line *command_line, char *str, int index);
 int					process_history_down(
 	t_shell *shell,
 	t_command_line *command_line,

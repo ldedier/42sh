@@ -243,6 +243,7 @@ SRCS			+=	vshortcuts.c \
 					ctrl_u.c \
 					ctrl_w.c \
 					ctrl_t.c \
+					ctrl_y.c \
 					ctrl_x_x.c
 
 

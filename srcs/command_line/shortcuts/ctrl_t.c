@@ -48,14 +48,17 @@ static void	transpose_str(char *str, int index_a, int index_b)
 	ft_strncpy(&str[index_a + len_b], buff, len_a);
 }
 
-void	process_ctrl_t(t_command_line *command_line)
+int		process_ctrl_t(t_command_line *command_line)
 {
 	int index_a;
 	int index_b;
 	int motion;
+	int ret;
 
 	if (ft_strlen_utf8(command_line->dy_str->str) < 2)
-		return ;
+		return SUCCESS;
+	if ((ret = sh_save_command_line(command_line)) != SUCCESS)
+		return (ret);
 	fill_indexes(command_line, &index_a, &index_b);
 	motion = index_b - index_a;
 	if (index_a == 0)
@@ -66,4 +69,5 @@ void	process_ctrl_t(t_command_line *command_line)
 	transpose_str(command_line->dy_str->str, index_a, index_b);
 	execute_motion(command_line,
 		command_line->current_index + motion, 0);
+	return (SUCCESS);
 }

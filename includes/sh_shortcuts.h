@@ -82,6 +82,58 @@ typedef struct			s_vshortcut
 */
 
 /*
+** alt_b.c
+*/
+int					process_alt_b(t_command_line *command_line);
+
+/*
+** alt_d.c
+*/
+int					process_alt_d(t_command_line *command_line);
+
+/*
+** alt_f.c
+*/
+int					process_alt_f(t_command_line *command_line);
+
+/*
+** alt_t.c
+*/
+int					sh_vs_motion_b_readline_alt(
+	t_command_line *command_line, int nb_words);
+int					process_alt_t(t_command_line *command_line);
+
+/*
+** ctrl_k.c
+*/
+int					process_ctrl_k(t_command_line *command_line);
+
+/*
+** ctrl_t.c
+*/
+int					process_ctrl_t(t_command_line *command_line);
+
+/*
+** ctrl_u.c
+*/
+int					process_ctrl_u(t_command_line *command_line);
+
+/*
+** ctrl_w.c
+*/
+int					process_ctrl_w(t_command_line *command_line);
+
+/*
+** ctrl_x_x.c
+*/
+void				process_ctrl_x_x(t_command_line *command_line);
+
+/*
+** ctrl_y.c
+*/
+int					process_ctrl_y(t_command_line *command_line);
+
+/*
 ** sh_vim_options.c
 */
 int					replace_cursor_vim_legal(t_command_line *command_line);

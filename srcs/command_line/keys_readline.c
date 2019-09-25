@@ -26,6 +26,8 @@ int		process_keys_readline(t_key_buffer *buffer, t_shell *shell,
 			ret = process_alt_b(command_line);
 		else if (buffer->buff[1] == 100)
 			ret = process_alt_d(command_line);
+		else if (buffer->buff[1] == 116)
+			ret = process_alt_t(command_line);
 	}
 	else if (buffer->buff[0] == 24 && buffer->last_char_input == 24)
 		process_ctrl_x_x(command_line);
@@ -40,13 +42,13 @@ int		process_keys_readline(t_key_buffer *buffer, t_shell *shell,
 	else if (buffer->buff[0] == 11)
 		ret = process_ctrl_k(command_line);
 	else if (buffer->buff[0] == 20)
-		process_ctrl_t(command_line);
+		ret = process_ctrl_t(command_line);
 	else if (buffer->buff[0] == 21)
 		ret = process_ctrl_u(command_line);
 	else if (buffer->buff[0] == 23)
 		ret = process_ctrl_w(command_line);
 	else if (buffer->buff[0] == 25)
-		ret = paste_current_index(command_line, command_line->clipboard);
+		ret = process_ctrl_y(command_line);
 	else if (buffer->buff[0] == 14)
 		ret = process_history_down(shell, command_line, 1, 0);
 	else if (buffer->buff[0] == 16)
