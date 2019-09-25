@@ -42,6 +42,16 @@ launch "Echo"
 		test_launch 'echo "$var
 		"'
 
+	launch_show "quotes"
+		test_launch 'echo simple test   without quote   !!'
+		test_launch 'echo "simple test   with doublequote   !!"'
+		test_launch "echo 'simple test   with doublequote   !!'"
+		test_launch 'ec\ho \hey hey hey'
+		test_launch "echo '\'hey \'hey hey"
+		test_launch "l\s \-l \/"
+		test_launch 'echo "\"\\\$$USER\$USER\\""'
+		test_launch "echo '\"$USER\$USER'"
+
 	launch_show "returned value"
 		test_launch "echo 1>&-"
 		test_launch "echo Okalm 1>&-"

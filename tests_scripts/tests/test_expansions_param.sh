@@ -205,7 +205,6 @@ launch "Parameter expansion"
 	test_launch 'echo ${=:}' 'echo ${?:}' 'echo ${-:}' 'echo ${+:}'
 	test_launch 'echo ${::}' 'echo ${:==}'  'echo ${=:::+}'  'echo ${+::=}'  'echo ${=::-}' 
 	test_launch 'echo ${}'
-	test_launch 'echo \$}'
 	test_launch 'echo ${()}'
 	test_launch 'echo ${asdw+}'
 	test_launch 'echo ${:asd}'
@@ -224,8 +223,6 @@ launch "Parameter expansion"
 	test_launch 'ls ~/${}'
 	test_launch 'ls ~/$'
 
-	test_launch 'echo ${'
-	test_launch 'echo ${{{{'
 
 	launch_show "random"
 		test_launch 'param=OkalmosSpeculos' 'echo ${param%\%Speculos}'
@@ -253,5 +250,7 @@ launch "Parameter expansion"
 	# test_launch 'echo ${$$}'
 	# test_launch 'param="Okalmos Speculos"' 'echo ${##param}'
 	# test_launch 'param="Okalmos Speculos"' 'echo ${##os}'
-
+	# test_launch 'echo ${'
+	# test_launch 'echo ${{{{'
+	# test_launch 'echo \$}'
 finish
