@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 16:35:24 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/25 06:26:31 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/25 06:49:27 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ int		sh_expansions_parameter_get_word(
 {
 	char		*start;
 	t_dy_tab	*quotes;
+	int			ret;
 
 	start = ft_strstr(exp->expansion, format);
 	if (exp->expansion[0] == '#')
@@ -136,10 +137,13 @@ int		sh_expansions_parameter_get_word(
 		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_parameter_get_word_expand"));
 	if (!(quotes = ft_dy_tab_new(5)))
 		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions"));
-	sh_expansions_tilde(word, *word, context, quotes); // check ret
-	sh_expansions_scan(word, 0, 1, context, quotes); // check ret
-	sh_expansions_quote_removal((t_quote**)quotes->tbl);
+	ret = sh_expansions_tilde(word, *word, context, quotes);
+	if (!ret)
+		ret = sh_expansions_scan(word, 0, 1, context, quotes);
+	if (!ret)
+		sh_expansions_quote_removal((t_quote**)quotes->tbl);
 	if (sh_verbose_expansion())
 		ft_dprintf(2, BLUE"word after expansions : %s\n"EOC, *word);
-	return (SUCCESS);
+	ft_dy_tab_del(quotes);
+	return (ret);
 }
