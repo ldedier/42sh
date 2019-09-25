@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 13:52:11 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/14 03:29:03 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/25 03:48:41 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,36 +18,38 @@
 **
 ** return :
 **		-1 : String given is invalid
-**		<0 : Lenght of the valid expansion detecteda
+**		<0 : Lenght of the valid expansion detected
 */
 
 int			sh_expansions_parameter_detect(char *start)
 {
 	int		i;
 	int		quoted;
+	int		bracket;
 
 	i = 0;
 	quoted = 0;
-	while (start[i] && !(!quoted && start[i] == '}'))
+	while (start[i] && start[i] != '{')
+		i++;
+	bracket = 1;
+	i++;
+	while (start[i] && bracket > 0)
 	{
 		if (start[i] == '\\' && start[i + 1])
-			i += 2;
+			i += 1;
 		else if (!quoted && (start[i] == '\'' || start[i] == '"'))
-		{
 			quoted = start[i];
-			i++;
-		}
 		else if (quoted && start[i] == quoted)
-		{
 			quoted = 0;
-			i++;
-		}
-		else
-			i++;
+		else if (!quoted && start[i] == '{')
+			bracket++;
+		else if (!quoted && start[i] == '}')
+			bracket--;
+		i++;
 	}
-	if (!start[i])
+	if (!start[i] && bracket > 0)
 		return (-1);
-	return (i);
+	return (i - 1);
 }
 
 /*
