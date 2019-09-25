@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 14:50:45 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/04 21:31:40 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/25 07:21:32 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,21 +19,19 @@ static int	sh_builtin_cd_parser_hyphen(
 
 	if (!(oldpwd = sh_vars_get_value(context->env, NULL, "OLDPWD")))
 	{
-		sh_perror_err_fd(FD_ERR, SH_ERR1_ENV_NOT_SET, "OLDPWD");
+		sh_perror_err(SH_ERR1_ENV_NOT_SET, "OLDPWD");
 		return (ERROR);
 	}
 	if (!(*curpath = ft_strdup(oldpwd)))
 	{
-		sh_perror_fd(
-			FD_ERR, SH_ERR1_MALLOC, "sh_builtin_cd_parser_hyphen");
+		sh_perror(SH_ERR1_MALLOC, "sh_builtin_cd_parser_hyphen");
 		return (FAILURE);
 	}
 	free(context->params->tbl[i]);
 	if (!(context->params->tbl[i] = ft_strdup(*curpath)))
 	{
 		ft_strdel(curpath);
-		return (sh_perror_fd(FD_ERR,
-			SH_ERR1_MALLOC, "sh_builtin_cd_parser_hyphen"));
+		return (sh_perror(SH_ERR1_MALLOC, "sh_builtin_cd_parser_hyphen"));
 	}
 	args[CD_HYPHEN_OPT].value = args;
 	return (SUCCESS);
@@ -51,8 +49,7 @@ int			sh_builtin_cd_parser(t_context *context, t_args *args,
 		return (sh_builtin_usage(args, argv[0], CD_USAGE, context));
 	if (argv[*index] && argv[*index + 1])
 	{
-		return (sh_perror_err_fd(
-			FD_ERR, argv[0], SH_ERR1_TOO_MANY_ARGS));
+		return (sh_perror_err(argv[0], SH_ERR1_TOO_MANY_ARGS));
 	}
 	if (ft_strequ(argv[*index], "-"))
 		if ((ret = sh_builtin_cd_parser_hyphen(context, args, curpath, *index)))
@@ -65,50 +62,91 @@ int			sh_builtin_cd_parser(t_context *context, t_args *args,
 	return (SUCCESS);
 }
 
-static int	sh_builtin_cd_rule5(t_context *context, char **curpath, char *param)
+static int	sh_builtin_cd_cdpath(
+	t_context *context, char **curpath, char *param, t_args *args)
+{
+	char	*cdpath;
+	char	**split;
+	int		i;
+	char	*path;
+	struct stat	st;
+	
+	if (!(cdpath = sh_vars_get_value(context->env, context->vars, "CDPATH")))
+		return (SUCCESS);
+	if (!(split = ft_strsplit(cdpath, ':')))
+		return (sh_perror(SH_ERR1_MALLOC, "sh_builtin_cd_cdpath"));
+	i = 0;
+	path = NULL;
+	while (split[i])
+	{
+		i++;
+		if (path)
+			ft_strdel(&path);
+		if (!split[i - 1] && !*split[i - 1])
+			continue ;
+		if (!(path = ft_strjoin_path(split[i - 1], param)))
+		{
+			ft_strtab_free(split);
+			return (sh_perror(SH_ERR1_MALLOC, "sh_builtin_cd_cdpath"));
+		}
+		if ((stat(path, &st)))
+			continue ;
+		if (!S_ISDIR(st.st_mode))
+			continue ;
+		if (access(*curpath, X_OK))
+			continue ;
+		*curpath = path;
+		args[CD_HYPHEN_OPT].value = &args;
+		ft_strtab_free(split);
+		return (SUCCESS);
+	}
+	ft_strtab_free(split);
+	if (path)
+		ft_strdel(&path);
+	if (!((*curpath) = ft_strdup(param)))
+		return (sh_perror(SH_ERR1_MALLOC, "sh_builtin_cd_cdpath"));
+	return (SUCCESS);
+}
+
+static int	sh_builtin_cd_rule5(t_context *context, char **curpath, char *param, t_args *args)
 {
 	char	*cdpath;
 
-	cdpath = sh_vars_get_value(context->env, NULL, "CDPATH");
+	cdpath = sh_vars_get_value(context->env, context->vars, "CDPATH");
 	if (!cdpath || !*cdpath)
 	{
 		*curpath = ft_strjoin_path(".", param);
 		if (!curpath)
 		{
-			sh_perror_fd(
-				FD_ERR, SH_ERR1_MALLOC, "sh_builtin_cd_rule5");
+			sh_perror(SH_ERR1_MALLOC, "sh_builtin_cd_rule5");
 			return (FAILURE);
 		}
 		return (SUCCESS);
 	}
-	sh_perror_fd(FD_ERR, "CD_PATH", "not implemented yet");
-	return (ERROR);
+	return (sh_builtin_cd_cdpath(context, curpath, param, args));
 }
 
 int			sh_builtin_cd_pre_rules(
-	t_context *context, char *param, char **curpath)
+	t_context *context, char *param, char **curpath, t_args *args)
 {
 	char	*home;
-	int		ret;
 
 	home = sh_vars_get_value(context->env, NULL, "HOME");
 	if (*curpath)
 		;
 	else if ((!param) && (!home || !*home))
-		return (sh_perror_err_fd(
-			FD_ERR, SH_ERR1_ENV_NOT_SET, "HOME"));
+		return (sh_perror_err(SH_ERR1_ENV_NOT_SET, "HOME"));
 	else if (!param)
 		*curpath = ft_strdup(home);
 	else if (*param == '/')
 		*curpath = ft_strdup(param);
 	else if (*param == '.' || ft_strnstr(param, "..", 2))
 		*curpath = ft_strdup(param);
-	else if ((ret = sh_builtin_cd_rule5(context, curpath, param)) != SUCCESS)
-		return (ret);
+	else
+		return (sh_builtin_cd_rule5(context, curpath, param, args));
 	if (!*curpath)
 	{
-		sh_perror_fd(
-			FD_ERR, SH_ERR1_MALLOC, "sh_builtin_cd_pre_rules");
+		sh_perror(SH_ERR1_MALLOC, "sh_builtin_cd_pre_rules");
 		return (FAILURE);
 	}
 	return (SUCCESS);

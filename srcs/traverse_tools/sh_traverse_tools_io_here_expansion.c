@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sh_traverse_io_here_expansion.c                    :+:      :+:    :+:   */
+/*   sh_traverse_tools_io_here_expansion.c              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/05 12:43:22 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/09/05 12:53:22 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/09/23 23:21:40 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,20 @@ static int	sh_traverse_io_here_expansion(
 		char **str, int *cursor, t_context *context)
 {
 	int ret;
+	t_dy_tab	*quotes;
 
 	if ((*str)[*cursor] == '$' && is_valid_var((*str)[*cursor + 1]))
 	{
+		if (!(quotes = ft_dy_tab_new(1)))
+			return (sh_perror(SH_ERR1_MALLOC, "sh_traverse_io_here_expansion"));
 		if ((ret = sh_expansions_process(
-						str, (*str) + *cursor, context, cursor)))
+						str, (*str) + *cursor, context, cursor, quotes)))
 		{
 			if (sh_env_update_ret_value_and_question(context->shell, ret))
 				return (FAILURE);
-			return (ERROR);
+			return (ret);
 		}
+		sh_expansions_quote_removal_in_str(*str); // needed ??
 	}
 	else
 		(*cursor) += 1;

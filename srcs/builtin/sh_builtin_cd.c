@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/11 17:43:29 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/05 17:45:34 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/17 01:23:55 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	sh_builtin_cd_body(
 	param = ((char**)context->params->tbl)[index];
 	if (!param)
 		param = *curpath;
-	if ((ret = sh_builtin_cd_pre_rules(context, param, curpath)))
+	if ((ret = sh_builtin_cd_pre_rules(context, param, curpath, args)))
 		return (ret);
 	if (args[CD_L_OPT].priority > args[CD_P_OPT].priority)
 	{

@@ -4,3 +4,8 @@ cat << eof
 $STILLNOT
 hey
 eof
+
+var="\"\""
+<<eof cat
+$var
+cat

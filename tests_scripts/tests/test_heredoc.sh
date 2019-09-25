@@ -11,31 +11,31 @@
 # **************************************************************************** #
 
 launch "Heredoc"
-	launch "Simple heredoc"
+	launch_show "Simple heredoc"
 		for i in `seq 1 6`; do
 			test_launch_pipe ./tests_files/heredoc/heredoc_${i}
 		done
-	launch "Expansion heredoc"
+	launch_show "Expansion heredoc"
 		for i in `seq 7 14`; do
 			test_launch_pipe ./tests_files/heredoc/heredoc_${i}
 		done
-	launch "Hard"
+	launch_show "Hard"
 		for i in `seq 15 20`; do
 			test_launch_pipe ./tests_files/heredoc/heredoc_${i}
 		done
-	launch "Quoting"
+	launch_show "Quoting"
 		for i in `seq 21 30` ; do
 			test_launch_pipe ./tests_files/heredoc/heredoc_${i}
 		done
-	launch "Parameter expansion"
+	launch_show "Parameter expansion"
 		for i in `seq 31 35` ; do
 			test_launch_pipe ./tests_files/heredoc/heredoc_${i}
 		done
-	launch "Tilde"
+	launch_show "Tilde"
 		for i in `seq 36 40` ; do
 			test_launch_pipe ./tests_files/heredoc/heredoc_${i}
 		done
-	launch "fd"
+	launch_show "fd"
 		for i in `seq 41 43` ; do
 			test_launch_pipe ./tests_files/heredoc/heredoc_${i}
 		done

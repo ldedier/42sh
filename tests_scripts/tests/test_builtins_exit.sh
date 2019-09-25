@@ -49,7 +49,7 @@ launch "exit"
 	test_launch 'false && exit 18'
 	test_launch 'exit 1 | exit 2 | exit 3 | ls'
 
-	launch "parser"
-	launch "arguments"
-	launch "returned value"
-	launch "write echo"
+	launch_show "parser"
+	launch_show "arguments"
+	launch_show "returned value"
+	launch_show "write echo"

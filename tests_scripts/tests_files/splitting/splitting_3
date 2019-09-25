@@ -1,0 +1,3 @@
+IFS=\"\'\ 
+var="Oka  lmos''''S''''pec   '   '   ulos"
+echo $var

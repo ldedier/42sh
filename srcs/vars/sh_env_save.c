@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/20 14:48:43 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/21 22:07:50 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/25 07:19:55 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ static int	sh_env_save_dup(t_context *context)
 
 	len = context->env->current_size;
 	if (!(save = ft_dy_tab_new(len)))
-		return (sh_perror_fd(FD_ERR, SH_ERR1_MALLOC, "sh_env_save_dup (1)"));
+		return (sh_perror(SH_ERR1_MALLOC, "sh_env_save_dup (1)"));
 	i = 0;
 	env = (char**)context->env->tbl;
 	while (i < len)
 	{
 		if (ft_dy_tab_add_str(save, env[i]))
-			return (sh_perror_fd(FD_ERR, SH_ERR1_MALLOC, "sh_env_save_dup (2)"));
+			return (sh_perror(SH_ERR1_MALLOC, "sh_env_save_dup (2)"));
 		i++;
 	}
 	context->saved_env = save;

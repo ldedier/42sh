@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/09/24 10:11:53 by jdugoudr         ###   ########.fr        #
+#    Updated: 2019/09/25 07:19:23 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -295,14 +295,15 @@ SRCS			 +=	sh_expansions.c \
 					sh_expansions_variable.c t_expansion.c \
 					sh_expansions_process.c sh_expansions_replace.c \
 					sh_expansions_field_splitting.c \
-					sh_expansions_scan.c
+					sh_expansions_quote_removal.c \
+					sh_expansions_scan.c \
+					t_quote.c
 
 ################################################################
 ########					PERROR						########
 ################################################################
 SRCS			 +=	sh_perror.c \
 					sh_perror2.c \
-					sh_perror_fd.c
 
 ################################################################
 ########					INCLUDES					########

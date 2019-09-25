@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/07 16:11:41 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/09 19:07:55 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/23 20:44:00 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static int		sh_lexer_run_rules(t_lexer *lexer)
 
 	i = 0;
 	if (sh_verbose_lexer())
-		ft_dprintf(2, "lexer in progress on :%.2c\t", lexer->c);
+		ft_dprintf(2, CYAN"lexer in progress on :%.2c\n"EOC, lexer->c);
 	while ((ret = rules[i](lexer)) == LEX_CONTINUE && i < LEX_RULES_LEN)
 		i++;
 	if (sh_verbose_lexer())

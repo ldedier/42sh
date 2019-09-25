@@ -160,7 +160,7 @@ void				sh_builtin_cd_rule8(char **curpath);
 int					sh_builtin_cd_parser(
 	t_context *context, t_args *args, int *index, char **curpath);
 int					sh_builtin_cd_pre_rules(
-	t_context *context, char *param, char **curpath);
+	t_context *context, char *param, char **curpath, t_args *args);
 
 /*
 ** sh_builtin_echo.c
@@ -262,13 +262,22 @@ int					sh_builtin_usage(
 /*
 ** sh_builtin_pwd.c
 */
-char				*sh_builtin_pwd_physical(int fd_err);
-char				*sh_builtin_pwd_logical(t_dy_tab *env, int fd_err);
+char				*sh_builtin_pwd_physical(void);
+char				*sh_builtin_pwd_logical(t_dy_tab *env);
 int					sh_builtin_pwd(t_context *context);
 
 /*
 ** sh_builtin_set.c
 */
+int					print_options_minus(t_shell *shell);
+int					print_options_plus(t_shell *shell);
+int					fill_option_value(
+	int **address_ptr, int *value_ptr, int *address, int value);
+int					get_option(
+	t_shell *shell, char *option_name, int  **option, int *value);
+int					add_option(t_context *context, int index);
+int					remove_option(t_context *context, int index);
+int					sh_builtin_set_param(t_context *context, int *index);
 int					sh_builtin_set_args(t_context *context);
 int					sh_builtin_set_print_all(t_context *context);
 int					sh_builtin_set(t_context *context);

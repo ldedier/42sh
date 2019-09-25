@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   sh_redirection.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/23 16:27:44 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/23 16:27:44 by ldedier          ###   ########.fr       */
+/*   Created: 2019/09/23 14:58:00 by jmartel           #+#    #+#             */
+/*   Updated: 2019/09/23 20:42:20 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SH_REDIRECTION_H
 # define SH_REDIRECTION_H
-
 
 # define DGREAT_OPT					(O_WRONLY | O_APPEND | O_CREAT)
 # define GREAT_OPT					(O_WRONLY | O_TRUNC | O_CREAT)

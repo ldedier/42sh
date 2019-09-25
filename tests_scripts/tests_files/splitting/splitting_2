@@ -1,0 +1,2 @@
+var='\"\"SA      ta\"\"\$nas'
+echo $var

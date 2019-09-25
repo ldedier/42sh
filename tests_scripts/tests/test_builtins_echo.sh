@@ -25,9 +25,9 @@ launch "Echo"
 	test_launch 'echo "" "" "" "" okalm'
 	test_launch 'echo -n -n -n ls -n'
 
-	launch "parser"
-	launch "arguments"
-	launch "returned value"
+	launch_show "parser"
+	launch_show "arguments"
+	launch_show "returned value"
 
 launch "write echo"
 	test_launch "echo 1>&-"

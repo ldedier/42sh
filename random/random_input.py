@@ -116,6 +116,29 @@ def line_random_quotes(lenght, cmd_generation_func=random_cmd):
 		line = random_add_quotes(line)
 	return (line)
 
+token_param_expansion_format = [":?", "?", ":+", "+", ":-", "-", ":=", "="]
+token_param_expansion_param = ["param", "noparam", "", " ", "~"]
+token_param_expansion_word = ["word", "noword", "$word", "\"$word\"", "\"word\"", "${word}", "${noword}", "${$word}", "", " ", "\$word", "\'word\'", "~"]
+
+param_expansion_ignore=["-", ""]
+
+def check_ignored(expansion):
+	for ignored in param_expansion_ignore:
+		if ( expansion == ignored):
+			return (1)
+	return (0)
+
+def parameter_expansion(lenght, cmd_generation_func=random_cmd):
+	print("launch random_param_exp")
+	for format in token_param_expansion_format:
+		for param in token_param_expansion_param:
+			for word in token_param_expansion_word:
+				line = "test_launch \'param=PARAMETER word=WORD\' "
+				line += "\'${" + param + format + word + "}"
+				line += " ; echo $? \'"
+				if (check_ignored(param + format + word) == 0):
+					print(line)
+
 def launch_cmd(valgrind=False, quiet=False, two=False, ret=False):
 	cmd = "./tester.sh "
 	if (quiet):
@@ -156,6 +179,7 @@ def handler(signal_received, frame):
 def main():
 	signal(SIGINT, handler)
 	os.system("./init.sh")
+	launch_test(line_random_parameter_expansion, 10, 30)
 	launch_test(line_random_pipe_sequence, 10, 30)
 	launch_test(line_random_redirection, 10, 30)
 	launch_test(line_random_pipe_and_redir, 5, 40, line_random_redirection)
@@ -171,4 +195,6 @@ def main():
 	launch_test(line_random_quotes, 10, 50, line_random_pipe_sequence)
 	launch_test(line_random_quotes, 10, 50, line_random_and_or_list)
 	launch_test(line_random_jump, 10, 50, line_random_redirection)
-main()
+# main()
+
+parameter_expansion(0)

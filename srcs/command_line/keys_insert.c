@@ -49,6 +49,7 @@ int		process_process_keys_ret(t_key_buffer *buffer,
 	else if (buffer->buff[0] == 3)
 	{
 		ret = (process_ctrl_c(shell, command_line));
+		sh_set_term_sig(1);
 		return (flush_keys_ret(buffer, ret));
 	}
 	return (KEEP_READ);

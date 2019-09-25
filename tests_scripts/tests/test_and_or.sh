@@ -14,7 +14,7 @@ true="./${obj_dir}/write_true"
 false="./${obj_dir}/write_false"
 
 launch "and_or"
-	launch "randomly generated"
+	launch_show "randomly generated"
 	test_launch "${true}  okalm  ||  ${true}  0  &&  ${true}  1 "
 	test_launch "${false} okalm  &&  ${true}  0  &&  ${false} 1  ||  ${false} 2 "
 	test_launch "${false} okalm  &&  ${false} 0  &&  ${true}  1  ||  ${false} 2 "
