@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 14:25:15 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/09 19:07:30 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/25 22:08:50 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ static int	sh_lexer_rule1_process_quoted_start(t_lexer *lexer, int reading)
 			return (LEX_ERR);
 		else if (lexer->quoted)
 		{
-			ft_dprintf(2, SH_ERR_COLOR
-			"unexpected EOF while looking for matching %c\n"EOC, lexer->quoted);
+			ft_dprintf(2, "unexpected EOF while looking for matching %c\n",
+				lexer->quoted);
 			return (LEX_FAIL);
 		}
 	}
