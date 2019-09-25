@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 16:35:24 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/25 02:41:50 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/25 06:26:31 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void	sh_expansions_parameter_fill_format(char *head, char *format, int n)
 **		SUCCESS : format was successfully filled
 */
 
-int			sh_expansions_parameter_format(t_expansion *exp, char *format)
+int			sh_expansions_parameter_format(t_expansion *exp, char *format, t_context *context)
 {
 	char	*head;
 	int		i;
@@ -55,7 +55,15 @@ int			sh_expansions_parameter_format(t_expansion *exp, char *format)
 		head++;
 	}
 	if (!ft_isalpha(*head) && *head != '_')
+	{
+		if (!isatty(0))
+		{
+			sh_perror(exp->original, SH_BAD_SUBSTITUTE);
+			sh_env_update_ret_value(context->shell, ERROR);
+			return (STOP_CMD_LINE);
+		}
 		return (sh_perror_err(exp->original, SH_BAD_SUBSTITUTE));
+	}
 	head++;
 	while (ft_isalnum((int)*head) || *head == '_')
 		head++;
@@ -108,25 +116,30 @@ char		*sh_expansions_parameter_get_param(
 */
 // Need to update comment
 
-char		*sh_expansions_parameter_get_word(
-	t_context *context, t_expansion *exp, char *format)
+int		sh_expansions_parameter_get_word(
+	t_context *context, t_expansion *exp, char *format, char **word)
 {
 	char		*start;
-	char		*word;
 	t_dy_tab	*quotes;
 
 	start = ft_strstr(exp->expansion, format);
 	if (exp->expansion[0] == '#')
 		format++;
 	start += ft_strlen(format);
-	if (!(word = ft_strdup(start)))
-		return (sh_perrorn(SH_ERR1_MALLOC, "sh_expansions_parameter_get_word_expand"));
+	if (ft_strchr(start, '$') != ft_strrchr(start, '$'))
+	{
+		sh_perror(exp->original, SH_BAD_SUBSTITUTE);
+		sh_env_update_ret_value(context->shell, ERROR);
+		return (STOP_CMD_LINE);
+	}
+	if (!(*word = ft_strdup(start)))
+		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_parameter_get_word_expand"));
 	if (!(quotes = ft_dy_tab_new(5)))
-		return (sh_perrorn(SH_ERR1_MALLOC, "sh_expansions"));
-	sh_expansions_tilde(&word, word, context, quotes); // cehck ret
-	sh_expansions_scan(&word, 0, 1, context, quotes); // check ret
+		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions"));
+	sh_expansions_tilde(word, *word, context, quotes); // check ret
+	sh_expansions_scan(word, 0, 1, context, quotes); // check ret
 	sh_expansions_quote_removal((t_quote**)quotes->tbl);
 	if (sh_verbose_expansion())
-		ft_dprintf(2, BLUE"word after expansions : %s\n"EOC, word);
-	return (word);
+		ft_dprintf(2, BLUE"word after expansions : %s\n"EOC, *word);
+	return (SUCCESS);
 }
