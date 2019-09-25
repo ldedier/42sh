@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 16:41:00 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/25 06:19:30 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/25 07:18:54 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,14 +123,14 @@ static int	sh_expansions_parameter_quest_msg(
 	buf = ft_strpbrk(expansion, ":?");
 	*buf = 0;
 	if (word && *word)
-		sh_perror_fd(FD_ERR, expansion, word);
+		sh_perror(expansion, word);
 	else
 	{
 		if (ft_strchr(format, ':'))
-			sh_perror_fd(FD_ERR, expansion,
+			sh_perror(expansion,
 			"parameter null or not set");
 		else
-			sh_perror_fd(FD_ERR, expansion, "parameter not set");
+			sh_perror(expansion, "parameter not set");
 	}
 	if (!isatty(0))
 		context->shell->running = 0;

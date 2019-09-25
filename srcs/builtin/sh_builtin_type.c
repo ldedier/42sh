@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/15 15:13:53 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/05 17:53:53 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/25 07:24:09 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int			sh_builtin_type(t_context *context)
 		return (sh_builtin_usage(args, argv[0], TYPE_USAGE, context));
 	if (argv[index] && write(FD_OUT, NULL, 0))
 	{
-		return (sh_perror2_err_fd(FD_ERR, "write error",
+		return (sh_perror2_err("write error",
 			context->params->tbl[0], SH_ERR1_BAD_FD));
 	}
 	if (args[TYPE_A_OPT].value)

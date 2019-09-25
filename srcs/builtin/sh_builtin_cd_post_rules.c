@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 13:33:24 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/04 21:27:28 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/25 07:23:01 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,14 @@ int			sh_builtin_cd_rule7(
 	{
 		if (**curpath != '/')
 		{
-			pwd = sh_builtin_pwd_logical(context->env, FD_ERR);
+			pwd = sh_builtin_pwd_logical(context->env);
 			if (!pwd)
 			{
 				free(*curpath);
 				return (ERROR);
 			}
 			if (!(*curpath = ft_strjoin_path_free(pwd, *curpath, 0x01 + 0x02)))
-				return (sh_perror_fd(
-					FD_ERR, SH_ERR1_MALLOC, "sh_builtin_cd_rule7"));
+				return (sh_perror(SH_ERR1_MALLOC, "sh_builtin_cd_rule7"));
 		}
 	}
 	return (SUCCESS);

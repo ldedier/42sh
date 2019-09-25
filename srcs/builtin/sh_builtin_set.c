@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/21 18:00:32 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/22 18:41:48 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/25 07:24:03 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ int			sh_builtin_set_print_all(t_context *context)
 		i++;
 	}
 	if (write(FD_OUT, NULL, 0))
-		return (sh_perror2_err_fd(FD_ERR, "write error",
+		return (sh_perror2_err("write error",
 			context->params->tbl[0], SH_ERR1_BAD_FD));
 	i = 0;
 	while (context->vars->tbl[i])

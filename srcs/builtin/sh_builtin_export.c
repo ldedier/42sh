@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/19 09:45:53 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/22 16:56:12 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/25 07:23:38 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static int	sh_builtin_export_show(t_context *context)
 	char	*equal;
 
 	if (write(FD_OUT, NULL, 0))
-		return (sh_perror2_err_fd(FD_ERR, "write error", "export", SH_ERR1_BAD_FD));
+		return (sh_perror2_err("write error", "export", SH_ERR1_BAD_FD));
 	tbl = (char**)(context->saved_env->tbl);
 	min = NULL;
 	sh_builtin_export_show_min(&min, tbl);
@@ -89,7 +89,7 @@ int			sh_builtin_export_assign(t_context *context, char *arg)
 	int		index;
 
 	if (!sh_expansions_variable_valid_name(arg))
-		return (sh_perror2_err_fd(FD_ERR, arg, "export", "not a valid identifier"));
+		return (sh_perror2_err(arg, "export", "not a valid identifier"));
 	if ((equal = ft_strchr(arg, '=')))
 	{
 		*equal = 0;

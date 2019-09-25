@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 12:14:59 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/18 16:07:12 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/25 07:22:19 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static int		sh_builtin_exit_treat_first_arg(t_context *context, int *ret)
 {
 	if (!sh_builtin_exit_is_numeric_value(context->params->tbl[1]))
 	{
-		sh_perror2_fd(FD_ERR, context->params->tbl[1],
+		sh_perror2(context->params->tbl[1],
 		"exit", "numeric argument required");
 		sh_env_update_ret_value(context->shell, 2);
 		context->shell->running = 0;
@@ -57,8 +57,7 @@ int				sh_builtin_exit(t_context *context)
 			return (ERROR);
 	if (context->params->tbl[1] && context->params->tbl[2])
 	{
-		sh_perror_err_fd(FD_ERR,
-			context->params->tbl[0], SH_ERR1_TOO_MANY_ARGS);
+		sh_perror_err(context->params->tbl[0], SH_ERR1_TOO_MANY_ARGS);
 		sh_env_update_ret_value(context->shell, SH_RET_ERROR);
 		return (STOP_CMD_LINE);
 	}
