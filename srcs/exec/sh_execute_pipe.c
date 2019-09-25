@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/07/31 18:32:26 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/25 13:31:02 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,17 @@ static int 		loop_pipe_exec(
 		else if (child)
 			return (father_exec(child, pds, curr_sequence, context));
 		if (dup2(pds[INPUT], STDIN_FILENO) < 0)
+		{
+			sh_reset_redirection(&context->redirections);
+			sh_free_all(context->shell);
 			exit(STOP_CMD_LINE);
+		}
 		close(pds[OUTPUT]);
 		ret = loop_pipe_exec(
 			lst_sequences->next->content, lst_sequences->next, context);
 		close(pds[INPUT]);
+		sh_reset_redirection(&context->redirections);
+		sh_free_all(context->shell);
 		exit(ret);
 	}
 }
