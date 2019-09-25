@@ -11,30 +11,42 @@
 # **************************************************************************** #
 
 launch "Echo"
-	test_launch "echo -n okalm"
-	test_launch "echo -n "
-	test_launch "echo"
-	test_launch "echo okalm"
-	test_launch 'echo $env'
-	test_launch 'echo $TERM'
-	test_launch 'echo $poasd'
-	test_launch 'echo $TERM $PATH'
-	test_launch 'echo -n $TERM $PATH'
-	test_launch 'echo $var $var $var'
-	test_launch 'echo $s#var $var'
-	test_launch 'echo "" "" "" "" okalm'
-	test_launch 'echo -n -n -n ls -n'
+		test_launch "echo -n okalm"
+		test_launch "echo -n "
+		test_launch "echo"
+		test_launch "echo okalm"
+		test_launch 'echo $env'
+		test_launch 'echo $TERM'
+		test_launch 'echo $poasd'
+		test_launch 'echo $TERM $PATH'
+		test_launch 'echo -n $TERM $PATH'
+		test_launch 'echo $var $var $var'
+		test_launch 'echo $s#var $var'
+		test_launch 'echo "" "" "" "" okalm'
+		test_launch 'echo -n -n -n ls -n'
 
 	launch_show "parser"
+		test_launch 'echo -e h'
+		test_launch 'echo -B h'
+		test_launch 'echo -n -E h'
+		test_launch 'echo -E -n h'
+		test_launch 'echo -nn h'
+		test_launch 'echo --n h'
+		test_launch 'echo -n -n -n hh'
+		test_launch 'echo e -n -n -n hh'
+		test_launch 'echo -e -n -n -n hh'
+
 	launch_show "arguments"
+		test_launch 'echo "" "" "" "" \" \" ok'
+		test_launch 'echo "\"\"\""'
+		test_launch 'echo "$var
+		"'
+
 	launch_show "returned value"
-
-launch "write echo"
-	test_launch "echo 1>&-"
-	test_launch "echo Okalm 1>&-"
-	test_launch "echo -n Okalm 1>&-"
-	test_launch "echo -n 1>&-"
-	test_launch "echo -Z 1>&-"
-	test_launch "echo -Z 2>&-"
-	test_launch "echo 2>&-"
-
+		test_launch "echo 1>&-"
+		test_launch "echo Okalm 1>&-"
+		test_launch "echo -n Okalm 1>&-"
+		test_launch "echo -n 1>&-"
+		test_launch "echo -Z 1>&-"
+		test_launch "echo -Z 2>&-"
+		test_launch "echo 2>&-"

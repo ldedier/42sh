@@ -35,5 +35,3 @@ launch "export"
 	test_launch "unset SHLVL _ OLDPWD" "export -E 2>&-"
 	test_launch "unset SHLVL _ OLDPWD" "export 2>&-"
 
-	launch_show "returned value"
-

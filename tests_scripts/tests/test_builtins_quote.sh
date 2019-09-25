@@ -10,8 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-
-launch "quote"
+launch "quotes"
 	test_launch 'echo simple test   without quote   !!'
 	test_launch 'echo "simple test   with doublequote   !!"'
 	test_launch "echo 'simple test   with doublequote   !!'"

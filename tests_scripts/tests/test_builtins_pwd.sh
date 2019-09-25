@@ -28,7 +28,3 @@ launch "write pwd"
 	test_launch "pwd -E 1>&-"
 	test_launch "pwd -E 2>&-"
 	test_launch "pwd 2>&-"
-
-	launch_show "parser"
-	launch_show "arguments"
-	launch_show "returned value"
