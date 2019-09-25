@@ -97,7 +97,13 @@ int		process_key_insert_printable_utf8(t_key_buffer *buffer,
 int		process_keys_insert(t_key_buffer *buffer,
 		t_shell *shell, t_command_line *command_line)
 {
+	int ret;
+
+//	sh_print_buffer(*buffer);
 	cancel_autocompletion(buffer, command_line);
+	if (command_line->edit_style == E_EDIT_STYLE_READLINE &&
+		(ret = process_keys_readline(buffer, shell, command_line)) != KEEP_READ)
+		return (ret);
 	if (is_printable_utf8(buffer->buff, buffer->progress))
 	{
 		if (process_key_insert_printable_utf8(buffer,

@@ -76,6 +76,7 @@ typedef struct		s_key_buffer
 	unsigned char	buff[READ_BUFF_SIZE];
 	int				progress;
 	int				last_char_input;
+	int				persistent;
 }					t_key_buffer;
 
 typedef struct		s_ft_command
@@ -141,6 +142,7 @@ typedef struct		s_command_line
 	char			*edit_line;
 	t_list			*saves_stack;
 	int				edit_counter;
+	int				mark_index;
 }					t_command_line;
 
 typedef struct		s_xy
@@ -212,6 +214,11 @@ int					paste_current_index(
 	t_command_line *command_line, char *to_paste);
 int					delete_command_line_selection(
 	t_command_line *command_line);
+
+/*
+** ctrl_t.c
+*/
+void				process_ctrl_t(t_command_line *command_line);
 
 /*
 ** cursor_motion.c
@@ -397,6 +404,21 @@ void				cancel_autocompletion(
 int					replace_command_line(
 	t_key_buffer *buffer, t_command_line *command_line);
 int					process_keys_others(
+	t_key_buffer *buffer,
+	t_shell *shell,
+	t_command_line *command_line);
+
+/*
+** keys_readline.c
+*/
+int					process_ctrl_u(t_command_line *command_line);
+int					process_ctrl_k(t_command_line *command_line);
+int					process_ctrl_w(t_command_line *command_line);
+int					process_alt_f(t_command_line *command_line);
+int					process_alt_b(t_command_line *command_line);
+int					process_alt_d(t_command_line *command_line);
+void				process_ctrl_x_x(t_command_line *command_line);
+int					process_keys_readline(
 	t_key_buffer *buffer,
 	t_shell *shell,
 	t_command_line *command_line);

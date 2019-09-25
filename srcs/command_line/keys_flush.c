@@ -16,7 +16,13 @@ void	flush_keys(t_key_buffer *buffer)
 {
 	if (buffer->progress)
 	{
-		buffer->last_char_input = buffer->buff[0];
+		if (buffer->persistent)
+			buffer->last_char_input = buffer->buff[0];
+		else
+		{
+			buffer->last_char_input = -1;
+			buffer->persistent = 1;
+		}
 		ft_bzero(buffer->buff, READ_BUFF_SIZE);
 		buffer->progress = 0;
 	}

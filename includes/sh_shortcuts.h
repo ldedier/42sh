@@ -97,6 +97,8 @@ int					sh_vs_motion_0(
 */
 int					sh_vs_motion_b(
 	t_command_line *command_line, char dummy);
+int					sh_vs_motion_b_readline(
+	t_command_line *command_line, char dummy);
 
 /*
 ** sh_vs_motion_b_maj.c
@@ -126,6 +128,8 @@ int					sh_vs_motion_dollar(
 ** sh_vs_motion_e.c
 */
 int					sh_vs_motion_e(
+	t_command_line *command_line, char dummy);
+int					sh_vs_motion_e_readline(
 	t_command_line *command_line, char dummy);
 
 /*
@@ -191,7 +195,11 @@ int					sh_vs_motion_t_maj(
 */
 char				get_char_type_word(
 	t_command_line *command_line, int index);
+char				get_char_type_word_readline(
+	t_command_line *command_line, int index);
 int					sh_vs_motion_w(
+	t_command_line *command_line, char dummy);
+int					sh_vs_motion_w_readline(
 	t_command_line *command_line, char dummy);
 
 /*
@@ -356,7 +364,8 @@ int					sh_vshortcut_y_maj(
 */
 int					sh_get_single_char(char *c);
 int					ft_clamp(int min, int val, int max);
-int					execute_motion(t_command_line *line, int index);
+int					execute_motion(
+	t_command_line *line, int index, int vi);
 int					execute_vsh_command(
 	t_command_line *command_line,
 	t_vshortcut *vshortcut,

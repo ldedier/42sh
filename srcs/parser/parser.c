@@ -34,6 +34,7 @@ int		sh_parse_token_list(t_lr_parser *parser, t_list **tokens,
 	if ((ret = sh_lr_parse(parser, tokens, ast_root, cst_root)) != SUCCESS)
 	{
 		ft_lstdel(&parser->stack, sh_free_stack_item_lst);
+		while(1) ;
 		return (ret);
 	}
 	else

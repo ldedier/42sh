@@ -15,7 +15,7 @@
 
 static void		print_builtin_usage(void)
 {
-	sh_perror("set [-o option] [+o option]\n", NULL);
+	sh_perror("set [-o option] [+o option]", NULL);
 }
 
 int				print_options_minus(t_shell *shell)
@@ -69,9 +69,7 @@ int			add_option(t_context *context, int index)
 	if (get_option(context->shell, option_name, &opt, &value))
 		*opt = value;
 	else
-	{
-		ft_dprintf(2, "%s%s%s", SH_ERR_COLOR, "set: unknown option", EOC);
-	}
+		ft_dprintf(2, "%s%s%s", SH_ERR_COLOR, "set: unknown option\n", EOC);
 	return (SUCCESS);
 }
 int			remove_option(t_context *context, int index)
@@ -84,9 +82,7 @@ int			remove_option(t_context *context, int index)
 	if (get_option(context->shell, option_name, &opt, &value))
 		*opt = !value;
 	else
-	{
-		ft_dprintf(2, "%s%s", SH_ERR_COLOR, "set: unknown option", EOC);
-	}
+		ft_dprintf(2, "%s%s", SH_ERR_COLOR, "set: unknown option\n", EOC);
 	return (SUCCESS);
 }
 
@@ -98,7 +94,7 @@ int		sh_builtin_set_param(t_context *context, int *index)
 		if (*index == (int)context->params->current_size)
 			return (print_options_minus(context->shell));
 		else
-			return (add_option(context, (*index)++));
+			return (add_option(context, *index));
 	}
 	else if (!ft_strcmp(context->params->tbl[*index], "+o"))
 	{
@@ -106,7 +102,7 @@ int		sh_builtin_set_param(t_context *context, int *index)
 		if (*index == (int)context->params->current_size)
 			return (print_options_plus(context->shell));
 		else
-			return (remove_option(context, (*index)++));
+			return (remove_option(context, *index));
 	}
 	else
 	{
@@ -118,11 +114,13 @@ int		sh_builtin_set_param(t_context *context, int *index)
 int			sh_builtin_set_args(t_context *context)
 {
 	int i;
+	int ret;
 
 	i = 1;
 	while (i < (int)context->params->current_size)
 	{
-		sh_builtin_set_param(context, &i);
+		if ((ret = sh_builtin_set_param(context, &i)))
+			return (ret);
 		i++;
 	}
 	return (SUCCESS);

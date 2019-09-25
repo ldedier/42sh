@@ -92,7 +92,7 @@ SRCS			+=	keys.c cursor_motion.c edit_command.c \
 					sh_get_cursor_position.c eof_percent.c \
 					update_prompt_cwd.c keys_insert_tools.c keys_flush.c \
 					keys_debug.c screen_tools.c get_char_len.c \
-					saves.c
+					saves.c keys_readline.c
 #sh_clipboard.c sh_command_line_tools.c
 #					sh_clipboard_tools.c
 
@@ -234,7 +234,17 @@ SRCS			+=	vshortcuts.c \
 					sh_vshortcut_p_maj.c \
 					sh_vshortcut_u.c \
 					sh_vshortcut_u_maj.c \
-					sh_vim_options.c
+					sh_vim_options.c \
+					alt_b.c \
+					alt_f.c \
+					alt_d.c \
+					alt_t.c \
+					ctrl_k.c \
+					ctrl_u.c \
+					ctrl_w.c \
+					ctrl_t.c \
+					ctrl_x_x.c
+
 
 ################################################################
 ########						VARS					########

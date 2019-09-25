@@ -15,8 +15,8 @@
 void	free_execution_tools(t_list **tokens, t_ast_node **ast_root,
 		t_ast_node **cst_root)
 {
-	sh_free_ast_node(ast_root, 0);
 	sh_free_ast_node(cst_root, 0);
+	sh_free_ast_node(ast_root, 0);
 	ft_lstdel(tokens, sh_free_token_lst);
 }
 
