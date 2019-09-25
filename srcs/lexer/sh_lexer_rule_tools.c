@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 14:47:05 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/23 20:44:01 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/25 06:55:19 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 
 /*
 ** sh_lexer_is_operator_char
+**	Check if given char can be used as part of an operator.
 **
-**
+**	returned Values:
+**	 True or False
 */
 
 int		sh_lexer_is_operator_char(int c)
@@ -46,10 +48,9 @@ int		sh_lexer_is_operator_char(int c)
 
 int		sh_lexer_check_operator(t_lexer *lexer)
 {
+	int					i;
 	static const char	*ops[] = {"<", ">", "&&", "||", "<&", ";;", "<<", ">>"
 		"<&", ">&", "<<-", "{", "}", "(", ")", "!", NULL};
-		// "<>", ">|"};
-	int					i;
 
 	i = 0;
 	lexer->tok_len++;

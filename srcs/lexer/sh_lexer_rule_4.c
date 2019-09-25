@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 14:36:01 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/07 17:18:03 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/25 06:53:47 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ static int		lexer_quoting_backslash(t_lexer *lexer)
 	else
 	{
 		lexer->backslash = 1;
-		if (lexer->input[lexer->tok_start + lexer->tok_len + 1] == '\0' && lexer->quoted != '\"')
+		if (lexer->input[lexer->tok_start + lexer->tok_len + 1] == '\0'
+			&& lexer->quoted != '\"')
 		{
 			ft_strdelchar(lexer->input, lexer->tok_start + lexer->tok_len);
 			return (LEX_OK);
