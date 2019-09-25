@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/21 15:58:19 by jmartel           #+#    #+#              #
-#    Updated: 2019/09/25 00:34:34 by jmartel          ###   ########.fr        #
+#    Updated: 2019/09/25 22:19:16 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -135,8 +135,8 @@ valgrind_test()
 			echo -e "${red}valgrind error, tracing logs at ${inner_log_dir}${eoc}"
 			echo -e "${yellow}`cat ${buffer}`${eoc}"
 			mkdir -p $inner_log_dir
-			cat ${buffer} > ${inner_log_dir}/failed_script
-			cat $tmp_log_file > ${inner_log_dir}/valgrind_trace
+			cat ${buffer} > "${inner_log_dir}/failed_script"
+			cat $tmp_log_file > "${inner_log_dir}/valgrind_trace"
 			rm -f $tmp_log_file
 		else
 			if [ ! -n "$show_error" ] ; then

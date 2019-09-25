@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/19 09:45:53 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/25 13:01:48 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/09/26 00:36:11 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ static int	sh_builtin_export_show(t_context *context)
 	char	**tbl;
 	char	*min;
 	char	*equal;
+	int		i;
 
 	if (write(FD_OUT, NULL, 0))
 		return (sh_perror2_err("write error", "export", SH_ERR1_BAD_FD));
@@ -68,14 +69,25 @@ static int	sh_builtin_export_show(t_context *context)
 	while (min)
 	{
 		if (!(equal = ft_strchr(min, '=')))
-			ft_dprintf(FD_OUT, "%s %s\n", EXPORT_MSG, min);
+			ft_printf("%s %s\n", EXPORT_MSG, min);
 		else
 		{
 			*equal = '\0';
-			ft_dprintf(FD_OUT, "%s %s=", EXPORT_MSG, min);
+			ft_printf("%s %s=", EXPORT_MSG, min);
 			if (equal[1])
-				ft_dprintf(FD_OUT, "\"%s\"", equal + 1);
-			ft_dprintf(FD_OUT, "\n", min);
+			{
+				i = 1;
+				ft_putchar('\"');
+				while (equal[i])
+				{
+					if (equal[i] == '\'' || equal[i] == '\\' || equal[i] == '\"')
+						ft_putchar('\\');
+					ft_putchar(equal[i]);
+					i++;
+				}
+				ft_putchar('\"');
+			}
+			ft_putchar('\n');
 			*equal = '=';
 		}
 		sh_builtin_export_show_min(&min, tbl);

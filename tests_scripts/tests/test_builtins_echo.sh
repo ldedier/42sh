@@ -26,15 +26,15 @@ launch "Echo"
 		test_launch 'echo -n -n -n ls -n'
 
 	launch_show "parser"
-		test_launch 'echo -e h'
+		test_launch 'echo -X h'
 		test_launch 'echo -B h'
-		test_launch 'echo -n -E h'
-		test_launch 'echo -E -n h'
-		test_launch 'echo -nn h'
+		test_launch 'echo -n -X h'
+		test_launch 'echo -X -n h'
+		# test_launch 'echo -nn h'
 		test_launch 'echo --n h'
 		test_launch 'echo -n -n -n hh'
 		test_launch 'echo e -n -n -n hh'
-		test_launch 'echo -e -n -n -n hh'
+		test_launch 'echo -X -n -n -n hh'
 
 	launch_show "arguments"
 		test_launch 'echo "" "" "" "" \" \" ok'
