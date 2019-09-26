@@ -6,7 +6,7 @@
 /*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/24 09:50:53 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/09/24 13:18:12 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/09/26 09:51:02 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	splitlen(char const *path)
 	int	i;
 	int len;
 
-	i = 1;
+	i = 0;
 	len = 0;
 	if (path[0] == ':')
 		len++;
