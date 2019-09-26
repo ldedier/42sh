@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/05 10:59:30 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/25 06:49:53 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/26 03:05:53 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int			sh_expansions(t_context *context, t_ast_node *node)
 	if ((*input)[0] == '~')
 		ret = sh_expansions_tilde(input, *input, context, quotes);
 	if (!ret)
-		ret = sh_expansions_scan(input, index, 1, context, quotes);
+		ret = sh_expansions_scan(input, index, context, quotes);
 	if (sh_verbose_expansion())
 	{
 		ft_dprintf(2, "input : %s\n", *input);

@@ -51,7 +51,6 @@ launch "Pipes"
 		test_launch "rm -f file" "./obj/fd_write 5 string 3>f3 4>f4 5>f5" "echo 3 ; cat f3" "echo 4 ; cat f4" "echo 5 ; cat f5" "rm f3 f4 f5"
 		test_launch "rm -f file" "./obj/fd_write 1 okalm 1>&- 1>&- 1>&2 1>&-"
 		test_launch "rm -f file" "./obj/fd_write 4 okalm 4>&- 4>&- 4>&1 4>&-"
-		test_launch "rm -f file" "./obj/fd_write 4 okalm 4>&1 4>&2 4>&3 3>file ; cat file ; rm file"
 		test_launch "rm -f file" "./obj/fd_write 4 okalm 4>&1 4>&2 3>file ; cat file ; rm file"
 
 	launch_show "asynchronous"
@@ -59,6 +58,10 @@ launch "Pipes"
 		test_launch 'pwd ; cd ..  | echo | exit ; pwd'
 		test_launch 'true | exit'
 		test_launch 'yes | head -c1'
+
+#		Deprecated
+#		test_launch "rm -f file" "./obj/fd_write 4 okalm 4>&1 4>&2 4>&3 3>file ; cat file ; rm file"
+
 
 	rm -f file
 

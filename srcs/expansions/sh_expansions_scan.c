@@ -6,14 +6,14 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/04 11:17:39 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/09/21 14:35:13 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/26 03:05:31 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
 static int	double_quote(
-	char **input, int *index, int do_expansion, t_context *context, t_dy_tab *quotes)
+	char **input, int *index, t_context *context, t_dy_tab *quotes)
 {
 	int	ret;
 
@@ -22,7 +22,7 @@ static int	double_quote(
 	(*index) += 1;
 	while ((*input)[*index] && (*input)[*index] != '\"')
 	{
-		if ((*input)[*index] == '$' && do_expansion)
+		if ((*input)[*index] == '$')
 		{
 			if ((ret = sh_expansions_process(
 				input, *input + *index, context, index, quotes)) != SUCCESS)
@@ -90,7 +90,7 @@ static int	simple_quote(char **input, int *index, t_dy_tab *quotes)
 */
 
 int			sh_expansions_scan(char **input, int index,
-	int do_expansion, t_context *context, t_dy_tab *quotes)
+	t_context *context, t_dy_tab *quotes)
 {
 	int	ret;
 
@@ -105,15 +105,15 @@ int			sh_expansions_scan(char **input, int index,
 	else if ((*input)[index] == '"')
 	{
 		if ((ret = double_quote(
-			input, &index, do_expansion, context, quotes)) != SUCCESS)
+			input, &index, context, quotes)) != SUCCESS)
 			return (ret);
 	}
-	else if ((*input)[index] == '$' && do_expansion)
+	else if ((*input)[index] == '$')
 	{
 		if ((ret = unquoted_var(input, &index, context, quotes)) != SUCCESS)
 			return (ret);
 	}
-	else if ((*input)[index] == '!' && do_expansion)
+	else if ((*input)[index] == '!')
 	{
 
 	}
@@ -123,5 +123,5 @@ int			sh_expansions_scan(char **input, int index,
 			return (sh_perror(SH_ERR1_MALLOC, "double_quote"));
 		index += 2;
 	}
-	return (sh_expansions_scan(input, index, do_expansion, context, quotes));
+	return (sh_expansions_scan(input, index, context, quotes));
 }

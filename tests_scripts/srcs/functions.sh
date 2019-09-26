@@ -162,9 +162,9 @@ check_ret_value()
 			echo -e "Script :" >> "${logging_file}"
 			echo -e `cat ${buffer}` >> "${logging_file}"
 			echo -e "" >> "${logging_file}"
-			echo -e "SEGFAULT OR SIGNAL RECEIVED" >> ${logging_file}
-			echo -e "${sh_ret}" >> ${logging_file}
-			echo -e "" >> ${logging_file}
+			echo -e "SEGFAULT OR SIGNAL RECEIVED" >> "${logging_file}"
+			echo -e "${sh_ret}" >> "${logging_file}"
+			echo -e "" >> "${logging_file}"
 		fi
 	fi
 
