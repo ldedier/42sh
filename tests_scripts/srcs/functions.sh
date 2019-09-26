@@ -237,6 +237,8 @@ test_launch()
 	if [ -n "$valgrind" ] ; then
 		valgrind_test
 	fi
+
+	rm "${res1_42sh}" "${res2_42sh}" "${res1_bash}" "${res2_bash}"
 }
 
 test_launch_pipe()
@@ -281,4 +283,6 @@ test_launch_pipe()
 	if [ -n "$valgrind" ] ; then
 		valgrind_test
 	fi
+
+	rm "${res1_42sh}" "${res2_42sh}" "${res1_bash}" "${res2_bash}"
 }
