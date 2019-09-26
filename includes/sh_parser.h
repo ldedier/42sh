@@ -69,6 +69,8 @@ typedef struct		s_action
 
 typedef struct		s_ast_builder
 {
+//	t_ast_node		**cst_node_ptr;
+//	t_ast_node		**ast_node_ptr;
 	t_ast_node		*cst_node;
 	t_ast_node		*ast_node;
 	t_symbol		*symbol;
@@ -78,7 +80,6 @@ struct				s_ast_node
 {
 	t_token			*token;
 	t_symbol		*symbol;
-	// t_metadata		metadata;
 	t_list			*children;
 	t_ast_node		*relative;
 	t_ast_node		*parent;
@@ -224,17 +225,17 @@ void				sh_free_ast_builder(t_ast_builder *ast_builder);
 /*
 ** free_parser.c
 */
-void				sh_free_parser_trees(t_lr_parser *parser);
 void				sh_free_cfg(t_cfg *cfg);
-void				sh_clear_parser(t_lr_parser *parser);
 void				sh_free_parser(t_lr_parser *parser);
 
 /*
 ** free_parser_tools.c
 */
 void				sh_free_stack_item(t_stack_item *stack_item);
+void				sh_free_stack_item_light(t_stack_item *stack_item);
 void				sh_free_stack_item(t_stack_item *stack_item);
 void				sh_free_stack_item_lst(void *si, size_t dummy);
+void				sh_free_stack_item_lst_light(void *si, size_t dummy);
 void				free_state_lst(void *s, size_t dummy);
 void				sh_free_lr_automata(t_lr_parser *parser);
 void				sh_free_production(void *p, size_t dummy);

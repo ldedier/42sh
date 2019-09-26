@@ -43,14 +43,25 @@ void	sh_free_ast_node(t_ast_node **node, int update)
 		child = (t_ast_node *)ft_lstpop_ptr(&(*node)->children);
 		sh_free_ast_node(&child, update);
 	}
+//	ft_printf("freeing node:\n");
+//	sh_print_ast(*node, 0);
+	if (update)
+	{
+		(*node)->builder->ast_node = NULL;
+		(*node)->builder->cst_node = NULL;
+	}
 	free(*node);
 	*node = NULL;
 }
 
 void	sh_free_ast_builder(t_ast_builder *ast_builder)
 {
+	static int i = 0;
 	(void)ast_builder;
-//	sh_free_ast_node(&ast_builder->ast_node, 0);
-//	sh_free_ast_node(&ast_builder->cst_node, 0);
-//	free(ast_builder);
+	(void)i;
+//	ft_printf("freeing from ast_builder %d\n", ++i);
+	sh_free_ast_node(&ast_builder->ast_node, 0);
+	sh_free_ast_node(&ast_builder->cst_node, 0);
+	free(ast_builder);
+//	ft_printf("end of freeing from ast_builder %d\n", i);
 }

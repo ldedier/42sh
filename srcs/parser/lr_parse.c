@@ -92,7 +92,6 @@ int				sh_lr_parse(t_lr_parser *parser, t_list **tokens,
 	t_stack_item	*stack_item;
 	int				ret;
 
-//	ft_lstdel(&parser->stack, sh_free_stack_item_lst);
 	parser->tmp_tokens = tokens;
 	if (!(stack_item = new_stack_item(NULL, parser->states->content)))
 		return (FAILURE);
@@ -104,13 +103,10 @@ int				sh_lr_parse(t_lr_parser *parser, t_list **tokens,
 	while (*tokens)
 	{
 		ret = process_lr_parse(parser, tokens, ast_root, cst_root);
-//		ft_printf("\nAST:\n");
-//		sh_print_ast(*ast_root, 0);
-//		ft_printf("\nCST:\n");
-//		sh_print_ast(*cst_root, 0);
 		if (ret != 3)
+		{
 			return (ret);
-//		sh_print_parser_state(parser);
+		}
 	}
 	return (ERROR);
 }
