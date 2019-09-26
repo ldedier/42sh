@@ -101,9 +101,12 @@ int		process_alt_t(t_command_line *command_line)
 	int index_a;
 	int index_b;
 	int motion_index;
+	int ret;
 
 	if (get_indexes(command_line, &index_a, &index_b))
 		return (SUCCESS);
+	if ((ret = sh_save_command_line(command_line)))
+		return (ret);
 	command_line->count.value = 1;
 	motion_index = sh_vs_motion_e_readline(command_line, 0);
 	if (motion_index != (int)command_line->dy_str->current_size)

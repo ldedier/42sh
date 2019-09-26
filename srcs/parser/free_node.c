@@ -30,9 +30,11 @@ static void	sh_free_token(t_ast_node *node, t_token **token)
 ** the data has already been freed
 */
 
-void	sh_free_ast_node(t_ast_node **node, int update)
+void	sh_free_ast_node(t_ast_node **node, int node_to_free)
 {
 	t_ast_node		*child;
+	t_ast_node		*tmp;
+
 
 	if (!*node)
 		return ;
@@ -41,27 +43,27 @@ void	sh_free_ast_node(t_ast_node **node, int update)
 	while ((*node)->children != NULL)
 	{
 		child = (t_ast_node *)ft_lstpop_ptr(&(*node)->children);
-		sh_free_ast_node(&child, update);
+		sh_free_ast_node(&child, node_to_free);
 	}
-//	ft_printf("freeing node:\n");
-//	sh_print_ast(*node, 0);
-	if (update)
+	tmp = *node;
+	if ((*node)->builder)
 	{
-		(*node)->builder->ast_node = NULL;
-		(*node)->builder->cst_node = NULL;
+		if (node_to_free == 1)
+			(*node)->builder->ast_node = NULL;
+		else if (node_to_free == 2)
+			(*node)->builder->cst_node = NULL;
 	}
-	free(*node);
+	free(tmp);
 	*node = NULL;
 }
 
 void	sh_free_ast_builder(t_ast_builder *ast_builder)
 {
 	static int i = 0;
-	(void)ast_builder;
 	(void)i;
 //	ft_printf("freeing from ast_builder %d\n", ++i);
-	sh_free_ast_node(&ast_builder->ast_node, 0);
-	sh_free_ast_node(&ast_builder->cst_node, 0);
+	sh_free_ast_node(&ast_builder->ast_node, 1);
+	sh_free_ast_node(&ast_builder->cst_node, 2);
 	free(ast_builder);
 //	ft_printf("end of freeing from ast_builder %d\n", i);
 }

@@ -69,8 +69,8 @@ typedef struct		s_action
 
 typedef struct		s_ast_builder
 {
-//	t_ast_node		**cst_node_ptr;
-//	t_ast_node		**ast_node_ptr;
+	t_ast_node		**cst_node_ptr;
+	t_ast_node		**ast_node_ptr;
 	t_ast_node		*cst_node;
 	t_ast_node		*ast_node;
 	t_symbol		*symbol;

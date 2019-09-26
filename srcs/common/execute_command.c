@@ -36,16 +36,20 @@ static int	sh_process_command(t_shell *shell, char *command)
 	{
 		if (sh_env_update_ret_value_and_question(shell, ret) == FAILURE)
 			ret = FAILURE;
+		ft_lstdel(&tokens, sh_free_token_lst);
 	}
-	if (!ret && (ret = sh_parser(shell, &tokens, &ast_root, &cst_root)))
+	else if ((ret = sh_parser(shell, &tokens, &ast_root, &cst_root)))
 	{
 		sh_perror_err("syntax error", NULL);
 		if (sh_env_update_ret_value_and_question(shell, ret) == FAILURE)
 			ret = FAILURE;
+		ft_lstdel(&tokens, sh_free_token_lst);
 	}
-	if (!ret)
+	else
+	{
 		ret = sh_process_traverse(shell, ast_root);
-	free_execution_tools(&tokens, &ast_root, &cst_root);
+		free_execution_tools(&tokens, &ast_root, &cst_root);
+	}
 	return (ret);
 }
 
