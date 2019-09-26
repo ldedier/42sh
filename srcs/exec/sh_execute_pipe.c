@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/22 01:44:25 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/26 05:06:50 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static pid_t 		fork_for_pipe(int *pds)
 		sh_perror(SH_ERR1_FORK, "execution fork for pipe");
 		return (-1);
 	}
+	// ft_dprintf(g_job_ctrl->term_fd, "Fork: pid: %d\tppid: %d\tpgid: %d\n", getpid(), getppid(), getpgid(getpid()));
 	return (child);
 }
 

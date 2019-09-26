@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_perror.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 14:16:12 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/14 02:42:42 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/26 03:28:03 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@
 # define SH_BLT_INTEGER			"Integer expression expected"
 
 # define SH_BAD_SUBSTITUTE		"bad substitution"
-
+# define SH_NO_SUCH_JOB			"no such job"
 /*
 ********************************************************************************
 */

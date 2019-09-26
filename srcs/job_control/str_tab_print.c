@@ -21,6 +21,8 @@ void			str_tab_print(char **char_tab)
 {
 	int	i;
 
+	if (char_tab == NULL)
+		return ;
 	i = 0;
 	while (char_tab[i])
 	{

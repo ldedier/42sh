@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/20 23:22:03 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/21 23:56:12 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/26 03:03:24 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int			job_put_in_fg(t_job *j, int cont, int *res)
 			return (ERROR);
 		}
 	}
+	j->foreground = 1;
 	job_wait(g_job_ctrl->curr_job, res);
 	// if (WIFSIGNALED(res))
 	// 	ft_printf("Was terminated by a signal\n");

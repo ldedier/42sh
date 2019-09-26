@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/04 21:42:55 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/21 16:32:03 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/26 04:48:30 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,37 @@ int		sh_parse_token_list(t_lr_parser *parser)
 	}
 }
 
+/*
+** mdaoud:
+** Dummy function to check if the command ends with '&'
+** Since the grammar is not coherent with the actual execution of this symbol,
+**		I can't really process it when it occurs at the end of the command line.
+** This SHOULD be replaced by a better and safer function.
+*/
+
+static void		check_ampersand_at_eoc(t_list *token_lst)
+{
+	t_list	*ptr;
+	t_token	*tok;
+
+	ptr = token_lst;
+	if (token_lst == NULL)
+		return ;
+	while (ptr->next != NULL)
+	{
+		tok = (t_token *)ptr->next->content;
+		if (tok->id == END_OF_INPUT && (((t_token *)ptr->content)->id == LEX_TOK_AND))
+		{
+			g_job_ctrl->ampersand_eol = 1;
+			ft_dprintf(g_job_ctrl->term_fd, "AMPERSAND\n");
+			return ;
+		}
+		else
+			g_job_ctrl->ampersand_eol = 0;
+		ptr = ptr->next;
+	}
+}
+
 int		sh_parser(t_list *tokens, t_shell *shell)
 {
 	t_token token;
@@ -53,6 +84,7 @@ int		sh_parser(t_list *tokens, t_shell *shell)
 	sh_populate_token(&token, END_OF_INPUT, 0);
 	ft_lstaddnew_last(&tokens, &token, sizeof(t_token));
 	ft_lstdel(&shell->parser.tokens, sh_free_token_lst);
+	check_ampersand_at_eoc(tokens);
 	if (sh_verbose_ast())
 	{
 		ft_dprintf(2, "input tokens: ");

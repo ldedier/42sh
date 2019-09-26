@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 00:38:06 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/26 01:52:50 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/26 04:11:13 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ t_process	*process_create(t_context *context, pid_t pid)
 	p->completed = 0;
 	p->stopped = 0;
 	p->status = 0;
+	p->next = NULL;
 	p->argv = str_tab_duplicate((char **)context->params->tbl);
 	// p->argv = (char **)context->params->tbl;
-	p->next = NULL;
 	return (p);
 }
 

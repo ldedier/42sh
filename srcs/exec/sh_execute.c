@@ -22,11 +22,11 @@ static int	sh_exec_binaire(t_context *context)
 		return (FAILURE);
 	if ((cpid = fork()) == -1)
 		return (sh_perror(SH_ERR1_FORK, "sh_process_process_execute"));
-	// if (g_job_ctrl->job_added == 0)
-	// {
-	// 	jobs_add();
-	// 	g_job_ctrl->job_added = 1;
-	// }
+	if (g_job_ctrl->job_added == 0)
+	{
+		jobs_add();
+		g_job_ctrl->job_added = 1;
+	}
 	if (cpid == 0)
 	{
 		cpid = getpid();
@@ -49,6 +49,7 @@ static int	sh_exec_binaire(t_context *context)
 		if (sh_post_execution() != SUCCESS)
 			return (FAILURE);
 		g_glob.command_line.interrupted = WIFSIGNALED(res);
+		g_job_ctrl->job_added = 0;
 		return (SUCCESS);
 	}
 	return (SUCCESS);

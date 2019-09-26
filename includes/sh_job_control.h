@@ -49,6 +49,7 @@ struct	s_job_control
 {
 	char			shell_is_interactive;
 	char			job_added;
+	char			ampersand_eol;
 	int				term_fd;
 	int				job_count;
 	int				job_num[MAX_JOBS];

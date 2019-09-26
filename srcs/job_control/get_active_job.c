@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 18:05:11 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/21 23:12:34 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/26 03:04:07 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,14 @@
 t_job		*get_active_job(void)
 {
 	t_job	*j;
+	t_job	*prev;
 
 	j = g_job_ctrl->first_job;
 	if (j == NULL)
 		return (NULL);
-	while (j->next != NULL)
+	while (j->next != NULL && j->next->pgid != 0)
 	{
-		if (j->pgid != 0)
-			return (j);
+		prev = j;
 		j = j->next;
 	}
 	return (j);

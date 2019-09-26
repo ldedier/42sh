@@ -6,14 +6,14 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 00:09:20 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/26 01:15:35 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/26 05:12:47 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_job_control.h"
 #include "sh_21.h"
 
-int			find_available_job_number(void)
+static int	find_available_job_number(void)
 {
 	int		i;
 
@@ -33,7 +33,6 @@ int			jobs_add(void)
 	t_job	*it;
 	int		n;
 
-	ft_dprintf(g_job_ctrl->term_fd, "%sADDING JOB%s\n", COLOR_CYAN, COLOR_END);
 	n = find_available_job_number();
 	if (n < 0)
 	{
@@ -43,13 +42,16 @@ int			jobs_add(void)
 	if ((j = malloc(sizeof(t_job))) == NULL)
 		return (FAILURE);
 	j->number = n;
+	j->foreground = g_job_ctrl->ampersand_eol ^ 1;
+	// j->foreground = 1;
+	ft_dprintf(g_job_ctrl->term_fd, "Job %d added in %s\n",
+		j->number, j->foreground == 1 ? "foreground" : "background");
 	j->signal_num = 0;
 	g_job_ctrl->job_num[n] = 1;
 	j->first_process = NULL;
 	j->next = NULL;
 	j->notified = 0;
 	j->pgid = 0;
-	j->foreground = 1;
 	j->command = NULL;	//	Fill it with the command
 	g_job_ctrl->curr_job = j;
 	if (g_job_ctrl->first_job == NULL)

@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/28 16:49:38 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/25 18:14:47 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/26 04:38:09 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ static int 	get_separator_op(
 	//need to send to_execute to the good separator
 	if (separator->symbol->id == sh_index(LEX_TOK_AND))
 	{
+		jobs_add();
 		g_job_ctrl->curr_job->foreground = 0;
-		// jobs_add();
-		// g_job_ctrl->job_added = 1;
+		g_job_ctrl->job_added = 1;
 		return (sh_traverse_semicol(to_execute, context));
 	}
 	else if (separator->symbol->id == sh_index(LEX_TOK_SEMICOL))
@@ -58,15 +58,15 @@ static int 	get_node_to_exec(t_ast_node *node, t_context *context)
 
 	lst = node->children;
 	node_to_exec = NULL;
+	if (g_job_ctrl->ampersand_eol == 1)
+		g_job_ctrl->ampersand_eol = 2;
 	ret = SUCCESS;
 	while (lst)
 	{
 		curr_node = lst->content;
 		if (curr_node->symbol->id == sh_index(SEPARATOR_OP))
 		{
-			if (jobs_add() < 0)
-				return (ERROR);	//	check
-			// g_job_ctrl->job_added = 0;
+			g_job_ctrl->job_added = 0;
 			if ((ret = get_separator_op(
 				node_to_exec, curr_node->children->content, context)))
 				return (ret);
@@ -76,11 +76,13 @@ static int 	get_node_to_exec(t_ast_node *node, t_context *context)
 			node_to_exec = curr_node;
 		lst = lst->next;
 	}
-	if (jobs_add() < 0)
-		return (ERROR);	//	check
-			// g_job_ctrl->job_added = 0;
+	g_job_ctrl->job_added = 0;
 	if (node_to_exec && ret == SUCCESS)
+	{
+		if (g_job_ctrl->ampersand_eol == 2)
+			g_job_ctrl->ampersand_eol = 1;
 		ret = sh_traverse_and_or(node_to_exec, context);
+	}
 	return (ret);
 }
 

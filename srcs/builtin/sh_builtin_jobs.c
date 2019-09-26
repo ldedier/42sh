@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 17:04:13 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/22 02:07:44 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/26 03:21:00 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,9 @@ int				sh_builtin_jobs(t_context *context)
 		{
 			ft_printf("%d\t", p->pid);
 			str_tab_print(p->argv);
-			ft_printf("\n\t\t ");
+			ft_printf("\n");
+			if (p->next != NULL)
+				ft_printf("\t\t ");
 			p = p->next;
 		}
 		j = j->next;
