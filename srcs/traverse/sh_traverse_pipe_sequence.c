@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/22 01:40:43 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/25 18:15:01 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,14 @@ int				sh_traverse_pipeline(t_ast_node *node, t_context *context)
 
 	sh_traverse_tools_show_traverse_start(node, context);
 	if (ft_lstlen(node->children) > 1)
+	{
+		// if (g_job_ctrl->job_added == 0)
+		// {
+		// 	jobs_add();
+		// 	g_job_ctrl->job_added = 1;
+		// }
 		ret = pipe_to_do(node, context);
+	}
 	else
 		ret = sh_traverse_command(node->children->content, context);
 	sh_traverse_tools_show_traverse_ret_value(node, context, ret);

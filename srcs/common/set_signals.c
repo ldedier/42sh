@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/31 16:05:53 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/20 16:43:34 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/25 18:27:46 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 void			reset_signals(void)
 {
-	// int i;
+	int i;
 
-	// i = 1;
-	// while (i <= SIGUSR2)
-	// 	signal(i++, SIG_DFL);
+	i = 1;
+	while (i <= SIGUSR2)
+		signal(i++, SIG_DFL);
 }
 
 void	sigtstp_handler(int signal)

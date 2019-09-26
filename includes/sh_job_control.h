@@ -25,33 +25,34 @@ typedef struct termios			t_term;
 
 struct	s_process
 {
-	t_process		*next;
-	char			**argv;
-	pid_t			pid;
-	int				terminated;
 	char			completed;
 	char			stopped;
 	int				status;
+	pid_t			pid;
+	char			**argv;
+	t_process		*next;
 };
 
 struct	s_job
 {
-	t_job			*next;
-	int				number;
-	char			*command;
-	char			foreground;
-	t_process		*first_process;
-	pid_t			pgid;
 	char			notified;
+	char			*command;
+	char			signal_num;
+	char			foreground;
+	int				number;
+	pid_t			pgid;
+	t_process		*first_process;
+	t_job			*next;
 };
 
 struct	s_job_control
 {
-	int				job_num[MAX_JOBS];
-	int				term_fd;
-	t_shell			*shell;
 	char			shell_is_interactive;
+	char			job_added;
+	int				term_fd;
 	int				job_count;
+	int				job_num[MAX_JOBS];
+	t_shell			*shell;
 	t_job			*first_job;
 	t_job			*curr_job;
 	pid_t			shell_pgid;

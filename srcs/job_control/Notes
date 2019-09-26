@@ -5,3 +5,8 @@ This normally causes all of the processes in that group to stop
 However, if the reading process is ignoring or blocking this signal,
 then read fails with an EIO error instead.
 -------------------------------------------------------------------------------
+If user tries to close 42sh while there are jobs running
+warn first time
+second time send SIGHUP to all jobs
+-------------------------------------------------------------------------------
+test when shell is running in bg

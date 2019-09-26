@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 23:24:10 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/21 15:49:21 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/25 18:04:32 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int		jobs_init(t_shell *shell)
 	}
 	ft_memset(g_job_ctrl->job_num, 0, MAX_JOBS);
 	g_job_ctrl->job_count = 1;
+	g_job_ctrl->job_added = 0;
 	g_job_ctrl->term_fd = g_glob.command_line.fd;
 	g_job_ctrl->first_job = NULL;
 	g_job_ctrl->curr_job = NULL;

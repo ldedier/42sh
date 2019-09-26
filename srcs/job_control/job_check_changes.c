@@ -29,13 +29,17 @@ static int	check_process_changes(t_job *j, int cpid, int status)
 			{
 				p->completed = 1;
 				if (WIFSIGNALED (status))
-					p->terminated = 1;
+				{
+					j->signal_num = WTERMSIG(status);
+					// ft_dprintf(g_job_ctrl->term_fd, "SIGNAL %d\n", WTERMSIG(status));
+				}
 			}
 			return (0);
 		}
 		p = p->next;
 	}
 }
+
 int			job_check_changes(pid_t cpid, int status)
 {
 	t_job		*j;
@@ -51,8 +55,30 @@ int			job_check_changes(pid_t cpid, int status)
 		}
 	}
 	else if (cpid == 0)
-	{
 		return (-1);
-	}
 	return (-1);
 }
+
+// static int	check_process_changes(t_job *j, int cpid, int status)
+// {
+// 	t_process	*p;
+
+// 	p = j->first_process;
+// 	while (p != NULL)
+// 	{
+// 		if (p->pid == cpid)
+// 		{
+// 			p->status = status;
+// 			if (WIFSTOPPED (status))
+// 				p->stopped = 1;
+// 			else
+// 			{
+// 				p->completed = 1;
+// 				if (WIFSIGNALED (status))
+// 					p->terminated = 1;
+// 			}
+// 			return (0);
+// 		}
+// 		p = p->next;
+// 	}
+// }

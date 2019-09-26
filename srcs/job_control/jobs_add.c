@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 00:09:20 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/22 01:31:16 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/26 01:15:35 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int			jobs_add(void)
 	t_job	*it;
 	int		n;
 
+	ft_dprintf(g_job_ctrl->term_fd, "%sADDING JOB%s\n", COLOR_CYAN, COLOR_END);
 	n = find_available_job_number();
 	if (n < 0)
 	{
@@ -42,6 +43,7 @@ int			jobs_add(void)
 	if ((j = malloc(sizeof(t_job))) == NULL)
 		return (FAILURE);
 	j->number = n;
+	j->signal_num = 0;
 	g_job_ctrl->job_num[n] = 1;
 	j->first_process = NULL;
 	j->next = NULL;
