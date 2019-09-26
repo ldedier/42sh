@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 14:50:45 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/25 07:21:32 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/26 02:47:23 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ static int	sh_builtin_cd_cdpath(
 			continue ;
 		if (!S_ISDIR(st.st_mode))
 			continue ;
-		if (access(*curpath, X_OK))
+		if (access(path, X_OK))
 			continue ;
 		*curpath = path;
 		args[CD_HYPHEN_OPT].value = &args;
