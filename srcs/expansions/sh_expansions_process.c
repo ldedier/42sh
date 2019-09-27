@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/03 14:58:45 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/09/23 14:47:00 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/27 23:01:58 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,13 @@
 
 static int	sh_expansions_init(char *original, t_expansion *exp)
 {
-	char	*start;
-
 	ft_bzero(exp, sizeof(t_expansion));
-	if (!(start = ft_strpbrk(original, "$")))
+	if (!original)
 		return (ERROR);
-	if (ft_strnstr(start, "${", 2))
-		return (sh_expansions_parameter_fill(exp, start));
-	else if (ft_strnstr(start, "$", 1))
-		return (sh_expansions_variable_fill(exp, start));
+	if (ft_strnstr(original, "${", 2))
+		return (sh_expansions_parameter_fill(exp, original));
+	else if (ft_strnstr(original, "$", 1))
+		return (sh_expansions_variable_fill(exp, original));
 	else
 		return (ERROR);
 }
@@ -41,6 +39,8 @@ static int	sh_expansions_init(char *original, t_expansion *exp)
 /*
 ** sh_expansions_process:
 **	For parameter and variables expansions detection.
+**	Condition `if (ret && exp.res)` is here to handle case of a solo $.
+**	This is linked to the function sh_expansions_variable_fill.
 **
 **	Return Value:
 **		FAILURE : malloc error
@@ -61,6 +61,12 @@ int			sh_expansions_process(
 		ret = exp.process(context, &exp);
 	if (!ret)
 		ret = sh_expansions_replace(&exp, input, *index, (t_quote**)quotes->tbl);
+	if (ret && exp.type == EXP_VAR)
+	{
+		(*index)++;
+		t_expansion_free_content(&exp);
+		return (SUCCESS);
+	}
 	if (ret)
 	{
 		t_expansion_free_content(&exp);

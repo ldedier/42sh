@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 21:49:08 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/21 15:53:45 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/26 20:12:21 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ void		t_quote_show_tab(t_quote **quotes)
 	size_t		i;
 
 	i = 0;
+	if (!quotes[i])
+		return ;
 	while (quotes[i])
 	{
 		ft_dprintf(2, "%d : %c || ", quotes[i]->index, *(quotes[i]->c));
