@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/05 12:43:22 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/09/26 02:29:09 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/26 19:24:30 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ static int	sh_traverse_io_here_expansion(
 		if (!(quotes = ft_dy_tab_new(1)))
 			return (sh_perror(SH_ERR1_MALLOC, "sh_traverse_io_here_expansion"));
 		ret = sh_expansions_process(str, (*str) + *cursor, context, cursor, quotes);
+		ft_dy_tab_del(quotes);
 		context->shell->running = 1;
 		if (ret != SUCCESS && ret != STOP_CMD_LINE)
 		{
