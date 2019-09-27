@@ -70,7 +70,7 @@ SRCS			+=	sh_traverse.c sh_traverse_default.c \
 					sh_traverse_io_redirect.c sh_traverse_io_here.c \
 					sh_traverse_io_here_canonical.c \
 					sh_traverse_and_or.c sh_traverse_list.c \
-					sh_traverse_command.c
+					sh_traverse_command.c sh_traverse_subshell.c
 
 ################################################################
 ########				COMMAND_LINE					########

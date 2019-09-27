@@ -118,4 +118,9 @@ int		sh_traverse_semicol(
 */
 int		sh_traverse_simple_command(t_ast_node *node, t_context *context);
 
+/*
+** sh_traverse_subshell.c
+*/
+int		sh_traverse_subshell(t_ast_node *node, t_context *context);
+
 #endif
