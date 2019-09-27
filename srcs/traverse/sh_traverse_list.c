@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/28 16:49:38 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/27 21:14:28 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/27 21:49:40 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,10 @@ static int 	get_node_to_exec(t_ast_node *node, t_context *context)
 			node_to_exec = NULL;
 		}
 		else
+		{
+			// sh_print_token_list(curr_node->token, g_glob.cfg);
 			node_to_exec = curr_node;
+		}
 		lst = lst->next;
 	}
 	g_job_ctrl->job_added = 0;

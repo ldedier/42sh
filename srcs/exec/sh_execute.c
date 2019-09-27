@@ -38,7 +38,7 @@ static int	sh_exec_binaire(t_context *context)
 	}
 	else
 	{
-		ft_dprintf(g_job_ctrl->term_fd, "Adding process: %d %s to job %d\n", cpid, context->path, g_job_ctrl->curr_job->number);
+		ft_printf("Adding process: %d %s to job %d\n", cpid, context->path, g_job_ctrl->curr_job->number);
 		process_add(context, cpid);
 		set_child_pgid(cpid);
 		if (g_job_ctrl->curr_job->foreground == 1)

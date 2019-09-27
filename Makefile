@@ -6,7 +6,7 @@
 #    By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/09/27 21:29:13 by mdaoud           ###   ########.fr        #
+#    Updated: 2019/09/27 21:37:50 by mdaoud           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -279,7 +279,6 @@ SRCS			+=	sh_builtin.c sh_builtin_pwd.c \
 					sh_builtin_test.c sh_builtin_test_unary.c \
 					sh_builtin_test_binary.c sh_builtin_jobs.c \
 					sh_builtin_fg.c sh_builtin_bg.c \
-					sh_builtin_test_binary.c \
 					sh_builtin_fc.c \
 					sh_builtin_fc_l_synopsis.c \
 					sh_builtin_fc_s_synopsis.c \
