@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 14:25:01 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/07 09:36:42 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/10 16:40:18 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,21 @@
 
 int		sh_lexer_rule2(t_lexer *lexer)
 {
-	char	operators[LEX_OPERATORS_CHARS_LEN];
+	const int		offset[] = {1, 0xff00, 0xff0000};
 
-	ft_strcpy(operators, LEX_OPERATORS_CHARS);
-	if (lexer->quoted > 0 || lexer->current_id == LEX_TOK_UNKNOWN)
+	if (lexer->quoted > 0)
 		return (LEX_CONTINUE);
-	if (!ft_strchr(operators, lexer->current_id & 0x00ff))
+	if (!sh_lexer_is_operator_char(lexer->current_id & 0x00ff))
 		return (LEX_CONTINUE);
-	if (ft_strchr(operators, lexer->c) || lexer->c == '-')
+	if (sh_lexer_is_operator_char(lexer->c))
 	{
-		if (!(lexer->current_id & 0xff00))
+		if (sh_lexer_check_operator(lexer))
 		{
-			if (sh_lexer_is_operator(lexer->current_id + 0xff00 * lexer->c))
-				lexer->current_id += 0xff00 * lexer->c;
-			else
-				return (LEX_CONTINUE);
+			lexer->current_id += offset[lexer->tok_len] * lexer->c;
+			lexer->tok_len++;
+			return (LEX_OK);
 		}
-		else if (lexer->c == '-' && lexer->current_id == '<' + '<' * 0xff00)
-			lexer->current_id += 0xff0000 * lexer->c;
-		else
-			return (LEX_CONTINUE);
-		lexer->tok_len++;
-		return (LEX_OK);
+		return (LEX_CONTINUE);
 	}
 	return (LEX_CONTINUE);
 }

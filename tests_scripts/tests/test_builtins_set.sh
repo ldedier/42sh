@@ -1,4 +1,3 @@
-# **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
 #    test_builtins_set.sh                               :+:      :+:    :+:    #
@@ -11,14 +10,5 @@
 # **************************************************************************** #
 
 launch "set"
-
-	launch "parser"
-	launch "arguments"
-	launch "returned value"
-
-	launch "write set"
+	launch_show "write set"
 	test_launch "set 1>&-"
-# 	test_launch " -E 1>&-"
-# 	test_launch " -E 2>&-"
-# 	test_launch " 2>&-"
-

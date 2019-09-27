@@ -1,0 +1,7 @@
+3<<eof ./obj/fd_read 3
+Writting on 3
+eof
+
+5<<eof ./obj/fd_read 1
+Nothing
+eof

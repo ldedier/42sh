@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 12:05:14 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/28 13:53:41 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/25 07:20:46 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,13 @@
 **		Else : New malloced string, containing path
 */
 
-char		*sh_builtin_pwd_physical(int fd_err)
+char		*sh_builtin_pwd_physical(void)
 {
 	char	*pwd;
 
 	if (!(pwd = getcwd(NULL, CWD_LEN)))
 	{
-		sh_perrorn_fd(fd_err, "getcwd(3) error", "sh_builtin_pwd_logical");
+		sh_perrorn("getcwd(3) error", "sh_builtin_pwd_logical");
 		return (NULL);
 	}
 	return (pwd);
@@ -49,7 +49,7 @@ char		*sh_builtin_pwd_physical(int fd_err)
 **		Else : New malloced string, containing path
 */
 
-char		*sh_builtin_pwd_logical(t_dy_tab *env, int fd_err)
+char		*sh_builtin_pwd_logical(t_dy_tab *env)
 {
 	char	*pwd;
 
@@ -57,7 +57,7 @@ char		*sh_builtin_pwd_logical(t_dy_tab *env, int fd_err)
 	if (pwd && *pwd == '/' && !ft_strchr(pwd, '.'))
 		return (ft_strdup(pwd));
 	else
-		return (sh_builtin_pwd_physical(fd_err));
+		return (sh_builtin_pwd_physical());
 }
 
 /*
@@ -86,12 +86,12 @@ int			sh_builtin_pwd(t_context *context)
 	if (sh_builtin_parser(ft_strtab_len(argv), argv, args, &index))
 		return (sh_builtin_usage(args, argv[0], PWD_USAGE, context));
 	if (write(FD_OUT, NULL, 0))
-		return (sh_perror2_err_fd(FD_ERR, "write error",
+		return (sh_perror2_err("write error",
 			"export", SH_ERR1_BAD_FD));
 	if (args[PWD_P_OPT].value && args[PWD_P_OPT].priority > args[PWD_L_OPT].priority)
-		pwd = sh_builtin_pwd_physical(FD_ERR);
+		pwd = sh_builtin_pwd_physical();
 	else
-		pwd = sh_builtin_pwd_logical(context->env, FD_ERR);
+		pwd = sh_builtin_pwd_logical(context->env);
 	if (!pwd)
 		return (FAILURE);
 	ft_dprintf(FD_OUT, "%s\n", pwd);

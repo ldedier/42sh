@@ -6,39 +6,26 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/04 11:17:39 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/09/05 13:50:07 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/26 03:05:31 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-static void	backslash(char *input, int *index, int quoted)
-{
-	if (quoted)
-	{
-		if (input[*index + 1] == '$' || input[*index + 1] == '"'
-			|| input[*index + 1] == '\\')
-			ft_strdelchars(input, *index, 1);
-		else if (input[*index + 1] == '\n')
-			ft_strdelchars(input, *index, 2);
-	}
-	else
-		ft_strdelchars(input, *index, 1);
-	(*index) += 1;
-}
-
-static int	double_quote_removal(
-	char **input, int *index, int do_expansion, t_context *context)
+static int	double_quote(
+	char **input, int *index, t_context *context, t_dy_tab *quotes)
 {
 	int	ret;
 
-	ft_strdelchars(*input, *index, 1);
-	while ((*input)[*index] != '\"')
+	if (t_quote_add_new(quotes, *index, (*input) + *index))
+		return (sh_perror(SH_ERR1_MALLOC, "double_quote"));
+	(*index) += 1;
+	while ((*input)[*index] && (*input)[*index] != '\"')
 	{
-		if ((*input)[*index] == '$' && do_expansion)
+		if ((*input)[*index] == '$')
 		{
 			if ((ret = sh_expansions_process(
-				input, *input + *index, context, index)) != SUCCESS)
+				input, *input + *index, context, index, quotes)) != SUCCESS)
 			{
 				if (sh_env_update_ret_value_and_question(context->shell, ret))
 					return (FAILURE);
@@ -46,38 +33,47 @@ static int	double_quote_removal(
 			}
 		}
 		else if ((*input)[*index] == '\\')
-			backslash(*input, index, 1);
+		{
+			if (t_quote_add_new(quotes, *index, (*input) + *index))
+				return (sh_perror(SH_ERR1_MALLOC, "double_quote"));
+			(*index) += 2;
+		}
 		else
 			*index += 1;
 	}
 	if (!(*input)[*index])
 		return (ERROR);
-	ft_strdelchars(*input, *index, 1);
+	if (t_quote_add_new(quotes, *index, (*input) + *index))
+		return (sh_perror(SH_ERR1_MALLOC, "double_quote"));
+	(*index) += 1;
 	return (SUCCESS);
 }
 
-static int	unquoted_var(char **input, int *index, t_context *context, t_ast_node *node)
+static int	unquoted_var(char **input, int *index, t_context *context, t_dy_tab *quotes)
 {
 	int	ret;
 
 	if ((ret = sh_expansions_process(
-		input, *input + *index, context, index)) != SUCCESS)
+		input, *input + *index, context, index, quotes)) != SUCCESS)
 	{
 		if (sh_env_update_ret_value_and_question(context->shell, ret))
 			return (FAILURE);
 		return (ret);
 	}
-	sh_expansions_splitting(node, context);
 	return (SUCCESS);
-	(void)node;
 }
 
-static void	quote_removal(char **input, int *index)
+static int	simple_quote(char **input, int *index, t_dy_tab *quotes)
 {
-	ft_strcpy(*input + *index, *input + *index + 1);
-	while ((*input)[*index] != '\'')
+	if (t_quote_add_new(quotes, *index, (*input) + *index))
+		return (sh_perror(SH_ERR1_MALLOC, "simple_quote"));
+	(*index) += 1;
+	while ((*input)[*index] && (*input)[*index] != '\'')
 		*index += 1;
-	ft_strcpy(*input + *index, *input + *index + 1);
+	if (t_quote_add_new(quotes, *index, (*input) + *index))
+		return (sh_perror(SH_ERR1_MALLOC, "simple_quote"));
+	(*index) += 1;
+	return (SUCCESS);
 }
 
 /*
@@ -94,7 +90,7 @@ static void	quote_removal(char **input, int *index)
 */
 
 int			sh_expansions_scan(char **input, int index,
-	int do_expansion, t_context *context, t_ast_node *node)
+	t_context *context, t_dy_tab *quotes)
 {
 	int	ret;
 
@@ -105,19 +101,27 @@ int			sh_expansions_scan(char **input, int index,
 	if ((*input)[index] == '\0')
 		return (SUCCESS);
 	if ((*input)[index] == '\'')
-		quote_removal(input, &index);
+		simple_quote(input, &index, quotes);
 	else if ((*input)[index] == '"')
 	{
-		if ((ret = double_quote_removal(
-			input, &index, do_expansion, context)) != SUCCESS)
+		if ((ret = double_quote(
+			input, &index, context, quotes)) != SUCCESS)
 			return (ret);
 	}
-	else if ((*input)[index] == '$' && do_expansion)
+	else if ((*input)[index] == '$')
 	{
-		if ((ret = unquoted_var(input, &index, context, node)) != SUCCESS)
+		if ((ret = unquoted_var(input, &index, context, quotes)) != SUCCESS)
 			return (ret);
+	}
+	else if ((*input)[index] == '!')
+	{
+
 	}
 	else
-		backslash(*input, &index, 0);
-	return (sh_expansions_scan(input, index, do_expansion, context, node));
+	{
+		if (t_quote_add_new(quotes, index, (*input) + index))
+			return (sh_perror(SH_ERR1_MALLOC, "double_quote"));
+		index += 2;
+	}
+	return (sh_expansions_scan(input, index, context, quotes));
 }

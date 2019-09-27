@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 11:08:27 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/12 01:18:58 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/09 18:37:18 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,12 @@
 typedef struct s_shell		t_shell;
 typedef struct s_ast_node	t_ast_node;
 
+typedef enum		e_lex_mode
+{
+	E_LEX_STANDARD,
+	E_LEX_AUTOCOMPLETION,
+}					t_lex_mode;
+
 typedef struct		s_lexer
 {
 	char			c;
@@ -52,6 +58,7 @@ typedef struct		s_lexer
 	t_dy_tab		*env;
 	t_dy_tab		*vars;
 	t_shell			*shell;
+	t_lex_mode		mode;
 }					t_lexer;
 
 typedef struct		s_token_union
@@ -81,7 +88,8 @@ typedef struct		s_token
 /*
 ** sh_lexer.c
 */
-int					sh_lexer(char *input, t_list **tokens, t_shell *shell);
+int					sh_lexer(
+	char *input, t_list **tokens, t_shell *shell, t_lex_mode mode);
 
 /*
 ** sh_lexer_rule_1.c
@@ -137,7 +145,8 @@ int					sh_lexer_rule9(t_lexer *lexer);
 /*
 ** sh_lexer_rule_tools.c
 */
-int					sh_lexer_is_operator(int op);
+int					sh_lexer_is_operator_char(int c);
+int					sh_lexer_check_operator(t_lexer *lexer);
 
 /*
 ** t_lexer.c
@@ -158,7 +167,7 @@ void				t_token_free(t_token *token);
 ** t_token_list.c
 */
 t_list				*t_token_node_new(int id, char *value);
-void				t_token_free_list(t_list *head);
+void				t_token_free_list(t_list **head);
 void				sh_free_token_lst(void *t, size_t dummy);
 t_token				*sh_get_token_by_index(
 	t_list *tokens, int index, t_list **prev);

@@ -6,7 +6,7 @@
 /*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 10:41:47 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/09/09 10:41:49 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/09/23 16:40:31 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,6 @@ static int			sh_process_redirection(
 }
 
 /*
- * Create and add redirection in the redirection list
- * We check if the redirection already exist
- * before create a new one.
- * The redirection is considerate aleardy existing if the redirected_fd (left)
- * and the type (input or output) are the same.
- *
  * If it already exist and the redirect fd (right fd) was closed, we have to
  * re-close it.
 */

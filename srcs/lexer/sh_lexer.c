@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/07 16:11:41 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/14 19:14:37 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/23 20:44:00 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static int		sh_lexer_run_rules(t_lexer *lexer)
 
 	i = 0;
 	if (sh_verbose_lexer())
-		ft_dprintf(2, "lexer in progress on :%.2c\t", lexer->c);
+		ft_dprintf(2, CYAN"lexer in progress on :%.2c\n"EOC, lexer->c);
 	while ((ret = rules[i](lexer)) == LEX_CONTINUE && i < LEX_RULES_LEN)
 		i++;
 	if (sh_verbose_lexer())
@@ -67,12 +67,14 @@ static int		sh_lexer_run_rules(t_lexer *lexer)
 	return (ret);
 }
 
-int				sh_lexer(char *input, t_list **tokens, t_shell *shell)
+int				sh_lexer(char *input, t_list **tokens, t_shell *shell,
+		t_lex_mode mode)
 {
 	t_lexer		lexer;
 	int			ret;
 
 	ft_bzero(&lexer, sizeof(t_lexer));
+	lexer.mode = mode;
 	lexer.shell = shell;
 	if (!(lexer.input = ft_strdup(input)))
 		return (FAILURE);
@@ -85,7 +87,7 @@ int				sh_lexer(char *input, t_list **tokens, t_shell *shell)
 	free(lexer.input);
 	if (ret != LEX_END)
 	{
-		t_token_free_list(lexer.list);
+		t_token_free_list(&lexer.list);
 		return (ret);
 	}
 	ret = sh_lexer_final_check(&lexer);

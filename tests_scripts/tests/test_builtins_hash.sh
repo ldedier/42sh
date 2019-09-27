@@ -23,16 +23,22 @@ launch "hash"
 	# test_launch "hash ls" "hash -e -r -e" "hash"
 	# test_launch "hash /bin/ls" "hash date" "hash"
 	# test_launch "hash ls ls ls ls date" "hash" "hash -r" "hash"
-	# test_launch "hash -r ls -r"
-	# test_launch "hash -r -r ls -r -r ls"
+	test_launch "hash ls ls ls ls date" "hash -r" "hash"
+	test_launch "hash -r ls -r"
+	test_launch "hash -r -r ls -r -r ls"
 	# test_launch "hash nothing ls" "hash"
-	# test_launch "hash -e"
+	test_launch "hash -e"
 
-	launch "parser"
-	launch "arguments"
-	launch "returned value"
+	launch_show 'modifying PATH'
+	test_launch 'hash ls' 'unset PATH' 'hash'
+	test_launch 'hash ls' 'PATH=/bin' 'hash'
+	test_launch 'hash ls' 'export PATH=/' 'hash'
+	# test_launch 'hash ls' 'export PATH' 'hash'
+	test_launch 'hash ls' 'export PATH=' 'hash'
+	test_launch 'hash ls' 'PATH=' 'hash'
+	test_launch 'hash ls' 'PATH="$PATH"' 'hash'
 
-	launch "write hash"
+	launch_show "write hash"
 	test_launch "hash 1>&-"
 	test_launch "hash -E 1>&-"
 	test_launch "hash -E 2>&-"

@@ -12,11 +12,11 @@
 
 # Redirections tests
 launch "Parameter expansion"
-	launch "General"
+	launch_show "General"
 	test_launch 'foo=okalm bar=tamer' 'echo ${foo}' 'echo ${bar}' 'echo ${foo}${bar}'
 	test_launch ''
 
-	launch ":- and -"
+	launch_show ":- and -"
 	## :- and -
 	test_launch 'var=wea' 'echo ${var:-okalm}'
 	test_launch 'var=wea' 'echo ${var-okalm}'
@@ -38,7 +38,7 @@ launch "Parameter expansion"
 	test_launch 'echo ${-asd}'
 	test_launch 'echo ${:-asd}'
 
-	launch ":= and ="
+	launch_show ":= and ="
 	## := and =
 	test_launch 'var=wea' 'echo ${var:=okalm}'
 	test_launch 'var=wea' 'echo ${var=okalm}'
@@ -60,7 +60,7 @@ launch "Parameter expansion"
 	test_launch 'echo ${=asd}'
 	test_launch 'echo ${:=asd}'
 
-	launch ":? and ?"
+	launch_show ":? and ?"
 	## :? and ?
 	test_launch 'var=wea' 'echo ${var:?okalm}' 'ls'
 	test_launch 'var=wea' 'echo ${var?okalm}' 'ls'
@@ -89,7 +89,7 @@ launch "Parameter expansion"
 	test_launch 'echo ${?asd}' 'ls '
 	test_launch 'echo ${:?asd}' 'ls'
 
-	launch ":+ and +"
+	launch_show ":+ and +"
 	## :+ and +
 	test_launch 'var=wea' 'okalm=tamer' 'echo ${var:+okalm}'
 	test_launch 'var=wea' 'echo ${var:+okalm}'
@@ -116,7 +116,7 @@ launch "Parameter expansion"
 	test_launch 'echo ${:+asd}'
 
 
-	launch "# and ##"
+	launch_show "# and ##"
 	test_launch 'param="Okalmos Speculos"' 'echo ${param#}'
 	test_launch 'param="Okalmos Speculos"' 'echo ${#}'
 	test_launch 'param="Okalmos Speculos"' 'echo ${#os}'
@@ -144,7 +144,7 @@ launch "Parameter expansion"
 	test_launch 'param="Okalmos Speculos"' 'echo ${param##OkalmosSpeculos}'
 	test_launch 'param="Okalmos Speculos"' 'echo ${var##Okalmos Speculos}'
 
-	launch "% and %%"
+	launch_show "% and %%"
 	test_launch 'param="Okalmos Speculos"' 'echo ${param%}'
 	test_launch 'param="Okalmos Speculos"' 'echo ${%}'
 	test_launch 'param="Okalmos Speculos"' 'echo ${%os}'
@@ -174,18 +174,37 @@ launch "Parameter expansion"
 	test_launch 'param="Okalmos Speculos"' 'echo ${param%%OkalmosSpeculos}'
 	test_launch 'param="Okalmos Speculos"' 'echo ${var%%Okalmos Speculos}'
 
-	launch "Quoting tests"
+	launch_show "expansions in word"
+	test_launch 'TOTO=hoho ; echo ${TOTO##"ho"} ; echo ${TOTO##\ho} ; echo ${TOTO##$TOTO}'
+	test_launch 'TOTO=hoho ; echo ${TOTO%%"ho"} ; echo ${TOTO%%\ho} ; echo ${TOTO%%$TOTO}'
+	test_launch 'param=Okalmos word=VARIABLE' 'echo ${param:-$word} ; echo ${param:-${word}}'
+	test_launch 'param=Okalmos word=VARIABLE' 'echo ${noparam:-$word} ; echo ${noparam:-${word}}'
+	test_launch 'param=Okalmos word=VARIABLE' 'echo ${param:+$word} ; echo ${param:+${word}}'
+	test_launch 'param=Okalmos word=VARIABLE' 'echo ${noparam:+$word} ; echo ${noparam:+${word}}'
+	test_launch 'param=Okalmos word=VARIABLE' 'echo ${param:?$word} ; echo ${param:?${word}}'
+	test_launch 'param=Okalmos word=VARIABLE' 'echo ${noparam:?$word} ; echo ${noparam:?${word}}'
+	test_launch 'param=Okalmos word=VARIABLE' 'echo ${param:=$word} ; echo ${param:=${word}}'
+	test_launch 'param=Okalmos word=VARIABLE' 'echo ${noparam:=$word} ; echo ${noparam:=${word}}'
+	test_launch 'echo ${param:-~} ; echo ${param:-~}'
+	test_launch 'echo ${noparam:-~} ; echo ${noparam:-~}'
+	test_launch 'echo ${param:-"~"} ; echo ${param:-"~"}'
+	test_launch 'echo ${noparam:-"~"} ; echo ${noparam:-"~"}'
+
+
+	test_launch 'param=Okalmos word=VARIABLE'
+	test_launch ''
+
+	launch_show "Quoting tests"
 	test_launch 'echo ${""}'
 	test_launch 'echo ${\}ls:=sd}'
 	test_launch 'echo ${"wd"sd:+okalm}'
 	test_launch 'wd=adq''echo ${"wd"sd:+okalm}'
 	test_launch 'echo ${"wd"sd:+okalm}'
 
-	launch "Random"
+	launch_show "Random"
 	test_launch 'echo ${=:}' 'echo ${?:}' 'echo ${-:}' 'echo ${+:}'
 	test_launch 'echo ${::}' 'echo ${:==}'  'echo ${=:::+}'  'echo ${+::=}'  'echo ${=::-}' 
 	test_launch 'echo ${}'
-	test_launch 'echo \$}'
 	test_launch 'echo ${()}'
 	test_launch 'echo ${asdw+}'
 	test_launch 'echo ${:asd}'
@@ -204,11 +223,14 @@ launch "Parameter expansion"
 	test_launch 'ls ~/${}'
 	test_launch 'ls ~/$'
 
-	test_launch 'echo ${'
-	test_launch 'echo ${{{{'
 
+	launch_show "random"
+		test_launch 'param=OkalmosSpeculos' 'echo ${param%\%Speculos}'
+		test_launch 'param=OkalmosSpeculos' 'echo ${param%"%Speculos"}'
+		test_launch 'param=OkalmosSpeculos' 'echo ${param%"#Speculos"}'
+		test_launch 'param=OkalmosSpeculos' 'echo ${param#\#Okalmos}'
 
-	launch "Field splitting Errors"
+	launch_show "Field splitting Errors"
 		test_launch 'param="Okalmos Speculos"' 'echo ${param#Speculos}'
 		test_launch 'param="Okalmos Speculos"' 'echo ${param#Okalmos}'
 		test_launch 'param="Okalmos Speculos"' 'echo ${param##Speculos}'
@@ -228,5 +250,7 @@ launch "Parameter expansion"
 	# test_launch 'echo ${$$}'
 	# test_launch 'param="Okalmos Speculos"' 'echo ${##param}'
 	# test_launch 'param="Okalmos Speculos"' 'echo ${##os}'
-
+	# test_launch 'echo ${'
+	# test_launch 'echo ${{{{'
+	# test_launch 'echo \$}'
 finish

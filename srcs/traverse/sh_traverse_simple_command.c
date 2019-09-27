@@ -6,23 +6,21 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/21 17:02:35 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/27 21:28:49 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
 /*
-** sh_traverse_sc_no_slash_cmd:
-**	Function launching the execution of a process if context->params->tbl[0]
-**	do not contain a path (does not contain a '/' character)
-**	It tries to launch any builtin, then look in $PATH env variable.
-**	If any command was found it is launched
-**	(Final else return SUCCESS to let cmd || cmd works)
+** sh_traverse_simple_command
+** Search and apply redirection, then try to execute command calling
+** sh_execute_redirection.
+** After the execution call, doesn't matter if it succeed or not,
+** we undo fd redirection.
 **
 ** return  :
-**	FAILURE : malloc error
-**	ERROR : command not found
+**	FAILURE : malloc error or issue with dup2
 **	any value returned by a builtin executed or a process launched
 */
 

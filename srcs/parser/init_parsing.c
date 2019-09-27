@@ -15,14 +15,11 @@
 int		sh_init_parsing(t_lr_parser *parser)
 {
 	g_glob.cfg = &parser->cfg;
-	parser->ast_root = NULL;
-	parser->cst_root = NULL;
 	parser->states = NULL;
 	parser->last_state_ptr = NULL;
 	parser->nb_states = -1;
 	parser->lr_tables = NULL;
 	parser->stack = NULL;
-	parser->tokens = NULL;
 	if (!(parser->states_by_items = ft_hash_table_new(100000)))
 		return (1);
 	if (init_context_free_grammar(&parser->cfg))

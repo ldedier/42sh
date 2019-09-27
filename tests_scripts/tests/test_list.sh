@@ -12,19 +12,19 @@
 
 launch "Lists of commands"
 
-	launch ";"
+	launch_show ";"
 	test_launch 'ls - ; pwd'
 	test_launch 'asd ; asd a ; qweqweqw ; pwd ; ls /'
 	test_launch 'echo okalm ; ls nofile ; pwd ; asdqw ; cat nofile'
 
-	launch "&&"
+	launch_show "&&"
 	test_launch 'ls && pwd'
 	test_launch 'ls nofile && pwd && echo okalm'
 	test_launch 'echo okalm && ls nofile && echo okalm'
 	test_launch 'echo okalm && ls && echo okalm'
 	test_launch 'ecasd okalm && ls && echo okalm'
 
-	launch "||"
+	launch_show "||"
 	test_launch 'ls || pwd'
 	test_launch 'ls nofile || echo okalm'
 	test_launch 'ls nofile || echo okalm || echo okalm'
@@ -35,7 +35,7 @@ launch "Lists of commands"
 	test_launch 'cat <&nofile || echo $?'
 	test_launch 'cat <&nofile && echo $?'
 
-	launch "pipes in lists"
+	launch_show "pipes in lists"
 	test_launch "echo ls -la | pwd ; echo 1>&- 11111 && echo 2222222 "
 	test_launch "cat nofile | pwd ; echo 1>&- 11111 && echo 2222222 "
 	test_launch "echo ls -la | okalmtamer ; echo 1>&- 11111 && echo 2222222 "

@@ -6,13 +6,21 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:31:30 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/04 19:18:31 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/23 14:51:43 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
 int			sh_traverse_cmd_name(t_ast_node *node, t_context *context)
+{
+	return (sh_traverse_cmd_suffix(node, context));
+}
+
+// merging corr-redirections and new field splitting , kept this code to check tit works
+// need to delete it then
+
+/*
 {
 	t_ast_node	*child;
 	int			ret;
@@ -38,3 +46,4 @@ int			sh_traverse_cmd_name(t_ast_node *node, t_context *context)
 	else
 		return (SUCCESS);
 }
+*/

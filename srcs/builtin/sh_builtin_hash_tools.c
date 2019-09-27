@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 19:23:54 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/22 19:01:23 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/25 07:23:49 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,7 @@ int			sh_builtin_hash_add_utility(t_context *context, char *utility)
 		if (!ret && !(new_context.builtin = sh_builtin_find(&new_context)))
 			ret = sh_traverse_sc_search_in_path(&new_context);
 		if (!ret && !new_context.builtin && !new_context.path)
-			ret = sh_perror2_err_fd(
-				FD_ERR, utility, "hash", "not found");
+			ret = sh_perror2_err(utility, "hash", "not found");
 		t_context_free_content(&new_context);
 		return (ret);
 	}

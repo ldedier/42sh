@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 launch "export"
-	launch "parser"
+	launch_show "parser"
 	test_launch "unset SHLVL _ OLDPWD" "export"
 	test_launch "unset SHLVL _ OLDPWD" "export -E"
 	test_launch "unset SHLVL _ OLDPWD" "export -p"
@@ -22,18 +22,15 @@ launch "export"
 	test_launch "unset SHLVL _ OLDPWD" "export -p -p -p -p"
 	test_launch "unset SHLVL _ OLDPWD" "export -p -p -p -p --"
 
-	launch "arguments"
-	test_launch 'unset SHLVL _ OLDPWD" "export var; echo $?' "export"
-	test_launch 'unset SHLVL _ OLDPWD" "export PWD OLDPWD; echo $?' "export"
-	test_launch 'unset SHLVL _ OLDPWD" "export var=okalm; echo $?' "export"
-	test_launch 'unset SHLVL _ OLDPWD" "export va; echo $?' "export"
+	launch_show "arguments"
+	test_launch 'unset SHLVL _ OLDPWD' 'export var; echo $?' "export"
+	test_launch 'unset SHLVL _ OLDPWD' 'export PWD OLDPWD; echo $?' "export"
+	test_launch 'unset SHLVL _ OLDPWD' 'export var=okalm; echo $?' "export"
+	test_launch 'unset SHLVL _ OLDPWD' 'export va; echo $?' "export"
 	test_launch 'unset SHLVL _ OLDPWD' 'export PWD var=\"okalmose speculos\"; echo $?' "export"
 
-	launch "write"
+	launch_show "write"
 	test_launch "unset SHLVL _ OLDPWD" "export 1>&-"
 	test_launch "unset SHLVL _ OLDPWD" "export -E 1>&-"
 	test_launch "unset SHLVL _ OLDPWD" "export -E 2>&-"
 	test_launch "unset SHLVL _ OLDPWD" "export 2>&-"
-
-	launch "returned value"
-

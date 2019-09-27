@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/04 21:42:55 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/27 21:15:11 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/27 21:27:56 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,21 +26,27 @@ void	sh_populate_token(t_token *token, t_symbol_id id,
 	token->value = NULL;
 }
 
-int		sh_parse_token_list(t_lr_parser *parser)
+int		sh_parse_token_list(t_lr_parser *parser, t_list **tokens,
+			t_ast_node **ast_root, t_ast_node **cst_root)
 {
 	int ret;
 
-	sh_free_parser_trees(parser);
-	if ((ret = sh_lr_parse(parser)) != SUCCESS)
+	if ((ret = sh_lr_parse(parser, tokens, ast_root, cst_root)) != SUCCESS)
+	{
+		ft_lstdel(&parser->stack, sh_free_stack_item_lst);
 		return (ret);
+	}
 	else
 	{
 		if (sh_verbose_ast())
 		{
 			ft_dprintf(2, "OK !\n");
 			ft_dprintf(2, "\nAST:\n");
-			sh_print_ast(parser->ast_root, 0);
+			sh_print_ast(*ast_root, 0);
+			ft_dprintf(2, "\nCST:\n");
+			sh_print_ast(*cst_root, 0);
 		}
+		ft_lstdel(&parser->stack, sh_free_stack_item_lst);
 		return (SUCCESS);
 	}
 }
@@ -81,19 +87,16 @@ int		sh_parser(t_list *tokens, t_shell *shell)
 	int		ret;
 
 	sh_populate_token(&token, END_OF_INPUT, 0);
-	ft_lstaddnew_last(&tokens, &token, sizeof(t_token));
-	ft_lstdel(&shell->parser.tokens, sh_free_token_lst);
-	check_ampersand_at_eoc(tokens);
+	ft_lstaddnew_last(tokens, &token, sizeof(t_token));
 	if (sh_verbose_ast())
 	{
 		ft_dprintf(2, "input tokens: ");
-		sh_print_token_list(tokens, &shell->parser.cfg);
+		sh_print_token_list(*tokens, &shell->parser.cfg);
 	}
-	shell->parser.tokens = tokens;
-	if ((ret = sh_parse_token_list(&shell->parser)) != SUCCESS)
+	if ((ret = sh_parse_token_list(&shell->parser, tokens,
+		ast_root, cst_root)) != SUCCESS)
 	{
 		sh_env_update_ret_value(shell, SH_RET_SYNTAX_ERROR);
-//		sh_perror_err("syntax error", NULL);
 	}
 	return (ret);
 }

@@ -12,7 +12,7 @@
 
 ## Expansions tests
 launch "Expansions"
-	launch "Random"
+	launch_show "Random"
 	test_launch 'echo $var'
 									test_launch 'echo $TERM'
 	test_launch 'var=Okalm' 'echo $var'
@@ -24,13 +24,13 @@ launch "Expansions"
 	test_launch '$novar ls'
 	test_launch	'$pwd $pwd'
 
-	launch "List tests"
+	launch_show "List tests"
 	test_launch 'ahsdiouashdiuasdhioasjdopasdjoldniouhjnqwioejqnwoel=adisuhiduashnodklajsodiajlsdlkasasdhuasodiu' 'echo $ahsdiouashdiuasdhioasjdopasdjoldniouhjnqwioejqnwoel='
 
 finish
 
 launch "Variables"
-	launch "Basic"
+	launch_show "Basic"
 	test_launch '=qsda'
 	test_launch 'var=okalm ; echo $var'
 	test_launch 'var=qwe 	&& echo $var'
@@ -44,7 +44,7 @@ launch "Variables"
 	test_launch '-=qwe' '--=qwe' '"pwe=qwe"'
 	test_launch 'var=pwd' '$var'
 	
-	launch "#"
+	launch_show "#"
 	test_launch 'var=Okalm' 'echo $#var $var'
 	test_launch 'var=' 'echo $#var $var'
 	test_launch 'echo $s#var $var'
@@ -60,7 +60,7 @@ launch "Variables"
 	test_launch 'echo #~$~d#v#ar $v#ar#'
 	test_launch 'echo #~$d~#~v#~ar $v~#ar#'
 
-	launch "Special Variables"
+	launch_show "Special Variables"
 	test_launch 'echo $?'
 	test_launch 'echo $? ; ls ; echo $?'
 	test_launch 'echo $? ; ls asdqwe ; echo $?'
@@ -71,7 +71,7 @@ launch "Variables"
 	test_launch 'echo $#' '#=123' 'echo $#'
 	test_launch 'echo $$ > buffer1' '$=1' 'echo $$>buffer2' 'diff buffer1 buffer2' 'rm buffer1 buffer2'
 
-	launch 'assignments'
+	launch_show 'assignments'
 	test_launch 'PATH='\''$PATH'\'' ; echo $PATH'
 	test_launch 'PATH='\''$var'\'' ; var='\''$PATH'\'' ; echo $PATH$var$PATH$var$PATH'
 	test_launch 'var=$HOME ; echo $var'

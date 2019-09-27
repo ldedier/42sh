@@ -1,0 +1,3 @@
+IFS="S"
+var='\"\"SA      ta\"\"\$nas'
+echo $var

@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 11:57:59 by jmartel           #+#    #+#             */
-/*   Updated: 2019/07/22 23:31:25 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/25 07:23:26 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@ static int	sh_builtin_echo_write(char *str)
 	ret = write(FD_OUT, str, len);
 	if (ret == -1)
 	{
-		return (sh_perror2_err_fd(FD_ERR, "echo", "write error",
-			SH_ERR1_BAD_FD));
+		return (sh_perror2_err("echo", "write error", SH_ERR1_BAD_FD));
 	}
 	return (SUCCESS);
 }

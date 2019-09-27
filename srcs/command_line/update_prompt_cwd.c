@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   update_prompt_cwd.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/31 15:58:24 by ldedier           #+#    #+#             */
-/*   Updated: 2019/07/31 15:58:42 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/25 07:21:58 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int		update_prompt_cwd(t_shell *shell, char **new_prompt)
 
 	if (!(*new_prompt = ft_strdup("→ ")))
 		return (sh_perror("cwd error", "update_prompt_cwd(3)"));
-	if (!(cwd = sh_builtin_pwd_logical(shell->env, 2)))
+	if (!(cwd = sh_builtin_pwd_logical(shell->env)))
 	{
 		return (ft_free_turn(*new_prompt,
 			sh_perror("Can't determine current working directory",

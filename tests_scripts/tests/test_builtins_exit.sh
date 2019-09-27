@@ -11,6 +11,7 @@
 # **************************************************************************** #
 
 launch "exit"
+	launch_show "parser"
 	test_launch 'exit ; ls'
 	test_launch 'exit' 'ls'
 	test_launch 'exit && ls'
@@ -21,12 +22,12 @@ launch "exit"
 	test_launch 'echo tamer ; exit 3 ; echo $?'
 	test_launch 'exit 123 ; echo $?'
 	
+	launch_show "arguments"
 	test_launch 'exit asd qwe ; ls'
 	test_launch 'exit 15 2 ; ls'
 	test_launch 'exit 13 asd ; ls'
 	test_launch 'exit eqw 13 ; ls'
 	test_launch 'exit -1 ; ls '
-
 	test_launch 'exit asd qwe || ls'
 	test_launch 'exit 15 2 || ls'
 	test_launch 'exit 13 asd || ls'
@@ -49,7 +50,11 @@ launch "exit"
 	test_launch 'false && exit 18'
 	test_launch 'exit 1 | exit 2 | exit 3 | ls'
 
-	launch "parser"
-	launch "arguments"
-	launch "returned value"
-	launch "write echo"
+	launch_show "returned value"
+
+	launch_show "write error"
+	test_launch "exit 1>&-"
+	test_launch "exit Okalm 1>&-"
+	test_launch "exit Okalm 2>&-"
+	test_launch "exit 2 2 2 2>&-"
+	test_launch "exit 2 2 2 2>&-"

@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 14:16:12 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/26 03:28:03 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/27 21:22:05 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@
 # define SH_ERR1_INTERN_ERR		"System internal error"
 # define SH_ERR1_FORK			"Could not fork, too many processes are running"
 # define SH_ERR1_CMD_NOT_FOUND	"Command not found"
-# define SH_ERR1_HISTORIC		"Could not open the historic file"
+# define SH_ERR1_HISTORY		"Could not open the history file"
+# define SH_ERR1_EDIT			"Could not open the edit file"
 # define SH_ERR1_TTY			"Could not open the tty file descriptor"
 # define SH_ERR1_PERM_DENIED	"Permission denied"
 # define SH_ERR1_TOO_MANY_ARGS	"Too many arguments"
@@ -46,9 +47,10 @@
 # define SH_BLT_BINAREXP		"Binary operator expected"
 # define SH_BLT_NOTWELLFORM		"Sorry your command are not well formatted"
 # define SH_BLT_INTEGER			"Integer expression expected"
+# define SH_BLT_HISTORY_RANGE	"fc: history specification out of range"
+# define SH_BLT_NO_CMD_FOUND	"fc: no command found"
 
-# define SH_BAD_SUBSTITUTE		"bad substitution"
-# define SH_NO_SUCH_JOB			"no such job"
+# define SH_BAD_SUBSTITUTE		"Bad subsitution"
 /*
 ********************************************************************************
 */
@@ -59,8 +61,6 @@
 int		sh_perror(const char *error, const char *suffix);
 int		sh_perror_err(const char *error, const char *suffix);
 void	*sh_perrorn(const char *error, const char *suffix);
-int		sh_perror_err_fd(int fd, const char *error, const char *suffix);
-void	*sh_perrorn_fd(int fd, const char *error, const char *suffix);
 
 /*
 ** sh_perror2.c
@@ -71,16 +71,5 @@ int		sh_perror2_err(
 	const char *error, const char *prefix, const char *suffix);
 void	*sh_perror2n(
 	const char *error, const char *prefix, const char *suffix);
-int		sh_perror2_err_fd(
-	int fd, const char *error, const char *prefix, const char *suffix);
-void	*sh_perror2n_fd(
-	int fd, const char *error, const char *prefix, const char *suffix);
-
-/*
-** sh_perror_fd.c
-*/
-int		sh_perror2_fd(
-	int fd, const char *error, const char *prefix, const char *suffix);
-int		sh_perror_fd(int fd, const char *error, const char *suffix);
 
 #endif

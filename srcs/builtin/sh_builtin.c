@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 19:04:16 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/21 23:33:43 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/27 21:22:35 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ t_builtin_container		*get_builtins(void)
 		{ "jobs", sh_builtin_jobs},
 		{ "fg", sh_builtin_fg},
 		{ "bg", sh_builtin_bg},
+		{ "fc", sh_builtin_fc },
 #if __APPLE__ && __MACH__
 		{ "🐑", sh_builtin_🐑 }
 #endif

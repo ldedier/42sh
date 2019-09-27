@@ -32,8 +32,9 @@ pink=\\033[35m cyan=\\033[36m grey=\\033[37m eoc=\\033[0m
 path=".."
 ## Executable name
 exec="42sh"
-## Directory for valgrind logs
-log_dir="./logs/" # watchout we rm -rf this
+## Directory for logs
+initial_log_dir="./logs/" # watchout we rm -rf this
+log_dir=${initial_log_dir}
 ## Directory used to store local configurtation and binaries
 obj_dir="./obj"
 ## Directory used to store binaries source code
@@ -44,9 +45,9 @@ suppressions_file="${obj_dir}/my_supp.supp"
 error_exit_code=247
 
 ## Options initialisation
-test_stderr="" verbose="ok" show_error="" test_returned_values="" file=""
+test_stderr="" verbose="ok" show_error="" test_returned_values="" file="" logging="ok"
 ## Counters initialisation
-passed=0 tried=0 diff_passed=0 diff_tried=0 logging=0
+passed=0 tried=0 diff_passed=0 diff_tried=0 
 
 ## Parse options given as arguments
 for arg in $@ ; do
@@ -58,9 +59,6 @@ for arg in $@ ; do
 
 	if [ "$arg" = "-2" ] ; then
 		test_stderr="ok" ; fi
-
-	if [ "$arg" = "-l" ] ; then
-		logging="ok" ; fi
 
 	if [ "$arg" = "-q" ] ; then
 		verbose="" ; fi
@@ -83,7 +81,7 @@ make -C $path && cp "${path}/${exec}" . || exit
 source ${src_dir}/functions.sh
 
 ## Call initialisation functions
-del_historic
+del_history
 compile_executable
 if [ ! -z $valgrind ] ; then init_valgrind ; fi
 
@@ -93,10 +91,12 @@ trap clean_and_exit 2
 ## Call tests files : all or specified one
 if [ -n "$file" ] ; then
 	for f in $file ; do
+		echo -e ${blue}${f}${eoc}
 		source $f
 	done
 else
 	for file in `ls tests/test_*.sh` ; do
+		echo -e ${blue}${file}${eoc}
 		source $file
 	done
 fi
