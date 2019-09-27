@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/31 16:05:53 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/25 18:27:46 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/27 20:16:55 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,22 @@ void	sigtstp_handler(int signal)
 	}
 }
 
+static void		handler_sigchld(int signo)
+{
+	if (signo == SIGCHLD)
+	{
+		job_notify();
+	}
+}
 static void		init_signal2(void (*default_func)(int))
 {
 	signal(SIGURG, transmit_sig_no_motion);
 	signal(SIGTSTP, sigtstp_handler);
 	signal(SIGSTOP, handle_stp);
 	signal(SIGCONT, handle_cont);
-	signal(SIGCHLD, transmit_sig_no_motion);
+	// signal(SIGCHLD, transmit_sig_no_motion);
+	// signal(SIGCHLD, SIG_IGN);
+	signal(SIGCHLD, handler_sigchld);
 	signal(SIGTTIN, transmit_sig_no_motion);
 	signal(SIGTTOU, transmit_sig_no_motion);
 	signal(SIGIO, transmit_sig_no_motion);

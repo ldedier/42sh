@@ -16,7 +16,8 @@
 void		sh_execute_binary(t_context *context)
 {
 	// reset signals AFTER tcsetpgrp
-	reset_signals();
+	// reset_signals();
+
 	ft_dprintf(g_job_ctrl->term_fd, "Executing \"%s\"\t\tpid: %d, ppid: %d, pgid: %d\n",
 		context->path, getpid(), getppid(), getpgid(getpid()));
 	execve(context->path, (char **)context->params->tbl,

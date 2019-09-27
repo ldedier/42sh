@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/04 21:42:55 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/26 04:48:30 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/27 21:15:11 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ static void		check_ampersand_at_eoc(t_list *token_lst)
 		if (tok->id == END_OF_INPUT && (((t_token *)ptr->content)->id == LEX_TOK_AND))
 		{
 			g_job_ctrl->ampersand_eol = 1;
-			ft_dprintf(g_job_ctrl->term_fd, "AMPERSAND\n");
 			return ;
 		}
 		else

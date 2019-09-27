@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 01:05:04 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/26 02:08:01 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/27 21:15:55 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,20 +20,8 @@ static void		job_check_updates_nohang(void)
 
 	pid = waitpid(-1, &status, WUNTRACED | WNOHANG);
 	while (!job_check_changes(pid, status))
-		pid = waitpid(-1, &status, WUNTRACED);
+		pid = waitpid(-1, &status, WUNTRACED | WNOHANG);
 }
-
-// static void		report_completed_or_terminated(t_job *j)
-// {
-// 	t_process	*p;
-
-// 	p = j->first_process;
-// 	if (p && p->next == NULL && (p->terminated == 1))
-// 		job_print_status(j, "Done");
-// 	else
-// 		job_print_status(j, "Terminated");
-
-// }
 
 static void		report_completed_job_status(t_job *j)
 {

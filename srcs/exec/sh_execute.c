@@ -20,13 +20,13 @@ static int	sh_exec_binaire(t_context *context)
 
 	if (sh_pre_execution() != SUCCESS)
 		return (FAILURE);
-	if ((cpid = fork()) == -1)
-		return (sh_perror(SH_ERR1_FORK, "sh_process_process_execute"));
 	if (g_job_ctrl->job_added == 0)
 	{
 		jobs_add();
 		g_job_ctrl->job_added = 1;
 	}
+	if ((cpid = fork()) == -1)
+		return (sh_perror(SH_ERR1_FORK, "sh_process_process_execute"));
 	if (cpid == 0)
 	{
 		cpid = getpid();
@@ -44,12 +44,12 @@ static int	sh_exec_binaire(t_context *context)
 		if (g_job_ctrl->curr_job->foreground == 1)
 			job_put_in_fg(g_job_ctrl->curr_job, 0, &res);
 		else
-			waitpid(cpid, &res, WNOHANG);
+			res = 0;
+		g_job_ctrl->job_added = 0;
 		sh_env_update_ret_value_wait_result(context, res);
 		if (sh_post_execution() != SUCCESS)
 			return (FAILURE);
 		g_glob.command_line.interrupted = WIFSIGNALED(res);
-		g_job_ctrl->job_added = 0;
 		return (SUCCESS);
 	}
 	return (SUCCESS);

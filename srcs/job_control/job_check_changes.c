@@ -24,15 +24,18 @@ static int	check_process_changes(t_job *j, int cpid, int status)
 		{
 			p->status = status;
 			if (WIFSTOPPED (status))
+			{
+				ft_printf("\n"); //dprintf
 				p->stopped = 1;
+				job_notify();
+			}
+			else if (WIFCONTINUED(status))
+				p->stopped = 0;
 			else
 			{
 				p->completed = 1;
 				if (WIFSIGNALED (status))
-				{
 					j->signal_num = WTERMSIG(status);
-					// ft_dprintf(g_job_ctrl->term_fd, "SIGNAL %d\n", WTERMSIG(status));
-				}
 			}
 			return (0);
 		}
@@ -48,6 +51,7 @@ int			job_check_changes(pid_t cpid, int status)
 	j = g_job_ctrl->first_job;
 	if (cpid > 0)
 	{
+		// ft_printf("CHECKIN CHANGES FOR %d\n", cpid);
 		while (j != NULL)
 		{
 			check_process_changes(j, cpid, status);
@@ -58,27 +62,3 @@ int			job_check_changes(pid_t cpid, int status)
 		return (-1);
 	return (-1);
 }
-
-// static int	check_process_changes(t_job *j, int cpid, int status)
-// {
-// 	t_process	*p;
-
-// 	p = j->first_process;
-// 	while (p != NULL)
-// 	{
-// 		if (p->pid == cpid)
-// 		{
-// 			p->status = status;
-// 			if (WIFSTOPPED (status))
-// 				p->stopped = 1;
-// 			else
-// 			{
-// 				p->completed = 1;
-// 				if (WIFSIGNALED (status))
-// 					p->terminated = 1;
-// 			}
-// 			return (0);
-// 		}
-// 		p = p->next;
-// 	}
-// }

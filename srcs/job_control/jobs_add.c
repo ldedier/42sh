@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 00:09:20 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/26 05:12:47 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/27 21:01:12 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ int			jobs_add(void)
 	j->number = n;
 	j->foreground = g_job_ctrl->ampersand_eol ^ 1;
 	// j->foreground = 1;
-	ft_dprintf(g_job_ctrl->term_fd, "Job %d added in %s\n",
-		j->number, j->foreground == 1 ? "foreground" : "background");
+	// ft_dprintf(g_job_ctrl->term_fd, "Job %d added in %s\n",
+	// 	j->number, j->foreground == 1 ? "foreground" : "background");
 	j->signal_num = 0;
 	g_job_ctrl->job_num[n] = 1;
 	j->first_process = NULL;
