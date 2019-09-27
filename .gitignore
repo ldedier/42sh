@@ -50,7 +50,6 @@ sh42
 includes/libft.h
 *.vscode
 
-
 .history
 
 # Prerequisites
