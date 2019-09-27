@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-## Expansions tests
+# Expansions tests
 launch "Expansions"
 	launch_show "Random"
 	test_launch 'echo $var'
@@ -90,6 +90,19 @@ launch "Variables"
 	test_launch '\v\a\r\=\\\\\=\=\=\=\=\= ; echo $var'
 	test_launch 'false' 'var=okalm' 'echo $?'
 	test_launch 'false' 'var=okalm false' 'echo $?'
+
+	launch_show 'Failed tests'
+	# test_launch 'var=Okalmos v=tamer' 'echo "$var"$var$var$"var"'
+	# test_launch 'var=Okalmos v=tamer' "echo $'var'"
+	# test_launch 'var=Okalmos v=tamer' 'echo $v'"'ar'"
+	# test_launch 'var=Okalmos v=tamer' 'echo $"var"'
+	# test_launch 'var=Okalmos v=tamer' 'echo $"v"ar"'
+	test_launch 'var=Okalmos v=tamer' 'echo $\var'
+	test_launch 'var=Okalmos v=tamer' 'echo $\v\a\r'
+	test_launch 'var=Okalmos v=tamer' 'echo $v\a\r'
+	test_launch 'echo $ '
+	test_launch 'cd $'
+
 
 # launch "Deprecated"
 	# launch "Hard"
