@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/19 10:05:51 by jmartel           #+#    #+#             */
-/*   Updated: 2019/07/22 11:44:16 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/28 02:15:49 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,4 +55,25 @@ char		*sh_env_get_value(char **env, char *str)
 		i++;
 	}
 	return (NULL);
+}
+
+/*
+** sh_env_get_assignment_value:
+**	In an assignment with the form key=value, where key not null,
+**	return address of the first char of the value.
+**	If no '=' was found, or no was key found NULL is returned.
+*/
+
+char		*sh_env_get_assignment_value(char *str)
+{
+	int		i;
+
+	if (!str || !*str || *str == '=')
+		return (NULL);
+	i = 0;
+	while (str[i] && str[i] != '=')
+		i++;
+	if (!str[i])
+		return (NULL);
+	return (str + i);
 }
