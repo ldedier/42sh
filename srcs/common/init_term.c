@@ -65,8 +65,8 @@ int		sh_init_terminal(t_shell *shell, char **env)
 		return (sh_perror(SH_ERR1_TERM_CPY, "sh_init_terminal"));
 	shell->term.c_lflag &= ~(ICANON);
 	shell->term.c_lflag &= ~(ECHO);
-	// shell->term.c_lflag &= ~(ISIG);
-	shell->term.c_lflag |= ISIG;
+	shell->term.c_lflag &= ~(ISIG);
+//	shell->term.c_lflag |= ISIG;
 	shell->term.c_cc[VMIN] = 1;
 	shell->term.c_cc[VTIME] = 0;
 	if (tcsetattr(0, TCSADRAIN, &shell->term) == -1)

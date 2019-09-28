@@ -39,7 +39,7 @@ int		process_ctrl_d(t_shell *shell, t_command_line *command_line)
 			shell->running = 0;
 		return (CTRL_D);
 	}
-	else
+	else if (command_line->edit_style == E_EDIT_STYLE_READLINE)
 		process_suppr(command_line);
 	return (KEEP_READ);
 }

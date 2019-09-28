@@ -33,7 +33,7 @@ int		sh_vs_motion_b_maj(t_command_line *command_line, char dummy)
 			command_line->current_index - 1);
 	nb_word_start = 0;
 	i = command_line->current_index - 1;
-	while (i > 0)
+	while (i >= 0)
 	{
 		new_type = get_char_type_bword(command_line, i);
 		if (new_type != prev_type && prev_type != ' ')

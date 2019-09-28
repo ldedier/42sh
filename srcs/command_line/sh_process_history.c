@@ -27,6 +27,25 @@ static void	update_command_line_start(t_command_line *command_line)
 	render_command_line(command_line, - g_glob.cursor, 1);
 }
 
+static void	update_command_line_index(t_command_line *command_line, int index)
+{
+	int nb_chars;
+	int len;
+	int i;
+
+	i = 0;
+	len = ft_strlen(command_line->dy_str->str);
+	nb_chars = 0;
+	while (i < index)
+	{
+		i += get_char_len2(i, len, (unsigned char *)command_line->dy_str->str);
+		nb_chars++;
+	}
+	command_line->current_index = i;
+	command_line->nb_chars = nb_chars;
+	render_command_line(command_line, - g_glob.cursor + nb_chars, 1);
+}
+
 static void	update_command_line(t_command_line *command_line, int start)
 {
 	if (start)
@@ -35,12 +54,24 @@ static void	update_command_line(t_command_line *command_line, int start)
 		update_command_line_end(command_line);
 }
 
-int			switch_command_line(t_command_line *command_line, char *str)
+int			switch_command_line(t_command_line *command_line,
+				char *str, int start)
 {
 	flush_command_line(command_line);
 	if (ft_dy_str_cpy_str(command_line->dy_str, str))
 		return (sh_perror(SH_ERR1_MALLOC, "restore_command_line"));
-	update_command_line(command_line, 0);
+	update_command_line(command_line, start);
+	replace_cursor_vim_legal(command_line);
+	return (SUCCESS);
+}
+
+int			switch_command_line_index(t_command_line *command_line,
+				char *str, int index)
+{
+	flush_command_line(command_line);
+	if (ft_dy_str_cpy_str(command_line->dy_str, str))
+		return (sh_perror(SH_ERR1_MALLOC, "restore_command_line"));
+	update_command_line_index(command_line, index);
 	replace_cursor_vim_legal(command_line);
 	return (SUCCESS);
 }
@@ -68,16 +99,11 @@ int			process_history_down(t_shell *shell, t_command_line *command_line,
 		if (i < count - 1)
 			ring_bell();
 		shell->history.head = &shell->history.head_start;
-		switch_command_line(command_line, command_line->edit_line);
-		return (SUCCESS);
+		return (switch_command_line(command_line, command_line->edit_line, 0));
 	}
 	entry = (t_entry *)shell->history.head->content;
 	sh_init_entry_saves(entry);
-	flush_command_line(command_line);
-	if (ft_dy_str_cpy_str(command_line->dy_str, entry->command))
-		return (FAILURE);
-	update_command_line(command_line, start);
-	return (SUCCESS);
+	return (switch_command_line(command_line, entry->command, start));
 }
 
 int			reached_history_end(t_shell *shell)
@@ -113,9 +139,5 @@ int			process_history_up(t_shell *shell, t_command_line *command_line,
 		ring_bell();
 	entry = (t_entry *)shell->history.head->content;
 	sh_init_entry_saves(entry);
-	flush_command_line(command_line);
-	if (ft_dy_str_cpy_str(command_line->dy_str, entry->command))
-		return (FAILURE);
-	update_command_line(command_line, start);
-	return (SUCCESS);
+	return (switch_command_line(command_line, entry->command, start));
 }

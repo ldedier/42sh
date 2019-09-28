@@ -82,7 +82,7 @@ int			ft_clamp(int min, int val, int max)
 	return (val);
 }
 
-int			execute_motion(t_command_line *line, int index)
+int			execute_motion(t_command_line *line, int index, int vi)
 {
 	int i;
 	int char_diff;
@@ -91,22 +91,24 @@ int			execute_motion(t_command_line *line, int index)
 	int len;
 
 	char_diff = 0;
-	index = ft_clamp(0, index, line->dy_str->current_size - 1);
-	i = ft_min(index, line->current_index);
+	index = ft_clamp(0, index, line->dy_str->current_size - vi);
+	i = ft_max(ft_min(index, line->current_index), 0);
 	max = ft_max(index, line->current_index);
 	len = ft_strlen(&line->dy_str->str[i]);
 	while (i < max
-		&& ((size_t)i < line->dy_str->current_size - 1 || index != max))
+		&& ((size_t)i < line->dy_str->current_size - vi || index != max))
 	{
 		if ((ret = get_char_len2(0, len,
 			(unsigned char *)&line->dy_str->str[i])) == -1)
+		{
 			break ;
+		}
 		i += ret;
 		len -= ret;
 		char_diff++;
 	}
 	char_diff = (index == max ? char_diff : - char_diff);
-	line->current_index = ft_clamp(0, index, line->dy_str->current_size - 1);
+	line->current_index = ft_clamp(0, index, line->dy_str->current_size - vi);
 	render_command_line(line, char_diff, 1);
 	return (SUCCESS);
 }
@@ -131,7 +133,7 @@ int				execute_vshortcut(t_command_line *command_line,
 	if (vshortcut->motion)
 	{
 		motion_res = vshortcut->motion(command_line, c);
-		return (execute_motion(command_line, motion_res));
+		return (execute_motion(command_line, motion_res, 1));
 	}
 	else
 		return (execute_vsh_command(command_line, vshortcut, c, 0));

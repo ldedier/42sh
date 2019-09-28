@@ -46,7 +46,7 @@ int		sh_parse_token_list(t_lr_parser *parser, t_list **tokens,
 			ft_dprintf(2, "\nCST:\n");
 			sh_print_ast(*cst_root, 0);
 		}
-		ft_lstdel(&parser->stack, sh_free_stack_item_lst);
+		ft_lstdel(&parser->stack, sh_free_stack_item_lst_light);
 		return (SUCCESS);
 	}
 }

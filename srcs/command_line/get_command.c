@@ -46,6 +46,7 @@ int		reset_command_line(t_shell *shell, t_command_line *command_line)
 	shell->history.head = &shell->history.head_start;
 	process_cancel_autocompletion(command_line);
 	command_line->searcher.active = 0;
+	command_line->mark_index = 0;
 	g_glob.cursor = 0;
 	flush_command_line(command_line);
 	if (sh_reset_saves(command_line))
@@ -62,6 +63,5 @@ int		sh_get_command(t_shell *shell, t_command_line *command_line)
 	if (reset_command_line(shell, command_line) == FAILURE)
 		return (FAILURE);
 	render_command_line(command_line, 0, 1);
-
 	return (get_keys(shell, command_line));
 }

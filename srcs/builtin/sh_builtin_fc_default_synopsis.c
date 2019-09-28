@@ -74,7 +74,11 @@ int		sh_execute_editor(char *editor, t_shell *shell)
 	if (!(command = ft_strjoin_3(editor, " ", EDIT_FILE)))
 		return (FAILURE);
 	if (execute_command(shell, command, 0) == FAILURE)
+	{
+		free(command);
 		return (FAILURE);
+	}
+	free(command);
 	return (SUCCESS);
 }
 
@@ -104,9 +108,9 @@ static int      sh_process_read_canonical_gnl(t_shell *shell, t_gnl_info *info)
 
 int		sh_execute_commands_from_file(t_shell *shell, char *filename)
 {
-	int         gnl_ret;
-	t_gnl_info  info;
-	int         ret;
+	int			gnl_ret;
+	t_gnl_info	info;
+	int			ret;
 	int			fd;
 
 	if ((fd = open(filename, O_RDONLY)) == -1)

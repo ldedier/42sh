@@ -16,6 +16,7 @@ int		process_end(t_command_line *command_line)
 {
 	process_cancel_autocompletion(command_line);
 	command_line->current_index = command_line->dy_str->current_size;
+	replace_cursor_vim_legal(command_line);
 	render_command_line(command_line,
 		command_line->nb_chars - g_glob.cursor, 1);
 	return (SUCCESS);
@@ -25,6 +26,7 @@ int		process_start(t_command_line *command_line)
 {
 	process_cancel_autocompletion(command_line);
 	command_line->current_index = 0;
+	replace_cursor_vim_legal(command_line);
 	render_command_line(command_line, -g_glob.cursor, 1);
 	return (SUCCESS);
 }
