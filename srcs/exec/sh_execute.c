@@ -1,59 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sh_execute.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/09/28 17:31:19 by mdaoud            #+#    #+#             */
+/*   Updated: 2019/09/28 17:31:22 by mdaoud           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "sh_21.h"
 #include "sh_job_control.h"
-
-/*
-** For each process in the current job-
-**	We add that process to the current job group.
-** Current job is designated by the g_job_ctrl->curr_job.
-** This needs to be done by both the child and the parent processe-
-** 	in order to avoid any possible race-conditions.
-** First process of each job is appointed as the group leader.
-** Example: ls | wc ; echo done
-** "ls" and "wc" are in the same process group (with "ls" as the leader)
-** "echo" is in another process group (and it's its leader).
-*/
-
-static int	sh_exec_binaire(t_context *context)
-{
-	int			res;
-	pid_t		cpid;
-
-	if (sh_pre_execution() != SUCCESS)
-		return (FAILURE);
-	if (g_job_ctrl->job_added == 0)
-	{
-		jobs_add();
-		g_job_ctrl->job_added = 1;
-	}
-	if ((cpid = fork()) == -1)
-		return (sh_perror(SH_ERR1_FORK, "sh_process_process_execute"));
-	if (cpid == 0)
-	{
-		cpid = getpid();
-		set_child_pgid(cpid);
-		if (g_job_ctrl->curr_job->foreground == 1)
-			if (tcsetpgrp(g_job_ctrl->term_fd, g_job_ctrl->curr_job->pgid) < 0)
-				exit(ERROR);
-		sh_execute_binary(context);
-	}
-	else
-	{
-		ft_printf("Adding process: %d %s to job %d\n", cpid, context->path, g_job_ctrl->curr_job->number);
-		process_add(context, cpid);
-		set_child_pgid(cpid);
-		if (g_job_ctrl->curr_job->foreground == 1)
-			job_put_in_fg(g_job_ctrl->curr_job, 0, &res);
-		else
-			res = 0;
-		g_job_ctrl->job_added = 0;
-		sh_env_update_ret_value_wait_result(context, res);
-		if (sh_post_execution() != SUCCESS)
-			return (FAILURE);
-		g_glob.command_line.interrupted = WIFSIGNALED(res);
-		return (SUCCESS);
-	}
-	return (SUCCESS);
-}
 
 static int		sh_no_slash_cmd(t_context *context)
 {

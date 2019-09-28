@@ -6,7 +6,7 @@
 #    By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/09/27 21:37:50 by mdaoud           ###   ########.fr        #
+#    Updated: 2019/09/28 17:52:03 by mdaoud           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -118,7 +118,7 @@ SRCS			+=	main.c index.c init.c shell_tools.c \
 					set_signals.c canonical_mode.c history.c home.c \
 					init_tabs.c non_canonical_mode.c hash_binaries.c \
 					check_term.c signal_tools.c execute_command.c \
-					t_entry.c sh_split_path.c
+					t_entry.c sh_split_path.c sh_exec_binaire.c
 
 ################################################################
 ########					PARSER						########
@@ -314,9 +314,8 @@ SRCS			+=	jobs_init.c \
 					jobs_add.c \
 					jobs_print.c \
 					process_add.c \
-					str_tab_duplicate.c \
-					str_tab_print.c \
-					set_child_pgid.c \
+					str_tab_duplicate.c str_tab_print.c str_tab_free.c \
+					set_child_pgid.c job_control_free.c \
 					job_wait.c \
 					job_put_in_bg.c \
 					job_put_in_fg.c \
@@ -326,7 +325,7 @@ SRCS			+=	jobs_init.c \
 					job_free.c \
 					job_print_status.c \
 					job_notify.c \
-					get_active_job.c
+					get_active_job.c jc_error_free.c
 
 ################################################################
 ########					INCLUDES					########

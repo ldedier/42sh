@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 01:05:04 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/27 21:15:55 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/28 16:38:14 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ void			job_notify(void)
 	t_job	*j_next;
 	t_job	*tmp;
 
-
 	job_check_updates_nohang();
 	j = g_job_ctrl->first_job;
 	tmp = NULL;
@@ -50,6 +49,7 @@ void			job_notify(void)
 		j_next = j->next;
 		if (job_is_completed(j))
 		{
+			g_job_ctrl->job_num[j->number] = 0;
 			if (j->foreground == 0)
 				report_completed_job_status(j);
 			if (tmp)
@@ -57,9 +57,8 @@ void			job_notify(void)
 			else
 			{
 				g_job_ctrl->first_job = j_next;
-				// job_free(j);
 			}
-			g_job_ctrl->job_num[j->number] = 0;
+			job_free(j);
 		}
 		else if (job_is_stopped(j) && !j->notified)
 		{
@@ -69,7 +68,7 @@ void			job_notify(void)
 		}
 		else
 			tmp = j;
-		j = j->next;
+		j = j_next;
 	}
 }
 

@@ -16,7 +16,9 @@
 # include "libft.h"
 # include <termios.h>
 # include "sh_grammar.h"
-# define MAX_JOBS				16
+
+# define MAX_JOBS				3
+# define ANY_CHILD_PROCESS		-1
 
 typedef struct s_process		t_process;
 typedef struct s_job			t_job;
@@ -47,7 +49,7 @@ struct	s_job
 
 struct	s_job_control
 {
-	char			shell_is_interactive;
+	char			shell_interactive;
 	char			job_added;
 	char			ampersand_eol;
 	int				term_fd;
@@ -66,6 +68,7 @@ void			jobs_print(void);
 int				process_add(t_context *context, pid_t pid);
 void			str_tab_print(char **char_tab);		//put in libft
 char			**str_tab_duplicate(char **from);	//put in libft
+void			str_tab_free(char **str);			//put in libft
 int				jobs_init(t_shell *shell);
 int				set_child_pgid(pid_t cpid);
 void			job_wait(t_job *j, int *res);
@@ -74,9 +77,12 @@ int				job_put_in_fg(t_job *j, int cont, int *res);
 int				job_is_completed(t_job *j);
 int				job_is_stopped(t_job *j);
 int				job_check_changes(pid_t cpid, int status);
+void			job_control_free(void);
 void			job_free(t_job *j);
 void			job_print_status(t_job *j, const char *new_status);
 void			job_notify(void);
 t_job			*get_active_job(void);
+int				jc_error_free(const char *err, const char *suff,
+				int to_free, int ret);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_perror.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:41:27 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/25 22:06:30 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/28 01:27:56 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int		sh_perror(const char *error, const char *suffix)
 {
-	if (isatty(0))
+	if (isatty(0))	//mdaoud: Why this condtion?
 	{
 		if (suffix)
 			ft_dprintf(2, "%s%s: %s: %s%s\n", SH_ERR_COLOR,

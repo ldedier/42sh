@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_all.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/14 14:27:47 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/02 15:08:46 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/28 16:22:09 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	free_entry_dlst(void *e, size_t dummy)
 
 void	sh_free_all(t_shell *shell)
 {
+	job_control_free();
 	sh_free_parser(&shell->parser);
 	sh_free_command_line(&g_glob.command_line);
 	ft_dlstdel(&shell->history.commands, free_entry_dlst);

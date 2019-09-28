@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/31 16:05:53 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/27 20:16:55 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/28 01:38:26 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static void		init_signal2(void (*default_func)(int))
 	// signal(SIGCHLD, SIG_IGN);
 	signal(SIGCHLD, handler_sigchld);
 	signal(SIGTTIN, transmit_sig_no_motion);
-	signal(SIGTTOU, transmit_sig_no_motion);
+	signal(SIGTTOU, SIG_IGN);
 	signal(SIGIO, transmit_sig_no_motion);
 	signal(SIGXCPU, default_func);
 	signal(SIGXFSZ, default_func);
