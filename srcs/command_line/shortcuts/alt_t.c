@@ -42,13 +42,16 @@ int		sh_vs_motion_b_readline_alt(t_command_line *command_line, int nb_words)
 static int		get_indexes(t_command_line *command_line, int *index_a,
 		int *index_b)
 {
-	*index_a = sh_vs_motion_b_readline_alt(command_line, 2);
-	*index_b = sh_vs_motion_b_readline_alt(command_line, 1);
+	if (get_next_word_index_readline(command_line, index_b) != SUCCESS)
+	{
+		*index_a = sh_vs_motion_b_readline_alt(command_line, 2);
+		*index_b = sh_vs_motion_b_readline_alt(command_line, 1);
+	}
+	else
+		*index_a = sh_vs_motion_b_readline_alt(command_line, 1);
 	if (*index_a == *index_b ||
 			!ft_isalnum(command_line->dy_str->str[*index_a]))
-	{
 		return (1);
-	}
 	return (0);
 }
 
@@ -107,8 +110,7 @@ int		process_alt_t(t_command_line *command_line)
 		return (SUCCESS);
 	if ((ret = sh_save_command_line(command_line)))
 		return (ret);
-	command_line->count.value = 1;
-	motion_index = sh_vs_motion_e_readline(command_line, 0);
+	motion_index = index_b + word_len(command_line->dy_str->str, index_b) - 1;
 	if (motion_index != (int)command_line->dy_str->current_size)
 	{
 		motion_index += get_char_len(motion_index,

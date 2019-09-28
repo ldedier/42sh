@@ -183,6 +183,10 @@ int					sh_vs_motion_e(
 	t_command_line *command_line, char dummy);
 int					sh_vs_motion_e_readline(
 	t_command_line *command_line, char dummy);
+int					get_next_word_index_readline(
+	t_command_line *command_line, int *index);
+int					sh_vs_motion_e_readline_no_end(
+	t_command_line *command_line, char dummy);
 
 /*
 ** sh_vs_motion_e_maj.c
