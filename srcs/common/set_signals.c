@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/31 16:05:53 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/28 01:38:26 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/28 23:52:40 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ static void		handler_sigchld(int signo)
 {
 	if (signo == SIGCHLD)
 	{
-		job_notify();
+		if (g_job_ctrl->shell_interactive)
+			job_notify();
 	}
 }
 static void		init_signal2(void (*default_func)(int))

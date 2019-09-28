@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 23:24:10 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/28 02:37:33 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/29 00:00:30 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,10 @@ int				jobs_init(t_shell *shell)
 		return (sh_perror(SH_ERR1_MALLOC, "jobs_init"));
 	// Check whether the shell in run interactively
 	g_job_ctrl->shell_interactive = isatty(STDIN_FILENO);
-	init_jc_values();
+	// g_job_ctrl->shell_interactive = 0;
 	if (g_job_ctrl->shell_interactive)
 	{
+		init_jc_values();
 		// If the shell in run as a background process, quit.
 		if(tcgetpgrp (g_job_ctrl->term_fd) != (g_job_ctrl->shell_pgid = getpgrp ()))
 			if (kill (- g_job_ctrl->shell_pgid, SIGHUP) < 0)
@@ -72,9 +73,11 @@ int				jobs_init(t_shell *shell)
 				free(g_job_ctrl);
 				return (sh_perror("kill", "Could not properly close the shell"));
 			}
-	signal(SIGTTOU, SIG_IGN);	//	signal handling needs rework
+		signal(SIGTTOU, SIG_IGN);	//	signal handling needs rework
 		if (jc_set_process_group() < 0)
 			return (FAILURE);
+		return (SUCCESS);
 	}
+	// free(g_job_ctrl);
 	return (SUCCESS);
 }

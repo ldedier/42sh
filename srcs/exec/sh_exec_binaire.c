@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 17:31:33 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/28 17:59:24 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/28 23:48:11 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int		do_pre_exc_job_add(t_context *context)
 
 	if (sh_pre_execution() != SUCCESS)
 		return (FAILURE);
-	if (g_job_ctrl->job_added == 0)
+	if (g_job_ctrl->shell_interactive && g_job_ctrl->job_added == 0)
 	{
 		if ((res = jobs_add()) != SUCCESS)
 			return (res);
@@ -45,12 +45,15 @@ static int		sh_exec_child_part(t_context *context)
 {
 	pid_t	cpid;
 
-	cpid = getpid();
-	set_child_pgid(cpid);
-	if (g_job_ctrl->curr_job->foreground == 1)
-		if (tcsetpgrp(g_job_ctrl->term_fd, g_job_ctrl->curr_job->pgid) < 0)
-			return (jc_error_free("tcsetpgrp",
-				"Could not give terminal control to the process", 1, FAILURE));
+	if (g_job_ctrl->shell_interactive)
+	{
+		cpid = getpid();
+		set_child_pgid(cpid);
+		if (g_job_ctrl->curr_job->foreground == 1)
+			if (tcsetpgrp(g_job_ctrl->term_fd, g_job_ctrl->curr_job->pgid) < 0)
+				return (jc_error_free("tcsetpgrp",
+					"Could not give terminal control to the process", 1, FAILURE));
+	}
 	sh_execute_binary(context);
 	return (SUCCESS);
 }
@@ -59,19 +62,25 @@ static int		sh_exec_parent_part(pid_t cpid, t_context *context)
 {
 	int		res;
 
-	// ft_printf("Adding process: %d %s to job %d\n", cpid, context->path, g_job_ctrl->curr_job->number);
-	if ((res = process_add(context, cpid)) != SUCCESS)
-		return (res);
-	if ((res = set_child_pgid(cpid)) != SUCCESS)
-		return (res);
-	if (g_job_ctrl->curr_job->foreground == 1)
+	if (g_job_ctrl->shell_interactive)
 	{
-		if ((res = job_put_in_fg(g_job_ctrl->curr_job, 0, &res)) != SUCCESS)
+		// ft_printf("Adding process: %d %s to job %d\n", cpid, context->path, g_job_ctrl->curr_job->number);
+		if ((res = process_add(context, cpid)) != SUCCESS)
 			return (res);
+		if ((res = set_child_pgid(cpid)) != SUCCESS)
+			return (res);
+		if (g_job_ctrl->curr_job->foreground == 1)
+		{
+			if ((res = job_put_in_fg(g_job_ctrl->curr_job, 0, &res)) != SUCCESS)
+				return (res);
+		}
+		else
+			res = job_put_in_bg(g_job_ctrl->curr_job, 0);
 	}
 	else
-		res = job_put_in_bg(g_job_ctrl->curr_job, 0);
-	g_job_ctrl->job_added = 0;
+		waitpid(cpid, &res, 0);
+	if (g_job_ctrl->shell_interactive)
+		g_job_ctrl->job_added = 0;
 	sh_env_update_ret_value_wait_result(context, res);
 	if (sh_post_execution() != SUCCESS)
 		return (FAILURE);
