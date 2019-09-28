@@ -23,14 +23,25 @@ static int	apply_expansion_to_children(t_ast_node *child, t_context *context)
 static int	compound_and_redirection(t_ast_node *node, t_context *context)
 {
 	t_ast_node	*child;
+	t_list		*compound_redir;
 	int			ret;
 	
 	child = node->children->content;
 	child = child->children->content;
+	compound_redir = NULL;
 	if (node->children->next)
+	{
+		context->phase = E_TRAVERSE_PHASE_REDIRECTIONS;
 		ft_printf("compund command have redirection\n");
+		if ((ret = sh_traverse_tools_browse(node->children->next->content, context)) != SUCCESS)
+			return (ret);
+		compound_redir = context->redirections;
+		context->redirections = NULL;
+	}
 	if (child->symbol->id == sh_index(SUBSHELL))
 		ret = sh_traverse_subshell(child, context);
+	if (sh_reset_redirection(&compound_redir))
+		return (FAILURE);
 	return (ret);
 }
 /*
