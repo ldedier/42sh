@@ -76,6 +76,7 @@ typedef struct		s_key_buffer
 	unsigned char	buff[READ_BUFF_SIZE];
 	int				progress;
 	int				last_char_input;
+	int				persistent;
 }					t_key_buffer;
 
 typedef struct		s_ft_command
@@ -91,6 +92,12 @@ typedef struct		s_command_count
 	int				tmp_value;
 	int				value;
 }					t_command_count;
+
+typedef struct		s_save
+{
+	int				current_index;
+	char			*str;
+}					t_save;
 
 /*
 ** dy_str			: content of the command_line
@@ -141,6 +148,7 @@ typedef struct		s_command_line
 	char			*edit_line;
 	t_list			*saves_stack;
 	int				edit_counter;
+	int				mark_index;
 }					t_command_line;
 
 typedef struct		s_xy
@@ -402,6 +410,14 @@ int					process_keys_others(
 	t_command_line *command_line);
 
 /*
+** keys_readline.c
+*/
+int					process_keys_readline(
+	t_key_buffer *buffer,
+	t_shell *shell,
+	t_command_line *command_line);
+
+/*
 ** render_command_line.c
 */
 void				render_command_researched(
@@ -459,9 +475,12 @@ int					process_research_history(
 */
 t_list				**get_current_saves_stack(
 	t_command_line *command_line, t_entry **entry);
+t_save				*t_save_new(char *str, int index);
 int					sh_save_command_line(t_command_line *command_line);
 int					process_restore_save(
-	t_command_line *command_line, char *save, int *ret);
+	t_command_line *command_line, t_save *save, int *ret);
+void				t_save_free(t_save *save);
+void				t_save_free_list(void *s, size_t dummy);
 int					sh_restore_save(t_command_line *command_line);
 int					sh_restore_all_save(t_command_line *command_line);
 int					sh_process_edit_counter(
@@ -503,7 +522,9 @@ int					sh_get_cursor_position(int *x, int *y);
 ** sh_process_history.c
 */
 int					switch_command_line(
-	t_command_line *command_line, char *str);
+	t_command_line *command_line, char *str, int start);
+int					switch_command_line_index(
+	t_command_line *command_line, char *str, int index);
 int					process_history_down(
 	t_shell *shell,
 	t_command_line *command_line,

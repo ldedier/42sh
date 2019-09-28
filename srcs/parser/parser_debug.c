@@ -322,12 +322,14 @@ void	sh_print_parser(t_lr_parser *parser, int depth)
 
 void	sh_print_ast_builder(t_ast_builder *ast_builder)
 {
-//	ft_printf("symbol: ");
+	ft_printf("\n-----------\n");
+	ft_printf("AST_BUILDER\n\n");
+	ft_printf("symbol: ");
 	sh_print_symbol(ast_builder->symbol);
-//	ft_printf("\n");
-//	ft_printf("ast tree: \n");
-//	sh_print_ast(ast_builder->ast_node, 0);
-//	ft_printf("cst tree: \n");
-//	sh_print_ast(ast_builder->cst_node, 0);
-//	ft_printf("\n");
+	ft_printf("\n");
+	ft_printf("ast tree: \n");
+	sh_print_ast(ast_builder->ast_node, 0);
+	ft_printf("cst tree: \n");
+	sh_print_ast(ast_builder->cst_node, 0);
+	ft_printf("\n-----------\n");
 }

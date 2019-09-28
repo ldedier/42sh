@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/27 21:28:49 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/29 00:14:02 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,13 @@ int		sh_traverse_simple_command(t_ast_node *node, t_context *context)
 		}
 		context->phase += 1;
 	}
-	if (sh_env_save(context) == FAILURE)
-		return (FAILURE);
-	sh_env_save_delete_exported(context);
 	ret = sh_execute_simple_command(context);
 	if (sh_reset_redirection(&(context->redirections)) != SUCCESS)
 		return (FAILURE);
-	if (sh_env_save_restore(context) == FAILURE)
-		return (FAILURE);
+	if (context->params && context->params->tbl && ((char**)context->params->tbl)[0])
+		sh_env_save_restore(context, 1);//check ret value
+	else
+		sh_env_save_restore(context, 0);//check ret value
 	sh_traverse_tools_show_traverse_ret_value(node, context, ret);
 	return (ret);
 }

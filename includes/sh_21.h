@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/30 15:48:56 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/28 17:51:47 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/29 00:14:25 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,7 @@ struct				s_shell
 	t_lr_parser		parser;
 	t_history		history;
 	t_dy_tab		*env;
+	t_dy_tab		*saved_env;
 	t_dy_tab		*vars;
 	t_hash_table	*binaries;
 	char			running;

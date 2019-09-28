@@ -12,3 +12,12 @@
 launch "set"
 	launch_show "write set"
 	test_launch "set 1>&-"
+
+	## Manual tests
+test_launch "var=tamer" "set | grep var="
+test_launch "var=tamer set | grep var="
+test_launch "HOME=/ set | grep HOME="
+test_launch "HOME=/ | set | grep HOME="
+test_launch "HOME=/" "HOME=Okalm | set | grep HOME="
+test_launch "var=Okalmos" "var=tamer set | grep HOME="
+test_launch "var=Okalmos" "var=tamer | set | grep HOME="

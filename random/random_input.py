@@ -116,7 +116,8 @@ def line_random_quotes(lenght, cmd_generation_func=random_cmd):
 		line = random_add_quotes(line)
 	return (line)
 
-token_param_expansion_format = [":?", "?", ":+", "+", ":-", "-", ":=", "="]
+# token_param_expansion_format = [":?", "?", ":+", "+", ":-", "-", ":=", "="]
+token_param_expansion_format = ["#", "##", "%", "%%"]
 token_param_expansion_param = ["param", "noparam", "", " ", "~"]
 token_param_expansion_word = ["word", "noword", "$word", "\"$word\"", "\"word\"", "${word}", "${noword}", "${$word}", "", " ", "\$word", "\'word\'", "~"]
 

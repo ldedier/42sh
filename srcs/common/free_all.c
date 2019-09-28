@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/14 14:27:47 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/28 16:22:09 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/29 00:13:36 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ void	sh_free_all(t_shell *shell)
 		ft_dy_tab_del(shell->vars);
 	if (shell->env)
 		ft_dy_tab_del(shell->env);
+	if (shell->saved_env)
+		ft_dy_tab_del(shell->saved_env);
 	if (shell->binaries)
 		ft_hash_table_del(shell->binaries, sh_free_binary_lst);
 }

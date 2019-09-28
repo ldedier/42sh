@@ -54,32 +54,12 @@ static int	process_keys_command(t_key_buffer *buffer, t_shell *shell,
 	(void)shell;
 	// old way olalala	
 	/* 
-	if (buffer->buff[0] == 'p')
-		return (process_p(command_line, buffer));
-	else if (buffer->buff[0] == 'i')
-		return (process_i(shell, command_line, buffer));
-	else if (buffer->buff[0] == 'v')
+	if (buffer->buff[0] == 'v')
 		return (process_v(shell, command_line, buffer));
-	else if (buffer->buff[0] == 'd' && buffer->last_char_input == 'd'
-		&& command_line->dy_str->current_size)
-	{
-		if (command_line_copy_all(command_line) != SUCCESS)
-			return (FAILURE);
-		flush_command_line(command_line);
-		render_command_line(command_line, -g_glob.cursor, 1);
-		flush_keys(buffer);
-	}
-	else if (buffer->buff[0] == 'y' && buffer->last_char_input == 'y')
-	{
-		if (command_line_copy_all(command_line) != SUCCESS)
-			return (FAILURE);
-		flush_keys(buffer);
-	}
 	*/
 
-//	ft_printf("progress: %d\n", buffer->progress);
-//	ft_printf("char: %d (%c)\n", buffer->buff[0], buffer->buff[0]);
-
+	//	ft_printf("progress: %d\n", buffer->progress);
+	//	ft_printf("char: %d (%c)\n", buffer->buff[0], buffer->buff[0]);
 	if (ft_isdigit(command_line->buffer.buff[0])
 		&& (command_line->count.active
 		|| command_line->buffer.buff[0] != '0'))
