@@ -92,15 +92,15 @@ launch "Variables"
 	test_launch 'false' 'var=okalm false' 'echo $?'
 
 	launch_show 'Failed tests'
-	# test_launch 'var=Okalmos v=tamer' 'echo "$var"$var$var$"var"'
-	# test_launch 'var=Okalmos v=tamer' "echo $'var'"
-	# test_launch 'var=Okalmos v=tamer' 'echo $v'"'ar'"
-	# test_launch 'var=Okalmos v=tamer' 'echo $"var"'
-	# test_launch 'var=Okalmos v=tamer' 'echo $"v"ar"'
+	test_launch 'var=Okalmos v=tamer' 'echo "$var"$var$var$"var"'
+	test_launch 'var=Okalmos v=tamer' "echo $'var'"
+	test_launch 'var=Okalmos v=tamer' 'echo $v'"'ar'"
+	test_launch 'var=Okalmos v=tamer' 'echo $"var"'
+	test_launch 'var=Okalmos v=tamer' 'echo $"v"ar"'
 	test_launch 'var=Okalmos v=tamer' 'echo $\var'
 	test_launch 'var=Okalmos v=tamer' 'echo $\v\a\r'
 	test_launch 'var=Okalmos v=tamer' 'echo $v\a\r'
-	test_launch 'echo $ '
+	test_launch 'echo $'
 	test_launch 'cd $'
 
 
