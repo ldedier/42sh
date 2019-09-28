@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/21 18:00:32 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/28 23:29:12 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/29 01:06:11 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,15 +128,30 @@ int			sh_builtin_set_args(t_context *context)
 
 static void	sh_builtin_set_print_assignment(char *assignment)
 {
-	ft_putstrn(assignment);
-	return ;
-	if (!ft_strpbrk(assignment, " \n\t\"\\\'"))
+	int		i;
+
+	if (!ft_strpbrk(assignment, " \n\t\"\\\'$"))
 	{
+		ft_putstrn(assignment);
 		return ;
 	}
+	i = ft_strchr(assignment, '=') - assignment;
+	assignment[i] = '\0';
+	ft_putstr(assignment);
+	ft_putstr("=\"");
+	assignment[i] = '=';
+	i++;
+	while (assignment[i])
+	{
+		if (ft_strchr("\"\'\\$", assignment[i]))
+			ft_putchar('\\');
+		ft_putchar(assignment[i]);
+		i++;
+	}
+	ft_putstr("\"\n");
 }
 
-static int	sh_builtin_set_print_all(t_context *context)
+static int	sh_builtin_set_print(t_context *context)
 {
 	int i;
 
@@ -172,7 +187,7 @@ int			sh_builtin_set(t_context *context)
 
 	i = 0;
 	if (context->params->current_size == 1)
-		return (sh_builtin_set_print_all(context));
+		return (sh_builtin_set_print(context));
 	else
 		return (sh_builtin_set_args(context));
 	return (SUCCESS);

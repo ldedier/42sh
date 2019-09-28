@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/19 09:45:53 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/28 23:21:20 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/29 01:35:52 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,19 +74,16 @@ static int	sh_builtin_export_show(t_context *context)
 		{
 			*equal = '\0';
 			ft_printf("%s %s=", EXPORT_MSG, min);
-			if (equal[1])
+			i = 1;
+			ft_putchar('\"');
+			while (equal[i])
 			{
-				i = 1;
-				ft_putchar('\"');
-				while (equal[i])
-				{
-					if (equal[i] == '\'' || equal[i] == '\\' || equal[i] == '\"')
-						ft_putchar('\\');
-					ft_putchar(equal[i]);
-					i++;
-				}
-				ft_putchar('\"');
+				if (equal[i] == '\'' || equal[i] == '\\' || equal[i] == '\"')
+					ft_putchar('\\');
+				ft_putchar(equal[i]);
+				i++;
 			}
+			ft_putchar('\"');
 			ft_putchar('\n');
 			*equal = '=';
 		}
@@ -95,14 +92,20 @@ static int	sh_builtin_export_show(t_context *context)
 	return (SUCCESS);
 }
 
-static int	sh_builtin_export_get_index(char **tbl, char *arg)
+static int	sh_builtin_export_get_index(t_dy_tab *vars, char *key)
 {
 	int		i;
+	int		j;
+	char	**tbl;
 
 	i = 0;
+	tbl = (char**)vars->tbl;
 	while (tbl[i])
 	{
-		if (ft_strequ(tbl[i], arg))
+		j = 0;
+		while (tbl[i][j] && key[j] && tbl[i][j] == key[j])
+			j++;
+		if (key[j] == 0 && (tbl[i][j] == '=' || tbl[i][j] == '\0'))
 			return (i);
 		i++;
 	}
@@ -119,7 +122,7 @@ static int		sh_builtin_export_assign(t_context *context, char *arg)
 	if ((equal = ft_strchr(arg, '=')))
 	{
 		*equal = 0;
-		if (sh_vars_get_index(context->vars, arg))
+		if (sh_builtin_export_get_index(context->vars, arg))
 			sh_vars_del_key(context->vars, arg);
 		*equal = '=';
 		if (sh_vars_assignment(context->saved_env, NULL, arg))
@@ -129,18 +132,17 @@ static int		sh_builtin_export_assign(t_context *context, char *arg)
 	}
 	else
 	{
-		if ((index = sh_builtin_export_get_index((char**)context->vars->tbl, arg)) >= 0)
+		if ((index = sh_builtin_export_get_index(context->vars, arg)) >= 0)
 		{
 			if (sh_vars_assignment(context->saved_env, NULL, context->vars->tbl[index]))
 				return (FAILURE); // perror
-			sh_vars_del_key(context->vars, arg);
+			ft_dy_tab_suppr_index(context->vars, index);
 			;//transfer vars -> env;
 		}
-		else if ((index = sh_builtin_export_get_index((char**)context->saved_env->tbl, arg)) == -1)
+		else if ((index = sh_builtin_export_get_index(context->saved_env, arg)) == -1)
 		{
-			if (sh_vars_get_index(context->saved_env, arg) == -1)
-				if (ft_dy_tab_add_str(context->saved_env, arg))
-					return (FAILURE); // perror
+			if (ft_dy_tab_add_str(context->saved_env, arg))
+				return (FAILURE); // perror
 		}
 	}
 	return (SUCCESS);
