@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 21:45:25 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/28 03:55:09 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/28 06:27:54 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,7 @@ int			t_context_init(t_context *context, t_shell *shell)
 	context->path = NULL;
 	context->shell = shell;
 	context->env = shell->env;
-	if (sh_env_save(context) == FAILURE) // is it usefull
-		return (FAILURE);
+	context->saved_env = shell->saved_env;
 	context->vars = shell->vars;
 	context->term = &shell->term;
 	context->builtin = NULL;
@@ -49,8 +48,6 @@ int			t_context_init(t_context *context, t_shell *shell)
 void		t_context_free_content(t_context *context)
 {
 	ft_dy_tab_del(context->params);
-	if (context->saved_env)
-		ft_dy_tab_del(context->saved_env);
 	if (context->path)
 		free(context->path);
 }
