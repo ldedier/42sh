@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/28 03:43:04 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/28 03:52:03 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ int		sh_traverse_simple_command(t_ast_node *node, t_context *context)
 	{
 		if (context->phase == E_TRAVERSE_PHASE_EXECUTE)
 		{
-			if (sh_env_save(context) == FAILURE)
-				return (FAILURE);
+			// if (sh_env_save(context) == FAILURE)
+			// 	return (FAILURE);
 			sh_env_save_delete_exported(context);
 		}
 		if ((ret = sh_traverse_tools_browse(node, context)))
