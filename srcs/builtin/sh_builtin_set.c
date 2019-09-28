@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/21 18:00:32 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/28 04:34:40 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/28 23:29:12 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,17 @@ int			sh_builtin_set_args(t_context *context)
 	return (SUCCESS);
 }
 
-int			sh_builtin_set_print_all(t_context *context)
+static void	sh_builtin_set_print_assignment(char *assignment)
+{
+	ft_putstrn(assignment);
+	return ;
+	if (!ft_strpbrk(assignment, " \n\t\"\\\'"))
+	{
+		return ;
+	}
+}
+
+static int	sh_builtin_set_print_all(t_context *context)
 {
 	int i;
 
@@ -134,18 +144,23 @@ int			sh_builtin_set_print_all(t_context *context)
 	if (write(FD_OUT, NULL, 0))
 		return (sh_perror2_err("write error",
 			context->params->tbl[0], SH_ERR1_BAD_FD));
+	if (sh_verbose_builtin())
+		ft_dprintf(2, MAGENTA"set : saved_env table :\n"EOC);
 	while (context->saved_env->tbl[i])
 	{
-		ft_putstrn(context->saved_env->tbl[i]);
+		if (ft_strchr(context->saved_env->tbl[i], '='))
+			sh_builtin_set_print_assignment(context->saved_env->tbl[i]);
 		i++;
 	}
 	i = 0;
+	if (sh_verbose_builtin())
+		ft_dprintf(2, MAGENTA"set : vars table :\n"EOC);
 	while (context->vars->tbl[i])
 	{
 		if (!(*(char*)(context->vars->tbl[i]) == '?'
 					|| *(char*)(context->vars->tbl[i]) == '$'
 					|| *(char*)(context->vars->tbl[i]) == '#'))
-			ft_putstrn(context->vars->tbl[i]);
+		sh_builtin_set_print_assignment(context->vars->tbl[i]);
 		i++;
 	}
 	return (SUCCESS);

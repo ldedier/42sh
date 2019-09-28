@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/20 14:48:43 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/28 22:04:01 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/28 23:12:18 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,16 @@ static void	sh_env_save_restore_command_clean(t_context *context)
 			if (sh_vars_get_index(context->saved_env, tbl[i]) == -1)
 				ft_dy_tab_suppr_index(context->env, i);
 			else
+			{
+				i++;
 				*equal = save;
+			}
 		}
-		i++;
+		else
+		{
+			ft_dy_tab_suppr_index(context->env, i);
+			ft_dprintf(2, "restoring env : deleted : %s\n", tbl[i]);
+		}
 	}
 }
 

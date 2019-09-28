@@ -29,3 +29,4 @@ launch "set"
 	test_launch 'unset HOME' 'set | grep HOME' 'eport | grep HOME'
 	test_launch 'variable=' 'set | grep variable= ; export grep variable=' 'unset variable' 'set | grep variable= ; export grep variable='
 	test_launch 'export variable=' 'set | grep variable= ; export grep variable=' 'unset variable' 'set | grep variable= ; export grep variable='
+	test_launch 'Okalm=os' 'set | grep Okalm=os ; export grep Okalm=os' 'export Okalm' 'set | grep Okalm=os ; export grep Okalm=os' 'unset Okalm' 'set | grep Okalm=os ; export grep Okalm=os'
