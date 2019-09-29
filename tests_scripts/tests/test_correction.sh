@@ -21,5 +21,5 @@ launch "correction"
 	test_launch 'export b' 'printenv b'
 	test_launch 'ONESHOT= env | grep ONESHOT' 'env | grep ONESHOT'
 	test_launch 'unset a b' "env | grep -E '(a|b)='" "set | grep -E '(a|b)='"
-	test_launch 'unset PATH' 'PATH=/bin:/usr/bin' 'mkdir testdir' 'echo ${?}' 'ls -1 | grep testdir' 'rm -f testdir'
+	test_launch 'unset PATH' 'PATH=/bin:/usr/bin' 'mkdir testdir' 'echo ${?}' 'ls -1 | grep testdir' 'rm -rf testdir'
 	test_launch 'true; echo ${?}; false; echo ${?}'
