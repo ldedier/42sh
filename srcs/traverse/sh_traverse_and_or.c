@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 15:54:02 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/29 04:53:20 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/29 18:26:02 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,16 +80,6 @@ static int		sh_traverse_and_or_launch_phase(
 	prev_symbol = -1;
 	while (ptr != NULL && context->shell->running)
 	{
-		if (g_job_ctrl->jc_enabled)
-		{
-			if (ptr->next && g_job_ctrl->job_added)
-			{
-				g_job_ctrl->curr_job->pipe_and_or_node = 2;
-				printf("FOUND AND OR\n");
-			}
-			else if (g_job_ctrl->job_added)
-				g_job_ctrl->curr_job->pipe_and_or_node = 2;
-		}
 		if ((ret = sh_traverse_and_or_process_phase(
 			context, prev_symbol, ptr)) != KEEP_READ)
 			return (ret);

@@ -19,6 +19,8 @@
 
 # define MAX_JOBS				17
 # define ANY_CHILD_PROCESS		-1
+# define PIPE_JOB				1
+# define AND_OR_JOB				2
 
 typedef struct s_process		t_process;
 typedef struct s_job			t_job;
@@ -41,7 +43,7 @@ struct	s_job
 	char			*command;
 	char			signal_num;
 	char			foreground;
-	char			pipe_and_or_node; // 0 nothing, 1 pipe, 2 and_or
+	char			pipe_node; // 0 nothing, 1 pipe, 2 and_or
 	int				number;
 	pid_t			pgid;
 	t_process		*first_process;
@@ -53,7 +55,7 @@ struct	s_job_control
 	char			jc_enabled;
 	char			job_added;
 	char			ampersand_eol;
-	char			pipe_and_or_node; // 0 nothing, 1 pipe, 2 and_or
+	char			pipe_node; // 0 nothing, 1 pipe, 2 and_or
 	int				term_fd;
 	int				job_count;
 	int				job_num[MAX_JOBS];
@@ -83,6 +85,9 @@ void			job_control_free(void);
 void			job_free(t_job *j);
 void			job_print_status(t_job *j, const char *new_status);
 void			job_notify(void);
+int				set_pgid_child(int cpid);
+int				set_pgid_parent(int cpid, t_context *context);
+
 t_job			*get_active_job(void);
 int				jc_error_free(const char *err, const char *suff,
 				int to_free, int ret);

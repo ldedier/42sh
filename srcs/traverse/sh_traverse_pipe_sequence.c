@@ -6,12 +6,49 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/28 00:33:46 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/29 23:42:55 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
+static int		pipe_child_part(t_ast_node *node, t_context *context)
+{
+	pid_t	cpid;
+	int		ret;
+
+	reset_signals();
+	if (sh_set_term_sig(1) != SUCCESS)
+		return (FAILURE);
+	cpid = getpid();
+	// ft_dprintf(g_job_ctrl->term_fd, "Forked first, %d\n", cpid);
+	if (g_job_ctrl->jc_enabled)
+	{
+		if ((ret = set_pgid_child(cpid)) != SUCCESS)
+			return (ret);
+	}
+	ret = sh_execute_pipe(node, context);
+	return (ret);
+}
+
+static int		pip_parent_part(pid_t cpid, t_context *context)
+{
+	int		ret;
+
+	if (g_job_ctrl->jc_enabled)
+	{
+		if ((ret = set_pgid_parent(cpid, context)) != SUCCESS)
+			return (ret);
+		if (g_job_ctrl->curr_job->foreground == 0)
+			waitpid(cpid, &ret, 0);
+		if (g_job_ctrl->curr_job->foreground == 0)
+			ret = job_put_in_bg(g_job_ctrl->curr_job, 0);
+		else if (job_put_in_fg(g_job_ctrl->curr_job, 0, &ret) != SUCCESS)
+			return (ret);
+	}
+	sh_env_update_ret_value_wait_result(context, ret);
+	return (SH_RET_VALUE_EXIT_STATUS(ret));
+}
 /*
  * pipe_to_do :
  * This function is called when we have pipes to execute.
@@ -21,22 +58,19 @@
 static int		pipe_to_do(t_ast_node *node, t_context *context)
 {
 	int		ret;
-	int 	child;
+	int 	cpid;
 
-	if ((child = fork()) < 0)
+	if ((cpid = fork()) < 0)
 		return (sh_perror(SH_ERR1_FORK, "execution fork for pipe"));
-	else if (child)
+	else if (cpid == 0)
 	{
-		waitpid(child, &ret, 0);
-		sh_env_update_ret_value_wait_result(context, ret);
-		return (SH_RET_VALUE_EXIT_STATUS(ret));
+		ret = pipe_child_part(node, context);
+		exit(ret);
 	}
 	else
 	{
-		child = getpid();
-		// ft_printf("Forked for the pipe, %d %d\n", child, getpgid(child));
-		ret = sh_execute_pipe(node, context);
-		exit(ret);
+		ret = pip_parent_part(cpid, context);
+		return (ret);
 	}
 }
 
@@ -55,11 +89,17 @@ int				sh_traverse_pipeline(t_ast_node *node, t_context *context)
 	sh_traverse_tools_show_traverse_start(node, context);
 	if (ft_lstlen(node->children) > 1)
 	{
-		// if (g_job_ctrl->job_added == 0)
-		// {
-		// 	jobs_add();
-		// 	g_job_ctrl->job_added = 1;
-		// }
+		if (g_job_ctrl->jc_enabled)
+		{
+			if (g_job_ctrl->job_added == 0)
+			{
+				ft_printf("No job added yet, adding ..\n");
+				if ((ret = jobs_add(1)) != SUCCESS)
+					return (ret);
+				g_job_ctrl->job_added = 1;
+			}
+			g_job_ctrl->curr_job->pipe_node = PIPE_JOB;
+		}
 		ret = pipe_to_do(node, context);
 	}
 	else

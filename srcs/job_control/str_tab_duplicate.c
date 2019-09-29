@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 21:32:43 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/14 21:59:07 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/29 17:30:00 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ char	**str_tab_duplicate(char **from)
 	char	**to;
 
 	i = 0;
+	if (from == NULL)
+		return (NULL);
 	while (from[i])
 		i++;
 	if ((to = malloc((i + 1) * sizeof(char *))) == NULL)

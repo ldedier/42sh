@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 23:24:10 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/29 04:13:44 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/29 19:06:26 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void		init_jc_values(void)
 	g_job_ctrl->job_count = 1;
 	g_job_ctrl->first_job = NULL;
 	g_job_ctrl->curr_job = NULL;
-	g_job_ctrl->pipe_and_or_node = 0;
+	g_job_ctrl->pipe_node = 0;
 	// This is where we print all job-control realted messages
 	g_job_ctrl->term_fd = open("/dev/tty", O_RDWR);
 }

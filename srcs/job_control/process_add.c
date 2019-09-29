@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 00:38:06 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/28 17:42:22 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/29 17:40:50 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,12 @@ t_process	*process_create(t_context *context, pid_t pid)
 	p->stopped = 0;
 	p->status = 0;
 	p->next = NULL;
-	p->argv = str_tab_duplicate((char **)context->params->tbl);
-	if (p->argv == NULL)
-		return (NULL);
+	if (context != NULL)
+	{
+		p->argv = str_tab_duplicate((char **)context->params->tbl);
+		if (p->argv == NULL)
+			return (NULL);
+	}
 	// p->argv = (char **)context->params->tbl;
 	return (p);
 }
@@ -53,7 +56,11 @@ int			process_add(t_context *context, pid_t pid)
 	// if not, append it to the process list (to be the last process)
 	p = j->first_process;
 	while (p->next != NULL)
+	{
+		if (p->pid == pid)
+			return (SUCCESS);
 		p = p->next;
+	}
 	p->next = new_p;
 	return (SUCCESS);
 }

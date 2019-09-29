@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 00:09:20 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/29 04:39:50 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/29 19:06:26 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ static void	init_job_values(t_job *j, int n, int fg)
 	j->pgid = 0;
 	j->number = n;
 	g_job_ctrl->job_num[n] = 1;
-	j->pipe_and_or_node = 0;
-	g_job_ctrl->pipe_and_or_node = 0;
+	j->pipe_node = 0;
+	g_job_ctrl->pipe_node = 0;
 	g_job_ctrl->curr_job = j;
 	// j->foreground = g_job_ctrl->ampersand_eol ^ 1;
 	j->foreground = fg;

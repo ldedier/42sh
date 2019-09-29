@@ -1,37 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shell_tools.c                                      :+:      :+:    :+:   */
+/*   get_job_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/14 13:59:30 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/29 23:26:31 by mdaoud           ###   ########.fr       */
+/*   Created: 2019/09/29 18:41:39 by mdaoud            #+#    #+#             */
+/*   Updated: 2019/09/29 18:42:06 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
+#include "sh_job_control.h"
 
-int		sh_reset_shell(int ret)
+char		*get_job_cmd(t_job *j)
 {
-	if (tcsetattr(0, TCSADRAIN, &g_glob.term_init) == -1)
-		return (ATTR_ERROR);
-	return (ret);
-}
 
-int		sh_set_shell_back(int ret)
-{
-	if (tcsetattr(0, TCSADRAIN, &g_glob.term) == -1)
-		return (ATTR_ERROR);
-	return (ret);
-}
-
-int		clear_all(void)
-{
-	char *res;
-
-	if (!(res = tgetstr("cl", NULL)))
-		return (-1);
-	tputs(res, 1, putchar_int);
-	return (0);
 }

@@ -1,37 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shell_tools.c                                      :+:      :+:    :+:   */
+/*   set_pgid_child.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/14 13:59:30 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/29 23:26:31 by mdaoud           ###   ########.fr       */
+/*   Created: 2019/09/29 18:29:26 by mdaoud            #+#    #+#             */
+/*   Updated: 2019/09/29 18:36:00 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "sh_job_control.h"
 #include "sh_21.h"
 
-int		sh_reset_shell(int ret)
+int				set_pgid_child(int cpid)
 {
-	if (tcsetattr(0, TCSADRAIN, &g_glob.term_init) == -1)
-		return (ATTR_ERROR);
-	return (ret);
-}
+	int	ret;
 
-int		sh_set_shell_back(int ret)
-{
-	if (tcsetattr(0, TCSADRAIN, &g_glob.term) == -1)
-		return (ATTR_ERROR);
-	return (ret);
-}
-
-int		clear_all(void)
-{
-	char *res;
-
-	if (!(res = tgetstr("cl", NULL)))
-		return (-1);
-	tputs(res, 1, putchar_int);
-	return (0);
+	cpid = getpid();
+	if ((ret = set_child_pgid(cpid)) != SUCCESS)
+		return (ret);
+	if (g_job_ctrl->curr_job->foreground == 1)
+		if (tcsetpgrp(g_job_ctrl->term_fd, g_job_ctrl->curr_job->pgid) < 0)
+			return (jc_error_free("tcsetpgrp",
+				"Could not give terminal control to the process", 1, FAILURE));
+	return (SUCCESS);
 }

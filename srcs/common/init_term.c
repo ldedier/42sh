@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/14 13:41:08 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/29 00:13:52 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/29 23:28:12 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ int		sh_init_terminal(t_shell *shell, char **env)
 		return (sh_perror(SH_ERR1_TERM_CPY, "sh_init_terminal"));
 	shell->term.c_lflag &= ~(ICANON);
 	shell->term.c_lflag &= ~(ECHO);
+	// shell->term.c_lflag |= (ISIG);
 	shell->term.c_lflag &= ~(ISIG);
 	shell->term.c_cc[VMIN] = 1;
 	shell->term.c_cc[VTIME] = 0;

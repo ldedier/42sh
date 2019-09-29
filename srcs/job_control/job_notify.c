@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 01:05:04 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/29 16:52:34 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/29 18:57:54 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ static void		report_completed_job_status(t_job *j)
 		job_print_status(j, "Quit");
 	else
 		job_print_status(j, "Done");
+	j->notified = 1;
 }
 
 void			job_notify(void)
@@ -50,7 +51,7 @@ void			job_notify(void)
 		if (job_is_completed(j))
 		{
 			g_job_ctrl->job_num[j->number] = 0;
-			if (j->foreground == 0)
+			if (j->foreground == 0 && !j->notified)
 				report_completed_job_status(j);
 			if (tmp)
 				tmp->next = j_next;

@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/22 10:38:19 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/29 01:00:03 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/29 20:14:50 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	handler_sigint(int signo)
 {
 	if (signo == SIGINT)
 	{
+		ft_dprintf(g_job_ctrl->term_fd, "SIGINT FROM %d\n", getpid());
 		if (isatty(0) && g_glob.command_line.dy_str)
 		{
 			get_down_from_command(&g_glob.command_line);
