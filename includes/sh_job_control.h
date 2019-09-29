@@ -17,7 +17,7 @@
 # include <termios.h>
 # include "sh_grammar.h"
 
-# define MAX_JOBS				3
+# define MAX_JOBS				17
 # define ANY_CHILD_PROCESS		-1
 
 typedef struct s_process		t_process;
@@ -52,6 +52,7 @@ struct	s_job_control
 	char			shell_interactive;
 	char			job_added;
 	char			ampersand_eol;
+	char			pipe_node;
 	int				term_fd;
 	int				job_count;
 	int				job_num[MAX_JOBS];

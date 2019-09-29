@@ -179,8 +179,6 @@ int					sh_builtin_exit(t_context *context);
 /*
 ** sh_builtin_export.c
 */
-int					sh_builtin_export_assign(
-	t_context *context, char *arg);
 int					sh_builtin_export(t_context *context);
 
 /*
@@ -283,7 +281,6 @@ int					add_option(t_context *context, int index);
 int					remove_option(t_context *context, int index);
 int					sh_builtin_set_param(t_context *context, int *index);
 int					sh_builtin_set_args(t_context *context);
-int					sh_builtin_set_print_all(t_context *context);
 int					sh_builtin_set(t_context *context);
 
 /*

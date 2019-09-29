@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sh_traverse_io_file_tools.c                        :+:      :+:    :+:   */
+/*   sh_traverse_tools_io_file.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/07 04:55:29 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/09 10:59:47 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/09/28 22:11:28 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int		sh_process_file_input(char *filename,
 		return (sh_perror_err(SH_ERR1_FILENAME_LEN, filename));
 	}
 	if (access(filename, F_OK))
-		fd = sh_perror(SH_ERR2_NO_SUCH_FILE_OR_DIR, filename);
+		fd = sh_perror(filename, SH_ERR2_NO_SUCH_FILE_OR_DIR);
 	if (stat(filename, &st) == -1)
 		return (ERROR);
 	else if (access(filename, R_OK))

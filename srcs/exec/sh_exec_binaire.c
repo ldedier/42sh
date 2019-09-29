@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 17:31:33 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/28 23:48:11 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/29 01:33:37 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ static int		sh_exec_child_part(t_context *context)
 				return (jc_error_free("tcsetpgrp",
 					"Could not give terminal control to the process", 1, FAILURE));
 	}
+	kill(g_job_ctrl->shell_pgid, SIGUSR1);
 	sh_execute_binary(context);
 	return (SUCCESS);
 }

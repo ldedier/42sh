@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 23:24:10 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/29 00:00:30 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/29 01:35:00 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ static void		init_jc_values(void)
 	while (i < MAX_JOBS)
 		g_job_ctrl->job_num[i++] = 0;
 	g_job_ctrl->job_count = 1;
+	g_job_ctrl->pipe_node = 0;
 	g_job_ctrl->job_added = 0;
 	g_job_ctrl->first_job = NULL;
 	g_job_ctrl->curr_job = NULL;
@@ -61,8 +62,8 @@ int				jobs_init(t_shell *shell)
 	if (g_job_ctrl == NULL)
 		return (sh_perror(SH_ERR1_MALLOC, "jobs_init"));
 	// Check whether the shell in run interactively
-	g_job_ctrl->shell_interactive = isatty(STDIN_FILENO);
-	// g_job_ctrl->shell_interactive = 0;
+	// g_job_ctrl->shell_interactive = isatty(STDIN_FILENO);
+	g_job_ctrl->shell_interactive = 0;
 	if (g_job_ctrl->shell_interactive)
 	{
 		init_jc_values();

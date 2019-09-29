@@ -6,25 +6,27 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/22 10:38:19 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/27 21:25:18 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/29 01:00:03 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-void	handler_sigint(int signal)
+void	handler_sigint(int signo)
 {
-	(void)signal;
-//	if (isatty(0) && g_glob.command_line.dy_str)
-//	{
-//		get_down_from_command(&g_glob.command_line);
-//		reset_command_line(g_glob.command_line.shell, &g_glob.command_line);
-//		sh_env_update_ret_value_and_question(g_glob.command_line.shell,
-//			SH_RET_CTRL_C);
-//		render_command_line(&g_glob.command_line, 0, 1);
-//		sh_set_term_sig(0);
-//		ioctl(0, TIOCSTI, "\x03");
-//	}
+	if (signo == SIGINT)
+	{
+		if (isatty(0) && g_glob.command_line.dy_str)
+		{
+			get_down_from_command(&g_glob.command_line);
+			reset_command_line(g_glob.command_line.shell, &g_glob.command_line);
+			sh_env_update_ret_value_and_question(g_glob.command_line.shell,
+				SH_RET_CTRL_C);
+			render_command_line(&g_glob.command_line, 0, 1);
+			sh_set_term_sig(0);
+			ioctl(0, TIOCSTI, "\x03");
+		}
+	}
 }
 
 void	transmit_sig_and_exit(int signal)
