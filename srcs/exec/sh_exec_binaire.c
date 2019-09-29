@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 17:31:33 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/29 04:47:41 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/29 16:57:29 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,8 @@ static int		sh_exec_parent_part(pid_t cpid, t_context *context)
 			return (res);
 		if ((res = set_child_pgid(cpid)) != SUCCESS)
 			return (res);
-		ft_dprintf(g_job_ctrl->term_fd, "Added process: %s", (char **)context->params->tbl[0]);
-		ft_dprintf(g_job_ctrl->term_fd, "\tpid: %d, pgid: %d\n", cpid, getpgid(cpid));
+		ft_dprintf(1, "Added process: %s", (char **)context->params->tbl[0]);
+		ft_dprintf(1, "\tpid: %d, pgid: %d\n", cpid, getpgid(cpid));
 		if (g_job_ctrl->curr_job->foreground == 0)
 			res = job_put_in_bg(g_job_ctrl->curr_job, 0);
 		else if (job_put_in_fg(g_job_ctrl->curr_job, 0, &res) != SUCCESS)
@@ -79,7 +79,7 @@ static int		sh_exec_parent_part(pid_t cpid, t_context *context)
 	}
 	else
 		waitpid(cpid, &res, 0);
-	if (g_job_ctrl->jc_enabled && g_job_ctrl->curr_job->pipe_and_or_node != 2)
+	if (g_job_ctrl->jc_enabled)
 		g_job_ctrl->job_added = 0;
 	sh_env_update_ret_value_wait_result(context, res);
 	if (sh_post_execution() != SUCCESS)
