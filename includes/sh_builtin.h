@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 11:36:31 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/27 21:23:12 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/30 01:47:24 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@
 # define NB_FLAG_UNARY	15
 # define NB_FLAG_BINARY	8
 
+/*
+** Macros for cd builtin
+*/
 # define CD_USAGE			"[-LP] [dir] || cd -"
 # define CD_P_OPT			0
 # define CD_P_OPT_USAGE		"Resolve pathname without any symlinks"
@@ -33,6 +36,9 @@
 # define CD_L_OPT_USAGE		"Resolve pathname including symlinks (default)"
 # define CD_HYPHEN_OPT		2
 
+/*
+** Macros for type builtin
+*/
 # define TYPE_USAGE			"[-atp] name [name ...]"
 # define TYPE_A_OPT			0
 # define TYPE_A_OPT_USAGE	"Print all places that contain valid executable"
@@ -40,6 +46,14 @@
 # define TYPE_P_OPT_USAGE	"Print path that name would execute"
 # define TYPE_T_OPT			2
 # define TYPE_T_OPT_USAGE	"Print a string describing the file type"
+
+/*
+** Macros for export builtin
+*/
+#define EXPORT_MSG			"declare -x" // need to be changed to "export"
+#define EXPORT_USAGE		"name[=word]"
+#define EXPORT_P_OPT		0
+#define EXPORT_P_OPT_USAGE	"print all exported variables (default option)"
 
 enum	e_built_test_unary {TEST_B, TEST_C, TEST_D, TEST_E, TEST_F, TEST_G,
 	TEST_L, TEST_P, TEST_R, TEST_SS, TEST_S, TEST_U, TEST_W, TEST_X, TEST_Z};
@@ -180,6 +194,11 @@ int					sh_builtin_exit(t_context *context);
 ** sh_builtin_export.c
 */
 int					sh_builtin_export(t_context *context);
+
+/*
+** sh_builtin_export_show.c
+*/
+int					sh_builtin_export_show(t_context *context);
 
 /*
 ** sh_builtin_fc.c

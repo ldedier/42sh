@@ -17,9 +17,11 @@ static int	check_process_changes(t_job *j, int cpid, int status)
 {
 	t_process	*p;
 
+	int i = 0;
 	p = j->first_process;
 	while (p != NULL)
 	{
+		i++;
 		if (p->pid == cpid)
 		{
 			p->status = status;
@@ -51,7 +53,6 @@ int			job_check_changes(pid_t cpid, int status)
 	j = g_job_ctrl->first_job;
 	if (cpid > 0)
 	{
-		// ft_printf("CHECKIN CHANGES FOR %d\n", cpid);
 		while (j != NULL)
 		{
 			check_process_changes(j, cpid, status);

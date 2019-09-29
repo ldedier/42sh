@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/29 23:42:55 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/30 01:42:53 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,16 @@ static int		pipe_child_part(t_ast_node *node, t_context *context)
 	if (sh_set_term_sig(1) != SUCCESS)
 		return (FAILURE);
 	cpid = getpid();
-	// ft_dprintf(g_job_ctrl->term_fd, "Forked first, %d\n", cpid);
 	if (g_job_ctrl->jc_enabled)
 	{
 		if ((ret = set_pgid_child(cpid)) != SUCCESS)
 			return (ret);
 	}
 	ret = sh_execute_pipe(node, context);
-	return (ret);
+	if (sh_set_term_sig(0) != SUCCESS)
+		return (FAILURE);
+	// return (ret);
+	exit (ret);
 }
 
 static int		pip_parent_part(pid_t cpid, t_context *context)
@@ -39,8 +41,6 @@ static int		pip_parent_part(pid_t cpid, t_context *context)
 	{
 		if ((ret = set_pgid_parent(cpid, context)) != SUCCESS)
 			return (ret);
-		if (g_job_ctrl->curr_job->foreground == 0)
-			waitpid(cpid, &ret, 0);
 		if (g_job_ctrl->curr_job->foreground == 0)
 			ret = job_put_in_bg(g_job_ctrl->curr_job, 0);
 		else if (job_put_in_fg(g_job_ctrl->curr_job, 0, &ret) != SUCCESS)
@@ -65,7 +65,7 @@ static int		pipe_to_do(t_ast_node *node, t_context *context)
 	else if (cpid == 0)
 	{
 		ret = pipe_child_part(node, context);
-		exit(ret);
+		return (ret);
 	}
 	else
 	{
@@ -93,7 +93,6 @@ int				sh_traverse_pipeline(t_ast_node *node, t_context *context)
 		{
 			if (g_job_ctrl->job_added == 0)
 			{
-				ft_printf("No job added yet, adding ..\n");
 				if ((ret = jobs_add(1)) != SUCCESS)
 					return (ret);
 				g_job_ctrl->job_added = 1;

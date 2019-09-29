@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 17:31:33 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/29 23:20:57 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/30 01:37:39 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ static int		do_pre_exc_job_add(t_context *context)
 	{
 		if ((ret = jobs_add(1)) != SUCCESS)
 			return (ret);
-		ft_printf("job added in exec_binary\n");
 		g_job_ctrl->job_added = 1;
 	}
 	return (SUCCESS);
@@ -49,7 +48,6 @@ static int		sh_exec_child_part(t_context *context)
 
 	if (g_job_ctrl->jc_enabled && g_job_ctrl->curr_job->pipe_node != PIPE_JOB)
 	{
-		ft_dprintf(g_job_ctrl->term_fd, "%sNOT GOOD AT ALL%s\n", COLOR_RED, COLOR_END);
 		if ((ret = set_pgid_child(cpid)) != SUCCESS)
 			return (ret);
 	}
@@ -64,7 +62,6 @@ static int		sh_exec_parent_part(pid_t cpid, t_context *context)
 	if (g_job_ctrl->jc_enabled
 		&& g_job_ctrl->curr_job->pipe_node != PIPE_JOB)
 	{
-		ft_dprintf(g_job_ctrl->term_fd, "%sNOT GOOD AT ALL%s\n", COLOR_RED, COLOR_END);
 		if ((ret = set_pgid_parent(cpid, context)) != SUCCESS)
 			return (ret);
 		if (g_job_ctrl->curr_job->foreground == 0)
@@ -73,12 +70,7 @@ static int		sh_exec_parent_part(pid_t cpid, t_context *context)
 			return (ret);
 	}
 	else
-	{
-
-		ft_dprintf(g_job_ctrl->term_fd, "%s%d waiting for: %d%s\n", COLOR_YELLOW, getpid(), cpid, COLOR_END);
 		waitpid(cpid, &ret, 0);
-		ft_dprintf(g_job_ctrl->term_fd, "%sret of %d\t%d%s\n", COLOR_PINK, getpid(),ret, COLOR_END);
-	}
 	if (g_job_ctrl->jc_enabled && g_job_ctrl->curr_job &&
 			g_job_ctrl->curr_job->pipe_node != PIPE_JOB)
 		g_job_ctrl->job_added = 0;

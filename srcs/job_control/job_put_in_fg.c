@@ -6,12 +6,47 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/20 23:22:03 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/29 23:22:13 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/30 01:34:14 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_job_control.h"
 #include "sh_21.h"
+
+static int	check_process_changes(t_job *j, int cpid, int status)
+{
+	t_process	*p;
+
+	int i = 0;
+	p = j->first_process;
+	while (p != NULL)
+	{
+		i++;
+		if (p->pid == cpid)
+		{
+			ft_dprintf(g_job_ctrl->term_fd, "CHECK PROCESS CHANGES: %d\n", cpid);
+			p->status = status;
+			if (WIFSTOPPED (status))
+			{
+				// ft_printf("\n"); //dprintf
+				ft_dprintf(g_job_ctrl->term_fd, "process %d had been stopped\n"); //dprintf
+				p->stopped = 1;
+				job_notify();
+			}
+			else if (WIFCONTINUED(status))
+				p->stopped = 0;
+			else
+			{
+				p->completed = 1;
+				if (WIFSIGNALED (status))
+					j->signal_num = WTERMSIG(status);
+			}
+			return (0);
+		}
+		p = p->next;
+	}
+	// ft_dprintf(g_job_ctrl->term_fd, "job [%d] has %d processes\n", j->number, i);
+}
 
 int			job_put_in_fg(t_job *j, int cont, int *res)
 {
@@ -21,8 +56,6 @@ int			job_put_in_fg(t_job *j, int cont, int *res)
 		return (jc_error_free("tcsetpgrp",
 			"Could not put the job in the foreground", 0, ERROR));
 	}
-	ft_dprintf(g_job_ctrl->term_fd, "put %d in fg\n", j->pgid);
-	ft_dprintf(g_job_ctrl->term_fd, "%sControlling terminal pgid: %d%s\n", COLOR_RED, tcgetpgrp(g_job_ctrl->term_fd), COLOR_END);
 	if (cont)
 	{
 		// tcsetattr (shell_terminal, TCSADRAIN, &j->tmodes);
@@ -35,9 +68,7 @@ int			job_put_in_fg(t_job *j, int cont, int *res)
 	}
 	j->foreground = 1;
 	// Wait for the job
-	ft_dprintf(g_job_ctrl->term_fd, "%sShell waiting for %d%s\n", COLOR_YELLOW, g_job_ctrl->curr_job->pgid, COLOR_END);
 	job_wait(g_job_ctrl->curr_job, res);
-	ft_dprintf(g_job_ctrl->term_fd, "job %d finished with %d\n", g_job_ctrl->curr_job->pgid, *res);
 	// Put the shell back into the forground.
 	if (tcsetpgrp(g_job_ctrl->term_fd, g_job_ctrl->shell_pgid) < 0)
 	{
@@ -45,7 +76,6 @@ int			job_put_in_fg(t_job *j, int cont, int *res)
 		return (jc_error_free("tcsetpgrp",
 			"Could not give the shell control of the terminal", 1, FAILURE));
 	}
-	ft_dprintf(g_job_ctrl->term_fd, "SHELL IN CONTROLL\n");
 	return (SUCCESS);
 
 }
