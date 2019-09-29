@@ -143,9 +143,9 @@ int		sh_builtin_fc_default_synopsis(t_context *context, t_fc_options *opts)
 
 	fill_default_opts_default_synopsis(opts);
 	if (!(from
-		= get_entry_from_fc_operand(&context->shell->history, &opts->from)))
+		= get_entry_from_fc_operand(&context->shell->history, &opts->from, 1)))
 		return (sh_perror_err(SH_BLT_HISTORY_RANGE, NULL));
-	if (!(to = get_entry_from_fc_operand(&context->shell->history, &opts->to)))
+	if (!(to = get_entry_from_fc_operand(&context->shell->history, &opts->to, 1)))
 		return (sh_perror_err(SH_BLT_HISTORY_RANGE, NULL));
 	if (opts->opt_r)
 		swap_entries(&context->shell->history, &from, &to);

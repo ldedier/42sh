@@ -308,6 +308,7 @@ SRCS			 +=	sh_expansions.c \
 					sh_expansions_field_splitting.c \
 					sh_expansions_quote_removal.c \
 					sh_expansions_scan.c \
+					sh_expansions_history.c \
 					t_quote.c
 
 ################################################################

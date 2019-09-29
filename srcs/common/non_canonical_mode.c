@@ -14,7 +14,7 @@
 
 static int		sh_await_command(t_shell *shell)
 {
-	int		ret;
+	int ret;
 
 	if ((ret = sh_get_command(shell, &g_glob.command_line)) != SUCCESS)
 		return (ret);

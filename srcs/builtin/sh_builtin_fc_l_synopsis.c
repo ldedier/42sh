@@ -106,9 +106,9 @@ int		sh_builtin_fc_l_synopsis(t_context *context, t_fc_options *opts)
 //	print_fc_operand(&opts->from);
 //	print_fc_operand(&opts->to);
 	
-	if (!(from = get_entry_from_fc_operand(&context->shell->history, &opts->from)))
+	if (!(from = get_entry_from_fc_operand(&context->shell->history, &opts->from, 1)))
 		return (sh_perror_err(SH_BLT_HISTORY_RANGE, NULL));
-	if (!(to = get_entry_from_fc_operand(&context->shell->history, &opts->to)))
+	if (!(to = get_entry_from_fc_operand(&context->shell->history, &opts->to, 1)))
 		return (sh_perror_err(SH_BLT_HISTORY_RANGE, NULL));
 	
 //	ft_printf("FROM: %p\n", from->content);

@@ -207,6 +207,7 @@ int			sh_expansions_splitting(t_context *context, t_ast_node *node, t_dy_tab *qu
 		if (!ft_strpbrk(node->token->value, " \t\n"))
 			return (SUCCESS);
 		ret = sh_expansions_splitting_default(node, quotes);
+		sh_print_ast_root(node);
 	}
 	else if (!*ifs)
 		return (SUCCESS);
@@ -223,5 +224,4 @@ int			sh_expansions_splitting(t_context *context, t_ast_node *node, t_dy_tab *qu
 		// sh_print_ast(context->shell->parser.ast_root, 0);
 	}	
 	return (ret);
-	(void)node;
 }
