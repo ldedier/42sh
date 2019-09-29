@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/31 16:05:53 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/29 01:14:59 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/29 04:13:44 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,14 @@ void	sigtstp_handler(int signal)
 
 static void		handler_sigchld(int signo)
 {
-	if (signo == SIGCHLD)
+	if (signo == SIGCHLD && g_job_ctrl)
 	{
-		if (g_job_ctrl->shell_interactive)
+		if (g_job_ctrl->jc_enabled)
 			job_notify();
+	// if (ioctl(0, TIOCGWINSZ, &g_glob.winsize) == -1)
+	// 	exit(sh_reset_shell(1));
+	// if (isatty(0) && g_glob.command_line.dy_str)
+	// 	render_command_line(&g_glob.command_line, 0, 1);
 	}
 }
 
@@ -86,7 +90,6 @@ static void		init_signal2(void (*default_func)(int))
 	// signal(SIGUSR1, default_func);
 	// signal(SIGUSR2, default_func);
 	signal(SIGQUIT, transmit_sig_no_motion);
-	signal(SIGKILL, default_func);
 	signal(SIGINT, handler_sigint);
 	signal(SIGHUP, default_func);
 	signal(SIGABRT, default_func);

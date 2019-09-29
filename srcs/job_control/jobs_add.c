@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 00:09:20 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/28 23:37:30 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/29 04:39:50 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,20 +27,23 @@ static int	find_available_job_number(void)
 	return (-1);
 }
 
-static void	init_job_values(t_job *j, int n)
+static void	init_job_values(t_job *j, int n, int fg)
 {
-	j->signal_num = 0;
 	j->first_process = NULL;
 	j->next = NULL;
+	j->signal_num = 0;
 	j->notified = 0;
 	j->pgid = 0;
-	g_job_ctrl->curr_job = j;
 	j->number = n;
 	g_job_ctrl->job_num[n] = 1;
-	j->foreground = g_job_ctrl->ampersand_eol ^ 1;
+	j->pipe_and_or_node = 0;
+	g_job_ctrl->pipe_and_or_node = 0;
+	g_job_ctrl->curr_job = j;
+	// j->foreground = g_job_ctrl->ampersand_eol ^ 1;
+	j->foreground = fg;
 }
 
-int			jobs_add(void)
+int			jobs_add(int fg)
 {
 	t_job	*j;
 	t_job	*it;
@@ -52,8 +55,8 @@ int			jobs_add(void)
 			"job_add", 0, STOP_CMD_LINE));
 	if ((j = malloc(sizeof(t_job))) == NULL)
 		return (jc_error_free(SH_ERR1_MALLOC, "jobs_add", 1, FAILURE));
-	init_job_values(j, n);
-	// ft_printf("Job %d added in %s\n", j->number, j->foreground == 1 ? "foreground" : "background");
+	init_job_values(j, n, fg);
+	ft_printf("%sJob %d added in %s%s\n",COLOR_GREEN, j->number, j->foreground == 1 ? "foreground" : "background", COLOR_END);
 	j->command = NULL;	//	Fill it with the command
 	// Add the newly created job at the end of the job list.
 	if (g_job_ctrl->first_job == NULL)

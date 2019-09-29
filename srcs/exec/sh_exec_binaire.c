@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 17:31:33 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/29 01:33:37 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/29 04:47:41 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,11 @@ static int		do_pre_exc_job_add(t_context *context)
 
 	if (sh_pre_execution() != SUCCESS)
 		return (FAILURE);
-	if (g_job_ctrl->shell_interactive && g_job_ctrl->job_added == 0)
+	if (g_job_ctrl->jc_enabled && g_job_ctrl->job_added == 0)
 	{
-		if ((res = jobs_add()) != SUCCESS)
+		if ((res = jobs_add(1)) != SUCCESS)
 			return (res);
+		ft_printf("job added in exec_binary\n");
 		g_job_ctrl->job_added = 1;
 	}
 	return (SUCCESS);
@@ -45,7 +46,7 @@ static int		sh_exec_child_part(t_context *context)
 {
 	pid_t	cpid;
 
-	if (g_job_ctrl->shell_interactive)
+	if (g_job_ctrl->jc_enabled)
 	{
 		cpid = getpid();
 		set_child_pgid(cpid);
@@ -54,7 +55,7 @@ static int		sh_exec_child_part(t_context *context)
 				return (jc_error_free("tcsetpgrp",
 					"Could not give terminal control to the process", 1, FAILURE));
 	}
-	kill(g_job_ctrl->shell_pgid, SIGUSR1);
+	// kill(g_job_ctrl->shell_pgid, SIGUSR1);
 	sh_execute_binary(context);
 	return (SUCCESS);
 }
@@ -63,24 +64,22 @@ static int		sh_exec_parent_part(pid_t cpid, t_context *context)
 {
 	int		res;
 
-	if (g_job_ctrl->shell_interactive)
+	if (g_job_ctrl->jc_enabled)
 	{
-		// ft_printf("Adding process: %d %s to job %d\n", cpid, context->path, g_job_ctrl->curr_job->number);
 		if ((res = process_add(context, cpid)) != SUCCESS)
 			return (res);
 		if ((res = set_child_pgid(cpid)) != SUCCESS)
 			return (res);
-		if (g_job_ctrl->curr_job->foreground == 1)
-		{
-			if ((res = job_put_in_fg(g_job_ctrl->curr_job, 0, &res)) != SUCCESS)
-				return (res);
-		}
-		else
+		ft_dprintf(g_job_ctrl->term_fd, "Added process: %s", (char **)context->params->tbl[0]);
+		ft_dprintf(g_job_ctrl->term_fd, "\tpid: %d, pgid: %d\n", cpid, getpgid(cpid));
+		if (g_job_ctrl->curr_job->foreground == 0)
 			res = job_put_in_bg(g_job_ctrl->curr_job, 0);
+		else if (job_put_in_fg(g_job_ctrl->curr_job, 0, &res) != SUCCESS)
+			return (res);
 	}
 	else
 		waitpid(cpid, &res, 0);
-	if (g_job_ctrl->shell_interactive)
+	if (g_job_ctrl->jc_enabled && g_job_ctrl->curr_job->pipe_and_or_node != 2)
 		g_job_ctrl->job_added = 0;
 	sh_env_update_ret_value_wait_result(context, res);
 	if (sh_post_execution() != SUCCESS)

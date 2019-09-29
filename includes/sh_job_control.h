@@ -41,6 +41,7 @@ struct	s_job
 	char			*command;
 	char			signal_num;
 	char			foreground;
+	char			pipe_and_or_node; // 0 nothing, 1 pipe, 2 and_or
 	int				number;
 	pid_t			pgid;
 	t_process		*first_process;
@@ -49,10 +50,10 @@ struct	s_job
 
 struct	s_job_control
 {
-	char			shell_interactive;
+	char			jc_enabled;
 	char			job_added;
 	char			ampersand_eol;
-	char			pipe_node;
+	char			pipe_and_or_node; // 0 nothing, 1 pipe, 2 and_or
 	int				term_fd;
 	int				job_count;
 	int				job_num[MAX_JOBS];
@@ -64,7 +65,7 @@ struct	s_job_control
 
 t_job_control	*g_job_ctrl;
 
-int				jobs_add(void);
+int				jobs_add(int fg);
 void			jobs_print(void);
 int				process_add(t_context *context, pid_t pid);
 void			str_tab_print(char **char_tab);		//put in libft

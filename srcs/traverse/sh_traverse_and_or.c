@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 15:54:02 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/27 19:12:36 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/29 04:53:20 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ static int		sh_traverse_and_or_launch_phase(
 	t_ast_node *node, t_context *context)
 {
 	t_list		*ptr;
+	t_list		*pp;
 	int			ret;
 	int			prev_symbol;
 
@@ -79,11 +80,16 @@ static int		sh_traverse_and_or_launch_phase(
 	prev_symbol = -1;
 	while (ptr != NULL && context->shell->running)
 	{
-		// if (g_job_ctrl->job_added == 0)
-		// {
-		// 	jobs_add();
-		// 	g_job_ctrl->job_added = 1;
-		// }
+		if (g_job_ctrl->jc_enabled)
+		{
+			if (ptr->next && g_job_ctrl->job_added)
+			{
+				g_job_ctrl->curr_job->pipe_and_or_node = 2;
+				printf("FOUND AND OR\n");
+			}
+			else if (g_job_ctrl->job_added)
+				g_job_ctrl->curr_job->pipe_and_or_node = 2;
+		}
 		if ((ret = sh_traverse_and_or_process_phase(
 			context, prev_symbol, ptr)) != KEEP_READ)
 			return (ret);
