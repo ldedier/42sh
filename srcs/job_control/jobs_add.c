@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 00:09:20 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/29 19:06:26 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/30 18:02:33 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int			jobs_add(int fg)
 	if ((j = malloc(sizeof(t_job))) == NULL)
 		return (jc_error_free(SH_ERR1_MALLOC, "jobs_add", 1, FAILURE));
 	init_job_values(j, n, fg);
-	ft_printf("%sJob %d added in %s%s\n",COLOR_GREEN, j->number, j->foreground == 1 ? "foreground" : "background", COLOR_END);
+	// ft_printf("%sJob %d added in %s%s\n",COLOR_GREEN, j->number, j->foreground == 1 ? "foreground" : "background", COLOR_END);
 	j->command = NULL;	//	Fill it with the command
 	// Add the newly created job at the end of the job list.
 	if (g_job_ctrl->first_job == NULL)

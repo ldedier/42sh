@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/30 15:48:56 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/29 00:14:25 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/01 00:17:14 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,8 +242,8 @@ int					sh_process_noncanonical_mode(t_shell *shell);
 ** set_signals.c
 */
 void				reset_signals(void);
-void				sigtstp_handler(int signal);
 void				init_signals(void);
+void				set_signals_pipe(void);
 
 /*
 ** sh_split_path.c

@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/31 16:05:53 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/30 01:41:40 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/01 00:17:24 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,27 @@
 #include <unistd.h>
 #include <signal.h>
 #include <string.h>
+
+// static void		handler_sigchld(int signo, siginfo_t *info, void *context)
+// {
+// 	if (signo == SIGCHLD)
+// 	{
+// 		ft_dprintf(g_job_ctrl->term_fd, "%sReceived SIGCHILD from <%d>%s\n",
+// 				COLOR_PINK, info->si_pid, COLOR_END);
+// 		job_notify();
+// 	}
+// }
+
+// static void		set_sigchld_sigaction(void)
+// {
+// 	struct sigaction	s_act;
+
+// 	ft_memset(&s_act, '\0', sizeof(s_act));
+// 	s_act.sa_sigaction = handler_sigchld;
+// 	s_act.sa_flags = SA_SIGINFO;
+// 	sigaction(SIGCHLD, &s_act, NULL);
+// }
+
 
 static void		handler_sigchld(int signo)
 {
@@ -27,13 +48,34 @@ static void		handler_sigchld(int signo)
 	}
 }
 
+static void		handler_sigtstp_pipe(int signo)
+{
+	if (signo == SIGTSTP)
+	{
+		signal(SIGTSTP, SIG_DFL);
+		kill(getpid(), SIGTSTP);
+		kill(getppid(), SIGCHLD);
+		// signal(SIGTSTP, handler_sigtstp_pipe);
+	}
+}
+
 void			reset_signals(void)
 {
 	int i;
 
 	i = 1;
-	while (i <= SIGUSR2)
+	while (i <= 31)
 		signal(i++, SIG_DFL);
+}
+
+void			set_signals_pipe(void)
+{
+	int i;
+
+	i = 1;
+	while (i <= 31)
+		signal(i++, SIG_DFL);
+	signal(SIGTSTP, handler_sigtstp_pipe);
 }
 
 static void		init_signal2(void (*default_func)(int))
@@ -42,14 +84,16 @@ static void		init_signal2(void (*default_func)(int))
 	signal(SIGCHLD, handler_sigchld);
 	signal(SIGQUIT, transmit_sig_no_motion);
 	signal(SIGTERM, transmit_sig_and_exit);
+	signal(SIGINT, SIG_IGN);
+	signal(SIGTSTP, SIG_IGN);
 	signal(SIGCONT, SIG_IGN);
 	signal(SIGTTOU, SIG_IGN);
 	signal(SIGTTIN, SIG_IGN);
 	signal(SIGUSR1, default_func);
 	signal(SIGUSR2, default_func);
-	signal(SIGINT, handler_sigint);
 	signal(SIGHUP, default_func);
 	signal(SIGABRT, default_func);
+	// set_sigchld_sigaction();
 }
 
 void			init_signals(void)

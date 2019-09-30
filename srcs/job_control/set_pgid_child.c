@@ -6,14 +6,14 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 18:29:26 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/29 18:36:00 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/30 22:55:17 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_job_control.h"
 #include "sh_21.h"
 
-int				set_pgid_child(int cpid)
+int					set_pgid_child(int cpid)
 {
 	int	ret;
 

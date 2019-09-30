@@ -25,14 +25,12 @@ static int	check_process_changes(t_job *j, int cpid, int status)
 		if (p->pid == cpid)
 		{
 			p->status = status;
-			if (WIFSTOPPED (status))
+			if (WIFSTOPPED(status))
 			{
 				ft_printf("\n"); //dprintf
 				p->stopped = 1;
 				job_notify();
 			}
-			else if (WIFCONTINUED(status))
-				p->stopped = 0;
 			else
 			{
 				p->completed = 1;

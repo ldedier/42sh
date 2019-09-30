@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 17:31:33 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/30 01:37:39 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/09/30 23:24:44 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ static int		sh_exec_child_part(t_context *context)
 	pid_t	cpid;
 	int		ret;
 
+	reset_signals();
 	if (g_job_ctrl->jc_enabled && g_job_ctrl->curr_job->pipe_node != PIPE_JOB)
 	{
 		if ((ret = set_pgid_child(cpid)) != SUCCESS)
