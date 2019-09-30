@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-launch "Lists of commands"
+launch "Lists"
 
 	launch_show ";"
 	test_launch 'ls - ; pwd'

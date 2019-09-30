@@ -39,23 +39,35 @@ t_list		**get_current_saves_stack(t_command_line *command_line,
 	return (res);
 }
 
+t_save		*t_save_new(char *str, int index)
+{
+	t_save *res;
+
+	if (!(res = malloc(sizeof(t_save))))
+		return (sh_perrorn(SH_ERR1_MALLOC, "t_save_new (1)"));
+	res->current_index = index;
+	if (!(res->str = ft_strdup(str)))
+	{
+		free(res);
+		return (sh_perrorn(SH_ERR1_MALLOC, "t_save_new (2)"));
+	}
+	return (res);
+}
+
 int			sh_save_command_line(t_command_line *command_line)
 {
-	char	*command_line_dup;
+	t_save	*save;
 	t_list	**saves_stack;
 	t_entry *entry;
 
-	if (!(command_line_dup = (char *)malloc(sizeof(char)
-		* (command_line->dy_str->current_size + 1))))
+	if (!(save = t_save_new(command_line->dy_str->str,
+			command_line->current_index)))
 	{
-		return (sh_perror(SH_ERR1_MALLOC, "save_command_line (1)"));
+		return (FAILURE);
 	}
-	ft_memcpy(command_line_dup, command_line->dy_str->str,
-			command_line->dy_str->current_size);
-	command_line_dup[command_line->dy_str->current_size] = 0;
 	saves_stack = get_current_saves_stack(command_line, &entry);
-	if ((ft_lstaddnew_ptr(saves_stack, command_line_dup,
-		sizeof(char *))))
+	if ((ft_lstaddnew_ptr(saves_stack, save,
+		sizeof(t_save *))))
 	{
 		return (sh_perror(SH_ERR1_MALLOC, "save_command_line (2)"));
 	}
@@ -66,14 +78,16 @@ int			sh_save_command_line(t_command_line *command_line)
 }
 
 int			process_restore_save(t_command_line *command_line,
-				char *save, int *ret)
+				t_save *save, int *ret)
 {
-	if (ft_strcmp(command_line->dy_str->str, save))
+
+	if (ft_strcmp(command_line->dy_str->str, save->str))
 	{
-		if (switch_command_line(command_line, save) != SUCCESS)
-			*ret = FAILURE;
+		if (command_line->edit_style == E_EDIT_STYLE_READLINE)
+			*ret = switch_command_line_index(command_line,
+					save->str, save->current_index);
 		else
-			*ret = SUCCESS;
+			*ret = switch_command_line(command_line, save->str, 0);
 		return (1);
 	}
 	else
@@ -83,9 +97,24 @@ int			process_restore_save(t_command_line *command_line,
 	}
 }
 
+void		t_save_free(t_save *save)
+{
+	free(save->str);
+	free(save);
+}
+
+void		t_save_free_list(void *s, size_t dummy)
+{
+	t_save *save;
+
+	(void)dummy;
+	save = (t_save *)s;
+	t_save_free(save);
+}
+
 int			sh_restore_save(t_command_line *command_line)
 {
-	char		*save;
+	t_save		*save;
 	t_entry		*entry;
 	t_list		**saves_stack;
 	int			ret;
@@ -96,10 +125,10 @@ int			sh_restore_save(t_command_line *command_line)
 	{
 		if (process_restore_save(command_line, save, &ret))
 		{
-			free(save);
+			t_save_free(save);
 			return (ret);
 		}
-		free(save);
+		t_save_free(save);
 	}
 	save = (*saves_stack)->content;
 	process_restore_save(command_line, save, &ret);
@@ -108,7 +137,7 @@ int			sh_restore_save(t_command_line *command_line)
 
 int			sh_restore_all_save(t_command_line *command_line)
 {
-	char		*save;
+	t_save		*save;
 	t_entry		*entry;
 	t_list		**saves_stack;
 	int			ret;
@@ -117,7 +146,7 @@ int			sh_restore_all_save(t_command_line *command_line)
 	while (saves_stack && (*saves_stack)->next
 		&& (save = ft_lstpop_ptr(saves_stack)))
 	{
-		free(save);
+		t_save_free(save);
 	}
 	save = (*saves_stack)->content;
 	process_restore_save(command_line, save, &ret);
@@ -134,7 +163,7 @@ int			sh_process_edit_counter(t_command_line *command_line, int inc)
 
 int			sh_reset_saves(t_command_line *command_line)
 {
-	ft_lstdel_value(&command_line->saves_stack);
+	ft_lstdel(&command_line->saves_stack, t_save_free_list);
 	if (sh_save_command_line(command_line))
 		return (FAILURE);
 	return (SUCCESS);
@@ -142,16 +171,16 @@ int			sh_reset_saves(t_command_line *command_line)
 
 int			sh_init_entry_saves(t_entry *entry)
 {
-	char	*cmd_dup;
+	t_save	*save;
 
 	if (entry->saves_stack == NULL)
 	{
-		if (!(cmd_dup = ft_strdup(entry->command)))
-			return (sh_perror(SH_ERR1_MALLOC, "sh_generate_entry_save (1)"));
-		if (ft_lstaddnew_ptr(&entry->saves_stack, cmd_dup, sizeof(char *)))
+		if (!(save = t_save_new(entry->command, ft_strlen(entry->command))))
+			return (FAILURE);
+		if (ft_lstaddnew_ptr(&entry->saves_stack, save, sizeof(t_save *)))
 		{
-			free(cmd_dup);
-			return (sh_perror(SH_ERR1_MALLOC, "sh_generate_entry_save (2)"));
+			t_save_free(save);
+			return (sh_perror(SH_ERR1_MALLOC, "sh_generate_entry_save"));
 		}
 	}
 	return (SUCCESS);

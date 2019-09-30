@@ -82,6 +82,58 @@ typedef struct			s_vshortcut
 */
 
 /*
+** alt_b.c
+*/
+int					process_alt_b(t_command_line *command_line);
+
+/*
+** alt_d.c
+*/
+int					process_alt_d(t_command_line *command_line);
+
+/*
+** alt_f.c
+*/
+int					process_alt_f(t_command_line *command_line);
+
+/*
+** alt_t.c
+*/
+int					sh_vs_motion_b_readline_alt(
+	t_command_line *command_line, int nb_words);
+int					process_alt_t(t_command_line *command_line);
+
+/*
+** ctrl_k.c
+*/
+int					process_ctrl_k(t_command_line *command_line);
+
+/*
+** ctrl_t.c
+*/
+int					process_ctrl_t(t_command_line *command_line);
+
+/*
+** ctrl_u.c
+*/
+int					process_ctrl_u(t_command_line *command_line);
+
+/*
+** ctrl_w.c
+*/
+int					process_ctrl_w(t_command_line *command_line);
+
+/*
+** ctrl_x_x.c
+*/
+void				process_ctrl_x_x(t_command_line *command_line);
+
+/*
+** ctrl_y.c
+*/
+int					process_ctrl_y(t_command_line *command_line);
+
+/*
 ** sh_vim_options.c
 */
 int					replace_cursor_vim_legal(t_command_line *command_line);
@@ -96,6 +148,8 @@ int					sh_vs_motion_0(
 ** sh_vs_motion_b.c
 */
 int					sh_vs_motion_b(
+	t_command_line *command_line, char dummy);
+int					sh_vs_motion_b_readline(
 	t_command_line *command_line, char dummy);
 
 /*
@@ -126,6 +180,12 @@ int					sh_vs_motion_dollar(
 ** sh_vs_motion_e.c
 */
 int					sh_vs_motion_e(
+	t_command_line *command_line, char dummy);
+int					sh_vs_motion_e_readline(
+	t_command_line *command_line, char dummy);
+int					get_next_word_index_readline(
+	t_command_line *command_line, int *index);
+int					sh_vs_motion_e_readline_no_end(
 	t_command_line *command_line, char dummy);
 
 /*
@@ -191,7 +251,11 @@ int					sh_vs_motion_t_maj(
 */
 char				get_char_type_word(
 	t_command_line *command_line, int index);
+char				get_char_type_word_readline(
+	t_command_line *command_line, int index);
 int					sh_vs_motion_w(
+	t_command_line *command_line, char dummy);
+int					sh_vs_motion_w_readline(
 	t_command_line *command_line, char dummy);
 
 /*
@@ -356,7 +420,8 @@ int					sh_vshortcut_y_maj(
 */
 int					sh_get_single_char(char *c);
 int					ft_clamp(int min, int val, int max);
-int					execute_motion(t_command_line *line, int index);
+int					execute_motion(
+	t_command_line *line, int index, int vi);
 int					execute_vsh_command(
 	t_command_line *command_line,
 	t_vshortcut *vshortcut,

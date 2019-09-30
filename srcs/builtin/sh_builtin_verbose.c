@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:19:57 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/22 19:29:53 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/29 05:09:20 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,15 @@
 #define VERBOSE_B_OPT			6
 #define VERBOSE_ALL_OPT			7
 
-static int	sh_builtin_verbose_process(t_context *context, t_args args[], char *state)
+static int	sh_builtin_verbose_process(
+	t_context *context, t_args args[], char *state)
 {
+	int			i;
+	char		value[3];
 	const char	key[9][20] = {"verbose_lexer", "verbose_ast", "verbose_pipe",
 		"verbose_exec", "verbose_expansion", "verbose_traverse",
 		"verbose_builtin", ""};
-	int			i;
-	char		value[3];
-	
+
 	i = 0;
 	if (ft_strequ(state, "on"))
 		ft_strcpy(value, "on");
@@ -38,7 +39,8 @@ static int	sh_builtin_verbose_process(t_context *context, t_args args[], char *s
 	while (args[i].type != E_ARGS_END)
 	{
 		if (args[i].value || args[VERBOSE_ALL_OPT].value)
-			if (sh_vars_assign_key_val(NULL, context->vars, (char*)key[i], value))
+			if (sh_vars_assign_key_val(
+					NULL, context->vars, (char*)key[i], value))
 				return (FAILURE);
 		i++;
 	}
@@ -49,7 +51,7 @@ int			sh_builtin_verbose(t_context *context)
 {
 	int				index;
 	char			**argv;
-	t_args	args[] = {
+	t_args			args[] = {
 		{E_ARGS_BOOL, 'l', "lexer", NULL, NULL, 0},
 		{E_ARGS_BOOL, 'a', "ast", NULL, NULL, 0},
 		{E_ARGS_BOOL, 'p', "pipe", NULL, NULL, 0},

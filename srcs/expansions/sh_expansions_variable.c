@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 13:38:26 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/19 19:01:44 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/27 22:59:00 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,6 @@ int			sh_expansions_variable_valid_name(char *name)
 {
 	int		i;
 
-	// if (sh_expansions_variable_detect_special(name))
-	// 	return (1);
 	if (!ft_isalpha(*name) && !(*name == '_'))
 		return (0);
 	i = 0;
@@ -87,8 +85,16 @@ int			sh_expansions_variable_detect(char *start)
 	i = 0;
 	if (sh_expansions_variable_detect_special(start))
 		return (2);
+	if (start[0] == '$' && start[1] == '\0')
+		return (0);
+	if (start[1] == '\\')
+		return (0);
 	if (*start == '$')
 		i++;
+	if (start[1] == '\'' && start[2] != '\'')
+		return (1);
+	if (start[1] == '"' && start[2] != '"')
+		return (1);
 	if (!(ft_isalpha(start[i]) || start[i] == '_'))
 		return (-1);
 	i++;
@@ -101,6 +107,9 @@ int			sh_expansions_variable_detect(char *start)
 ** sh_expansions_variable_fill:
 **	Try to fill type, expansion, original and process fields of a t_expansion
 **	structure.
+**	Conditon `if (i == 0)` is here to handle case of a solo $.
+**	This is linked to the function sh_expansions_process and
+**	sh_expansions_variable_detect.
 **
 **	Return Value:
 **		FAILURE : malloc error
@@ -114,6 +123,11 @@ int			sh_expansions_variable_fill(t_expansion *exp, char *start)
 
 	if ((i = sh_expansions_variable_detect(start)) == -1)
 		return (ERROR);
+	if (i == 0)
+	{
+		exp->type = EXP_VAR;
+		return (ERROR);
+	}
 	if (!(exp->original = ft_strndup(start, i)))
 		return (sh_perror(SH_ERR1_MALLOC, "sh_exp_variable_detect_name (1)"));
 	if (!(exp->expansion = ft_strndup(start + 1, i - 1)))

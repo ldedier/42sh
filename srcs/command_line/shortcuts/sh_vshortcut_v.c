@@ -30,7 +30,7 @@ static char	*get_to_edit(t_command_line *command_line)
 		fc.type = E_FC_INTEGER;
 		if (!(entry_ptr = get_entry_from_fc_operand(
 			&command_line->shell->history,
-			&fc)))
+			&fc, 1)))
 			return (sh_perrorn(SH_BLT_HISTORY_RANGE, NULL));
 		else
 			return (((t_entry *)entry_ptr->content)->command);
@@ -58,6 +58,9 @@ int		sh_vshortcut_v(t_command_line *command_line, int dummy, int dummy_2)
 	get_down_from_command(command_line);
 	ret = sh_execute_commands_from_file(command_line->shell, EDIT_FILE);
 	flush_command_line(command_line);
+	command_line->mode = E_MODE_INSERT;
+	if (update_prompt(command_line->shell, command_line))
+		return (FAILURE);
 	render_command_line(command_line, -g_glob.cursor, 1);
 	return (ret);
 }

@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/09/25 07:19:23 by jmartel          ###   ########.fr        #
+#    Updated: 2019/09/29 04:12:42 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -92,7 +92,7 @@ SRCS			+=	keys.c cursor_motion.c edit_command.c \
 					sh_get_cursor_position.c eof_percent.c \
 					update_prompt_cwd.c keys_insert_tools.c keys_flush.c \
 					keys_debug.c screen_tools.c get_char_len.c \
-					saves.c
+					saves.c keys_readline.c
 #sh_clipboard.c sh_command_line_tools.c
 #					sh_clipboard_tools.c
 
@@ -234,7 +234,18 @@ SRCS			+=	vshortcuts.c \
 					sh_vshortcut_p_maj.c \
 					sh_vshortcut_u.c \
 					sh_vshortcut_u_maj.c \
-					sh_vim_options.c
+					sh_vim_options.c \
+					alt_b.c \
+					alt_f.c \
+					alt_d.c \
+					alt_t.c \
+					ctrl_k.c \
+					ctrl_u.c \
+					ctrl_w.c \
+					ctrl_t.c \
+					ctrl_y.c \
+					ctrl_x_x.c
+
 
 ################################################################
 ########						VARS					########
@@ -272,8 +283,9 @@ SRCS			+=	sh_builtin.c sh_builtin_pwd.c \
 					sh_builtin_type.c sh_builtin_type_search_path.c \
 					sh_builtin_type_search.c\
 					sh_builtin_verbose.c \
-					sh_builtin_hash.c sh_builtin_set.c sh_builtin_unset.c \
-					sh_builtin_export.c sh_builtin_hash_tools.c \
+					sh_builtin_set.c sh_builtin_unset.c \
+					sh_builtin_export.c sh_builtin_export_show.c \
+					sh_builtin_hash.c sh_builtin_hash_tools.c \
 					sh_builtin_bonus.c sh_builtin_parser.c \
 					sh_builtin_test.c sh_builtin_test_unary.c \
 					sh_builtin_test_binary.c \
@@ -297,6 +309,7 @@ SRCS			 +=	sh_expansions.c \
 					sh_expansions_field_splitting.c \
 					sh_expansions_quote_removal.c \
 					sh_expansions_scan.c \
+					sh_expansions_history.c \
 					t_quote.c
 
 ################################################################

@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/23 14:47:57 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/09/28 22:07:17 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,11 @@ int		sh_traverse_simple_command(t_ast_node *node, t_context *context)
 		}
 		context->phase += 1;
 	}
-	if (sh_env_save(context) == FAILURE)
-		return (FAILURE);
-	sh_env_save_delete_exported(context);
 	ret = sh_execute_simple_command(context);
 	if (sh_reset_redirection(&(context->redirections)) != SUCCESS)
 		return (FAILURE);
-	if (sh_env_save_restore(context) == FAILURE)
-		return (FAILURE);
+	if (!ret)
+		ret = sh_env_save_restore(context);
 	sh_traverse_tools_show_traverse_ret_value(node, context, ret);
 	return (ret);
 }

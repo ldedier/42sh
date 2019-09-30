@@ -10,8 +10,8 @@
 #                                                                              #
 # **************************************************************************** #
 
-launch "Tilde expansion"
-launch "Normal tests"
+launch "Tilde_expansion"
+	launch_show "Normal tests"
 	test_launch 'ls -a ~/'
 	test_launch 'ls ~' 'ls ~ '
 	test_launch 'echo ~'
@@ -21,7 +21,7 @@ launch "Normal tests"
 	test_launch 'cd ~d/' 'ls' 'cd ~/' 'ls'
 	test_launch 'ls -a ~$easd'
 
-launch "Hard tests"
+	launch_show "Hard tests"
 	test_launch 'echo ~~~~~~~~' 
 	test_launch 'echo ~~~~~~~~' 'echo $?'
 	test_launch 'echo ~~~~~~~~///////'
@@ -34,7 +34,7 @@ launch "Hard tests"
 	test_launch 'echo ~as\dasdas/'
 	test_launch 'echo ~as"dasd"as/'
 
-launch "Quote tests"
+	launch_show "Quote tests"
 	test_launch 'echo ~    /~ /~ "~"'
 	test_launch 'echo "~"\~' 
 	test_launch 'echo "~"\~' 'echo $?'

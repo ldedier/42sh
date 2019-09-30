@@ -21,10 +21,17 @@ void	sh_free_stack_item(t_stack_item *stack_item)
 }
 */
 
-void	sh_free_stack_item(t_stack_item *stack_item)
+void	sh_free_stack_item_light(t_stack_item *stack_item)
 {
 	if (stack_item->stack_enum == E_STACK_AST_BUILDER)
 		free(stack_item->stack_union.ast_builder);
+	free(stack_item);
+}
+
+void	sh_free_stack_item(t_stack_item *stack_item)
+{
+	if (stack_item->stack_enum == E_STACK_AST_BUILDER)
+		sh_free_ast_builder(stack_item->stack_union.ast_builder);
 	free(stack_item);
 }
 
@@ -33,6 +40,13 @@ void	sh_free_stack_item_lst(void *si, size_t dummy)
 	(void)dummy;
 	sh_free_stack_item((t_stack_item *)si);
 }
+
+void	sh_free_stack_item_lst_light(void *si, size_t dummy)
+{
+	(void)dummy;
+	sh_free_stack_item_light((t_stack_item *)si);
+}
+
 
 void	free_state_lst(void *s, size_t dummy)
 {

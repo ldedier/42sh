@@ -15,8 +15,8 @@
 void	free_execution_tools(t_list **tokens, t_ast_node **ast_root,
 		t_ast_node **cst_root)
 {
-	sh_free_ast_node(ast_root, 0);
 	sh_free_ast_node(cst_root, 0);
+	sh_free_ast_node(ast_root, 0);
 	ft_lstdel(tokens, sh_free_token_lst);
 }
 
@@ -36,16 +36,20 @@ static int	sh_process_command(t_shell *shell, char *command)
 	{
 		if (sh_env_update_ret_value_and_question(shell, ret) == FAILURE)
 			ret = sh_perror(SH_ERR1_MALLOC, "sh_process_command (1)");
+		ft_lstdel(&tokens, sh_free_token_lst);
 	}
-	if (!ret && (ret = sh_parser(shell, &tokens, &ast_root, &cst_root)))
+	else if ((ret = sh_parser(shell, &tokens, &ast_root, &cst_root)))
 	{
 		sh_perror_err("syntax error", NULL);
 		if (sh_env_update_ret_value_and_question(shell, ret) == FAILURE)
 			ret = sh_perror(SH_ERR1_MALLOC, "sh_process_command (2)");
+		ft_lstdel(&tokens, sh_free_token_lst);
 	}
-	if (!ret)
+	else
+	{
 		ret = sh_process_traverse(shell, ast_root);
-	free_execution_tools(&tokens, &ast_root, &cst_root);
+		free_execution_tools(&tokens, &ast_root, &cst_root);
+	}
 	return (ret);
 }
 
@@ -55,11 +59,11 @@ int		execute_command(t_shell *shell, char *command, int should_add)
 	char	*dup;
 
 	dup = NULL;
-	shell->history.should_add = should_add;
+	shell->history.should_add = 1;
 	if (should_add && !(dup = ft_strdup(command)))
 		return (sh_perror(SH_ERR1_MALLOC, "execute_command"));
 	ret = sh_process_command(shell, command);
-	if (ret != FAILURE && shell->history.should_add)
+	if (ret != FAILURE && should_add && shell->history.should_add)
 	{
 		ret = sh_append_to_history(&shell->history, dup, 1);
 		ft_strdel(&dup);

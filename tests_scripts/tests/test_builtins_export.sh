@@ -27,7 +27,7 @@ launch "export"
 	test_launch 'unset SHLVL _ OLDPWD' 'export PWD OLDPWD; echo $?' "export"
 	test_launch 'unset SHLVL _ OLDPWD' 'export var=okalm; echo $?' "export"
 	test_launch 'unset SHLVL _ OLDPWD' 'export va; echo $?' "export"
-	test_launch 'unset SHLVL _ OLDPWD' 'export PWD var=\"okalmose speculos\"; echo $?' "export"
+	test_launch 'unset SHLVL _ OLDPWD' 'export PWD var="\"okalmose speculos\""; echo $?' "export"
 
 	launch_show "write"
 	test_launch "unset SHLVL _ OLDPWD" "export 1>&-"

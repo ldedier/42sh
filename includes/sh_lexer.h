@@ -44,6 +44,16 @@ typedef enum		e_lex_mode
 	E_LEX_AUTOCOMPLETION,
 }					t_lex_mode;
 
+typedef enum		e_token_type
+{
+	E_TOKEN_TYPE_STANDARD,
+	E_TOKEN_TYPE_COMMAND_SUBSTITUTION_PAR,
+	E_TOKEN_TYPE_COMMAND_SUBSTITUTION_BACK,
+	E_TOKEN_TYPE_PROCESS_SUBSTITUTION_INPUT,
+	E_TOKEN_TYPE_PROCESS_SUBSTITUTION_OUTPUT,
+	E_TOKEN_TYPE_ARITHMETIC_EXPANSION
+}					t_token_type;
+
 typedef struct		s_lexer
 {
 	char			c;
@@ -72,6 +82,7 @@ typedef struct		s_token
 {
 	t_token_union	token_union;
 	t_symbol_id		id;
+	t_token_type	type;
 	int				index;
 	char			*value;
 	char			expansion;

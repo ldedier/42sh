@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/21 18:00:32 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/25 07:24:03 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/29 01:06:11 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 static void		print_builtin_usage(void)
 {
-	sh_perror("set [-o option] [+o option]\n", NULL);
+	sh_perror("set [-o option] [+o option]", NULL);
 }
 
 int				print_options_minus(t_shell *shell)
@@ -69,9 +69,7 @@ int			add_option(t_context *context, int index)
 	if (get_option(context->shell, option_name, &opt, &value))
 		*opt = value;
 	else
-	{
-		ft_dprintf(2, "%s%s%s", SH_ERR_COLOR, "set: unknown option", EOC);
-	}
+		ft_dprintf(2, "%s%s%s", SH_ERR_COLOR, "set: unknown option\n", EOC);
 	return (SUCCESS);
 }
 int			remove_option(t_context *context, int index)
@@ -84,9 +82,7 @@ int			remove_option(t_context *context, int index)
 	if (get_option(context->shell, option_name, &opt, &value))
 		*opt = !value;
 	else
-	{
-		ft_dprintf(2, "%s%s", SH_ERR_COLOR, "set: unknown option", EOC);
-	}
+		ft_dprintf(2, "%s%s", SH_ERR_COLOR, "set: unknown option\n", EOC);
 	return (SUCCESS);
 }
 
@@ -98,7 +94,7 @@ int		sh_builtin_set_param(t_context *context, int *index)
 		if (*index == (int)context->params->current_size)
 			return (print_options_minus(context->shell));
 		else
-			return (add_option(context, (*index)++));
+			return (add_option(context, *index));
 	}
 	else if (!ft_strcmp(context->params->tbl[*index], "+o"))
 	{
@@ -106,7 +102,7 @@ int		sh_builtin_set_param(t_context *context, int *index)
 		if (*index == (int)context->params->current_size)
 			return (print_options_plus(context->shell));
 		else
-			return (remove_option(context, (*index)++));
+			return (remove_option(context, *index));
 	}
 	else
 	{
@@ -118,40 +114,68 @@ int		sh_builtin_set_param(t_context *context, int *index)
 int			sh_builtin_set_args(t_context *context)
 {
 	int i;
+	int ret;
 
 	i = 1;
 	while (i < (int)context->params->current_size)
 	{
-		sh_builtin_set_param(context, &i);
+		if ((ret = sh_builtin_set_param(context, &i)))
+			return (ret);
 		i++;
 	}
 	return (SUCCESS);
 }
 
-int			sh_builtin_set_print_all(t_context *context)
+static void	sh_builtin_set_print_assignment(char *assignment)
+{
+	int		i;
+
+	if (!ft_strpbrk(assignment, " \n\t\"\\\'$"))
+	{
+		ft_putstrn(assignment);
+		return ;
+	}
+	i = ft_strchr(assignment, '=') - assignment;
+	assignment[i] = '\0';
+	ft_putstr(assignment);
+	ft_putstr("=\"");
+	assignment[i] = '=';
+	i++;
+	while (assignment[i])
+	{
+		if (ft_strchr("\"\'\\$", assignment[i]))
+			ft_putchar('\\');
+		ft_putchar(assignment[i]);
+		i++;
+	}
+	ft_putstr("\"\n");
+}
+
+static int	sh_builtin_set_print(t_context *context)
 {
 	int i;
 
 	i = 0;
-	while (context->env->tbl[i])
-	{
-		ft_putstr_fd(context->env->tbl[i], FD_OUT);
-		ft_putchar_fd('\n', FD_OUT);
-		i++;
-	}
 	if (write(FD_OUT, NULL, 0))
 		return (sh_perror2_err("write error",
 			context->params->tbl[0], SH_ERR1_BAD_FD));
+	if (sh_verbose_builtin())
+		ft_dprintf(2, MAGENTA"set : saved_env table :\n"EOC);
+	while (context->saved_env->tbl[i])
+	{
+		if (ft_strchr(context->saved_env->tbl[i], '='))
+			sh_builtin_set_print_assignment(context->saved_env->tbl[i]);
+		i++;
+	}
 	i = 0;
+	if (sh_verbose_builtin())
+		ft_dprintf(2, MAGENTA"set : vars table :\n"EOC);
 	while (context->vars->tbl[i])
 	{
 		if (!(*(char*)(context->vars->tbl[i]) == '?'
 					|| *(char*)(context->vars->tbl[i]) == '$'
 					|| *(char*)(context->vars->tbl[i]) == '#'))
-		{
-			ft_putstr_fd(context->vars->tbl[i], FD_OUT);
-			ft_putchar_fd('\n', FD_OUT);
-		}
+		sh_builtin_set_print_assignment(context->vars->tbl[i]);
 		i++;
 	}
 	return (SUCCESS);
@@ -163,7 +187,7 @@ int			sh_builtin_set(t_context *context)
 
 	i = 0;
 	if (context->params->current_size == 1)
-		return (sh_builtin_set_print_all(context));
+		return (sh_builtin_set_print(context));
 	else
 		return (sh_builtin_set_args(context));
 	return (SUCCESS);

@@ -32,6 +32,7 @@ launch "unset"
 	test_launch "unset SHLVL _ OLDPWD" 'unset PWD var=\"okalmose speculos\"; echo $?' "export"
 	test_launch "unset SHLVL _ OLDPWD" 'unset ""; echo $?' "export"
 	test_launch "unset SHLVL _ OLDPWD" 'unset "" ""; echo $?' "export"
+	test_launch "unset NOVARIABLE"
 
 	launch_show "write"
 	test_launch "unset SHLVL _ OLDPWD" "unset 1>&-"

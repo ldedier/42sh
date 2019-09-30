@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/05 11:20:39 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/09/23 14:47:48 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/28 03:17:41 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int		sh_traverse_assignment_word(t_ast_node *node, t_context *context)
 			sh_builtin_hash_empty_table(context->shell);
 		if (!ret && node && node->token && node->token->value)
 			ret = sh_vars_assignment(
-					context->env, context->vars, node->token->value);
+					context->env, NULL, node->token->value);
 		if (!ret && node && node->token && node->token->value
 			&& sh_verbose_exec())
 			ft_dprintf(2, "assigned : %s\n", node->token->value);

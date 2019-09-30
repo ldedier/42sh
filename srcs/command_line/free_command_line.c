@@ -20,7 +20,7 @@ void	sh_free_command_line(t_command_line *command_line)
 	ft_strdel(&command_line->prompt);
 	ft_strdel(&command_line->clipboard);
 	ft_strdel(&command_line->edit_line);
-	ft_lstdel_value(&command_line->saves_stack);
+	ft_lstdel(&command_line->saves_stack, t_save_free_list);
 	if (command_line->fd != -1)
 		close(command_line->fd);
 }

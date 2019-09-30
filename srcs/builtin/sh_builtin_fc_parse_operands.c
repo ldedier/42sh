@@ -12,7 +12,7 @@
 
 #include "sh_21.h"
 
-static int	sh_atoi_fc(char *str, int *error)
+int		sh_atoi_fc(char *str, int *error)
 {
 	int     res;
 	int     i;

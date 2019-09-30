@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/05 15:37:31 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/25 07:22:06 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/28 06:26:25 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,10 +115,17 @@ int			sh_main_init_env(t_shell *shell, char **env)
 		i++;
 	}
 	shell->env = tbl;
+	if (!(shell->saved_env = ft_dy_tab_cpy_str(shell->env)))
+	{
+		ft_dy_tab_del(tbl);
+		return (sh_perror(SH_ERR1_MALLOC, "sh_main_init_env"));
+	}
 	if (sh_main_init_env_special_vars(shell) == FAILURE)
 	{
+		ft_dy_tab_del(shell->env);
 		shell->env = NULL;
-		ft_dy_tab_del(tbl);
+		ft_dy_tab_del(shell->saved_env);
+		shell->saved_env = NULL;
 		return (FAILURE);
 	}
 	return (SUCCESS);

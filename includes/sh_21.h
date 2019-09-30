@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/30 15:48:56 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/24 16:10:23 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/09/28 06:23:55 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@
 # define CTRL_C			6
 
 # define KEEP_READ		7
+# define HIST_EXP_ERROR	8
 
 # define MAX_YANK				2000
 # define BINARIES_TABLE_SIZE	200
@@ -142,6 +143,7 @@ struct				s_shell
 	t_lr_parser		parser;
 	t_history		history;
 	t_dy_tab		*env;
+	t_dy_tab		*saved_env;
 	t_dy_tab		*vars;
 	t_hash_table	*binaries;
 	char			running;

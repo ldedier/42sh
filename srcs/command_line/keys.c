@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   keys.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/24 22:43:23 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/07 17:06:44 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/09/24 20:57:27 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,19 +81,17 @@ int		process_keys(t_key_buffer *buffer, t_shell *shell,
 	if (buffer->buff[0] == 27)
 	{
 		if (buffer->progress == 1 && !await_stream(0))
-			return (process_escape(shell, command_line, buffer));
+		{
+			if (command_line->edit_style == E_EDIT_STYLE_VIM)
+				return (process_escape(shell, command_line, buffer));
+		}
 		else
 			return (process_escape_sequence(shell, command_line, buffer));
 	}
 	else if (buffer->buff[0] == 12)
 		process_clear(command_line);
-	else if (buffer->buff[0] == 127
-		&& command_line->edit_style == E_EDIT_STYLE_READLINE)
+	else if (buffer->buff[0] == 127 && command_line->mode != E_MODE_COMMAND)
 		process_delete(command_line, shell);
-	else if (buffer->buff[0] == 1)
-		process_start(command_line);
-	else if (buffer->buff[0] == 5)
-		process_end(command_line);
 	else
 		return (SUCCESS);
 	flush_keys(buffer);
@@ -130,6 +128,7 @@ int		get_keys(t_shell *shell, t_command_line *command_line)
 	ft_bzero(command_line->buffer.buff, READ_BUFF_SIZE);
 	command_line->buffer.progress = 0;
 	command_line->buffer.last_char_input = -1;
+	command_line->buffer.persistent = 1;
 	while (1)
 	{
 		if (read(0, &command_line->buffer.buff[
@@ -137,7 +136,7 @@ int		get_keys(t_shell *shell, t_command_line *command_line)
 		{
 			return (sh_perror(SH_ERR1_READ, "get_keys"));
 		}
-	//	sh_print_buffer(command_line->buffer);
+		//sh_print_buffer(command_line->buffer);
 		if ((res = process_get_keys(&command_line->buffer, shell, command_line)) != KEEP_READ)
 			return (res);
 		if (command_line->buffer.progress >= READ_BUFF_SIZE
