@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/01 00:17:53 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/01 00:21:13 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ static int		pipe_child_part(t_ast_node *node, t_context *context)
 	pid_t	cpid;
 	int		ret;
 
-	set_signals_pipe();
+	// set_signals_pipe();
+	reset_signals();
 	if (sh_set_term_sig(1) != SUCCESS)
 		return (FAILURE);
 	cpid = getpid();

@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/31 16:05:53 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/01 00:17:24 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/01 00:21:03 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,15 +68,15 @@ void			reset_signals(void)
 		signal(i++, SIG_DFL);
 }
 
-void			set_signals_pipe(void)
-{
-	int i;
+// void			set_signals_pipe(void)
+// {
+// 	int i;
 
-	i = 1;
-	while (i <= 31)
-		signal(i++, SIG_DFL);
-	signal(SIGTSTP, handler_sigtstp_pipe);
-}
+// 	i = 1;
+// 	while (i <= 31)
+// 		signal(i++, SIG_DFL);
+// 	signal(SIGTSTP, handler_sigtstp_pipe);
+// }
 
 static void		init_signal2(void (*default_func)(int))
 {
