@@ -80,8 +80,10 @@ int		sh_history_expand(t_shell *shell,
 	{
 		ft_dprintf(2, "%s!%s: %s%s\n", SH_ERR_COLOR,
 			str, SH_ERR1_EVENT_NOT_FOUND, EOC);
+		free(str);
 		return (ERROR);
 	}
+	free(str);
 	entry = entry_ptr->content;
 	if (ft_substitute_dy_str(command_line->dy_str,
 		entry->command, *index, len + 1))
