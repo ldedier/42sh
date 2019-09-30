@@ -59,6 +59,15 @@ int		sh_expansions_splitting(
 	t_context *context, t_ast_node *node, t_dy_tab *quotes);
 
 /*
+** sh_expansions_history.c
+*/
+char	*ft_strdup_word(char *str);
+int		sh_history_expand(
+	t_shell *shell, t_command_line *command_line, int *index);
+int		sh_expansions_history(
+	t_shell *shell, t_command_line *command_line, int *expanded);
+
+/*
 ** sh_expansions_parameter.c
 */
 int		sh_expansions_parameter_detect(char *start);

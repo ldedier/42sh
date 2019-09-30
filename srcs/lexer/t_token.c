@@ -33,6 +33,7 @@ t_token	*t_token_new_ptr(int id, char *value)
 	if (value)
 		token->value = value;
 	token->id = id;
+	token->type = E_TOKEN_TYPE_STANDARD; 
 	token->index = sh_index(id);
 	token->ast_node = NULL;
 	token->expansion = 0;

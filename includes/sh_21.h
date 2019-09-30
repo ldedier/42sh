@@ -64,6 +64,7 @@
 # define CTRL_C			6
 
 # define KEEP_READ		7
+# define HIST_EXP_ERROR	8
 
 # define MAX_YANK				2000
 # define BINARIES_TABLE_SIZE	200

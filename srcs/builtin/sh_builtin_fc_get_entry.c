@@ -13,7 +13,7 @@
 #include "sh_21.h"
 
 static t_dlist		*get_entry_from_positive_number(t_history *history,
-		int number)
+		int number, int fc)
 {
 	int		first;
 	t_entry	*entry;
@@ -22,7 +22,12 @@ static t_dlist		*get_entry_from_positive_number(t_history *history,
 	if (!history->nb_entries)
 		return (NULL);
 	else if (number > history->nb_entries)
-		return (history->commands);
+	{
+		if (fc)
+			return (history->commands);
+		else
+			return (NULL);
+	}
 	else
 	{
 		ptr = history->commands;
@@ -40,7 +45,8 @@ static t_dlist		*get_entry_from_positive_number(t_history *history,
 	}
 }
 
-static t_dlist		*get_entry_from_number(t_history *history, int number)
+static t_dlist		*get_entry_from_number(t_history *history,
+	int number, int fc)
 {
 	t_dlist	*ptr;
 	int		i;
@@ -55,10 +61,13 @@ static t_dlist		*get_entry_from_number(t_history *history, int number)
 			ptr = ptr->next;
 			i--;
 		}
-		return (ptr);
+		if (i == number || fc)
+			return (ptr);
+		else
+			return (NULL);
 	}
 	else
-		return (get_entry_from_positive_number(history, number));
+		return (get_entry_from_positive_number(history, number, fc));
 	return (NULL);
 }
 
@@ -82,12 +91,12 @@ static t_dlist		*get_entry_from_substring(t_history *history, char *str)
 }
 
 t_dlist				*get_entry_from_fc_operand(t_history *history,
-						t_fc_operand *op)
+						t_fc_operand *op, int fc)
 {
 	if (!history->nb_entries)
 		return (NULL);
 	if (op->type == E_FC_STRING)
 		return (get_entry_from_substring(history, op->un.string));
 	else
-		return (get_entry_from_number(history, op->un.integer));
+		return (get_entry_from_number(history, op->un.integer, fc));
 }

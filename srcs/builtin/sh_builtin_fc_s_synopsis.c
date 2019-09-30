@@ -136,7 +136,7 @@ int		sh_builtin_fc_s_synopsis(t_context *context, t_fc_options *opts)
 	substitution_str = NULL;
 	fill_finder(&finder, opts, &substitution_str);
 	if (!(entry_ptr
-		= get_entry_from_fc_operand(&context->shell->history, finder)))
+		= get_entry_from_fc_operand(&context->shell->history, finder, 1)))
 	   	return (sh_perror_err(SH_BLT_NO_CMD_FOUND, NULL));
 	entry = entry_ptr->content;
 	if (!(res = get_command_to_execute_fc(entry->command, substitution_str)))
