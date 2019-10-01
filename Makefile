@@ -6,7 +6,11 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
+<<<<<<< HEAD
 #    Updated: 2019/09/30 17:04:29 by ldedier          ###   ########.fr        #
+=======
+#    Updated: 2019/10/01 10:34:45 by jdugoudr         ###   ########.fr        #
+>>>>>>> lexer
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,7 +65,7 @@ SRCS			 =	debug.c first_sets.c grammar.c init_cfg.c \
 ########					TRAVERSE					########
 ################################################################
 SRCS			+=	sh_traverse.c sh_traverse_default.c \
-					sh_traverse_semicol.c sh_traverse_pipe_sequence.c \
+					sh_traverse_semicol.c sh_traverse_pipe_line.c \
 					sh_traverse_assignment_word.c \
 					sh_traverse_simple_command.c \
 					sh_traverse_io_file.c \
