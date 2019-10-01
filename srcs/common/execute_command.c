@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/15 16:08:40 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/24 16:57:59 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/01 21:16:22 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int	sh_process_command(t_shell *shell, char *command)
 	ret = 0;
 	if ((ret = sh_lexer(command, &tokens, shell, E_LEX_STANDARD)) != SUCCESS)
 	{
-		if (ret == ERROR) //make ctrl c not returning error
+		if (ret == ERROR)
 			sh_perror_err("lexical error", NULL);
 		if (sh_env_update_ret_value_and_question(shell, ret) == FAILURE)
 			ret = sh_perror(SH_ERR1_MALLOC, "sh_process_command (1)");
