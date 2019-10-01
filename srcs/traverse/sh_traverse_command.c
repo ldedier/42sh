@@ -34,8 +34,6 @@ int	sh_traverse_command(t_ast_node *node, t_context *context)
 	sh_traverse_tools_show_traverse_start(node, context);
 	if (child->symbol->id == sh_index(SIMPLE_COMMAND))
 		ret = sh_traverse_simple_command(child, context);
-	if (ret != SUCCESS)
-		sh_env_update_ret_value_and_question(context->shell, ret);
 	sh_traverse_tools_show_traverse_ret_value(node, context, ret);
 	return (ret);
 }
