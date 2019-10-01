@@ -12,14 +12,14 @@
 
 #include "libft.h"
 
-void	ft_dy_tab_del(t_dy_tab *d_tab)
+void	ft_dy_tab_del(t_dy_tab *d_tab, void (*func)(void *))
 {
 	int i;
 
 	i = 0;
 	while ((size_t)i < d_tab->current_size)
 	{
-		free(d_tab->tbl[i]);
+		func(d_tab->tbl[i]);
 		i++;
 	}
 	free(d_tab->tbl);
