@@ -34,7 +34,8 @@ static int	sh_process_command(t_shell *shell, char *command)
 	ret = 0;
 	if ((ret = sh_lexer(command, &tokens, shell, E_LEX_STANDARD)) != SUCCESS)
 	{
-		sh_perror_err("lexical error", NULL);
+		if (ret == ERROR) //make ctrl c not returning error
+			sh_perror_err("lexical error", NULL);
 		if (sh_env_update_ret_value_and_question(shell, ret) == FAILURE)
 			ret = sh_perror(SH_ERR1_MALLOC, "sh_process_command (1)");
 		ft_lstdel(&tokens, sh_free_token_lst);

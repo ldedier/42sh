@@ -57,6 +57,8 @@ int		sh_parser(t_shell *shell, t_list **tokens,
 	t_token token;
 	int		ret;
 
+	sh_populate_token(&token, LEX_TOK_NEWLINE, 0);
+	ft_lstaddnew_last(tokens, &token, sizeof(t_token));
 	sh_populate_token(&token, END_OF_INPUT, 0);
 	ft_lstaddnew_last(tokens, &token, sizeof(t_token));
 	if (sh_verbose_ast())
