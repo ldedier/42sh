@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/31 16:05:53 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/01 00:21:03 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/01 02:31:20 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,14 @@
 #include <signal.h>
 #include <string.h>
 
-// static void		handler_sigchld(int signo, siginfo_t *info, void *context)
+// static void		handler_sigchld_act(int signo, siginfo_t *info, void *context)
 // {
 // 	if (signo == SIGCHLD)
 // 	{
-// 		ft_dprintf(g_job_ctrl->term_fd, "%sReceived SIGCHILD from <%d>%s\n",
+// 		ft_dprintf(g_job_ctrl->term_fd, "%sReceived SIGCHILD from <%d>%s\t",
 // 				COLOR_PINK, info->si_pid, COLOR_END);
+// 		ft_dprintf(g_job_ctrl->term_fd, "%swith exit status of %d%s\n",
+// 				COLOR_PINK, info->si_status, COLOR_END);
 // 		job_notify();
 // 	}
 // }
@@ -32,7 +34,7 @@
 // 	struct sigaction	s_act;
 
 // 	ft_memset(&s_act, '\0', sizeof(s_act));
-// 	s_act.sa_sigaction = handler_sigchld;
+// 	s_act.sa_sigaction = handler_sigchld_act;
 // 	s_act.sa_flags = SA_SIGINFO;
 // 	sigaction(SIGCHLD, &s_act, NULL);
 // }
@@ -43,19 +45,7 @@ static void		handler_sigchld(int signo)
 	if (signo == SIGCHLD)
 	{
 		if (g_job_ctrl && g_job_ctrl->jc_enabled)
-			if (g_job_ctrl->curr_job && !g_job_ctrl->curr_job->pipe_node)
 				job_notify();
-	}
-}
-
-static void		handler_sigtstp_pipe(int signo)
-{
-	if (signo == SIGTSTP)
-	{
-		signal(SIGTSTP, SIG_DFL);
-		kill(getpid(), SIGTSTP);
-		kill(getppid(), SIGCHLD);
-		// signal(SIGTSTP, handler_sigtstp_pipe);
 	}
 }
 
@@ -66,22 +56,14 @@ void			reset_signals(void)
 	i = 1;
 	while (i <= 31)
 		signal(i++, SIG_DFL);
+	signal(SIGTTOU, SIG_IGN);
+	signal(SIGTTIN, SIG_IGN);
 }
-
-// void			set_signals_pipe(void)
-// {
-// 	int i;
-
-// 	i = 1;
-// 	while (i <= 31)
-// 		signal(i++, SIG_DFL);
-// 	signal(SIGTSTP, handler_sigtstp_pipe);
-// }
 
 static void		init_signal2(void (*default_func)(int))
 {
 
-	signal(SIGCHLD, handler_sigchld);
+	// signal(SIGCHLD, handler_sigchld);
 	signal(SIGQUIT, transmit_sig_no_motion);
 	signal(SIGTERM, transmit_sig_and_exit);
 	signal(SIGINT, SIG_IGN);

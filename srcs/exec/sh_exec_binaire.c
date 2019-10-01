@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 17:31:33 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/30 23:24:44 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/01 02:20:38 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ static int		sh_exec_child_part(t_context *context)
 	int		ret;
 
 	reset_signals();
-	if (g_job_ctrl->jc_enabled && g_job_ctrl->curr_job->pipe_node != PIPE_JOB)
+	// if (g_job_ctrl->jc_enabled && g_job_ctrl->curr_job->pipe_node != PIPE_JOB)
+	if (g_job_ctrl->jc_enabled)
 	{
 		if ((ret = set_pgid_child(cpid)) != SUCCESS)
 			return (ret);
@@ -72,8 +73,9 @@ static int		sh_exec_parent_part(pid_t cpid, t_context *context)
 	}
 	else
 		waitpid(cpid, &ret, 0);
-	if (g_job_ctrl->jc_enabled && g_job_ctrl->curr_job &&
-			g_job_ctrl->curr_job->pipe_node != PIPE_JOB)
+	// if (g_job_ctrl->jc_enabled && g_job_ctrl->curr_job &&
+	// 		g_job_ctrl->curr_job->pipe_node != PIPE_JOB)
+	if (g_job_ctrl->jc_enabled)
 		g_job_ctrl->job_added = 0;
 	sh_env_update_ret_value_wait_result(context, ret);
 	if (sh_post_execution() != SUCCESS)

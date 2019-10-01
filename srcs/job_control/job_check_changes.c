@@ -27,7 +27,7 @@ static int	check_process_changes(t_job *j, int cpid, int status)
 			p->status = status;
 			if (WIFSTOPPED(status))
 			{
-				ft_printf("\n"); //dprintf
+				// ft_dprintf(g_job_ctrl->term_fd, "<%d> Stopped\n", p->pid); //dprintf
 				p->stopped = 1;
 				job_notify();
 			}
