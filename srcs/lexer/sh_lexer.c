@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/07 16:11:41 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/01 16:39:54 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/01 16:55:37 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ static int		sh_lexer_is_operator(t_symbol_id id, t_list **head)
 		if (sh_verbose_lexer())
 			ft_dprintf(2, "Operator found\n");
 		*head = (*head)->next;
-		if ((*head)->next)
+		if ((*head))
 			*head = (*head)->next;
 		return (1);
 	}
