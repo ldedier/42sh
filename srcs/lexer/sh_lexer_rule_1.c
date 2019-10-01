@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 14:25:15 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/01 16:44:13 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/01 17:14:52 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	sh_lexer_rule1_process_quoted_start(t_lexer *lexer, int reading)
 {
-	if (!reading || E_LEX_AUTOCOMPLETION)
+	if (!reading || lexer->mode == E_LEX_AUTOCOMPLETION)
 	{
 		if (lexer->mode == E_LEX_AUTOCOMPLETION)
 			return (LEX_ERR);

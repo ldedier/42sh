@@ -56,7 +56,7 @@ int			sh_expansions(t_context *context, t_ast_node *node)
 		sh_expansions_quote_removal((t_quote**)quotes->tbl);
 	if (ret == ERROR || ret == FAILURE)
 		sh_env_update_ret_value(context->shell, ret);
-	ft_dy_tab_del(quotes);
+	ft_dy_tab_del_ptr(quotes);
 	if (sh_env_update_question_mark(context->shell) == FAILURE)
 		return (FAILURE);
 	if (ret)

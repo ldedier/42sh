@@ -189,5 +189,11 @@ int		populate_parsed_word_by_index(t_shell *shell, char *command,
 		ret = populate_word_from_lexer(&exec->tokens, index, &exec->word);
 	if (!ret)
 		ret = sh_parser(shell, &exec->tokens, &exec->ast_root, &exec->cst_root);
+	if (ret)
+	{
+		ft_lstdel(&exec->tokens, sh_free_token_lst);
+		exec->ast_root = NULL;
+		exec->cst_root = NULL;
+	}
 	return (ret);
 }
