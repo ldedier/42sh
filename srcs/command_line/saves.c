@@ -69,6 +69,7 @@ int			sh_save_command_line(t_command_line *command_line)
 	if ((ft_lstaddnew_ptr(saves_stack, save,
 		sizeof(t_save *))))
 	{
+		t_save_free(save);
 		return (sh_perror(SH_ERR1_MALLOC, "save_command_line (2)"));
 	}
 	command_line->edit_counter = 0;
