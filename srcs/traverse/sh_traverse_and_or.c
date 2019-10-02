@@ -6,22 +6,22 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 15:54:02 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/07 09:37:19 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/01 11:13:40 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
 /*
- * sh_traverse_and_or_call_sons_exec :
- * Following return value of the preview execution,
- * this function execute or not the next level in the ast,
- * pipe sequence (sh_traverse_pipe_sequence).
+** sh_traverse_and_or_call_sons_exec :
+** Following return value of the preview execution,
+** this function execute or not the next level in the ast,
+** pipe line (sh_traverse_pipe_sequence).
 */
 static int		sh_traverse_and_or_call_sons_exec(t_ast_node *node,
 		int *prev_symbol, t_context *context)
 {
-	t_ast_node	*child;
+	/*t_ast_node	*child;*/
 	int			ret;
 
 	if (*prev_symbol == -1)
@@ -32,8 +32,8 @@ static int		sh_traverse_and_or_call_sons_exec(t_ast_node *node,
 	else if (*prev_symbol == sh_index(LEX_TOK_OR_IF)
 		&& !context->shell->ret_value)
 		return (SUCCESS);
-	child = (t_ast_node*)(node->children->content);
-	ret = sh_traverse_pipeline(child, context);
+	/*ret = sh_traverse_pipeline(child, context);*/
+	ret = sh_traverse_pipeline(node, context);
 	if (ret == BLT_TEST_ERROR || context->shell->ret_value == BLT_TEST_ERROR)
 	{
 		context->shell->ret_value_set = 0;
@@ -47,9 +47,9 @@ static int		sh_traverse_and_or_call_sons_exec(t_ast_node *node,
 }
 
 /*
- * sh_traverse_and_or_process_phase :
- * This function set the env variable with the return value of the
- * and_or node execution.
+** sh_traverse_and_or_process_phase :
+** This function set the env variable with the return value of the
+** and_or node execution.
 */
 static int		sh_traverse_and_or_process_phase(
 	t_context *context, int prev_symbol, t_list *ptr)
@@ -93,14 +93,14 @@ static int		sh_traverse_and_or_launch_phase(
 }
 
 /*
- * sh_traverse_and_or :
- * This is the browser of the t_list and_or (grammar)
- * We execute a and_or node, check it return value and
- * execute or not the next and_or node follow the found token
- * AND_IF or OR_IF.
- * 
- * We also call the function sh_env_update_question_mark to be sur
- * that at this time, the return value is set in the env variable 
+** sh_traverse_and_or :
+** This is the browser of the t_list and_or (grammar)
+** We execute a and_or node, check it return value and
+** execute or not the next and_or node follow the found token
+** AND_IF or OR_IF.
+** 
+** We also call the function sh_env_update_question_mark to be sur
+** that at this time, the return value is set in the env variable 
 */
 int				sh_traverse_and_or(t_ast_node *node, t_context *context)
 {

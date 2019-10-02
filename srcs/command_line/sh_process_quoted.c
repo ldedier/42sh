@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 14:21:18 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/08 10:02:48 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/10/01 16:28:00 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ int		sh_process_process_quoted(int old_context, t_lexer *lexer)
 		if (ret == CTRL_C)
 		{
 			g_glob.command_line.interrupted = 1;
-			return (LEX_ERR);
+			return (CTRL_C);
 		}
 		else if (ret != CTRL_D)
-			return (LEX_FAIL);
+			return (CTRL_D);
 	}
 	if (!(lexer->input = ft_strjoin_free(lexer->input,
 					g_glob.command_line.dy_str->str, 1)))
