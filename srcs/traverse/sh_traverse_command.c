@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/02 00:35:13 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/02 08:56:23 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/02 09:09:51 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,16 @@ static int	compound_and_redirection(t_ast_node *node, t_context *context)
 	if (node->children->next)
 	{
 		context->phase = E_TRAVERSE_PHASE_REDIRECTIONS;
-		ft_printf("compund command have redirection\n");
 		if ((ret = sh_traverse_tools_browse(node->children->next->content, context)) != SUCCESS)
 			return (ret);
 		compound_redir = context->redirections;
 		context->redirections = NULL;
 	}
+//	ret = g_grammar[child->symbol->id].traverse(child, context);
 	if (child->symbol->id == sh_index(SUBSHELL))
 		ret = sh_traverse_subshell(child, context);
+	else if (child->symbol->id == sh_index(BRACE_GROUP))
+		ret = sh_traverse_brace_group(child, context);
 	if (sh_reset_redirection(&compound_redir))
 		return (FAILURE);
 	return (ret);
@@ -63,7 +65,7 @@ static int	compound_and_redirection(t_ast_node *node, t_context *context)
 ** right traverse.
 ** If we have compound_command (like subshell), we can have some pipe to apply here.
 */
-int	sh_traverse_command(t_ast_node *node, t_context *context)
+int			sh_traverse_command(t_ast_node *node, t_context *context)
 {
 	t_ast_node *child;
 	int 		ret;

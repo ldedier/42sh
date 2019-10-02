@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sh_traverse_subshell.c                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/02 10:03:30 by jdugoudr          #+#    #+#             */
+/*   Updated: 2019/10/02 10:06:47 by jdugoudr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "sh_21.h"
 
 /*
@@ -36,6 +48,7 @@ static int	search_term(t_ast_node *node, t_context *context)
 	}
 	return (SUCCESS);
 }
+
 /*
 ** sh_traverse_subshell
 ** We execute here what a subshell do.
@@ -45,7 +58,7 @@ static int	search_term(t_ast_node *node, t_context *context)
 ** '(' 'compund_list' and ')' children.
 ** So we can directly go to compound_list node.
 */
-int	sh_traverse_subshell(t_ast_node *node, t_context *context)
+int		sh_traverse_subshell(t_ast_node *node, t_context *context)
 {
 	pid_t	pid;
 	int		ret;
@@ -61,7 +74,17 @@ int	sh_traverse_subshell(t_ast_node *node, t_context *context)
 	else
 	{
 		ret = search_term(node->children->next->content, context);
-		exit(ret);//reset redirection ?
+		exit(ret);
 	}
 	return (0);
+}
+
+int		sh_traverse_brace_group(t_ast_node *node, t_context *context)
+{
+	int	ret;
+
+	sh_traverse_tools_show_traverse_start(node, context);
+	ret = search_term(node->children->next->content, context);
+	sh_traverse_tools_show_traverse_ret_value(node, context, ret);
+	return (ret);
 }
