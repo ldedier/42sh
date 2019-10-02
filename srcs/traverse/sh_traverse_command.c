@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/02 00:35:13 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/02 09:09:51 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/02 11:23:07 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 /*
 ** apply_expansion_to_children
-** We apply expansion here for all possible command (grammar) child.
+** We apply expansion here for all possible redirection of 
+** the command (grammar) child.
 ** simple_command, compound_command...
 */
 static int	apply_expansion_to_children(t_ast_node *child, t_context *context)
@@ -43,6 +44,8 @@ static int	compound_and_redirection(t_ast_node *node, t_context *context)
 	compound_redir = NULL;
 	if (node->children->next)
 	{
+		if ((ret = apply_expansion_to_children(child, context)) != SUCCESS)
+			return (ret);
 		context->phase = E_TRAVERSE_PHASE_REDIRECTIONS;
 		if ((ret = sh_traverse_tools_browse(node->children->next->content, context)) != SUCCESS)
 			return (ret);
@@ -72,8 +75,6 @@ int			sh_traverse_command(t_ast_node *node, t_context *context)
 
 	ret = 0;
 	child = node->children->content;
-	if ((ret = apply_expansion_to_children(child, context)) != SUCCESS)
-		return (ret);
 	sh_traverse_tools_show_traverse_start(node, context);//mettre node pour parcourir eventuel redirection
 	if (child->symbol->id == sh_index(SIMPLE_COMMAND))
 		ret = sh_traverse_simple_command(child, context);
