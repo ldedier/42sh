@@ -58,10 +58,24 @@ int		reset_command_line(t_shell *shell, t_command_line *command_line)
 
 int		sh_get_command(t_shell *shell, t_command_line *command_line)
 {
+	int expanded;
+	int ret;
+	int	keys_ret;
+
+	expanded = 0;
 	sh_add_eof(command_line->interrupted);
 	command_line->interrupted = 0;
 	if (reset_command_line(shell, command_line) == FAILURE)
 		return (FAILURE);
 	render_command_line(command_line, 0, 1);
-	return (get_keys(shell, command_line));
+	keys_ret = get_keys(shell, command_line);
+	if (keys_ret == SUCCESS && (ret = sh_expansions_history(shell,
+		&g_glob.command_line, &expanded)) != SUCCESS)
+	{
+		return (ret == FAILURE ? FAILURE
+			: sh_get_command(shell, command_line));
+	}
+	if (expanded)
+		ft_printf("%s\n", g_glob.command_line.dy_str->str);
+	return (keys_ret);
 }

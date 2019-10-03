@@ -30,7 +30,7 @@ static char	*get_to_edit(t_command_line *command_line)
 		fc.type = E_FC_INTEGER;
 		if (!(entry_ptr = get_entry_from_fc_operand(
 			&command_line->shell->history,
-			&fc)))
+			&fc, 1)))
 			return (sh_perrorn(SH_BLT_HISTORY_RANGE, NULL));
 		else
 			return (((t_entry *)entry_ptr->content)->command);

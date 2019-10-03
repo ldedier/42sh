@@ -37,6 +37,7 @@ int		sh_process_traverse(t_shell *shell, t_ast_node *ast_root)
 	context.cmd_bg = g_job_ctrl->ampersand_eol;
 	if ((list_node = go_to_list(ast_root)) == NULL)
 	{
+		shell->history.should_add = 0;
 		t_context_free_content(&context);
 		return (SUCCESS);
 	}

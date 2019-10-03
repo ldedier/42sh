@@ -48,7 +48,7 @@ int			t_context_init(t_context *context, t_shell *shell)
 
 void		t_context_free_content(t_context *context)
 {
-	ft_dy_tab_del(context->params);
+	ft_dy_tab_del_ptr(context->params);
 	if (context->path)
 		free(context->path);
 }

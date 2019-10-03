@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:35:27 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/12 04:55:25 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/02 09:20:33 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,5 +117,11 @@ int		sh_traverse_semicol(
 ** sh_traverse_simple_command.c
 */
 int		sh_traverse_simple_command(t_ast_node *node, t_context *context);
+
+/*
+** sh_traverse_subshell.c
+*/
+int		sh_traverse_subshell(t_ast_node *node, t_context *context);
+int		sh_traverse_brace_group(t_ast_node *node, t_context *context);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/15 16:08:40 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/03 05:27:59 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/03 05:53:47 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,11 @@ int		execute_command(t_shell *shell, char *command, int should_add)
 	char	*dup;
 
 	dup = NULL;
-	shell->history.should_add = should_add;
+	shell->history.should_add = 1;
 	if (should_add && !(dup = ft_strdup(command)))
 		return (sh_perror(SH_ERR1_MALLOC, "execute_command"));
 	ret = sh_process_command(shell, command);
-	if (ret != FAILURE && shell->history.should_add)
+	if (ret != FAILURE && should_add && shell->history.should_add)
 	{
 		ret = sh_append_to_history(&shell->history, dup, 1);
 		ft_strdel(&dup);

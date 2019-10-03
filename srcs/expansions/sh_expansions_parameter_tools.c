@@ -144,6 +144,6 @@ int		sh_expansions_parameter_get_word(
 		sh_expansions_quote_removal((t_quote**)quotes->tbl);
 	if (sh_verbose_expansion())
 		ft_dprintf(2, BLUE"word after expansions : %s\n"EOC, *word);
-	ft_dy_tab_del(quotes);
+	ft_dy_tab_del_ptr(quotes);
 	return (ret);
 }

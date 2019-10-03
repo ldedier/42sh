@@ -6,7 +6,11 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2019/09/29 02:01:36 by mdaoud           ###   ########.fr       */
+=======
+/*   Updated: 2019/10/02 11:24:36 by jdugoudr         ###   ########.fr       */
+>>>>>>> 3f696232b2d3fe1820f33aa557523a7bf716221f
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +32,8 @@ int		sh_traverse_simple_command(t_ast_node *node, t_context *context)
 {
 	int		ret;
 
-	context->phase = E_TRAVERSE_PHASE_REDIRECTIONS;
+//	context->phase = E_TRAVERSE_PHASE_REDIRECTIONS;
+	context->phase = E_TRAVERSE_PHASE_EXPANSIONS;
 	sh_traverse_tools_show_traverse_start(node, context);
 	while (context->phase <= E_TRAVERSE_PHASE_EXECUTE)
 	{

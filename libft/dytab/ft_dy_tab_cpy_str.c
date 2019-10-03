@@ -25,12 +25,12 @@ t_dy_tab	*ft_dy_tab_cpy_str(t_dy_tab *d_tab)
 	{
 		if (!(str = ft_strdup((char *)d_tab->tbl[i])))
 		{
-			ft_dy_tab_del(res);
+			ft_dy_tab_del_ptr(res);
 			return (NULL);
 		}
 		if (ft_dy_tab_add_ptr(res, str))
 		{
-			ft_dy_tab_del(res);
+			ft_dy_tab_del_ptr(res);
 			return (NULL);
 		}
 		res->current_size = i++ + 1;

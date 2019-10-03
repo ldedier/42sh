@@ -316,6 +316,7 @@ char				*sh_color_depth(int i);
 void				sh_print_ast_child(
 	int depth, int *j, t_ast_node *child);
 void				sh_print_ast(t_ast_node *node, int depth);
+void				sh_print_ast_root(t_ast_node *node);
 
 /*
 ** reduce.c
