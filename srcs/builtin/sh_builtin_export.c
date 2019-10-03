@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/19 09:45:53 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/29 04:24:05 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/03 17:23:44 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,17 @@ static int	assign_empty_variable(t_context *context, char *arg)
 			return (sh_perror(SH_ERR1_MALLOC, "export : assign_empty (0)"));
 		ft_dy_tab_suppr_index(context->vars, index);
 	}
+	else if ((index = assign_get_index(context->env, arg)) >= 0)
+	{
+		if (sh_vars_assignment(
+			context->saved_env, NULL, context->env->tbl[index]))
+			return (sh_perror(SH_ERR1_MALLOC, "export : assign_empty (1)"));
+		ft_dy_tab_suppr_index(context->env, index);
+	}
 	else if ((index = assign_get_index(context->saved_env, arg)) == -1)
 	{
 		if (ft_dy_tab_add_str(context->saved_env, arg))
-			return (sh_perror(SH_ERR1_MALLOC, "export : assign_empty (1)"));
+			return (sh_perror(SH_ERR1_MALLOC, "export : assign_empty (2)"));
 	}
 	return (SUCCESS);
 }
