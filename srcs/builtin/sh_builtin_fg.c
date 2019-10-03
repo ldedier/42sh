@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 17:04:13 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/01 02:07:52 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/01 17:05:00 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ int			sh_builtin_fg(t_context *context)
 		return (sh_perror_err("fg", "no such job"));
 	if (active_job == NULL)
 		return (ERROR);
-	ft_dprintf(g_job_ctrl->term_fd, "Sending sigcont to [%d]\n", active_job->pgid);
 	mark_job_as_running(active_job);
 	return (job_put_in_fg(active_job, 1, &res));
 }

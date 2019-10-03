@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_exec.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 17:11:16 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/20 15:26:54 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/03 04:57:03 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ typedef struct		s_context
 	t_dy_tab		*params;
 	int				(*builtin)(struct s_context *);
 	int				redirected_fd;
+	char			cmd_bg;	//Added by @mdaoud
 	t_phase			phase;
 	t_ast_node		*current_command_node;
 	t_ast_node		*current_pipe_sequence_node;

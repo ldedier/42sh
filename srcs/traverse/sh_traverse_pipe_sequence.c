@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/01 02:18:59 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/03 04:39:20 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,14 @@ static int		pip_parent_part(pid_t cpid, t_context *context)
 	sh_env_update_ret_value_wait_result(context, ret);
 	return (SH_RET_VALUE_EXIT_STATUS(ret));
 }
+
 /*
  * pipe_to_do :
  * This function is called when we have pipes to execute.
  * We do here the first fork. That's mean, in this case, we have to add
  * this new process in the jobs list.
 */
+
 static int		pipe_to_do(t_ast_node *node, t_context *context)
 {
 	int		ret;
@@ -81,6 +83,7 @@ static int		pipe_to_do(t_ast_node *node, t_context *context)
  * If we have, we do the first fork here and call the pipe_sequence_execute
  * wich will perform all pipe and call traverse_command for each sons.
 */
+
 int				sh_traverse_pipeline(t_ast_node *node, t_context *context)
 {
 	int		ret;

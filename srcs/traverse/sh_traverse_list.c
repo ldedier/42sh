@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/28 16:49:38 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/29 04:13:44 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/03 05:32:51 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,24 @@
 #include "sh_job_control.h"
 
 /*
- * get_separator_op :
- * This function take the current and_or nod to execute and the separator_op.
- * Separator_op is necessary because it can change the way we execute the
- * and_or node.
- * semi column separator : just execute the and_or
- * and (&) separator : probably we need to fork at this time and execute
- * and_or node in background.
+** get_separator_op :
+** This function take the current and_or nod to execute and the separator_op.
+** Separator_op is necessary because it can change the way we execute the
+** and_or node.
+** semi column separator : just execute the and_or
+** and (&) separator : probably we need to fork at this time and execute
+** and_or node in background.
 */
+
 static int 	get_separator_op(
 	t_ast_node *to_execute, t_ast_node *separator, t_context *context)
 {
 	int		res;
-	//need to send to_execute to the good separator
+	// If the "&" is present at the end of the command, create a job.
 	if (separator->symbol->id == sh_index(LEX_TOK_AND))
 	{
+		// This will be used as a flag for waitpid inside sh_exec_binaire
+		context->cmd_bg = WNOHANG;
 		if (g_job_ctrl->jc_enabled)
 		{
 			if ((res = jobs_add(0)) != SUCCESS)

@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/04 21:42:55 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/29 04:13:44 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/03 05:31:45 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,6 @@ int		sh_parse_token_list(t_lr_parser *parser, t_list **tokens,
 	}
 }
 
-
-
 int		sh_parser(t_shell *shell, t_list **tokens,
 	t_ast_node **ast_root, t_ast_node **cst_root)
 {
@@ -92,8 +90,7 @@ int		sh_parser(t_shell *shell, t_list **tokens,
 
 	sh_populate_token(&token, END_OF_INPUT, 0);
 	ft_lstaddnew_last(tokens, &token, sizeof(t_token));
-	if (g_job_ctrl->jc_enabled)
-		check_ampersand_at_eoc(*tokens);
+	check_ampersand_at_eoc(*tokens);
 	if (sh_verbose_ast())
 	{
 		ft_dprintf(2, "input tokens: ");

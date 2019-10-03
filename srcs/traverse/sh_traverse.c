@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_traverse.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 21:45:25 by ldedier           #+#    #+#             */
-/*   Updated: 2019/07/30 11:25:24 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/10/03 05:30:09 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int		sh_process_traverse(t_shell *shell, t_ast_node *ast_root)
 
 	if (t_context_init(&context, shell) == FAILURE)
 		return (FAILURE);
+	context.cmd_bg = g_job_ctrl->ampersand_eol;
 	if ((list_node = go_to_list(ast_root)) == NULL)
 	{
 		t_context_free_content(&context);

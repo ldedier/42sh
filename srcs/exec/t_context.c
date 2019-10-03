@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_context.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 21:45:25 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/28 06:27:54 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/03 04:57:06 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int			t_context_init(t_context *context, t_shell *shell)
 	ft_bzero(context, sizeof(t_context));
 	if (!(context->params = ft_dy_tab_new(5)))
 		return (sh_perror(SH_ERR1_MALLOC, "t_context_init"));
+	context->cmd_bg = 0;	// Added by @mdaoud
 	context->path = NULL;
 	context->shell = shell;
 	context->env = shell->env;
