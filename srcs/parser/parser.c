@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/04 21:42:55 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/21 16:32:03 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/10/01 16:58:49 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ int		sh_parser(t_shell *shell, t_list **tokens,
 	t_token token;
 	int		ret;
 
+//	sh_populate_token(&token, LEX_TOK_NEWLINE, 0);
+//	ft_lstaddnew_last(tokens, &token, sizeof(t_token));
 	sh_populate_token(&token, END_OF_INPUT, 0);
 	ft_lstaddnew_last(tokens, &token, sizeof(t_token));
 	if (sh_verbose_ast())

@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 00:22:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/23 00:22:52 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/10/01 21:11:37 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,8 +222,10 @@ int		sh_compute_transitions(t_state *state, t_lr_parser *parser)
 	{
 		item = (t_item *)ptr->content;
 		if (item->progress && sh_add_transition_item(item, state,
-					parser, &changes))
+				parser, &changes))
+		{
 			return (-1);
+		}
 		ptr = ptr->next;
 	}
 	return (changes);
