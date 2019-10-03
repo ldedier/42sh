@@ -56,12 +56,15 @@ int	sh_traverse_subshell(t_ast_node *node, t_context *context)
 	{
 		waitpid(pid, &ret, 0);
 		sh_env_update_ret_value_wait_result(context, ret);
-		return (SH_RET_VALUE_EXIT_STATUS(ret));
+		return (SUCCESS);
 	}
 	else
 	{
 		ret = search_term(node->children->next->content, context);
-		exit(ret);//reset redirection ?
+		sh_free_all(context->shell);
+		if (ret != SUCCESS)
+			exit(ret);
+		exit(context->shell->ret_value);
 	}
 	return (0);
 }
