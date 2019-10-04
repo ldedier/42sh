@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/20 14:48:43 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/04 03:12:51 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/04 12:18:38 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,14 @@ static void		restore_command_clean(t_context *context)
 	{
 		if (!ft_strchr(tbl[i], '='))
 		{
-			ft_dprintf(2, GREEN"deleted empty var : %s\n"EOC, tbl[i]);
+			if (sh_verbose_exec())
+				ft_dprintf(2, GREEN"deleted empty var : %s\n"EOC, tbl[i]);
 			ft_dy_tab_suppr_index(context->env, i);
 		}
 		else if (sh_env_save_get_index(context->saved_env, tbl[i]) == -1)
 		{
-			ft_dprintf(2, GREEN"deleted old var : %s\n"EOC, tbl[i]);
+			if (sh_verbose_exec())
+				ft_dprintf(2, GREEN"deleted old var : %s\n"EOC, tbl[i]);
 			ft_dy_tab_suppr_index(context->env, i);
 		}
 		i++;
