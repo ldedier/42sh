@@ -42,3 +42,17 @@ launch "export"
 	test_launch "unset SHLVL _ OLDPWD" "var=tamer ; export tamer ; echo $var" "export"
 	test_launch "unset SHLVL _ OLDPWD" "var=tamer ls ; export var ; echo $var" "export"
 	test_launch "unset SHLVL _ OLDPWD" "var=tamer ls ; export tamer ; echo $var" "export"
+
+	test_launch "export variable ; variable="         "export | grep variable ; echo ; set | grep variable ; echo ; env | grep variale"
+	test_launch "export variable ; variable= ls"      "export | grep variable ; echo ; set | grep variable ; echo ; env | grep variale"
+	test_launch "export variable ; variable= nocmd"   "export | grep variable ; echo ; set | grep variable ; echo ; env | grep variale"
+	test_launch "export variable ; variable=Tamer"    "export | grep variable ; echo ; set | grep variable ; echo ; env | grep variale"
+	test_launch "export variable ; variable=Tamre ls" "export | grep variable ; echo ; set | grep variable ; echo ; env | grep variale"
+	test_launch "export variable ; variable=Ta nocmd" "export | grep variable ; echo ; set | grep variable ; echo ; env | grep variale"
+	
+	test_launch "variable=var env   | grep variable=var" 'echo $?' "export | grep variable ; echo ; set | grep variable ; echo ; env | grep variale"
+	test_launch "variable=var set   | grep variable=var" 'echo $?' "export | grep variable ; echo ; set | grep variable ; echo ; env | grep variale"
+	test_launch "variable=var export| grep variable=var" 'echo $?' "export | grep variable ; echo ; set | grep variable ; echo ; env | grep variale"
+	test_launch "variable=var nocmd                    " 'echo $?' "export | grep variable ; echo ; set | grep variable ; echo ; env | grep variale"
+
+

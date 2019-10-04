@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/19 12:19:24 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/29 05:04:20 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/04 01:38:15 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,6 @@
 #define UNSET_V_OPT_USAGE	"unset variables (default option)"
 #define UNSET_F_OPT			1
 #define UNSET_F_OPT_USAGE	"unset fuctions"
-
-static int	unset_get_index(char **tbl, char *arg)
-{
-	int		i;
-
-	i = 0;
-	while (tbl[i])
-	{
-		if (ft_strequ(tbl[i], arg))
-			return (i);
-		i++;
-	}
-	return (-1);
-}
 
 static void	unset_variable(t_context *context, char **argv, int index)
 {
@@ -48,8 +34,7 @@ static void	unset_variable(t_context *context, char **argv, int index)
 			ft_dprintf(2, "unset : found %s in saved_env\n", argv[index]);
 		sh_vars_del_key(context->saved_env, argv[index]);
 	}
-	else if ((i = unset_get_index(
-		(char**)context->saved_env->tbl, argv[index])) >= 0)
+	else if ((i = sh_env_save_get_index(context->saved_env, argv[index])) >= 0)
 	{
 		if (sh_verbose_builtin())
 			ft_dprintf(2, "unset : found %s in saved_env\n", argv[index]);
