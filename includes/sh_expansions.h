@@ -61,9 +61,12 @@ int		sh_expansions_splitting(
 /*
 ** sh_expansions_history.c
 */
-char	*ft_strdup_word(char *str);
+char	*ft_strdup_word_delim(char *str, int delim);
 int		sh_history_expand(
-	t_shell *shell, t_command_line *command_line, int *index);
+	t_shell *shell,
+	t_command_line *command_line,
+	int *index,
+	int *double_quoted);
 int		sh_expansions_history(
 	t_shell *shell, t_command_line *command_line, int *expanded);
 
