@@ -46,7 +46,7 @@ char	*sh_get_editor(char *editor, t_shell *shell)
 		return (ft_strdup(editor));
 	else
 	{
-		if ((fcedit_var = sh_vars_get_value(NULL, shell->vars, "FC_EDIT")))
+		if ((fcedit_var = sh_vars_get_value(shell->env, shell->vars, "FCEDIT")))
 			return (ft_strdup(fcedit_var));
 		else
 			return (ft_strdup("ed"));
@@ -81,7 +81,6 @@ int		sh_execute_editor(char *editor, t_shell *shell)
 	free(command);
 	return (SUCCESS);
 }
-
 
 static int      sh_process_read_canonical_gnl(t_shell *shell, t_gnl_info *info)
 {
