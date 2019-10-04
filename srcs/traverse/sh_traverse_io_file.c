@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 11:19:41 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/12 14:56:33 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/04 15:41:30 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,12 +115,23 @@ int			sh_traverse_io_file(t_ast_node *node, t_context *context)
 	char		*filename;
 	int			ret;
 
+	redir_child = node->children->content;
+	filename_child = node->children->next->content;
+	filename_child = filename_child->children->content;
+	filename = filename_child->token->value;
+	if (context->phase == E_TRAVERSE_PHASE_EXPANSIONS)
+	{
+		filename = ft_strdup(filename);
+		ret = sh_expansions(context, filename_child);
+		if (ret == SUCCESS
+					&& (filename_child->parent->children->next 
+						|| !filename_child->token->value[0]))
+			ret = sh_perror_err(SH_AMB_REDIRECT, filename);
+		free(filename);
+		return (ret);
+	}
 	if (context->phase == E_TRAVERSE_PHASE_REDIRECTIONS)
 	{
-		redir_child = node->children->content;
-		filename_child = node->children->next->content;
-		filename = ((t_ast_node *)
-			(filename_child->children->content))->token->value;
 		ret = get_io_file_return(redir_child, filename, context);
 		if (ret)
 			sh_env_update_ret_value(context->shell, ret);
