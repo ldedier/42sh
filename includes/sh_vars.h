@@ -134,6 +134,7 @@ int		sh_env_update_ret_value_and_question(t_shell *shell, int res);
 ** sh_env_save.c
 */
 int		sh_env_save_restore(t_context *context);
+int		sh_env_save_get_index(t_dy_tab *saved_env, char *key);
 
 /*
 ** sh_env_tools.c
