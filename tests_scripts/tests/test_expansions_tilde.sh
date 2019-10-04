@@ -50,6 +50,37 @@ launch "Tilde_expansion"
 	test_launch 'cd \~d/' 'ls' 'cd "~/"' 'ls'
 	test_launch 'cd \~d/' 'ls' 'cd '\''~/'\''' 'ls'
 
-# launch "Deprecated"
-	# test_launch 'ls ~jmartel/'
+	launch_show "Old errors"
+	test_launch 'echo ~okalm'
+	test_launch 'echo ~okalm\'
+	test_launch 'echo ~okalm\ '
+	test_launch 'echo ~okalm\d'
+	test_launch 'echo ~:'
+	test_launch 'echo ~~:'
+	test_launch 'echo ~~/'
+	test_launch 'var=~:~/: ; echo $var'
+	test_launch 'var=~/:~::: ; echo $var'
+	test_launch 'var=~/:~//::: ; echo $var'
+	test_launch 'var=:~/:~/::: ; echo $var'
+	test_launch 'var=:~/:~/::: ; echo $var'
+	test_launch 'var=:~root/:~jmartel/::: ; echo $var'
+	test_launch 'var=:~root/:~/jmartel::: ; echo $var'
+	test_launch 'var=:~root/root::~jmartel:~root: ; echo $var'
+	test_launch 'var=:~root/~root::~jmartel:~root: ; echo $var'
+	test_launch 'var=:~root/~root/::~jmartel:~root: ; echo $var'
+	test_launch 'var=:~root/root/~root/::~jmartel:~root: ; echo $var'
+
+
+	launch_show "Bonus"
+		test_launch 'ls ~jmartel/'
+		test_launch 'ls ~jmartel//'
+		test_launch 'ls ~jmartel'
+		test_launch 'ls ~root/'
+		test_launch 'ls ~root:'
+		test_launch 'ls ~root//'
+		test_launch 'ls ~root'
+		test_launch 'ls ~noone'
+		test_launch 'ls ~noone/'
+		test_launch 'ls ~noone//'
+
 finish

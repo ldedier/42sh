@@ -135,7 +135,9 @@ int		sh_expansions_scan(
 int		sh_expansions_tilde_detect(char *start);
 int		sh_expansions_tilde_process(t_context *context, t_expansion *exp);
 int		sh_expansions_tilde(
-	char **input, char *original, t_context *context, t_dy_tab *quotes);
+	char **input, t_context *context, t_dy_tab *quotes, int *index);
+int		sh_expansions_tilde_assignment(
+	char **input, t_context *context, t_dy_tab *quotes);
 
 /*
 ** sh_expansions_variable.c
