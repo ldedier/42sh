@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/02 00:35:13 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/02 11:23:07 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/04 11:08:49 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,21 @@
 /*
 ** apply_expansion_to_children
 ** We apply expansion here for all possible redirection of 
-** the command (grammar) child.
-** simple_command, compound_command...
+** the command (grammar)
 */
-static int	apply_expansion_to_children(t_ast_node *child, t_context *context)
+static int	apply_expansion_to_children(t_list *lst_child, t_context *context)
 {
+	t_ast_node	*child;
 	int 		ret;
 
-	context->phase = E_TRAVERSE_PHASE_EXPANSIONS;
-	if ((ret = sh_traverse_tools_browse(child, context)))
-		return (ret);
+	while (lst_child)
+	{
+		child = lst_child->content;
+		context->phase = E_TRAVERSE_PHASE_EXPANSIONS;
+		if ((ret = sh_traverse_tools_browse(child, context)))
+			return (ret);
+		lst_child = lst_child->next;
+	}
 	return (SUCCESS);
 }
 
@@ -44,7 +49,7 @@ static int	compound_and_redirection(t_ast_node *node, t_context *context)
 	compound_redir = NULL;
 	if (node->children->next)
 	{
-		if ((ret = apply_expansion_to_children(child, context)) != SUCCESS)
+		if ((ret = apply_expansion_to_children(node->children->next, context)) != SUCCESS)
 			return (ret);
 		context->phase = E_TRAVERSE_PHASE_REDIRECTIONS;
 		if ((ret = sh_traverse_tools_browse(node->children->next->content, context)) != SUCCESS)
