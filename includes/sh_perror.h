@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 14:16:12 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/14 02:42:42 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/04 14:15:17 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@
 # define SH_BLT_NO_CMD_FOUND	"fc: no command found"
 
 # define SH_BAD_SUBSTITUTE		"Bad subsitution"
+# define SH_AMB_REDIRECT		"Ambigous redirect"
 /*
 ********************************************************************************
 */
