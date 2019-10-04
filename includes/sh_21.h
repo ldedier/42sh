@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/30 15:48:56 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/28 06:23:55 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/04 21:50:40 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@
 # define BONUS_HOME_AS_TILDE_PROMPT	1
 # define BONUS_REDIRECT_SIGNAL		1
 # define BONUS_DOLLAR_VARIABLE		1
-# define BONUS_TILDE_EXP			0
+# define BONUS_TILDE_EXP			1
 
 typedef struct s_shell		t_shell;
 
