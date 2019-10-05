@@ -103,6 +103,11 @@ int					sh_lexer(
 	char *input, t_list **tokens, t_shell *shell, t_lex_mode mode);
 
 /*
+** sh_lexer_reserved_words.c
+*/
+int					sh_lexer_reserved_words(t_lexer *lexer);
+
+/*
 ** sh_lexer_rule_1.c
 */
 int					sh_lexer_rule1(t_lexer *lexer);
