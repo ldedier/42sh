@@ -32,6 +32,7 @@ int		sh_vshortcut_hashtag(t_command_line *command_line, int dummy, int dummy_2)
 		return (FAILURE);
 	render_command_line(command_line, 0, 1);
 	get_down_from_command(command_line);
+	command_line->shell->exec_depth++;
 	ret = execute_command(command_line->shell, command_line->dy_str->str, 1);
 	flush_command_line(command_line);
 	render_command_line(command_line, -g_glob.cursor, 1);

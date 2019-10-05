@@ -139,6 +139,7 @@ int		sh_builtin_fc_default_synopsis(t_context *context, t_fc_options *opts)
 {
 	t_dlist *from;
 	t_dlist *to;
+	int		ret;
 
 	fill_default_opts_default_synopsis(opts);
 	if (!(from
@@ -152,11 +153,14 @@ int		sh_builtin_fc_default_synopsis(t_context *context, t_fc_options *opts)
 		return (FAILURE);
 	if (!(opts->editor = sh_get_editor(opts->editor, context->shell)))
 		return (sh_perror(SH_ERR1_MALLOC, "sh_builtin_fc_default_synopsis"));
+	ft_printf("%s\n", opts->editor);
 	if (sh_execute_editor(opts->editor, context->shell) != SUCCESS)
 	{
 		free(opts->editor);
 		return (FAILURE);
 	}
 	free(opts->editor);
-	return (sh_execute_commands_from_file(context->shell, EDIT_FILE));
+	ret = sh_execute_commands_from_file(context->shell, EDIT_FILE);
+	context->shell->history.should_add = 0;
+	return (ret);
 }
