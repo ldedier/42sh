@@ -103,6 +103,10 @@ launch "Variables"
 	test_launch 'echo $'
 	test_launch 'cd $'
 	test_launch 'echo "$"'
+	test_launch 'echo $'
+	test_launch 'echo \$'
+	test_launch 'echo "\$"'
+	test_launch "echo '$'"
 	test_launch 'echo ~/~/ '
 	test_launch 'HOME="/path    /path" echo $HOME'
 	test_launch 'HOME="/path    /path" ; echo $HOME'
