@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/20 14:48:43 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/04 12:18:38 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/05 03:46:06 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 **	Function used after restoring env in a command case.
 */
 
-static void		restore_command_clean(t_context *context)
+static void	restore_command_clean(t_context *context)
 {
 	int		i;
 	char	**tbl;
@@ -48,6 +48,7 @@ static void		restore_command_clean(t_context *context)
 /*
 ** sh_env_save_restore_command_run:
 **	Body of sh_env_save_restore_command, see it description.
+**	First case in used with the export builtin, the second in other cases.
 */
 
 static int	sh_env_save_restore_command_run(
@@ -56,7 +57,7 @@ static int	sh_env_save_restore_command_run(
 	int		index;
 
 	*equal = '\0';
-	if ((index = sh_vars_get_index(context->env, tbl[*i])) == -1) // is this case usefull ???
+	if ((index = sh_vars_get_index(context->env, tbl[*i])) == -1)
 	{
 		*equal = '=';
 		if (ft_dy_tab_add_str(context->env, tbl[*i]))
@@ -82,7 +83,7 @@ static int	sh_env_save_restore_command_run(
 **	Function used to restore env between two commands if there were at least
 **	one parameter in context->params.
 **	The aim is to synchronize env with the content of saved_env.
-**	For every entry in saved_env if entry is not in env, it's added,
+**	For every assignment in saved_env if entry is not in env, it's added,
 **	if entry exist but value is not the same it is updated in env.
 **	Finally restore_command_clean delete any entry in env
 **	that is not in saved_env and any non assigned key in env.
@@ -170,7 +171,7 @@ static int	sh_env_save_restore_no_command(t_context *context)
 	{
 		if (!(equal = ft_strchr(tbl[i], '=')))
 		{
-			ft_dprintf(2, RED"ERROR reported by sh_env_save_restore_no_command : inform jmartel with current commands\n"EOC); // to del
+			ft_dprintf(2, RED"ERROR reported by sh_env_save_restore_no_command : please inform jmartel with current commands\n"EOC); // to del
 			return (FAILURE);
 		}
 		ret = sh_env_save_restore_no_command_run(context, tbl, &i, equal);

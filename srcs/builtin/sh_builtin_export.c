@@ -6,11 +6,22 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/19 09:45:53 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/04 03:15:01 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/05 03:23:16 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
+
+/*
+** assign_assignment:
+**	Used in the case taht argument is a key=value like, where value can be null.
+**	If the key is found in vars table it is transfered to saved_env,
+**	else it is only created / updated in saved_env table.
+**
+**	Returnd Values:
+**		SUCCESS
+**		FAILURE : malloc error
+*/
 
 static int	assign_assignment(t_context *context, char *arg)
 {
@@ -27,6 +38,18 @@ static int	assign_assignment(t_context *context, char *arg)
 		sh_builtin_hash_empty_table(context->shell);
 	return (SUCCESS);
 }
+
+/*
+** assign_empty_variable:
+**	Fonction used if argument is a key, with no '=' char.
+**	It first looks in vars and env tables, if any assignments correspond
+**	to that key, this assignment is transfered from current table to saved_env.
+**	Else, if key do not exist in saved_env it is created.
+**
+**	Returnd Values:
+**		SUCCESS
+**		FAILURE : malloc error
+*/
 
 static int	assign_empty_variable(t_context *context, char *arg)
 {

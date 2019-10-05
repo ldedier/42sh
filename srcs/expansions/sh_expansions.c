@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/05 10:59:30 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/04 23:10:53 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/05 04:04:32 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ int			sh_expansions(t_context *context, t_ast_node *node)
 	if (!(quotes = ft_dy_tab_new(5)))
 		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions"));
 	if (node->token->id == LEX_TOK_ASSIGNMENT_WORD)
+		ret = sh_expansions_tilde_assignment(input, context, quotes);
+	else if (sh_expansions_variable_valid_name(*input) && ft_strchr(*input, '='))
 		ret = sh_expansions_tilde_assignment(input, context, quotes);
 	else if ((*input)[0] == '~')
 		ret = sh_expansions_tilde(input, context, quotes, &ret);
