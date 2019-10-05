@@ -1,16 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sh_traverse_pipe_sequence.c                        :+:      :+:    :+:   */
+/*   sh_traverse_pipe_line.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-<<<<<<< HEAD:srcs/traverse/sh_traverse_pipe_sequence.c
-/*   Updated: 2019/10/03 04:39:20 by mdaoud           ###   ########.fr       */
-=======
-/*   Updated: 2019/10/01 11:19:43 by jdugoudr         ###   ########.fr       */
->>>>>>> 3f696232b2d3fe1820f33aa557523a7bf716221f:srcs/traverse/sh_traverse_pipe_line.c
+/*   Updated: 2019/10/03 05:58:48 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,12 +80,8 @@ static int		pipe_to_do(t_ast_node *node, t_context *context)
 ** We check what if we have pipe to do in the
 ** pipe sequence.
 */
-<<<<<<< HEAD:srcs/traverse/sh_traverse_pipe_sequence.c
 
-int				sh_traverse_pipeline(t_ast_node *node, t_context *context)
-=======
 static int		sh_traverse_pipe_sequence(t_ast_node *node, t_context *context)
->>>>>>> 3f696232b2d3fe1820f33aa557523a7bf716221f:srcs/traverse/sh_traverse_pipe_line.c
 {
 	int	ret;
 

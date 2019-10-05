@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 17:04:13 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/01 17:05:00 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/03 07:30:20 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,41 @@ static void		mark_job_as_running (t_job *j)
 	j->notified = 0;
 }
 
+static t_job	*get_active_job(void)
+{
+	t_job	*j;
+	t_job	*it;
+	t_job	*prev;
+
+	if (g_job_ctrl->first_job == NULL)
+	{
+		sh_perror("fg: current", "no such job");
+		return (NULL);
+	}
+	j = g_job_ctrl->first_job;
+	it = NULL;
+	while (j != NULL)
+	{
+		prev = j;
+		if (job_is_stopped(j))
+			it = j;
+		j = j->next;
+	}
+	if (it == NULL)
+	{
+		sh_perror("fg", NULL);
+		ft_dprintf(2, "job [%d] already running in background\n", prev->number);
+		return (NULL);
+	}
+	return (it);
+}
+
 int			sh_builtin_fg(t_context *context)
 {
 	t_job	*active_job;
 	int		res;
 
 	active_job = get_active_job();
-	if (active_job == NULL || active_job->pgid == 0)
-		return (sh_perror_err("fg", "no such job"));
 	if (active_job == NULL)
 		return (ERROR);
 	mark_job_as_running(active_job);

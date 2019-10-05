@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 17:04:13 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/29 03:07:29 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/04 17:56:58 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,11 @@
 static void		print_job_status(t_job *j)
 {
 	if (job_is_completed(j))
-		ft_printf("completed");
+		ft_printf("[%d] Completed\t\t%s\n", j->number, j->command);
 	else if (job_is_stopped(j))
-		ft_printf("stopped");
+		ft_printf("[%d] Stopped\t\t%s\n", j->number, j->command);
 	else
-		ft_printf("running");
-	ft_printf("  ");
+		ft_printf("[%d] Running\t\t%s\n", j->number, j->command);
 }
 
 int				sh_builtin_jobs(t_context *context)
@@ -30,28 +29,19 @@ int				sh_builtin_jobs(t_context *context)
 	t_job	*j;
 	t_process	*p;
 
-	ft_printf("Shell pgid: %d\n", g_job_ctrl->shell_pgid);
-	if (g_job_ctrl->curr_job)
-	{
-		ft_printf("curr job number: %d\n", g_job_ctrl->curr_job->number);
-	}
+	// ft_printf("Shell pgid: %d\n", g_job_ctrl->shell_pgid);
+	// if (g_job_ctrl->curr_job)
+	// {
+	// 	ft_printf("curr job number: %d\n", g_job_ctrl->curr_job->number);
+	// }
 	if (g_job_ctrl->first_job == NULL)
 		return (SUCCESS);
 	j = g_job_ctrl->first_job;
 	while (j != NULL && !job_is_completed(j))
 	{
-		ft_printf("[%d]\t", j->number);
+		// ft_printf("[%d]\t\t%s\n", j->number, j->command);
 		print_job_status(j);
-		p = j->first_process;
-		while (p != NULL)
-		{
-			ft_printf("%d\t", p->pid);
-			str_tab_print(p->argv);
-			ft_printf("\n");
-			if (p->next != NULL)
-				ft_printf("\t\t ");
-			p = p->next;
-		}
+
 		j = j->next;
 	}
 	return (0);

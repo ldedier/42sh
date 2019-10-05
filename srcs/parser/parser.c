@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/04 21:42:55 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/03 05:54:01 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/03 16:57:00 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,8 @@ int		sh_parser(t_shell *shell, t_list **tokens,
 //	ft_lstaddnew_last(tokens, &token, sizeof(t_token));
 	sh_populate_token(&token, END_OF_INPUT, 0);
 	ft_lstaddnew_last(tokens, &token, sizeof(t_token));
+	jobs_create_cmds(*tokens);
+	// sh_print_token_list(tokens);
 	check_ampersand_at_eoc(*tokens);
 	if (sh_verbose_ast())
 	{

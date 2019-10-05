@@ -25,6 +25,7 @@
 typedef struct s_process		t_process;
 typedef struct s_job			t_job;
 typedef struct s_job_control	t_job_control;
+typedef struct s_job_cmd		t_job_cmd;
 typedef struct termios			t_term;
 
 struct	s_process
@@ -50,6 +51,12 @@ struct	s_job
 	t_job			*next;
 };
 
+struct	s_job_cmd
+{
+	char			*str;
+	t_job_cmd		*next;
+};
+
 struct	s_job_control
 {
 	char			jc_enabled;
@@ -59,6 +66,7 @@ struct	s_job_control
 	int				term_fd;
 	int				job_count;
 	int				job_num[MAX_JOBS];
+	t_job_cmd		*job_cmd;
 	t_shell			*shell;
 	t_job			*first_job;
 	t_job			*curr_job;
@@ -87,8 +95,10 @@ void			job_print_status(t_job *j, const char *new_status);
 void			job_notify(void);
 int				set_pgid_child(int cpid);
 int				set_pgid_parent(int cpid, t_context *context);
+int				jobs_create_cmds(t_list *token_list);
+void			jobs_print_cmds(void);
+void			jobs_free_cmds(void);
 
-t_job			*get_active_job(void);
 int				jc_error_free(const char *err, const char *suff,
 				int to_free, int ret);
 

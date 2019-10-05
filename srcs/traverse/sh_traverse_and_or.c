@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 15:54:02 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/03 05:54:08 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/05 01:35:49 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 static int		sh_traverse_and_or_call_sons_exec(t_ast_node *node,
 		int *prev_symbol, t_context *context)
 {
-	/*t_ast_node	*child;*/
 	int			ret;
 
 	if (*prev_symbol == -1)
@@ -32,7 +31,6 @@ static int		sh_traverse_and_or_call_sons_exec(t_ast_node *node,
 	else if (*prev_symbol == sh_index(LEX_TOK_OR_IF)
 		&& !context->shell->ret_value)
 		return (SUCCESS);
-	/*ret = sh_traverse_pipeline(child, context);*/
 	ret = sh_traverse_pipeline(node, context);
 	if (ret == BLT_TEST_ERROR || context->shell->ret_value == BLT_TEST_ERROR)
 	{
@@ -94,16 +92,6 @@ static int		sh_traverse_and_or_launch_phase(
 }
 
 /*
-<<<<<<< HEAD
- * sh_traverse_and_or :
- * This is the browser of the t_list and_or (grammar)
- * We execute a and_or node, check it return value and
- * execute or not the next and_or node follow the found token
- * AND_IF or OR_IF.
- *
- * We also call the function sh_env_update_question_mark to be sur
- * that at this time, the return value is set in the env variable
-=======
 ** sh_traverse_and_or :
 ** This is the browser of the t_list and_or (grammar)
 ** We execute a and_or node, check it return value and
@@ -112,7 +100,6 @@ static int		sh_traverse_and_or_launch_phase(
 **
 ** We also call the function sh_env_update_question_mark to be sur
 ** that at this time, the return value is set in the env variable
->>>>>>> 3f696232b2d3fe1820f33aa557523a7bf716221f
 */
 int				sh_traverse_and_or(t_ast_node *node, t_context *context)
 {

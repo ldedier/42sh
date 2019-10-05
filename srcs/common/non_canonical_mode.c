@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/05 15:41:50 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/29 04:13:44 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/03 17:54:45 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,19 @@ static int		sh_await_command(t_shell *shell)
 	if ((ret = sh_get_command(shell, &g_glob.command_line)) != SUCCESS)
 	{
 		if (g_job_ctrl->jc_enabled)
+		{
+			// reset job_cmds
+			jobs_free_cmds();
 			job_notify();
+		}
 		return (ret);
 	}
 	if (g_job_ctrl->jc_enabled)
+	{
+		// reset job_cmds
+		jobs_free_cmds();
 		job_notify();
+	}
 	return (execute_command(shell,
 		g_glob.command_line.dy_str->str, 1));
 }

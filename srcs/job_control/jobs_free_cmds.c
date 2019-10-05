@@ -1,31 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_active_job.c                                   :+:      :+:    :+:   */
+/*   jobs_free_cmds.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/21 18:05:11 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/26 03:04:07 by mdaoud           ###   ########.fr       */
+/*   Created: 2019/10/03 17:49:52 by mdaoud            #+#    #+#             */
+/*   Updated: 2019/10/03 17:54:28 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 #include "sh_job_control.h"
 
-
-t_job		*get_active_job(void)
+void			jobs_free_cmds(void)
 {
-	t_job	*j;
-	t_job	*prev;
+	t_job_cmd	*ptr;
 
-	j = g_job_ctrl->first_job;
-	if (j == NULL)
-		return (NULL);
-	while (j->next != NULL && j->next->pgid != 0)
+	if (g_job_ctrl->jc_enabled == 0)
+		return ;
+	ptr = g_job_ctrl->job_cmd;
+	while (g_job_ctrl->job_cmd != NULL)
 	{
-		prev = j;
-		j = j->next;
+		ptr = g_job_ctrl->job_cmd->next;
+		free(g_job_ctrl->job_cmd->str);
+		free(g_job_ctrl->job_cmd);
+		g_job_ctrl->job_cmd = ptr;
 	}
-	return (j);
 }

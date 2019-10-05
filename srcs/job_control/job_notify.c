@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 01:05:04 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/01 00:09:20 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/04 18:01:52 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,16 +56,15 @@ void			job_notify(void)
 			if (tmp)
 				tmp->next = j_next;
 			else
-			{
 				g_job_ctrl->first_job = j_next;
-			}
 			if (g_job_ctrl->curr_job == j)
 				g_job_ctrl->curr_job = NULL;
 			job_free(j);
 		}
 		else if (job_is_stopped(j) && !j->notified)
 		{
-			job_print_status(j, "stopped");
+			// ft_dprintf(g_job_ctrl->term_fd, "\n");
+			job_print_status(j, "Stopped");
 			j->notified = 1;
 			tmp = j;
 		}
