@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 13:38:26 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/05 02:51:26 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/05 07:39:26 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,10 +165,11 @@ int			sh_expansions_variable_process(t_context *context, t_expansion *exp)
 		if (!value)
 			exp->res = ft_dy_str_new_str("0");
 		else
-			exp->res = ft_dy_str_new_ptr(ft_itoa(ft_strlen(value)));
+		{
+			value = ft_itoa(ft_strlen(value));
+			exp->res = ft_dy_str_new_ptr(value, ft_strlen(value), ft_strlen(value) + 1);
+		}
 	}
-	// else if (ft_strequ(exp->expansion, ""))
-	// 	exp->res = ft_dy_str_new_str("$");
 	else
 	{
 		if (!value)

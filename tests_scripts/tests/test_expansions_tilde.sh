@@ -50,6 +50,17 @@ launch "Tilde_expansion"
 	test_launch 'cd \~d/' 'ls' 'cd "~/"' 'ls'
 	test_launch 'cd \~d/' 'ls' 'cd '\''~/'\''' 'ls'
 
+	launch_show "Field splittitng"
+	test_launch 'HOME="path    with    spaces    /" ; cd ~/'
+	test_launch 'HOME="path    with    spaces    /" ; cd'
+	test_launch 'HOME="path    with    spaces    /" ; echo ~/'
+	test_launch 'export HOME="path    with    spaces    /" ; cd ~/'
+	test_launch 'export HOME="path    with    spaces    /" ; cd'
+	test_launch 'export HOME="path    with    spaces    /" ; echo ~/'
+	test_launch 'export HOME="/    tmp" ; echo ~/'
+	test_launch 'export HOME="/    tmp" ; cd ~/'
+	test_launch 'export HOME="/    tmp" ; cd ~'
+
 	launch_show "Old errors"
 	test_launch 'echo ~okalm'
 	test_launch 'echo ~okalm\'
@@ -72,15 +83,15 @@ launch "Tilde_expansion"
 
 
 	launch_show "Bonus"
-		test_launch 'ls ~jmartel/'
-		test_launch 'ls ~jmartel//'
-		test_launch 'ls ~jmartel'
-		test_launch 'ls ~root/'
-		test_launch 'ls ~root:'
-		test_launch 'ls ~root//'
-		test_launch 'ls ~root'
-		test_launch 'ls ~noone'
-		test_launch 'ls ~noone/'
-		test_launch 'ls ~noone//'
+	test_launch 'ls ~jmartel/'
+	test_launch 'ls ~jmartel//'
+	test_launch 'ls ~jmartel'
+	test_launch 'ls ~root/'
+	test_launch 'ls ~root:'
+	test_launch 'ls ~root//'
+	test_launch 'ls ~root'
+	test_launch 'ls ~noone'
+	test_launch 'ls ~noone/'
+	test_launch 'ls ~noone//'
 
 finish

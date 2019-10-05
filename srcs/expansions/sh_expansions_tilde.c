@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 13:56:29 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/05 01:48:48 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/05 07:37:59 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,17 +82,18 @@ static int	sh_expansions_tilde_process_bonus(
 int			sh_expansions_tilde_process(t_context *context, t_expansion *exp)
 {
 	char	*home;
+	char	*buffer;
 
 	if (!exp->original[1] || ft_iswhite(exp->original[1])
 			|| exp->original[1] == '/' || exp->original[1] == ':')
 	{
 		if (!(home = sh_vars_get_value(context->env, NULL, "HOME")))
 			return (sh_perror_err(SH_ERR1_ENV_NOT_SET, "HOME"));
-		if (!(exp->res = (t_dy_str *)malloc(sizeof(t_dy_str))))
-			return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_tilde (1)"));
-		if (!(exp->res->str = ft_strrep_pattern_free(
+		if (!(buffer = ft_strrep_pattern_free(
 						exp->original, home, "~", 0)))
 			return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_tilde (2)"));
+		if (!(exp->res = ft_dy_str_new_ptr(buffer, ft_strlen(buffer), ft_strlen(buffer) + 1)))
+			return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_tilde (1)"));
 		return (SUCCESS);
 	}
 	return (sh_expansions_tilde_process_bonus(context, exp));
@@ -130,7 +131,42 @@ static int	sh_expansions_init_tilde(char *original, t_expansion *exp)
 }
 
 /*
+** sh_expansions_tilde_replace:
+**	Used to add quotes around the result in the new input, only if result
+**	is different of the original input.
+**	Thanks to that, tilde epansion result is not subject to field splitting.
+**	Moreover, it update index value, using the result lenght.
+**
+**	Returned Values:
+**		SUCCESS
+**		FAILURE : malloc error
+*/
+
+static int	sh_expansions_tilde_replace(
+	char **input, t_dy_tab *quotes, int *index, t_expansion *exp)
+{
+	int		ret;
+
+	if (!ft_strequ(exp->res->str, exp->original))
+	{
+		if (ft_dy_str_add_index(exp->res, '\'', *index))
+			return (FAILURE);
+		if (ft_dy_str_add_index(exp->res, '\'', *index + ft_strlen(exp->res->str)))
+			return (FAILURE);
+	}
+	ret = sh_expansions_replace(exp, input, *index, (t_quote**)quotes->tbl);
+	if (ret)
+		return (ret);
+	(*index) += ft_strlen(exp->res->str);
+	return (SUCCESS);
+}
+
+/*
 ** sh_expansions_tilde:
+**	Look for valid tilde prefix in *input, startint at *index.
+**	If any was found, a t_expansion structure is filled (init_tilde).
+**	This structure is used to determine the result (tilde_process).
+**	The result is finally replacing the original expansion in *input.
 **
 **	Return Value:
 **		FAILURE : malloc error
@@ -159,8 +195,7 @@ int			sh_expansions_tilde(
 		t_expansion_show(&exp);
 	ret = sh_expansions_tilde_process(context, &exp);
 	if (!ret)
-		ret = sh_expansions_replace(&exp, input, *index, (t_quote**)quotes->tbl);
-	(*index) += ft_strlen(exp.res->str);
+		ret = sh_expansions_tilde_replace(input, quotes, index, &exp);
 	t_expansion_free_content(&exp);
 	return (ret);
 }
