@@ -18,6 +18,7 @@ static int		sh_await_command(t_shell *shell)
 
 	if ((ret = sh_get_command(shell, &g_glob.command_line)) != SUCCESS)
 		return (ret);
+	shell->exec_depth = 0;
 	return (execute_command(shell,
 		g_glob.command_line.dy_str->str, 1));
 }

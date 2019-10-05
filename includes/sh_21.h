@@ -68,6 +68,7 @@
 
 # define MAX_YANK				2000
 # define BINARIES_TABLE_SIZE	200
+# define MAX_EXEC_RECURSIONS	100
 
 /*
 ** Macros of fdin, fdout and fderr in context->fd
@@ -150,6 +151,7 @@ struct				s_shell
 	struct termios	term;
 	int				ret_value_set;
 	int				ret_value;
+	int				exec_depth;
 };
 
 /*
