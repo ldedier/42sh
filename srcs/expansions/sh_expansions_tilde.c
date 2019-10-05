@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 13:56:29 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/19 12:11:22 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/05 07:37:59 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ static int	sh_expansions_tilde_process_bonus(
 
 	if (BONUS_TILDE_EXP)
 	{
-		buf = ft_strndup(exp->original + 1, ft_strlen(exp->original) - 2);
+		buf = ft_strndup(exp->original + 1, ft_strlen(exp->original) - 1);
 		if (!buf)
-			return (sh_perror(SH_ERR1_MALLOC, "expansion_process_tilde_2 (1)"));
+			return (sh_perror(SH_ERR1_MALLOC, "expansion_process_tilde (3)"));
 		if (!(passwd = getpwnam(buf)))
 			exp->res = ft_dy_str_new_str(exp->original);
 		else
@@ -62,7 +62,7 @@ static int	sh_expansions_tilde_process_bonus(
 	else
 		exp->res = ft_dy_str_new_str(exp->original);
 	if (!(exp->res))
-		return (sh_perror(SH_ERR1_MALLOC, "expansion_process_tilde_2 (2)"));
+		return (sh_perror(SH_ERR1_MALLOC, "expansion_process_tilde (4)"));
 	return (SUCCESS);
 	(void)context;
 }
@@ -82,17 +82,18 @@ static int	sh_expansions_tilde_process_bonus(
 int			sh_expansions_tilde_process(t_context *context, t_expansion *exp)
 {
 	char	*home;
+	char	*buffer;
 
 	if (!exp->original[1] || ft_iswhite(exp->original[1])
 			|| exp->original[1] == '/' || exp->original[1] == ':')
 	{
 		if (!(home = sh_vars_get_value(context->env, NULL, "HOME")))
 			return (sh_perror_err(SH_ERR1_ENV_NOT_SET, "HOME"));
-		if (!(exp->res = (t_dy_str *)malloc(sizeof(t_dy_str))))
-			return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_tilde_1 (1)"));
-		if (!(exp->res->str = ft_strrep_pattern_free(
+		if (!(buffer = ft_strrep_pattern_free(
 						exp->original, home, "~", 0)))
-			return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_tilde_1 (2)"));
+			return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_tilde (2)"));
+		if (!(exp->res = ft_dy_str_new_ptr(buffer, ft_strlen(buffer), ft_strlen(buffer) + 1)))
+			return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_tilde (1)"));
 		return (SUCCESS);
 	}
 	return (sh_expansions_tilde_process_bonus(context, exp));
@@ -117,11 +118,11 @@ static int	sh_expansions_init_tilde(char *original, t_expansion *exp)
 	ft_bzero(exp, sizeof(t_expansion));
 	if (!(start = ft_strpbrk(original, "~")))
 		return (ERROR);
-	if (!ft_strnstr(start, "~", 1))
+	if (start[0] != '~')
 		return (ERROR);
 	if ((i = sh_expansions_tilde_detect(start)) == -1)
 		return (ERROR);
-	if (!(exp->original = ft_strndup(start, i + 1)))
+	if (!(exp->original = ft_strndup(start, i)))
 		return (sh_perror(SH_ERR1_MALLOC, "sh_exp_variable_detect_name (1)"));
 	exp->expansion = NULL;
 	exp->type = EXP_VAR;
@@ -130,7 +131,42 @@ static int	sh_expansions_init_tilde(char *original, t_expansion *exp)
 }
 
 /*
+** sh_expansions_tilde_replace:
+**	Used to add quotes around the result in the new input, only if result
+**	is different of the original input.
+**	Thanks to that, tilde epansion result is not subject to field splitting.
+**	Moreover, it update index value, using the result lenght.
+**
+**	Returned Values:
+**		SUCCESS
+**		FAILURE : malloc error
+*/
+
+static int	sh_expansions_tilde_replace(
+	char **input, t_dy_tab *quotes, int *index, t_expansion *exp)
+{
+	int		ret;
+
+	if (!ft_strequ(exp->res->str, exp->original))
+	{
+		if (ft_dy_str_add_index(exp->res, '\'', *index))
+			return (FAILURE);
+		if (ft_dy_str_add_index(exp->res, '\'', *index + ft_strlen(exp->res->str)))
+			return (FAILURE);
+	}
+	ret = sh_expansions_replace(exp, input, *index, (t_quote**)quotes->tbl);
+	if (ret)
+		return (ret);
+	(*index) += ft_strlen(exp->res->str);
+	return (SUCCESS);
+}
+
+/*
 ** sh_expansions_tilde:
+**	Look for valid tilde prefix in *input, startint at *index.
+**	If any was found, a t_expansion structure is filled (init_tilde).
+**	This structure is used to determine the result (tilde_process).
+**	The result is finally replacing the original expansion in *input.
 **
 **	Return Value:
 **		FAILURE : malloc error
@@ -139,14 +175,16 @@ static int	sh_expansions_init_tilde(char *original, t_expansion *exp)
 */
 
 int			sh_expansions_tilde(
-	char **input, char *original, t_context *context, t_dy_tab *quotes)
+	char **input, t_context *context, t_dy_tab *quotes, int *index)
 {
 	t_expansion	exp;
 	int			ret;
+	char		*original;
 
-	if (!ft_strpbrk(original, "~"))
+	original = *input;
+	if (!ft_strpbrk(original + *index, "~"))
 		return (SUCCESS);
-	if (sh_expansions_init_tilde(original, &exp) != SUCCESS)
+	if (sh_expansions_init_tilde(original + *index, &exp) != SUCCESS)
 	{
 		t_expansion_free_content(&exp);
 		return (ERROR);
@@ -157,7 +195,39 @@ int			sh_expansions_tilde(
 		t_expansion_show(&exp);
 	ret = sh_expansions_tilde_process(context, &exp);
 	if (!ret)
-		ret = sh_expansions_replace(&exp, input, 0 , (t_quote**)quotes->tbl);
+		ret = sh_expansions_tilde_replace(input, quotes, index, &exp);
 	t_expansion_free_content(&exp);
 	return (ret);
+}
+
+int			sh_expansions_tilde_assignment(
+	char **input, t_context *context, t_dy_tab *quotes)
+{
+	int		index;
+	char	*original;
+	int		ret;
+
+	original = *input;
+	if (!(index = ft_strchr(original, '=') - original))
+		return (ERROR);
+	if (original[index] == '=' && original[index + 1] == '~')
+	{
+		index++;
+		if ((ret = sh_expansions_tilde(input, context, quotes, &index)))
+			return (ret);
+		original = *input;
+	}
+	while (original[index])
+	{
+		if (original[index] == ':' && original[index + 1] == '~')
+		{
+			index++;
+			if ((ret = sh_expansions_tilde(input, context, quotes, &index)))
+				return (ret);
+			index--;
+			original = *input;
+		}
+		index++;
+	}
+	return (SUCCESS);
 }

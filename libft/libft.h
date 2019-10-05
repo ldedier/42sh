@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/07 10:11:38 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/03 05:10:41 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/05 22:49:20 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -309,7 +309,8 @@ int					ft_dlstadd_sorted(t_dlist **dlst,
 */
 t_dy_str			*ft_dy_str_new(size_t max_size);
 t_dy_str			*ft_dy_str_new_str(char *str);
-t_dy_str			*ft_dy_str_new_ptr(char *ptr);
+t_dy_str			*ft_dy_str_new_ptr(
+	char *ptr, size_t current_size, size_t max_size);
 int					ft_dy_str_add_index(t_dy_str *d_str, char c, size_t index);
 int					ft_dy_str_realloc(t_dy_str *d_str);
 int					ft_dy_str_suppr_index(t_dy_str *d_str, size_t index);

@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/03 05:58:48 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/05 23:53:11 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int		pipe_child_part(t_ast_node *node, t_context *context)
 	exit (ret);
 }
 
-static int		pip_parent_part(pid_t cpid, t_context *context)
+static int		pipe_parent_part(pid_t cpid, t_context *context)
 {
 	int		ret;
 
@@ -70,7 +70,7 @@ static int		pipe_to_do(t_ast_node *node, t_context *context)
 	}
 	else
 	{
-		ret = pip_parent_part(cpid, context);
+		ret = pipe_parent_part(cpid, context);
 		return (ret);
 	}
 }

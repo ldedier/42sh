@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 17:11:16 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/03 04:57:03 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/05 23:01:22 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,11 @@ void				sh_execute_binary(t_context *context);
 ** sh_execute_builtin.c
 */
 int					sh_execute_builtin(t_context *context);
+
+/*
+** sh_execute_and_or.c
+*/
+int		sh_execute_and_or(t_ast_node *node, t_context *context);
 
 /*
 ** sh_execute_pipe.c

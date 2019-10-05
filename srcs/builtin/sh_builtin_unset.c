@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/19 12:19:24 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/29 05:04:20 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/05 03:06:20 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,6 @@
 #define UNSET_F_OPT			1
 #define UNSET_F_OPT_USAGE	"unset fuctions"
 
-static int	unset_get_index(char **tbl, char *arg)
-{
-	int		i;
-
-	i = 0;
-	while (tbl[i])
-	{
-		if (ft_strequ(tbl[i], arg))
-			return (i);
-		i++;
-	}
-	return (-1);
-}
-
 static void	unset_variable(t_context *context, char **argv, int index)
 {
 	int		i;
@@ -39,21 +25,25 @@ static void	unset_variable(t_context *context, char **argv, int index)
 	if (sh_vars_get_index(context->vars, argv[index]) >= 0)
 	{
 		if (sh_verbose_builtin())
-			ft_dprintf(2, "unset : found %s in vars\n", argv[index]);
+			ft_dprintf(2, RED"unset : found %s in vars\n"EOC, argv[index]);
 		sh_vars_del_key(context->vars, argv[index]);
 	}
 	else if (sh_vars_get_index(context->saved_env, argv[index]) >= 0)
 	{
 		if (sh_verbose_builtin())
-			ft_dprintf(2, "unset : found %s in saved_env\n", argv[index]);
+			ft_dprintf(2, RED"unset : found %s in saved_env\n"EOC, argv[index]);
 		sh_vars_del_key(context->saved_env, argv[index]);
 	}
-	else if ((i = unset_get_index(
-		(char**)context->saved_env->tbl, argv[index])) >= 0)
+	else if ((i = sh_env_save_get_index(context->saved_env, argv[index])) >= 0)
 	{
 		if (sh_verbose_builtin())
-			ft_dprintf(2, "unset : found %s in saved_env\n", argv[index]);
+			ft_dprintf(2, RED"unset : found %s in saved_env\n"EOC, argv[index]);
 		ft_dy_tab_suppr_index(context->saved_env, i);
+	}
+	else
+	{
+		if (sh_verbose_builtin())
+			ft_dprintf(2, RED"unset : cannot find %s !!\n"EOC, argv[index]);
 	}
 	if (ft_strnstr(argv[index], "PATH", 4))
 		sh_builtin_hash_empty_table(context->shell);

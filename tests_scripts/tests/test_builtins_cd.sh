@@ -13,11 +13,11 @@
 launch "cd"
 	launch_show "cdpath"
 	test_launch 'unset CDPATH' 'pwd' 'cd tmp ; echo $? ; pwd' 'cd ; pwd' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
-	test_launch 'unset CDPATH' 'cd ~ pwd' ' cd - ; pwd' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
+	test_launch 'unset CDPATH' 'cd ~ ; pwd' ' cd - ; pwd' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
 	test_launch 'unset CDPATH' 'cd srcs ; echo $? ; pwd' 'cd objs ; echo $? ; pwd' 'cd logs ; echo $? ; pwd' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
 	test_launch 'CDPATH=""' 'cd tmp ; echo $? ; pwd' 'cd ~/ ; pwd' 'cd $HOME ; pwd' 'cd Desktop' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
 	test_launch 'CDPATH=""' 'cd srcs ; echo $? ; pwd' 'cd objs ; echo $? ; pwd' 'cd logs ; echo $? ; pwd' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
-	test_launch 'CDPATH=""' 'cd ~ pwd' ' cd - ; pwd' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
+	test_launch 'CDPATH=""' 'cd ~ ; pwd' ' cd - ; pwd' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
 	test_launch 'CDPATH="/"'    'cd srcs ; echo $? ; pwd' 'cd Desktop ; echo $? ; pwd' 'cd tmp ; echo $? ; pwd' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
 	test_launch 'CDPATH="$HOME' 'cd srcs ; echo $? ; pwd' 'cd Desktop ; echo $? ; pwd' 'cd tmp ; echo $? ; pwd' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
 	test_launch 'CDPATH=":$HOME:/' 'cd srcs ; echo $? ; pwd' 'cd Desktop ; echo $? ; pwd' 'cd tmp ; echo $? ; pwd' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
@@ -25,6 +25,30 @@ launch "cd"
 	test_launch 'CDPATH="/:$HOME' 'cd srcs ; echo $? ; pwd' 'cd Desktop ; echo $? ; pwd' 'cd tmp ; echo $? ; pwd' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
 	test_launch 'CDPATH="/:$HOME:' 'cd srcs ; echo $? ; pwd' 'cd Desktop ; echo $? ; pwd' 'cd tmp ; echo $? ; pwd' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
 	test_launch 'CDPATH="/:$HOME:::::' 'cd srcs ; echo $? ; pwd' 'cd Desktop ; echo $? ; pwd' 'cd tmp ; echo $? ; pwd' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
+
+	test_launch "CDPATH=~/ cd Desktop ; pwd ; cd .. ; pwd"
+	test_launch "CDPATH=/:~/ cd Desktop ; pwd ; cd .. ; pwd"
+	test_launch "CDPATH=:~/ cd Desktop ; pwd ; cd .. ; pwd"
+	test_launch "CDPATH=~/ ; cd Desktop ; pwd ; cd .. ; pwd"
+	test_launch "CDPATH=/:~/ ; cd Desktop ; pwd ; cd .. ; pwd"
+	test_launch "CDPATH=:~/ ; cd Desktop ; pwd ; cd .. ; pwd"
+	test_launch "CDPATH=:/ ; cd Desktop ; pwd ; cd .. ; pwd"
+	test_launch "CDPATH=:/: ; cd Desktop ; pwd ; cd .. ; pwd"
+	test_launch "export CDPATH=~/ ; cd Desktop ; pwd ; cd .. ; pwd"
+	test_launch "export CDPATH=/: ; cd Desktop ; pwd ; cd .. ; pwd"
+	test_launch "export CDPATH=/:~/ ; cd Desktop ; pwd ; cd .. ; pwd"
+
+	test_launch "CDPATH=/ cd tmp ; pwd ; cd .. ; pwd"
+	test_launch "CDPATH=/:. cd tmp ; pwd ; cd .. ; pwd"
+	test_launch "CDPATH=:/ cd tmp ; pwd ; cd .. ; pwd"
+	test_launch "CDPATH=/ ; cd tmp ; pwd ; cd .. ; pwd"
+	test_launch "CDPATH=/:/ ; cd tmp ; pwd ; cd .. ; pwd"
+	test_launch "CDPATH=:/ ; cd tmp ; pwd ; cd .. ; pwd"
+	test_launch "CDPATH=:/ ; cd tmp ; pwd ; cd .. ; pwd"
+	test_launch "CDPATH=:/: ; cd tmp ; pwd ; cd .. ; pwd"
+	test_launch "export CDPATH=/ ; cd tmp ; pwd ; cd .. ; pwd"
+	test_launch "export CDPATH=/: ; cd tmp ; pwd ; cd .. ; pwd"
+	test_launch "export CDPATH=/:. ; cd tmp ; pwd ; cd .. ; pwd"
 
 
 	launch_show "simple"

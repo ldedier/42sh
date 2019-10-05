@@ -12,25 +12,25 @@
 
 #include "sh_21.h"
 
-static int ft_word_len(char *str)
+static int ft_word_delim_len(char *str, int delim)
 {
 	int i;
 
 	i = 0;
-	while (str[i] && !ft_iswhite(str[i]))
+	while (str[i] && !ft_iswhite(str[i]) && str[i] != delim)
 		i++;
 	return (i);
 }
 
-char	*ft_strdup_word(char *str)
+char	*ft_strdup_word_delim(char *str, int delim)
 {
 	char	*res;
 	int		i;
 	int		len;
 
-	len = ft_word_len(str);
+	len = ft_word_delim_len(str, delim);
 	if (!(res = ft_strnew(len)))
-		return (sh_perrorn(SH_ERR1_MALLOC, "ft_strdup_word"));
+		return (sh_perrorn(SH_ERR1_MALLOC, "ft_strdup_word_delim"));
 	i = 0;
 	ft_strncpy(res, str, len);
 	res[len] = '\0';
@@ -63,7 +63,7 @@ static void	parse_fc_operand_expansion(t_fc_operand *operand,
 }
 
 int		sh_history_expand(t_shell *shell,
-		t_command_line *command_line, int *index)
+		t_command_line *command_line, int *index, int *double_quoted)
 {
 	char			*str;
 	t_fc_operand	operand;
@@ -72,7 +72,8 @@ int		sh_history_expand(t_shell *shell,
 	int				len;
 
 	(void)shell;
-	if (!(str = ft_strdup_word(&command_line->dy_str->str[*index + 1])))
+	if (!(str = ft_strdup_word_delim(&command_line->dy_str->str[*index + 1],
+		*double_quoted == 1 ? '"' : '\0')))
 		return (FAILURE);
 	len = ft_strlen(str);
 	parse_fc_operand_expansion(&operand, str);
@@ -97,6 +98,7 @@ int		sh_expansions_history(t_shell *shell, t_command_line *command_line,
 {
 	int i;
 	int single_quoted;
+	int double_quoted;
 	int backslashed;
 	int ret;
 
@@ -110,13 +112,16 @@ int		sh_expansions_history(t_shell *shell, t_command_line *command_line,
 			backslashed = !backslashed;
 		else if (command_line->dy_str->str[i] == '\'' && !backslashed)
 			single_quoted = !single_quoted;
+		else if (command_line->dy_str->str[i] == '\"' && !backslashed)
+			double_quoted = !double_quoted;
 		else if (command_line->dy_str->str[i] == '!'
 				&& !backslashed && !single_quoted
 				&& (i != (int)command_line->dy_str->current_size - 1
 					&& !ft_iswhite(command_line->dy_str->str[i + 1])))
 		{
 			*expanded = 1;
-			if ((ret = sh_history_expand(shell, command_line, &i)) != SUCCESS)
+			if ((ret = sh_history_expand(shell, command_line, &i,
+				&double_quoted)) != SUCCESS)
 			{
 				return (ret);
 			}

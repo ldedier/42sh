@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 16:35:24 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/26 03:06:03 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/05 04:34:18 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,10 +134,11 @@ int		sh_expansions_parameter_get_word(
 		return (STOP_CMD_LINE);
 	}
 	if (!(*word = ft_strdup(start)))
-		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_parameter_get_word_expand"));
+		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_parameter_get_word"));
 	if (!(quotes = ft_dy_tab_new(5)))
 		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions"));
-	ret = sh_expansions_tilde(word, *word, context, quotes);
+	ret = 0;
+	ret = sh_expansions_tilde(word, context, quotes, &ret);
 	if (!ret)
 		ret = sh_expansions_scan(word, 0, context, quotes);
 	if (!ret)

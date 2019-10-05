@@ -50,6 +50,48 @@ launch "Tilde_expansion"
 	test_launch 'cd \~d/' 'ls' 'cd "~/"' 'ls'
 	test_launch 'cd \~d/' 'ls' 'cd '\''~/'\''' 'ls'
 
-# launch "Deprecated"
-	# test_launch 'ls ~jmartel/'
+	launch_show "Field splittitng"
+	test_launch 'HOME="path    with    spaces    /" ; cd ~/'
+	test_launch 'HOME="path    with    spaces    /" ; cd'
+	test_launch 'HOME="path    with    spaces    /" ; echo ~/'
+	test_launch 'export HOME="path    with    spaces    /" ; cd ~/'
+	test_launch 'export HOME="path    with    spaces    /" ; cd'
+	test_launch 'export HOME="path    with    spaces    /" ; echo ~/'
+	test_launch 'export HOME="/    tmp" ; echo ~/'
+	test_launch 'export HOME="/    tmp" ; cd ~/'
+	test_launch 'export HOME="/    tmp" ; cd ~'
+
+	launch_show "Old errors"
+	test_launch 'echo ~okalm'
+	test_launch 'echo ~okalm\'
+	test_launch 'echo ~okalm\ '
+	test_launch 'echo ~okalm\d'
+	test_launch 'echo ~:'
+	test_launch 'echo ~~:'
+	test_launch 'echo ~~/'
+	test_launch 'var=~:~/: ; echo $var'
+	test_launch 'var=~/:~::: ; echo $var'
+	test_launch 'var=~/:~//::: ; echo $var'
+	test_launch 'var=:~/:~/::: ; echo $var'
+	test_launch 'var=:~/:~/::: ; echo $var'
+	test_launch 'var=:~root/:~jmartel/::: ; echo $var'
+	test_launch 'var=:~root/:~/jmartel::: ; echo $var'
+	test_launch 'var=:~root/root::~jmartel:~root: ; echo $var'
+	test_launch 'var=:~root/~root::~jmartel:~root: ; echo $var'
+	test_launch 'var=:~root/~root/::~jmartel:~root: ; echo $var'
+	test_launch 'var=:~root/root/~root/::~jmartel:~root: ; echo $var'
+
+
+	launch_show "Bonus"
+	test_launch 'ls ~jmartel/'
+	test_launch 'ls ~jmartel//'
+	test_launch 'ls ~jmartel'
+	test_launch 'ls ~root/'
+	test_launch 'ls ~root:'
+	test_launch 'ls ~root//'
+	test_launch 'ls ~root'
+	test_launch 'ls ~noone'
+	test_launch 'ls ~noone/'
+	test_launch 'ls ~noone//'
+
 finish

@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/04 11:17:39 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/01 15:54:43 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/04 04:21:28 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,7 @@ static int	unquoted_var(char **input, int *index, t_context *context, t_dy_tab *
 	if ((ret = sh_expansions_process(
 		input, *input + *index, context, index, quotes)) != SUCCESS)
 	{
-		if (sh_env_update_ret_value_and_question(context->shell, ret))
-			return (FAILURE);
+		sh_env_update_ret_value(context->shell, ret);
 		return (ret);
 	}
 	return (SUCCESS);

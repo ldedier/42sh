@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/05 15:41:50 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/03 17:54:45 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/05 22:49:41 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ static int		sh_await_command(t_shell *shell)
 		jobs_free_cmds();
 		job_notify();
 	}
+	shell->exec_depth = 0;
 	return (execute_command(shell,
 		g_glob.command_line.dy_str->str, 1));
 }

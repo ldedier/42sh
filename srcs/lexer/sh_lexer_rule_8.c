@@ -6,13 +6,13 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 14:45:02 by jmartel           #+#    #+#             */
-/*   Updated: 2019/07/30 20:15:14 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/03 16:38:03 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-int		sh_lexer_rule8_assignment(t_lexer *lexer)
+static int	sh_lexer_rule8_assignment(t_lexer *lexer)
 {
 	char	*buff;
 	t_token	*tok;
@@ -46,10 +46,10 @@ int		sh_lexer_rule8(t_lexer *lexer)
 	if (lexer->current_id == LEX_TOK_WORD
 	|| lexer->current_id == LEX_TOK_ASSIGNMENT_WORD)
 	{
-		if (lexer->c == '=')
-			sh_lexer_rule8_assignment(lexer);
 		lexer->tok_len++;
 		return (LEX_OK);
 	}
 	return (LEX_CONTINUE);
+		if (lexer->c == '=')
+			sh_lexer_rule8_assignment(lexer);
 }

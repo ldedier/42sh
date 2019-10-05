@@ -6,31 +6,22 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/19 09:45:53 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/29 04:24:05 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/05 03:23:16 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-static int	assign_get_index(t_dy_tab *vars, char *key)
-{
-	int		i;
-	int		j;
-	char	**tbl;
-
-	i = 0;
-	tbl = (char**)vars->tbl;
-	while (tbl[i])
-	{
-		j = 0;
-		while (tbl[i][j] && key[j] && tbl[i][j] == key[j])
-			j++;
-		if (key[j] == 0 && (tbl[i][j] == '=' || tbl[i][j] == '\0'))
-			return (i);
-		i++;
-	}
-	return (-1);
-}
+/*
+** assign_assignment:
+**	Used in the case taht argument is a key=value like, where value can be null.
+**	If the key is found in vars table it is transfered to saved_env,
+**	else it is only created / updated in saved_env table.
+**
+**	Returnd Values:
+**		SUCCESS
+**		FAILURE : malloc error
+*/
 
 static int	assign_assignment(t_context *context, char *arg)
 {
@@ -38,7 +29,7 @@ static int	assign_assignment(t_context *context, char *arg)
 
 	equal = ft_strchr(arg, '=');
 	*equal = 0;
-	if (assign_get_index(context->vars, arg))
+	if (sh_env_save_get_index(context->vars, arg))
 		sh_vars_del_key(context->vars, arg);
 	*equal = '=';
 	if (sh_vars_assignment(context->saved_env, NULL, arg))
@@ -48,21 +39,40 @@ static int	assign_assignment(t_context *context, char *arg)
 	return (SUCCESS);
 }
 
+/*
+** assign_empty_variable:
+**	Fonction used if argument is a key, with no '=' char.
+**	It first looks in vars and env tables, if any assignments correspond
+**	to that key, this assignment is transfered from current table to saved_env.
+**	Else, if key do not exist in saved_env it is created.
+**
+**	Returnd Values:
+**		SUCCESS
+**		FAILURE : malloc error
+*/
+
 static int	assign_empty_variable(t_context *context, char *arg)
 {
 	int		index;
 
-	if ((index = assign_get_index(context->vars, arg)) >= 0)
+	if ((index = sh_env_save_get_index(context->vars, arg)) >= 0)
 	{
 		if (sh_vars_assignment(
 			context->saved_env, NULL, context->vars->tbl[index]))
 			return (sh_perror(SH_ERR1_MALLOC, "export : assign_empty (0)"));
 		ft_dy_tab_suppr_index(context->vars, index);
 	}
-	else if ((index = assign_get_index(context->saved_env, arg)) == -1)
+	else if ((index = sh_env_save_get_index(context->env, arg)) >= 0)
+	{
+		if (sh_vars_assignment(
+			context->saved_env, NULL, context->env->tbl[index]))
+			return (sh_perror(SH_ERR1_MALLOC, "export : assign_empty (1)"));
+		ft_dy_tab_suppr_index(context->env, index);
+	}
+	else if ((index = sh_env_save_get_index(context->saved_env, arg)) == -1)
 	{
 		if (ft_dy_tab_add_str(context->saved_env, arg))
-			return (sh_perror(SH_ERR1_MALLOC, "export : assign_empty (1)"));
+			return (sh_perror(SH_ERR1_MALLOC, "export : assign_empty (2)"));
 	}
 	return (SUCCESS);
 }

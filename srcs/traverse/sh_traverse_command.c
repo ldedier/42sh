@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_traverse_command.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/02 00:35:13 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/02 11:23:07 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/05 23:59:05 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 /*
 ** apply_expansion_to_children
-** We apply expansion here for all possible redirection of 
+** We apply expansion here for all possible redirection of
 ** the command (grammar) child.
 ** simple_command, compound_command...
 */
@@ -38,7 +38,7 @@ static int	compound_and_redirection(t_ast_node *node, t_context *context)
 	t_ast_node	*child;
 	t_list		*compound_redir;
 	int			ret;
-	
+
 	child = node->children->content;
 	child = child->children->content;
 	compound_redir = NULL;

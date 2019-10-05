@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/30 15:48:56 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/03 05:26:07 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/05 22:49:04 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@
 
 # define MAX_YANK				2000
 # define BINARIES_TABLE_SIZE	200
+# define MAX_EXEC_RECURSIONS	100
 
 /*
 ** Macros of fdin, fdout and fderr in context->fd
@@ -134,7 +135,7 @@
 # define BONUS_HOME_AS_TILDE_PROMPT	1
 # define BONUS_REDIRECT_SIGNAL		1
 # define BONUS_DOLLAR_VARIABLE		1
-# define BONUS_TILDE_EXP			0
+# define BONUS_TILDE_EXP			1
 
 typedef struct s_shell		t_shell;
 
@@ -150,6 +151,7 @@ struct				s_shell
 	struct termios	term;
 	int				ret_value_set;
 	int				ret_value;
+	int				exec_depth;
 };
 
 /*

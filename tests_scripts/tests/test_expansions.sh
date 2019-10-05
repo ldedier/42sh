@@ -102,7 +102,18 @@ launch "Variables"
 	test_launch 'var=Okalmos v=tamer' 'echo $v\a\r'
 	test_launch 'echo $'
 	test_launch 'cd $'
-
+	test_launch 'echo "$"'
+	test_launch 'echo $'
+	test_launch 'echo \$'
+	test_launch 'echo "\$"'
+	test_launch "echo '$'"
+	test_launch 'echo ~/~/ '
+	test_launch 'HOME="/path    /path" echo $HOME'
+	test_launch 'HOME="/path    /path" ; echo $HOME'
+	test_launch 'var=~:~/: ; echo $var'
+	test_launch 'var=~/:~::: ; echo $var'
+	test_launch 'var=~/:~//::: ; echo $var'
+	test_launch 'var=:~/:~/::: ; echo $var'
 
 # launch "Deprecated"
 	# launch "Hard"
