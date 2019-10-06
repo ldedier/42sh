@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 16:41:00 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/26 02:28:28 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/06 05:47:57 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,10 @@ int			sh_expansions_parameter_minus(
 		exp->res = ft_dy_str_new_str(param);
 	if (sh_verbose_expansion())
 		ft_dprintf(2, "param : %s <> word : %s\n", param, word);
-	if (!exp->res)
-		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_parameter_minus"));
 	if (word)
 		ft_strdel(&word);
+	if (!exp->res)
+		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_parameter_minus"));
 	return (SUCCESS);
 }
 
@@ -260,6 +260,8 @@ int			sh_expansions_parameter_hash(
 		else
 			exp->res = ft_dy_str_new_str(param + ft_strlen(word));
 	}
+	if (word)
+		ft_strdel(&word);
 	if (!exp->res)
 		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_parameter_hash"));
 	if (sh_verbose_expansion())
@@ -298,6 +300,8 @@ int			sh_expansions_parameter_percent(
 			*end = save;
 		}
 	}
+	if (word)
+		ft_strdel(&word);
 	if (!exp->res)
 		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_parameter_hash"));
 	return (SUCCESS);
