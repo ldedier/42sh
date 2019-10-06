@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/07 10:11:38 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/05 07:27:31 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/07 00:41:11 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -331,6 +331,7 @@ void				ft_dy_tab_suppr_index(t_dy_tab *d_tab, size_t index);
 void				ft_dy_tab_del_ptr(t_dy_tab *d_tab);
 void				ft_dy_tab_del(t_dy_tab *d_tab, void (*func)(void *));
 void				ft_dy_tab_suppr_index_ptr(t_dy_tab *d_tab, size_t index);
+void				ft_dy_tab_empty(t_dy_tab *table);
 int					ft_dy_tab_realloc(t_dy_tab *d_tab);
 t_dy_tab			*ft_dy_tab_cpy_ptr(t_dy_tab *d_tab);
 t_dy_tab			*ft_dy_tab_cpy_str(t_dy_tab *d_tab);

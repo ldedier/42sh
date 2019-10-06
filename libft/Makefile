@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/12/06 12:53:13 by jmartel           #+#    #+#              #
-#    Updated: 2019/10/05 06:48:14 by jmartel          ###   ########.fr        #
+#    Updated: 2019/10/07 00:41:33 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -180,7 +180,8 @@ SRCS	+=	./dytab/ft_dy_tab_add_index_ptr.c \
 			./dytab/ft_dy_tab_new.c \
 			./dytab/ft_dy_tab_realloc.c \
 			./dytab/ft_dy_tab_suppr_index.c \
-			./dytab/ft_dy_tab_suppr_index_ptr.c
+			./dytab/ft_dy_tab_suppr_index_ptr.c \
+			./dytab/ft_dy_tab_empty.c
 
 SRCS	+=	./dystr/ft_dy_str_new.c \
 			./dystr/ft_dy_str_add_index.c \

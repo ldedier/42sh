@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/19 12:19:24 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/05 03:06:20 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/07 00:10:22 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,12 @@ static void	unset_variable(t_context *context, char **argv, int index)
 			ft_dprintf(2, RED"unset : found %s in vars\n"EOC, argv[index]);
 		sh_vars_del_key(context->vars, argv[index]);
 	}
-	else if (sh_vars_get_index(context->saved_env, argv[index]) >= 0)
-	{
-		if (sh_verbose_builtin())
-			ft_dprintf(2, RED"unset : found %s in saved_env\n"EOC, argv[index]);
-		sh_vars_del_key(context->saved_env, argv[index]);
-	}
+	// else if (sh_vars_get_index(context->saved_env, argv[index]) >= 0)
+	// {
+	// 	if (sh_verbose_builtin())
+	// 		ft_dprintf(2, RED"unset : found %s in saved_env\n"EOC, argv[index]);
+	// 	sh_vars_del_key(context->saved_env, argv[index]);
+	// }
 	else if ((i = sh_env_save_get_index(context->saved_env, argv[index])) >= 0)
 	{
 		if (sh_verbose_builtin())

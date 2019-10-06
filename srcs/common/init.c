@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/14 13:19:50 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/20 10:28:40 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/10/06 23:18:49 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,8 @@ int			sh_init_shell(t_shell *shell, char **env)
 	shell->term = s;
 	shell->ret_value = 0;
 	shell->ret_value_set = 0;
+	if (!(shell->alias = ft_dy_tab_new(5)))
+		return (FAILURE);
 	if (sh_main_init_env(shell, env) == FAILURE)
 		return (FAILURE);
 	if (sh_main_init_vars(shell) == FAILURE)

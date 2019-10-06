@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 21:45:25 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/28 06:27:54 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/06 23:19:23 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int			t_context_init(t_context *context, t_shell *shell)
 	context->env = shell->env;
 	context->saved_env = shell->saved_env;
 	context->vars = shell->vars;
+	context->alias = shell->alias;
 	context->term = &shell->term;
 	context->builtin = NULL;
 	context->current_command_node = NULL;

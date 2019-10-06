@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/30 15:48:56 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/04 21:50:40 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/06 22:54:26 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,7 @@ struct				s_shell
 	t_dy_tab		*env;
 	t_dy_tab		*saved_env;
 	t_dy_tab		*vars;
+	t_dy_tab		*alias;
 	t_hash_table	*binaries;
 	char			running;
 	struct termios	term;

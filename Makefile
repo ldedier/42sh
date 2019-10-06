@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/10/06 01:30:31 by jmartel          ###   ########.fr        #
+#    Updated: 2019/10/06 23:14:17 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -146,6 +146,7 @@ SRCS			 +=	sh_lexer.c \
 					sh_lexer_rule_9.c \
 					sh_lexer_rule_10.c \
 					sh_lexer_reserved_words.c \
+					sh_lexer_alias.c \
 					sh_lexer_rule_tools.c t_lexer.c t_token.c \
 					t_token_show.c t_token_list.c
 
@@ -295,7 +296,10 @@ SRCS			+=	sh_builtin.c sh_builtin_pwd.c \
 					sh_builtin_fc_s_synopsis.c \
 					sh_builtin_fc_default_synopsis.c \
 					sh_builtin_fc_parse_operands.c \
-					sh_builtin_fc_get_entry.c
+					sh_builtin_fc_get_entry.c \
+					sh_builtin_alias.c \
+					sh_builtin_alias_show.c \
+					sh_builtin_unalias.c
 
 ################################################################
 ########						EXPANSION				########

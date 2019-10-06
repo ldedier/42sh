@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 17:11:16 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/20 15:26:54 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/06 22:54:10 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct		s_context
 	t_dy_tab		*env;
 	t_dy_tab		*saved_env;
 	t_dy_tab		*vars;
+	t_dy_tab		*alias;
 	char			*path;
 	t_dy_tab		*params;
 	int				(*builtin)(struct s_context *);

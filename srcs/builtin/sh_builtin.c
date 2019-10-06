@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 19:04:16 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/04 21:35:56 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/06 23:15:03 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ t_builtin_container		*get_builtins(void)
 		{ "export", sh_builtin_unset },
 		{ "test", sh_builtin_test },
 		{ "fc", sh_builtin_fc },
+		{ "alias", sh_builtin_alias },
+		{ "unalias", sh_builtin_unalias },
 #if __APPLE__ && __MACH__
 		{ "🐑", sh_builtin_🐑 }
 #endif
