@@ -55,6 +55,19 @@ launch "Lexer"
 	test_launch '"var=pwe"'
 	test_launch 'ls ""'
 
+	launch_show	"Braces and parenthesis detection"
+	test_launch '( ! ls ) && pwd'
+	test_launch '( ! ls ) || pwd'
+	test_launch '( ! ls && pwd )'
+	test_launch '( ! ls || pwd )'
+	test_launch '( VAR=foo ) ; echo $VAR'
+	test_launch '( export VAR=foo ) ; echo $VAR'
+	test_launch '( nocmd )'
+	test_launch '( { echo jey } )'
+	test_launch '( echo jey } )'
+	test_launch '( echo jey } )'
+	test_launch '{ echo lol { }} | cat -e ; }'
+
 finish
 
 rm file
