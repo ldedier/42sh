@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/28 16:49:38 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/06 03:29:44 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/06 16:53:56 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int 	get_separator_op(
 				return (res);
 			g_job_ctrl->job_added = 1;
 		}
-		context->cmd_bg = WNOHANG;
+		context->wait_flags = WNOHANG;
 		return (sh_traverse_semicol(to_execute, context));
 	}
 	else if (separator->symbol->id == sh_index(LEX_TOK_SEMICOL))
@@ -82,7 +82,7 @@ static int 	get_node_to_exec(t_ast_node *node, t_context *context)
 	g_job_ctrl->job_added = 0; // check if this condition is needed
 	if (node_to_exec && ret == SUCCESS)
 	{
-		context->cmd_bg = g_job_ctrl->ampersand_eol;
+		context->wait_flags = g_job_ctrl->ampersand_eol;
 		if (g_job_ctrl->jc_enabled && g_job_ctrl->ampersand_eol)
 		{
 			if ((ret = jobs_add(0)) != SUCCESS)

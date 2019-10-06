@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 17:31:33 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/06 03:21:31 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/06 17:20:11 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ static int		sh_exec_child_part(t_context *context)
 
 	reset_signals();
 	if (g_job_ctrl->jc_enabled && !g_job_ctrl->curr_job->pipe_node)
-	// if (g_job_ctrl->jc_enabled)
 	{
 		if ((ret = set_pgid_child(cpid)) != SUCCESS)
 			return (ret);
@@ -61,7 +60,8 @@ static int		sh_exec_parent_part(pid_t cpid, t_context *context)
 {
 	int		ret;
 
-	if (g_job_ctrl->jc_enabled && !g_job_ctrl->curr_job->pipe_node)
+	if (g_job_ctrl->jc_enabled && !g_job_ctrl->curr_job->pipe_node
+		&& !g_job_ctrl->curr_job->andor_node)
 	{
 		if ((ret = set_pgid_parent(cpid, context)) != SUCCESS)
 			return (ret);
@@ -70,10 +70,10 @@ static int		sh_exec_parent_part(pid_t cpid, t_context *context)
 		else if (job_put_in_fg(g_job_ctrl->curr_job, 0, &ret) != SUCCESS)
 			return (ret);
 	}
+	else if (g_job_ctrl->jc_enabled)
+		waitpid(cpid, &ret, 0);
 	else
-		waitpid(cpid, &ret, context->cmd_bg);
-	// if (g_job_ctrl->jc_enabled && g_job_ctrl->curr_job &&
-	// 		g_job_ctrl->curr_job->pipe_node != PIPE_JOB)
+		waitpid(cpid, &ret, context->wait_flags);
 	if (g_job_ctrl->jc_enabled)
 		g_job_ctrl->job_added = 0;
 	sh_env_update_ret_value_wait_result(context, ret);

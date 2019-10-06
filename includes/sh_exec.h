@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 17:11:16 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/06 03:20:46 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/06 16:50:55 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ typedef enum		e_phase
 
 typedef struct		s_context
 {
-	char			cmd_bg;
+	char			wait_flags;
 	t_shell			*shell;
 	struct termios	*term;
 	t_dy_tab		*env;
