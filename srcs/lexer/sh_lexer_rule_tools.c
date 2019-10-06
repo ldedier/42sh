@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 14:47:05 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/25 06:55:19 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/01 03:35:58 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 
 int		sh_lexer_is_operator_char(int c)
 {
-	static const char	*chars = "|&;<>(){}-\0";
+	static const char	*chars = "|&;<>()-\0";
 	int					i;
 
 	i = 0;
@@ -50,7 +50,7 @@ int		sh_lexer_check_operator(t_lexer *lexer)
 {
 	int					i;
 	static const char	*ops[] = {"<", ">", "&&", "||", "<&", ";;", "<<", ">>"
-		"<&", ">&", "<<-", "{", "}", "(", ")", "!", NULL};
+		"<&", ">&", "<<-", "(", ")", "!", NULL};
 
 	i = 0;
 	lexer->tok_len++;

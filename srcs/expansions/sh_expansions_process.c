@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/03 14:58:45 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/09/27 23:01:58 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/05 02:48:47 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ static int	sh_expansions_init(char *original, t_expansion *exp)
 /*
 ** sh_expansions_process:
 **	For parameter and variables expansions detection.
-**	Condition `if (ret && exp.res)` is here to handle case of a solo $.
-**	This is linked to the function sh_expansions_variable_fill.
+**	Condition `if (ret && exp.res)` is here to handle case of a solo $,
+**	this is linked to the function sh_expansions_variable_fill.
 **
 **	Return Value:
 **		FAILURE : malloc error

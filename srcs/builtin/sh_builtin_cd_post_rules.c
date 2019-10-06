@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 13:33:24 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/25 07:23:01 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/05 04:22:17 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ int			sh_builtin_cd_rule7(
 				return (sh_perror(SH_ERR1_MALLOC, "sh_builtin_cd_rule7"));
 		}
 	}
+	if (sh_verbose_builtin())
+		ft_dprintf(2, MAGENTA"cd : after rule_7 : curpath = %s\n"EOC, *curpath);;
 	return (SUCCESS);
 }
 
@@ -57,6 +59,8 @@ static void	sh_builtin_cd_rule8_a(char **curpath)
 		ft_strdelchars(find, 0, 2);
 	while ((find = ft_strrnstr(*curpath, "/.", 2)))
 		ft_strdelchars(find, 0, 2);
+	if (sh_verbose_builtin())
+		ft_dprintf(2, MAGENTA"cd : after deleting '.' : curpath = %s\n"EOC, *curpath);;
 	return ;
 }
 
@@ -76,10 +80,14 @@ static void	sh_builtin_cd_rule8_b(char **curpath)
 		{
 			*find = 0;
 			start = ft_strrchr(*curpath, '/');
+			if (start == *curpath)
+				start++;
 			*find = '/';
 		}
 		ft_strdelchars(start, 0, end - start);
 	}
+	if (sh_verbose_builtin())
+		ft_dprintf(2, MAGENTA"cd : after deleting '..' : curpath = %s\n"EOC, *curpath);;
 	return ;
 }
 

@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 14:16:12 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/27 21:22:05 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/06 02:24:21 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,9 @@
 # define SH_ERR1_READ			"Read error"
 # define SH_ERR1_EXECVE_FAIL	"Cannot execute binary file: Exec format error"
 # define SH_ERR1_FILENAME_LEN	"File name too long"
+# define SH_ERR1_MAX_RECUR		"Maximum execution recursion depth reached"
+
+# define SH_ERR1_EVENT_NOT_FOUND		"event not found"
 
 # define SH_ERR2_NO_SUCH_FILE_OR_DIR	"No such file or directory"
 # define SH_ERR2_INVALID_OPT			"Invalid option"
@@ -51,6 +54,7 @@
 # define SH_BLT_NO_CMD_FOUND	"fc: no command found"
 
 # define SH_BAD_SUBSTITUTE		"Bad subsitution"
+# define SH_AMB_REDIRECT		"Ambigous redirect"
 /*
 ********************************************************************************
 */

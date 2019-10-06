@@ -6,7 +6,7 @@
 #    By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/10/06 02:21:10 by mdaoud           ###   ########.fr        #
+#    Updated: 2019/10/06 03:09:36 by mdaoud           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,7 +62,7 @@ SRCS			 =	debug.c first_sets.c grammar.c init_cfg.c \
 ########					TRAVERSE					########
 ################################################################
 SRCS			+=	sh_traverse.c sh_traverse_default.c \
-					sh_traverse_semicol.c sh_traverse_pipeline.c \
+					sh_traverse_semicol.c sh_traverse_pipe_line.c \
 					sh_traverse_assignment_word.c \
 					sh_traverse_simple_command.c \
 					sh_traverse_io_file.c \
@@ -71,7 +71,7 @@ SRCS			+=	sh_traverse.c sh_traverse_default.c \
 					sh_traverse_io_redirect.c sh_traverse_io_here.c \
 					sh_traverse_io_here_canonical.c \
 					sh_traverse_and_or.c sh_traverse_list.c \
-					sh_traverse_command.c
+					sh_traverse_command.c sh_traverse_subshell.c
 
 ################################################################
 ########				COMMAND_LINE					########
@@ -146,6 +146,7 @@ SRCS			 +=	sh_lexer.c \
 					sh_lexer_rule_8.c \
 					sh_lexer_rule_9.c \
 					sh_lexer_rule_10.c \
+					sh_lexer_reserved_words.c \
 					sh_lexer_rule_tools.c t_lexer.c t_token.c \
 					t_token_show.c t_token_list.c
 
@@ -259,6 +260,7 @@ SRCS			+=	sh_vars_tools_1.c sh_vars_tools_2.c \
 ########						EXEC					########
 ################################################################
 SRCS			+=	sh_execute.c \
+					sh_execute_and_or.c \
 					sh_execute_binary.c \
 					sh_execute_builtin.c \
 					sh_execute_pipe.c \
@@ -311,6 +313,7 @@ SRCS			 +=	sh_expansions.c \
 					sh_expansions_field_splitting.c \
 					sh_expansions_quote_removal.c \
 					sh_expansions_scan.c \
+					sh_expansions_history.c \
 					t_quote.c
 
 ################################################################
@@ -328,7 +331,8 @@ SRCS			+=	jobs_init.c jobs_add.c jobs_print.c process_add.c \
 					job_put_in_bg.c job_put_in_fg.c job_is_completed.c \
 					job_is_stopped.c job_check_changes.c job_free.c \
 					job_print_status.c job_notify.c get_active_job.c \
-					jc_error_free.c set_pgid_child.c set_pgid_parent.c
+					jc_error_free.c set_pgid_child.c set_pgid_parent.c \
+					jobs_create_cmds.c jobs_free_cmds.c jobs_print_cmds.c
 
 ################################################################
 ########					INCLUDES					########

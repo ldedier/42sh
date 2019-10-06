@@ -25,6 +25,7 @@ int		process_find_in_history(t_command_line *command_line,
 	len = ft_strnlen_utf8(to_search_in, command_line->searcher.match_index);
 	command_line->current_index = command_line->searcher.match_index;
 	render_command_line(command_line, len - g_glob.cursor, 1);
+	command_line->shell->history.head = command_line->searcher.head;
 	return (SUCCESS);
 }
 

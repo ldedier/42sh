@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/04 21:42:55 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/29 04:13:44 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/06 03:28:59 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void		check_ampersand_at_eoc(t_list *token_lst)
 		tok = (t_token *)ptr->next->content;
 		if (tok->id == END_OF_INPUT && (((t_token *)ptr->content)->id == LEX_TOK_AND))
 		{
-			g_job_ctrl->ampersand_eol = 1;
+			g_job_ctrl->ampersand_eol = WNOHANG;
 			return ;
 		}
 		else
@@ -90,10 +90,12 @@ int		sh_parser(t_shell *shell, t_list **tokens,
 	t_token token;
 	int		ret;
 
+//	sh_populate_token(&token, LEX_TOK_NEWLINE, 0);
+//	ft_lstaddnew_last(tokens, &token, sizeof(t_token));
 	sh_populate_token(&token, END_OF_INPUT, 0);
 	ft_lstaddnew_last(tokens, &token, sizeof(t_token));
-	if (g_job_ctrl->jc_enabled)
-		check_ampersand_at_eoc(*tokens);
+	jobs_create_cmds(*tokens);	//Protect
+	check_ampersand_at_eoc(*tokens);
 	if (sh_verbose_ast())
 	{
 		ft_dprintf(2, "input tokens: ");

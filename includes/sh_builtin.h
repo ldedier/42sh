@@ -223,7 +223,7 @@ int					sh_builtin_fc_default_synopsis(
 ** sh_builtin_fc_get_entry.c
 */
 t_dlist				*get_entry_from_fc_operand(
-	t_history *history, t_fc_operand *op);
+	t_history *history, t_fc_operand *op, int fc);
 
 /*
 ** sh_builtin_fc_l_synopsis.c
@@ -242,6 +242,7 @@ int					sh_builtin_fc_l_synopsis(
 /*
 ** sh_builtin_fc_parse_operands.c
 */
+int					sh_atoi_fc(char *str, int *error);
 int					parse_fc_operands(
 	t_context *context, int index, t_fc_options *options);
 

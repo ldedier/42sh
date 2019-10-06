@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/06 22:29:38 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/06 22:29:38 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/10/01 19:52:04 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,9 +168,14 @@ void	sh_print_item(t_item *item)
 
 void	sh_print_transition(t_transition *transition, int depth)
 {
-	sh_print_symbol(transition->symbol);
-	ft_printf(" → ");
-	sh_print_state(transition->state, depth);
+	if (transition->symbol->id == sh_index(LEX_TOK_CLS_PAR) || 1)
+	{
+		sh_print_symbol(transition->symbol);
+		ft_printf(" → ");
+		sh_print_state(transition->state, -1);
+		ft_printf("\n");
+		(void)depth;
+	}
 }
 
 void	sh_print_state(t_state *state, int depth)
@@ -192,7 +197,7 @@ void	sh_print_state(t_state *state, int depth)
 		sh_print_item(item);
 		ptr = ptr->next;
 	}
-	if (depth > 0 && state->transitions)
+	if (depth > 0)
 	{
 		ft_printf(UNDERLINE"\nState transitions:%s \n\n", EOC);
 		ptr = state->transitions;
@@ -322,14 +327,14 @@ void	sh_print_parser(t_lr_parser *parser, int depth)
 
 void	sh_print_ast_builder(t_ast_builder *ast_builder)
 {
-	ft_printf("\n-----------\n");
-	ft_printf("AST_BUILDER\n\n");
-	ft_printf("symbol: ");
+//	ft_printf("\n-----------\n");
+//	ft_printf("AST_BUILDER\n\n");
+//	ft_printf("symbol: ");
 	sh_print_symbol(ast_builder->symbol);
-	ft_printf("\n");
-	ft_printf("ast tree: \n");
-	sh_print_ast(ast_builder->ast_node, 0);
-	ft_printf("cst tree: \n");
-	sh_print_ast(ast_builder->cst_node, 0);
-	ft_printf("\n-----------\n");
+//	ft_printf("\n");
+//	ft_printf("ast tree: \n");
+//	sh_print_ast(ast_builder->ast_node, 0);
+//	ft_printf("cst tree: \n");
+//	sh_print_ast(ast_builder->cst_node, 0);
+//	ft_printf("\n-----------\n");
 }

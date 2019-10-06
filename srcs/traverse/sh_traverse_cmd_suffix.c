@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:31:30 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/23 20:27:38 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/04 14:30:10 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static int	sh_process_traverse_cmd_suffix(
 		if (child && child->token)
 			if ((ret = sh_expansions(context, child)) != SUCCESS)
 				return (ret);
+//		ft_printf("to debug after in cmd_suffix %p -%s-\n", child, child->token->value);
 	}
 	if (context->phase == E_TRAVERSE_PHASE_EXECUTE && child->token)
 	{

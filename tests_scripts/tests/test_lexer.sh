@@ -34,39 +34,39 @@ launch "Lexer"
 	test_launch 'l\s $HOME\'
 	test_launch '""'
 	test_launch '"\\\""\\ls'
+	test_launch '"var=pwe" echo $var ; echo $var'
 	
 	launch_show "multiple lines"
-	test_launch '"var=pwe" echo $var ; echo $var'
-
-	test_launch '\ls "
-	okalm"'
-
-	for i in `seq 1 21` ; do
+	for i in `seq 1 22` ; do
 		test_launch_pipe ./tests_files/lexer/lexer_${i}
 	done
 
-	echo "ls \\" > file ; echo "-a" >>file
-	test_launch_pipe file
-
 	launch_show "Solo quotes"
-	test_launch '"'
-	test_launch "'"
-	test_launch '\'
-	echo -n \' > file
-	test_launch_pipe file
-	echo -n \" > file
-	test_launch_pipe file
-	echo -n \\ > file
-	test_launch_pipe file
+	for i in `seq 23 29` ; do
+		test_launch_pipe ./tests_files/lexer/lexer_${i}
+	done
 	
-	echo \\ > file ; for i in 1 2 3 4 ; do echo \\ >> file ; done ; echo -n ls >> file ; test_launch file
-	echo \" > file ; for i in 1 2 3 4 ; do echo \\ >> file ; done ; echo -n \"ls >> file ; test_launch file
-	echo \\ > file ; for i in 1 2 3 4 ; do echo ls >> file ; done ; echo -n \" >> file ; test_launch file
-	echo ls > file ; for i in 1 2 3 4 ; do echo " \\" >> file ; done ; echo -n -la >> file ; test_launch file
+	launch_show "Solo quotes"
+	for i in `seq 30 35` ; do
+		test_launch_pipe ./tests_files/lexer/lexer_${i}
+	done
 
 	launch_show "Random"
 	test_launch '"var=pwe"'
 	test_launch 'ls ""'
+
+	launch_show	"Braces and parenthesis detection"
+	test_launch '( ! ls ) && pwd'
+	test_launch '( ! ls ) || pwd'
+	test_launch '( ! ls && pwd )'
+	test_launch '( ! ls || pwd )'
+	test_launch '( VAR=foo ) ; echo $VAR'
+	test_launch '( export VAR=foo ) ; echo $VAR'
+	test_launch '( nocmd )'
+	test_launch '( { echo jey } )'
+	test_launch '( echo jey } )'
+	test_launch '( echo jey } )'
+	test_launch '{ echo lol { }} | cat -e ; }'
 
 finish
 

@@ -63,3 +63,18 @@ void	sh_print_ast(t_ast_node *node, int depth)
 		ptr = ptr->next;
 	}
 }
+
+void	sh_print_ast_root(t_ast_node *node)
+{
+	t_ast_node *root;
+
+	if (!node)
+		ft_printf("LEAF NODE\n");
+	else
+	{
+		root = node;
+		while (root->parent)
+			root = root->parent;
+		sh_print_ast(root, 0);
+	}
+}

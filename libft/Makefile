@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/12/06 12:53:13 by jmartel           #+#    #+#              #
-#    Updated: 2019/08/28 09:42:35 by jdugoudr         ###   ########.fr        #
+#    Updated: 2019/10/05 06:48:14 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -190,6 +190,7 @@ SRCS	+=	./dystr/ft_dy_str_new.c \
 			./dystr/ft_dy_str_new_str.c \
 			./dystr/ft_dy_str_new_ptr.c \
 			./dystr/ft_dy_str_cpy_str.c \
+			./dystr/ft_dy_str_replace.c \
 			./dystr/ft_substitute_dy_str.c
 
 SRCS	+=	./dlst/ft_dlstnew.c \
@@ -240,7 +241,7 @@ ifeq ($(OS),Linux)
 	FLAGS_COLOR = \033[1;34m
 	#COMP_COLOR =
 else
-	CFLAGS		= -Wall -Werror -Wextra $(INCLUDES)
+	CFLAGS		= -Wall -Werror -Wextra $(INCLUDES) -g3
 	OK_COLOR = \x1b[32;01m
 	#COMP_COLOR = \x1b[34;01m
 	FLAGS_COLOR = \x1b[34;01m

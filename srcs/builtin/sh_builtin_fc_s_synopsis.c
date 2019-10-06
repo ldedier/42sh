@@ -133,18 +133,20 @@ int		sh_builtin_fc_s_synopsis(t_context *context, t_fc_options *opts)
 	char			*res;
 	t_entry			*entry;
 
+	context->shell->history.should_add = 0;
+	if (context->shell->exec_depth++ >= MAX_EXEC_RECURSIONS)
+		return (sh_perror_err(SH_ERR1_MAX_RECUR, "sh_builtin_fc_s_synopsis"));
 	substitution_str = NULL;
 	fill_finder(&finder, opts, &substitution_str);
 	if (!(entry_ptr
-		= get_entry_from_fc_operand(&context->shell->history, finder)))
+		= get_entry_from_fc_operand(&context->shell->history, finder, 1)))
 	   	return (sh_perror_err(SH_BLT_NO_CMD_FOUND, NULL));
 	entry = entry_ptr->content;
 	if (!(res = get_command_to_execute_fc(entry->command, substitution_str)))
 		return (sh_perror(SH_ERR1_MALLOC, "sh_builtin_fc_s_synopsis"));
 	ft_printf("%s\n", res);
-//	execute command res
-//	t_context_reset(context);
 	execute_command(context->shell, res, 1);
 	free(res);
+	context->shell->history.should_add = 0;
 	return (SUCCESS);
 }

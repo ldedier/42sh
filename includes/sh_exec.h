@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_exec.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 17:11:16 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/20 15:26:54 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/06 03:20:46 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef enum		e_phase
 
 typedef struct		s_context
 {
+	char			cmd_bg;
 	t_shell			*shell;
 	struct termios	*term;
 	t_dy_tab		*env;
@@ -91,6 +92,11 @@ int					sh_execute_builtin(t_context *context);
 ** sh_execute_pipe.c
 */
 int					sh_execute_pipe(t_ast_node *node, t_context *context);
+
+/*
+** sh_execute_and_or.c
+*/
+int					sh_execute_and_or(t_ast_node *node, t_context *context);
 
 /*
 ** sh_execute_prefix_postfix.c

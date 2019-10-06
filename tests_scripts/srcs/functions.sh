@@ -31,14 +31,14 @@ init_valgrind()
 	supp_script="${src_dir}/supp_getter.perl"
 
 	if [ -f "$suppressions_file" ] ; then
-		echo -e ${green}"Found valgrind configuration file : ${supsuppressions_filep_file}"${eoc}
+		echo -e ${green}"Found valgrind configuration file : ${suppressions_file}"${eoc}
 		echo -e ${green}"Valgrind initialized"${eoc}
 		return
 	fi
 	if [ ! -f "$empty_binary" ] ; then
 			gcc -o $empty_binary $empty_main && echo -e ${green}"Compiled : ${empty_binary}"${eoc} || exit
 	fi
-	valgrind --leak-check=full --gen-suppressions=all "./${empty_binary}" 2>&1 | perl ${supp_script} > $suppressions_file
+	valgrind --leak-check=full --show-leak-kind=all--gen-suppressions=all "./${empty_binary}" 2>&1 | perl ${supp_script} > $suppressions_file
 	rm -rf "${empty_binary}.dSYM"
 	echo -e ${green}"Valgrind initialized"${eoc}
 }

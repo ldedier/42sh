@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/07 10:11:38 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/19 12:08:52 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/05 07:27:31 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -308,7 +308,8 @@ int					ft_dlstadd_sorted(t_dlist **dlst,
 */
 t_dy_str			*ft_dy_str_new(size_t max_size);
 t_dy_str			*ft_dy_str_new_str(char *str);
-t_dy_str			*ft_dy_str_new_ptr(char *ptr);
+t_dy_str			*ft_dy_str_new_ptr(
+	char *ptr, size_t current_size, size_t max_size);
 int					ft_dy_str_add_index(t_dy_str *d_str, char c, size_t index);
 int					ft_dy_str_realloc(t_dy_str *d_str);
 int					ft_dy_str_suppr_index(t_dy_str *d_str, size_t index);
@@ -328,7 +329,7 @@ int					ft_dy_tab_add_index_ptr(t_dy_tab *d_tab, void *to_add,
 		size_t index);
 void				ft_dy_tab_suppr_index(t_dy_tab *d_tab, size_t index);
 void				ft_dy_tab_del_ptr(t_dy_tab *d_tab);
-void				ft_dy_tab_del(t_dy_tab *d_tab);
+void				ft_dy_tab_del(t_dy_tab *d_tab, void (*func)(void *));
 void				ft_dy_tab_suppr_index_ptr(t_dy_tab *d_tab, size_t index);
 int					ft_dy_tab_realloc(t_dy_tab *d_tab);
 t_dy_tab			*ft_dy_tab_cpy_ptr(t_dy_tab *d_tab);

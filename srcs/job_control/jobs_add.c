@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 00:09:20 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/30 18:02:33 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/06 03:18:04 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,23 @@ static void	init_job_values(t_job *j, int n, int fg)
 	j->number = n;
 	g_job_ctrl->job_num[n] = 1;
 	j->pipe_node = 0;
-	g_job_ctrl->pipe_node = 0;
+	j->andor_node = 0;
 	g_job_ctrl->curr_job = j;
-	// j->foreground = g_job_ctrl->ampersand_eol ^ 1;
 	j->foreground = fg;
+}
+
+static int	get_job_cmd_str(t_job *j)
+{
+	t_job_cmd	*temp;
+
+	j->command = ft_strdup(g_job_ctrl->job_cmd->str);
+	if (j->command == NULL)
+		return (jc_error_free(SH_ERR1_MALLOC, "jobs_add", 1, FAILURE));
+	temp = g_job_ctrl->job_cmd;
+	g_job_ctrl->job_cmd = g_job_ctrl->job_cmd->next;
+	free(temp->str);
+	free(temp);
+	return (SUCCESS);
 }
 
 int			jobs_add(int fg)
@@ -58,6 +71,8 @@ int			jobs_add(int fg)
 	init_job_values(j, n, fg);
 	// ft_printf("%sJob %d added in %s%s\n",COLOR_GREEN, j->number, j->foreground == 1 ? "foreground" : "background", COLOR_END);
 	j->command = NULL;	//	Fill it with the command
+	if (get_job_cmd_str(j) < 0)
+		return (FAILURE);
 	// Add the newly created job at the end of the job list.
 	if (g_job_ctrl->first_job == NULL)
 	{

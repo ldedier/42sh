@@ -26,7 +26,7 @@ t_entry		*t_entry_new(int number, char *command)
 
 void		t_entry_free(t_entry *entry)
 {
-	ft_lstdel_value(&entry->saves_stack);
+	ft_lstdel(&entry->saves_stack, t_save_free_list);
 	free(entry->command);
 	free(entry);
 }

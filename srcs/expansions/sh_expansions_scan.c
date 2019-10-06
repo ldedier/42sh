@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/04 11:17:39 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/09/26 03:05:31 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/04 04:21:28 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,16 @@ static int	double_quote(
 		{
 			if ((ret = sh_expansions_process(
 				input, *input + *index, context, index, quotes)) != SUCCESS)
-			{
-				if (sh_env_update_ret_value_and_question(context->shell, ret))
-					return (FAILURE);
 				return (ret);
-			}
 		}
-		else if ((*input)[*index] == '\\')
+		else if ((*input)[*index] == '\\' && ft_strchr("$`\"\\", (*input)[*index + 1]))
 		{
 			if (t_quote_add_new(quotes, *index, (*input) + *index))
 				return (sh_perror(SH_ERR1_MALLOC, "double_quote"));
 			(*index) += 2;
 		}
+		else if ((*input)[*index] == '\\' && (*input)[*index + 1] == '\n')
+			ft_strdelchars((*input) + *index, 0, 2);
 		else
 			*index += 1;
 	}
@@ -56,8 +54,7 @@ static int	unquoted_var(char **input, int *index, t_context *context, t_dy_tab *
 	if ((ret = sh_expansions_process(
 		input, *input + *index, context, index, quotes)) != SUCCESS)
 	{
-		if (sh_env_update_ret_value_and_question(context->shell, ret))
-			return (FAILURE);
+		sh_env_update_ret_value(context->shell, ret);
 		return (ret);
 	}
 	return (SUCCESS);
@@ -92,7 +89,7 @@ static int	simple_quote(char **input, int *index, t_dy_tab *quotes)
 int			sh_expansions_scan(char **input, int index,
 	t_context *context, t_dy_tab *quotes)
 {
-	int	ret;
+	int		ret;
 
 	while ((*input)[index] != '\'' && (*input)[index] != '"'
 		&& (*input)[index] != '\\' && (*input)[index] != '$'
@@ -113,10 +110,8 @@ int			sh_expansions_scan(char **input, int index,
 		if ((ret = unquoted_var(input, &index, context, quotes)) != SUCCESS)
 			return (ret);
 	}
-	else if ((*input)[index] == '!')
-	{
-
-	}
+	else if ((*input)[index] == '\\' && (*input)[index + 1] == '\n')
+		ft_strdelchars((*input) + index, 0, 2);
 	else
 	{
 		if (t_quote_add_new(quotes, index, (*input) + index))

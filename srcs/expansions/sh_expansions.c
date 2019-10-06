@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/05 10:59:30 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/26 19:23:51 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/05 04:04:32 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,12 @@ int			sh_expansions(t_context *context, t_ast_node *node)
 	ret = SUCCESS;
 	if (!(quotes = ft_dy_tab_new(5)))
 		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions"));
-	if ((*input)[0] == '~')
-		ret = sh_expansions_tilde(input, *input, context, quotes);
+	if (node->token->id == LEX_TOK_ASSIGNMENT_WORD)
+		ret = sh_expansions_tilde_assignment(input, context, quotes);
+	else if (sh_expansions_variable_valid_name(*input) && ft_strchr(*input, '='))
+		ret = sh_expansions_tilde_assignment(input, context, quotes);
+	else if ((*input)[0] == '~')
+		ret = sh_expansions_tilde(input, context, quotes, &ret);
 	if (!ret)
 		ret = sh_expansions_scan(input, index, context, quotes);
 	if (sh_verbose_expansion())
@@ -56,9 +60,7 @@ int			sh_expansions(t_context *context, t_ast_node *node)
 		sh_expansions_quote_removal((t_quote**)quotes->tbl);
 	if (ret == ERROR || ret == FAILURE)
 		sh_env_update_ret_value(context->shell, ret);
-	ft_dy_tab_del(quotes);
-	if (sh_env_update_question_mark(context->shell) == FAILURE)
-		return (FAILURE);
+	ft_dy_tab_del_ptr(quotes);
 	if (ret)
 		return (ret);
 	return (SUCCESS);

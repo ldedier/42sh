@@ -31,7 +31,7 @@ static char	*sh_update_shell_lvl_get_value(t_shell *shell)
 	}
 	if (!(new_lvl_str = ft_itoa(new_lvl)))
 	{
-		ft_dy_tab_del(shell->env);
+		ft_dy_tab_del_ptr(shell->env);
 		return (sh_perrorn(SH_ERR1_MALLOC, "sh_update_shell_lvl"));
 	}
 	return (new_lvl_str);
@@ -46,7 +46,7 @@ int			sh_update_shell_lvl(t_shell *shell)
 	if (sh_vars_assign_key_val(shell->env, NULL, "SHLVL", new_lvl_str))
 	{
 		free(new_lvl_str);
-		ft_dy_tab_del(shell->env);
+		ft_dy_tab_del_ptr(shell->env);
 		return (sh_perror(SH_ERR1_MALLOC, "sh_update_shell_lvl"));
 	}
 	free(new_lvl_str);
@@ -109,7 +109,7 @@ int			sh_main_init_env(t_shell *shell, char **env)
 	{
 		if (ft_dy_tab_add_str(tbl, env[i]))
 		{
-			ft_dy_tab_del(tbl);
+			ft_dy_tab_del_ptr(tbl);
 			return (sh_perror(SH_ERR1_MALLOC, "sh_main_init_env"));
 		}
 		i++;
@@ -117,14 +117,14 @@ int			sh_main_init_env(t_shell *shell, char **env)
 	shell->env = tbl;
 	if (!(shell->saved_env = ft_dy_tab_cpy_str(shell->env)))
 	{
-		ft_dy_tab_del(tbl);
+		ft_dy_tab_del_ptr(tbl);
 		return (sh_perror(SH_ERR1_MALLOC, "sh_main_init_env"));
 	}
 	if (sh_main_init_env_special_vars(shell) == FAILURE)
 	{
-		ft_dy_tab_del(shell->env);
+		ft_dy_tab_del_ptr(shell->env);
 		shell->env = NULL;
-		ft_dy_tab_del(shell->saved_env);
+		ft_dy_tab_del_ptr(shell->saved_env);
 		shell->saved_env = NULL;
 		return (FAILURE);
 	}

@@ -51,11 +51,11 @@ void	sh_free_all(t_shell *shell)
 	sh_free_command_line(&g_glob.command_line);
 	ft_dlstdel(&shell->history.commands, free_entry_dlst);
 	if (shell->vars)
-		ft_dy_tab_del(shell->vars);
+		ft_dy_tab_del_ptr(shell->vars);
 	if (shell->env)
-		ft_dy_tab_del(shell->env);
+		ft_dy_tab_del_ptr(shell->env);
 	if (shell->saved_env)
-		ft_dy_tab_del(shell->saved_env);
+		ft_dy_tab_del_ptr(shell->saved_env);
 	if (shell->binaries)
 		ft_hash_table_del(shell->binaries, sh_free_binary_lst);
 }

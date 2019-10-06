@@ -255,9 +255,8 @@ int		sh_scroll_command_line(t_command_line *command_line,
 	int	research_nb_lines;
 
 	research_nb_lines = get_research_nb_lines(command_line);
-	//ft_dprintf(2, "research_nb_lines: %d\n", research_nb_lines);
 	true_cursor = get_true_cursor_pos_prev_prompt(cursor);
-
+	//ft_dprintf(2, "research_nb_lines: %d\n", research_nb_lines);
 	// ft_dprintf(2, "scrolled lines:%d\ntarget:%d 
 	// (+%d)\ncurrent:%d\nrow:%d\n\n", command_line->scrolled_lines, 
 	// target_screen_line, cursor_inc, current_screen_line, g_glob.winsize.ws_row);
@@ -271,13 +270,6 @@ int		sh_scroll_command_line(t_command_line *command_line,
 		&& g_glob.winsize.ws_row - research_nb_lines
 			> command_line_nb_rows(command_line))
 	{
-//	if (!should_elipse_end(command_line, command_line->scrolled_lines)
-//		&& command_line->scrolled_lines
-//		&& g_glob.winsize.ws_row - research_nb_lines
-//			> command_line_nb_rows(command_line))
-
-//	{
-	//	command_line->scrolled_lines -= g_glob.winsize.ws_row - research_nb_lines - command_line_nb_rows(command_line);
 		command_line->scrolled_lines--;
 	}
 	target_screen_line = ((true_cursor + cursor_inc) / g_glob.winsize.ws_col)

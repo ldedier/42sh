@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 22:43:40 by jmartel           #+#    #+#             */
-/*   Updated: 2019/07/02 22:43:56 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/05 07:21:39 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 t_dy_str	*ft_dy_str_new_str(char *str)
 {
 	t_dy_str	*res;
-	int			len;
+	size_t		len;
 
 	len = ft_strlen(str);
 	if (!(res = malloc(sizeof(*res))))
@@ -25,7 +25,7 @@ t_dy_str	*ft_dy_str_new_str(char *str)
 		free(res);
 		return (NULL);
 	}
-	res->max_size = len;
+	res->max_size = len + 1;
 	res->current_size = len;
 	return (res);
 }

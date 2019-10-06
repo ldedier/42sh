@@ -46,7 +46,7 @@ char	*sh_get_editor(char *editor, t_shell *shell)
 		return (ft_strdup(editor));
 	else
 	{
-		if ((fcedit_var = sh_vars_get_value(NULL, shell->vars, "FC_EDIT")))
+		if ((fcedit_var = sh_vars_get_value(shell->env, shell->vars, "FCEDIT")))
 			return (ft_strdup(fcedit_var));
 		else
 			return (ft_strdup("ed"));
@@ -81,7 +81,6 @@ int		sh_execute_editor(char *editor, t_shell *shell)
 	free(command);
 	return (SUCCESS);
 }
-
 
 static int      sh_process_read_canonical_gnl(t_shell *shell, t_gnl_info *info)
 {
@@ -140,12 +139,13 @@ int		sh_builtin_fc_default_synopsis(t_context *context, t_fc_options *opts)
 {
 	t_dlist *from;
 	t_dlist *to;
+	int		ret;
 
 	fill_default_opts_default_synopsis(opts);
 	if (!(from
-		= get_entry_from_fc_operand(&context->shell->history, &opts->from)))
+		= get_entry_from_fc_operand(&context->shell->history, &opts->from, 1)))
 		return (sh_perror_err(SH_BLT_HISTORY_RANGE, NULL));
-	if (!(to = get_entry_from_fc_operand(&context->shell->history, &opts->to)))
+	if (!(to = get_entry_from_fc_operand(&context->shell->history, &opts->to, 1)))
 		return (sh_perror_err(SH_BLT_HISTORY_RANGE, NULL));
 	if (opts->opt_r)
 		swap_entries(&context->shell->history, &from, &to);
@@ -153,11 +153,14 @@ int		sh_builtin_fc_default_synopsis(t_context *context, t_fc_options *opts)
 		return (FAILURE);
 	if (!(opts->editor = sh_get_editor(opts->editor, context->shell)))
 		return (sh_perror(SH_ERR1_MALLOC, "sh_builtin_fc_default_synopsis"));
+	ft_printf("%s\n", opts->editor);
 	if (sh_execute_editor(opts->editor, context->shell) != SUCCESS)
 	{
 		free(opts->editor);
 		return (FAILURE);
 	}
 	free(opts->editor);
-	return (sh_execute_commands_from_file(context->shell, EDIT_FILE));
+	ret = sh_execute_commands_from_file(context->shell, EDIT_FILE);
+	context->shell->history.should_add = 0;
+	return (ret);
 }

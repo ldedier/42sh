@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 17:38:53 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/22 16:36:27 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/10/01 19:40:24 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,9 @@ int			sh_is_in_state_item(t_production *production,
 		item = (t_item *)ptr->content;
 		if (item->lookahead == lookahead
 			&& item->progress == item->production->symbols)
+		{
 			return (1);
+		}
 		ptr = ptr->next;
 	}
 	return (0);
