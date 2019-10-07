@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 11:47:31 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/07 14:43:36 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/07 16:02:05 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,4 +85,10 @@ int 	sh_get_separator_op(
 		t_ast_node *to_execute, t_ast_node *separator, t_context *context);
 int		sh_get_separator(
 		t_ast_node *to_execute, t_ast_node *separator_op, t_context *context);
+/*
+** sh_traverse_tools_get_exec_node.c
+*/
+int 	get_node_to_exec(t_ast_node *node, t_context *context,
+		t_symbol_id symbol, int (*f)(t_ast_node *, t_ast_node *, t_context *));
+
 #endif

@@ -6,7 +6,7 @@
 /*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/02 10:03:30 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/07 14:44:03 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/07 16:00:42 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,21 +40,7 @@ static int	search_term(t_ast_node *node, t_context *context)
 		el = el->next;
 	}
 	if (el)
-	{
-		el = curr_node->children;
-		while (el && ret != ERROR)
-		{
-			curr_node = el->content;
-			if (curr_node->symbol->id == sh_index(SEPARATOR))
-				ret = sh_get_separator(
-						node_to_exec, curr_node->children->content, context);
-			else
-				node_to_exec = curr_node;
-			el = el->next;
-		}
-		if (node_to_exec && ret == SUCCESS)
-			ret = sh_traverse_and_or(node_to_exec, context);
-	}
+		ret = get_node_to_exec(curr_node, context, SEPARATOR, &sh_get_separator);
 	return (ret);
 }
 

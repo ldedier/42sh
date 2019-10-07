@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/10/07 13:46:15 by jdugoudr         ###   ########.fr        #
+#    Updated: 2019/10/07 16:07:30 by jdugoudr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -108,7 +108,8 @@ SRCS			+=	sh_traverse_tools_browse.c \
 					sh_traverse_tools_simple_command_check_perm.c \
 					sh_traverse_tools_get_heredoc.c \
 					sh_traverse_tools_io_here_redirection.c \
-					sh_get_separator.c
+					sh_traverse_tools_get_separator.c \
+					sh_traverse_tools_get_exec_node.c
 
 ################################################################
 ########					COMMON						########
