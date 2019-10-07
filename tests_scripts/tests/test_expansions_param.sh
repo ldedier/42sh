@@ -14,7 +14,6 @@
 launch "Parameter_expansion"
 	launch_show "General"
 	test_launch 'foo=okalm bar=tamer' 'echo ${foo}' 'echo ${bar}' 'echo ${foo}${bar}'
-	test_launch ''
 
 	launch_show ":- and -"
 	## :- and -

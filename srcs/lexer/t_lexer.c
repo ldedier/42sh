@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 11:39:44 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/07 06:17:24 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/07 06:36:59 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,16 @@ void	t_lexer_reset(t_lexer *lexer, int tok_start)
 **	Use current lexer state to create a new token, appending it at the
 **	end of the token list. It use tok_start and tok_len to
 **	determine value in input.
+**	If lexer state is ok and token value correspond to an alias lexer->input
+**	is updated, token is not delimited and lexer is reset at the begining of
+**	the current token.
+**	If alias resolution failed token is created and encapsuled in a t_list.
+**	Token attributes are set using lexer current state.
+**	Lexer is then reset and reserved word detection is performed on new token.
 **
 **	Returned Values:
 **		LEX_OK
+**		LEX_CONTINUE : alias had been found and token was not delimited
 **		LEX_FAIL : malloc error
 */
 
@@ -53,23 +60,22 @@ int		t_lexer_add_token(t_lexer *lexer)
 	t_list		*link;
 	t_token		*token;
 	char		*value;
+	int			ret;
 
 	if (lexer->tok_len == 0 && lexer->current_id == LEX_TOK_UNKNOWN)
 		return (LEX_OK);
-	value = ft_strndup(lexer->input + lexer->tok_start, lexer->tok_len); // check ret value
-	if (sh_lexer_alias(lexer, value) == LEX_OK)
-		return (LEX_CONTINUE); // free value
+	if (!(value = ft_strndup(lexer->input + lexer->tok_start, lexer->tok_len)))
+		return (LEX_FAIL);
+	if ((ret = sh_lexer_alias(lexer, value)) != LEX_CONTINUE)
+	{
+		free(value);
+		return (ret);
+	}
 	if (!(link = t_token_node_new(lexer->current_id, NULL)))
 		return (LEX_FAIL);
 	token = link->content;
 	token->value = value;
 	ft_lstadd_last(&lexer->list, link);
-	if (!token->value)
-	{
-		free(token);
-		free(link);
-		return (LEX_FAIL);
-	}
 	token->expansion = lexer->expansion;
 	token->index_start = lexer->tok_start;
 	token->index_end = lexer->tok_start + lexer->tok_len + 1;
