@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/21 16:00:50 by jmartel           #+#    #+#              #
-#    Updated: 2019/09/23 17:35:47 by jdugoudr         ###   ########.fr        #
+#    Updated: 2019/10/07 11:28:39 by jdugoudr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -95,4 +95,11 @@ launch "Redirections"
 	test_launch "echo dodo 12>&12"
 	test_launch "echo dodo 12>&12 4>&12"
 	test_launch "echo dodo 1>&- 3>&- 4>&- 5>&-"
+
+## With expansion
+	test_launch 'TEST=file ; echo test > $TEST ; ls ; rm file'
+	test_launch 'TEST= ; echo test > $TEST ; ls'
+	test_launch 'echo test > $NOEXIST ; ls'
+	test_launch 'TEST="test  with  space" ; echo test > $TEST ; ls ; rm $TEST'
+	test_launch 'TEST="test  with  space" ; echo test > "$TEST" ; ls ; rm "$TEST"'
 finish
