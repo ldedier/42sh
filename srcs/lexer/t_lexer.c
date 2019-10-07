@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 11:39:44 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/07 05:28:34 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/07 05:39:26 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,8 @@ int		t_lexer_add_token(t_lexer *lexer)
 	t_list		*link;
 	t_token		*token;
 
-	if (lexer->tok_len == 0 && lexer->current_id == LEX_TOK_UNKNOWN) // This condition shall be deleted and moved in rules
-	{
-		t_lexer_reset(lexer, lexer->tok_start + lexer->tok_len);
+	if (lexer->tok_len == 0 && lexer->current_id == LEX_TOK_UNKNOWN)
 		return (LEX_OK);
-	}
 	if (!(link = t_token_node_new(lexer->current_id, NULL)))
 		return (LEX_FAIL);
 	token = link->content;

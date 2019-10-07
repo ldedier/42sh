@@ -40,17 +40,15 @@ launch "Lexer"
 	for i in `seq 1 22` ; do
 		test_launch_pipe ./tests_files/lexer/lexer_${i}
 	done
+	for i in `seq 30 35` ; do
+		test_launch_pipe ./tests_files/lexer/lexer_${i}
+	done
 
 	launch_show "Solo quotes"
 	for i in `seq 23 29` ; do
 		test_launch_pipe ./tests_files/lexer/lexer_${i}
 	done
 	
-	launch_show "Solo quotes"
-	for i in `seq 30 35` ; do
-		test_launch_pipe ./tests_files/lexer/lexer_${i}
-	done
-
 	launch_show "Random"
 	test_launch '"var=pwe"'
 	test_launch 'ls ""'
