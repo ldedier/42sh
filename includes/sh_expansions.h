@@ -61,9 +61,12 @@ int		sh_expansions_splitting(
 /*
 ** sh_expansions_history.c
 */
-char	*ft_strdup_word(char *str);
+char	*ft_strdup_word_delim(char *str, int delim);
 int		sh_history_expand(
-	t_shell *shell, t_command_line *command_line, int *index);
+	t_shell *shell,
+	t_command_line *command_line,
+	int *index,
+	int *double_quoted);
 int		sh_expansions_history(
 	t_shell *shell, t_command_line *command_line, int *expanded);
 
@@ -135,7 +138,9 @@ int		sh_expansions_scan(
 int		sh_expansions_tilde_detect(char *start);
 int		sh_expansions_tilde_process(t_context *context, t_expansion *exp);
 int		sh_expansions_tilde(
-	char **input, char *original, t_context *context, t_dy_tab *quotes);
+	char **input, t_context *context, t_dy_tab *quotes, int *index);
+int		sh_expansions_tilde_assignment(
+	char **input, t_context *context, t_dy_tab *quotes);
 
 /*
 ** sh_expansions_variable.c

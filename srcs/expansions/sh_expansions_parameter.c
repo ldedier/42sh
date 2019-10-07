@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 13:52:11 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/27 22:14:26 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/06 04:08:21 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ int			sh_expansions_parameter_process(t_context *context,
 
 	if (sh_expansions_parameter_detect_special_var(exp))
 		return (sh_expansions_variable_process(context, exp));
-	if (!ft_strpbrk(exp->expansion, ":-=?+%") && !ft_strchr(exp->expansion + 1, '#'))
+	if (!ft_strpbrk(exp->expansion, ":-=?+%") && (exp->expansion[0] && !ft_strchr(exp->expansion + 1, '#')))
 	{
 		if (ft_strpbrk(exp->expansion, "\'\"\\"))
 			return (sh_perror_err(exp->original, SH_BAD_SUBSTITUTE));

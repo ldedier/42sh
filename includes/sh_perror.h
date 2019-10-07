@@ -38,6 +38,7 @@
 # define SH_ERR1_READ			"Read error"
 # define SH_ERR1_EXECVE_FAIL	"Cannot execute binary file: Exec format error"
 # define SH_ERR1_FILENAME_LEN	"File name too long"
+# define SH_ERR1_MAX_RECUR		"Maximum execution recursion depth reached"
 
 # define SH_ERR1_EVENT_NOT_FOUND		"event not found"
 

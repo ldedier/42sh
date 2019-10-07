@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 16:35:24 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/26 03:06:03 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/06 05:44:10 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,12 +109,14 @@ char		*sh_expansions_parameter_get_param(
 
 /*
 ** sh_expansions_parameter_get_param :
-**	read the t_expansion to get the word in an expresion of type ${param:+word}.
+**	Detect word in parameter expansion like ${param:-word}, and expand it.
+**	Word obtained is malloced and stored in *word.
 **
 **	Returned Values:
-**		Starting char of the null terminated string word.
+**		SUCCESS
+**		FAILURE : malloc error
+**		ERROR : returned by expansions_ilde or expansions_scan
 */
-// Need to update comment
 
 int		sh_expansions_parameter_get_word(
 	t_context *context, t_expansion *exp, char *format, char **word)
@@ -127,17 +129,15 @@ int		sh_expansions_parameter_get_word(
 	if (exp->expansion[0] == '#')
 		format++;
 	start += ft_strlen(format);
-	if (ft_strchr(start, '$') != ft_strrchr(start, '$'))
-	{
-		sh_perror(exp->original, SH_BAD_SUBSTITUTE);
-		sh_env_update_ret_value(context->shell, ERROR);
-		return (STOP_CMD_LINE);
-	}
 	if (!(*word = ft_strdup(start)))
-		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_parameter_get_word_expand"));
+		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_parameter_get_word"));
 	if (!(quotes = ft_dy_tab_new(5)))
+	{
+		ft_strdel(word);
 		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions"));
-	ret = sh_expansions_tilde(word, *word, context, quotes);
+	}
+	ret = 0;
+	ret = sh_expansions_tilde(word, context, quotes, &ret);
 	if (!ret)
 		ret = sh_expansions_scan(word, 0, context, quotes);
 	if (!ret)
