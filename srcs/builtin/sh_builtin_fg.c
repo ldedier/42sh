@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 17:04:13 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/06 02:48:54 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/06 17:43:47 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ static void		mark_job_as_running (t_job *j)
 static t_job	*get_active_job(void)
 {
 	t_job	*j;
-	t_job	*it;
-	t_job	*prev;
 
 	if (g_job_ctrl->first_job == NULL)
 	{
@@ -39,21 +37,9 @@ static t_job	*get_active_job(void)
 		return (NULL);
 	}
 	j = g_job_ctrl->first_job;
-	it = NULL;
-	while (j != NULL)
-	{
-		prev = j;
-		if (job_is_stopped(j))
-			it = j;
+	while (j->next != NULL)
 		j = j->next;
-	}
-	if (it == NULL)
-	{
-		sh_perror("fg", NULL);
-		ft_dprintf(2, "job [%d] already running in background\n", prev->number);
-		return (NULL);
-	}
-	return (it);
+	return (j);
 }
 
 int			sh_builtin_fg(t_context *context)

@@ -19,8 +19,6 @@
 
 # define MAX_JOBS				17
 # define ANY_CHILD_PROCESS		-1
-# define PIPE_JOB				1
-# define AND_OR_JOB				2
 
 typedef struct s_process		t_process;
 typedef struct s_job			t_job;
@@ -44,8 +42,7 @@ struct	s_job
 	char			*command;
 	char			signal_num;
 	char			foreground;
-	char			pipe_node;
-	char			andor_node;
+	char			simple_cmd;
 	int				number;
 	pid_t			pgid;
 	t_process		*first_process;

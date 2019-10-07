@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_execute_prefix_postfix.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/31 12:20:31 by ldedier           #+#    #+#             */
-/*   Updated: 2019/07/31 13:49:37 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/10/06 18:30:48 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int		sh_pre_execution_pipes(t_list *contexts)
 	(void)contexts;
 	if (isatty(0) && sh_reset_shell(0) == ATTR_ERROR)
 	{
-		// sh_execute_pipe_sequence_close_pipes_list(contexts); //need to close pipe here in case of troubles!
+		// sh_execute_pipe_sequence_close_pipes_list(contexts); //need to close pipe here in case of trouble!
 		return (FAILURE);
 	}
 	sh_reset_signals_pre_exec();

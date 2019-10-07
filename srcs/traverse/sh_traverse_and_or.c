@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 15:54:02 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/06 02:39:58 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/06 17:22:51 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int				sh_traverse_and_or(t_ast_node *node, t_context *context)
 		sh_traverse_tools_show_traverse_ret_value(node, context, ret);
 		return (ret);
 	}
-	g_job_ctrl->curr_job->andor_node = 1;
+	g_job_ctrl->curr_job->simple_cmd = 0;
 	if ((cpid = fork()) < 0)
 		return (sh_perror(SH_ERR1_FORK, "sh_traverse_and_or"));
 	if (cpid == 0)

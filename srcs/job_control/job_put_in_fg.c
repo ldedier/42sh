@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/20 23:22:03 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/01 00:04:33 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/06 18:12:34 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ int			job_put_in_fg(t_job *j, int cont, int *res)
 	j->foreground = 1;
 	// Wait for the job
 	job_wait(g_job_ctrl->curr_job, res);
+	if (sh_post_execution() != SUCCESS)
+		return (FAILURE);
 	// ft_dprintf(g_job_ctrl->term_fd, "%sDone waiting%s\n", COLOR_YELLOW, COLOR_END);
 	// Put the shell back into the forground.
 	if (tcsetpgrp(g_job_ctrl->term_fd, g_job_ctrl->shell_pgid) < 0)

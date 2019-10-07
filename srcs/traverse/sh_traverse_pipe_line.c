@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/06 02:30:28 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/06 18:16:44 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ static int		pipe_child_part(t_ast_node *node, t_context *context)
 	int		ret;
 
 	reset_signals();
-	if (sh_set_term_sig(1) != SUCCESS)
-		return (FAILURE);
 	cpid = getpid();
 	if (g_job_ctrl->jc_enabled)
 	{
@@ -27,12 +25,10 @@ static int		pipe_child_part(t_ast_node *node, t_context *context)
 			return (ret);
 	}
 	ret = sh_execute_pipe(node, context);
-	if (sh_set_term_sig(0) != SUCCESS)
-		return (FAILURE);
 	exit (ret);
 }
 
-static int		pip_parent_part(pid_t cpid, t_context *context)
+static int		pipe_parent_part(pid_t cpid, t_context *context)
 {
 	int		ret;
 
@@ -45,6 +41,8 @@ static int		pip_parent_part(pid_t cpid, t_context *context)
 		else if (job_put_in_fg(g_job_ctrl->curr_job, 0, &ret) != SUCCESS)
 			return (ret);
 	}
+	else
+		waitpid(cpid, &ret, context->wait_flags);
 	sh_env_update_ret_value_wait_result(context, ret);
 	return (SH_RET_VALUE_EXIT_STATUS(ret));
 }
@@ -69,7 +67,7 @@ static int		pipe_to_do(t_ast_node *node, t_context *context)
 	}
 	else
 	{
-		ret = pip_parent_part(cpid, context);
+		ret = pipe_parent_part(cpid, context);
 		return (ret);
 	}
 }
@@ -94,7 +92,7 @@ static int		sh_traverse_pipe_sequence(t_ast_node *node, t_context *context)
 					return (ret);
 				g_job_ctrl->job_added = 1;
 			}
-			g_job_ctrl->curr_job->pipe_node = PIPE_JOB;
+			g_job_ctrl->curr_job->simple_cmd = 0;
 		}
 		ret = pipe_to_do(node, context);
 	}
