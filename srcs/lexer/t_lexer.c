@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 11:39:44 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/07 04:27:38 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/07 05:28:34 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int		t_lexer_add_token(t_lexer *lexer)
 	token->index_start = lexer->tok_start;
 	token->index_end = lexer->tok_start + lexer->tok_len;
 	t_lexer_reset(lexer, lexer->tok_start + lexer->tok_len);
-	return (LEX_OK);
+	return (sh_lexer_reserved_words(lexer, token));
 }
 
 void	t_lexer_show(t_lexer *lexer)
@@ -89,16 +89,4 @@ void	t_lexer_show(t_lexer *lexer)
 		head = head->next;
 	}
 	ft_putstr_fd("\n", 2);
-}
-
-t_token	*t_lexer_get_last_token(t_lexer *lexer)
-{
-	t_list	*head;
-
-	if (!lexer->list)
-		return (NULL);
-	head = lexer->list;
-	while (head->next)
-		head = head->next;
-	return ((t_token*)head->content);
 }

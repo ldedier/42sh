@@ -181,7 +181,6 @@ int					t_lexer_init(
 void				t_lexer_reset(t_lexer *lexer, int tok_start);
 int					t_lexer_add_token(t_lexer *lexer);
 void				t_lexer_show(t_lexer *lexer);
-t_token				*t_lexer_get_last_token(t_lexer *lexer);
 
 /*
 ** t_token.c
