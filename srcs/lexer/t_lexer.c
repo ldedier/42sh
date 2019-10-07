@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 11:39:44 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/07 05:39:26 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/07 06:17:24 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,18 @@ int		t_lexer_add_token(t_lexer *lexer)
 {
 	t_list		*link;
 	t_token		*token;
+	char		*value;
 
 	if (lexer->tok_len == 0 && lexer->current_id == LEX_TOK_UNKNOWN)
 		return (LEX_OK);
+	value = ft_strndup(lexer->input + lexer->tok_start, lexer->tok_len); // check ret value
+	if (sh_lexer_alias(lexer, value) == LEX_OK)
+		return (LEX_CONTINUE); // free value
 	if (!(link = t_token_node_new(lexer->current_id, NULL)))
 		return (LEX_FAIL);
 	token = link->content;
+	token->value = value;
 	ft_lstadd_last(&lexer->list, link);
-	token->value = ft_strndup(lexer->input + lexer->tok_start, lexer->tok_len);
 	if (!token->value)
 	{
 		free(token);
@@ -68,7 +72,7 @@ int		t_lexer_add_token(t_lexer *lexer)
 	}
 	token->expansion = lexer->expansion;
 	token->index_start = lexer->tok_start;
-	token->index_end = lexer->tok_start + lexer->tok_len;
+	token->index_end = lexer->tok_start + lexer->tok_len + 1;
 	t_lexer_reset(lexer, lexer->tok_start + lexer->tok_len);
 	return (sh_lexer_reserved_words(lexer, token));
 }

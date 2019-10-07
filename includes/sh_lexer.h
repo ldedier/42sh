@@ -109,7 +109,7 @@ int					sh_lexer(
 /*
 ** sh_lexer_alias.c
 */
-int					sh_lexer_alias(t_lexer *lexer, int *alias);
+int					sh_lexer_alias(t_lexer *lexer, char *value);
 
 /*
 ** sh_lexer_reserved_words.c

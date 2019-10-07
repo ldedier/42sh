@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 14:25:15 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/07 05:19:11 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/07 06:13:40 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ static int	sh_lexer_rule1_process_quoted(t_lexer *lexer)
 
 int			sh_lexer_rule1(t_lexer *lexer)
 {
+	int		ret;
+
 	if (lexer->c == '\0')
 	{
 		if (lexer->quoted > 0 || lexer->backslash)
@@ -72,8 +74,9 @@ int			sh_lexer_rule1(t_lexer *lexer)
 			else
 				return (sh_process_quoted(lexer));
 		}
-		if (t_lexer_add_token(lexer))
-			return (LEX_FAIL);
+		ret = t_lexer_add_token(lexer);
+		if (ret == LEX_FAIL || ret == LEX_CONTINUE)
+			return (ret);
 		return (LEX_END);
 	}
 	return (LEX_CONTINUE);

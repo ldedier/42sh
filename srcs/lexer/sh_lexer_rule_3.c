@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 14:33:30 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/07 03:55:34 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/07 06:18:01 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ static int	sh_lexer_is_operator(int op, t_lexer *lexer)
 
 int			sh_lexer_rule3(t_lexer *lexer)
 {
+	int		ret;
+
 	if (!lexer->current_id)
 		return (LEX_CONTINUE);
 	if (!sh_lexer_is_operator_char(lexer->current_id & 0x00ff))
@@ -55,8 +57,8 @@ int			sh_lexer_rule3(t_lexer *lexer)
 	{
 		if (sh_lexer_is_operator(lexer->current_id, lexer))
 		{
-			if (t_lexer_add_token(lexer))
-				return (LEX_FAIL);
+			if ((ret = t_lexer_add_token(lexer)))
+				return (ret);
 			lexer->tok_len = 0;
 			return (LEX_OK);
 		}
