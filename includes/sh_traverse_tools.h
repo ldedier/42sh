@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 11:47:31 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/18 08:28:20 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/07 14:43:36 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,4 +78,11 @@ int		sh_traverse_sc_check_perm_quiet(char *path);
 int		sh_traverse_sc_check_perm(
 	t_context *context, char *path, char *command_name);
 
+/*
+** sh_get_separator.c
+*/
+int 	sh_get_separator_op(
+		t_ast_node *to_execute, t_ast_node *separator, t_context *context);
+int		sh_get_separator(
+		t_ast_node *to_execute, t_ast_node *separator_op, t_context *context);
 #endif

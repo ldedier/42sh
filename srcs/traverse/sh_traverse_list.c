@@ -6,35 +6,11 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/28 16:49:38 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/12 15:02:18 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/07 14:46:54 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
-
-/*
- * get_separator_op :
- * This function take the current and_or nod to execute and the separator_op.
- * Separator_op is necessary because it can change the way we execute the
- * and_or node.
- * semi column separator : just execute the and_or
- * and (&) separator : probably we need to fork at this time and execute
- * and_or node in back_ground.
-*/
-static int 	get_separator_op(
-	t_ast_node *to_execute, t_ast_node *separator, t_context *context)
-{
-	//need to send to_execute to the good separator
-	(void)separator;
-	if (separator->symbol->id == sh_index(LEX_TOK_SEMICOL))
-		return (sh_traverse_semicol(to_execute, context));
-	if (separator->symbol->id == sh_index(LEX_TOK_AND))
-	{
-		ft_dprintf(STDERR_FILENO, "sh_traverse_list: sorry & is not yet implement\n");
-		return (ERROR);
-	}
-	return (FAILURE);
-}
 
 /*
  * get_node_to_exec :
@@ -61,7 +37,7 @@ static int 	get_node_to_exec(t_ast_node *node, t_context *context)
 		curr_node = lst->content;
 		if (curr_node->symbol->id == sh_index(SEPARATOR_OP))
 		{
-			if ((ret = get_separator_op(
+			if ((ret = sh_get_separator_op(
 				node_to_exec, curr_node->children->content, context)))
 				return (ret);
 			node_to_exec = NULL;
