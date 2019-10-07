@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/07 16:11:41 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/07 01:31:12 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/07 04:55:42 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,6 @@ int				sh_lexer(char *input, t_list **tokens, t_shell *shell,
 	}
 	if (sh_verbose_lexer())
 		t_lexer_show(&lexer);
-	ret = sh_lexer_reserved_words(&lexer);
 	ret = sh_lexer_final_check(&lexer);
 	if (sh_verbose_lexer())
 		t_lexer_show(&lexer);

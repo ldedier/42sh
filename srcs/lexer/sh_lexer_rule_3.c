@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 14:33:30 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/25 02:54:52 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/07 03:55:34 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,19 @@
 **	Else it return False.
 */
 
-static int	sh_lexer_is_operator(int op)
+static int	sh_lexer_is_operator(int op, t_lexer *lexer)
 {
 	if (op == LEX_TOK_AND_IF
 	|| op == LEX_TOK_OR_IF
-	|| op == LEX_TOK_DSEMI
+	|| op == LEX_TOK_SEMICOL
+	|| op == LEX_TOK_AND
+	|| op == LEX_TOK_OPN_PAR
+	|| op == LEX_TOK_CLS_PAR)
+	{
+		lexer->first_word = 1;
+		return (1);
+	}
+	else if (op == LEX_TOK_DSEMI
 	|| op == LEX_TOK_DLESS
 	|| op == LEX_TOK_DGREAT
 	|| op == LEX_TOK_LESSAND
@@ -31,13 +39,8 @@ static int	sh_lexer_is_operator(int op)
 	|| op == LEX_TOK_DLESSDASH
 	|| op == LEX_TOK_CLOBBER
 	|| op == LEX_TOK_PIPE
-	|| op == LEX_TOK_AND
-	|| op == LEX_TOK_SEMICOL
 	|| op == LEX_TOK_LESS
-	|| op == LEX_TOK_GREAT
-	|| op == LEX_TOK_OPN_PAR
-	|| op == LEX_TOK_CLS_PAR
-	|| op == LEX_TOK_BANG)
+	|| op == LEX_TOK_GREAT)
 		return (1);
 	return (0);
 }
@@ -50,9 +53,10 @@ int			sh_lexer_rule3(t_lexer *lexer)
 		return (LEX_CONTINUE);
 	if (!sh_lexer_check_operator(lexer))
 	{
-		if (sh_lexer_is_operator(lexer->current_id))
+		if (sh_lexer_is_operator(lexer->current_id, lexer))
 		{
-			t_lexer_add_token(lexer);
+			if (t_lexer_add_token(lexer))
+				return (LEX_FAIL);
 			lexer->tok_len = 0;
 			return (LEX_OK);
 		}

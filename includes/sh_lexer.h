@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 11:08:27 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/09 18:37:18 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/10/07 02:46:19 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@
 
 typedef struct s_shell		t_shell;
 typedef struct s_ast_node	t_ast_node;
+typedef struct s_token		t_token;
 
 typedef enum		e_lex_mode
 {
@@ -64,9 +65,12 @@ typedef struct		s_lexer
 	char			quoted;
 	int				backslash;
 	char			expansion;
+	int				first_word;
+	t_token			*brace;
 	t_list			*list;
 	t_dy_tab		*env;
 	t_dy_tab		*vars;
+	t_dy_tab		*alias;
 	t_shell			*shell;
 	t_lex_mode		mode;
 }					t_lexer;
@@ -105,11 +109,13 @@ int					sh_lexer(
 /*
 ** sh_lexer_alias.c
 */
+int					sh_lexer_alias(t_lexer *lexer, int *alias);
 
 /*
 ** sh_lexer_reserved_words.c
 */
-int					sh_lexer_reserved_words(t_lexer *lexer);
+int					sh_lexer_reserved_words(
+	t_lexer *lexer, t_token *token);
 
 /*
 ** sh_lexer_rule_1.c
@@ -170,9 +176,12 @@ int					sh_lexer_check_operator(t_lexer *lexer);
 /*
 ** t_lexer.c
 */
-void				t_lexer_init(t_lexer *lexer, int tok_start);
+int					t_lexer_init(
+	t_lexer *lexer, t_lex_mode mode, t_shell *shell, char *input);
+void				t_lexer_reset(t_lexer *lexer, int tok_start);
 int					t_lexer_add_token(t_lexer *lexer);
 void				t_lexer_show(t_lexer *lexer);
+t_token				*t_lexer_get_last_token(t_lexer *lexer);
 
 /*
 ** t_token.c
