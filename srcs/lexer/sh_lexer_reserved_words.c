@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/06 01:28:29 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/07 05:13:44 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/07 05:17:45 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ int				sh_lexer_reserved_words(t_lexer *lexer, t_token *token)
 {
 	if (!token || !token->value || token->id != LEX_TOK_WORD)
 		return (SUCCESS);
-	ft_dprintf(2, "reserved words : token value : %s\n", token->value);
 	if (lexer->first_word)
 	{
 		if (is_reserved(lexer, token))
