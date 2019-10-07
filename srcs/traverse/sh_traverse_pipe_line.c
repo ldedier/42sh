@@ -29,7 +29,8 @@ static int		pipe_to_do(t_ast_node *node, t_context *context)
 	{
 		waitpid(child, &ret, 0);
 		sh_env_update_ret_value_wait_result(context, ret);
-		return (SH_RET_VALUE_EXIT_STATUS(ret));
+		return (SUCCESS);
+	//	return (SH_RET_VALUE_EXIT_STATUS(ret));
 	}
 	else
 	{

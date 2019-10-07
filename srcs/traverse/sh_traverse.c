@@ -42,6 +42,7 @@ int		sh_process_traverse(t_shell *shell, t_ast_node *ast_root)
 	}
 	context.phase = E_TRAVERSE_PHASE_INTERACTIVE_REDIRECTIONS;
 	if ((ret = sh_traverse_tools_browse(list_node, &context)) == SUCCESS)
+		/*ret = g_grammar[list_node->symbol->id].traverse(list_node, &context);*/
 		ret = sh_traverse_list(list_node, &context);
 	t_context_free_content(&context);
 	return (ret);
