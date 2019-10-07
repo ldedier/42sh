@@ -6,13 +6,27 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 11:39:44 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/25 06:53:10 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/07 01:54:05 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-void	t_lexer_init(t_lexer *lexer, int tok_start)
+int		t_lexer_init(t_lexer *lexer, t_lex_mode mode, t_shell *shell, char *input)
+{
+	ft_bzero(lexer, sizeof(*lexer));
+	if (!(lexer->input = ft_strdup(input)))
+		return (FAILURE);
+	lexer->shell = shell;
+	lexer->env = shell->env;
+	lexer->vars = shell->vars;
+	lexer->alias = shell->alias;
+	lexer->mode = mode;
+	t_lexer_reset(lexer, 0);
+	return (SUCCESS);
+}
+
+void	t_lexer_reset(t_lexer *lexer, int tok_start)
 {
 	lexer->quoted = 0;
 	lexer->expansion = 0;
@@ -29,7 +43,7 @@ int		t_lexer_add_token(t_lexer *lexer)
 
 	if (lexer->tok_len == 0 && lexer->current_id == LEX_TOK_UNKNOWN)
 	{
-		t_lexer_init(lexer, lexer->tok_start + lexer->tok_len);
+		t_lexer_reset(lexer, lexer->tok_start + lexer->tok_len);
 		return (LEX_OK);
 	}
 	if (!(link = t_token_node_new(lexer->current_id, NULL)))
@@ -46,7 +60,7 @@ int		t_lexer_add_token(t_lexer *lexer)
 	token->expansion = lexer->expansion;
 	token->index_start = lexer->tok_start;
 	token->index_end = lexer->tok_start + lexer->tok_len;
-	t_lexer_init(lexer, lexer->tok_start + lexer->tok_len);
+	t_lexer_reset(lexer, lexer->tok_start + lexer->tok_len);
 	return (LEX_OK);
 }
 
