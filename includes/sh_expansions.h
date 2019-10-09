@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 17:46:46 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/26 03:04:47 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/09 14:40:37 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@ enum					e_exp_type
 	EXP_CMD,
 	EXP_ARITH,
 	EXP_TILDE,
+	EXP_CMD_SUBST,
+	EXP_PROC_SUBST_IN, // >()
+	EXP_PROC_SUBST_OUT, // <()
 };
 
 typedef struct			s_quote
@@ -51,6 +54,15 @@ struct					s_expansion
 ** sh_expansions.c
 */
 int		sh_expansions(t_context *context, t_ast_node *node);
+
+/*
+** sh_expansions_cmd_subst.c
+*/
+int		sh_expansions_cmd_subst_detect_backquotes(char *start);
+int		sh_expansions_cmd_subst_detect_dollar(char *start);
+int		sh_expansions_cmd_subst_fill(t_expansion *exp, char *start);
+int		sh_expansions_cmd_subst_process(
+	t_context *context, t_expansion *exp);
 
 /*
 ** sh_expansions_field_splitting.c

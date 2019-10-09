@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 14:37:57 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/05 01:50:38 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/09 15:29:25 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,11 @@ static int		sh_lexer_exp(t_lexer *lexer)
 	int		end;
 
 	start = lexer->input + lexer->tok_start + lexer->tok_len;
-	if (ft_strnstr(start, "${", 2))
+	if (start[0] == '`')
+		end = sh_expansions_cmd_subst_detect_backquotes(start);
+	else if (ft_strnstr(start, "$(", 2))
+		end = sh_expansions_cmd_subst_detect_dollar(start) + 1;
+	else if (ft_strnstr(start, "${", 2))
 		end = sh_expansions_parameter_detect(start) + 1;
 	else if (start[0] == '$')
 		end = sh_expansions_variable_detect(start);

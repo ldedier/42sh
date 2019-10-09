@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/04 11:17:39 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/04 04:21:28 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/09 15:32:29 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int			sh_expansions_scan(char **input, int index,
 
 	while ((*input)[index] != '\'' && (*input)[index] != '"'
 		&& (*input)[index] != '\\' && (*input)[index] != '$'
-		&& (*input)[index])
+		&& (*input)[index] != '`' && (*input)[index])
 		index++;
 	if ((*input)[index] == '\0')
 		return (SUCCESS);
@@ -105,7 +105,7 @@ int			sh_expansions_scan(char **input, int index,
 			input, &index, context, quotes)) != SUCCESS)
 			return (ret);
 	}
-	else if ((*input)[index] == '$')
+	else if ((*input)[index] == '$' || (*input)[index] == '`')
 	{
 		if ((ret = unquoted_var(input, &index, context, quotes)) != SUCCESS)
 			return (ret);
