@@ -34,10 +34,29 @@ void	sh_traverse_tools_show_traverse_ret_value(
 	t_ast_node *node, t_context *context, int ret);
 
 /*
+** sh_traverse_tools_get_exec_node.c
+*/
+int 	get_node_to_exec(
+	t_ast_node *node,
+	t_context *context,
+	t_symbol_id symbol,
+	int (*f)(t_ast_node *,
+	t_ast_node *,
+	t_context *));
+
+/*
 ** sh_traverse_tools_get_heredoc.c
 */
 char	*get_heredoc(
 	t_context *context, t_heredoc *heredoc_data, int *ret);
+
+/*
+** sh_traverse_tools_get_separator.c
+*/
+int 	sh_get_separator_op(
+	t_ast_node *to_execute, t_ast_node *separator, t_context *context);
+int		sh_get_separator(
+	t_ast_node *to_execute, t_ast_node *separator, t_context *context);
 
 /*
 ** sh_traverse_tools_io_file.c
@@ -77,18 +96,5 @@ int		sh_traverse_sc_search_in_path(t_context *context);
 int		sh_traverse_sc_check_perm_quiet(char *path);
 int		sh_traverse_sc_check_perm(
 	t_context *context, char *path, char *command_name);
-
-/*
-** sh_get_separator.c
-*/
-int 	sh_get_separator_op(
-		t_ast_node *to_execute, t_ast_node *separator, t_context *context);
-int		sh_get_separator(
-		t_ast_node *to_execute, t_ast_node *separator_op, t_context *context);
-/*
-** sh_traverse_tools_get_exec_node.c
-*/
-int 	get_node_to_exec(t_ast_node *node, t_context *context,
-		t_symbol_id symbol, int (*f)(t_ast_node *, t_ast_node *, t_context *));
 
 #endif

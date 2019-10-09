@@ -52,8 +52,12 @@ launch "type"
 	test_launch 'type -t -p -a cd ls brew  type while'
 	test_launch 'ls' 'type -p -t cd ls brew  type while'
 	test_launch 'ls' 'type -t -p cd ls brew  type while'
+	test_launch 'ls' 'alias ls=ls' 'type -t -p cd ls brew  type while'
+	test_launch 'ls' 'alias ls=' 'type -t -p cd ls brew  type while'
 	test_launch 'ls' 'type -a -p -t cd ls brew  type while'
+	test_launch 'ls' 'alias ls=ok ''type -a -p -t cd ls brew  type while'
 	test_launch 'ls' 'type -a -t -p cd ls brewe type while'
+	test_launch 'ls' 'alias ls=ok' 'type -a -t -p cd ls brewe type while'
 
 	launch_show "write"
 	test_launch "type 1>&-"

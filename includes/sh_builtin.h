@@ -343,6 +343,8 @@ int					sh_builtin_type(t_context *context);
 /*
 ** sh_builtin_type_search.c
 */
+int					sh_builtin_type_search_alias(
+	char *name, t_args args[], t_context *context);
 int					sh_builtin_type_search_reserved(
 	char *name, t_args args[]);
 int					sh_builtin_type_search_builtin(

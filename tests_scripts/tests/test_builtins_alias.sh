@@ -23,6 +23,7 @@ launch "export"
 
 	launch_show "arguments"
 	test_launch 'shopt -s expand_aliases' 'type alias'
+	test_launch 'shopt -s expand_aliases' 'alias ls=ls' 'ls'
 	test_launch 'shopt -s expand_aliases' 'alias ok=ls' 'ok' 'alias ok="ls -a"' 'ok' 'unalias ok' 'ok'
 	test_launch 'shopt -s expand_aliases' 'alias ok=ls' 'ok ' 'alias ok="ls -a"' 'ok ' 'unalias ok' 'ok '
 	test_launch 'shopt -s expand_aliases' 'alias ok=""' 'alias' 'ok'

@@ -6,11 +6,33 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/04 21:46:13 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/04 21:47:56 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/09 05:58:51 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
+
+int			sh_builtin_type_search_alias(
+	char *name, t_args args[], t_context *context)
+{
+	int			index;
+	char		*value;
+
+	if ((index = sh_vars_get_index(context->alias, name)) != -1)
+	{
+		if (args[TYPE_P_OPT].priority > args[TYPE_T_OPT].priority)
+			return (ERROR);
+		if (args[TYPE_T_OPT].value)
+			ft_dprintf(FD_OUT, "alias\n");
+		else
+		{
+			value = sh_env_get_value((char**)context->alias->tbl, name);
+			ft_dprintf(FD_OUT, "%s is aliased to `%s'\n", name, value);
+		}
+		return (SUCCESS);
+	}
+	return (ERROR);
+}
 
 int			sh_builtin_type_search_reserved(char *name, t_args args[])
 {
@@ -30,9 +52,7 @@ int			sh_builtin_type_search_reserved(char *name, t_args args[])
 			else if (args[TYPE_T_OPT].value)
 				ft_dprintf(FD_OUT, "keyword\n");
 			else
-			{
 				ft_dprintf(FD_OUT, "%s is a shell keyword\n", name);
-			}
 			return (SUCCESS);
 		}
 		i++;

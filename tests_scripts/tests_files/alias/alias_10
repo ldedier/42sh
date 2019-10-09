@@ -4,13 +4,16 @@ alias test="echo "
 alias option="-n "
 alias arg="okalm"
 test option arg
+type -a test option
 
 alias test="echo"
 alias option="-n "
 alias arg="okalm"
 test option arg
+type -a test option
 
 alias test="echo "
 alias option="-n"
 alias arg="okalm"
 test option arg
+type -a test option
