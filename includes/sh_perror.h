@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 14:16:12 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/04 14:15:17 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/09 01:20:55 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@
 
 # define SH_BAD_SUBSTITUTE		"Bad subsitution"
 # define SH_AMB_REDIRECT		"Ambigous redirect"
+
 /*
 ********************************************************************************
 */

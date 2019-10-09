@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 11:39:44 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/07 06:36:59 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/09 02:36:32 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int		t_lexer_add_token(t_lexer *lexer)
 		return (LEX_OK);
 	if (!(value = ft_strndup(lexer->input + lexer->tok_start, lexer->tok_len)))
 		return (LEX_FAIL);
-	if ((ret = sh_lexer_alias(lexer, value)) != LEX_CONTINUE)
+	if ((ret = sh_lexer_alias(lexer, value)) != LEX_OK)
 	{
 		free(value);
 		return (ret);
@@ -80,6 +80,12 @@ int		t_lexer_add_token(t_lexer *lexer)
 	token->index_start = lexer->tok_start;
 	token->index_end = lexer->tok_start + lexer->tok_len + 1;
 	t_lexer_reset(lexer, lexer->tok_start + lexer->tok_len);
+	if (sh_verbose_lexer())
+	{
+		ft_dprintf(2, "new token delimited : ");
+		t_token_show(token);
+		ft_dprintf(2, "\n");
+	}
 	return (sh_lexer_reserved_words(lexer, token));
 }
 

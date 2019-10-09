@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 14:25:15 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/07 06:13:40 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/09 02:44:59 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,24 @@ static int	sh_lexer_rule1_process_quoted(t_lexer *lexer)
 	return (LEX_OK);
 }
 
+/*
+** sh_lexer_rule1:
+**	posix : 1. If the end of input is recognized,
+**			the current token (if any) shall be delimited.
+**	Rule 1 is checking that quotes are correctly closed before terminating
+**	lexer process. Unclosed quotes treatment is different if in interactive
+**	mode or not.
+**	If any token had been started it is delimited and added to list.
+**	If t_lexer_add_token return LEX_CONTINUE an alias had been detected,
+**	lexer state had been reset and it shall start a new lexer cycle.
+**
+**	Returned Values :
+**		LEX_END : Successfully finished lexer process
+**		LEX_OK : Alias had been detected, need to start new lexer cycles
+**		LEX_CONTINUE : Current char is not input end
+**		LEX_FAIL : malloc error
+*/
+
 int			sh_lexer_rule1(t_lexer *lexer)
 {
 	int		ret;
@@ -75,8 +93,10 @@ int			sh_lexer_rule1(t_lexer *lexer)
 				return (sh_process_quoted(lexer));
 		}
 		ret = t_lexer_add_token(lexer);
-		if (ret == LEX_FAIL || ret == LEX_CONTINUE)
+		if (ret == LEX_FAIL)
 			return (ret);
+		else if (ret == LEX_CONTINUE)
+			return (LEX_OK);
 		return (LEX_END);
 	}
 	return (LEX_CONTINUE);

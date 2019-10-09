@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/06 22:53:28 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/07 00:37:33 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/09 02:32:24 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,13 +80,11 @@ int			sh_builtin_alias_show(t_context *context)
 	char	**tbl;
 	char	*min;
 
+	tbl = (char**)(context->alias->tbl);
+	if (!tbl || !*tbl)
+		return (SUCCESS);
 	if (write(FD_OUT, NULL, 0))
 		return (sh_perror2_err("write error", "alias", SH_ERR1_BAD_FD));
-	tbl = (char**)(context->alias->tbl);
-	if (!tbl)
-		return (SUCCESS);
-	if (!tbl[0])
-		return (SUCCESS);
 	min = NULL;
 	show_get_min_init(&min, tbl);
 	while (min)

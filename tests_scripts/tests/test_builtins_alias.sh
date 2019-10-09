@@ -1,56 +1,43 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    test_builtins_export.sh                            :+:      :+:    :+:    #
+#    test_builtins_alias.sh                             :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/22 15:32:16 by jmartel           #+#    #+#              #
-#    Updated: 2019/08/22 17:43:00 by jmartel          ###   ########.fr        #
+#    Updated: 2019/10/09 02:17:43 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 launch "export"
 	launch_show "parser"
-	test_launch "unset SHLVL _ OLDPWD" "export"
-	test_launch "unset SHLVL _ OLDPWD" "export -E"
-	test_launch "unset SHLVL _ OLDPWD" "export -p"
-	test_launch "unset SHLVL _ OLDPWD" "export -- -p"
-	test_launch "unset SHLVL _ OLDPWD" "export -p -- -p"
-	test_launch "unset SHLVL _ OLDPWD" "export -E -p"
-	test_launch "unset SHLVL _ OLDPWD" "export -- Okqlm SPecul"
-	test_launch "unset SHLVL _ OLDPWD" "export -p -p -p -p"
-	test_launch "unset SHLVL _ OLDPWD" "export -p -p -p -p --"
+	test_launch 'shopt -s expand_aliases' 'alias -A -E'
+	test_launch 'shopt -s expand_aliases' 'alias -E -E'
+	test_launch 'shopt -s expand_aliases' 'alias -- -E -E'
+	test_launch 'shopt -s expand_aliases' 'alias -- var'
+	test_launch 'shopt -s expand_aliases' 'alias -- var='
+	test_launch 'shopt -s expand_aliases' 'alias -- var=ok'
+	test_launch 'shopt -s expand_aliases' 'alias -- -E var=ok'
+	test_launch 'shopt -s expand_aliases' 'alias -- var=ok -E'
 
 	launch_show "arguments"
-	test_launch 'unset SHLVL _ OLDPWD' 'export var; echo $?' "export"
-	test_launch 'unset SHLVL _ OLDPWD' 'export PWD OLDPWD; echo $?' "export"
-	test_launch 'unset SHLVL _ OLDPWD' 'export var=okalm; echo $?' "export"
-	test_launch 'unset SHLVL _ OLDPWD' 'export va; echo $?' "export"
-	test_launch 'unset SHLVL _ OLDPWD' 'export PWD var="\"okalmose speculos\""; echo $?' "export"
+	test_launch 'shopt -s expand_aliases' 'type alias'
+	test_launch 'shopt -s expand_aliases' 'alias ok=ls' 'ok' 'alias ok="ls -a"' 'ok' 'unalias ok' 'ok'
+	test_launch 'shopt -s expand_aliases' 'alias ok=ls' 'ok ' 'alias ok="ls -a"' 'ok ' 'unalias ok' 'ok '
+	test_launch 'shopt -s expand_aliases' 'alias ok=""' 'alias' 'ok'
+	test_launch 'shopt -s expand_aliases' 'alias ok=' 'alias' 'ok' 'alias ok && unalias ok && alias && alias ok'
+	test_launch 'shopt -s expand_aliases' 'alias ok=ls' 'ok -a && ok nodir'
 
 	launch_show "write"
-	test_launch "unset SHLVL _ OLDPWD" "export 1>&-"
-	test_launch "unset SHLVL _ OLDPWD" "export -E 1>&-"
-	test_launch "unset SHLVL _ OLDPWD" "export -E 2>&-"
-	test_launch "unset SHLVL _ OLDPWD" "export 2>&-"
+	test_launch 'shopt -s expand_aliases' "alias 1>&-"
+	test_launch 'shopt -s expand_aliases' 'alias ok=ls' "alias 1>&-"
+	test_launch 'shopt -s expand_aliases' "alias ok=ls 1>&-"
+	test_launch 'shopt -s expand_aliases' "alias ok=ls" "alias ok 1>&-"
+	test_launch 'shopt -s expand_aliases' "alias ok=ls" "alias ok= 1>&-" "alias ok 1>&-"
+	test_launch 'shopt -s expand_aliases' "alias -E 1>&-"
+	test_launch 'shopt -s expand_aliases' "alias -E ls=ok 1>&-" "alias"
+	test_launch 'shopt -s expand_aliases' "alias -E 2>&-"
+	test_launch 'shopt -s expand_aliases' "alias no 2>&-"
 
 	launch_show "old_errors"
-	test_launch "unset SHLVL _ OLDPWD" "var=tamer export var ; echo $var" "export"
-	test_launch "unset SHLVL _ OLDPWD" "var=tamer export tamer ; echo $var" "export"
-	test_launch "unset SHLVL _ OLDPWD" "var=tamer ; export var ; echo $var" "export"
-	test_launch "unset SHLVL _ OLDPWD" "var=tamer ; export tamer ; echo $var" "export"
-	test_launch "unset SHLVL _ OLDPWD" "var=tamer ls ; export var ; echo $var" "export"
-	test_launch "unset SHLVL _ OLDPWD" "var=tamer ls ; export tamer ; echo $var" "export"
-
-	test_launch "export variable ; variable="         "export | grep variable ; echo ; set | grep variable ; echo ; env | grep variale"
-	test_launch "export variable ; variable= ls"      "export | grep variable ; echo ; set | grep variable ; echo ; env | grep variale"
-	test_launch "export variable ; variable= nocmd"   "export | grep variable ; echo ; set | grep variable ; echo ; env | grep variale"
-	test_launch "export variable ; variable=Tamer"    "export | grep variable ; echo ; set | grep variable ; echo ; env | grep variale"
-	test_launch "export variable ; variable=Tamre ls" "export | grep variable ; echo ; set | grep variable ; echo ; env | grep variale"
-	test_launch "export variable ; variable=Ta nocmd" "export | grep variable ; echo ; set | grep variable ; echo ; env | grep variale"
-	
-	test_launch "variable=var env   | grep variable=var" 'echo $?' "export | grep variable ; echo ; set | grep variable ; echo ; env | grep variale"
-	test_launch "variable=var set   | grep variable=var" 'echo $?' "export | grep variable ; echo ; set | grep variable ; echo ; env | grep variale"
-	test_launch "variable=var export| grep variable=var" 'echo $?' "export | grep variable ; echo ; set | grep variable ; echo ; env | grep variale"
-	test_launch "variable=var nocmd                    " 'echo $?' "export | grep variable ; echo ; set | grep variable ; echo ; env | grep variale"
