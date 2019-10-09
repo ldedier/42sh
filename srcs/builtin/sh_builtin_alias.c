@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/06 22:45:49 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/06 23:30:03 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/09 05:12:13 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	alias_treat_argument(t_context *context, char *arg)
 	int		index;
 
 	if (!sh_expansions_variable_valid_name(arg))
-		return (sh_perror2_err(arg, "export", "not a valid identifier"));
+		return (sh_perror2_err(arg, "alias", "not a valid identifier"));
 	if (!ft_strchr(arg, '='))
 	{
 		if ((index = sh_vars_get_index(context->alias, arg)) != -1)

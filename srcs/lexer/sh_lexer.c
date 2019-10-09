@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/07 16:11:41 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/07 04:55:42 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/09 05:19:23 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ int				sh_lexer(char *input, t_list **tokens, t_shell *shell,
 	while (ret == LEX_OK)
 		ret = sh_lexer_run_rules(&lexer);
 	free(lexer.input);
+	ft_lstdel(&lexer.alias_stack, NULL);
 	if (ret != LEX_END)
 	{
 		t_token_free_list(&lexer.list);

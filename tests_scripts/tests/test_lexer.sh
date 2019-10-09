@@ -50,7 +50,7 @@ launch "Lexer"
 	done
 	
 	launch_show "Alias substitution"
-	for i in `seq 1 10` ; do
+	for i in `seq 1 11` ; do
 		test_launch_pipe ./tests_files/alias/alias_${i}
 	done
 
@@ -73,4 +73,4 @@ launch "Lexer"
 
 finish
 
-rm file
+rm -f file

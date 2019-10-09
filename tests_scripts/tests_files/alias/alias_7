@@ -1,23 +1,10 @@
 shopt -s expand_aliases
 
-alias okalm="ls 
--a"
-okalm
-
-alias oka\
-lm="ls"
-
-oka\
-lm
-
+alias alias=alias alias=alias alias=alias
+alias
+alias alias
 unalias -a
-
-alias "
-
-empty"="
-
-ls"
-
-"
-
-empty"
+alias unalias=alias alias=unalias
+unalias
+alias -a
+alias
