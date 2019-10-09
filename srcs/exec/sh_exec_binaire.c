@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 17:31:33 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/09 01:42:40 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/09 02:36:52 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ static int		do_pre_exc_job_add(void)
 	}
 	if (g_job_ctrl->interactive && g_job_ctrl->curr_job->foreground)
 	{
-		ft_dprintf(g_term_fd, "Job in foreground\n");
 		if (sh_pre_execution() != SUCCESS)
 			return (FAILURE);
 

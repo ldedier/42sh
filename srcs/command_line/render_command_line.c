@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_command_line.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/22 14:40:58 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/12 19:18:38 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/10/09 02:33:27 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ void	process_termcaps_through_copy(t_command_line *command_line,
 void	process_termcaps_through_utf8_copy(char *str,
 			t_command_line *command_line, t_utf8_copier *c)
 {
-	if (command_line->mode == E_MODE_VISUAL 
+	if (command_line->mode == E_MODE_VISUAL
 		&& command_line->pinned_index != -1 && c->min != c->max)
 	{
 		if (c->i == c->min)
@@ -235,7 +235,7 @@ int		should_elipse_end(t_command_line *command_line, int scrolled_lines)
 {
 	int index;
 	int add;
-	
+
 	index = get_command_line_starting_index2(scrolled_lines);
 	add = get_command_line_prefix_len(command_line);
 	if (add + ft_strlen_utf8(&command_line->dy_str->str[index])
@@ -249,7 +249,7 @@ int		sh_scroll_command_line(t_command_line *command_line,
 			int cursor, int cursor_inc)
 {
 	int true_cursor;
-	int current_screen_line;
+	// int current_screen_line;
 	int target_screen_line;
 	int ret;
 	int	research_nb_lines;
@@ -257,14 +257,14 @@ int		sh_scroll_command_line(t_command_line *command_line,
 	research_nb_lines = get_research_nb_lines(command_line);
 	true_cursor = get_true_cursor_pos_prev_prompt(cursor);
 	//ft_dprintf(2, "research_nb_lines: %d\n", research_nb_lines);
-	// ft_dprintf(2, "scrolled lines:%d\ntarget:%d 
-	// (+%d)\ncurrent:%d\nrow:%d\n\n", command_line->scrolled_lines, 
+	// ft_dprintf(2, "scrolled lines:%d\ntarget:%d
+	// (+%d)\ncurrent:%d\nrow:%d\n\n", command_line->scrolled_lines,
 	// target_screen_line, cursor_inc, current_screen_line, g_glob.winsize.ws_row);
-	
+
 	//scroll with dimensions first.
 
 	//si ws_row > necessaire et que on est a la fin => nb_scrolled -= chepa
-	
+
 	while (!should_elipse_end(command_line, command_line->scrolled_lines)
 		&& command_line->scrolled_lines
 		&& g_glob.winsize.ws_row - research_nb_lines
@@ -274,8 +274,8 @@ int		sh_scroll_command_line(t_command_line *command_line,
 	}
 	target_screen_line = ((true_cursor + cursor_inc) / g_glob.winsize.ws_col)
 		- command_line->scrolled_lines;
-	current_screen_line = (true_cursor / g_glob.winsize.ws_col)
-		- command_line->scrolled_lines;
+	// current_screen_line = (true_cursor / g_glob.winsize.ws_col)
+		// - command_line->scrolled_lines;
 	if (target_screen_line < 1)
 	{
 		if (command_line->scrolled_lines + target_screen_line > 0)
@@ -325,12 +325,12 @@ int		render_command_line(t_command_line *command_line,
 			int cursor_inc, int print_choices)
 {
 	char	*str;
-	int		ret;
 
 	if (!isatty(0) || !command_line)
 		return (SUCCESS);
 	go_up_to_prompt(g_glob.winsize.ws_col, g_glob.cursor);
-	ret = sh_scroll_command_line(command_line, g_glob.cursor, cursor_inc);
+	// ret = sh_scroll_command_line(command_line, g_glob.cursor, cursor_inc);
+	sh_scroll_command_line(command_line, g_glob.cursor, cursor_inc);
 	str = tgetstr("cd", NULL);
 	tputs(str, 1, putchar_int);
 	if (command_line->scrolled_lines && g_glob.winsize.ws_row <= 2)

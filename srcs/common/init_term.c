@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/14 13:41:08 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/29 23:28:12 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/09 02:33:40 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int		sh_set_term_sig(int value)
 		g_glob.term.c_lflag &= ~(ISIG);
 	else
 		g_glob.term.c_lflag |= ISIG;
-		if (tcsetattr(0, TCSADRAIN, &g_glob.term) == -1)
+	if (tcsetattr(0, TCSADRAIN, &g_glob.term) == -1)
 	{
 		return (sh_perror("Could not modify this terminal attributes",
 			"sh_init_terminal"));

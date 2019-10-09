@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_vs_motion_e.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 11:02:58 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/20 09:49:26 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/10/09 02:35:35 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 /*
 ** sh_vs_motion_e.c
-**	
+**
 **	go to the end of the counth word starting from command_line->current_index
 */
 
@@ -108,10 +108,10 @@ int		get_next_word_index_readline(t_command_line *command_line, int *index)
 
 int		sh_vs_motion_e_readline_no_end(t_command_line *command_line, char dummy)
 {
-	int     i;
-	char    prev_type;
-	int     new_type;
-	int		first;
+	int		i;
+	char	prev_type;
+	int		new_type;
+	// int		first;
 
 	(void)dummy;
 	if (command_line->current_index == (int)command_line->dy_str->current_size)
@@ -119,13 +119,13 @@ int		sh_vs_motion_e_readline_no_end(t_command_line *command_line, char dummy)
 	prev_type = get_char_type_word_readline(command_line,
 		command_line->current_index);
 	i = command_line->current_index + 1;
-	first = 1;
+	// first = 1;
 	while (i < (int)command_line->dy_str->current_size)
 	{
 		new_type = get_char_type_word_readline(command_line, i);
 		if (new_type != prev_type && prev_type != ' ')
 			return (i - 1);
-		first = 0;
+		// first = 0;
 		prev_type = new_type;
 		i++;
 	}
