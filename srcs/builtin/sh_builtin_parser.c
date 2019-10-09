@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/15 13:19:47 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/04 21:44:45 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/10 00:50:09 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,8 @@ int		sh_builtin_usage(t_args args[], char *name, char *usage, t_context *context
 	int		fd;
 
 	fd = FD_ERR;
-	ft_dprintf(fd, SH_ERR_COLOR);
+	if (isatty(0))
+		ft_dprintf(fd, SH_ERR_COLOR);
 	ft_dprintf(fd, "Usage: %s %s\n", name, usage);
 	i = 0;
 	while (args && args[i].type != E_ARGS_END)
@@ -163,7 +164,8 @@ int		sh_builtin_usage(t_args args[], char *name, char *usage, t_context *context
 			ft_dprintf(fd, "\n");
 		i++;
 	}
-	ft_dprintf(fd, EOC);
+	if (isatty(0))
+		ft_dprintf(fd, EOC);
 	sh_env_update_ret_value(context->shell, SH_RET_ARG_ERROR);
 	return (ERROR);
 }
