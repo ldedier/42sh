@@ -101,16 +101,109 @@ int			sh_expansions_cmd_subst_fill(t_expansion *exp, char *start)
 
 }
 
+static int get_string_process_gnl_returns(t_gnl_info *info, char **res)
+{
+	if (info->separator == E_SEPARATOR_NL)
+	{
+		if (*res == NULL)
+		{
+			if (!(*res = ft_strjoin(info->line, "\n")))
+				return (sh_perror(SH_ERR1_MALLOC, "get_string_from_fd"));
+		}
+		else if (!(*res = ft_strjoin_3_free(*res, "\n", info->line)))
+			return (sh_perror(SH_ERR1_MALLOC, "get_string_from_fd"));
+	}
+	else if (info->separator == E_SEPARATOR_EOF)
+	{
+		if (*res == NULL)
+		{
+			if (!(*res = ft_strdup(info->line)))
+				return (sh_perror(SH_ERR1_MALLOC, "get_string_from_fd"));
+		}
+		else if (!(*res = ft_strjoin_free(*res, info->line, 1)))
+			return (sh_perror(SH_ERR1_MALLOC, "get_string_from_fd"));
+	}
+	else
+		return (sh_perror(SH_ERR1_UNEXPECTED_EOF, "get_string_from_fd"));
+	return (SUCCESS);
+}
+
+char	*get_string_from_fd(int fd)
+{
+	t_gnl_info	info;
+	int			ret;
+	char		*res;
+
+	res = NULL;
+	while ((ret = get_next_line2(fd, &info, BUFF_SIZE)) > 0)
+	{
+		if (get_string_process_gnl_returns(&info, &res))
+		{
+			free(info.line);
+			return (NULL);
+		}
+		free(info.line);
+	}
+	free(info.line);
+	if (!res)
+	{
+		ft_printf("found nothing in pipe !\n");
+		if (!(res = ft_strnew(0)))
+			return (sh_perrorn(SH_ERR1_MALLOC, "get_string_from_fd"));
+	}
+	return (res);
+}
+
+char 	*get_subshell_output(t_shell *shell, char *command)
+{
+	pid_t	child;
+	char	*str;
+	int		fds[2];
+	int		ret;
+
+	if (pipe(fds))
+		return (sh_perrorn(SH_ERR1_PIPE, "get_subshell_output"));
+	if ((child = fork()) == -1)
+		return (sh_perrorn(SH_ERR1_FORK, "get_subshell_output"));
+	if (child == 0)
+	{
+		if (dup2(fds[FD_IN], STDOUT_FILENO) < 0)
+			return (sh_perrorn(SH_ERR1_INTERN_ERR, "get_subshell_output"));
+		close(fds[FD_OUT]);
+		ret = execute_command(shell, command, 0);
+		close(fds[FD_IN]);
+		sh_free_all(shell);
+		exit(ret);
+	}
+	else
+	{
+		//{ child => PID du subshell }
+		close(fds[FD_IN]);
+		str = get_string_from_fd(fds[FD_OUT]);
+	//	close(fds[FD_OUT]);
+		return (str);
+	}
+}
+
 int			sh_expansions_cmd_subst_process(t_context *context,
 				t_expansion *exp)
 {
+	char *str;
+
 	// insert your code here
 	// need to fill exp->res field (!! it is ft_dy_str)
 	// This res will later replace the exp->original string in the token value
 	(void)context;
 	(void)exp;
-	ft_dprintf(2, "command substitution detected : \n\t");
-	t_expansion_show(exp);
-	exp->res = ft_dy_str_new_str(""); // protect
+	if(!(str = get_subshell_output(context->shell, exp->expansion)))
+		return (FAILURE);
+//	ft_dprintf(2, "command substitution detected : \n\t");
+//	t_expansion_show(exp);
+	if (!(exp->res = ft_dy_str_new_str(str)))
+	{
+		free(str);
+		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_cmd_subs_process"));
+	}
+	free(str);
 	return (SUCCESS);
 }
