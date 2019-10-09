@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 11:08:27 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/07 02:46:19 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/09 04:22:46 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ typedef struct		s_lexer
 	t_dy_tab		*env;
 	t_dy_tab		*vars;
 	t_dy_tab		*alias;
+	t_list			*alias_stack;
 	t_shell			*shell;
 	t_lex_mode		mode;
 }					t_lexer;

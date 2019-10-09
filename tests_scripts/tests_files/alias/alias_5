@@ -1,0 +1,12 @@
+shopt -s expand_aliases
+
+alias +=e 2=ls
+2
+alias
+alias ok="-a"
+ls ok
+
+alias cmd="echo" opt="tamer"
+cmd opt
+alias cmd="echo  "
+cmd opt

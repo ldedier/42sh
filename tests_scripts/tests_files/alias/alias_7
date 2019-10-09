@@ -1,0 +1,23 @@
+shopt -s expand_aliases
+
+alias okalm="ls 
+-a"
+okalm
+
+alias oka\
+lm="ls"
+
+oka\
+lm
+
+unalias -a
+
+alias "
+
+empty"="
+
+ls"
+
+"
+
+empty"

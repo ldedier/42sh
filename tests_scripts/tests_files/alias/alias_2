@@ -1,0 +1,12 @@
+shopt -s expand_aliases
+
+alias ok=echo
+alias
+ok ok ok
+
+alias ok="echo "
+alias
+ok ok ok
+ok -- ok ok
+ok d ok ok
+ok -n ok ok

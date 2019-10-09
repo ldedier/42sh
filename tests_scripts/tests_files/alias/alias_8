@@ -1,0 +1,12 @@
+shopt -s expand_aliases
+
+alias \v\a\r\='$var'
+var=ls
+var
+
+alias var=$var
+var
+
+alias var='$var'
+var="echo -n pwd tamer"
+var

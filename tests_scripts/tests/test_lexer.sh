@@ -49,6 +49,11 @@ launch "Lexer"
 		test_launch_pipe ./tests_files/lexer/lexer_${i}
 	done
 	
+	launch_show "Alias substitution"
+	for i in `seq 1 10` ; do
+		test_launch_pipe ./tests_files/alias/alias_${i}
+	done
+
 	launch_show "Random"
 	test_launch '"var=pwe"'
 	test_launch 'ls ""'
