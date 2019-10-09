@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/08 16:19:21 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/09 16:59:55 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,10 @@ static int		pipe_to_do(t_ast_node *node, t_context *context)
 	{
 		ret = pipe_child_part(node, context);
 		return (ret);
+		// From master
+		// waitpid(child, &ret, 0);
+		// sh_env_update_ret_value_wait_result(context, ret);
+		// return (SUCCESS);
 	}
 	else
 	{

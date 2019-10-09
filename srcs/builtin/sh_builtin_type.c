@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/15 15:13:53 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/25 07:24:09 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/09 05:46:18 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ static int	sh_builtin_type_default(
 	ret = SUCCESS;
 	while (argv[i++])
 	{
+		if (!sh_builtin_type_search_alias(argv[i - 1], args, context))
+			continue ;
 		if (!sh_builtin_type_search_reserved(argv[i - 1], args))
 			continue ;
 		if (!sh_builtin_type_search_builtin(argv[i - 1], args))
@@ -53,6 +55,7 @@ static int	sh_builtin_type_all(
 	while (argv[i++])
 	{
 		found = 0;
+		found += !sh_builtin_type_search_alias(argv[i - 1], args, context);
 		found += !sh_builtin_type_search_reserved(argv[i - 1], args);
 		found += !sh_builtin_type_search_builtin(argv[i - 1], args);
 		buffer = sh_builtin_type_search_in_path(context, argv[i - 1], args);

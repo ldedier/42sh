@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 17:31:33 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/09 02:36:52 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/09 22:36:53 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@
 ** This needs to be done by both the child and the parent processe-
 ** 	in order to avoid any possible race-conditions.
 ** First process of each job is appointed as the group leader.
-** Example: ls | wc ; echo done
+** Example: ls | wc ; cat
 ** "ls" and "wc" are in the same process group (with "ls" as the leader)
-** "echo" is in another process group (and it's its leader).
+** "cat" is in another process group (and it's its leader).
 */
 
 #include "sh_21.h"

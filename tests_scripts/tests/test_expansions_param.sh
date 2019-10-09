@@ -14,7 +14,6 @@
 launch "Parameter_expansion"
 	launch_show "General"
 	test_launch 'foo=okalm bar=tamer' 'echo ${foo}' 'echo ${bar}' 'echo ${foo}${bar}'
-	test_launch ''
 
 	launch_show ":- and -"
 	## :- and -
@@ -189,10 +188,9 @@ launch "Parameter_expansion"
 	test_launch 'echo ${noparam:-~} ; echo ${noparam:-~}'
 	test_launch 'echo ${param:-"~"} ; echo ${param:-"~"}'
 	test_launch 'echo ${noparam:-"~"} ; echo ${noparam:-"~"}'
-
-
-	test_launch 'param=Okalmos word=VARIABLE'
-	test_launch ''
+	test_launch 's=Oklma d=TAMER ; echo ${param:-$s$d} ; echo $?'
+	test_launch 's=Oklma ; echo ${param:-$s$d} ; echo $?'
+	test_launch 's=Oklma ; echo ${param:+$s$d} ; echo $?'
 
 	launch_show "Quoting tests"
 	test_launch 'echo ${""}'

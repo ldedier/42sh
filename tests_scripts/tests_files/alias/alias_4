@@ -1,0 +1,15 @@
+shopt -s expand_aliases
+
+alias alias="ls"
+alias
+type alias
+type -a alias
+unalias -a
+
+alias ""=sd
+alias ""=""
+alias ok=""
+alias
+
+ok
+""

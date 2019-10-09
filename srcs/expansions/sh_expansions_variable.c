@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 13:38:26 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/05 07:39:26 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/06 04:15:18 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,9 +157,10 @@ int			sh_expansions_variable_process(t_context *context, t_expansion *exp)
 {
 	char	*value;
 
-	value = sh_vars_get_value(context->env, context->vars, exp->expansion + 1);
 	if (*exp->expansion != '#')
 		value = sh_vars_get_value(context->env, context->vars, exp->expansion);
+	else
+		value = sh_vars_get_value(context->env, context->vars, exp->expansion + 1);
 	if (*exp->expansion == '#')
 	{
 		if (!value)

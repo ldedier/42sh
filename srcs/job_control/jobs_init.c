@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 23:24:10 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/09 01:42:40 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/09 22:34:40 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static void		init_jc_values(void)
 	g_job_ctrl->first_job = NULL;
 	g_job_ctrl->job_cmd = NULL;
 	g_job_ctrl->curr_job = NULL;
+	g_job_ctrl->job_added = 0;
 	// This is where we print all job-control realted messages
 	// g_term_fd = open("/dev/tty", O_RDWR); //Protect
 }

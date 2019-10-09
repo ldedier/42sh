@@ -1,0 +1,6 @@
+shopt -s expand_aliases
+
+alias cmd="echo" opt="tamer"
+cmd opt
+alias cmd="echo  "
+cmd opt

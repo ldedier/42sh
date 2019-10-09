@@ -1,0 +1,12 @@
+shopt -s expand_aliases
+
+alias alias=alias alias=alias alias=alias
+alias
+alias alias
+unalias -a
+alias unalias=alias alias=unalias
+type -a alias unalias
+type alias unalias
+unalias
+alias -a
+alias

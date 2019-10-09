@@ -1,0 +1,12 @@
+shopt -s expand_aliases
+
+alias ok="ls"
+alias
+ok ok 2>file ; cat file ; rm file
+ok ok ok 2>file ; cat file ; rm file
+
+alias ok="ls "
+alias
+ok ok 2>file ; cat file ; rm file
+ok ok ok 2>file ; cat file ; rm file
+ok file ok ok 2>file ; cat file ; rm file

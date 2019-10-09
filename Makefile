@@ -6,7 +6,7 @@
 #    By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/10/08 16:27:52 by mdaoud           ###   ########.fr        #
+#    Updated: 2019/10/09 19:09:33 by mdaoud           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,7 +63,7 @@ SRCS			 =	debug.c first_sets.c grammar.c init_cfg.c \
 ################################################################
 SRCS			+=	sh_traverse.c sh_traverse_default.c \
 					sh_traverse_semicol.c sh_traverse_pipe_line.c \
-					sh_traverse_assignment_word.c \
+					sh_traverse_assignment_word.c sh_traverse_ampersand.c \
 					sh_traverse_simple_command.c \
 					sh_traverse_io_file.c \
 					sh_traverse_cmd_name.c sh_traverse_cmd_word.c \
@@ -108,7 +108,9 @@ SRCS			+=	sh_traverse_tools_browse.c \
 					sh_traverse_tools_simple_command.c \
 					sh_traverse_tools_simple_command_check_perm.c \
 					sh_traverse_tools_get_heredoc.c \
-					sh_traverse_tools_io_here_redirection.c
+					sh_traverse_tools_io_here_redirection.c \
+					sh_traverse_tools_get_separator.c \
+					sh_traverse_tools_get_exec_node.c
 
 ################################################################
 ########					COMMON						########
@@ -147,6 +149,7 @@ SRCS			 +=	sh_lexer.c \
 					sh_lexer_rule_9.c \
 					sh_lexer_rule_10.c \
 					sh_lexer_reserved_words.c \
+					sh_lexer_alias.c \
 					sh_lexer_rule_tools.c t_lexer.c t_token.c \
 					t_token_show.c t_token_list.c
 
@@ -298,7 +301,10 @@ SRCS			+=	sh_builtin.c sh_builtin_pwd.c \
 					sh_builtin_fc_s_synopsis.c \
 					sh_builtin_fc_default_synopsis.c \
 					sh_builtin_fc_parse_operands.c \
-					sh_builtin_fc_get_entry.c
+					sh_builtin_fc_get_entry.c \
+					sh_builtin_alias.c \
+					sh_builtin_alias_show.c \
+					sh_builtin_unalias.c
 
 ################################################################
 ########						EXPANSION				########

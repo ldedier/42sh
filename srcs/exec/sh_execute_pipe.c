@@ -73,14 +73,14 @@ static int 		loop_pipe_exec(
 	else
 	{
 		if ((child = fork_for_pipe(pds)) < 0)
-			return (STOP_CMD_LINE);
+			return (ERROR);
 		else if (child)
 			return (parent_exec(child, pds, curr_sequence, context));
 		if (dup2(pds[INPUT], STDIN_FILENO) < 0)
 		{
 			sh_reset_redirection(&context->redirections);
 			sh_free_all(context->shell);
-			exit(STOP_CMD_LINE);
+			exit(ERROR);
 		}
 		close(pds[OUTPUT]);
 		ret = loop_pipe_exec(
@@ -89,6 +89,7 @@ static int 		loop_pipe_exec(
 		sh_reset_redirection(&context->redirections);
 		sh_free_all(context->shell);
 		exit(ret);
+//		exit(context->shell->ret_value);
 	}
 }
 

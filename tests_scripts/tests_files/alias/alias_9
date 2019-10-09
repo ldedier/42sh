@@ -1,0 +1,5 @@
+shopt -s expand_aliases
+
+alias suite="ls && pwd && ls nodir || pwd &&"
+suite suite ls
+

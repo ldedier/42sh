@@ -1,0 +1,14 @@
+shopt -s expand_aliases
+
+alias ls=a1 a1=a2 a3=ls
+ls
+ls -a
+
+alias "o
+k"=ls
+o\
+k
+
+alias
+unalias -a
+alias

@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 17:11:16 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/06 16:50:55 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/09 16:58:07 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct		s_context
 	t_dy_tab		*env;
 	t_dy_tab		*saved_env;
 	t_dy_tab		*vars;
+	t_dy_tab		*alias;
 	char			*path;
 	t_dy_tab		*params;
 	int				(*builtin)(struct s_context *);

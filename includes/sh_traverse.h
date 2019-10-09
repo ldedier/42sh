@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_traverse.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:35:27 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/02 09:20:33 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/09 19:09:11 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,13 @@ int		sh_traverse_pipeline(t_ast_node *node, t_context *context);
 */
 int		sh_traverse_semicol(
 	t_ast_node *node_to_execute, t_context *context);
+
+/*
+** sh_traverse_ampersand.c
+*/
+int		sh_traverse_ampersand(
+	t_ast_node *node_to_execute, t_context *context);
+
 
 /*
 ** sh_traverse_simple_command.c

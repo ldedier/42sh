@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/07 16:11:41 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/06 01:30:52 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/09 05:19:23 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,17 +74,13 @@ int				sh_lexer(char *input, t_list **tokens, t_shell *shell,
 	int			ret;
 
 	ft_bzero(&lexer, sizeof(t_lexer));
-	lexer.mode = mode;
-	lexer.shell = shell;
-	if (!(lexer.input = ft_strdup(input)))
+	if (t_lexer_init(&lexer, mode, shell, input))
 		return (FAILURE);
-	t_lexer_init(&lexer, 0);
-	lexer.env = shell->env;
-	lexer.vars = shell->vars;
 	ret = LEX_OK;
 	while (ret == LEX_OK)
 		ret = sh_lexer_run_rules(&lexer);
 	free(lexer.input);
+	ft_lstdel(&lexer.alias_stack, NULL);
 	if (ret != LEX_END)
 	{
 		t_token_free_list(&lexer.list);
@@ -98,7 +94,6 @@ int				sh_lexer(char *input, t_list **tokens, t_shell *shell,
 	}
 	if (sh_verbose_lexer())
 		t_lexer_show(&lexer);
-	ret = sh_lexer_reserved_words(&lexer);
 	ret = sh_lexer_final_check(&lexer);
 	if (sh_verbose_lexer())
 		t_lexer_show(&lexer);

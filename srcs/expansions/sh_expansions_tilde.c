@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 13:56:29 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/05 07:37:59 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/06 05:18:37 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,18 +45,18 @@ int			sh_expansions_tilde_detect(char *start)
 static int	sh_expansions_tilde_process_bonus(
 		t_context *context, t_expansion *exp)
 {
-	char			*buf;
 	struct passwd	*passwd;
+	char			*buf;
 
 	if (BONUS_TILDE_EXP)
 	{
 		buf = ft_strndup(exp->original + 1, ft_strlen(exp->original) - 1);
 		if (!buf)
 			return (sh_perror(SH_ERR1_MALLOC, "expansion_process_tilde (3)"));
-		if (!(passwd = getpwnam(buf)))
-			exp->res = ft_dy_str_new_str(exp->original);
-		else
+		if ((passwd = getpwnam(buf)))
 			exp->res = ft_dy_str_new_str(passwd->pw_dir);
+		else
+			exp->res = ft_dy_str_new_str(exp->original);
 		free(buf);
 	}
 	else

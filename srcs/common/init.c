@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/14 13:19:50 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/09 15:49:36 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/09 16:58:57 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,8 @@ int			sh_init_shell(t_shell *shell, char **env)
 	shell->term = s;
 	shell->ret_value = 0;
 	shell->ret_value_set = 0;
+	if (!(shell->alias = ft_dy_tab_new(5)))
+		return (FAILURE);
 	if (sh_main_init_env(shell, env) == FAILURE)
 		return (FAILURE);
 	if (sh_main_init_vars(shell) == FAILURE)

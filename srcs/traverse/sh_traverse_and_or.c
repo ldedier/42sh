@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 15:54:02 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/08 19:24:48 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/09 22:34:14 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ int				sh_traverse_and_or(t_ast_node *node, t_context *context)
 	ptr = node->children;
 	// If no jobs are added, it means that there is no "&" present at the end of the command.
 	// If no jobs are added, or no "||" or "&&" are found, proceed as normal.
+	// if (g_job_ctrl->job_added == 0 || ptr->next == NULL)
 	if (g_job_ctrl->job_added == 0 || ptr->next == NULL)
 	{
 		ret = sh_execute_and_or(node, context);

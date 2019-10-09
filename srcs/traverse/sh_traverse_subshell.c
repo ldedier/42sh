@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_traverse_subshell.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/02 10:03:30 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/02 10:06:47 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/09 19:29:44 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,31 +22,58 @@
 ** A term can be a list of and_or break by separator node.
 ** A separator can be ';' '&' 'line_break' or 'newline_list'
 */
+static int	get_last_separator(t_ast_node *curr_node)
+{
+	t_ast_node	*last_separator;
+
+	if (curr_node->children->next)
+	{
+		last_separator = curr_node->children->next->content;
+		last_separator = last_separator->children->content;
+		if (last_separator->symbol->id == sh_index(SEPARATOR_OP))
+		{
+			last_separator = last_separator->children->content;
+			ft_printf("we've got a separator ! it's ");// delete it
+			if (last_separator->symbol->id == sh_index(LEX_TOK_AND))
+			{
+				ft_printf("-%c-\n", '&');// delete it
+				return (1);
+			}
+			else if (last_separator->symbol->id == sh_index(LEX_TOK_SEMICOL))
+				ft_printf("-%c-\n", ';');// delete it
+		}
+		else
+			ft_printf("-Seperator not yet handeled ..-\n");// delete it
+	}
+	return (0);
+}
+
 static int	search_term(t_ast_node *node, t_context *context)
 {
 	t_list		*el;
-	t_ast_node	*child;
+	int			ret;
+	t_ast_node	*curr_node;
+	// t_ast_node	*node_to_exec;
 
 	el = node->children;
+	// node_to_exec = NULL;
+	ret = SUCCESS;
 	while (el)
 	{
-		child = el->content;
-		if (child->symbol->id == sh_index(TERM))
+		curr_node = el->content;
+		if (curr_node->symbol->id == sh_index(COMPOUND_LIST))
+		{
+			get_last_separator(curr_node);//check retrun value to know if they are '&' at the end
+			el = curr_node->children;
+			curr_node = el->content;
+		}
+		if (curr_node->symbol->id == sh_index(TERM))
 			break ;
 		el = el->next;
 	}
 	if (el)
-	{
-		el = child->children;
-		while (el)
-		{
-			child = el->content;
-			if (child->symbol->id == sh_index(AND_OR))
-				sh_traverse_and_or(child, context);//check retour
-			el = el->next;
-		}
-	}
-	return (SUCCESS);
+		ret = get_node_to_exec(curr_node, context, SEPARATOR, &sh_get_separator);
+	return (ret);
 }
 
 /*
@@ -69,12 +96,16 @@ int		sh_traverse_subshell(t_ast_node *node, t_context *context)
 	{
 		waitpid(pid, &ret, 0);
 		sh_env_update_ret_value_wait_result(context, ret);
-		return (SH_RET_VALUE_EXIT_STATUS(ret));
+		return (SUCCESS);
 	}
 	else
 	{
-		ret = search_term(node->children->next->content, context);
-		exit(ret);
+		/*ret = search_term(node->children->next->content, context);*/
+		ret = search_term(node, context);
+		sh_free_all(context->shell);
+		if (ret != SUCCESS)
+			exit(ret);
+		exit(context->shell->ret_value);
 	}
 	return (0);
 }
@@ -84,7 +115,8 @@ int		sh_traverse_brace_group(t_ast_node *node, t_context *context)
 	int	ret;
 
 	sh_traverse_tools_show_traverse_start(node, context);
-	ret = search_term(node->children->next->content, context);
+	/*ret = search_term(node->children->next->content, context);*/
+	ret = search_term(node, context);
 	sh_traverse_tools_show_traverse_ret_value(node, context, ret);
 	return (ret);
 }

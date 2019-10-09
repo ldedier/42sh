@@ -40,15 +40,18 @@ launch "Lexer"
 	for i in `seq 1 22` ; do
 		test_launch_pipe ./tests_files/lexer/lexer_${i}
 	done
+	for i in `seq 30 35` ; do
+		test_launch_pipe ./tests_files/lexer/lexer_${i}
+	done
 
 	launch_show "Solo quotes"
 	for i in `seq 23 29` ; do
 		test_launch_pipe ./tests_files/lexer/lexer_${i}
 	done
 	
-	launch_show "Solo quotes"
-	for i in `seq 30 35` ; do
-		test_launch_pipe ./tests_files/lexer/lexer_${i}
+	launch_show "Alias substitution"
+	for i in `seq 1 11` ; do
+		test_launch_pipe ./tests_files/alias/alias_${i}
 	done
 
 	launch_show "Random"
@@ -70,4 +73,4 @@ launch "Lexer"
 
 finish
 
-rm file
+rm -f file

@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 04:11:01 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/29 04:11:51 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/07 00:36:30 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@ int			sh_builtin_export_show(t_context *context)
 	if (write(FD_OUT, NULL, 0))
 		return (sh_perror2_err("write error", "export", SH_ERR1_BAD_FD));
 	tbl = (char**)(context->saved_env->tbl);
+	if (!tbl || !*tbl)
+		return (SUCCESS);
 	min = NULL;
 	show_get_min_init(&min, tbl);
 	while (min)

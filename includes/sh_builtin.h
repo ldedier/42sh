@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 11:36:31 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/30 01:47:24 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/09 17:15:19 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 # define SH_BUILTIN_H
 
 # if __APPLE__ && __MACH__
-#  define NB_BUILTINS	17
+#  define NB_BUILTINS	19
 # else
-#  define NB_BUILTINS	16
+#  define NB_BUILTINS	18
 # endif
 
 # include "sh_grammar.h"
@@ -54,6 +54,15 @@
 #define EXPORT_USAGE		"name[=word]"
 #define EXPORT_P_OPT		0
 #define EXPORT_P_OPT_USAGE	"print all exported variables (default option)"
+
+/*
+** Macros for alias builtin
+*/
+
+#define ALIAS_MSG			"alias"
+#define ALIAS_USAGE			"[alias-name[=string]...]"
+#define ALIAS_P_OPT			0
+#define ALIAS_P_OPT_USAGE	"print all exported variables (default option)"
 
 enum	e_built_test_unary {TEST_B, TEST_C, TEST_D, TEST_E, TEST_F, TEST_G,
 	TEST_L, TEST_P, TEST_R, TEST_SS, TEST_S, TEST_U, TEST_W, TEST_X, TEST_Z};
@@ -153,6 +162,18 @@ int					sh_builtin_🐑(t_context *context);
 t_builtin_container	*get_builtins(void);
 t_builtin			sh_builtin_find_name(char *name);
 t_builtin			sh_builtin_find(t_context *context);
+
+/*
+** sh_builtin_alias.c
+*/
+int					sh_builtin_alias(t_context *context);
+int					alias_valid_name(char *str);
+
+/*
+** sh_builtin_alias_show.c
+*/
+void				show_alias(char *str);
+int					sh_builtin_alias_show(t_context *context);
 
 /*
 ** sh_builtin_cd.c
@@ -326,6 +347,8 @@ int					sh_builtin_type(t_context *context);
 /*
 ** sh_builtin_type_search.c
 */
+int					sh_builtin_type_search_alias(
+	char *name, t_args args[], t_context *context);
 int					sh_builtin_type_search_reserved(
 	char *name, t_args args[]);
 int					sh_builtin_type_search_builtin(
@@ -340,6 +363,11 @@ int					sh_builtin_type_search_in_dir(
 	char *path, DIR *dir, t_context *context, char *name);
 int					sh_builtin_type_search_in_path(
 	t_context *context, char *name, t_args args[]);
+
+/*
+** sh_builtin_unalias.c
+*/
+int					sh_builtin_unalias(t_context *context);
 
 /*
 ** sh_builtin_unset.c
