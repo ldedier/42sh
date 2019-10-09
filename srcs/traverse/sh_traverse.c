@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 21:45:25 by ldedier           #+#    #+#             */
-/*   Updated: 2019/07/30 11:25:24 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/10/09 10:56:01 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ static t_ast_node	*go_to_list(t_ast_node *node)
 	t_ast_node *test;
 
 	test = node;
-	while (test->symbol->id != sh_index(LIST))
+	/*while (test->symbol->id != sh_index(LIST))*/
+	while (test->symbol->id != sh_index(COMPLETE_COMMAND))
 	{
 		if (test->children == NULL)
 			return (NULL);

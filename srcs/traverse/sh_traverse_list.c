@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/28 16:49:38 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/07 15:59:43 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/09 11:10:59 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,23 @@
 */
 int			sh_traverse_list(t_ast_node *node, t_context *context)
 {
-	int		ret;
+	int			ret;
+	t_ast_node	*last_separator;
 
+	if (node->children->next)
+	{
+		last_separator = node->children->next->content;
+		last_separator = last_separator->children->content;
+		ft_printf("we've got a separator ! it's ");// delete it
+		if (last_separator->symbol->id == sh_index(LEX_TOK_AND))
+			ft_printf("-%c-\n", '&');// delete it
+		else if (last_separator->symbol->id == sh_index(LEX_TOK_SEMICOL))
+			ft_printf("-%c-\n", ';');// delete it
+		else
+			ft_printf("-... well this is not suppose to append...-\n");// delete it
+	}
 	sh_traverse_tools_show_traverse_start(node, context);
-	ret = get_node_to_exec(node, context, SEPARATOR_OP, &sh_get_separator_op);
+	ret = get_node_to_exec(node->children->content, context, SEPARATOR_OP, &sh_get_separator_op);
 	sh_traverse_tools_show_traverse_ret_value(node, context, ret);
 	if (ret == FAILURE)
 		return (FAILURE);

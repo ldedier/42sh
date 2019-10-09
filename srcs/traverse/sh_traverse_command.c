@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/02 00:35:13 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/04 16:12:16 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/09 10:49:41 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ static int	compound_and_redirection(t_ast_node *node, t_context *context)
 		return (FAILURE);
 	return (ret);
 }
+
 /*
  * sh_traverse_command
 ** This is the dispatcher of command (grammar) node
