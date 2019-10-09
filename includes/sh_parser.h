@@ -19,6 +19,8 @@
 # include "sh_grammar.h"
 # include "sh_exec.h"
 
+# define KNOWN_ITERATIONS 2
+
 typedef struct s_ast_node	t_ast_node;
 typedef struct s_shell		t_shell;
 typedef struct s_stack_item	t_stack_item;

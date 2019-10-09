@@ -432,6 +432,10 @@ int					execute_vshortcut(
 int					is_printable_utf8_byte(unsigned char c);
 int					get_inclusion(
 	t_command_line *command_line, t_motion_inclusion inclusion);
+int					get_motion_awaiting_shortcut(
+	t_command_line *command_line,
+	int *motion_res,
+	t_vshortcut *motion_shortcut);
 int					execute_motion_awaiting_shortcut(
 	t_command_line *command_line,
 	t_vshortcut *vshortcut,
