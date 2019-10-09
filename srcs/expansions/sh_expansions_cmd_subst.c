@@ -167,20 +167,20 @@ char 	*get_subshell_output(t_shell *shell, char *command)
 		return (sh_perrorn(SH_ERR1_FORK, "get_subshell_output"));
 	if (child == 0)
 	{
-		if (dup2(fds[FD_IN], STDOUT_FILENO) < 0)
+		if (dup2(fds[PIPE_IN], STDOUT_FILENO) < 0)
 			return (sh_perrorn(SH_ERR1_INTERN_ERR, "get_subshell_output"));
-		close(fds[FD_OUT]);
+		close(fds[PIPE_OUT]);
 		ret = execute_command(shell, command, 0);
-		close(fds[FD_IN]);
+		close(fds[PIPE_IN]);
 		sh_free_all(shell);
 		exit(ret);
 	}
 	else
 	{
 		//{ child => PID du subshell }
-		close(fds[FD_IN]);
-		str = get_string_from_fd(fds[FD_OUT]);
-	//	close(fds[FD_OUT]);
+		close(fds[PIPE_IN]);
+		str = get_string_from_fd(fds[PIPE_OUT]);
+		close(fds[PIPE_OUT]);
 		return (str);
 	}
 }
@@ -195,7 +195,7 @@ int			sh_expansions_cmd_subst_process(t_context *context,
 	// This res will later replace the exp->original string in the token value
 	(void)context;
 	(void)exp;
-	if(!(str = get_subshell_output(context->shell, exp->expansion)))
+	if (!(str = get_subshell_output(context->shell, exp->expansion)))
 		return (FAILURE);
 //	ft_dprintf(2, "command substitution detected : \n\t");
 //	t_expansion_show(exp);
