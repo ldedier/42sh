@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/03 07:59:34 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/04 17:44:26 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/09 01:42:40 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static char			*create_cmd_word(t_token *t)
 	// ft_printf("\n");
 	if (t->id == LEX_TOK_WORD)
 	{
-		// ft_dprintf(g_job_ctrl->term_fd, "token %s\n", t->value);
+		// ft_dprintf(g_term_fd, "token %s\n", t->value);
 		if ((str = ft_strdup(t->value)) == NULL)
 			return (sh_perrorn(SH_ERR1_MALLOC, "create job command"));
 		return (str);
@@ -31,7 +31,7 @@ static char			*create_cmd_word(t_token *t)
 	// 		return (sh_perror(SH_ERR1_MALLOC, "create job command"));
 	else
 	{
-		// ft_dprintf(g_job_ctrl->term_fd, "token %s\n", g_glob.cfg->symbols[t->index].debug);
+		// ft_dprintf(g_term_fd, "token %s\n", g_glob.cfg->symbols[t->index].debug);
 		str = ft_strdup(g_glob.cfg->symbols[t->index].debug);
 		return (str);
 	}
@@ -64,7 +64,7 @@ static t_job_cmd		*create_job_cmd(t_list *s, t_list *e)
 			str = ft_strjoin_free(str, " ", 1);
 			str = ft_strjoin_free(str, tmp, 3);
 		}
-		// ft_dprintf(g_job_ctrl->term_fd, "%sstr: \"%s\"%s\n", YELLOW, str, EOC);
+		// ft_dprintf(g_term_fd, "%sstr: \"%s\"%s\n", YELLOW, str, EOC);
 		s = s->next;
 	}
 	job_cmd->str = str;
@@ -92,32 +92,24 @@ int			jobs_create_cmds(t_list *token_list)
 	t_list		*s;
 	t_list		*e;
 	t_job_cmd	*cmd;
-	t_job_cmd	*it;
 
-	if (g_job_ctrl->jc_enabled == 0)
+	if (g_job_ctrl->interactive == 0)
 		return (SUCCESS);
 	s = token_list;
 	// sh_print_token_list(token_list, g_glob.cfg);
 	while (s != NULL && ((t_token *)(s->content))->id != END_OF_INPUT)
 	{
 		e = s;
-		// ft_printf("s: ");
-		// sh_print_token(s->content, g_glob.cfg);
-		// ft_printf("\n");
 		while (((t_token *)(e->content))->id != END_OF_INPUT
 			&& (((t_token *)(e->content))->id != LEX_TOK_SEMICOL)
 			&& (((t_token *)(e->content))->id != LEX_TOK_AND))
-			{
-				// ft_printf("e: ");
-				// sh_print_token(e->content, g_glob.cfg);
-				// ft_printf("\n");
 				e = e->next;
-			}
 		cmd = create_job_cmd(s, e);
 		if (cmd == NULL)
 			return (FAILURE);
 		add_job_cmd(cmd);
 		s = e->next;
 	}
+	return (SUCCESS);
 	// jobs_print_cmds();
 }

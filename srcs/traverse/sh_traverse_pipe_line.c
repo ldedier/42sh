@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/06 18:16:44 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/08 16:19:21 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int		pipe_child_part(t_ast_node *node, t_context *context)
 
 	reset_signals();
 	cpid = getpid();
-	if (g_job_ctrl->jc_enabled)
+	if (g_job_ctrl->interactive)
 	{
 		if ((ret = set_pgid_child(cpid)) != SUCCESS)
 			return (ret);
@@ -32,9 +32,9 @@ static int		pipe_parent_part(pid_t cpid, t_context *context)
 {
 	int		ret;
 
-	if (g_job_ctrl->jc_enabled)
+	if (g_job_ctrl->interactive)
 	{
-		if ((ret = set_pgid_parent(cpid, context)) != SUCCESS)
+		if ((ret = set_pgid_parent(cpid)) != SUCCESS)
 			return (ret);
 		if (g_job_ctrl->curr_job->foreground == 0)
 			ret = job_put_in_bg(g_job_ctrl->curr_job, 0);
@@ -84,11 +84,11 @@ static int		sh_traverse_pipe_sequence(t_ast_node *node, t_context *context)
 	sh_traverse_tools_show_traverse_start(node, context);
 	if (ft_lstlen(node->children) > 1)
 	{
-		if (g_job_ctrl->jc_enabled)
+		if (g_job_ctrl->interactive)
 		{
 			if (g_job_ctrl->job_added == 0)
 			{
-				if ((ret = jobs_add(1)) != SUCCESS)
+				if ((ret = job_add(1)) != SUCCESS)
 					return (ret);
 				g_job_ctrl->job_added = 1;
 			}

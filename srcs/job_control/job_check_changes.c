@@ -27,6 +27,7 @@ static int	check_process_changes(t_job *j, int cpid, int status)
 			p->status = status;
 			if (WIFSTOPPED(status))
 			{
+				ft_dprintf(g_term_fd, "\n");
 				p->stopped = 1;
 				job_notify();
 			}
@@ -40,19 +41,25 @@ static int	check_process_changes(t_job *j, int cpid, int status)
 		}
 		p = p->next;
 	}
+	return (-1);
 }
+
+/*
+** When waitpid returns a pid, we check to which job that pid belongs to
+** Then we update that process and the job strucutre.
+*/
 
 int			job_check_changes(pid_t cpid, int status)
 {
 	t_job		*j;
-	t_process	*p;
 
 	j = g_job_ctrl->first_job;
 	if (cpid > 0)
 	{
 		while (j != NULL)
 		{
-			check_process_changes(j, cpid, status);
+			if (check_process_changes(j, cpid, status) == 0)
+				return (0);
 			j = j->next;
 		}
 	}

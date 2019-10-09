@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 01:05:04 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/06 18:02:29 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/08 20:45:06 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,15 @@ static void		report_completed_job_status(t_job *j)
 	j->notified = 1;
 }
 
+/*
+** When we recieve a SIGCHLD from a process in the background,
+**	We call waitpid with the flag "WNOHANG" that will return the pid of
+**	the process that has changed status.
+** We then check all of our jobs and their processes to see which process that pid
+**	coressponds to, then we update the status of that process and job,
+**	and notify the user of any notable changes.
+*/
+
 void			job_notify(void)
 {
 	t_job	*j;
@@ -48,6 +57,7 @@ void			job_notify(void)
 	while (j != NULL)
 	{
 		j_next = j->next;
+		// If the job is completed, report to user and remove the job from the list.
 		if (job_is_completed(j))
 		{
 			g_job_ctrl->job_num[j->number] = 0;
@@ -56,13 +66,12 @@ void			job_notify(void)
 			if (tmp)
 				tmp->next = j_next;
 			else
-			{
 				g_job_ctrl->first_job = j_next;
-			}
 			if (g_job_ctrl->curr_job == j)
 				g_job_ctrl->curr_job = NULL;
 			job_free(j);
 		}
+		// If the job has stopped (but not completed), report to the user (only once)
 		else if (job_is_stopped(j) && !j->notified)
 		{
 			job_print_status(j, "Stopped");

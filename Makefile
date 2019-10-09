@@ -6,7 +6,7 @@
 #    By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/10/06 03:09:36 by mdaoud           ###   ########.fr        #
+#    Updated: 2019/10/08 16:27:52 by mdaoud           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -325,13 +325,13 @@ SRCS			 +=	sh_perror.c \
 ################################################################
 ########				JOB_CONTROL						########
 ################################################################
-SRCS			+=	jobs_init.c jobs_add.c jobs_print.c process_add.c \
+SRCS			+=	jobs_init.c job_add.c process_add.c \
 					str_tab_duplicate.c str_tab_print.c str_tab_free.c \
-					set_child_pgid.c job_control_free.c job_wait.c \
+					job_control_free.c job_wait.c \
 					job_put_in_bg.c job_put_in_fg.c job_is_completed.c \
 					job_is_stopped.c job_check_changes.c job_free.c \
 					job_print_status.c job_notify.c get_active_job.c \
-					jc_error_free.c set_pgid_child.c set_pgid_parent.c \
+					jobs_error_free.c set_pgid_child.c set_pgid_parent.c \
 					jobs_create_cmds.c jobs_free_cmds.c jobs_print_cmds.c
 
 ################################################################
@@ -361,7 +361,7 @@ INC 			=	-I $(INCLUDESDIR) -I $(LIBFTDIR) -I $(LIBFTDIR)/$(PRINTFDIR)
 
 EOC = \033[0m
 ifeq ($(OS),Linux)
-	CFLAGS = -DPATH=$(PWD) $(INC)
+	CFLAGS = -DPATH=$(PWD) $(INC) -Wall -Werror -Wextra
 	OK_COLOR = \033[1;32m
 	FLAGS_COLOR = \033[1;34m
 	#COMP_COLOR =

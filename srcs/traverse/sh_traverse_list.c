@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/28 16:49:38 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/06 16:53:56 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/08 18:44:32 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,18 @@ static int 	get_separator_op(
 	t_ast_node *to_execute, t_ast_node *separator, t_context *context)
 {
 	int		res;
-	//need to send to_execute to the good separator
 	if (separator->symbol->id == sh_index(LEX_TOK_AND))
 	{
-		if (g_job_ctrl->jc_enabled)
+		if (g_job_ctrl->interactive)
 		{
-			if ((res = jobs_add(0)) != SUCCESS)
+			// if the seperator op is "&" add the job now in background
+			if ((res = job_add(0)) != SUCCESS)
 				return (res);
+			// Make sure we don't add another job at lower ast levels (simple command for example).
 			g_job_ctrl->job_added = 1;
 		}
+		// if the shell is not interactive, and the seperator is "&"
+		// We need the WNOHANG wait flag to make sure the shell does not wait for the command.
 		context->wait_flags = WNOHANG;
 		return (sh_traverse_semicol(to_execute, context));
 	}
@@ -83,9 +86,9 @@ static int 	get_node_to_exec(t_ast_node *node, t_context *context)
 	if (node_to_exec && ret == SUCCESS)
 	{
 		context->wait_flags = g_job_ctrl->ampersand_eol;
-		if (g_job_ctrl->jc_enabled && g_job_ctrl->ampersand_eol)
+		if (g_job_ctrl->interactive && g_job_ctrl->ampersand_eol)
 		{
-			if ((ret = jobs_add(0)) != SUCCESS)
+			if ((ret = job_add(0)) != SUCCESS)
 					return (ret);
 			g_job_ctrl->job_added = 1;
 		}

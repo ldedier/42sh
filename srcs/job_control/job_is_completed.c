@@ -6,12 +6,16 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 00:19:55 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/01 02:31:35 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/08 20:41:30 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 #include "sh_job_control.h"
+
+/*
+** A job is considered completed if all the process are completed.
+*/
 
 int		job_is_completed(t_job *j)
 {

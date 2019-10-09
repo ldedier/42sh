@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 17:59:53 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/28 01:37:43 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/09 02:14:43 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static int	main_exit_value(t_shell *shell, int ret)
 	}
 	if (sh_verbose_exec())
 		ft_dprintf(2, "Final returned value : %d\n", ret);
+	// mdaoud: 0 or g_term_fd?
 	if (isatty(0) && ret_save != 2)
 		ft_dprintf(2, "exit\n");
 	return (ret);
@@ -39,9 +40,11 @@ int			main(int argc, char **argv, char **env)
 	(void)argc;
 	(void)argv;
 	init_signals();
-	if (jobs_init(&shell))
+	if (jobs_init())
 		return (FAILURE);
-	if (!isatty(0))
+	if ((g_term_fd = open("/dev/tty", O_RDWR)) < 0)
+		return (sh_perror(SH_ERR1_TTY, "main"));
+	if (!isatty(STDIN_FILENO))
 		ret = sh_process_canonical_mode(&shell, env);
 	else
 	{

@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/06 18:26:16 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/09 01:42:40 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static pid_t 		fork_for_pipe(int *pds)
 		sh_perror(SH_ERR1_FORK, "execution fork for pipe");
 		return (-1);
 	}
-	// ft_dprintf(g_job_ctrl->term_fd, "Fork: pid: %d\tppid: %d\tpgid: %d\n", getpid(), getppid(), getpgid(getpid()));
+	// ft_dprintf(g_term_fd, "Fork: pid: %d\tppid: %d\tpgid: %d\n", getpid(), getppid(), getpgid(getpid()));
 	return (child);
 }
 
@@ -41,7 +41,7 @@ static int 		parent_exec(
 	sh_traverse_command(node_to_execute, context);
 	close(pds[OUTPUT]);
 	close(STDOUT_FILENO);
-	// ft_dprintf(g_job_ctrl->term_fd, "%s%d waiting for %d%s\n", COLOR_YELLOW, getpid(), child, COLOR_END);
+	// ft_dprintf(g_term_fd, "%s%d waiting for %d%s\n", COLOR_YELLOW, getpid(), child, COLOR_END);
 	waitpid(child, &ret, 0);
 	return (SH_RET_VALUE_EXIT_STATUS(ret));
 }

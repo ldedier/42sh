@@ -34,3 +34,5 @@ builtin commands that end with &
 non-interative shell with signals (./42sh < In then ctrl_z or ctrl_c)
 TEST TEST TEST
 ===================================================================
+sleep & (leaks)
+42sh < in6 launched from within 42sh

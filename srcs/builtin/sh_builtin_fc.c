@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_builtin_fc.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/13 19:11:45 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/13 19:11:45 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/10/08 15:25:30 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static int	parse_fc_options(t_context *context, int *index, t_fc_options *opts)
 		{
 			if (((char *)context->params->tbl[*index])[i + 1])
 			{
-				opts->editor = &context->params->tbl[*index][i + 1];
+				opts->editor = &((char **)context->params->tbl)[*index][i + 1];
 				return (SUCCESS);
 			}
 			else

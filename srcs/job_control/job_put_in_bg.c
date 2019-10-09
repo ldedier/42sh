@@ -6,12 +6,17 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 00:10:55 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/01 00:03:03 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/09 01:42:40 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_job_control.h"
 #include "sh_21.h"
+
+/*
+** When we put a job in the background,
+**	the pid of the last process in that wil be printed.
+*/
 
 pid_t		get_last_process_pid(t_job *j)
 {
@@ -27,18 +32,20 @@ pid_t		get_last_process_pid(t_job *j)
 	return (p->pid);
 }
 
+/*
+** Putting the job in background only means printing the message on the terminal.
+** Since it's in the background we don't have to wait for it.
+** cont: if the job was previously stopped and we want to continue it.
+*/
+
 int			job_put_in_bg(t_job *j, int cont)
 {
 	pid_t	pid;
 
 	pid = get_last_process_pid(j);
 	j->foreground = 0;
-	if (cont)
-		if (kill (- j->pgid, SIGCONT) < 0)
-		{
-			ft_dprintf(STDERR_FILENO, "kill");
-			return (ERROR);
-		}
-	ft_dprintf(g_job_ctrl->term_fd, "[%d] %d\n", j->number, pid);
+	if (cont && (kill (- j->pgid, SIGCONT)) < 0)
+		return (jobs_error_free("job_put_in_bg", "kill", 0, ERROR));
+	ft_dprintf(g_term_fd, "[%d] %d\n", j->number, pid);
 	return (SUCCESS);
 }

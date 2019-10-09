@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 15:54:02 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/06 02:44:31 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/08 19:25:17 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 static int		sh_traverse_and_or_call_sons_exec(t_ast_node *node,
 		int *prev_symbol, t_context *context)
 {
-	/*t_ast_node	*child;*/
 	int			ret;
 
 	if (*prev_symbol == -1)
@@ -32,7 +31,6 @@ static int		sh_traverse_and_or_call_sons_exec(t_ast_node *node,
 	else if (*prev_symbol == sh_index(LEX_TOK_OR_IF)
 		&& !context->shell->ret_value)
 		return (SUCCESS);
-	/*ret = sh_traverse_pipeline(child, context);*/
 	ret = sh_traverse_pipeline(node, context);
 	if (ret == BLT_TEST_ERROR || context->shell->ret_value == BLT_TEST_ERROR)
 	{
@@ -71,7 +69,6 @@ static int		sh_traverse_and_or_process_phase(
 int		sh_execute_and_or(t_ast_node *node, t_context *context)
 {
 	t_list		*ptr;
-	t_list		*pp;
 	int			ret;
 	int			prev_symbol;
 

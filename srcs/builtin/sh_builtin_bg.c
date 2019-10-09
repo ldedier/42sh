@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 17:04:13 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/06 02:48:27 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/09 01:42:40 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ static t_job	*get_active_job(void)
 int				sh_builtin_bg(t_context *context)
 {
 	t_job	*active_job;
-	int		res;
 
+	(void)context;
 	active_job = get_active_job();
 	if (active_job == NULL)
 		return (ERROR);
@@ -72,7 +72,7 @@ int				sh_builtin_bg(t_context *context)
 	active_job->foreground = 0;
 	mark_job_as_running(active_job);
 	// job_print_status(active_job, "Continued");
-	ft_dprintf(g_job_ctrl->term_fd, "[%d]  %s &\n",
+	ft_dprintf(g_term_fd, "[%d]  %s &\n",
 		active_job->number, active_job->command);
 	return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 17:04:13 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/06 17:43:47 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/08 23:30:28 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,12 @@ int			sh_builtin_fg(t_context *context)
 	t_job	*active_job;
 	int		res;
 
+	(void)context;
 	active_job = get_active_job();
 	if (active_job == NULL)
 		return (ERROR);
 	mark_job_as_running(active_job);
+	if (sh_pre_execution() != SUCCESS)
+		return (FAILURE);
 	return (job_put_in_fg(active_job, 1, &res));
 }
