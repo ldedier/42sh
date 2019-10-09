@@ -6,7 +6,7 @@
 /*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/02 10:03:30 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/02 10:06:47 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/07 16:00:42 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,28 +25,23 @@
 static int	search_term(t_ast_node *node, t_context *context)
 {
 	t_list		*el;
-	t_ast_node	*child;
+	int			ret;
+	t_ast_node	*curr_node;
+	t_ast_node	*node_to_exec;
 
 	el = node->children;
+	node_to_exec = NULL;
+	ret = SUCCESS;
 	while (el)
 	{
-		child = el->content;
-		if (child->symbol->id == sh_index(TERM))
+		curr_node = el->content;
+		if (curr_node->symbol->id == sh_index(TERM))
 			break ;
 		el = el->next;
 	}
 	if (el)
-	{
-		el = child->children;
-		while (el)
-		{
-			child = el->content;
-			if (child->symbol->id == sh_index(AND_OR))
-				sh_traverse_and_or(child, context);//check retour
-			el = el->next;
-		}
-	}
-	return (SUCCESS);
+		ret = get_node_to_exec(curr_node, context, SEPARATOR, &sh_get_separator);
+	return (ret);
 }
 
 /*
@@ -69,12 +64,15 @@ int		sh_traverse_subshell(t_ast_node *node, t_context *context)
 	{
 		waitpid(pid, &ret, 0);
 		sh_env_update_ret_value_wait_result(context, ret);
-		return (SH_RET_VALUE_EXIT_STATUS(ret));
+		return (SUCCESS);
 	}
 	else
 	{
 		ret = search_term(node->children->next->content, context);
-		exit(ret);
+		sh_free_all(context->shell);
+		if (ret != SUCCESS)
+			exit(ret);
+		exit(context->shell->ret_value);
 	}
 	return (0);
 }
