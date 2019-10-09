@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/01 11:19:43 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/09 15:27:20 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ static int		sh_traverse_pipe_sequence(t_ast_node *node, t_context *context)
 	sh_traverse_tools_show_traverse_start(node, context);
 	if (ft_lstlen(node->children) > 1)
 		ret = pipe_to_do(node, context);
+		/*ret = sh_execute_pipe(node, context);*/
 	else
 		ret = sh_traverse_command(node->children->content, context);
 	sh_traverse_tools_show_traverse_ret_value(node, context, ret);
