@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 15:54:02 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/08 19:25:17 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/10 00:47:09 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ static int		sh_traverse_and_or_call_sons_exec(t_ast_node *node,
 	else if (*prev_symbol == sh_index(LEX_TOK_OR_IF)
 		&& !context->shell->ret_value)
 		return (SUCCESS);
+	// ft_dprintf(g_term_fd, "%swaitflag in PIPELINE1: %d%s\n", GREEN, context->wait_flags, EOC);
 	ret = sh_traverse_pipeline(node, context);
 	if (ret == BLT_TEST_ERROR || context->shell->ret_value == BLT_TEST_ERROR)
 	{
@@ -88,23 +89,3 @@ int		sh_execute_and_or(t_ast_node *node, t_context *context)
 	}
 	return (SUCCESS);
 }
-
-/*
-** sh_traverse_and_or :
-** This is the browser of the t_list and_or (grammar)
-** We execute a and_or node, check it return value and
-** execute or not the next and_or node follow the found token
-** AND_IF or OR_IF.
-**
-** We also call the function sh_env_update_question_mark to be sur
-** that at this time, the return value is set in the env variable
-*/
-// int				sh_traverse_and_or(t_ast_node *node, t_context *context)
-// {
-// 	int		ret;
-
-// 	sh_traverse_tools_show_traverse_start(node, context);
-// 	ret = sh_traverse_and_or_launch_phase(node, context);
-// 	sh_traverse_tools_show_traverse_ret_value(node, context, ret);
-// 	return (ret);
-// }

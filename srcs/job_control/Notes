@@ -8,14 +8,10 @@ then read fails with an EIO error instead.
 If user tries to close 42sh while there are jobs running
 warn first time
 second time send SIGHUP to all jobs
--------------------------------------------------------------------------------
-===================================================================
-
-TEST
 ===================================================================
 What to return in case of max job num exceeded.
 (ERROR or STP_CMD_LINE)
-Both these value corrupt the corrent prompt output.
+Both these value corrupt the current prompt output.
 ===================================================================
 Jobs, fg, bg options!
 ===================================================================
@@ -36,3 +32,7 @@ TEST TEST TEST
 ===================================================================
 sleep & (leaks)
 42sh < in6 launched from within 42sh
+===================================================================
+ sleep 10 || ls then ctrl_z segfault cuz these need to be 2 seperate jobs
+===================================================================
+fg prints the job command as well

@@ -20,7 +20,7 @@ void		sh_execute_binary(t_context *context)
 
 	// ft_dprintf(g_term_fd, "Executing %s", (char **)context->params->tbl[0]);
 	// ft_dprintf(g_term_fd, "\tpid: %d, ppid: %d, pgid: %d\n",
-		// getpid(), getppid(), getpgid(getpid()));
+	// 	getpid(), getppid(), getpgid(getpid()));
 	execve(context->path, (char **)context->params->tbl,
 			(char **)context->env->tbl);
 	sh_perror(((char **)context->params->tbl)[0], SH_ERR1_EXECVE_FAIL);

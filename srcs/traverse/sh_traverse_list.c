@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/28 16:49:38 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/09 19:33:35 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/10 00:07:14 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,12 @@ int			sh_traverse_list(t_ast_node *node, t_context *context)
 		last_separator = node->children->next->content;
 		last_separator = last_separator->children->content;
 		if (last_separator->symbol->id == sh_index(LEX_TOK_AND))
-			g_job_ctrl->ampersand_eol = WUNTRACED | WNOHANG;
+			g_job_ctrl->ampersand_eol = 1;
 		else
-			g_job_ctrl->ampersand_eol = WUNTRACED;
+			g_job_ctrl->ampersand_eol = 0;
 	}
+	else
+		g_job_ctrl->ampersand_eol = 0;
 	sh_traverse_tools_show_traverse_start(node, context);
 	ret = get_node_to_exec(node->children->content, context, SEPARATOR_OP, &sh_get_separator_op);
 	sh_traverse_tools_show_traverse_ret_value(node, context, ret);

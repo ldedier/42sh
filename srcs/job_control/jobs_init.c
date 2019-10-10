@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 23:24:10 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/09 22:34:40 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/10 01:23:43 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int				jobs_init(void)
 	// Check whether the shell in run interactively
 	// g_job_ctrl->interactive = 0;
 	g_job_ctrl->interactive = isatty(STDIN_FILENO);
+
 	if (g_job_ctrl->interactive)
 	{
 		// If the shell in run as a background process, quit.

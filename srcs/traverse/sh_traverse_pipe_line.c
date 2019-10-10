@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/09 16:59:55 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/10 00:47:16 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,7 @@ int				sh_traverse_pipeline(t_ast_node *node, t_context *context)
 	t_ast_node	*child;
 
 	sh_traverse_tools_show_traverse_start(node, context);
+	// ft_dprintf(g_term_fd, "%swaitflag in PIPELINE: %d%s\n", GREEN, context->wait_flags, EOC);
 	bang = 0;
 	child = node->children->content;
 	if (child->symbol->id == sh_index(LEX_TOK_BANG))

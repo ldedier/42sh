@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 17:31:33 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/09 22:36:53 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/10 18:33:25 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ static int		do_pre_exc_job_add(void)
 	{
 		if (sh_pre_execution() != SUCCESS)
 			return (FAILURE);
-
 	}
 	return (SUCCESS);
 }
@@ -72,6 +71,7 @@ static int		sh_exec_parent_part(pid_t cpid, t_context *context)
 {
 	int		ret;
 
+	// ft_dprintf(g_term_fd, "%swait flags: %d%s\n", YELLOW, context->wait_flags, EOC);
 	// Shell is interactive, command is simple (no pipes/and_or).
 	if (g_job_ctrl->interactive && g_job_ctrl->curr_job->simple_cmd)
 	{
@@ -84,10 +84,12 @@ static int		sh_exec_parent_part(pid_t cpid, t_context *context)
 	}
 	// Shell is interactive, but the command is a pipe/and_or.
 	else if (g_job_ctrl->interactive)
-		waitpid(cpid, &ret, WUNTRACED);
+		waitpid(cpid, &ret, 0);
 	// Shell is non-interactive.
 	else
-		waitpid(cpid, &ret, context->wait_flags);
+		waitpid(cpid, &ret, 0);
+	if (g_job_ctrl->interactive && sh_post_execution() != SUCCESS)
+		return (FAILURE);
 	if (g_job_ctrl->interactive)
 		g_job_ctrl->job_added = 0;
 	sh_env_update_ret_value_wait_result(context, ret);
@@ -106,7 +108,6 @@ int		sh_exec_binaire(t_context *context)
 {
 	int			ret;
 	pid_t		cpid;
-
 
 	if ((ret = do_pre_exc_job_add()) != SUCCESS)
 		return (ret);

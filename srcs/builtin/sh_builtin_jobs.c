@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 17:04:13 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/08 15:18:43 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/10 18:22:45 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@
 static void		print_job_status(t_job *j)
 {
 	if (job_is_completed(j))
-		ft_printf("[%d] Completed\t\t%s\n", j->number, j->command);
+		ft_printf("[%d]\tCompleted\t\t%s\n", j->number, j->command);
 	else if (job_is_stopped(j))
-		ft_printf("[%d] Stopped\t\t%s\n", j->number, j->command);
+		ft_printf("[%d]\tStopped\t\t%s\n", j->number, j->command);
 	else
-		ft_printf("[%d] Running\t\t%s\n", j->number, j->command);
+		ft_printf("[%d]\tRunning\t\t%s\n", j->number, j->command);
 }
 
 int				sh_builtin_jobs(t_context *context)

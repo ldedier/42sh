@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 15:54:02 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/09 22:34:14 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/10 00:47:06 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ int				sh_traverse_and_or(t_ast_node *node, t_context *context)
 	if (g_job_ctrl->job_added == 0 || ptr->next == NULL)
 	{
 		ret = sh_execute_and_or(node, context);
+		// ft_dprintf(g_term_fd, "%swaitflag in AND_OR: %d%s\n", GREEN, context->wait_flags, EOC);
 		sh_traverse_tools_show_traverse_ret_value(node, context, ret);
 		return (ret);
 	}

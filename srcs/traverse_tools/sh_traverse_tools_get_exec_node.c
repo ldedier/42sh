@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:00:19 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/09 22:35:25 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/10 00:09:30 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,10 @@ int 	get_node_to_exec(t_ast_node *node, t_context *context,
 	g_job_ctrl->job_added = 0; // check if needed.
 	if (node_to_exec && ret == SUCCESS)
 	{
-		context->wait_flags = g_job_ctrl->ampersand_eol;
+		if (g_job_ctrl->ampersand_eol != 0)
+			context->wait_flags = WUNTRACED | WNOHANG;
+		else
+			context->wait_flags = WUNTRACED;
 		if (g_job_ctrl->interactive && g_job_ctrl->ampersand_eol)
 		{
 			if ((ret = job_add(0)) != SUCCESS)
