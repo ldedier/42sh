@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/20 14:48:43 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/05 03:46:06 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/10 15:47:28 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ static void	restore_command_clean(t_context *context)
 				ft_dprintf(2, GREEN"deleted old var : %s\n"EOC, tbl[i]);
 			ft_dy_tab_suppr_index(context->env, i);
 		}
-		i++;
+		else
+			i++;
 	}
 	return ;
 }
