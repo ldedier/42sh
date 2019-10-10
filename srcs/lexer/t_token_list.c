@@ -81,7 +81,7 @@ t_token	*sh_get_token_by_index(t_list *tokens, int index, t_list **prev)
 	while (ptr)
 	{
 		token = (t_token *)(ptr->content);
-		if (token->index_start <= index && token->index_end >= index)
+		if (token->index_start <= index && token->index_end > index)
 			return (token);
 		else if (token->index_end > index)
 			return (NULL);
