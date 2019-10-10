@@ -41,4 +41,16 @@ launch "export"
 	test_launch 'shopt -s expand_aliases' "alias -E 2>&-"
 	test_launch 'shopt -s expand_aliases' "alias no 2>&-"
 
+	launch_show 'correction'
+	test_launch 'shopt -s expand_aliases' 'alias hello="echo \"hello, world\""' 'hello | cat -e' 'alias hello ; alias hello= ; helllo'
+	test_launch 'shopt -s expand_aliases' "alias sub='(echo abc|'" 'sub cat -e)'
+	test_launch 'shopt -s expand_aliases' 'alias rd="ls DOESTNOEXIST 2>>err"' 'rd ; rd ; rd' 'cat err' 'rm -f err'
+	test_launch 'shopt -s expand_aliases' "alias aa='echo hello' bb='echo world'" 'aa; bb'
+	test_launch 'shopt -s expand_aliases' "alias mk='mkdir -v' abc='def'" 'mk abc' 'rm -rf abc' 'alias'
+	test_launch 'shopt -s expand_aliases' 'alias a=alias' 'a aa="echo \"alias builtin redefined\""' 'aa'
+	test_launch 'shopt -s expand_aliases' 'alias b=c' 'alias c=d' 'alias d="echo shall works"' 'b'
+	test_launch 'shopt -s expand_aliases' 'alias e="g"' 'alias f="e"' 'alias g="echo infinite loop" ; e' 'g'
+	test_launch 'shopt -s expand_aliases' 'alias hello="echo \" Hello, world !\"' 'unalias hello' 'hello'
+	test_launch 'shopt -s expand_aliases' 'alias hello="echo okalm"' 'unalias -a' 'alias'
+
 	launch_show "old_errors"
