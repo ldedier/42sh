@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 11:36:31 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/06 23:15:08 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/10 00:52:35 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@
 #define ALIAS_MSG			"alias"
 #define ALIAS_USAGE			"[alias-name[=string]...]"
 #define ALIAS_P_OPT			0
-#define ALIAS_P_OPT_USAGE	"print all exported variables (default option)"
+#define ALIAS_P_OPT_USAGE	"print all alias stored (default option)"
 
 enum	e_built_test_unary {TEST_B, TEST_C, TEST_D, TEST_E, TEST_F, TEST_G,
 	TEST_L, TEST_P, TEST_R, TEST_SS, TEST_S, TEST_U, TEST_W, TEST_X, TEST_Z};

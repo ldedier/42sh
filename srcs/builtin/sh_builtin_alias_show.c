@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/06 22:53:28 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/09 02:32:24 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/10 02:00:01 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void		show_alias(char *str)
 		ft_putchar('\'');
 		while (equal[i])
 		{
-			if (equal[i] == '\'' || equal[i] == '\\' || equal[i] == '\"')
+			if (equal[i] == '\'' || equal[i] == '\\')// || equal[i] == '\"')
 				ft_putchar('\\');
 			ft_putchar(equal[i]);
 			i++;

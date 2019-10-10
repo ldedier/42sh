@@ -6,13 +6,13 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/06 23:15:34 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/07 00:48:32 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/10 00:55:48 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-#define UNALIAS_USAGE			"alias-name... || -a"
+#define UNALIAS_USAGE			"alias-name... || unalias -a"
 #define UNALIAS_A_OPT			0
 #define UNALIAS_A_OPT_USAGE		"remove all alias definitions for current shell"
 
