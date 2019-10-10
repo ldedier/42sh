@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/10 06:04:23 by jmartel           #+#    #+#              #
-#    Updated: 2019/10/10 08:35:10 by jmartel          ###   ########.fr        #
+#    Updated: 2019/10/10 08:47:34 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,6 +45,10 @@ launch "Command_Substitution_dollar"
 	test_launch 'local=var echo $(echo $local var)' 'local=var ; echo $(echo $local var)'
 	test_launch 'echo tamer > file' '<file $(cat) | cat -e ' 'echo $? ; rm file'
 	test_launch 'var=$(ls -a | wc -l) ; echo $var'
+	test_launch 'echo $(echo "taaaaam           e           r            O       kaaal mmmmm")'
+	test_launch 'IFS=" a" ; echo $(echo "taaaaam           e           r            O       kaaal mmmmm")'
+	test_launch 'var="taaaaam           e           r            O       kaaal mmmmm"' 'echo $(echo $var)'
+	test_launch 'var="taaaaam           e           r            O       kaaal mmmmm"' 'IFS=" a" ; echo $(echo $var)'
 
 launch "Command_Substitution_backquote"
 	launch_show "Simple"
