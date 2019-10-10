@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 14:37:57 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/09 15:29:25 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/10 03:04:20 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,10 @@ static int		sh_lexer_exp(t_lexer *lexer)
 	start = lexer->input + lexer->tok_start + lexer->tok_len;
 	if (start[0] == '`')
 		end = sh_expansions_cmd_subst_detect_backquotes(start);
+	else if (ft_strnstr(start, "<(", 2))
+		end = sh_expansions_proc_subst_out_detect(start) + 1;
+	else if (ft_strnstr(start, ">(", 2))
+		end = sh_expansions_proc_subst_in_detect(start) + 1;
 	else if (ft_strnstr(start, "$(", 2))
 		end = sh_expansions_cmd_subst_detect_dollar(start) + 1;
 	else if (ft_strnstr(start, "${", 2))
@@ -39,10 +43,12 @@ int				sh_lexer_rule5(t_lexer *lexer)
 {
 	if (lexer->quoted == '\'' || lexer->quoted == '\\')
 		return (LEX_CONTINUE);
-	if (lexer->c == '$' || lexer->c == '`')
+	if (lexer->c == '$' || lexer->c == '`' || lexer->c == '<' || lexer->c == '>')
 	{
 		if (lexer->current_id == LEX_TOK_UNKNOWN)
 			lexer->current_id = LEX_TOK_WORD;
+		if (lexer->current_id != LEX_TOK_WORD)
+			return (LEX_CONTINUE);
 		return (sh_lexer_exp(lexer));
 	}
 	return (LEX_CONTINUE);

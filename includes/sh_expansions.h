@@ -61,6 +61,8 @@ int		sh_expansions(t_context *context, t_ast_node *node);
 int		sh_expansions_cmd_subst_detect_backquotes(char *start);
 int		sh_expansions_cmd_subst_detect_dollar(char *start);
 int		sh_expansions_cmd_subst_fill(t_expansion *exp, char *start);
+char	*get_string_from_fd(int fd);
+char 	*get_subshell_output(t_shell *shell, char *command);
 int		sh_expansions_cmd_subst_process(
 	t_context *context, t_expansion *exp);
 
@@ -115,6 +117,22 @@ char	*sh_expansions_parameter_get_param(
 	t_context *context, t_expansion *exp);
 int		sh_expansions_parameter_get_word(
 	t_context *context, t_expansion *exp, char *format, char **word);
+
+/*
+** sh_expansions_proc_subst_in.c
+*/
+int		sh_expansions_proc_subst_in_detect(char *start);
+int		sh_expansions_proc_subst_in_fill(t_expansion *exp, char *start);
+int		sh_expansions_proc_subst_in_process(
+	t_context *context, t_expansion *exp);
+
+/*
+** sh_expansions_proc_subst_out.c
+*/
+int		sh_expansions_proc_subst_out_detect(char *start);
+int		sh_expansions_proc_subst_out_fill(t_expansion *exp, char *start);
+int		sh_expansions_proc_subst_out_process(
+	t_context *context, t_expansion *exp);
 
 /*
 ** sh_expansions_process.c

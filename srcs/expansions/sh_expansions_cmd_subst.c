@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 14:29:58 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/09 15:33:09 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/10 02:47:35 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,11 @@ int			sh_expansions_cmd_subst_detect_backquotes(char *start)
     int     quoted;
     int     back_quote;
 
-	i = 0;
 	if (start[0] != '`')
         return (-1);
 	quoted = 0;
     back_quote = 1;
-    i++;
+    i = 1;
     while (start[i] && back_quote > 0)
     {
         if (start[i] == '\\' && start[i + 1])
@@ -38,7 +37,7 @@ int			sh_expansions_cmd_subst_detect_backquotes(char *start)
     }
     if (!start[i] && back_quote > 0)
         return (-1);
-    return (i - 1);
+    return (i);
 }
 
 int			sh_expansions_cmd_subst_detect_dollar(char *start)
@@ -47,12 +46,11 @@ int			sh_expansions_cmd_subst_detect_dollar(char *start)
     int     quoted;
     int     parenthesis;
 
-	i = 0;
 	quoted = 0;
     if (!(start = ft_strchr(start, '(')))
         return (-1);
     parenthesis = 1;
-    i++;
+    i = 2;
     while (start[i] && parenthesis > 0)
     {
         if (start[i] == '\\' && start[i + 1])
@@ -65,7 +63,6 @@ int			sh_expansions_cmd_subst_detect_dollar(char *start)
             parenthesis++;
         else if (!quoted && start[i] == ')')
             parenthesis--;
-		else
         i++;
     }
     if (!start[i] && parenthesis > 0)
@@ -91,9 +88,9 @@ int			sh_expansions_cmd_subst_fill(t_expansion *exp, char *start)
 	}
 	if (i == -1)
 		return (ERROR);
-    if (!(exp->original = ft_strndup(start, i + 1)))
+    if (!(exp->original = ft_strndup(start, i)))
 		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_cmd_subst_fill (1)"));
-	if (!(exp->expansion = ft_strndup(start + pattern_len, i - pattern_len)))
+	if (!(exp->expansion = ft_strndup(start + pattern_len, i - pattern_len - 1)))
 		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_cmd_subst_fill (2)"));
 	exp->type = EXP_CMD_SUBST;
 	exp->process = &sh_expansions_cmd_subst_process;
