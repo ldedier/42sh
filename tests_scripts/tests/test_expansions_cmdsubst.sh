@@ -1,0 +1,69 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    test_expansions_cmdsubst.sh                        :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2019/10/10 06:04:23 by jmartel           #+#    #+#              #
+#    Updated: 2019/10/10 06:20:17 by jmartel          ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+launch "Command_Substitution_dollar"
+	launch_show "Simple"
+	test_launch '$()'
+	test_launch '$(  )'
+	test_launch '$(nocmd)'
+	test_launch 'echo $(nocmd)'
+	test_launch '$(ls)'
+	test_launch '$(  ls     )'
+	test_launch 'echo $(ls)'
+	test_launch 'echo $(ls) | cat -e'
+	test_launch 'echo $(ls -a) | cat -e'
+	test_launch 'var=.. ; echo $(ls -a $var) | cat -e'
+	test_launch 'var="ls -la" ; echo $($var ..) | cat -e'
+	test_launch 'alias var="ls -a" ; echo $(var ..) | cat -e'
+	test_launch 'alias var="ls -a | wc -l" ; echo $(var ..) | cat -e'
+	test_launch 'alias var="ls -a | wc > file" ; echo $(var ..) | cat -e ; cat file ; rm -f file'
+	test_launch 'echo $(echo $(ls) | cat -e ) | cat -e'
+	test_launch 'var="ls    -a" cmd=echo ; alias cmd=echo' '$cmd $(cmd $($var) | cat -e ) | cat -e'
+	test_launch '$(export HOME=/ ; cd ; pwd)' 'pwd ; cd ; pwd'
+	test_launch 'unset HOME && echo $(cd ; pwd)' 'export HOME=/ && echo $(cd ; pwd)'
+
+	launch_show "Changed IFS"
+	test_launch 'export IFS="\ \"d"''"' 'var="ls -la" ; echo $($var ..) | cat -e'
+	test_launch 'export IFS="\ \"d"''"' 'alias var="ls -a" ; echo $(var ..) | cat -e'
+	test_launch 'export IFS="\ \"d"''"' 'alias var="ls -a | wc -l" ; echo $(var ..) | cat -e'
+	test_launch 'export IFS="\ \"d"''"' 'alias var="ls -a | wc > file" ; echo $(var ..) | cat -e ; cat file ; rm -f file'
+	test_launch 'export IFS="\ \"d"''"' 'echo $(echo $(ls) | cat -e ) | cat -e'
+	test_launch 'export IFS="\ \"d"''"' 'var="ls    -a" cmd=echo ; alias cmd=echo' '$cmd $(cmd $($var) | cat -e ) | cat -e'
+
+	launch_show "Hard"
+	test_launch 'alias cmd="echo " opt="tamer     la      ..." ; echo $(cmd opt)'
+	test_launch 'var1=Okalm var2=tamer var3=Speculos ; echo $(echo $var1$var2${#var3}Okslm$          tamer)'
+	test_launch 'local=var echo $(echo $local var)' 'local=var ; echo $(echo $local var)'
+
+launch "Command_Substitution_backquote"
+	launch_show "Simple"
+	test_launch '``'
+	test_launch '`  `'
+	test_launch '`nocmd`'
+	test_launch 'echo `nocmd`'
+	test_launch '`ls`'
+	test_launch '`  ls     `'
+	test_launch 'echo `ls`'
+	test_launch 'echo `ls` | cat -e'
+	test_launch 'echo `ls -a` | cat -e'
+	test_launch 'var=.. ; echo `ls -a $var` | cat -e'
+	test_launch 'var="ls -la" ; echo `$var ..` | cat -e'
+	test_launch 'alias var="ls -a" ; echo `var ..` | cat -e'
+	test_launch 'alias var="ls -a | wc -l" ; echo `var ..` | cat -e'
+	test_launch 'alias var="ls -a | wc > file" ; echo `var ..` | cat -e ; cat file ; rm -f file'
+	test_launch 'echo `echo `ls` | cat -e ` | cat -e'
+
+launch "Process_Substitution_in"
+	launch_show "Simple"
+
+launch "Process_Substitution_out"
+	launch_show "Simple"

@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 14:29:58 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/10 02:47:35 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/10 06:20:47 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ char	*get_string_from_fd(int fd)
 	free(info.line);
 	if (!res)
 	{
-		ft_printf("found nothing in pipe !\n");
+		ft_dprintf(2, "found nothing in pipe !\n");
 		if (!(res = ft_strnew(0)))
 			return (sh_perrorn(SH_ERR1_MALLOC, "get_string_from_fd"));
 	}
