@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 14:29:58 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/10 06:20:47 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/10 08:23:23 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int			sh_expansions_cmd_subst_detect_dollar(char *start)
     int     parenthesis;
 
 	quoted = 0;
-    if (!(start = ft_strchr(start, '(')))
+	if (start[0] != '$' || start[1] != '(')
         return (-1);
     parenthesis = 1;
     i = 2;
@@ -67,7 +67,7 @@ int			sh_expansions_cmd_subst_detect_dollar(char *start)
     }
     if (!start[i] && parenthesis > 0)
         return (-1);
-    return (i + 1);
+    return (i);
 }
 
 int			sh_expansions_cmd_subst_fill(t_expansion *exp, char *start)
