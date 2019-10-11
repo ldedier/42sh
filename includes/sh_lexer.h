@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 11:08:27 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/09 04:22:46 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/10 05:57:56 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ typedef struct		s_token
 {
 	t_token_union	token_union;
 	t_symbol_id		id;
-	t_token_type	type;
 	int				index;
 	char			*value;
 	char			expansion;

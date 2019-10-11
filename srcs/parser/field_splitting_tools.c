@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   field_splitting_tools.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/07 15:38:10 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/07 15:38:10 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/10/10 05:32:09 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,10 @@ t_ast_node			*sh_add_word_to_ast(t_ast_node *previous_word, char *value)
 
 	ptr = previous_word->parent->children;
 	if (!(new_node = sh_new_ast_node(LEX_TOK_WORD, value)))
+	{
+		free(value);
 		return (NULL);
+	}
 	if (previous_word == NULL)
 		return (sh_add_word_to_ast_first(previous_word->parent, &new_node));
 	while (ptr != NULL)
@@ -71,7 +74,7 @@ t_ast_node			*sh_add_word_to_ast(t_ast_node *previous_word, char *value)
 			return (new_node);
 		ptr = ptr->next;
 	}
-	ft_dprintf(2, "This should never be printed (sh_add_word_to_ast)\n");
+	free(value);
 	return (NULL);
 }
 

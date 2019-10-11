@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 11:29:18 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/14 19:17:54 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/10 05:57:49 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ t_token	*t_token_new_ptr(int id, char *value)
 	if (value)
 		token->value = value;
 	token->id = id;
-	token->type = E_TOKEN_TYPE_STANDARD; 
 	token->index = sh_index(id);
 	token->ast_node = NULL;
 	token->expansion = 0;
@@ -45,9 +44,8 @@ t_token	*t_token_new(int id, char *value)
 {
 	t_token		*token;
 
-	if (!(token = malloc(sizeof(*token))))
+	if (!(token = ft_memalloc(sizeof(*token))))
 		return (NULL);
-	token->value = NULL;
 	if (value)
 	{
 		if (!(token->value = ft_strdup(value)))
@@ -58,8 +56,6 @@ t_token	*t_token_new(int id, char *value)
 	}
 	token->id = id;
 	token->index = sh_index(id);
-	token->ast_node = NULL;
-	token->expansion = 0;
 	token->apply_heredoc_expansion = 1;
 	return (token);
 }
