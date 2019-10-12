@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 15:54:02 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/11 20:58:44 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/12 20:07:01 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ static int		sh_traverse_and_or_call_sons_exec(t_ast_node *node,
 	if (*prev_symbol == -1)
 		;
 	else if (*prev_symbol == sh_index(LEX_TOK_AND_IF)
-		&& context->shell->ret_value)
+		&& (context->shell->ret_value || g_glob.command_line.interrupted))
 		return (SUCCESS);
 	else if (*prev_symbol == sh_index(LEX_TOK_OR_IF)
-		&& !context->shell->ret_value)
+		&& (!context->shell->ret_value || g_glob.command_line.interrupted))
 		return (SUCCESS);
 	ret = sh_traverse_pipeline(node, context);
 	if (ret == BLT_TEST_ERROR || context->shell->ret_value == BLT_TEST_ERROR)

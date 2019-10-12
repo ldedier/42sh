@@ -1,10 +1,3 @@
-When a process in a background job tries to read from its controlling terminal,
-the process group is usually sent a SIGTTIN signal.
-This normally causes all of the processes in that group to stop
-(unless they handle the signal and don’t stop themselves).
-However, if the reading process is ignoring or blocking this signal,
-then read fails with an EIO error instead.
--------------------------------------------------------------------------------
 If user tries to close 42sh while there are jobs running
 warn first time
 second time send SIGHUP to all jobs
@@ -44,7 +37,8 @@ tcsetpgrp could not put shell back in control
 ls & ls -l & ls || sleep 3
 weird output (Art abstrait)
 ===================================================================
-ls && sleep 2 & reports done just after
-===================================================================
 Check what happens when ctrl_z ctrl_c with sleep 10 || ls
 (interative or not)
+===================================================================
+Check what happens with outside signaling to sleep 10 || ls and sleep 10 && ls
+===================================================================
