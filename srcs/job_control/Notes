@@ -42,3 +42,6 @@ Check what happens when ctrl_z ctrl_c with sleep 10 || ls
 ===================================================================
 Check what happens with outside signaling to sleep 10 || ls and sleep 10 && ls
 ===================================================================
+sending SIGCONT to a background stopped process does not update the status.
+===================================================================
+
