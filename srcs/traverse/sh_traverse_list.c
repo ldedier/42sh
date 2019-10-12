@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/28 16:49:38 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/10 00:07:14 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/11 22:04:52 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int			sh_traverse_list(t_ast_node *node, t_context *context)
 	int			ret;
 	t_ast_node	*last_separator;
 
+	// ft_printf("SHELL PGID: %d\n", g_job_ctrl->shell_pgid);
 	if (node->children->next)
 	{
 		last_separator = node->children->next->content;

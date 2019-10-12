@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 21:45:25 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/09 23:58:16 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/11 10:10:27 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ int			t_context_init(t_context *context, t_shell *shell)
 	ft_bzero(context, sizeof(t_context));
 	if (!(context->params = ft_dy_tab_new(5)))
 		return (sh_perror(SH_ERR1_MALLOC, "t_context_init"));
-	context->wait_flags = WUNTRACED;
+	context->wait_flags = (g_job_ctrl->interactive ? WUNTRACED : 0);
+	context->cmd_type = SIMPLE_NODE;
 	context->path = NULL;
 	context->shell = shell;
 	context->env = shell->env;

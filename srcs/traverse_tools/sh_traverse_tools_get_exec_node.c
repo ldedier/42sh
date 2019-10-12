@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:00:19 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/10 00:09:30 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/11 22:02:53 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,22 +43,25 @@ int 	get_node_to_exec(t_ast_node *node, t_context *context,
 		curr_node = lst->content;
 		if (curr_node->symbol->id == sh_index(symbol))
 		{
-			g_job_ctrl->job_added = 0;
-			ret = f(node_to_exec, curr_node->children->content, context);
 			// For each seperator op, we need a new job.
+			g_job_ctrl->job_added = 0;
+			context->cmd_type = SIMPLE_NODE;
+			ret = f(node_to_exec, curr_node->children->content, context);
 			node_to_exec = NULL;
 		}
 		else
 			node_to_exec = curr_node;
 		lst = lst->next;
 	}
-	g_job_ctrl->job_added = 0; // check if needed.
+	// For the last command.
+	context->cmd_type = SIMPLE_NODE;
+	g_job_ctrl->job_added = 0;
+	if (g_job_ctrl->ampersand_eol != 0)
+		context->cmd_type |= BG_NODE;
 	if (node_to_exec && ret == SUCCESS)
 	{
 		if (g_job_ctrl->ampersand_eol != 0)
-			context->wait_flags = WUNTRACED | WNOHANG;
-		else
-			context->wait_flags = WUNTRACED;
+			context->wait_flags |= WNOHANG;
 		if (g_job_ctrl->interactive && g_job_ctrl->ampersand_eol)
 		{
 			if ((ret = job_add(0)) != SUCCESS)

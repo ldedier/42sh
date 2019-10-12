@@ -33,6 +33,18 @@ TEST TEST TEST
 sleep & (leaks)
 42sh < in6 launched from within 42sh
 ===================================================================
- sleep 10 || ls then ctrl_z segfault cuz these need to be 2 seperate jobs
+sleep 10 || ls then ctrl_z segfault cuz these need to be 2 seperate jobs
 ===================================================================
 fg prints the job command as well
+===================================================================
+ls & ls && sleep 1 & ls -l
+then ps right away.
+tcsetpgrp could not put shell back in control
+===================================================================
+ls & ls -l & ls || sleep 3
+weird output (Art abstrait)
+===================================================================
+ls && sleep 2 & reports done just after
+===================================================================
+Check what happens when ctrl_z ctrl_c with sleep 10 || ls
+(interative or not)

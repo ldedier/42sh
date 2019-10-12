@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 15:54:02 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/10 00:47:09 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/11 20:58:44 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 ** this function execute or not the next level in the ast,
 ** pipe line (sh_traverse_pipe_sequence).
 */
+
 static int		sh_traverse_and_or_call_sons_exec(t_ast_node *node,
 		int *prev_symbol, t_context *context)
 {
@@ -31,7 +32,6 @@ static int		sh_traverse_and_or_call_sons_exec(t_ast_node *node,
 	else if (*prev_symbol == sh_index(LEX_TOK_OR_IF)
 		&& !context->shell->ret_value)
 		return (SUCCESS);
-	// ft_dprintf(g_term_fd, "%swaitflag in PIPELINE1: %d%s\n", GREEN, context->wait_flags, EOC);
 	ret = sh_traverse_pipeline(node, context);
 	if (ret == BLT_TEST_ERROR || context->shell->ret_value == BLT_TEST_ERROR)
 	{
@@ -79,7 +79,7 @@ int		sh_execute_and_or(t_ast_node *node, t_context *context)
 	{
 		if ((ret = sh_traverse_and_or_process_phase(
 			context, prev_symbol, ptr)) != KEEP_READ)
-			return (ret);
+				return (ret);
 		if ((ptr = (ptr)->next))
 		{
 			prev_symbol = ((t_ast_node*)ptr->content)->symbol->id;

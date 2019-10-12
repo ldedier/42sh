@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/31 16:05:53 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/10 18:28:32 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/11 22:06:09 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,26 @@ void			reset_signals(void)
 	signal(SIGTTOU, SIG_IGN);
 	signal(SIGTTIN, SIG_IGN);
 }
+
+// static void		handler_sigint_and_or(int signo)
+// {
+// 	if (signo == SIGINT)
+// 	{
+// 		ft_dprintf(g_term_fd, "RECEIVED SIGINT FROM %d\n", getpid());
+// 	}
+// }
+// void			reset_signals_and_or(void)
+// {
+// 	int i;
+
+// 	// ft_dprintf(g_term_fd, "SIGNAL RESET\n");
+// 	i = 1;
+// 	while (i <= 31)
+// 		signal(i++, SIG_DFL);
+// 	signal(SIGTTOU, SIG_IGN);
+// 	signal(SIGTTIN, SIG_IGN);
+// 	signal(SIGINT, handler_sigint_and_or);
+// }
 
 static void		init_signal2(void (*default_func)(int))
 {

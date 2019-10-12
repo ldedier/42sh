@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/20 23:22:03 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/10 01:45:04 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/11 08:02:56 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int			job_put_in_fg(t_job *j, int cont, int *ret)
 		return (jobs_error_free("tcsetpgrp",
 			"Could not put the job in the foreground", 0, ERROR));
 	}
+	// ft_dprintf(g_term_fd, "%sJob [%d] in control\n%s", COLOR_YELLOW, j->number, EOC);
 	if (cont)
 	{
 		if (kill (- j->pgid, SIGCONT) < 0)
@@ -45,7 +46,7 @@ int			job_put_in_fg(t_job *j, int cont, int *ret)
 	// Wait for the job
 	job_wait(j, ret);
 	g_glob.command_line.interrupted = WIFSIGNALED(*ret);
-	// ft_dprintf(g_term_fd, "%sDone waiting%s\n", COLOR_YELLOW, COLOR_END);
+	// ft_dprintf(g_term_fd, "%sjob [%d] returned%s\n", COLOR_YELLOW, j->number, COLOR_END);
 	// Put the shell back into the forground.
 	if (tcsetpgrp(g_term_fd, g_job_ctrl->shell_pgid) < 0)
 	{

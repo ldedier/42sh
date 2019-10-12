@@ -18,9 +18,9 @@ void		sh_execute_binary(t_context *context)
 	// reset signals AFTER tcsetpgrp
 	reset_signals();
 
-	// ft_dprintf(g_term_fd, "Executing %s", (char **)context->params->tbl[0]);
-	// ft_dprintf(g_term_fd, "\tpid: %d, ppid: %d, pgid: %d\n",
-	// 	getpid(), getppid(), getpgid(getpid()));
+	// ft_dprintf(g_term_fd, "%sExecuting %s", GREEN, (char **)context->params->tbl[0]);
+	// ft_dprintf(g_term_fd, "\tpid: %d, ppid: %d, pgid: %d%s\n",
+	// 	getpid(), getppid(), getpgid(getpid()), EOC);
 	execve(context->path, (char **)context->params->tbl,
 			(char **)context->env->tbl);
 	sh_perror(((char **)context->params->tbl)[0], SH_ERR1_EXECVE_FAIL);

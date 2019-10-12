@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/10 00:47:16 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/11 22:03:41 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ static int		pipe_parent_part(pid_t cpid, t_context *context)
 			return (ret);
 	}
 	else
-		waitpid(cpid, &ret, context->wait_flags);
+		ret = SUCCESS;
+	// 	waitpid(cpid, &ret, context->wait_flags);
 	sh_env_update_ret_value_wait_result(context, ret);
 	return (SH_RET_VALUE_EXIT_STATUS(ret));
 }
@@ -64,10 +65,6 @@ static int		pipe_to_do(t_ast_node *node, t_context *context)
 	{
 		ret = pipe_child_part(node, context);
 		return (ret);
-		// From master
-		// waitpid(child, &ret, 0);
-		// sh_env_update_ret_value_wait_result(context, ret);
-		// return (SUCCESS);
 	}
 	else
 	{
@@ -88,8 +85,11 @@ static int		sh_traverse_pipe_sequence(t_ast_node *node, t_context *context)
 	sh_traverse_tools_show_traverse_start(node, context);
 	if (ft_lstlen(node->children) > 1)
 	{
+		context->cmd_type &= ~CMD_TYPE;
+		context->cmd_type |= PIPE_NODE;
 		if (g_job_ctrl->interactive)
 		{
+			// ft_printf("%sInteractive shell PIPE%s\n", BLUE, EOC);
 			if (g_job_ctrl->job_added == 0)
 			{
 				if ((ret = job_add(1)) != SUCCESS)
@@ -124,7 +124,6 @@ int				sh_traverse_pipeline(t_ast_node *node, t_context *context)
 	t_ast_node	*child;
 
 	sh_traverse_tools_show_traverse_start(node, context);
-	// ft_dprintf(g_term_fd, "%swaitflag in PIPELINE: %d%s\n", GREEN, context->wait_flags, EOC);
 	bang = 0;
 	child = node->children->content;
 	if (child->symbol->id == sh_index(LEX_TOK_BANG))

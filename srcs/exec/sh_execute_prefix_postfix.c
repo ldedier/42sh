@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/31 12:20:31 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/10 00:49:21 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/11 20:59:01 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@ int		sh_pre_execution()
 				"sh_pre_execution"));
 		// sh_process_execute_close_pipes(context);
 	}
-	else
-		// ft_dprintf(g_term_fd, "%sShell non-interactive%s\n", YELLOW, EOC);
 	sh_reset_signals_pre_exec();
 	return (SUCCESS);
 }
@@ -45,8 +43,6 @@ int		sh_post_execution(void)
 			return (sh_perror("Could not modify this terminal attributes",
 				"sh_post_execution"));
 	}
-	else
-		// ft_dprintf(g_term_fd, "%sShell non-interactive%s\n", YELLOW, EOC);
 	sh_reset_signals_post_exec();
 	return (SUCCESS);
 }

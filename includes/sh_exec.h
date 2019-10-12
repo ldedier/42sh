@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 17:11:16 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/10 02:22:43 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/11 11:45:56 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,18 @@
 # define SH_RET_CTRL_C			130
 
 /*
+** For job control
+*/
+
+# define SIMPLE_NODE			1
+# define PIPE_NODE				2
+# define AND_OR_NODE			4
+# define CMD_TYPE				7
+# define BG_NODE				8
+# define FG_NODE				16
+# define CMD_BG_FG				24
+
+/*
 ** Builtin return value
 */
 # define SH_RET_ARG_ERROR		2
@@ -47,6 +59,7 @@ typedef enum		e_phase
 typedef struct		s_context
 {
 	char			wait_flags;	//mdaoud: Not needed, remove it everywhere when you're sure
+	int				cmd_type;
 	t_shell			*shell;
 	struct termios	*term;
 	t_dy_tab		*env;

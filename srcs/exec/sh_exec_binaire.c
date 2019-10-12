@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 17:31:33 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/10 18:33:25 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/11 22:04:34 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,11 @@
 #include "sh_job_control.h"
 
 
-static int		do_pre_exc_job_add(void)
+static int		do_pre_exc_job_add(t_context *context)
 {
 	int		ret;
 
+	(void)context;
 	if (g_job_ctrl->interactive && g_job_ctrl->job_added == 0)
 	{
 		if ((ret = job_add(1)) != SUCCESS)
@@ -40,6 +41,7 @@ static int		do_pre_exc_job_add(void)
 	{
 		if (sh_pre_execution() != SUCCESS)
 			return (FAILURE);
+
 	}
 	return (SUCCESS);
 }
@@ -50,7 +52,7 @@ static int		sh_exec_child_part(t_context *context)
 	int		ret;
 
 	cpid = getpid();
-	if (g_job_ctrl->interactive && g_job_ctrl->curr_job->simple_cmd)
+	if (g_job_ctrl->interactive && (context->cmd_type & SIMPLE_NODE))
 	{
 		if ((ret = set_pgid_child(cpid)) != SUCCESS)
 			return (ret);
@@ -73,24 +75,34 @@ static int		sh_exec_parent_part(pid_t cpid, t_context *context)
 
 	// ft_dprintf(g_term_fd, "%swait flags: %d%s\n", YELLOW, context->wait_flags, EOC);
 	// Shell is interactive, command is simple (no pipes/and_or).
-	if (g_job_ctrl->interactive && g_job_ctrl->curr_job->simple_cmd)
+	// ft_printf("node type: %d\n", context->cmd_type);
+	if (context->cmd_type & SIMPLE_NODE)
 	{
-		if ((ret = set_pgid_parent(cpid)) != SUCCESS)
-			return (ret);
-		if (g_job_ctrl->curr_job->foreground == 0)
-			ret = job_put_in_bg(g_job_ctrl->curr_job, 0);
-		else if (job_put_in_fg(g_job_ctrl->curr_job, 0, &ret) != SUCCESS)
-			return (ret);
+		// ft_printf("%sSimple commande%s\n", CYAN, EOC);
+		if (g_job_ctrl->interactive)
+		{
+			// ft_printf("%sInteractive shell%s\n", BLUE, EOC);
+			if ((ret = set_pgid_parent(cpid)) != SUCCESS)
+				return (ret);
+			if (g_job_ctrl->curr_job->foreground == 0)
+				ret = job_put_in_bg(g_job_ctrl->curr_job, 0);
+			else if (job_put_in_fg(g_job_ctrl->curr_job, 0, &ret) != SUCCESS)
+				return (ret);
+		}
+		else
+		{
+			// ft_printf("%sNon-nteractive shell%s\n", BLUE, EOC);
+			waitpid(cpid, &ret, context->wait_flags);
+		}
 	}
-	// Shell is interactive, but the command is a pipe/and_or.
-	else if (g_job_ctrl->interactive)
-		waitpid(cpid, &ret, 0);
-	// Shell is non-interactive.
 	else
+	{
+		// ft_printf("%sAND_OR or PIPE%s\n", CYAN, EOC);
 		waitpid(cpid, &ret, 0);
+	}
 	if (g_job_ctrl->interactive && sh_post_execution() != SUCCESS)
 		return (FAILURE);
-	if (g_job_ctrl->interactive)
+	if (g_job_ctrl->interactive && (context->cmd_type & SIMPLE_NODE))
 		g_job_ctrl->job_added = 0;
 	sh_env_update_ret_value_wait_result(context, ret);
 	g_glob.command_line.interrupted = WIFSIGNALED(ret);
@@ -109,7 +121,8 @@ int		sh_exec_binaire(t_context *context)
 	int			ret;
 	pid_t		cpid;
 
-	if ((ret = do_pre_exc_job_add()) != SUCCESS)
+	// ft_dprintf(g_term_fd, "%s\texec for %s inside %d%s\n", COLOR_GREY, context->params->tbl[0], getpid(), EOC);
+	if ((ret = do_pre_exc_job_add(context)) != SUCCESS)
 		return (ret);
 	if ((cpid = fork()) == -1)
 		return (sh_perror(SH_ERR1_FORK, "sh_process_process_execute"));

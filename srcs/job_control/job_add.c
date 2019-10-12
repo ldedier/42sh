@@ -96,9 +96,10 @@ int			job_add(int fg)
 	if ((j = malloc(sizeof(t_job))) == NULL)
 		return (jobs_error_free(SH_ERR1_MALLOC, "job_add", 1, FAILURE));
 	init_job_values(j, n, fg);
-	// ft_printf("%sJob %d added in %s%s\n",COLOR_GREEN, j->number, j->foreground == 1 ? "foreground" : "background", COLOR_END);
 	if (get_job_cmd_str(j) < 0)
 		return (FAILURE);
+	// ft_printf("%sAdded job [%d] %s ", GREEN, g_job_ctrl->curr_job->number, g_job_ctrl->curr_job->command);
+	// ft_printf("in %s%s\n",j->foreground == 1 ? "foreground" : "background", COLOR_END);
 	// Add the newly created job at the end of the job list.
 	if (g_job_ctrl->first_job == NULL)
 	{

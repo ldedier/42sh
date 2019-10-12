@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 12:27:20 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/10 00:47:00 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/11 11:08:24 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int		sh_traverse_ampersand(t_ast_node *node_to_execute, t_context *context)
 {
 	int 	ret;
 
+	context->cmd_type |= BG_NODE;
 	if (g_job_ctrl->interactive)
 	{
 		// if the seperator_op is "&" add the job now in background
@@ -33,7 +34,7 @@ int		sh_traverse_ampersand(t_ast_node *node_to_execute, t_context *context)
 	}
 	// if the shell is not interactive, and the seperator is "&"
 	// We need the WNOHANG wait flag to make sure the shell does not wait for the command.
-	context->wait_flags = WUNTRACED | WNOHANG;
+	context->wait_flags |= WNOHANG;
 	// ft_dprintf(g_term_fd, "%swaitflag in AMPERSAND: %d%s\n", GREEN, context->wait_flags, EOC);
 	ret = sh_traverse_and_or(node_to_execute, context);
 	return (ret);
