@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 21:49:08 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/26 20:12:21 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/10 05:24:59 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ void		t_quote_show_tab(t_quote **quotes)
 
 /*
 ** t_quote_is_original_quote:
-**	Check if current index correspond for start of 
+**	Check if current index correspond to an original quote, stored in
+**	quotes table.
 **
 **	Returned Values :
 **		-1 : Error occured
