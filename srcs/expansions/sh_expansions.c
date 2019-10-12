@@ -57,6 +57,8 @@ int			sh_expansions(t_context *context, t_ast_node *node)
 	if (!ret)
 		ret = sh_expansions_splitting(context, node, quotes);
 	if (!ret)
+		ret = sh_expansions_pattern_matching(context, node);
+	if (!ret)
 		sh_expansions_quote_removal((t_quote**)quotes->tbl);
 	if (ret == ERROR || ret == FAILURE)
 		sh_env_update_ret_value(context->shell, ret);

@@ -105,6 +105,12 @@ int		sh_expansions_parameter_get_word(
 	t_context *context, t_expansion *exp, char *format, char **word);
 
 /*
+** sh_expansions_pattern_matching.c
+*/
+int		sh_expansions_pattern_matching(
+	t_context *context, t_ast_node *node);
+
+/*
 ** sh_expansions_process.c
 */
 int		sh_expansions_process(

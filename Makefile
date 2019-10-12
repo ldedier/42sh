@@ -317,6 +317,7 @@ SRCS			 +=	sh_expansions.c \
 					sh_expansions_quote_removal.c \
 					sh_expansions_scan.c \
 					sh_expansions_history.c \
+					sh_expansions_pattern_matching.c \
 					t_quote.c
 
 ################################################################
