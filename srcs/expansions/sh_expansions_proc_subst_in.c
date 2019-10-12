@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_expansions_proc_subst_in.c                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 14:29:58 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/10 03:15:08 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/12 12:35:39 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,17 +58,62 @@ int			sh_expansions_proc_subst_in_fill(t_expansion *exp, char *start)
 
 }
 
+char		*sh_get_fd_string(int fd)
+{
+	char *str;
+	char *fd_str;
+
+	if (!(fd_str = ft_itoa(fd)))
+		return (sh_perrorn(SH_ERR1_MALLOC, "sh_get_fd_string"));
+	if (!(str = ft_strjoin_free("/dev/fd/", fd_str, 2)))
+		return (sh_perrorn(SH_ERR1_MALLOC, "sh_get_fd_string"));
+	return (str);
+}
+
+char		*sh_get_process_subst_in(t_shell *shell, char *command)
+{
+	char	*str;
+	int		fds[2];
+	pid_t	child;
+	int		ret;
+
+	if (pipe(fds))
+		return (sh_perrorn(SH_ERR1_PIPE, "sh_get_process_subst_in"));
+	if ((child = fork()) == -1)
+		return (sh_perrorn(SH_ERR1_FORK, "sh_get_process_subst_in"));
+	if (child == 0)
+	{
+		if (dup2(fds[PIPE_OUT], STDIN_FILENO) < 0)
+			return (sh_perrorn(SH_ERR1_INTERN_ERR, "sh_get_process_subst_in"));
+		close(fds[PIPE_IN]);
+		ret = execute_command(shell, command, 0);
+		close(fds[PIPE_OUT]);
+		sh_free_all(shell);
+		exit(ret);
+	}
+	else
+	{
+		//{ child => PID du subshell }
+		close(fds[PIPE_OUT]);
+		if (!(str = sh_get_fd_string(fds[PIPE_IN])))
+			return (NULL);
+		return (str);
+	}
+}
+
 int			sh_expansions_proc_subst_in_process(t_context *context,
 				t_expansion *exp)
 {
-	// insert your code here
-	// need to fill exp->res field (!! it is ft_dy_str)
-	// This res will later replace the exp->original string in the token value
-	(void)context;
-	(void)exp;
-	ft_dprintf(2, "proc in substitution detected : \n\t");
-	t_expansion_show(exp);
-	if (!(exp->res = ft_dy_str_new_str(exp->original)))
+
+	char *str;
+
+	if (!(str = sh_get_process_subst_in(context->shell, exp->expansion)))
+		return (FAILURE);
+	if (!(exp->res = ft_dy_str_new_str(str)))
+	{
+		free(str);
 		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_cmd_subs_process"));
+	}
+	free(str);
 	return (SUCCESS);
 }

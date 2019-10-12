@@ -123,6 +123,8 @@ int		sh_expansions_parameter_get_word(
 */
 int		sh_expansions_proc_subst_in_detect(char *start);
 int		sh_expansions_proc_subst_in_fill(t_expansion *exp, char *start);
+char	*sh_get_fd_string(int fd);
+char	*sh_get_process_subst_in(t_shell *shell, char *command);
 int		sh_expansions_proc_subst_in_process(
 	t_context *context, t_expansion *exp);
 
@@ -131,6 +133,7 @@ int		sh_expansions_proc_subst_in_process(
 */
 int		sh_expansions_proc_subst_out_detect(char *start);
 int		sh_expansions_proc_subst_out_fill(t_expansion *exp, char *start);
+char	*sh_get_process_subst_out(t_shell *shell, char *command);
 int		sh_expansions_proc_subst_out_process(
 	t_context *context, t_expansion *exp);
 
