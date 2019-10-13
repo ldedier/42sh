@@ -6,13 +6,11 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/15 13:19:47 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/04 21:44:45 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/10 16:02:13 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
-
-#define		PARSER_HELP		-1
 
 static int	parser_get_arg_content(t_args *args, char **argv, int *index)
 {
@@ -49,7 +47,7 @@ static int	paser_long_arg(char **argv, int *index, t_args args[])
 		if (ft_strequ(args[i].name_long, argv[*index] + 2))
 			return (parser_get_arg_content(args + i, argv, index));
 		if (ft_strequ("help", argv[*index] + 2))
-			return (PARSER_HELP);
+			return (ERROR);
 		i++;
 	}
 	return (ERROR);
@@ -80,7 +78,9 @@ static int	paser_short_arg(char **argv, int *index, t_args args[])
 		}
 		if (found)
 			continue ;
-		return (ERROR);
+		ft_memmove(argv[*index] + 1, argv[*index] + i, 1);
+		argv[*index][2] = 0;
+		return (sh_perror2_err(argv[*index], argv[0], "invalid option"));
 	}
 	return (SUCCESS);
 }
@@ -146,7 +146,8 @@ int		sh_builtin_usage(t_args args[], char *name, char *usage, t_context *context
 	int		fd;
 
 	fd = FD_ERR;
-	ft_dprintf(fd, SH_ERR_COLOR);
+	if (isatty(2))
+		ft_dprintf(fd, SH_ERR_COLOR);
 	ft_dprintf(fd, "Usage: %s %s\n", name, usage);
 	i = 0;
 	while (args && args[i].type != E_ARGS_END)
@@ -163,7 +164,8 @@ int		sh_builtin_usage(t_args args[], char *name, char *usage, t_context *context
 			ft_dprintf(fd, "\n");
 		i++;
 	}
-	ft_dprintf(fd, EOC);
+	if (isatty(2))
+		ft_dprintf(fd, EOC);
 	sh_env_update_ret_value(context->shell, SH_RET_ARG_ERROR);
 	return (ERROR);
 }

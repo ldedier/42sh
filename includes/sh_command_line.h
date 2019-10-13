@@ -144,6 +144,8 @@ typedef struct		s_command_line
 	int				fd;
 	t_key_buffer	buffer;
 	t_command_count	count;
+	t_command_count	motion_count;
+	t_command_count	*current_count;
 	t_ft_command	last_ft_command;
 	char			*edit_line;
 	t_list			*saves_stack;
@@ -402,6 +404,8 @@ void				cancel_autocompletion(
 /*
 ** keys_others.c
 */
+int					add_digit_and_update(
+	t_command_line *command_line, char  c);
 int					replace_command_line(
 	t_key_buffer *buffer, t_command_line *command_line);
 int					process_keys_others(

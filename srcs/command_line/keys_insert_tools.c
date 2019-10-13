@@ -18,7 +18,6 @@ int		process_enter_no_autocompletion(t_command_line *command_line)
 	command_line->searcher.active = 0;
 	render_command_line(command_line, 0, 0);
 	get_down_from_command(command_line);
-	//command_line->dy_str->current_size = 0;
 	return (0);
 }
 

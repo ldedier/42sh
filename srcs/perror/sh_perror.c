@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:41:27 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/28 01:27:56 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/13 19:07:02 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int		sh_perror(const char *error, const char *suffix)
 {
-	if (isatty(0))	//mdaoud: Why this condtion?
+	if (isatty(2))
 	{
 		if (suffix)
 			ft_dprintf(2, "%s%s: %s: %s%s\n", SH_ERR_COLOR,

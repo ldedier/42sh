@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/23 13:10:40 by jmartel           #+#    #+#              #
-#    Updated: 2019/08/07 17:00:10 by jmartel          ###   ########.fr        #
+#    Updated: 2019/10/10 10:08:55 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ launch "Expansions"
 	test_launch '${)'
 	test_launch '$novar ls'
 	test_launch	'$pwd $pwd'
+	test_launch "alias al='$var'" 'var="ls -a ; al"'
 
 	launch_show "List tests"
 	test_launch 'ahsdiouashdiuasdhioasjdopasdjoldniouhjnqwioejqnwoel=adisuhiduashnodklajsodiajlsdlkasasdhuasodiu' 'echo $ahsdiouashdiuasdhioasjdopasdjoldniouhjnqwioejqnwoel='
@@ -114,6 +115,20 @@ launch "Variables"
 	test_launch 'var=~/:~::: ; echo $var'
 	test_launch 'var=~/:~//::: ; echo $var'
 	test_launch 'var=:~/:~/::: ; echo $var'
+
+	launch_show "Hybrid tests"
+	test_launch 'var=root' 'echo $(echo ~/) ; echo $(echo ~$var/)' 'echo ~$var/'
+	test_launch 'shopt -s expand_aliases' 'alias cmd='"'"'cd ~/'"'" 'alias ; cmd ; echo $?' 'pwd'
+	test_launch 'ls -a ; !ls' 'ls ; !ls ; ls -a' 'alias ls=echo' '!ls'
+
+	launch_show "Expansions on all tokens types"
+	test_launch 'var=file' 'echo tamer > $file'
+	test_launch 'var=2' 'ls rien $var > file'
+	test_launch 'var="      spa     ces"' '<$var cat'
+	test_launch 'var="      spa     ces"' 'touch "$var"' '<"$var" cat' 'rm -f "$var"'
+	test_launch 'var="      spa     ces"' 'echo > $var' 'cat "$var"' 'rm -f "$var"'
+	test_launch 'var="      spa     ces"' 'echo > "$var"' 'cat "$var"' 'rm -f "$var"'
+	test_launch 'var=">file"' 'echo oklam $var' 'cat file ; rm -f file'
 
 # launch "Deprecated"
 	# launch "Hard"

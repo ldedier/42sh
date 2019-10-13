@@ -48,11 +48,11 @@ int		fill_prompt_command_mode(char **new_prompt, t_command_line *command_line)
 
 	if (!(*new_prompt = ft_strjoin_free(*new_prompt, COMMAND_PROMPT, 1)))
 		return (sh_perror(SH_ERR1_MALLOC, "fill_prompt_command_mode"));
-	if (command_line->count.active)
+	if (command_line->current_count->active)
 	{
 		if (!(*new_prompt = ft_strjoin_free(*new_prompt, COUNT_PROMPT, 1)))
 			return (sh_perror(SH_ERR1_MALLOC, "fill_prompt_command_mode"));
-		if (!(count_str = ft_itoa(command_line->count.tmp_value)))
+		if (!(count_str = ft_itoa(command_line->current_count->tmp_value)))
 			return (sh_perror(SH_ERR1_MALLOC, "fill_prompt_command_mode"));
 		if (!(*new_prompt = ft_strjoin_free(*new_prompt, count_str, 1)))
 		{

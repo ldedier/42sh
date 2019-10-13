@@ -44,4 +44,5 @@ Check what happens with outside signaling to sleep 10 || ls and sleep 10 && ls
 ===================================================================
 sending SIGCONT to a background stopped process does not update the status.
 ===================================================================
+HANDLE SIGCONT
 

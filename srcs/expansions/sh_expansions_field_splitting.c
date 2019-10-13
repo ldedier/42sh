@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/27 16:47:32 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/01 15:18:28 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/10 05:48:13 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,19 @@ static int	sh_splitting_non_white_ifs(t_ast_node *node, char *ifs, char *input, 
 	return (SUCCESS);
 }
 
+static void	decrease_quotes(t_quote **tbl)
+{
+	int		i;
+
+	i = 0;
+	while (tbl[i])
+	{
+		tbl[i]->index--;
+		tbl[i]->c--;
+		i++;
+	}
+}
+
 static int	sh_expansions_splitting_default(t_ast_node *node, t_dy_tab *quotes)
 {
 	int			i;
@@ -142,10 +155,13 @@ static int	sh_expansions_splitting_default(t_ast_node *node, t_dy_tab *quotes)
 	start = -2;
 	if (sh_verbose_expansion())
 		ft_dprintf(2, RED"default IFS\n"EOC);
+	while (input[i] && ft_strchr(ifs, input[i]))
+	{
+		ft_strdelchar(input, i);
+		decrease_quotes((t_quote**)quotes->tbl); // be carefull if used with IFS using quotes
+	}
 	while (input[i])
 	{
-		if (sh_verbose_expansion())
-			ft_dprintf(2, "input [%d] : %c (%s)\n", i, input[i], input + i);
 		if (t_quote_is_original_quote(i, (t_quote**)quotes->tbl))
 		{
 			if (sh_verbose_expansion())
@@ -161,13 +177,13 @@ static int	sh_expansions_splitting_default(t_ast_node *node, t_dy_tab *quotes)
 				i++;
 				start = -1;
 				if (sh_verbose_expansion())
-					ft_dprintf(2, "adding first node : %s|\n", input);
+					ft_dprintf(2, "adding first node : (%s)\n", input);
 			}
 			else
 			{
 				if (sh_verbose_expansion())
-					ft_dprintf(2, "adding node : %s\n", ft_strndup(input + start, i - start));
-				if (!(node = sh_add_word_to_ast(node, ft_strndup(input + start, i - start)))) //protect
+					ft_dprintf(2, "adding node : %s\n", node->token->value);
+				if (!(node = sh_add_word_to_ast(node, ft_strndup(input + start, i - start))))
 					return (FAILURE);
 				update_quotes((t_quote**)quotes->tbl, i, start, node);
 			}
@@ -182,10 +198,10 @@ static int	sh_expansions_splitting_default(t_ast_node *node, t_dy_tab *quotes)
 	}
 	if (start != i && start >= 0)
 	{
-		if (sh_verbose_expansion())
-			ft_dprintf(2, "adding last node : %s\n", ft_strndup(input + start, i - start));
 		if (!(node = sh_add_word_to_ast(node, ft_strndup(input + start, i - start)))) //protect
 			return (FAILURE);
+		if (sh_verbose_expansion())
+			ft_dprintf(2, "adding last node : %s\n", node->token->value);
 		update_quotes((t_quote**)quotes->tbl, i, start, node);
 		if (sh_verbose_expansion())
 			ft_dprintf(2, "last node added : start : %d, i : %d\n", start, i);
@@ -193,6 +209,19 @@ static int	sh_expansions_splitting_default(t_ast_node *node, t_dy_tab *quotes)
 	return (SUCCESS);
 	(void)quotes;
 }
+
+/*
+** sh_expansions_splitting:
+**	Result of expansions might be spltted into different tokens under
+**	certain conditions (unquoted, IFS set, ...).
+**	This function only determine wich mode to apply, using IFS variable value.
+**	First condition is here to avoid field splitting in heredocs (node is NULL).
+**
+**	Returned Values:
+**		SUCCESS
+**		ERROR : IFS is too long to be parsed
+**		FAILURE : malloc error
+*/
 
 int			sh_expansions_splitting(t_context *context, t_ast_node *node, t_dy_tab *quotes)
 {
@@ -217,8 +246,6 @@ int			sh_expansions_splitting(t_context *context, t_ast_node *node, t_dy_tab *qu
 		ret = sh_splitting_non_white_ifs(node, ifs, node->token->value, quotes);
 	}
 	if (sh_verbose_expansion())
-	{
 		sh_print_ast_root(node);
-	}	
 	return (ret);
 }

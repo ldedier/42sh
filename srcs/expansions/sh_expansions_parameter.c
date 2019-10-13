@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 13:52:11 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/06 04:08:21 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/10 10:01:02 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ int			sh_expansions_parameter_process(t_context *context,
 			return (sh_perror_err(exp->original, SH_BAD_SUBSTITUTE));
 		if (exp->expansion[0] == '#')
 			return (sh_expansions_variable_process(context, exp));
-		if (sh_expansions_variable_detect(exp->expansion) == -1)
+		if (!sh_expansions_variable_valid_name(exp->expansion))
 			return (sh_perror_err(exp->original, SH_BAD_SUBSTITUTE));
 		return (sh_expansions_variable_process(context, exp));
 	}
