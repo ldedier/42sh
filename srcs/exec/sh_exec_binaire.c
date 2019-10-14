@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 17:31:33 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/11 22:04:34 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/14 05:10:15 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ static int		do_pre_exc_job_add(t_context *context)
 	}
 	if (g_job_ctrl->interactive && g_job_ctrl->curr_job->foreground)
 	{
+		// ft_dprintf("PRE EXEC\n");
 		if (sh_pre_execution() != SUCCESS)
 			return (FAILURE);
 
@@ -73,15 +74,11 @@ static int		sh_exec_parent_part(pid_t cpid, t_context *context)
 {
 	int		ret;
 
-	// ft_dprintf(g_term_fd, "%swait flags: %d%s\n", YELLOW, context->wait_flags, EOC);
 	// Shell is interactive, command is simple (no pipes/and_or).
-	// ft_printf("node type: %d\n", context->cmd_type);
 	if (context->cmd_type & SIMPLE_NODE)
 	{
-		// ft_printf("%sSimple commande%s\n", CYAN, EOC);
 		if (g_job_ctrl->interactive)
 		{
-			// ft_printf("%sInteractive shell%s\n", BLUE, EOC);
 			if ((ret = set_pgid_parent(cpid)) != SUCCESS)
 				return (ret);
 			if (g_job_ctrl->curr_job->foreground == 0)
@@ -90,16 +87,10 @@ static int		sh_exec_parent_part(pid_t cpid, t_context *context)
 				return (ret);
 		}
 		else
-		{
-			// ft_printf("%sNon-nteractive shell%s\n", BLUE, EOC);
 			waitpid(cpid, &ret, context->wait_flags);
-		}
 	}
 	else
-	{
-		// ft_printf("%sAND_OR or PIPE%s\n", CYAN, EOC);
 		waitpid(cpid, &ret, 0);
-	}
 	if (g_job_ctrl->interactive && sh_post_execution() != SUCCESS)
 		return (FAILURE);
 	if (g_job_ctrl->interactive && (context->cmd_type & SIMPLE_NODE))
@@ -121,7 +112,8 @@ int		sh_exec_binaire(t_context *context)
 	int			ret;
 	pid_t		cpid;
 
-	// ft_dprintf(g_term_fd, "%s\texec for %s inside %d%s\n", COLOR_GREY, context->params->tbl[0], getpid(), EOC);
+	if (context->cmd_type & PIPE_NODE)
+		sh_execute_binary(context);
 	if ((ret = do_pre_exc_job_add(context)) != SUCCESS)
 		return (ret);
 	if ((cpid = fork()) == -1)

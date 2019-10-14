@@ -13,6 +13,8 @@ log_bash="../logs/bash.log"
 
 # touch $log_bash $log_42
 
+rm $log_42 $log_bash
+
 while IFS= read -r line
 do
 	echo -e ${yellow}$line${eoc}
@@ -20,6 +22,7 @@ do
 	bash < infile >> $log_bash
 	../../../../42sh < infile >> $log_42
 	x=`diff $log_bash $log_42`
+	echo $x
 	if [$x == ""]
 		then	echo -e ${green}OK${eoc}
 		else	echo -e ${red}KO${eoc}

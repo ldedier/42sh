@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 15:54:02 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/12 20:07:01 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/14 04:37:53 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,38 @@
 ** pipe line (sh_traverse_pipe_sequence).
 */
 
+static int		should_execute(int prev_symb, int retvalue)
+{
+	if (prev_symb == -1)
+		return (1);
+	ft_dprintf(g_term_fd, "%sRet in AND_OR: %#X (%d)\n%s",BLUE, retvalue, retvalue, EOC);
+	if (prev_symb == sh_index(LEX_TOK_AND_IF))
+		return (!retvalue);
+	else
+	{
+		if (g_job_ctrl->interactive)
+			return (retvalue && WTERMSIG(retvalue) != SIGINT);
+		return (retvalue && WIFSIGNALED(retvalue));
+	}
+}
+
 static int		sh_traverse_and_or_call_sons_exec(t_ast_node *node,
 		int *prev_symbol, t_context *context)
 {
 	int			ret;
 
-	if (*prev_symbol == -1)
-		;
-	else if (*prev_symbol == sh_index(LEX_TOK_AND_IF)
-		&& (context->shell->ret_value || g_glob.command_line.interrupted))
-		return (SUCCESS);
-	else if (*prev_symbol == sh_index(LEX_TOK_OR_IF)
-		&& (!context->shell->ret_value || g_glob.command_line.interrupted))
+	// if (*prev_symbol == -1)
+	// 	;
+	// else if (*prev_symbol == sh_index(LEX_TOK_AND_IF)
+	// 	&& context->shell->ret_value)
+	// 	return (SUCCESS);
+	// else if (*prev_symbol == sh_index(LEX_TOK_OR_IF)
+	// 	&& !context->shell->ret_value)
+	// 	return (SUCCESS);
+	if (!should_execute(*prev_symbol, context->shell->ret_value))
 		return (SUCCESS);
 	ret = sh_traverse_pipeline(node, context);
+	// ft_dprintf(g_term_fd, "%sRet after pipeline: %#X (%d)\n%s",BLUE, context->shell->ret_value, context->shell->ret_value, EOC);
 	if (ret == BLT_TEST_ERROR || context->shell->ret_value == BLT_TEST_ERROR)
 	{
 		context->shell->ret_value_set = 0;

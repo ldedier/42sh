@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/20 23:22:03 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/11 08:02:56 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/13 23:50:02 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,6 @@ int			job_put_in_fg(t_job *j, int cont, int *ret)
 		return (jobs_error_free("tcsetpgrp",
 			"Could not give the shell control of the terminal", 1, FAILURE));
 	}
+	// ft_dprintf(g_term_fd, "%sShell control\n%s", COLOR_YELLOW, EOC);
 	return (SUCCESS);
-
 }

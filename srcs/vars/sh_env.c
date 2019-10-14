@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/14 14:52:02 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/19 19:11:32 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/14 05:41:15 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ static void	sh_env_update_ret_value_treat_sig(t_context *context, int sig)
 		sh_perror("Bus error", context->params->tbl[0]);
 	else if (sig == 11)
 		sh_perror("Segmentation fault", context->params->tbl[0]);
+
 	sh_env_update_ret_value(context->shell, SH_RET_SIG_RECEIVED + sig);
 	return ;
 }
@@ -48,8 +49,14 @@ void		sh_env_update_ret_value_wait_result(t_context *context, int res)
 	if (!shell->ret_value_set)
 	{
 		if (SH_RET_VALUE_SIG_RECEIVED(res))
-			sh_env_update_ret_value_treat_sig(
-				context, SH_RET_VALUE_SIG_RECEIVED(res));
+		{
+			// mdaoud: To handle stopped processes.
+			if (WIFSTOPPED(res))
+				sh_env_update_ret_value_treat_sig(context, WSTOPSIG(res));
+			else
+				sh_env_update_ret_value_treat_sig(
+					context, SH_RET_VALUE_SIG_RECEIVED(res));
+		}
 		if (sh_verbose_exec())
 		{
 			ft_dprintf(2, COLOR_CYAN"Process signal sent : %d\n"COLOR_END,
