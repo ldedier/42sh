@@ -37,6 +37,7 @@ typedef struct termios			t_term;
 struct	s_process
 {
 	char			completed;
+	char			continued;
 	char			stopped;
 	int				status;
 	pid_t			pid;
@@ -122,6 +123,7 @@ int				job_check_changes(pid_t cpid, int status);
 void			job_control_free(void);
 void			job_free(t_job *j);
 int				job_is_completed(t_job *j);
+int				job_is_continued(t_job *j);
 int				job_is_stopped(t_job *j);
 void			job_notify(void);
 void			job_print_status(t_job *j, const char *new_status);

@@ -6,7 +6,7 @@
 #    By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/10/09 19:09:33 by mdaoud           ###   ########.fr        #
+#    Updated: 2019/10/15 01:24:13 by mdaoud           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -333,7 +333,7 @@ SRCS			 +=	sh_perror.c \
 ################################################################
 SRCS			+=	jobs_init.c job_add.c process_add.c \
 					str_tab_duplicate.c str_tab_print.c str_tab_free.c \
-					job_control_free.c job_wait.c \
+					job_control_free.c job_wait.c job_is_continued.c \
 					job_put_in_bg.c job_put_in_fg.c job_is_completed.c \
 					job_is_stopped.c job_check_changes.c job_free.c \
 					job_print_status.c job_notify.c get_active_job.c \

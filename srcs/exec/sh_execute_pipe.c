@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/14 05:43:03 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/15 00:26:26 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,7 +205,7 @@ static int		get_last_ret_value(t_job *j)
 {
 	if (j == NULL || j->first_process == NULL)
 		return (-1);
-	ft_dprintf(g_term_fd, "Last ret value, pid: %d, ret: %#X (%d)\n", j->first_process->pid, j->first_process->status, j->first_process->status);
+	// ft_dprintf(g_term_fd, "Last ret value, pid: %d, ret: %#X (%d)\n", j->first_process->pid, j->first_process->status, j->first_process->status);
 	return (j->first_process->status);
 }
 

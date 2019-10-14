@@ -30,8 +30,8 @@ static int	execute_child_part(pid_t cpid, t_context *context)
 	{
 		if ((ret = set_pgid_child(cpid)) != SUCCESS)
 			return (ret);
-		ft_dprintf(g_term_fd, "%sChild: pid: %d, ppid: %d, pgid: %d%s\n",
-			BLUE, cpid, getppid(), getpgid(cpid), EOC);
+		// ft_dprintf(g_term_fd, "%sChild: pid: %d, ppid: %d, pgid: %d%s\n",
+		// 	BLUE, cpid, getppid(), getpgid(cpid), EOC);
 	}
 	ret = context->builtin(context);
 	exit(ret);
@@ -45,8 +45,8 @@ static int	execute_parent_part(pid_t cpid)
 	{
 		if ((ret = set_pgid_parent(cpid)) != SUCCESS)
 			return (ret);
-		ft_dprintf(g_term_fd, "%sParent: pid: %d, ppid: %d, pgid: %d%s\n",
-			BLUE, cpid, getppid(), getpgid(cpid), EOC);
+		// ft_dprintf(g_term_fd, "%sParent: pid: %d, ppid: %d, pgid: %d%s\n",
+		// 	BLUE, cpid, getppid(), getpgid(cpid), EOC);
 		if ((ret = job_put_in_bg(g_job_ctrl->curr_job, 0)) != SUCCESS)
 			return (FAILURE);
 		// waitpid(cpid, &ret, WNOHANG);
@@ -79,20 +79,8 @@ int			sh_execute_builtin(t_context *context)
 
 	if (g_job_ctrl->interactive && sh_reset_shell(0) != SUCCESS)
 		return (FAILURE);
-	// ft_dprintf(g_term_fd, "%scmd type: %d\n", YELLOW, context->cmd_type);
-	// if ((context->cmd_type & CMD_TYPE) == SIMPLE_NODE)
-	// 	ft_dprintf(g_term_fd, "%sSimple command ", YELLOW);
-	// else
-	// 	ft_dprintf(g_term_fd, "%s Not a Simple command ", YELLOW);
-	// if (context->cmd_type & BG_NODE)
-	// 	ft_dprintf(g_term_fd, "In the background\n");
-	// else
-	// 	ft_dprintf(g_term_fd, "In the Forground\n");
-	// ft_dprintf(g_term_fd, "%s", EOC);
 	if (context->cmd_type == (SIMPLE_NODE | BG_NODE))
-	{
 		res = execute_builting_in_bg(context);
-	}
 	else
 		res = context->builtin(context);
 	if (res == SUCCESS)
