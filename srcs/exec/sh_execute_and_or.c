@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 15:54:02 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/14 04:37:53 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/14 23:46:23 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int		should_execute(int prev_symb, int retvalue)
 {
 	if (prev_symb == -1)
 		return (1);
-	ft_dprintf(g_term_fd, "%sRet in AND_OR: %#X (%d)\n%s",BLUE, retvalue, retvalue, EOC);
+	// ft_dprintf(g_term_fd, "%sRet in AND_OR: %#X (%d)\n%s",BLUE, retvalue, retvalue, EOC);
 	if (prev_symb == sh_index(LEX_TOK_AND_IF))
 		return (!retvalue);
 	else
