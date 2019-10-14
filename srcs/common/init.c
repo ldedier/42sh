@@ -94,14 +94,21 @@ static int	sh_init_history(t_history *history)
 	return (SUCCESS);
 }
 
+static void sh_init_count(t_command_count *count)
+{
+	count->active = 0;
+	count->tmp_value = 1;
+}
+
 static int	sh_init_command_line(t_shell *shell, t_command_line *command_line)
 {
+	command_line->edit_counter = 0;
+	sh_init_count(&command_line->count);
+	sh_init_count(&command_line->motion_count);
+	command_line->current_count = &command_line->count;
 	command_line->shell = shell;
 	command_line->edit_line = NULL;
-	command_line->edit_counter = 0;
 	command_line->saves_stack = NULL;
-	command_line->count.active = 0;
-	command_line->count.tmp_value = 1;
 	command_line->last_ft_command.motion = NULL;
 	command_line->last_ft_command.locked = 0;
 	command_line->autocompletion.choices = NULL;

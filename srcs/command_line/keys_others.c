@@ -46,6 +46,15 @@ static void	add_digit(t_command_count *count, char c)
 	}
 }
 
+int		add_digit_and_update(t_command_line *command_line, char  c)
+{
+	add_digit(command_line->current_count, c);
+	if (update_prompt(command_line->shell, command_line))
+		return (FAILURE);
+	render_command_line(command_line, 0, 1);
+	return (SUCCESS);
+}
+
 static int	process_keys_command(t_key_buffer *buffer, t_shell *shell,
 			t_command_line *command_line)
 {
@@ -60,14 +69,13 @@ static int	process_keys_command(t_key_buffer *buffer, t_shell *shell,
 
 	//	ft_printf("progress: %d\n", buffer->progress);
 	//	ft_printf("char: %d (%c)\n", buffer->buff[0], buffer->buff[0]);
+	command_line->current_count = &command_line->count;
 	if (ft_isdigit(command_line->buffer.buff[0])
 		&& (command_line->count.active
 		|| command_line->buffer.buff[0] != '0'))
 	{
-		add_digit(&command_line->count, command_line->buffer.buff[0]);
-		if (update_prompt(command_line->shell, command_line))
+		if (add_digit_and_update(command_line, command_line->buffer.buff[0]))
 			return (FAILURE);
-		render_command_line(command_line, 0, 1);
 		//ft_printf("wip: %d\n", command_line->count.tmp_value);
 		flush_keys(buffer);
 		return (SUCCESS);

@@ -55,7 +55,5 @@ int		process_keys_readline(t_key_buffer *buffer, t_shell *shell,
 		ret = process_history_up(shell, command_line, 1, 0);
 	else if (buffer->buff[0] == 31)
 		ret = sh_restore_save(command_line);
-		return (KEEP_READ);
-	flush_keys(buffer);
-	return (ret);
+	return (ret != SUCCESS ? ret : KEEP_READ);
 }
