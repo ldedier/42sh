@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_expansions_proc_subst_in.c                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 14:29:58 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/12 12:35:39 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/10/15 07:58:23 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int			sh_expansions_proc_subst_in_fill(t_expansion *exp, char *start)
 	i = sh_expansions_proc_subst_in_detect(start);
 	if (i == -1)
 		return (ERROR);
-    if (!(exp->original = ft_strndup(start, i + 1)))
+    if (!(exp->original = ft_strndup(start, i)))
 		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_proc_subst_in_fill (1)"));
 	if (!(exp->expansion = ft_strndup(start + 2, i - 3)))
 		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_proc_subst_in_fill (2)"));

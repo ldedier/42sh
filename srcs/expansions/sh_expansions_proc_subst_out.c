@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 14:29:58 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/10 03:14:58 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/15 07:58:19 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int			sh_expansions_proc_subst_out_fill(t_expansion *exp, char *start)
 	i = sh_expansions_proc_subst_out_detect(start);
 	if (i == -1)
 		return (ERROR);
-    if (!(exp->original = ft_strndup(start, i + 1)))
+    if (!(exp->original = ft_strndup(start, i)))
 		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_proc_subst_out_fill (1)"));
 	if (!(exp->expansion = ft_strndup(start + 2, i - 3)))
 		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_proc_subst_out_fill (2)"));
