@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 17:11:16 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/06 22:54:10 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/15 13:48:47 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,13 @@ typedef struct		s_context
 	pid_t			pid;
 }					t_context;
 
+typedef	struct		s_pipe{
+	int				**tab_pds;
+	int				nb_pipe;
+	int				nb_cmd;
+	pid_t			*tab_pid;
+}					t_pipe;
+
 /*
 ********************************************************************************
 */
@@ -112,4 +119,12 @@ int					t_context_init(t_context *context, t_shell *shell);
 void				t_context_free_content(t_context *context);
 void				t_context_reset(t_context *context);
 
+/*
+** sh_execute_pipe_tool.c
+*/
+void				close_all_pipe(int nb_pipe, int **tab_pds);
+void				close_and_free(
+		int curr_cmd, t_pipe *pipes, t_context *context);
+void				close_all_pipe_but_one(
+		int nb_pipe, int curr_cmd, int **tab_pds);
 #endif
