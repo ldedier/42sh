@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/10 06:04:23 by jmartel           #+#    #+#              #
-#    Updated: 2019/10/15 07:45:58 by jmartel          ###   ########.fr        #
+#    Updated: 2019/10/15 08:01:25 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -75,6 +75,8 @@ launch "Process_Substitution"
 	test_launch 'sort <(cat -e <(grep fork <(ls -tr /usr/share/man/man2)) | (head -n 1 1> >(rev)))'
 	test_launch 'ls | tee >(cat -e) >/dev/null'
 	test_launch 'sort -k 9 <(ls -l /bin) <(ls -l /usr/bin) <(ls -l ~/)'
-	test_launch 'echo <(ls)        <(ls -l)'
-	test_launch 'echo <(ls) <(ls -l)'
-	test_launch 'echo <(ls)<(ls -l)'
+
+## Deprecated
+	# test_launch 'echo <(ls)        <(ls -l)'
+	# test_launch 'echo <(ls) <(ls -l)'
+	# test_launch 'echo <(ls)<(ls -l)'
