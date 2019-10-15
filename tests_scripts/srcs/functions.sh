@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/21 15:58:19 by jmartel           #+#    #+#              #
-#    Updated: 2019/09/25 22:19:16 by jmartel          ###   ########.fr        #
+#    Updated: 2019/10/14 22:31:58 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,7 @@ init_valgrind()
 compile_executable()
 {
 	mkdir -p "$obj_dir"
-	for bin in "fd_write" "fd_read" "signal" "segfault" "write_true" "write_false"; do
+	for bin in "fd_write" "fd_read" "signal" "segfault" "write_true" "write_false" "write_arguments"; do
 		if [ ! -f "${obj_dir}/$bin" ] ; then
 			gcc ${src_dir}/${bin}.c -o "${obj_dir}/${bin}" && echo -e ${green}"Compiled ${bin}"${eoc} || exit
 		fi

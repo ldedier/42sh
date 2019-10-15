@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/22 15:32:16 by jmartel           #+#    #+#              #
-#    Updated: 2019/08/22 17:43:00 by jmartel          ###   ########.fr        #
+#    Updated: 2019/10/14 23:08:38 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,4 +55,6 @@ launch "export"
 	test_launch "variable=var export| grep variable=var" 'echo $?' "export | grep variable ; echo ; set | grep variable ; echo ; env | grep variale"
 	test_launch "variable=var nocmd                    " 'echo $?' "export | grep variable ; echo ; set | grep variable ; echo ; env | grep variale"
 
+	test_launch ' ( (TOKEN201910142215_NAME=TOKEN201910142215_VALUE env | grep TOKEN ) ; env | grep TOKEN) ; env | grep TOKEN'
 
+finish
