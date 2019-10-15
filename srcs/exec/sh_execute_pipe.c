@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/15 15:00:24 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/15 16:31:04 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,22 +87,36 @@ static int		loop_pipe_exec(
 	return (SUCCESS);
 }
 
+/*
+** creat_all_pipe
+** If we have a intern problems like can't fork,
+** we have to wait for created process.
+*/
+
 static int		create_all_pipe(
 		int nb_pipe, t_pipe *pipes, t_list *lst_psequences, t_context *context)
 {
 	int	pds[2];
 	int	ret;
+	int	i;
 
+	i = 0;
 	if (nb_pipe == -1)
 	{
 		ret = loop_pipe_exec(0, pipes, lst_psequences, context);
 		close_all_pipe(pipes->nb_pipe - 1, pipes->tab_pds);
+		if (ret)
+		{
+			while (i < pipes->nb_cmd)
+				waitpid(pipes->tab_pid[i++], &ret, 0);
+			return (ERROR);
+		}
 		return (ret);
 	}
 	if (pipe(pds))
 	{
 		sh_perror(SH_ERR1_PIPE, "execution commande pipe");
-		return (ERROR);
+		return (-1);
 	}
 	pipes->tab_pds[nb_pipe] = pds;
 	return (create_all_pipe(nb_pipe - 1, pipes, lst_psequences, context));
