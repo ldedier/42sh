@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sh_expansions_pattern_matching.c                   :+:      :+:    :+:   */
+/*   sh_globbing.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 13:31:28 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/12 18:44:15 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/10/15 23:19:56 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,24 +15,32 @@
 int			fill_regexp(t_list **value, char *str)
 {
 
-	return (0);
+	return (SUCCESS);
+	(void)value;
+	(void)str;
 }
 
 /*
 ** pattern matching (globing) : *, ?, [], !, intervals with '-'
 */
 
-int			sh_expansions_pattern_matching(t_context *context, t_ast_node *node)
+int			sh_expansions_pattern_matching(t_context *context, t_ast_node *father)
 {
+	t_list		*head;
 	t_ast_node	*child;
 	char		*str;
 	t_list		*matches;
 
-	str = node->token->value;
-	matches = NULL;
-//	ft_printf("value: %s\n", str);
+	head = father->children;
+	while (head)
+	{
+		child = (t_ast_node*)head->content;
+		str = child->token->value;
+		matches = NULL;
+		ft_printf("value: %s\n", str);
+		head = head->next;
+	}
 	(void)context;
-	(void)node;
 	(void)child;
-	return (0);
+	return (SUCCESS);
 }

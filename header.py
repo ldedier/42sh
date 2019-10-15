@@ -149,6 +149,7 @@ def automatic_header(dir, header, tab_offset):
 
 automatic_header("./srcs/lexer",                        "./includes/sh_lexer.h", 5)
 automatic_header("./srcs/expansions",           "./includes/sh_expansions.h", 0)
+automatic_header("./srcs/globbing",           "./includes/sh_globbing.h", 0)
 automatic_header("./srcs/traverse_tools",       "./includes/sh_traverse_tools.h", 0)
 automatic_header("./srcs/vars",                         "./includes/sh_vars.h", 0)
 automatic_header("./srcs/traverse",                     "./includes/sh_traverse.h", 0)

@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/10/09 02:48:34 by jmartel          ###   ########.fr        #
+#    Updated: 2019/10/15 23:22:41 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,7 @@ VPATH		= $(INCLUDESDIR) \
 			  $(SRCDIR)/common \
 			  $(SRCDIR)/exec \
 			  $(SRCDIR)/expansions \
+			  $(SRCDIR)/globbing \
 			  $(SRCDIR)/grammar \
 			  $(SRCDIR)/lexer \
 			  $(SRCDIR)/parser \
@@ -46,7 +47,6 @@ VPATH		= $(INCLUDESDIR) \
 			  $(SRCDIR)/traverse_tools \
 			  $(SRCDIR)/redirection \
 			  $(SRCDIR)/vars
-
 
 SPEED = -j1
 LIBFT = $(LIBFTDIR)/libft.a
@@ -317,8 +317,13 @@ SRCS			 +=	sh_expansions.c \
 					sh_expansions_quote_removal.c \
 					sh_expansions_scan.c \
 					sh_expansions_history.c \
-					sh_expansions_pattern_matching.c \
 					t_quote.c
+
+################################################################
+########					GLOBBING					########
+################################################################
+SRCS			+=	sh_globbing.c \
+					t_regexp.c
 
 ################################################################
 ########					PERROR						########

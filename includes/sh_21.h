@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/30 15:48:56 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/06 22:54:26 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/15 23:21:42 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@
 # include "sh_traverse_tools.h"
 # include "sh_command_line.h"
 # include "sh_expansions.h"
+# include "sh_globbing.h"
 # include "sh_vars.h"
 # include "sh_shortcuts.h"
 # include "sh_history.h"

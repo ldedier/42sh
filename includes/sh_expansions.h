@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 17:46:46 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/26 03:04:47 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/15 23:15:01 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,12 +103,6 @@ char	*sh_expansions_parameter_get_param(
 	t_context *context, t_expansion *exp);
 int		sh_expansions_parameter_get_word(
 	t_context *context, t_expansion *exp, char *format, char **word);
-
-/*
-** sh_expansions_pattern_matching.c
-*/
-int		sh_expansions_pattern_matching(
-	t_context *context, t_ast_node *node);
 
 /*
 ** sh_expansions_process.c
