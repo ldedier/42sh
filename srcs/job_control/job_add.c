@@ -72,6 +72,7 @@ static int	get_job_cmd_str(t_job *j)
 	j->cmd_copy = ft_strdup(j->command);
 	if (j->cmd_copy == NULL)
 		return (jobs_error_free(SH_ERR1_MALLOC, "job_add", 1, FAILURE));
+	ft_strrev(j->cmd_copy);
 	free(temp->str);
 	free(temp);
 	return (SUCCESS);

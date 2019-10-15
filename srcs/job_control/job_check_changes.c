@@ -13,52 +13,28 @@
 #include "sh_21.h"
 #include "sh_job_control.h"
 
-// static void	reset_job_status(t_job *j, const char status_type)
-// {
-// 	t_process	*p;
-
-// 	p = j->first_process;
-// 	if (status_type == 's')
-// 	{
-// 		while (p != NULL)
-// 		{
-// 			p->stopped = 0;
-// 			p = p->next;
-// 		}
-// 	}
-// 	else if (status_type == 'c')
-// 	{
-// 		while (p != NULL)
-// 		{
-// 			p->continued = 0;
-// 			p = p->next;
-// 		}
-// 	}
-// }
-
 static int	update_process_info(t_job *j, t_process *p, int status)
 {
 	p->status = status;
-	if (WIFSTOPPED(status))
+	if (WIFSTOPPED(status) && !p->stopped)
 	{
-		// ft_dprintf(g_term_fd, "\n");
 		p->stopped = 1;
-		// if (job_is_stopped(j))
-		// 	reset_job_status(j, 'c');
-		job_notify();
+		j->notified = 0;
 	}
-	// if (WIFCONTINUED(status))
-	// {
-	// 	p->continued = 1;
-	// 	// if (job_is_continued(j))
-	// 	// 	reset_job_status(j, 's');
-	// }
-	else if (WIFEXITED(status))
+	if (WIFCONTINUED(status) && p->stopped)
 	{
-		p->completed = 1;
-		if (WIFSIGNALED (status))
-			j->signal_num = WTERMSIG(status);
+		p->continued = 1;
+		p->stopped = 0;
+		j->notified = 0;
 	}
+	else if (WIFEXITED(status) || WIFSIGNALED(status))
+		p->completed = 1;
+	if (WIFSIGNALED (status))
+	{
+		j->notified = 0;
+		j->signal_num = WTERMSIG(status);
+	}
+	job_notify();
 	return (SUCCESS);
 }
 

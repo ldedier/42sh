@@ -6,34 +6,22 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 01:05:04 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/15 04:26:39 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/15 21:37:59 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 #include "sh_job_control.h"
+#include "string.h"
 
 static void		job_check_updates_nohang(void)
 {
 	int		status;
 	pid_t	pid;
 
-	pid = waitpid(ANY_CHILD_PROCESS, &status, WUNTRACED | WNOHANG);
+	pid = waitpid(ANY_CHILD_PROCESS, &status, WUNTRACED | WCONTINUED | WNOHANG);
 	while (!job_check_changes(pid, status))
-		pid = waitpid(ANY_CHILD_PROCESS, &status, WUNTRACED | WNOHANG);
-}
-
-static void		report_completed_job_status(t_job *j)
-{
-	if (j->signal_num == SIGHUP)
-		job_print_status(j, "Hangup");
-	else if (j->signal_num == SIGINT)
-		job_print_status(j, "Interrupt");
-	else if (j->signal_num == SIGQUIT)
-		job_print_status(j, "Quit");
-	else
-		job_print_status(j, "Done");
-	j->notified = 1;
+		pid = waitpid(ANY_CHILD_PROCESS, &status, WUNTRACED | WCONTINUED | WNOHANG);
 }
 
 /*
@@ -62,7 +50,7 @@ void			job_notify(void)
 		{
 			g_job_ctrl->job_num[j->number] = 0;
 			if (j->foreground == 0)
-				report_completed_job_status(j);
+				job_print(j, 1);
 			if (tmp)
 				tmp->next = j_next;
 			else
@@ -74,7 +62,15 @@ void			job_notify(void)
 		// If the job has stopped (but not completed), report to the user (only once)
 		else if (job_is_stopped(j) && !j->notified)
 		{
-			// job_print_status(j, "Stopped");
+			job_print(j, 1);
+			j->foreground = 0;
+			j->notified = 1;
+			tmp = j;
+		}
+		// If the job was continued after being stopped, report to the user (only once)
+		else if (job_is_continued(j) && !j->notified)
+		{
+			job_print(j, 1);
 			j->notified = 1;
 			tmp = j;
 		}

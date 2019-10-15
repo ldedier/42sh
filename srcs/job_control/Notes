@@ -38,7 +38,7 @@ ls & ls -l & ls || sleep 3
 weird output (Art abstrait)
 ===================================================================
 Check what happens when ctrl_z ctrl_c with sleep 10 || ls
-(interative or not)
+(interactive or not)
 ===================================================================
 Check what happens with outside signaling to sleep 10 || ls and sleep 10 && ls
 ===================================================================

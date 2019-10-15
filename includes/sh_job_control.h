@@ -130,6 +130,7 @@ int				job_is_continued(t_job *j);
 int				job_is_stopped(t_job *j);
 void			job_notify(void);
 void			job_print_status(t_job *j, const char *new_status);
+void			job_print(t_job *j, int pid_flag);
 int				job_put_in_bg(t_job *j, int cont);
 int				job_put_in_fg(t_job *j, int cont, int *res);
 void			job_wait(t_job *j, int *res);

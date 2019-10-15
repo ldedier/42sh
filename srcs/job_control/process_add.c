@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 00:38:06 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/15 04:38:19 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/15 22:28:05 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ t_process	*process_create(pid_t pid)
 	p->pid = pid;
 	p->completed = 0;
 	p->stopped = 0;
+	p->continued = 0;
 	p->status = -1;
 	p->next = NULL;
 	return (p);
@@ -35,20 +36,24 @@ static int	create_process_cmd(t_job *j, t_process *p, int first_p)
 
 	ft_memset(p->cmd, MAX_PROCESS_LEN, '\0');
 	if (first_p)
+	{
 		str = ft_strtok(j->cmd_copy, "|");
+		ft_strrev(str);
+		str = str + 1;
+	}
 	else
 	{
 		str = ft_strtok(NULL, "|");
-		str = str + 1;
+		ft_strrev(str);
 	}
 	ft_strcpy(p->cmd, str);
+	// if (!first_p)
 	return (SUCCESS);
 }
 
 int			process_add(pid_t pid)
 {
 	t_job		*j;		//	current job
-	t_process	*p;		//	process iterator
 	t_process	*new_p;	//	the newly created process
 
 	// create the process with the pid pid
@@ -63,15 +68,9 @@ int			process_add(pid_t pid)
 		j->first_process = new_p;
 		return (SUCCESS);
 	}
+	// If not, add to the head of the process list.
 	create_process_cmd(j, new_p, 0);
-	// if not, append it to the process list (to be the last process)
-	p = j->first_process;
-	while (p->next != NULL)
-	{
-		if (p->pid == pid)
-			return (SUCCESS);
-		p = p->next;
-	}
-	p->next = new_p;
+	new_p->next = j->first_process;
+	j->first_process = new_p;
 	return (SUCCESS);
 }

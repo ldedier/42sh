@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 17:04:13 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/08 23:30:28 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/15 21:36:36 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,5 +54,7 @@ int			sh_builtin_fg(t_context *context)
 	mark_job_as_running(active_job);
 	if (sh_pre_execution() != SUCCESS)
 		return (FAILURE);
+	ft_dprintf(g_term_fd, "[%d]  %s\n",
+		active_job->number, active_job->command);
 	return (job_put_in_fg(active_job, 1, &res));
 }
