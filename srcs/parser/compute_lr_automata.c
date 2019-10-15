@@ -70,6 +70,7 @@ int		sh_compute_lr_automata(t_lr_parser *parser)
 {
 	t_state *first_state;
 	int		ret;
+	int		i;
 
 	(void)ret;
 	if (!(first_state = sh_compute_first_state(parser)))
@@ -79,7 +80,8 @@ int		sh_compute_lr_automata(t_lr_parser *parser)
 		sh_free_state(first_state);
 		return (sh_perror(SH_ERR1_MALLOC, "sh_compute_lr_automata (2)"));
 	}
-	while ((ret = sh_compute_states(parser) == 1))
+	i = 1;
+	while ((ret = sh_compute_states(parser) == 1) && i++ < KNOWN_ITERATIONS)
 		;
 	if (ret == -1)
 		return (FAILURE);

@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/21 16:00:50 by jmartel           #+#    #+#              #
-#    Updated: 2019/10/07 11:28:39 by jdugoudr         ###   ########.fr        #
+#    Updated: 2019/10/14 22:52:04 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -102,4 +102,7 @@ launch "Redirections"
 	test_launch 'echo test > $NOEXIST ; ls'
 	test_launch 'TEST="test  with  space" ; echo test > $TEST ; ls ; rm $TEST'
 	test_launch 'TEST="test  with  space" ; echo test > "$TEST" ; ls ; rm "$TEST"'
+	test_launch 'file=buffer' 'echo tamertamer > buffer' 'cat $file' '<$file cat'
+	test_launch 'file=buffer' 'echo tamertamer > buffer' 'cat $file' '< $file cat'
+	test_launch 'file=buffer' 'echo okalm > $file' 'cat $file'
 finish
