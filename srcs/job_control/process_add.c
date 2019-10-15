@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 00:38:06 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/08 16:17:44 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/15 04:38:19 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,25 @@ t_process	*process_create(pid_t pid)
 	p->pid = pid;
 	p->completed = 0;
 	p->stopped = 0;
-	p->status = 0;
+	p->status = -1;
 	p->next = NULL;
-	// p->argv = (char **)context->params->tbl;
 	return (p);
+}
+
+static int	create_process_cmd(t_job *j, t_process *p, int first_p)
+{
+	char	*str;
+
+	ft_memset(p->cmd, MAX_PROCESS_LEN, '\0');
+	if (first_p)
+		str = ft_strtok(j->cmd_copy, "|");
+	else
+	{
+		str = ft_strtok(NULL, "|");
+		str = str + 1;
+	}
+	ft_strcpy(p->cmd, str);
+	return (SUCCESS);
 }
 
 int			process_add(pid_t pid)
@@ -44,9 +59,11 @@ int			process_add(pid_t pid)
 	// if it's the first process in the current job, make it the process group leader
 	if (j->first_process == NULL)
 	{
+		create_process_cmd(j, new_p, 1);
 		j->first_process = new_p;
 		return (SUCCESS);
 	}
+	create_process_cmd(j, new_p, 0);
 	// if not, append it to the process list (to be the last process)
 	p = j->first_process;
 	while (p->next != NULL)

@@ -19,6 +19,7 @@
 
 # define MAX_JOBS				17
 # define ANY_CHILD_PROCESS		-1
+# define MAX_PROCESS_LEN		1000
 
 typedef struct s_process		t_process;
 typedef struct s_job			t_job;
@@ -39,6 +40,7 @@ struct	s_process
 	char			completed;
 	char			continued;
 	char			stopped;
+	char			cmd[MAX_PROCESS_LEN];
 	int				status;
 	pid_t			pid;
 	t_process		*next;
@@ -63,6 +65,7 @@ struct	s_job
 {
 	char			notified;
 	char			*command;
+	char			*cmd_copy;
 	char			signal_num;
 	char			foreground;
 	char			simple_cmd;

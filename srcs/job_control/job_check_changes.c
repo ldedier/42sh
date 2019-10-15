@@ -13,46 +13,46 @@
 #include "sh_21.h"
 #include "sh_job_control.h"
 
-static void	reset_job_status(t_job *j, const char status_type)
-{
-	t_process	*p;
+// static void	reset_job_status(t_job *j, const char status_type)
+// {
+// 	t_process	*p;
 
-	p = j->first_process;
-	if (status_type == 's')
-	{
-		while (p != NULL)
-		{
-			p->stopped = 0;
-			p = p->next;
-		}
-	}
-	else if (status_type == 'c')
-	{
-		while (p != NULL)
-		{
-			p->continued = 0;
-			p = p->next;
-		}
-	}
-}
+// 	p = j->first_process;
+// 	if (status_type == 's')
+// 	{
+// 		while (p != NULL)
+// 		{
+// 			p->stopped = 0;
+// 			p = p->next;
+// 		}
+// 	}
+// 	else if (status_type == 'c')
+// 	{
+// 		while (p != NULL)
+// 		{
+// 			p->continued = 0;
+// 			p = p->next;
+// 		}
+// 	}
+// }
 
 static int	update_process_info(t_job *j, t_process *p, int status)
 {
 	p->status = status;
 	if (WIFSTOPPED(status))
 	{
-		ft_dprintf(g_term_fd, "\n");
+		// ft_dprintf(g_term_fd, "\n");
 		p->stopped = 1;
-		if (job_is_stopped(j))
-			reset_job_status(j, 'c');
+		// if (job_is_stopped(j))
+		// 	reset_job_status(j, 'c');
 		job_notify();
 	}
-	if (WIFCONTINUED(status))
-	{
-		p->continued = 1;
-		if (job_is_continued(j))
-			reset_job_status(j, 's');
-	}
+	// if (WIFCONTINUED(status))
+	// {
+	// 	p->continued = 1;
+	// 	// if (job_is_continued(j))
+	// 	// 	reset_job_status(j, 's');
+	// }
 	else if (WIFEXITED(status))
 	{
 		p->completed = 1;

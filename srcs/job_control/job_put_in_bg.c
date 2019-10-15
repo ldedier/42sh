@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 00:10:55 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/09 01:42:40 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/15 04:19:44 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,19 @@
 **	the pid of the last process in that wil be printed.
 */
 
-pid_t		get_last_process_pid(t_job *j)
-{
-	t_process	*p;
+// pid_t		get_last_process_pid(t_job *j)
+// {
+// 	t_process	*p;
 
-	if (j == NULL)
-		return (0);
-	p = j->first_process;
-	if (p == NULL)
-		return (0);
-	while (p != NULL && p->next != NULL)
-		p = p->next;
-	return (p->pid);
-}
+// 	if (j == NULL)
+// 		return (0);
+// 	p = j->first_process;
+// 	if (p == NULL)
+// 		return (0);
+// 	while (p != NULL && p->next != NULL)
+// 		p = p->next;
+// 	return (p->pid);
+// }
 
 /*
 ** Putting the job in background only means printing the message on the terminal.
@@ -40,12 +40,18 @@ pid_t		get_last_process_pid(t_job *j)
 
 int			job_put_in_bg(t_job *j, int cont)
 {
-	pid_t	pid;
+	t_process	*p;
 
-	pid = get_last_process_pid(j);
 	j->foreground = 0;
 	if (cont && (kill (- j->pgid, SIGCONT)) < 0)
 		return (jobs_error_free("job_put_in_bg", "kill", 0, ERROR));
-	ft_dprintf(g_term_fd, "[%d] %d\n", j->number, pid);
+	ft_dprintf(g_term_fd, "[%d]  ", j->number);
+	p = j->first_process;
+	while (p != NULL)
+	{
+		ft_dprintf(g_term_fd, "%d ", p->pid);
+		p = p->next;
+	}
+	ft_dprintf(g_term_fd, "\n");
 	return (SUCCESS);
 }
