@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/09 17:53:57 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/15 11:51:25 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,8 @@ static int 		child_exec(
 	if (ret == SUCCESS)
 		ret = sh_traverse_simple_command(node_to_execute, context);
 	close_and_free(curr_cmd, pipes, context);
+	if (ret == SUCCESS)
+		return (context->shell->ret_value);
 	return (ret);
 }
 
@@ -183,14 +185,20 @@ static int			create_all_pipe(int nb_pipe, t_pipe *pipes, t_list *lst_psequences,
 ** The shell call all cmd of the pipe sequence and stock
 ** each of them and all pipe in a structure t_pipe.
 ** After fork for all cmd we wait for the end of all of them.
+**
+** Return :
+** SUCCESS if no problems appeared
+** ERROR otherwise
 */
 int				sh_execute_pipe(t_ast_node *node, t_context *context)
 {
 	t_list		*lst_psequences;
 	int 		ret;
+	int			i;
 	t_pipe		pipes;
-	t_ast_node	*curr;
 
+	i = 0;
+	ret = SUCCESS;
 	lst_psequences = node->children;
 	pipes.nb_pipe = ft_lstlen(lst_psequences) / 2;
 	pipes.nb_cmd = pipes.nb_pipe + 1;
@@ -203,10 +211,11 @@ int				sh_execute_pipe(t_ast_node *node, t_context *context)
 	}
 	if (!create_all_pipe(pipes.nb_pipe - 1, &pipes, lst_psequences, context))
 	{
-		while (--pipes.nb_cmd >= 0)
-			waitpid(pipes.tab_pid[pipes.nb_cmd], &ret, 0);//need to see how we do to get the last ret value
+		while (i < pipes.nb_cmd)
+			waitpid(pipes.tab_pid[i++], &ret, 0);//need to see how we do to get the last ret value
 	}
 	free(pipes.tab_pds);
 	free(pipes.tab_pid);
-	return (ret);
+	sh_env_update_ret_value_wait_result(context, ret);
+	return (SUCCESS);
 }
