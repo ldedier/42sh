@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 23:13:55 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/15 23:21:03 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/16 05:12:39 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,16 @@
 typedef struct s_regexp		t_regexp;
 typedef enum e_regexp_type	t_regexp_type;
 
-enum					e_regexp_type
+enum						e_regexp_type
 {
 	REG_STR,
 	REG_STAR,
-	REG_CHAR,
+	REG_CHAR, // used ?
+	REG_QUEST,
+	REG_BRACE
 };
 
-struct					s_regexp
+struct						s_regexp
 {
 	t_regexp_type	type;
 	int				start;
@@ -38,12 +40,20 @@ struct					s_regexp
 /*
 ** sh_globbing.c
 */
-int		fill_regexp(t_list **value, char *str);
-int		sh_expansions_pattern_matching(
-	t_context *context, t_ast_node *father);
+int							sh_expansions_globbing(
+	t_context *context, t_ast_node *father, t_dy_tab *quotes);
+
+/*
+** sh_regexp_parse.c
+*/
+int							sh_regexp_parse(
+	char *str, t_dy_tab **regexp_tab);
 
 /*
 ** t_regexp.c
 */
+t_regexp					*t_regexp_new_push(t_list **regexp_list);
+void						t_regexp_show_list(t_list *head);
+void						t_regexp_show(t_regexp *regexp);
 
 #endif

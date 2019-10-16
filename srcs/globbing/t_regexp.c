@@ -1,0 +1,61 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   t_regexp.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/15 23:26:35 by jmartel           #+#    #+#             */
+/*   Updated: 2019/10/16 05:12:59 by jmartel          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "sh_21.h"
+
+t_regexp		*t_regexp_new_push(t_list **regexp_list)
+{
+	t_regexp	*regexp;
+	t_list		*lst;
+
+	if (!(regexp = malloc(sizeof(*regexp))))
+		return (NULL); //perrror
+	if (!(lst = ft_lstnew(regexp, sizeof(*regexp))))
+	{
+		free(regexp);
+		return (NULL); //perrror
+	}
+	ft_lstadd_last(regexp_list, lst);
+	return (regexp);
+}
+
+void			t_regexp_show_list(t_list *head)
+{
+	while (head)
+	{
+		t_regexp_show((t_regexp*)head->content);
+		head = head->next;
+		if (head)
+			ft_dprintf(2, BLUE" || " EOC);
+		else
+			ft_dprintf(2, "\n");
+	}
+}
+
+void			t_regexp_show(t_regexp *regexp)
+{
+
+	if (regexp->type == REG_CHAR)
+		ft_dprintf(2, "REG_CHAR : ");
+	else if (regexp->type == REG_STR)
+		ft_dprintf(2, "REG_STR : ");
+	else if (regexp->type == REG_STAR)
+		ft_dprintf(2, "REG_START : ");
+	else if (regexp->type == REG_QUEST)
+		ft_dprintf(2, "REG_START : ");
+	else if (regexp->type == REG_BRACE)
+		ft_dprintf(2, "REG_START : ");
+	else
+		ft_dprintf(2, "unknown : ");
+	ft_dprintf(2, "%.*s", regexp->len, regexp->value);
+	// ft_dprintf(2, "start : %d || len : %d\n", regexp->start, regexp->len);
+}
