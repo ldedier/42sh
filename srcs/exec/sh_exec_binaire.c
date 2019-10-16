@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 17:31:33 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/14 05:10:15 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/17 00:19:58 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,10 +87,16 @@ static int		sh_exec_parent_part(pid_t cpid, t_context *context)
 				return (ret);
 		}
 		else
+		{
+			// ft_dprintf(g_term_fd, "SOME WAITING HERE1\n");
 			waitpid(cpid, &ret, context->wait_flags);
+		}
 	}
 	else
+	{
+			// ft_dprintf(g_term_fd, "SOME WAITING HERE2\n");
 		waitpid(cpid, &ret, 0);
+	}
 	if (g_job_ctrl->interactive && sh_post_execution() != SUCCESS)
 		return (FAILURE);
 	if (g_job_ctrl->interactive && (context->cmd_type & SIMPLE_NODE))

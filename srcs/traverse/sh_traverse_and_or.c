@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 15:54:02 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/11 22:04:04 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/16 02:55:23 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ static int		and_or_child_part(t_ast_node *node, t_context *context)
 			return (ret);
 		// ft_dprintf(g_term_fd, "%sChild:\tpid: %d, ppid: %d, pgid: %d%s\n", YELLOW, getpid(), getppid(), getpgid(getpid()), EOC);
 	}
+	ft_dprintf(g_term_fd, "AND_OR FORK: %d\n", cpid);
 	ret = sh_execute_and_or(node, context);
 	// ft_dprintf(g_term_fd, "Exiting with %d\n", ret);
 	exit (ret);

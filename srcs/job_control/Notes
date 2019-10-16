@@ -47,3 +47,5 @@ sending SIGCONT to a background stopped process does not update the status.
 HANDLE SIGCONT
 ===================================================================
 ls | sleep 3 || ls, ctrl_z quitts shell
+===================================================================
+FIX POST_PREFIX IN PIPE_EXECUTE

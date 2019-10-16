@@ -6,74 +6,11 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/14 05:43:58 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/16 02:49:20 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
-
-// static int		pipe_child_part(t_ast_node *node, t_context *context)
-// {
-// 	pid_t	cpid;
-// 	int		ret;
-
-// 	reset_signals();
-// 	cpid = getpid();
-// 	if (g_job_ctrl->interactive)
-// 	{
-// 		if ((ret = set_pgid_child(cpid)) != SUCCESS)
-// 			return (ret);
-// 	}
-// 	ret = sh_execute_pipe(node, context);
-// 	exit (ret);
-// }
-
-// static int		pipe_parent_part(pid_t cpid, t_context *context)
-// {
-// 	int		ret;
-
-// 	if (g_job_ctrl->interactive)
-// 	{
-// 		if ((ret = set_pgid_parent(cpid)) != SUCCESS)
-// 			return (ret);
-// 		if (g_job_ctrl->curr_job->foreground == 0)
-// 			ret = job_put_in_bg(g_job_ctrl->curr_job, 0);
-// 		else if (job_put_in_fg(g_job_ctrl->curr_job, 0, &ret) != SUCCESS)
-// 			return (ret);
-// 	}
-// 	else
-// 		ret = SUCCESS;
-// 	// 	waitpid(cpid, &ret, context->wait_flags);
-// 	sh_env_update_ret_value_wait_result(context, ret);
-// 	return (SH_RET_VALUE_EXIT_STATUS(ret));
-// }
-
-/*
-** pipe_to_do :
-** This function is called when we have pipes to execute.
-** We do here the first fork. That's mean, in this case, we have to add
-** this new process in the jobs list.
-*/
-//static int		pipe_to_do(t_ast_node *node, t_context *context)
-//{
-//	int		ret;
-//	int 	child;
-//
-//	if ((child = fork()) < 0)
-//		return (sh_perror(SH_ERR1_FORK, "execution fork for pipe"));
-//	else if (child)
-//	{
-//		waitpid(child, &ret, 0);
-//		sh_env_update_ret_value_wait_result(context, ret);
-//		return (SUCCESS);
-//	//	return (SH_RET_VALUE_EXIT_STATUS(ret));
-//	}
-//	else
-//	{
-//		ret = sh_execute_pipe(node, context);
-//		exit(ret);
-//	}
-//}
 
 /*
 ** sh_traverse_pipe_sequence :

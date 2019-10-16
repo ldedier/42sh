@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 17:11:16 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/11 11:45:56 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/17 00:25:59 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define SH_EXEC_H
 
 # include "sh_21.h"
+# include "sh_job_control.h"
 
 # define SH_RET_VALUE_EXIT_STATUS(res)	res >> 8
 # define SH_RET_VALUE_SIG_RECEIVED(res)	res & 0xff
@@ -77,6 +78,14 @@ typedef struct		s_context
 	pid_t			pid;
 }					t_context;
 
+typedef struct		s_pipe
+{
+	int				**tab_pds;
+	int				nb_pipe;
+	int				nb_cmd;
+	pid_t			*tab_pid;
+}					t_pipe;
+
 /*
 ********************************************************************************
 */
@@ -108,6 +117,15 @@ int					sh_execute_builtin(t_context *context);
 int					sh_execute_pipe(t_ast_node *node, t_context *context);
 
 /*
+** sh_execute_pipe_tools.c
+*/
+void				close_all_pipe_but_one(int nb_pipe, int cmd, int **pds);
+void				close_and_free(int cmd, t_pipe *pipes, t_context *cntxt);
+void				close_all_pipe(int nb_pipe, int **tab_pds);
+int					get_last_ret_value(t_job *j);
+int					sh_pre_exec_pipe(t_ast_node *node, t_list **pseq, t_pipe *pipes);
+
+/*
 ** sh_execute_and_or.c
 */
 int					sh_execute_and_or(t_ast_node *node, t_context *context);
@@ -115,8 +133,7 @@ int					sh_execute_and_or(t_ast_node *node, t_context *context);
 /*
 ** sh_execute_prefix_postfix.c
 */
-int					sh_pre_execution();
-int					sh_pre_execution_pipes(t_list *contexts);
+int					sh_pre_execution(void);
 int					sh_post_execution(void);
 
 /*

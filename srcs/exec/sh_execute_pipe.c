@@ -6,44 +6,12 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/15 00:26:26 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/17 00:42:59 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-typedef	struct s_pipe{
-	int		**tab_pds;
-	int		nb_pipe;
-	int		nb_cmd;
-	pid_t	*tab_pid;
-}			t_pipe;
-
-/*
-** close_all_pipe_but_one
-** As we create pipe in shell process, all child process
-** have a reference to all the pipe.
-** Before execution we close all unused pipe.
-*/
-static void			close_all_pipe_but_one(int nb_pipe, int curr_cmd, int **tab_pds)
-{
-	int	i;
-
-	i = 0;
-	while (i < nb_pipe)
-	{
-		if (i == curr_cmd)
-			close(tab_pds[i][INPUT]);
-		else if (i == curr_cmd - 1)
-			close(tab_pds[i][OUTPUT]);
-		else
-		{
-			close(tab_pds[i][OUTPUT]);
-			close(tab_pds[i][INPUT]);
-		}
-		i++;
-	}
-}
 
 static pid_t 		fork_for_pipe()
 {
@@ -62,47 +30,15 @@ static pid_t 		fork_for_pipe()
 			if ((ret = set_pgid_child(child)) != SUCCESS)
 				return (ret);
 		}
-		// ft_dprintf(g_term_fd, "%sChild: pid: %d, ppid: %d, pgid: %d%s\n",
-		// 	YELLOW, getpid(), getppid(), getpgid(getpid()), EOC);
 	}
 	else
 	{
-		if (g_job_ctrl->interactive)
-		{
-			// ft_printf("%sInteractive shell%s\n", BLUE, EOC);
-			if ((ret = set_pgid_parent(child)) != SUCCESS)
-				return (ret);
-			// ft_dprintf(g_term_fd, "%sParent: pid: %d, ppid: %d, pgid: %d%s\n",
-			// 	BLUE, child, getppid(), getpgid(child), EOC);
-		}
+		if (g_job_ctrl->interactive && set_pgid_parent(child) != SUCCESS)
+			return (FAILURE);
 	}
 
 	// ft_dprintf(g_term_fd, "Fork: pid: %d\tppid: %d\tpgid: %d\n", getpid(), getppid(), getpgid(getpid()));
 	return (child);
-}
-
-/*
-** close_and_free
-** After the execution, we have to close used pipe, to send a signal
-** at the other side of the pipe
-** free to not have any leaks
-*/
-static void		close_and_free(int curr_cmd, t_pipe *pipes, t_context *context)
-{
-	sh_reset_redirection(&context->redirections);
-	sh_free_all(context->shell);
-	if (pipes->nb_pipe > curr_cmd)
-	{
-		close(pipes->tab_pds[curr_cmd][OUTPUT]);
-		close(STDOUT_FILENO);
-	}
-	if (curr_cmd > 0)
-	{
-		close(pipes->tab_pds[curr_cmd - 1][INPUT]);
-		close(STDIN_FILENO);
-	}
-	free(pipes->tab_pds);
-	free(pipes->tab_pid);
 }
 
 /*
@@ -164,22 +100,6 @@ static int 		loop_pipe_exec(
 	return (SUCCESS);
 }
 
-/*
-** close_all_pipe
-** As we create all pipe in the shell process,
-** we need to close all of them, after fork all cmd,
-** in the shell process
-*/
-static void		close_all_pipe(int nb_pipe, int **tab_pds)
-{
-	while (nb_pipe >= 0)
-	{
-		close(tab_pds[nb_pipe][INPUT]);
-		close(tab_pds[nb_pipe][OUTPUT]);
-		nb_pipe--;
-	}
-}
-
 static int		create_all_pipe(int nb_pipe, t_pipe *pipes,
 					t_list *lst_psequences, t_context *context)
 {
@@ -201,13 +121,23 @@ static int		create_all_pipe(int nb_pipe, t_pipe *pipes,
 	return (create_all_pipe(nb_pipe - 1, pipes, lst_psequences, context));
 }
 
-static int		get_last_ret_value(t_job *j)
-{
-	if (j == NULL || j->first_process == NULL)
-		return (-1);
-	// ft_dprintf(g_term_fd, "Last ret value, pid: %d, ret: %#X (%d)\n", j->first_process->pid, j->first_process->status, j->first_process->status);
-	return (j->first_process->status);
-}
+/*
+**
+*/
+
+// static int		exec_interactive_pipe(t_context *context)
+// {
+// 	int		ret;
+
+// 	if (g_job_ctrl->curr_job->foreground == 0)
+// 			ret = job_put_in_bg(g_job_ctrl->curr_job, 0);
+// 	else if (job_put_in_fg(g_job_ctrl->curr_job, 0, &ret) != SUCCESS)
+// 		return (ret);
+// 	if (sh_post_execution() != SUCCESS)
+// 		return (FAILURE);
+// 	ret = g_job_ctrl->curr_job->first_process->status;
+// 	sh_env_update_ret_value_wait_result(context, ret);
+// }
 
 /*
 ** sh_execute_pipe
@@ -223,21 +153,13 @@ int				sh_execute_pipe(t_ast_node *node, t_context *context)
 	int 		ret;
 	t_pipe		pipes;
 
-	lst_psequences = node->children;
-	pipes.nb_pipe = ft_lstlen(lst_psequences) / 2;
-	pipes.nb_cmd = pipes.nb_pipe + 1;
-	if ((pipes.tab_pds = malloc(pipes.nb_pipe * sizeof(int *))) == NULL)
-		return (ERROR);
-	if ((pipes.tab_pid = malloc(pipes.nb_cmd * sizeof(pid_t))) == NULL)
-	{
-		free(pipes.tab_pds);
-		return (ERROR);
-	}
-	if (sh_pre_execution() != SUCCESS)
+	if ((sh_pre_exec_pipe(node, &lst_psequences, &pipes))!= SUCCESS)
+		return (FAILURE);
+	if (g_job_ctrl->curr_job->foreground && sh_pre_execution() != SUCCESS)
 		return (FAILURE);
 	if (!create_all_pipe(pipes.nb_pipe - 1, &pipes, lst_psequences, context))
 	{
-		if (g_job_ctrl->interactive)
+		if (g_job_ctrl->interactive && (context->cmd_type & 12) != 12)
 		{
 			if (g_job_ctrl->curr_job->foreground == 0)
 					ret = job_put_in_bg(g_job_ctrl->curr_job, 0);
@@ -245,16 +167,17 @@ int				sh_execute_pipe(t_ast_node *node, t_context *context)
 				return (ret);
 			if (sh_post_execution() != SUCCESS)
 				return (FAILURE);
-			if ((ret = get_last_ret_value(g_job_ctrl->curr_job)) < 0)
-				return (ERROR);
+			// ret = g_job_ctrl->curr_job->first_process->status;
+			ret = get_last_ret_value(g_job_ctrl->curr_job);
 			sh_env_update_ret_value_wait_result(context, ret);
-			// ft_dprintf(g_term_fd, "%sRet in pipe: %#X (%d)\n%s",BLUE, context->shell->ret_value, context->shell->ret_value, EOC);
+			ft_dprintf(g_term_fd, "%sRet in pipe: %#X (%d)\n%s",BLUE, context->shell->ret_value, context->shell->ret_value, EOC);
 		}
 		else
 		{
 			while (--pipes.nb_cmd >= 0)
 				waitpid(pipes.tab_pid[pipes.nb_cmd], &ret, 0);
 			sh_env_update_ret_value_wait_result(context, ret);
+			ft_dprintf(g_term_fd, "%sRet in pipe: %#X (%d)\n%s",BLUE, context->shell->ret_value, context->shell->ret_value, EOC);
 		}
 	}
 	free(pipes.tab_pds);
