@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 17:35:18 by jmartel           #+#    #+#             */
-/*   Updated: 2019/07/30 15:54:53 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/16 01:05:29 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # define VERBOSE_EXPANSION	0x0010
 # define VERBOSE_BUILTIN	0x0020
 # define VERBOSE_TRAVERSE	0x0040
+# define VERBOSE_GLOBBING	0x0080
 
 # ifndef SIGHUP
 #  define SIGHUP	1
@@ -166,6 +167,7 @@ void	sh_vars_del_key(t_dy_tab *vars, char *key);
 void	sh_verbose_update(t_shell *shell);
 int		sh_verbose_traverse(void);
 int		sh_verbose_builtin(void);
+int		sh_verbose_globbing(void);
 
 /*
 ** sh_verbose_check.c
