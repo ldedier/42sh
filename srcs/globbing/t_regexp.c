@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 23:26:35 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/16 05:12:59 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/16 07:30:21 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,18 +44,14 @@ void			t_regexp_show_list(t_list *head)
 void			t_regexp_show(t_regexp *regexp)
 {
 
-	if (regexp->type == REG_CHAR)
-		ft_dprintf(2, "REG_CHAR : ");
+	if (regexp->type == REG_STAR)
+		ft_dprintf(2, "REG_STAR : ");
 	else if (regexp->type == REG_STR)
 		ft_dprintf(2, "REG_STR : ");
-	else if (regexp->type == REG_STAR)
-		ft_dprintf(2, "REG_START : ");
 	else if (regexp->type == REG_QUEST)
-		ft_dprintf(2, "REG_START : ");
+		ft_dprintf(2, "REG_QUEST : ");
 	else if (regexp->type == REG_BRACE)
-		ft_dprintf(2, "REG_START : ");
-	else
-		ft_dprintf(2, "unknown : ");
+		ft_dprintf(2, "REG_BRACE : ");
 	ft_dprintf(2, "%.*s", regexp->len, regexp->value);
 	// ft_dprintf(2, "start : %d || len : %d\n", regexp->start, regexp->len);
 }

@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 23:53:16 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/16 06:07:29 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/16 07:32:15 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,22 @@ static int		sh_regexp_parse_new_question(char *str, int *i, t_list **regexp_list
 	return (SUCCESS);
 }
 
+static int		sh_regexp_parse_new_star(char *str, int *i, t_list **regexp_list)
+{
+	int			start;
+	t_regexp	*regexp;
+
+	start = (*i);
+	(*i)++;
+	if (!(regexp = t_regexp_new_push(regexp_list)))
+		return (FAILURE);
+	regexp->type = REG_STAR;
+	regexp->start = start;
+	regexp->len = 1;
+	regexp->value = str + start;
+	return (SUCCESS);
+}
+
 static int		sh_regexp_parse_component(char *str, t_list **regexp_list)
 {
 	int		i;
@@ -83,6 +99,8 @@ static int		sh_regexp_parse_component(char *str, t_list **regexp_list)
 			ret = sh_regexp_parse_new_bracket(str, &i, regexp_list);
 		else if (str[i] == '?')
 			ret = sh_regexp_parse_new_question(str, &i, regexp_list);
+		else if (str[i] == '*')
+			ret = sh_regexp_parse_new_star(str, &i, regexp_list);
 		else
 			ret = sh_regexp_parse_new_string(str, &i, regexp_list);
 		if (ret)

@@ -6,43 +6,11 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 13:31:28 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/16 06:08:31 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/16 07:41:45 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
-
-static int	is_matching_pattern(char *name, t_list *regexp_head)
-{
-	t_regexp	*regexp;
-	int			i;
-
-	i = 0;
-	while (regexp_head && name[i])
-	{
-		regexp = (t_regexp*)regexp_head->content;
-		if (regexp->type == REG_STR)
-		{
-			if (ft_strnequ(regexp->value, name + i, regexp->len))
-				i += regexp->len;
-			else
-				return (ERROR);
-		}
-		else if (regexp->type == REG_QUEST)
-		{
-			if (name[i])
-				i += 1;
-			else
-				return (ERROR);
-		}
-		else
-			return (ERROR);
-		regexp_head = regexp_head->next;
-	}
-	if (regexp_head || name[i])
-		return (ERROR);
-	return (SUCCESS);
-}
 
 static int	pattern_matching(char *path, t_list **regexp_list, t_dy_tab *quotes, t_list **matchs)
 {
@@ -58,7 +26,7 @@ static int	pattern_matching(char *path, t_list **regexp_list, t_dy_tab *quotes, 
 		return (ERROR);
 	while ((dirent = readdir(dir)))
 	{
-		if (is_matching_pattern(dirent->d_name, *regexp_list) == SUCCESS)
+		if (sh_is_pattern_matching(dirent->d_name, *regexp_list) == SUCCESS)
 		{
 			new_path = ft_strjoin_path(path, dirent->d_name); //protect && leaks
 			if (regexp_list[1])
@@ -119,7 +87,7 @@ int			sh_expansions_globbing(t_context *context, t_ast_node *father, t_dy_tab *q
 			if (matches)
 			{
 				if (sh_verbose_globbing())
-				{ft_lstput_fd(matches, 2); ft_dprintf(2, "\n");}
+					{ft_lstput_fd(matches, 2); ft_dprintf(2, "\n");}
 				free(child->token->value);
 				child->token->value = ft_strdup((char*)matches->content); // FUCKING MOCHE
 				ft_lstdel_value(&matches);
