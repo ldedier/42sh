@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/17 02:02:02 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/17 12:38:05 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ static int		sh_pipe_wait(t_context *context, t_pipe *pipes)
 	int		ret;
 
 	// 12 means AND_OR_NODE(4) & BG_NODE(8)
+	ret = 0;
 	if (g_job_ctrl->interactive && (context->cmd_type & 12) != 12)
 	{
 		if (g_job_ctrl->curr_job->foreground == 0)
