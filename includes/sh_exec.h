@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 17:11:16 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/15 13:48:47 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/16 18:11:45 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ void				t_context_reset(t_context *context);
 /*
 ** sh_execute_pipe_tool.c
 */
-void				close_all_pipe(int nb_pipe, int **tab_pds);
+void				close_one_pipe(int curr, t_pipe *pipes);
 void				close_and_free(
 		int curr_cmd, t_pipe *pipes, t_context *context);
 void				close_all_pipe_but_one(

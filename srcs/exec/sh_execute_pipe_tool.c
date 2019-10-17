@@ -6,7 +6,7 @@
 /*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 13:41:34 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/15 15:00:43 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/16 18:11:51 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,18 +65,16 @@ void		close_and_free(int curr_cmd, t_pipe *pipes, t_context *context)
 }
 
 /*
-** close_all_pipe
-** As we create all pipe in the shell process,
-** we need to close all of them, after fork all cmd,
-** in the shell process
+** close_one_pipe
+** In the shell process we need to close pipe
+** just after fork the associate command
 */
 
-void		close_all_pipe(int nb_pipe, int **tab_pds)
+void		close_one_pipe(int curr, t_pipe *pipes)
 {
-	while (nb_pipe >= 0)
+	if (curr < pipes->nb_pipe)
 	{
-		close(tab_pds[nb_pipe][INPUT]);
-		close(tab_pds[nb_pipe][OUTPUT]);
-		nb_pipe--;
+		close(pipes->tab_pds[curr][INPUT]);
+		close(pipes->tab_pds[curr][OUTPUT]);
 	}
 }

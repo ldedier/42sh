@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/15 16:31:04 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/16 19:22:38 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static int		child_exec(
 	close_all_pipe_but_one(pipes->nb_pipe, curr_cmd, pipes->tab_pds);
 	if (curr_cmd > 0)
 		ret = dup2(pipes->tab_pds[curr_cmd - 1][INPUT], STDIN_FILENO);
-	if (ret >= 0 && pipes->nb_pipe > curr_cmd)
+	if (ret >= 0 && curr_cmd < pipes->nb_pipe)
 		ret = dup2(pipes->tab_pds[curr_cmd][OUTPUT], STDOUT_FILENO);
 	if (ret < 0)
 		ret = ERROR;
@@ -46,6 +46,7 @@ static int		child_exec(
 		ret = SUCCESS;
 	if (ret == SUCCESS)
 		ret = sh_traverse_simple_command(to_execute, context);
+	/*ft_dprintf(2, "on close_and_free\n");*/
 	close_and_free(curr_cmd, pipes, context);
 	if (ret == SUCCESS)
 		return (context->shell->ret_value);
@@ -69,21 +70,22 @@ static int		loop_pipe_exec(
 	{
 		if ((pipes->tab_pid[curr_cmd] = fork_for_pipe()) < 0)
 			return (ERROR);
-		else if (!pipes->tab_pid[curr_cmd])
+		else if (pipes->tab_pid[curr_cmd] == 0)
 			exit(child_exec(curr_cmd, pipes, curr_sequence, context));
 	}
 	else if (curr_sequence->symbol->id == sh_index(LEX_TOK_PIPE))
 		return (loop_pipe_exec(curr_cmd, pipes, lst_sequences->next, context));
 	else
 	{
+		if ((pipes->tab_pid[curr_cmd] = fork_for_pipe()) < 0)
+			return (ERROR);
+		else if (pipes->tab_pid[curr_cmd] == 0)
+			exit(child_exec(curr_cmd, pipes, curr_sequence, context));
 		if ((ret = loop_pipe_exec(
 						curr_cmd + 1, pipes, lst_sequences->next, context)))
 			return (ret);
-		if ((pipes->tab_pid[curr_cmd] = fork_for_pipe()) < 0)
-			return (ERROR);
-		else if (!pipes->tab_pid[curr_cmd])
-			exit(child_exec(curr_cmd, pipes, curr_sequence, context));
 	}
+	close_one_pipe(curr_cmd, pipes);
 	return (SUCCESS);
 }
 
@@ -104,8 +106,7 @@ static int		create_all_pipe(
 	if (nb_pipe == -1)
 	{
 		ret = loop_pipe_exec(0, pipes, lst_psequences, context);
-		close_all_pipe(pipes->nb_pipe - 1, pipes->tab_pds);
-		if (ret)
+		if (ret != SUCCESS)
 		{
 			while (i < pipes->nb_cmd)
 				waitpid(pipes->tab_pid[i++], &ret, 0);
@@ -135,27 +136,27 @@ static int		create_all_pipe(
 ** ERROR otherwise
 */
 
+
 int				sh_execute_pipe(t_ast_node *node, t_context *context)
 {
-	t_list		*lst_psq;
 	int			ret;
 	int			i;
 	t_pipe		pipes;
 
 	i = 0;
 	ret = ERROR;
-	lst_psq = node->children;
-	pipes.nb_pipe = ft_lstlen(lst_psq) / 2;
+	pipes.nb_pipe = ft_lstlen(node->children) / 2;
 	pipes.nb_cmd = pipes.nb_pipe + 1;
 	pipes.tab_pid = NULL;
+	pipes.tab_pds = NULL;
 	if ((pipes.tab_pds = malloc(pipes.nb_pipe * sizeof(int *))) == NULL
 			|| (pipes.tab_pid = malloc(pipes.nb_cmd * sizeof(pid_t))) == NULL)
 		sh_env_update_ret_value(context->shell, ret);
-	else if (!create_all_pipe(pipes.nb_pipe - 1, &pipes, lst_psq, context))
+	else if (!create_all_pipe(pipes.nb_pipe - 1, &pipes, node->children, context))
 	{
-		while (i < pipes.nb_cmd)
-			waitpid(pipes.tab_pid[i++], &ret, 0);
-		sh_env_update_ret_value_wait_result(context, ret);
+		while (i++ < pipes.nb_cmd)
+			if (waitpid(-1, &ret, 0) == pipes.tab_pid[pipes.nb_cmd - 1])
+				sh_env_update_ret_value_wait_result(context, ret);
 	}
 	else
 		sh_env_update_ret_value(context->shell, ret);
