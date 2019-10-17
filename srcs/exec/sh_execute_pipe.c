@@ -6,40 +6,12 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/17 00:42:59 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/17 02:02:02 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-
-static pid_t 		fork_for_pipe()
-{
-	pid_t 	child;
-	int		ret;
-
-	if ((child = fork()) < 0)
-	{
-		sh_perror(SH_ERR1_FORK, "execution fork for pipe");
-		return (-1);
-	}
-	if (child == 0)
-	{
-		if (g_job_ctrl->interactive)
-		{
-			if ((ret = set_pgid_child(child)) != SUCCESS)
-				return (ret);
-		}
-	}
-	else
-	{
-		if (g_job_ctrl->interactive && set_pgid_parent(child) != SUCCESS)
-			return (FAILURE);
-	}
-
-	// ft_dprintf(g_term_fd, "Fork: pid: %d\tppid: %d\tpgid: %d\n", getpid(), getppid(), getpgid(getpid()));
-	return (child);
-}
 
 /*
 ** child_exec
@@ -114,6 +86,9 @@ static int		create_all_pipe(int nb_pipe, t_pipe *pipes,
 	}
 	if (pipe(pds))//checker si pas d'erreur au milieu d'une pipe sequence
 	{
+		// CHECK FOR THE NEED FOR FREE
+		free(pipes->tab_pds);
+		free(pipes->tab_pid);
 		sh_perror(SH_ERR1_PIPE, "execution commande pipe");
 		return (ERROR);
 	}
@@ -122,23 +97,38 @@ static int		create_all_pipe(int nb_pipe, t_pipe *pipes,
 }
 
 /*
-**
+** If we are in an interactive shell, we treat the pipe as a job.
+** If we are in an non-interactive shell,
+**	or if we already forked for a background and or, we just wait with waitpid.
 */
 
-// static int		exec_interactive_pipe(t_context *context)
-// {
-// 	int		ret;
+static int		sh_pipe_wait(t_context *context, t_pipe *pipes)
+{
+	int		ret;
 
-// 	if (g_job_ctrl->curr_job->foreground == 0)
-// 			ret = job_put_in_bg(g_job_ctrl->curr_job, 0);
-// 	else if (job_put_in_fg(g_job_ctrl->curr_job, 0, &ret) != SUCCESS)
-// 		return (ret);
-// 	if (sh_post_execution() != SUCCESS)
-// 		return (FAILURE);
-// 	ret = g_job_ctrl->curr_job->first_process->status;
-// 	sh_env_update_ret_value_wait_result(context, ret);
-// }
-
+	// 12 means AND_OR_NODE(4) & BG_NODE(8)
+	if (g_job_ctrl->interactive && (context->cmd_type & 12) != 12)
+	{
+		if (g_job_ctrl->curr_job->foreground == 0)
+				ret = job_put_in_bg(g_job_ctrl->curr_job, 0);
+		else if (job_put_in_fg(g_job_ctrl->curr_job, 0, &ret) != SUCCESS)
+			return (FAILURE);
+		if (sh_post_execution() != SUCCESS)
+			return (FAILURE);
+		sh_env_update_ret_value_wait_result(context, ret);
+		// ft_dprintf(g_term_fd, "%sRet in pipe: %#X (%d)\n%s",BLUE, context->shell->ret_value, context->shell->ret_value, EOC);
+	}
+	else
+	{
+		if (--pipes->nb_cmd >= 0)
+			waitpid(pipes->tab_pid[pipes->nb_cmd], &ret, 0);
+		sh_env_update_ret_value_wait_result(context, ret);
+		while (--pipes->nb_cmd >= 0)
+			waitpid(pipes->tab_pid[pipes->nb_cmd], &ret, 0);
+		// ft_dprintf(g_term_fd, "%sRet in pipe: %#X (%d)\n%s",CYAN, context->shell->ret_value, context->shell->ret_value, EOC);
+	}
+	return (SUCCESS);
+}
 /*
 ** sh_execute_pipe
 ** This the execution file of pipe.
@@ -150,34 +140,24 @@ static int		create_all_pipe(int nb_pipe, t_pipe *pipes,
 int				sh_execute_pipe(t_ast_node *node, t_context *context)
 {
 	t_list		*lst_psequences;
-	int 		ret;
 	t_pipe		pipes;
 
 	if ((sh_pre_exec_pipe(node, &lst_psequences, &pipes))!= SUCCESS)
 		return (FAILURE);
-	if (g_job_ctrl->curr_job->foreground && sh_pre_execution() != SUCCESS)
-		return (FAILURE);
+	if (g_job_ctrl->interactive && g_job_ctrl->curr_job->foreground)
+		if (sh_pre_execution() != SUCCESS)
+		{
+			free(pipes.tab_pds);
+			free(pipes.tab_pid);
+			return (FAILURE);
+		}
 	if (!create_all_pipe(pipes.nb_pipe - 1, &pipes, lst_psequences, context))
 	{
-		if (g_job_ctrl->interactive && (context->cmd_type & 12) != 12)
+		if (sh_pipe_wait (context, &pipes) != SUCCESS)
 		{
-			if (g_job_ctrl->curr_job->foreground == 0)
-					ret = job_put_in_bg(g_job_ctrl->curr_job, 0);
-			else if (job_put_in_fg(g_job_ctrl->curr_job, 0, &ret) != SUCCESS)
-				return (ret);
-			if (sh_post_execution() != SUCCESS)
-				return (FAILURE);
-			// ret = g_job_ctrl->curr_job->first_process->status;
-			ret = get_last_ret_value(g_job_ctrl->curr_job);
-			sh_env_update_ret_value_wait_result(context, ret);
-			ft_dprintf(g_term_fd, "%sRet in pipe: %#X (%d)\n%s",BLUE, context->shell->ret_value, context->shell->ret_value, EOC);
-		}
-		else
-		{
-			while (--pipes.nb_cmd >= 0)
-				waitpid(pipes.tab_pid[pipes.nb_cmd], &ret, 0);
-			sh_env_update_ret_value_wait_result(context, ret);
-			ft_dprintf(g_term_fd, "%sRet in pipe: %#X (%d)\n%s",BLUE, context->shell->ret_value, context->shell->ret_value, EOC);
+			free(pipes.tab_pds);
+			free(pipes.tab_pid);
+			return (FAILURE);
 		}
 	}
 	free(pipes.tab_pds);

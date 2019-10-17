@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 17:11:16 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/17 00:25:59 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/17 01:59:59 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,10 +120,10 @@ int					sh_execute_pipe(t_ast_node *node, t_context *context);
 ** sh_execute_pipe_tools.c
 */
 void				close_all_pipe_but_one(int nb_pipe, int cmd, int **pds);
-void				close_and_free(int cmd, t_pipe *pipes, t_context *cntxt);
+void				close_and_free(int cmd, t_pipe *pipes, t_context *ctxt);
 void				close_all_pipe(int nb_pipe, int **tab_pds);
-int					get_last_ret_value(t_job *j);
 int					sh_pre_exec_pipe(t_ast_node *node, t_list **pseq, t_pipe *pipes);
+pid_t 				fork_for_pipe(void);
 
 /*
 ** sh_execute_and_or.c

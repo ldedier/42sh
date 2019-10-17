@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 15:54:02 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/14 23:46:23 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/17 02:49:10 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,11 @@ static int		should_execute(int prev_symb, int retvalue)
 		return (!retvalue);
 	else
 	{
+		// Review conditions, bg or fg should be taken into account.
 		if (g_job_ctrl->interactive)
-			return (retvalue && WTERMSIG(retvalue) != SIGINT);
-		return (retvalue && WIFSIGNALED(retvalue));
+			return (retvalue || (WIFSIGNALED(retvalue) && WTERMSIG(retvalue) != SIGINT));
+		return (retvalue || WIFSIGNALED(retvalue));
+		// return (retvalue);
 	}
 }
 

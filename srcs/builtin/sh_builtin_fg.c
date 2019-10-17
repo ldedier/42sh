@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 17:04:13 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/15 21:36:36 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/17 02:23:10 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int			sh_builtin_fg(t_context *context)
 	t_job	*active_job;
 	int		res;
 
-	(void)context;
+	res = 0;
 	active_job = get_active_job();
 	if (active_job == NULL)
 		return (ERROR);
@@ -56,5 +56,8 @@ int			sh_builtin_fg(t_context *context)
 		return (FAILURE);
 	ft_dprintf(g_term_fd, "[%d]  %s\n",
 		active_job->number, active_job->command);
-	return (job_put_in_fg(active_job, 1, &res));
+	if (job_put_in_fg(active_job, 1, &res) != SUCCESS)
+		return (FAILURE);
+	sh_env_update_ret_value_wait_result(context, res);
+	return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 03:20:57 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/17 00:42:35 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/17 01:59:41 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,10 +101,30 @@ void		close_all_pipe(int nb_pipe, int **tab_pds)
 	}
 }
 
-int		get_last_ret_value(t_job *j)
+pid_t 		fork_for_pipe(void)
 {
-	if (j == NULL || j->first_process == NULL)
+	pid_t 	child;
+	int		ret;
+
+	if ((child = fork()) < 0)
+	{
+		sh_perror(SH_ERR1_FORK, "execution fork for pipe");
 		return (-1);
-	// ft_dprintf(g_term_fd, "Last ret value, pid: %d, ret: %#X (%d)\n", j->first_process->pid, j->first_process->status, j->first_process->status);
-	return (j->first_process->status);
+	}
+	if (child == 0)
+	{
+		if (g_job_ctrl->interactive)
+		{
+			if ((ret = set_pgid_child(child)) != SUCCESS)
+				return (ret);
+		}
+	}
+	else
+	{
+		if (g_job_ctrl->interactive && set_pgid_parent(child) != SUCCESS)
+			return (-1);
+	}
+
+	// ft_dprintf(g_term_fd, "Fork: pid: %d\tppid: %d\tpgid: %d\n", getpid(), getppid(), getpgid(getpid()));
+	return (child);
 }

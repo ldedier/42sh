@@ -49,3 +49,6 @@ HANDLE SIGCONT
 ls | sleep 3 || ls, ctrl_z quitts shell
 ===================================================================
 FIX POST_PREFIX IN PIPE_EXECUTE
+===================================================================
+Ret value of command after fg, (sleep then ctrl_c)
+===================================================================

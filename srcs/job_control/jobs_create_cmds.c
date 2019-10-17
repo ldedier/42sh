@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/03 07:59:34 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/11 06:34:12 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/17 02:41:55 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static char			*create_cmd_word(t_token *t)
 	// ft_printf("creating word from: ");
 	// sh_print_token(t, g_glob.cfg);
 	// ft_printf("\n");
-	if (t->id == LEX_TOK_WORD)
+	if (t->id == LEX_TOK_WORD || t->id == LEX_TOK_IO_NUMBER)
 	{
 		// ft_dprintf(g_term_fd, "token %s\n", t->value);
 		if ((str = ft_strdup(t->value)) == NULL)

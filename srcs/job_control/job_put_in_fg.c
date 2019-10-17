@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/20 23:22:03 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/17 00:08:43 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/17 00:45:35 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,13 @@ int			job_put_in_fg(t_job *j, int cont, int *ret)
 	// ft_dprintf(g_term_fd, "%sJob [%d] in control\n%s", COLOR_YELLOW, j->number, EOC);
 	if (cont && kill (- j->pgid, SIGCONT) < 0)
 	{
-		*ret = ERROR;
 		return (jobs_error_free("kill",
-			"Could not send SIGCONT to the process", 0, ERROR));
+			"Could not send SIGCONT to the process", 0, FAILURE));
 	}
 	if (tcsetpgrp(g_term_fd, j->pgid) < 0)
 	{
-		*ret = ERROR;
 		return (jobs_error_free("tcsetpgrp",
-			"Could not put the job in the foreground", 0, ERROR));
+			"Could not put the job in the foreground", 0, FAILURE));
 	}
 	j->foreground = 1;
 	// Wait for the job
@@ -47,7 +45,6 @@ int			job_put_in_fg(t_job *j, int cont, int *ret)
 	// Put the shell back into the forground.
 	if (tcsetpgrp(g_term_fd, g_job_ctrl->shell_pgid) < 0)
 	{
-		*ret = FAILURE;
 		return (jobs_error_free("tcsetpgrp",
 			"Could not give the shell control of the terminal", 1, FAILURE));
 	}
