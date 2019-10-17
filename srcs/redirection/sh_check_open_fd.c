@@ -6,7 +6,7 @@
 /*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 15:06:52 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/09/23 17:33:08 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/16 19:30:38 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,15 @@ static int	is_saved(t_list *lst_redir, int fd)
 }
 
 /*
- * We creat a backup for the given fd
- * If the fd to save was close we return -1
- * Otherwise, the backup fd
- * -2 if an error occur
- *
- * If the dup creat a fd wich is already
- * in the list. That's mean the user already
- * closed this fd. So we re-do a dup until we
- * find a "non-used" fd.
+** We creat a backup for the given fd
+** If the fd to save was close we return -1
+** Otherwise, the backup fd
+** -2 if an error occur
+**
+** If the dup creat a fd wich is already
+** in the list. That's mean the user already
+** closed this fd. So we re-do a dup until we
+** find a "non-used" fd.
 */
 
 static int	save_fd(t_list *lst, t_redirection_type type, int fd)
@@ -57,28 +57,37 @@ static int	save_fd(t_list *lst, t_redirection_type type, int fd)
 	return (backup);
 }
 
+/*
+** sh_check_open_fd
+** We need to check if the the right fd is a valid open fd.
+** We use fcntl function cause testing with write on a pipe
+** could break the shell. This was used to appened with this specific command :
+** cmd > fifo | echo 2
+*/
+
 int			sh_check_open_fd(t_redirection_type type, int fd)
 {
-	if (type == OUTPUT)
-	{
-		if (write(fd, "", 0) == 0)
+	(void)type;
+//	if (type == OUTPUT)
+//	{
+//		if (fcntl(fd, F_GETFL) != -1)
+//			return (fd);
+//	}
+//	else
+//	{
+		if (fcntl(fd, F_GETFL) != -1)
 			return (fd);
-	}
-	else
-	{
-		if (read(fd, "", 0) == 0)
-			return (fd);
-	}
+//	}
 	return (-1);
 }
 
 /*
- * We check if the destination fd is not close one.
- * Return -1 if not
- * Return fd if it's ok
- *
- * If fd and one backup are egual means fd it's.
- * Because backup can only took on close fd.
+** We check if the destination fd is not close one.
+** Return -1 if not
+** Return fd if it's ok
+**
+** If fd and one backup are egual means fd it's.
+** Because backup can only took on close fd.
 */
 
 int			sh_check_dst_fd(t_list *lst, t_redirection_type type, int fd)
@@ -98,12 +107,12 @@ int			sh_check_dst_fd(t_list *lst, t_redirection_type type, int fd)
 }
 
 /*
- * If the source fd is egual to a backup we need to take a
- * new backup.
- * If source fd is not close we need to create a backup.
- *
- * return -1 if error
- * otherwise 0
+** If the source fd is egual to a backup we need to take a
+** new backup.
+** If source fd is not close we need to create a backup.
+**
+** return -1 if error
+** otherwise 0
 */
 
 int 		sh_check_src_fd(t_list *head, t_redirection *curr_redir)

@@ -6,7 +6,7 @@
 /*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 10:41:47 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/09/23 16:40:31 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/16 18:53:45 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ static t_redirection	sh_new_redir(
 static int			sh_process_redirection(
 	t_redirection redirection, t_list **list)
 {
-
 	if (sh_execute_redirection(*list, &redirection) != SUCCESS)
 		return (STOP_CMD_LINE);
 	if (ft_lstaddnew(list, &redirection, sizeof(t_redirection)))
