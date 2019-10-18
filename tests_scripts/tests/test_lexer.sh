@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/21 16:00:41 by jmartel           #+#    #+#              #
-#    Updated: 2019/09/05 16:03:41 by jmartel          ###   ########.fr        #
+#    Updated: 2019/10/14 22:42:55 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -70,6 +70,15 @@ launch "Lexer"
 	test_launch '( echo jey } )'
 	test_launch '( echo jey } )'
 	test_launch '{ echo lol { }} | cat -e ; }'
+
+  
+  	mkdir "./test_globbing" && cd "./test_globbing" && touch 'a' 'b' 'c' 'd' 'e' 'f' '!' '^' && cd ..
+	launch_show "wesh tests"
+	test_launch 'cd "./test_globbing"' './obj/write_arguments [abc\]def]'
+	test_launch 'cd "./test_globbing"' './obj/write_arguments [abc\\\]def]'
+	test_launch 'cd "./test_globbing"' './obj/write_arguments [abc\\\\\]def]'
+	test_launch 'cd "./test_globbing"' './obj/write_arguments [abc\\\\\\\]def]"'
+	rm -rf test_globbing
 
 finish
 

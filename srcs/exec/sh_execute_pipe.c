@@ -6,7 +6,11 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2019/10/17 09:05:45 by mdaoud           ###   ########.fr       */
+=======
+/*   Updated: 2019/10/17 12:45:25 by mdaoud           ###   ########.fr       */
+>>>>>>> fa8e7e2216c675a34c54b955be11f8663db91120
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,24 +22,32 @@
 ** Apply pipe redirection and call next level on ast, simple_command
 */
 
+<<<<<<< HEAD
 static int 		child_exec(
 	int curr_cmd, t_pipe *pipes, t_ast_node *node_to_execute, t_context *context)
+=======
+static int		child_exec(
+		int curr_cmd, t_pipe *pipes, t_ast_node *to_execute, t_context *context)
+>>>>>>> fa8e7e2216c675a34c54b955be11f8663db91120
 {
-	int 		ret;
+	int	ret;
 
 	ret = 0;
 	close_all_pipe_but_one(pipes->nb_pipe, curr_cmd, pipes->tab_pds);
 	if (curr_cmd > 0)
 		ret = dup2(pipes->tab_pds[curr_cmd - 1][INPUT], STDIN_FILENO);
-	if (ret >= 0 && pipes->nb_pipe > curr_cmd)
+	if (ret >= 0 && curr_cmd < pipes->nb_pipe)
 		ret = dup2(pipes->tab_pds[curr_cmd][OUTPUT], STDOUT_FILENO);
 	if (ret < 0)
 		ret = ERROR;
 	else
 		ret = SUCCESS;
 	if (ret == SUCCESS)
-		ret = sh_traverse_simple_command(node_to_execute, context);
+		ret = sh_traverse_simple_command(to_execute, context);
+	/*ft_dprintf(2, "on close_and_free\n");*/
 	close_and_free(curr_cmd, pipes, context);
+	if (ret == SUCCESS)
+		return (context->shell->ret_value);
 	return (ret);
 }
 
@@ -45,10 +57,14 @@ static int 		child_exec(
 ** fork and execute in the child process the current pipe sequence.
 */
 
+<<<<<<< HEAD
 static int 		loop_pipe_exec(
+=======
+static int		loop_pipe_exec(
+>>>>>>> fa8e7e2216c675a34c54b955be11f8663db91120
 	int curr_cmd, t_pipe *pipes, t_list *lst_sequences, t_context *context)
 {
-	int 		ret;
+	int			ret;
 	t_ast_node	*curr_sequence;
 
 	curr_sequence = lst_sequences->content;
@@ -56,43 +72,57 @@ static int 		loop_pipe_exec(
 	{
 		if ((pipes->tab_pid[curr_cmd] = fork_for_pipe()) < 0)
 			return (ERROR);
-		else if (!pipes->tab_pid[curr_cmd])
+		else if (pipes->tab_pid[curr_cmd] == 0)
 			exit(child_exec(curr_cmd, pipes, curr_sequence, context));
 	}
 	else if (curr_sequence->symbol->id == sh_index(LEX_TOK_PIPE))
 		return (loop_pipe_exec(curr_cmd, pipes, lst_sequences->next, context));
 	else
 	{
+		if ((pipes->tab_pid[curr_cmd] = fork_for_pipe()) < 0)
+			return (ERROR);
+		else if (pipes->tab_pid[curr_cmd] == 0)
+			exit(child_exec(curr_cmd, pipes, curr_sequence, context));
 		if ((ret = loop_pipe_exec(
 						curr_cmd + 1, pipes, lst_sequences->next, context)))
 			return (ret);
-		if ((pipes->tab_pid[curr_cmd] = fork_for_pipe()) < 0)
-			return (ERROR);
-		else if (!pipes->tab_pid[curr_cmd])
-			exit(child_exec(curr_cmd, pipes, curr_sequence, context));
 	}
+	close_one_pipe(curr_cmd, pipes);
 	return (SUCCESS);
 }
 
-static int		create_all_pipe(int nb_pipe, t_pipe *pipes,
-					t_list *lst_psequences, t_context *context)
+/*
+** creat_all_pipe
+** If we have a intern problems like can't fork,
+** we have to wait for created process.
+*/
+
+static int		create_all_pipe(
+		int nb_pipe, t_pipe *pipes, t_list *lst_psequences, t_context *context)
 {
 	int	pds[2];
 	int	ret;
+	int	i;
 
+	i = 0;
 	if (nb_pipe == -1)
 	{
 		ret = loop_pipe_exec(0, pipes, lst_psequences, context);
-		close_all_pipe(pipes->nb_pipe - 1, pipes->tab_pds);
+		if (ret != SUCCESS)
+		{
+			while (i < pipes->nb_cmd)
+				waitpid(pipes->tab_pid[i++], &ret, 0);
+			return (ERROR);
+		}
 		return (ret);
 	}
-	if (pipe(pds))//checker si pas d'erreur au milieu d'une pipe sequence
+	if (pipe(pds))
 	{
 		// CHECK FOR THE NEED FOR FREE
 		free(pipes->tab_pds);
 		free(pipes->tab_pid);
 		sh_perror(SH_ERR1_PIPE, "execution commande pipe");
-		return (ERROR);
+		return (-1);
 	}
 	pipes->tab_pds[nb_pipe] = pds;
 	return (create_all_pipe(nb_pipe - 1, pipes, lst_psequences, context));
@@ -108,6 +138,7 @@ static int		sh_pipe_wait(t_context *context, t_pipe *pipes)
 {
 	int		ret;
 
+	ret = 0;
 	// 12 means AND_OR_NODE(4) & BG_NODE(8), too laze to write the whole thing
 	if (g_job_ctrl->interactive && (context->cmd_type & 12) != 12)
 	{
@@ -138,7 +169,13 @@ static int		sh_pipe_wait(t_context *context, t_pipe *pipes)
 ** The shell call all cmd of the pipe sequence and stock
 ** each of them and all pipe in a structure t_pipe.
 ** After fork for all cmd we wait for the end of all of them.
+**
+** Return :
+** SUCCESS if no problems appeared
+** ERROR otherwise
 */
+
+
 int				sh_execute_pipe(t_ast_node *node, t_context *context)
 {
 	t_list		*lst_psequences;
@@ -162,6 +199,27 @@ int				sh_execute_pipe(t_ast_node *node, t_context *context)
 			return (FAILURE);
 		}
 	}
+	// int			ret;
+	// int			i;
+	// t_pipe		pipes;
+
+	// i = 0;
+	// ret = ERROR;
+	// pipes.nb_pipe = ft_lstlen(node->children) / 2;
+	// pipes.nb_cmd = pipes.nb_pipe + 1;
+	// pipes.tab_pid = NULL;
+	// pipes.tab_pds = NULL;
+	// if ((pipes.tab_pds = malloc(pipes.nb_pipe * sizeof(int *))) == NULL
+	// 		|| (pipes.tab_pid = malloc(pipes.nb_cmd * sizeof(pid_t))) == NULL)
+	// 	sh_env_update_ret_value(context->shell, ret);
+	// else if (!create_all_pipe(pipes.nb_pipe - 1, &pipes, node->children, context))
+	// {
+	// 	while (i++ < pipes.nb_cmd)
+	// 		if (waitpid(-1, &ret, 0) == pipes.tab_pid[pipes.nb_cmd - 1])
+	// 			sh_env_update_ret_value_wait_result(context, ret);
+	// }
+	// else
+	// 	sh_env_update_ret_value(context->shell, ret);
 	free(pipes.tab_pds);
 	free(pipes.tab_pid);
 	return (SUCCESS);
