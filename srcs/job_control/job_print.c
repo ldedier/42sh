@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 04:42:10 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/17 02:40:01 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/18 14:25:24 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void		print_process_status(t_process *p, int pid_flag)
 	// ft_dprintf(g_term_fd, "<%d>: %#X (%d)\n", p->pid, p->status, p->status);
 	if (status == -1 || WIFCONTINUED(status))
 		ft_dprintf(print_fd, "Running    ");
-	if (WIFEXITED(status))
+	else if (WIFEXITED(status))
 		ft_dprintf(print_fd, "Done       ");
 	else if (WIFSIGNALED(status))
 		ft_dprintf(print_fd, "%-11s", strsignal(WTERMSIG(status)));
@@ -60,7 +60,7 @@ static void		print_job_status(t_job *j, int pid_flag)
 	status = j->first_process->status;
 	if (j->first_process->next == NULL && pid_flag)
 		ft_dprintf(print_fd, "%d  ",j->first_process->pid);
-	if (status == -1 || WIFCONTINUED(status))
+	else if (status == -1 || WIFCONTINUED(status))
 		ft_dprintf(print_fd, "Running    ");
 	if (WIFEXITED(status))
 		ft_dprintf(print_fd, "Done       ");

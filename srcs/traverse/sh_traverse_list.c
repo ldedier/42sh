@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/28 16:49:38 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/18 08:06:50 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/18 15:23:00 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,14 @@ int			sh_traverse_list(t_ast_node *node, t_context *context)
 	t_ast_node	*last_separator;
 
 	// This is to check if the command ends with an ampersand (&).
+	g_job_ctrl->ampersand_eol = 0;
 	if (node->children->next)
 	{
 		last_separator = node->children->next->content;
 		last_separator = last_separator->children->content;
 		if (last_separator->symbol->id == sh_index(LEX_TOK_AND))
 			g_job_ctrl->ampersand_eol = 1;
-		else
-			g_job_ctrl->ampersand_eol = 0;
 	}
-	else
-		g_job_ctrl->ampersand_eol = 0;
 	sh_traverse_tools_show_traverse_start(node, context);
 	ret = get_node_to_exec(node->children->content, context, SEPARATOR_OP, &sh_get_separator_op);
 	sh_traverse_tools_show_traverse_ret_value(node, context, ret);

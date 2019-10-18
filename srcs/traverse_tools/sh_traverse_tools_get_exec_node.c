@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:00:19 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/18 12:21:21 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/18 15:23:27 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int 	get_node_to_exec(t_ast_node *node, t_context *context,
 			g_job_ctrl->ampersand = 0;
 			// For each SEPERATOR_OP, we need a new job.
 			context->cmd_type = SIMPLE_NODE;
+			context->wflags = 0;
 			ret = f(node_to_exec, curr_node->children->content, context);
 			node_to_exec = NULL;
 		}
@@ -56,17 +57,11 @@ int 	get_node_to_exec(t_ast_node *node, t_context *context,
 	}
 	// For the last command.
 	g_job_ctrl->job_added = 0;
+	context->wflags = 0;
 	context->cmd_type = SIMPLE_NODE;
 	if (node_to_exec && ret == SUCCESS)
 	{
-		//context->wflags is used for a non-interactive shell (no job control).
-		// If a process is in the background, we call waitpid but we don't block the shell
-		// WNOHANG means get the return value when you receive a SIGHLD, but don't block.
 		g_job_ctrl->ampersand = g_job_ctrl->ampersand_eol;
-		// if (g_job_ctrl->ampersand_eol != 0)
-		// {
-		// 	context->wflags |= WNOHANG;
-		// }
 		ret = sh_traverse_and_or(node_to_exec, context);
 	}
 	return (ret);

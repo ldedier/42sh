@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 17:31:33 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/18 12:03:50 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/18 15:24:03 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ static int		sh_exec_parent_part(pid_t cpid, t_context *context)
 		// If not, we wait for each process individually.
 		else
 		{
-			// ft_dprintf(g_term_fd, "Simple command, non-interactive\n");
+			// ft_dprintf(g_term_fd, "waitflags: %d\n", context->wflags);
 			waitpid(cpid, &ret, context->wflags);
 		}
 	// }

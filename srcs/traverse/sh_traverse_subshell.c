@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/02 10:03:30 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/18 08:23:14 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/18 15:22:46 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static int	get_last_separator(t_ast_node *curr_node)
 {
 	t_ast_node	*last_separator;
 
+	g_job_ctrl->ampersand_eol = 0;
 	if (curr_node->children->next)
 	{
 		last_separator = curr_node->children->next->content;
@@ -33,18 +34,13 @@ static int	get_last_separator(t_ast_node *curr_node)
 		if (last_separator->symbol->id == sh_index(SEPARATOR_OP))
 		{
 			last_separator = last_separator->children->content;
-			/*ft_printf("we've got a separator ! it's ");// delete it*/
 			if (last_separator->symbol->id == sh_index(LEX_TOK_AND))
 			{
-				/*ft_printf("-%c-\n", '&');// delete it*/
+				g_job_ctrl->ampersand_eol = 1;
 				return (1);
 			}
 			else if (last_separator->symbol->id == sh_index(LEX_TOK_SEMICOL))
-			{
-				;
-			}
-
-				/*ft_printf("-%c-\n", ';');// delete it*/
+				g_job_ctrl->ampersand_eol = 0;
 		}
 		else
 			return (ERROR);
@@ -61,6 +57,7 @@ static int	search_term(t_ast_node *node, t_context *context)
 	// t_ast_node	*node_to_exec;
 
 	el = node->children;
+	// ft_dprintf(g_term_fd, "%sSubshell pid: %d%s\n",COL_MAGENTA, getpid(), EOC);
 	// node_to_exec = NULL;
 	ret = SUCCESS;
 	while (el)
@@ -95,17 +92,34 @@ int		sh_traverse_subshell(t_ast_node *node, t_context *context)
 	pid_t	pid;
 	int		ret;
 
+	ret = 0;
 	if ((pid = fork()) < 0)
 		return (sh_perror_err(SH_ERR1_FORK, "can't fork for subshell"));
 	else if (pid)
 	{
-		waitpid(pid, &ret, 0);
+		if (set_pgid_parent(pid) != SUCCESS)
+			return (FAILURE);
+		if (g_job_ctrl->interactive)
+		{
+			if (g_job_ctrl->curr_job->foreground)
+			{
+				if (job_put_in_fg(g_job_ctrl->curr_job, 0, &ret) != SUCCESS)
+					return (FAILURE);
+			}
+			else if (job_put_in_bg(g_job_ctrl->curr_job, 0) != SUCCESS)
+				return (FAILURE);
+		}
+		else
+			waitpid(pid, &ret, 0);
 		sh_env_update_ret_value_wait_result(context, ret);
 		return (SUCCESS);
 	}
 	else
 	{
 		/*ret = search_term(node->children->next->content, context);*/
+		if (set_pgid_child(getpid()) != SUCCESS)
+			return (FAILURE);
+		g_job_ctrl->interactive = 0;
 		ret = search_term(node, context);
 		sh_free_all(context->shell);
 		if (ret != SUCCESS)

@@ -40,7 +40,7 @@ static int	update_process_info(t_job *j, t_process *p, int status)
 		j->notified = 0;
 		j->signal_num = WTERMSIG(status);
 	}
-	job_notify();
+	// job_notify();
 	return (SUCCESS);
 }
 
