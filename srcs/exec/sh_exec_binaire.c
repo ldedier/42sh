@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 17:31:33 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/17 00:19:58 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/17 09:10:15 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,9 @@ static int		sh_exec_parent_part(pid_t cpid, t_context *context)
 {
 	int		ret;
 
-	// Shell is interactive, command is simple (no pipes/and_or).
 	if (context->cmd_type & SIMPLE_NODE)
 	{
+		// If shell is interactive, waiting should be for the whole job.
 		if (g_job_ctrl->interactive)
 		{
 			if ((ret = set_pgid_parent(cpid)) != SUCCESS)
@@ -86,15 +86,17 @@ static int		sh_exec_parent_part(pid_t cpid, t_context *context)
 			else if (job_put_in_fg(g_job_ctrl->curr_job, 0, &ret) != SUCCESS)
 				return (ret);
 		}
+		// If not, we wait for each process individually.
 		else
 		{
-			// ft_dprintf(g_term_fd, "SOME WAITING HERE1\n");
+			// ft_dprintf(g_term_fd, "Simple command, non-interactive\n");
 			waitpid(cpid, &ret, context->wait_flags);
 		}
 	}
+	// We get here if we forked before and we the child process has to wait for its children
 	else
 	{
-			// ft_dprintf(g_term_fd, "SOME WAITING HERE2\n");
+		// ft_dprintf(g_term_fd, "SOME WAITING HERE2\n");
 		waitpid(cpid, &ret, 0);
 	}
 	if (g_job_ctrl->interactive && sh_post_execution() != SUCCESS)
@@ -102,7 +104,10 @@ static int		sh_exec_parent_part(pid_t cpid, t_context *context)
 	if (g_job_ctrl->interactive && (context->cmd_type & SIMPLE_NODE))
 		g_job_ctrl->job_added = 0;
 	sh_env_update_ret_value_wait_result(context, ret);
-	g_glob.command_line.interrupted = WIFSIGNALED(ret);
+	// to ldedier: Signals can come from outside the terminal (kill)
+	// Not sure if we can make the difference between ctrl_c or kill (SIGINT)
+	// If we hit ctrl_z, the process is stopped but not signaled.
+	g_glob.command_line.interrupted = WIFSIGNALED(ret) || WIFSTOPPED(ret);
 	return (SUCCESS);
 }
 

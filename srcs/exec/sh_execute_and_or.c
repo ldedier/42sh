@@ -6,17 +6,26 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 15:54:02 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/17 02:49:10 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/18 07:59:02 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
+
+
+
+//	fg, received SIGINT-> no execution
+//	bg: received SIGINT-> execution
+//	fg, bg: reveived any other terminating signal-> execution
+// non-interactive: any terminating signal -> execution
+
 /*
-** sh_traverse_and_or_call_sons_exec :
-** Following return value of the preview execution,
-** this function execute or not the next level in the ast,
-** pipe line (sh_traverse_pipe_sequence).
+** If the command is of the type cmd1 || cmd2.
+** Shell is interactive:
+** 	1- job in fg, cmd1 fails or is killed by any signal other than SIGINT.
+** Shell is non-interactive:
+**	if cmd1 fails or is killed by ANY signal.
 */
 
 static int		should_execute(int prev_symb, int retvalue)
@@ -26,15 +35,18 @@ static int		should_execute(int prev_symb, int retvalue)
 	// ft_dprintf(g_term_fd, "%sRet in AND_OR: %#X (%d)\n%s",BLUE, retvalue, retvalue, EOC);
 	if (prev_symb == sh_index(LEX_TOK_AND_IF))
 		return (!retvalue);
-	else
-	{
-		// Review conditions, bg or fg should be taken into account.
-		if (g_job_ctrl->interactive)
-			return (retvalue || (WIFSIGNALED(retvalue) && WTERMSIG(retvalue) != SIGINT));
-		return (retvalue || WIFSIGNALED(retvalue));
-		// return (retvalue);
-	}
+	else if (g_job_ctrl->interactive)
+		return (retvalue &&
+					(WIFSIGNALED(retvalue) && WTERMSIG(retvalue) != SIGINT));
+	return (retvalue);
 }
+
+/*
+** sh_traverse_and_or_call_sons_exec :
+** Following return value of the preview execution,
+** this function execute or not the next level in the ast,
+** pipe line (sh_traverse_pipe_sequence).
+*/
 
 static int		sh_traverse_and_or_call_sons_exec(t_ast_node *node,
 		int *prev_symbol, t_context *context)

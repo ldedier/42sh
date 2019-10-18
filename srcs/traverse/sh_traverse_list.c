@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/28 16:49:38 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/11 22:04:52 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/17 09:10:56 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,18 @@
 #include "sh_job_control.h"
 
 /*
- * sh_traverse_list :
- * This is the browser of the t_list LIST (grammar)
- * Here we scan all LIST node, and_or and separator together, and
- * execute the and_or node at the moment we find it.
- * We wait its return to continue to run the t_list LIST.
+** sh_traverse_list :
+** This is the browser of the t_list LIST (grammar)
+** Here we scan all LIST node, and_or and separator together, and
+** execute the and_or node at the moment we find it.
+** We wait its return to continue to run the t_list LIST.
 */
 int			sh_traverse_list(t_ast_node *node, t_context *context)
 {
 	int			ret;
 	t_ast_node	*last_separator;
 
-	// ft_printf("SHELL PGID: %d\n", g_job_ctrl->shell_pgid);
+	// This is to check if the command ends with an ampersand (&).
 	if (node->children->next)
 	{
 		last_separator = node->children->next->content;

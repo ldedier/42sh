@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 15:54:02 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/17 01:50:23 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/17 09:16:53 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,14 @@ static int		and_or_child_part(t_ast_node *node, t_context *context)
 	pid_t	cpid;
 	int		ret;
 
-	// reset_signals_and_or();
-	reset_signals(); // CHECK
+	reset_signals();
 	cpid = getpid();
 	if (g_job_ctrl->interactive)
 	{
-		// ft_printf("%sInteractive shell AND_OR%s\n", BLUE, EOC);
+		// Adding the child process to the job process group
 		if ((ret = set_pgid_child(cpid)) != SUCCESS)
 			return (ret);
-		// ft_dprintf(g_term_fd, "%sChild:\tpid: %d, ppid: %d, pgid: %d%s\n", YELLOW, getpid(), getppid(), getpgid(getpid()), EOC);
 	}
-	// ft_dprintf(g_term_fd, "AND_OR FORK: %d\n", cpid);
 	ret = sh_execute_and_or(node, context);
 	// ft_dprintf(g_term_fd, "Exiting with %d\n", ret);
 	exit (ret);
@@ -59,6 +56,7 @@ static int		and_or_parent_part(pid_t cpid, t_context *context)
 
 	if (g_job_ctrl->interactive)
 	{
+		// Add the process to the job process group.
 		if ((ret = set_pgid_parent(cpid)) != SUCCESS)
 			return (ret);
 	// ft_dprintf(g_term_fd, "%sSHELL:\tpid: %d, ppid: %d, pgid: %d%s\n", YELLOW, getpid(), getppid(), getpgid(getpid()), EOC);
@@ -101,7 +99,7 @@ int				sh_traverse_and_or(t_ast_node *node, t_context *context)
 	// In this case, we need to fork.
 	// (All background commands need to be executed in a subshell).
 	context->cmd_type &= ~CMD_TYPE;	// Mask to reset the cmd_type
-	context->cmd_type |= AND_OR_NODE;
+	context->cmd_type |= AND_OR_NODE; // set the cmd_type to AND_OR.
 	if ((cpid = fork()) < 0)
 		return (sh_perror(SH_ERR1_FORK, "sh_traverse_and_or"));
 	if (cpid == 0)

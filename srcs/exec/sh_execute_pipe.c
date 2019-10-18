@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/17 02:02:02 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/17 09:05:45 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 ** child_exec
 ** Apply pipe redirection and call next level on ast, simple_command
 */
+
 static int 		child_exec(
 	int curr_cmd, t_pipe *pipes, t_ast_node *node_to_execute, t_context *context)
 {
@@ -43,6 +44,7 @@ static int 		child_exec(
 ** This function look over the t_list pipe_sequece (grammar)
 ** fork and execute in the child process the current pipe sequence.
 */
+
 static int 		loop_pipe_exec(
 	int curr_cmd, t_pipe *pipes, t_list *lst_sequences, t_context *context)
 {
@@ -106,7 +108,7 @@ static int		sh_pipe_wait(t_context *context, t_pipe *pipes)
 {
 	int		ret;
 
-	// 12 means AND_OR_NODE(4) & BG_NODE(8)
+	// 12 means AND_OR_NODE(4) & BG_NODE(8), too laze to write the whole thing
 	if (g_job_ctrl->interactive && (context->cmd_type & 12) != 12)
 	{
 		if (g_job_ctrl->curr_job->foreground == 0)

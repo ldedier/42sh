@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 01:05:04 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/15 21:37:59 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/18 07:59:29 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void			job_notify(void)
 		// If the job is completed, report to user and remove the job from the list.
 		if (job_is_completed(j))
 		{
+			// ft_dprintf(g_term_fd, "JOB [%d] completed\n", j->number);
 			g_job_ctrl->job_num[j->number] = 0;
 			if (j->foreground == 0)
 				job_print(j, 1);
