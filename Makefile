@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/10/15 13:49:36 by jdugoudr         ###   ########.fr        #
+#    Updated: 2019/10/17 17:58:48 by jdugoudr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -100,6 +100,7 @@ SRCS			+=	keys.c cursor_motion.c edit_command.c \
 ########				TRAVERSE_TOOLS					########
 ################################################################
 SRCS			+=	sh_traverse_tools_browse.c \
+					sh_traverse_tools_browse_redirection.c \
 					sh_traverse_tools_reset.c \
 					sh_traverse_tools_debug.c \
 					sh_traverse_tools_io_file.c \

@@ -1,6 +1,6 @@
 #include "sh_21.h"
 
-static int	sh_exec_binaire(t_context *context)
+static int	sh_exec_binaire(t_ast_node *father_node, t_context *context)
 {
 	int			res;
 	pid_t		child;
@@ -8,9 +8,9 @@ static int	sh_exec_binaire(t_context *context)
 	if (sh_pre_execution() != SUCCESS)
 		return (FAILURE);
 	if ((child = fork()) == -1)
-		return (sh_perror(SH_ERR1_FORK, "sh_process_process_execute"));
+		return (sh_perror(SH_ERR1_FORK, "sh_exec_binaire"));
 	if (child == 0)
-		sh_execute_binary(context);
+		sh_execute_binary(father_node, context);
 	else
 	{
 		waitpid(child, &res, 0);
@@ -51,7 +51,7 @@ static int		sh_slash_cmd(t_context *context)
 	return (SUCCESS);
 }
 
-int 	sh_execute_simple_command(t_context *context)
+int 	sh_execute_simple_command(t_ast_node *father_node, t_context *context)
 {
 	int 	ret;
 
@@ -65,9 +65,9 @@ int 	sh_execute_simple_command(t_context *context)
 	if (ret == SUCCESS)
 	{
 		if (context->builtin)
-			ret = sh_execute_builtin(context);
+			ret = sh_execute_builtin(father_node, context);
 		else
-			ret = sh_exec_binaire(context);
+			ret = sh_exec_binaire(father_node, context);
 	}
 	return (ret);
 }

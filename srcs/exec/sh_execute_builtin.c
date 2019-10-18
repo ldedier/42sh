@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 15:06:13 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/19 19:12:14 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/17 18:48:02 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,17 @@
 **		any value returned by a builtin function
 */
 
-int			sh_execute_builtin(t_context *context)
+int			sh_execute_builtin(t_ast_node *father_node, t_context *context)
 {
 	int		res;
 
 	if (isatty(0) && sh_reset_shell(0) == -1)
 		return (FAILURE);
+	if ((res = loop_traverse_redirection(father_node, context)) != SUCCESS)
+	{
+		sh_env_update_ret_value(context->shell, res);
+		return (res);
+	}
 	res = context->builtin(context);
 	if (res == SUCCESS)
 		sh_env_update_ret_value(context->shell, SH_RET_SUCCESS);
