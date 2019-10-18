@@ -1,1 +1,0 @@
-sleep 30 | ls && pwd

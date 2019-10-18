@@ -1,36 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sh_execute_pipe_tools.c                            :+:      :+:    :+:   */
+/*   sh_execute_pipe_tool.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/16 03:20:57 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/17 01:59:41 by mdaoud           ###   ########.fr       */
+/*   Created: 2019/10/15 13:41:34 by jdugoudr          #+#    #+#             */
+/*   Updated: 2019/10/18 08:19:24 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
-#include "sh_job_control.h"
-
-/*
-** A Function to malloc and initalize the strucutre.
-*/
-
-int		sh_pre_exec_pipe(t_ast_node *node, t_list **pseq, t_pipe *pipes)
-{
-	*pseq = node->children;
-	pipes->nb_pipe = ft_lstlen(*pseq) / 2;
-	pipes->nb_cmd = pipes->nb_pipe + 1;
-	if ((pipes->tab_pds = malloc(pipes->nb_pipe * sizeof(int *))) == NULL)
-		return (FAILURE);
-	if ((pipes->tab_pid = malloc(pipes->nb_cmd * sizeof(pid_t))) == NULL)
-	{
-		free(pipes->tab_pds);
-		return (FAILURE);
-	}
-	return (SUCCESS);
-}
 
 /*
 ** close_all_pipe_but_one
@@ -39,7 +19,7 @@ int		sh_pre_exec_pipe(t_ast_node *node, t_list **pseq, t_pipe *pipes)
 ** Before execution we close all unused pipe.
 */
 
-void			close_all_pipe_but_one(int nb_pipe, int curr_cmd, int **tab_pds)
+void		close_all_pipe_but_one(int nb_pipe, int curr_cmd, int **tab_pds)
 {
 	int	i;
 
@@ -85,46 +65,16 @@ void		close_and_free(int curr_cmd, t_pipe *pipes, t_context *context)
 }
 
 /*
-** close_all_pipe
-** As we create all pipe in the shell process,
-** we need to close all of them, after fork all cmd,
-** in the shell process
+** close_one_pipe
+** In the shell process we need to close pipe
+** just after fork the associate command
 */
 
-void		close_all_pipe(int nb_pipe, int **tab_pds)
+void		close_one_pipe(int curr, t_pipe *pipes)
 {
-	while (nb_pipe >= 0)
+	if (curr < pipes->nb_pipe)
 	{
-		close(tab_pds[nb_pipe][INPUT]);
-		close(tab_pds[nb_pipe][OUTPUT]);
-		nb_pipe--;
+		close(pipes->tab_pds[curr][INPUT]);
+		close(pipes->tab_pds[curr][OUTPUT]);
 	}
-}
-
-pid_t 		fork_for_pipe(void)
-{
-	pid_t 	child;
-	int		ret;
-
-	if ((child = fork()) < 0)
-	{
-		sh_perror(SH_ERR1_FORK, "execution fork for pipe");
-		return (-1);
-	}
-	if (child == 0)
-	{
-		if (g_job_ctrl->interactive)
-		{
-			if ((ret = set_pgid_child(child)) != SUCCESS)
-				return (ret);
-		}
-	}
-	else
-	{
-		if (g_job_ctrl->interactive && set_pgid_parent(child) != SUCCESS)
-			return (-1);
-	}
-
-	// ft_dprintf(g_term_fd, "Fork: pid: %d\tppid: %d\tpgid: %d\n", getpid(), getppid(), getpgid(getpid()));
-	return (child);
 }

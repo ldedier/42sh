@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 17:11:16 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/17 12:48:58 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/18 12:26:01 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,10 @@
 # define FG_NODE				16
 # define CMD_BG_FG				24
 
+# define IS_BG(x)				x & BG_NODE
+# define IS_PIPE(x)				x & PIPE_NODE
+# define IS_SIMPLE(x)			x & SIMPLE_NODE
+
 /*
 ** Builtin return value
 */
@@ -59,7 +63,7 @@ typedef enum		e_phase
 
 typedef struct		s_context
 {
-	char			wait_flags;	//mdaoud: Not needed, remove it everywhere when you're sure
+	char			wflags;	//wait_flags for non-interactive shell
 	int				cmd_type;
 	t_shell			*shell;
 	struct termios	*term;
@@ -119,11 +123,9 @@ int					sh_execute_pipe(t_ast_node *node, t_context *context);
 /*
 ** sh_execute_pipe_tools.c
 */
-void				close_all_pipe_but_one(int nb_pipe, int cmd, int **pds);
-void				close_and_free(int cmd, t_pipe *pipes, t_context *ctxt);
-void				close_all_pipe(int nb_pipe, int **tab_pds);
-int					sh_pre_exec_pipe(t_ast_node *node, t_list **pseq, t_pipe *pipes);
-pid_t 				fork_for_pipe(void);
+void				close_all_pipe_but_one(int n_pipe, int cmd, int **tab_pds);
+void				close_and_free(int cmd, t_pipe *pipes, t_context *context);
+void				close_one_pipe(int curr, t_pipe *pipes);
 
 /*
 ** sh_execute_and_or.c
@@ -148,12 +150,4 @@ int					t_context_init(t_context *context, t_shell *shell);
 void				t_context_free_content(t_context *context);
 void				t_context_reset(t_context *context);
 
-/*
-** sh_execute_pipe_tool.c
-*/
-void				close_one_pipe(int curr, t_pipe *pipes);
-// void				close_and_free(
-// 		int curr_cmd, t_pipe *pipes, t_context *context);
-// void				close_all_pipe_but_one(
-// 		int nb_pipe, int curr_cmd, int **tab_pds);
 #endif

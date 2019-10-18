@@ -1,1 +1,1 @@
-ls | wc || pwd 
+ls || ls -l

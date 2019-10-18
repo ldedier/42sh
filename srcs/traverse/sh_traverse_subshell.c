@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/02 10:03:30 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/17 12:43:52 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/18 08:23:14 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,11 @@ static int	get_last_separator(t_ast_node *curr_node)
 				return (1);
 			}
 			else if (last_separator->symbol->id == sh_index(LEX_TOK_SEMICOL))
-				/*ft_printf("-%c-\n", ';');// delete it*/
+			{
 				;
+			}
+
+				/*ft_printf("-%c-\n", ';');// delete it*/
 		}
 		else
 			return (ERROR);

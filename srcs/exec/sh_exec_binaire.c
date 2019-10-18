@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 17:31:33 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/17 09:10:15 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/18 12:03:50 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,26 +26,26 @@
 #include "sh_job_control.h"
 
 
-static int		do_pre_exc_job_add(t_context *context)
-{
-	int		ret;
+// static int		do_pre_exc_job_add(t_context *context)
+// {
+// 	// int		ret;
 
-	(void)context;
-	if (g_job_ctrl->interactive && g_job_ctrl->job_added == 0)
-	{
-		if ((ret = job_add(1)) != SUCCESS)
-			return (ret);
-		g_job_ctrl->job_added = 1;
-	}
-	if (g_job_ctrl->interactive && g_job_ctrl->curr_job->foreground)
-	{
-		// ft_dprintf("PRE EXEC\n");
-		if (sh_pre_execution() != SUCCESS)
-			return (FAILURE);
+// 	(void)context;
+// 	// if (g_job_ctrl->interactive && g_job_ctrl->job_added == 0)
+// 	// {
+// 	// 	if ((ret = job_add(1)) != SUCCESS)
+// 	// 		return (ret);
+// 	// 	g_job_ctrl->job_added = 1;
+// 	// }
+// 	if (g_job_ctrl->interactive && g_job_ctrl->curr_job->foreground)
+// 	{
+// 		// ft_dprintf("PRE EXEC\n");
+// 		if (sh_pre_execution() != SUCCESS)
+// 			return (FAILURE);
 
-	}
-	return (SUCCESS);
-}
+// 	}
+// 	return (SUCCESS);
+// }
 
 static int		sh_exec_child_part(t_context *context)
 {
@@ -53,7 +53,7 @@ static int		sh_exec_child_part(t_context *context)
 	int		ret;
 
 	cpid = getpid();
-	if (g_job_ctrl->interactive && (context->cmd_type & SIMPLE_NODE))
+	if (g_job_ctrl->interactive)
 	{
 		if ((ret = set_pgid_child(cpid)) != SUCCESS)
 			return (ret);
@@ -74,8 +74,8 @@ static int		sh_exec_parent_part(pid_t cpid, t_context *context)
 {
 	int		ret;
 
-	if (context->cmd_type & SIMPLE_NODE)
-	{
+	// if (context->cmd_type & SIMPLE_NODE)
+	// {
 		// If shell is interactive, waiting should be for the whole job.
 		if (g_job_ctrl->interactive)
 		{
@@ -90,19 +90,13 @@ static int		sh_exec_parent_part(pid_t cpid, t_context *context)
 		else
 		{
 			// ft_dprintf(g_term_fd, "Simple command, non-interactive\n");
-			waitpid(cpid, &ret, context->wait_flags);
+			waitpid(cpid, &ret, context->wflags);
 		}
-	}
-	// We get here if we forked before and we the child process has to wait for its children
-	else
-	{
-		// ft_dprintf(g_term_fd, "SOME WAITING HERE2\n");
-		waitpid(cpid, &ret, 0);
-	}
-	if (g_job_ctrl->interactive && sh_post_execution() != SUCCESS)
-		return (FAILURE);
-	if (g_job_ctrl->interactive && (context->cmd_type & SIMPLE_NODE))
-		g_job_ctrl->job_added = 0;
+	// }
+	// if (g_job_ctrl->interactive && sh_post_execution() != SUCCESS)
+	// 	return (FAILURE);
+	// if (g_job_ctrl->interactive && (context->cmd_type & SIMPLE_NODE))
+	// 	g_job_ctrl->job_added = 0;
 	sh_env_update_ret_value_wait_result(context, ret);
 	// to ldedier: Signals can come from outside the terminal (kill)
 	// Not sure if we can make the difference between ctrl_c or kill (SIGINT)
@@ -120,13 +114,16 @@ static int		sh_exec_parent_part(pid_t cpid, t_context *context)
 
 int		sh_exec_binaire(t_context *context)
 {
-	int			ret;
+	// int			ret;
 	pid_t		cpid;
 
-	if (context->cmd_type & PIPE_NODE)
+	if (g_job_ctrl->interactive && g_job_ctrl->curr_job->foreground)
+		if (sh_pre_execution() != SUCCESS)
+			return (FAILURE);
+	if (IS_PIPE(context->cmd_type))
 		sh_execute_binary(context);
-	if ((ret = do_pre_exc_job_add(context)) != SUCCESS)
-		return (ret);
+	// if ((ret = do_pre_exc_job_add(context)) != SUCCESS)
+	// 	return (ret);
 	if ((cpid = fork()) == -1)
 		return (sh_perror(SH_ERR1_FORK, "sh_process_process_execute"));
 	if (cpid == 0)

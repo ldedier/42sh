@@ -68,7 +68,6 @@ struct	s_job
 	char			*cmd_copy;
 	char			signal_num;
 	char			foreground;
-	char			simple_cmd;
 	int				number;
 	pid_t			pgid;
 	t_process		*first_process;
@@ -112,6 +111,7 @@ struct	s_job_control
 	char			interactive;
 	char			job_added;
 	char			ampersand_eol;
+	char			ampersand;
 	pid_t			shell_pgid;
 	int				job_num[MAX_JOBS];
 	t_job_cmd		*job_cmd;

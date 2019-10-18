@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/20 23:22:03 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/17 00:45:35 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/18 09:02:21 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,9 @@ int			job_put_in_fg(t_job *j, int cont, int *ret)
 	j->foreground = 1;
 	// Wait for the job
 	job_wait(j, ret);
-	g_glob.command_line.interrupted = WIFSIGNALED(*ret);
+	g_glob.command_line.interrupted = WIFSIGNALED(*ret) || WIFSTOPPED(*ret);
+	if (sh_post_execution() != SUCCESS)
+		return (FAILURE);
 	// ft_dprintf(g_term_fd, "%sjob [%d] returned%s\n", COLOR_YELLOW, j->number, COLOR_END);
 	// Put the shell back into the forground.
 	if (tcsetpgrp(g_term_fd, g_job_ctrl->shell_pgid) < 0)

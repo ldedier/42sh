@@ -6,19 +6,11 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 15:54:02 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/18 07:59:02 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/18 12:09:44 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
-
-
-
-
-//	fg, received SIGINT-> no execution
-//	bg: received SIGINT-> execution
-//	fg, bg: reveived any other terminating signal-> execution
-// non-interactive: any terminating signal -> execution
 
 /*
 ** If the command is of the type cmd1 || cmd2.
@@ -28,17 +20,28 @@
 **	if cmd1 fails or is killed by ANY signal.
 */
 
-static int		should_execute(int prev_symb, int retvalue)
+static int		should_execute(int prev_symb, int ret)
 {
+	int	ret_sig;
+	int	ret_exit;
+	int	result;
+
+	ret_sig = SH_RET_VALUE_SIG_RECEIVED(ret);
+	ret_exit = SH_RET_VALUE_EXIT_STATUS(ret);
+
 	if (prev_symb == -1)
 		return (1);
-	// ft_dprintf(g_term_fd, "%sRet in AND_OR: %#X (%d)\n%s",BLUE, retvalue, retvalue, EOC);
+	// ft_dprintf(g_term_fd, "%sRet in AND_OR: %#X (%d)\n%s",BLUE, ret, ret, EOC);
+	// ft_dprintf(g_term_fd, "%sexit status: %d, signal status: %d%s\n",BLUE, ret_exit, ret_sig, EOC);
 	if (prev_symb == sh_index(LEX_TOK_AND_IF))
-		return (!retvalue);
+		return (!ret);
 	else if (g_job_ctrl->interactive)
-		return (retvalue &&
-					(WIFSIGNALED(retvalue) && WTERMSIG(retvalue) != SIGINT));
-	return (retvalue);
+	{
+		result = ret_exit || (ret_sig != 130 && ret_sig != 0);
+		ft_dprintf(g_term_fd, "%sReturning: %d%s\n", BLUE, result, EOC);
+		return (result);
+	}
+	return (ret);
 }
 
 /*
@@ -53,17 +56,16 @@ static int		sh_traverse_and_or_call_sons_exec(t_ast_node *node,
 {
 	int			ret;
 
-	// if (*prev_symbol == -1)
-	// 	;
-	// else if (*prev_symbol == sh_index(LEX_TOK_AND_IF)
-	// 	&& context->shell->ret_value)
-	// 	return (SUCCESS);
-	// else if (*prev_symbol == sh_index(LEX_TOK_OR_IF)
-	// 	&& !context->shell->ret_value)
-	// 	return (SUCCESS);
 	if (!should_execute(*prev_symbol, context->shell->ret_value))
 		return (SUCCESS);
+	if (g_job_ctrl->interactive)
+	{
+		if ((ret = job_add(IS_BG(context->cmd_type))) != SUCCESS)
+			return (ret);
+		g_job_ctrl->job_added = 1;
+	}
 	ret = sh_traverse_pipeline(node, context);
+	g_job_ctrl->job_added = 0;
 	// ft_dprintf(g_term_fd, "%sRet after pipeline: %#X (%d)\n%s",BLUE, context->shell->ret_value, context->shell->ret_value, EOC);
 	if (ret == BLT_TEST_ERROR || context->shell->ret_value == BLT_TEST_ERROR)
 	{
@@ -109,6 +111,11 @@ int		sh_execute_and_or(t_ast_node *node, t_context *context)
 	prev_symbol = -1;
 	while (ptr != NULL && context->shell->running)
 	{
+		if (ptr->next == NULL)
+		{
+			context->cmd_type |= (g_job_ctrl->ampersand ? BG_NODE : 0);
+			context->wflags = (g_job_ctrl->ampersand ? WNOHANG : 0);
+		}
 		if ((ret = sh_traverse_and_or_process_phase(
 			context, prev_symbol, ptr)) != KEEP_READ)
 				return (ret);

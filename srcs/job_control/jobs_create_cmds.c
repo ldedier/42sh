@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/03 07:59:34 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/17 02:41:55 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/18 09:22:15 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,22 +87,22 @@ static int	add_job_cmd(t_job_cmd *cmd)
 	return (SUCCESS);
 }
 
-static int	next_sep_is_ampersand(t_list *ptr)
-{
-	t_list		*it;
-	t_symbol_id	id;
+// static int	next_sep_is_ampersand(t_list *ptr)
+// {
+// 	t_list		*it;
+// 	t_symbol_id	id;
 
-	it = ptr;
-	id = ((t_token *)(ptr->content))->id;
-	while (id != END_OF_INPUT && id != LEX_TOK_SEMICOL)
-	{
-		if (id == LEX_TOK_AND)
-			return (1);
-		it = it->next;
-		id = ((t_token *)(it->content))->id;
-	}
-	return (0);
-}
+// 	it = ptr;
+// 	id = ((t_token *)(ptr->content))->id;
+// 	while (id != END_OF_INPUT && id != LEX_TOK_SEMICOL)
+// 	{
+// 		if (id == LEX_TOK_AND)
+// 			return (1);
+// 		it = it->next;
+// 		id = ((t_token *)(it->content))->id;
+// 	}
+// 	return (0);
+// }
 
 int			jobs_create_cmds(t_list *token_list)
 {
@@ -121,8 +121,8 @@ int			jobs_create_cmds(t_list *token_list)
 		id = ((t_token *)(e->content))->id;
 		while (id != END_OF_INPUT && id != LEX_TOK_SEMICOL && id != LEX_TOK_AND)
 		{
-			if ((id == LEX_TOK_AND_IF || id == LEX_TOK_OR_IF)
-				&& !next_sep_is_ampersand(e))
+			if ((id == LEX_TOK_AND_IF || id == LEX_TOK_OR_IF))
+				// && !next_sep_is_ampersand(e))
 					break ;
 			e = e->next;
 			id = ((t_token *)(e->content))->id;

@@ -36,18 +36,18 @@ static int	find_available_job_number(void)
 	return (-1);
 }
 
-static void	init_job_values(t_job *j, int n, int fg)
+static void	init_job_values(t_job *j, int n, int bg)
 {
 	j->first_process = NULL;
 	j->next = NULL;
 	j->signal_num = 0;
 	j->notified = 0;
 	j->pgid = 0;
-	j->simple_cmd = 1;
+	// j->simple_cmd = 1;
 	j->number = n;
 	g_job_ctrl->job_num[n] = 1;
 	g_job_ctrl->curr_job = j;
-	j->foreground = fg;
+	j->foreground = !bg;
 }
 
 /*
@@ -72,7 +72,6 @@ static int	get_job_cmd_str(t_job *j)
 	j->cmd_copy = ft_strdup(j->command);
 	if (j->cmd_copy == NULL)
 		return (jobs_error_free(SH_ERR1_MALLOC, "job_add", 1, FAILURE));
-	ft_strrev(j->cmd_copy);
 	free(temp->str);
 	free(temp);
 	return (SUCCESS);
@@ -87,7 +86,7 @@ static int	get_job_cmd_str(t_job *j)
 ** If not, we add it the tail of the job list.
 */
 
-int			job_add(int fg)
+int			job_add(int bg)
 {
 	t_job	*j;
 	t_job	*it;
@@ -99,10 +98,10 @@ int			job_add(int fg)
 			"job_add", 0, STOP_CMD_LINE));
 	if ((j = malloc(sizeof(t_job))) == NULL)
 		return (jobs_error_free(SH_ERR1_MALLOC, "job_add", 1, FAILURE));
-	init_job_values(j, n, fg);
+	init_job_values(j, n, bg);
 	if (get_job_cmd_str(j) < 0)
 		return (FAILURE);
-	// ft_printf("%sAdded job [%d] %s ", GREEN, g_job_ctrl->curr_job->number, g_job_ctrl->curr_job->command);
+	// ft_printf("%sAdded job [%d] %s ", CYAN, g_job_ctrl->curr_job->number, g_job_ctrl->curr_job->command);
 	// ft_printf("in %s%s\n",j->foreground == 1 ? "foreground" : "background", COLOR_END);
 	// Add the newly created job at the end of the job list.
 	if (g_job_ctrl->first_job == NULL)

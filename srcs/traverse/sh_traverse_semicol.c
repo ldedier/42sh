@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 12:27:20 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/11 08:02:14 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/18 12:03:50 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ int		sh_traverse_semicol(t_ast_node *node_to_execute, t_context *context)
 {
 	int 	ret;
 
-	// ft_dprintf(g_term_fd, "%swaitflag in SEMICOLON: %d%s\n", GREEN, context->wait_flags, EOC);
-	// context->wait_flags = WUNTRACED;
+	// ft_dprintf(g_term_fd, "%swaitflag in SEMICOLON: %d%s\n", GREEN, context->wflags, EOC);
+	// context->wflags = WUNTRACED;
 	ret = sh_traverse_and_or(node_to_execute, context);
 	return (ret);
 }

@@ -1,1 +1,1 @@
-sleep 30 | ls || pwd
+ls || ls -l &

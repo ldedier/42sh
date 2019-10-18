@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 17:04:13 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/09 01:42:40 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/18 11:44:29 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,14 @@ static t_job	*get_active_job(void)
 	t_job	*it;
 	t_job	*prev;
 
-	if (g_job_ctrl->first_job == NULL)
+	if (g_job_ctrl->first_job == g_job_ctrl->curr_job)
 	{
 		sh_perror("bg: current", "no such job");
 		return (NULL);
 	}
 	j = g_job_ctrl->first_job;
 	it = NULL;
-	while (j != NULL)
+	while (j->next != NULL)
 	{
 		prev = j;
 		if (job_is_stopped(j))
@@ -58,22 +58,23 @@ static t_job	*get_active_job(void)
 
 int				sh_builtin_bg(t_context *context)
 {
-	t_job	*active_job;
+	t_job	*j;
 
 	(void)context;
-	active_job = get_active_job();
-	if (active_job == NULL)
+	j = get_active_job();
+	if (j == NULL)
 		return (ERROR);
-	if (kill(- active_job->pgid, SIGCONT) < 0)
+	ft_dprintf(g_term_fd, "%sActive job: [%d] \"%s\"%s\n", YELLOW, j->number, j->command, EOC);
+	if (kill(- j->pgid, SIGCONT) < 0)
 	{
 		ft_dprintf(STDERR_FILENO, "kill SIGCONT\n");
 		return (ERROR);
 	}
-	active_job->foreground = 0;
-	mark_job_as_running(active_job);
-	// job_print_status(active_job, "Continued");
+	j->foreground = 0;
+	mark_job_as_running(j);
+	// job_print_status(j, "Continued");
 	ft_dprintf(g_term_fd, "[%d]  %s &\n",
-		active_job->number, active_job->command);
+		j->number, j->command);
 	return (SUCCESS);
 }
 

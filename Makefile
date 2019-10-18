@@ -6,7 +6,7 @@
 #    By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/10/17 12:49:03 by mdaoud           ###   ########.fr        #
+#    Updated: 2019/10/18 12:26:11 by mdaoud           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -262,7 +262,7 @@ SRCS			+=	sh_vars_tools_1.c sh_vars_tools_2.c \
 ################################################################
 ########						EXEC					########
 ################################################################
-SRCS			+=	sh_execute.c sh_execute_pipe_tools.c \
+SRCS			+=	sh_execute.c \
 					sh_execute_and_or.c \
 					sh_execute_binary.c \
 					sh_execute_builtin.c \
@@ -270,7 +270,7 @@ SRCS			+=	sh_execute.c sh_execute_pipe_tools.c \
 					sh_execute_prefix_postfix.c \
 					t_context.c sh_debug.c \
 					sh_execute_redirection.c \
-					sh_execute_pipe_tool.c
+					sh_execute_pipe_tools.c
 
 ################################################################
 ########					REDIRECTION					########
