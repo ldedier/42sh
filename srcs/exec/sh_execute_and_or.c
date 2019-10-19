@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 15:54:02 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/18 15:23:36 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/19 05:52:14 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@ static int		should_execute(int prev_symb, int ret)
 	// ft_dprintf(g_term_fd, "%sexit status: %d, signal status: %d%s\n",BLUE, ret_exit, ret_sig, EOC);
 	if (prev_symb == sh_index(LEX_TOK_AND_IF))
 		return (!ret);
+	// cmd1 || cmd2 : we don't execute cmd2 if cmd1 was killed by a SIGINT (130).
 	else if (g_job_ctrl->interactive)
 	{
 		result = ret_exit || (ret_sig != 130 && ret_sig != 0);
-		ft_dprintf(g_term_fd, "%sReturning: %d%s\n", BLUE, result, EOC);
 		return (result);
 	}
 	return (ret);
@@ -58,6 +58,7 @@ static int		sh_traverse_and_or_call_sons_exec(t_ast_node *node,
 
 	if (!should_execute(*prev_symbol, context->shell->ret_value))
 		return (SUCCESS);
+	// Each pipeline is a job.
 	if (g_job_ctrl->interactive)
 	{
 		if ((ret = job_add(IS_BG(context->cmd_type))) != SUCCESS)
@@ -111,6 +112,8 @@ int		sh_execute_and_or(t_ast_node *node, t_context *context)
 	prev_symbol = -1;
 	while (ptr != NULL && context->shell->running)
 	{
+		// we need this condition because with the cmd: cmd1 || cmd2 &
+		// Only the cmd2 is affected by the '&'
 		if (ptr->next == NULL)
 		{
 			context->cmd_type |= (g_job_ctrl->ampersand ? BG_NODE : 0);

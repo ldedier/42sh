@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/04 21:42:55 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/06 03:28:59 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/19 05:43:14 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,8 @@ int		sh_parse_token_list(t_lr_parser *parser, t_list **tokens,
 			ft_dprintf(2, "OK !\n");
 			ft_dprintf(2, "\nAST:\n");
 			sh_print_ast(*ast_root, 0);
-			ft_dprintf(2, "\nCST:\n");
-			sh_print_ast(*cst_root, 0);
+			// ft_dprintf(2, "\nCST:\n");
+			// sh_print_ast(*cst_root, 0);
 		}
 		ft_lstdel(&parser->stack, sh_free_stack_item_lst_light);
 		return (SUCCESS);
