@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 11:36:31 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/13 19:06:22 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/20 05:40:49 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -383,7 +383,16 @@ int					sh_builtin_verbose(t_context *context);
 ** sh_builtin_jobs
 */
 int					sh_builtin_jobs(t_context *context);
+int					parse_jobs_args(char **argv, int j_lst[], int *opt);
+
+/*
+** sh_builtin_fg
+*/
 int					sh_builtin_fg(t_context *context);
+
+/*
+** sh_builtin_bg
+*/
 int					sh_builtin_bg(t_context *context);
 
 #endif
