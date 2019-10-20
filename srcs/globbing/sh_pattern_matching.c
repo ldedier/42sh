@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 07:35:43 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/20 03:40:58 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/20 06:56:25 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	sh_pattern_matching_brace_dash(char *name, t_regexp *regexp, int *i, 
 
 	a = regexp->value[*j];
 	b = regexp->value[*j + 2];
-	ft_dprintf(2, "name : %s |||| a : %c || b : %c || not : %d\n", name + *i, a, b, not);
+	// ft_dprintf(2, "name : %s |||| a : %c || b : %c || not : %d\n", name + *i, a, b, not);
 	if (b < a)
 		return (ERROR);
 	(*j) += 3;
@@ -45,13 +45,13 @@ static int	sh_pattern_matching_brace_dash(char *name, t_regexp *regexp, int *i, 
 	{
 		if (!not && name[*i] == a)
 		{
-			ft_dprintf(2, "match name[i] <> a : %c\n", name[*i], a);
+			// ft_dprintf(2, "match name[i] <> a : %c\n", name[*i], a);
 			(*i) += 1;
 			return (SUCCESS);
 		}
 		else if (not && name[*i] == a)
 		{
-			ft_dprintf(2, "match excluded char : name[i] <> a : %c\n", name[*i], a);
+			// ft_dprintf(2, "match excluded char : name[i] <> a : %c\n", name[*i], a);
 			return (ERROR);
 		}
 		a++;
@@ -103,7 +103,7 @@ static int	sh_pattern_matching_star(char *name, t_regexp *regexp, int *i, t_list
 	{
 		while (name[*i])
 			(*i) += 1;
-		ft_dprintf(2, "no new regexp : i : %i\n", *i);
+		// ft_dprintf(2, "no new regexp : i : %i\n", *i);
 		return (SUCCESS);
 	}
 	next_regexp = (t_regexp*)regexp_head->next->content;
@@ -111,12 +111,12 @@ static int	sh_pattern_matching_star(char *name, t_regexp *regexp, int *i, t_list
 	{
 		save = next_regexp->value[next_regexp->len];
 		next_regexp->value[next_regexp->len] = '\0';
-		ft_dprintf(2, "looking for %s in : %s\n", next_regexp->value, name + *i);
+		// ft_dprintf(2, "looking for %s in : %s\n", next_regexp->value, name + *i);
 		if ((buff = ft_strrstr(name + *i, next_regexp->value)))
 		{
 			next_regexp->value[next_regexp->len] = save;
 			(*i) += buff - (name + *i);
-			ft_dprintf(2, "new i : %d (%c)\n", *i, name[*i]);
+			// ft_dprintf(2, "new i : %d (%c)\n", *i, name[*i]);
 			return (SUCCESS);
 		}
 		next_regexp->value[next_regexp->len] = save;
@@ -131,20 +131,19 @@ static int	sh_pattern_matching_star(char *name, t_regexp *regexp, int *i, t_list
 	}
 	else if (next_regexp->type == REG_BRACE)
 	{
-		ft_dprintf(2, "tamer\n");
 		int		j;
 	
 		j = ft_strlen(name) - 1;
-		ft_dprintf(2, "i : %d || j : %d\n", *i, j);
+		// ft_dprintf(2, "i : %d || j : %d\n", *i, j);
 		while (j >= (*i) && sh_pattern_matching_brace(name, next_regexp, &j))
 		{
-			ft_dprintf(2, "bracket do not feat : %c\n", name[j]);
+			// ft_dprintf(2, "bracket do not feat : %c\n", name[j]);
 			j--;
 		}
 		if (j <= (*i))
 			return (ERROR);
 		(*i) = j - 1;
-		ft_dprintf(2, "new i : %d || name[i] : %c\n", *i, name[*i]);
+		// ft_dprintf(2, "new i : %d || name[i] : %c\n", *i, name[*i]);
 		return (SUCCESS);
 	}
 	return (ERROR);
@@ -158,8 +157,10 @@ int			sh_is_pattern_matching(char *name, t_list *regexp_head)
 
 	i = 0;
 	ret = SUCCESS;
-	if (regexp_head && regexp_head->next)
-		ft_dprintf(2, "processing regexp on %s\n", name + i);
+	if (*name == '.' && ((t_regexp*)regexp_head->content)->value[0] != '.')
+		return (ERROR);
+	// if (regexp_head && regexp_head->next)
+	// 	ft_dprintf(2, "processing regexp on %s\n", name + i);
 	while (regexp_head && name[i])
 	{
 		regexp = (t_regexp*)regexp_head->content;
@@ -173,7 +174,7 @@ int			sh_is_pattern_matching(char *name, t_list *regexp_head)
 		else if (regexp->type == REG_STAR)
 		{
 			ret = sh_pattern_matching_star(name, regexp, &i, regexp_head);
-			if (!ret){ft_dprintf(2, "SUCCESS star\n");}
+			// if (!ret){ft_dprintf(2, "SUCCESS star\n");}
 		}
 		else
 			return (ERROR);
@@ -181,6 +182,8 @@ int			sh_is_pattern_matching(char *name, t_list *regexp_head)
 			return (ret);
 		regexp_head = regexp_head->next;
 	}
+	while (regexp_head && ((t_regexp*)regexp_head->content)->type == REG_STAR)
+		regexp_head = regexp_head->next;
 	if (regexp_head || name[i])
 		return (ERROR);
 	return (SUCCESS);

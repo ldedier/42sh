@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 23:53:16 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/20 02:55:38 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/20 07:42:32 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,41 @@ static int		sh_regexp_parse_new_string(char *str, int *i, t_list **regexp_list)
 {
 	int			start;
 	t_regexp	*regexp;
+	char		quoted;
 
 	start = *i;
-	while (str[*i] && str[*i] != '?' && str[*i] != '[' && str[*i] != '*')
-		(*i)++;
+	if (str[*i] == '[')
+		(*i) += 1;
+	quoted = 0;
+	while (str[*i])
+	{
+		ft_dprintf(2, "while : str[*i] : %c (%d)\n", str[*i], *i);
+		if (str[*i] == '\'' || str[*i] == '\\' || str[*i] == '"')
+		{
+			quoted = str[*i];
+			(*i) += 1;
+		}
+		else if (quoted == '\'' || quoted == '"')
+		{
+			while (str[*i] && str[*i] != quoted)
+				(*i) += 1;
+			if (str[*i])
+				(*i) += 1;
+			quoted = 0;
+		}
+		else if (quoted == '\\')
+			(*i) += 1;
+		else if (str[*i] == '?' || str[*i] == '[' || str[*i] == '*')
+			break ;
+		else
+			(*i) += 1;
+	}
+	if (quoted)
+	{
+		ft_dprintf(2, "returning ERROR in parsing str\n" );
+		return (ERROR); // Is it pertinent ?
+	}
+	ft_dprintf(2, "str[*i] : %c (%d)\n", str[*i], *i);
 	if (!(regexp = t_regexp_new_push(regexp_list)))
 		return (FAILURE);
 	regexp->type = REG_STR;
@@ -49,6 +80,7 @@ static int		sh_regexp_parse_new_bracket(char *str, int *i, t_list **regexp_list)
 	regexp->len = *i - start + 1;
 	regexp->value = str + start;
 	(*i)++;
+	ft_dprintf(2, "i : %d\n", *i);
 	return (SUCCESS);
 }
 
@@ -90,12 +122,14 @@ static int		sh_regexp_parse_component(char *str, t_list **regexp_list)
 	int		ret;
 
 	i = 0;
-	ft_dprintf(2, "regexp_parse_component : %s\n", str);
+	// ft_dprintf(2, "regexp_parse_component : %s\n", str);
 	while (str[i])
 	{
 		if (sh_verbose_globbing())
 			ft_dprintf(2, GREEN"new loop : on %c (%d)\n"EOC, str[i], i);
-		if (str[i] == '[')
+		if (str[i] == '\'' || str[i] == '\\' || str[i] == '"')
+			ret = sh_regexp_parse_new_string(str, &i, regexp_list);
+		else if (str[i] == '[')
 			ret = sh_regexp_parse_new_bracket(str, &i, regexp_list);
 		else if (str[i] == '?')
 			ret = sh_regexp_parse_new_question(str, &i, regexp_list);
@@ -121,9 +155,9 @@ int		sh_regexp_parse(char *str, t_dy_tab **regexp_tab)
 	i = 0;
 	if (!ft_strpbrk(str, "?[*"))
 		return (SUCCESS);
-	if (*str == '.')
-		str++;
-	if (*str == '/')
+	if (*str == '.' && *str == '/')
+		str += 2;
+	else if (*str == '/')
 		str++;
 	if (!(split = ft_strsplit(str, '/')))
 		return (FAILURE); // perror

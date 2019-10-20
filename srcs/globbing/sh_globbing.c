@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 13:31:28 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/20 05:04:24 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/20 07:48:54 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ static int	pattern_matching(char *path, t_list **regexp_list, t_dy_tab *quotes, 
 		if (sh_is_pattern_matching(dirent->d_name, *regexp_list) == SUCCESS)
 		{
 			new_path = ft_strjoin_path(path, dirent->d_name); //protect && leaks
+			ft_dprintf(2, "path : %s || new path : %s\n", path, new_path);
 			if (regexp_list[1])
 			{
 				if (sh_verbose_globbing())
@@ -50,18 +51,35 @@ static int	init_path(char **path, char *str)
 {
 	if (*str == '/')
 		*path = ft_strdup("/");
-	else if (str[0] == '.' && str[1] == '/')
-		*path = ft_strdup("./");
 	else
 		*path = ft_strdup("");
 	if (!path)
-		return (FAILURE); //perror
+		return (sh_perror(SH_ERR1_MALLOC, "globbing : init_path (1)"));
 	return (SUCCESS);
 }
 
-static int	sh_expansions_globbing_matches(t_ast_node *node, t_list *matches)
+static int	sh_expansions_globbing_matches(t_list **head, t_list *matches)
 {
-	;
+	t_ast_node	*node;
+
+	// if (sh_verbose_globbing() || 1)
+	// 	{ft_lstput_fd(matches, 2); ft_dprintf(2, "\n");}
+	// ft_lstput_fd(matches, 2); ft_dprintf(2, "\n");
+	node = (t_ast_node*)(*head)->content;
+	free(node->token->value);
+	if (!(node->token->value = ft_strdup((char*)matches->content)))
+		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_globbing_matches (1)"));
+	matches = matches->next;
+	while (matches)
+	{
+		node = (t_ast_node*)(*head)->content;
+		if (!(node = sh_add_word_to_ast(node, matches->content)))
+			return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_globbing_matches (2)"));
+		(*head) = (*head)->next;
+		matches = matches->next;
+	}
+	ft_lstdel(&matches, NULL);
+	return (SUCCESS);
 }
 
 /*
@@ -80,9 +98,17 @@ int			sh_expansions_globbing(t_context *context, t_ast_node *father, t_dy_tab *q
 	head = father->children;
 	regexp_tab = NULL;
 	matches = NULL;
-	while (head)
-	{
+	// Need to see for quote removal
+	// need t ofind a solution t go threought every field splited fields, with no repeat for non splitted fields
+	// while (head)
+	// {
 		child = (t_ast_node*)head->content;
+		if (child->symbol->id != sh_index(LEX_TOK_WORD)) // Are TERM_WORD only valid tokens ?? Assignment_word ?
+		{
+			return (SUCCESS);
+			// head = head->next;
+			// continue ;
+		}
 		str = child->token->value;
 		sh_regexp_parse(str, &regexp_tab);
 		if (regexp_tab) //modify
@@ -90,17 +116,10 @@ int			sh_expansions_globbing(t_context *context, t_ast_node *father, t_dy_tab *q
 			init_path(&path, str);
 			pattern_matching(path, (t_list**)regexp_tab->tbl, quotes, &matches);
 			if (matches)
-			{
-				if (sh_verbose_globbing() || 1)
-					{ft_lstput_fd(matches, 2); ft_dprintf(2, "\n");}
-				// ft_lstput_fd(matches, 2); ft_dprintf(2, "\n");
-				free(child->token->value);
-				child->token->value = ft_strdup((char*)matches->content); // FUCKING MOCHE
-				ft_lstdel_value(&matches);
-			}
+				sh_expansions_globbing_matches(&head, matches);
 		}
-		head = head->next;
-	}
+	// 	head = head->next;
+	// }
 	(void)context;
 	(void)quotes;
 	return (SUCCESS);
