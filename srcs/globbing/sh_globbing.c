@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 13:31:28 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/16 07:41:45 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/20 05:04:24 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,11 @@ static int	init_path(char **path, char *str)
 	return (SUCCESS);
 }
 
+static int	sh_expansions_globbing_matches(t_ast_node *node, t_list *matches)
+{
+	;
+}
+
 /*
 ** pattern matching (globing) : *, ?, [], !, intervals with '-'
 */
@@ -86,8 +91,9 @@ int			sh_expansions_globbing(t_context *context, t_ast_node *father, t_dy_tab *q
 			pattern_matching(path, (t_list**)regexp_tab->tbl, quotes, &matches);
 			if (matches)
 			{
-				if (sh_verbose_globbing())
+				if (sh_verbose_globbing() || 1)
 					{ft_lstput_fd(matches, 2); ft_dprintf(2, "\n");}
+				// ft_lstput_fd(matches, 2); ft_dprintf(2, "\n");
 				free(child->token->value);
 				child->token->value = ft_strdup((char*)matches->content); // FUCKING MOCHE
 				ft_lstdel_value(&matches);

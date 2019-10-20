@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 23:53:16 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/16 07:32:15 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/20 02:55:38 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int		sh_regexp_parse_new_string(char *str, int *i, t_list **regexp_list)
 	t_regexp	*regexp;
 
 	start = *i;
-	while (str[*i] && str[*i] != '?' && str[*i] != '[')
+	while (str[*i] && str[*i] != '?' && str[*i] != '[' && str[*i] != '*')
 		(*i)++;
 	if (!(regexp = t_regexp_new_push(regexp_list)))
 		return (FAILURE);
@@ -90,11 +90,11 @@ static int		sh_regexp_parse_component(char *str, t_list **regexp_list)
 	int		ret;
 
 	i = 0;
-	// ft_dprintf(2, "regexp_parse_component : %s\n", str);
+	ft_dprintf(2, "regexp_parse_component : %s\n", str);
 	while (str[i])
 	{
-		// if (sh_verbose_globbing())
-		// 	ft_dprintf(2, GREEN"new loop : on %c (%d)\n"EOC, str[i], i);
+		if (sh_verbose_globbing())
+			ft_dprintf(2, GREEN"new loop : on %c (%d)\n"EOC, str[i], i);
 		if (str[i] == '[')
 			ret = sh_regexp_parse_new_bracket(str, &i, regexp_list);
 		else if (str[i] == '?')
@@ -119,7 +119,7 @@ int		sh_regexp_parse(char *str, t_dy_tab **regexp_tab)
 	t_list	**list_tab;
 
 	i = 0;
-	if (!ft_strpbrk(str, "?["))
+	if (!ft_strpbrk(str, "?[*"))
 		return (SUCCESS);
 	if (*str == '.')
 		str++;
