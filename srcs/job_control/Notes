@@ -54,3 +54,4 @@ Ret value of command after fg, (sleep then ctrl_c)
 ===================================================================
 Leaks when builtis return error
 ===================================================================
+segfault when adding a slep 30 &

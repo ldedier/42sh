@@ -6,7 +6,7 @@
 #    By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/10/18 12:26:11 by mdaoud           ###   ########.fr        #
+#    Updated: 2019/10/20 06:38:24 by mdaoud           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -295,8 +295,10 @@ SRCS			+=	sh_builtin.c sh_builtin_pwd.c \
 					sh_builtin_hash.c sh_builtin_hash_tools.c \
 					sh_builtin_bonus.c sh_builtin_parser.c \
 					sh_builtin_test.c sh_builtin_test_unary.c \
-					sh_builtin_test_binary.c sh_builtin_jobs.c \
-					sh_builtin_fg.c sh_builtin_bg.c \
+					sh_builtin_test_binary.c \
+					sh_builtin_jobs.c sh_builtin_jobs_tools.c\
+					sh_builtin_fg.c \
+					sh_builtin_bg.c \
 					sh_builtin_fc.c \
 					sh_builtin_fc_l_synopsis.c \
 					sh_builtin_fc_s_synopsis.c \
@@ -339,7 +341,8 @@ SRCS			+=	jobs_init.c job_add.c process_add.c \
 					job_is_stopped.c job_check_changes.c job_free.c \
 					job_print_status.c job_notify.c job_print.c \
 					jobs_error_free.c set_pgid_child.c set_pgid_parent.c \
-					jobs_create_cmds.c jobs_free_cmds.c jobs_print_cmds.c
+					jobs_create_cmds.c jobs_free_cmds.c jobs_print_cmds.c \
+					job_sign_tools.c
 
 ################################################################
 ########					INCLUDES					########

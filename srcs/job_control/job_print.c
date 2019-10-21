@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 04:42:10 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/18 14:25:24 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/20 13:50:32 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,17 @@ static void		print_job_status(t_job *j, int pid_flag)
 	int	print_fd;
 
 	print_fd = (pid_flag == 0 ? STDOUT_FILENO : g_term_fd);
-	ft_dprintf(print_fd, "[%d]  ", j->number);
+	ft_dprintf(print_fd, "[%d]  %c ", j->number, j->sign);
 	status = j->first_process->status;
 	if (j->first_process->next == NULL && pid_flag)
 		ft_dprintf(print_fd, "%d  ",j->first_process->pid);
 	else if (status == -1 || WIFCONTINUED(status))
 		ft_dprintf(print_fd, "Running    ");
-	if (WIFEXITED(status))
+	if (WIFEXITED(status) && WEXITSTATUS(status) == 0)
 		ft_dprintf(print_fd, "Done       ");
+	else if (WIFEXITED(status))
+		ft_dprintf(print_fd, "Exit %d    ", WEXITSTATUS(status));
+
 	else if (WIFSIGNALED(status))
 		ft_dprintf(print_fd, "%-11s", strsignal(WTERMSIG(status)));
 	else if (WIFSTOPPED(status))
@@ -78,7 +81,7 @@ static void		print_job_differant_status(t_job *j, int pid_flag)
 
 	print_fd = (pid_flag == 0 ? STDOUT_FILENO : g_term_fd);
 	p = j->first_process;
-	ft_dprintf(print_fd, "[%d]  ", j->number);
+	ft_dprintf(print_fd, "[%d]  %c ", j->number, j->sign);
 	while (p->next != NULL)
 	{
 		print_process_status(p, pid_flag);
@@ -88,7 +91,6 @@ static void		print_job_differant_status(t_job *j, int pid_flag)
 	print_process_status(p, pid_flag);
 	ft_dprintf(print_fd, "\"%s\"\n", p->cmd);
 }
-
 
 void			job_print(t_job *j, int pid_flag)
 {

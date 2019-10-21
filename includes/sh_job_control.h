@@ -66,7 +66,8 @@ struct	s_job
 	char			notified;
 	char			*command;
 	char			*cmd_copy;
-	char			signal_num;
+	char			signal_num;	//Don't think this is needed anymore
+	char			sign;
 	char			foreground;
 	int				number;
 	pid_t			pgid;
@@ -147,5 +148,11 @@ char			**str_tab_duplicate(char **from);	//put in libft
 void			str_tab_free(char **str);			//put in libft
 void			str_tab_print(char **char_tab);		//put in libft
 
+t_job			*job_get_by_sign(char c);
+void			job_reset_sign(char c);
+void			job_set_plus_sign(t_job *j);
+void			job_added_update_sign(t_job *j);
+t_job			*job_get_unsigned(void);
+void			job_exited_update_sign(char j_sign);
 
 #endif

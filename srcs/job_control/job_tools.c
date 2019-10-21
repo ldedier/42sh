@@ -1,0 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   job_tools.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/20 05:57:09 by mdaoud            #+#    #+#             */
+/*   Updated: 2019/10/20 06:31:54 by mdaoud           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "sh_21.h"
+
+t_job			*get_job_by_num(int num)
+{
+	t_job	*j;
+
+	if (num >= MAX_JOBS || num < 0 || !g_job_ctrl->interactive)
+		return (NULL);
+	j = g_job_ctrl->first_job;
+	while (j != NULL && j->number != num)
+		j = j->next;
+	return (j);
+}
+
