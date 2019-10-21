@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 03:46:18 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/21 05:01:39 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/21 06:43:10 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	create_regexp(t_list **regexp_list, char *str, int start, int i)
 	regexp->value = value;
 	regexp->type = REG_BRACE;
 	regexp->start = start;
-	regexp->len = i - start;
+	regexp->len = ft_strlen(value);
 	return (SUCCESS);
 }
 
@@ -79,6 +79,8 @@ int			sh_regexp_parse_new_brace(char *str, int *i, t_list **regexp_list)
 		else
 			(*i)++;
 	}
+	if (quoted)
+		return (ERROR);
 	if (!str[*i])
 	{
 		if (first_closing == -1)
