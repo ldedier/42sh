@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 07:35:43 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/21 02:15:24 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/21 02:19:00 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,12 +110,13 @@ static int	sh_pattern_matching_brace(char *name, t_regexp *regexp, int *i)
 		}
 		else
 		{
-			if ((!not && regexp->value[j] == name[*i]) || (not && regexp->value[j] != name[*i]))
+			if (!not && regexp->value[j] == name[*i])
 			{
-				// ft_dprintf(2, "brace matched : name[*i] = %c || regexp->value : %c || not : %d\n", name[*i], regexp->value[j], not);
 				(*i) += 1;
 				return (SUCCESS);
 			}
+			if (not && regexp->value[j] == name[*i])
+				return (ERROR);
 		}
 		j++;
 	}
