@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/16 05:23:32 by jmartel           #+#    #+#              #
-#    Updated: 2019/10/21 01:41:45 by jmartel          ###   ########.fr        #
+#    Updated: 2019/10/21 05:47:30 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,8 +25,12 @@ launch "Globbing"
 	test_launch 'cd sandbox' 'echo [a-a][a-a] ; echo $?' 'echo [!a][!a] ; echo $?' 'echo [!] ; echo $?'
 	test_launch 'cd sandbox' 'echo [a-aa-ab-bb-b] ; echo $?' 'echo [!a-aa-ab-bb-b] ; echo $?' 'echo [!a-a!a-a!b-bb-b] ; echo $?' 'echo [!a-aa-ab-b!b!-b] ; echo $?'
 	test_launch 'cd sandbox' 'echo [!] ; echo $?' 'echo [\!] ; echo $?' 'echo [!\!] ; echo $?' 'echo [!!] ; echo $?'
-	# test_launch 'cd sandbox' ''
-	# test_launch 'cd sandbox' ''
+	launch_show "brace quoted"
+	test_launch 'cd sandbox' ''
+	test_launch 'cd sandbox' ''
+	test_launch 'cd sandbox' ''
+	test_launch 'cd sandbox' ''
+	test_launch 'cd sandbox' ''
 
 	launch_show "star"
 	test_launch 'cd sandbox' 'echo *' 'echo *' 'echo .*' 'echo ./*' 'echo **' 'echo ***'
@@ -40,6 +44,7 @@ launch "Globbing"
 	test_launch 'cd sandbox' 'echo file\[1-2]'
 	test_launch 'cd sandbox' 'echo file\[!1-2]'
 	test_launch 'cd sandbox' 'echo file"[!2-3]"'
+	test_launch 'cd sandbox' 'echo .*/"a"* '
 	
 	# test_launch 'rm -rf sandbox'
 	
