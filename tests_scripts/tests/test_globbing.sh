@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/16 05:23:32 by jmartel           #+#    #+#              #
-#    Updated: 2019/10/21 05:47:30 by jmartel          ###   ########.fr        #
+#    Updated: 2019/10/21 08:06:35 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,8 +26,8 @@ launch "Globbing"
 	test_launch 'cd sandbox' 'echo [a-aa-ab-bb-b] ; echo $?' 'echo [!a-aa-ab-bb-b] ; echo $?' 'echo [!a-a!a-a!b-bb-b] ; echo $?' 'echo [!a-aa-ab-b!b!-b] ; echo $?'
 	test_launch 'cd sandbox' 'echo [!] ; echo $?' 'echo [\!] ; echo $?' 'echo [!\!] ; echo $?' 'echo [!!] ; echo $?'
 	launch_show "brace quoted"
-	test_launch 'cd sandbox' ''
-	test_launch 'cd sandbox' ''
+	test_launch 'cd sandbox' 'echo [!a-ba\ ]'
+	test_launch 'cd sandbox' 'echo "[!a-bz ]"' 'echo "[!a-bz]"'
 	test_launch 'cd sandbox' ''
 	test_launch 'cd sandbox' ''
 	test_launch 'cd sandbox' ''

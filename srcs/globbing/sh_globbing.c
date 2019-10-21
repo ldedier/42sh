@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 13:31:28 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/21 05:55:50 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/21 08:00:28 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ static int	pattern_matching(char *path, t_list **regexp_list, t_dy_tab *quotes, 
 				ft_lstadd_last(matchs, ft_lstnew(new_path, ft_strlen(new_path) + 1)); // protect lst_new malloc
 			}
 		}
+		else  if (sh_verbose_globbing())
+			ft_dprintf(2, RED"found invalid path : %s\n"EOC, dirent->d_name);
 	}
 	return (SUCCESS);
 }

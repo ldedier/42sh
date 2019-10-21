@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 04:48:28 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/21 07:46:26 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/21 08:05:11 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int	sh_pattern_matching_brace_dash_not(char *name, t_regexp *regexp, int 
 			return (ERROR);
 		a++;
 	}
-	return (SUCCESS);
+	return (FAILURE);
 }
 
 /*
