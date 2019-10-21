@@ -1,43 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sh_traverse_pipe_sequence.c                        :+:      :+:    :+:   */
+/*   sh_traverse_pipe_line.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/09 15:27:20 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/19 05:55:02 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
-
-/*
-** pipe_to_do :
-** This function is called when we have pipes to execute.
-** We do here the first fork. That's mean, in this case, we have to add
-** this new process in the jobs list.
-*/
-//static int		pipe_to_do(t_ast_node *node, t_context *context)
-//{
-//	int		ret;
-//	int 	child;
-//
-//	if ((child = fork()) < 0)
-//		return (sh_perror(SH_ERR1_FORK, "execution fork for pipe"));
-//	else if (child)
-//	{
-//		waitpid(child, &ret, 0);
-//		sh_env_update_ret_value_wait_result(context, ret);
-//		return (SUCCESS);
-//	//	return (SH_RET_VALUE_EXIT_STATUS(ret));
-//	}
-//	else
-//	{
-//		ret = sh_execute_pipe(node, context);
-//		exit(ret);
-//	}
-//}
 
 /*
 ** sh_traverse_pipe_sequence :
@@ -50,8 +23,14 @@ static int		sh_traverse_pipe_sequence(t_ast_node *node, t_context *context)
 
 	sh_traverse_tools_show_traverse_start(node, context);
 	if (ft_lstlen(node->children) > 1)
-		/*ret = pipe_to_do(node, context);*/
+	{
+		// We already fork for each command in a pipeline, so when we get to exec_binaire
+		// We don't need to fork again, that's why we mark the node as a (PIPE_NODE).
+		// This way when we get to exec_binaire, we call execve without forking again.
+		context->cmd_type |= PIPE_NODE;
 		ret = sh_execute_pipe(node, context);
+		context->cmd_type &= ~PIPE_NODE;
+	}
 	else
 		ret = sh_traverse_command(node->children->content, context);
 	sh_traverse_tools_show_traverse_ret_value(node, context, ret);

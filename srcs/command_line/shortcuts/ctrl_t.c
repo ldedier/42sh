@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ctrl_t.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 15:47:39 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/25 15:47:39 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/10/09 02:35:56 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,10 @@ static void	transpose_str(char *str, int index_a, int index_b)
 {
 	int len_a;
 	int len_b;
-	int	len;
+	// int	len;
 	char buff[5];
 
-	len = ft_strlen(str);
+	// len = ft_strlen(str);
 	len_a = get_char_len_unprotected(index_a, (unsigned char *)str);
 	len_b = get_char_len_unprotected(index_b, (unsigned char *)str);
 	ft_bzero(buff, sizeof(buff));

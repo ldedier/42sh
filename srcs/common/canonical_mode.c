@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   canonical_mode.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/03 18:06:46 by ldedier           #+#    #+#             */
-/*   Updated: 2019/07/31 17:20:10 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/10 02:23:20 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ int				sh_process_canonical_mode(t_shell *shell, char **env)
 {
 	int ret;
 
+	reset_signals();
 	if (sh_init_shell(shell, env) != SUCCESS)
 	{
 		sh_free_all(shell);

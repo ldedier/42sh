@@ -3,24 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   sh_execute_pipe.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/16 19:22:38 by jdugoudr         ###   ########.fr       */
+/*   Created: 2019/10/18 08:21:00 by mdaoud            #+#    #+#             */
+/*   Updated: 2019/10/18 12:24:10 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-static pid_t	fork_for_pipe(void)
+static pid_t 		fork_for_pipe(void)
 {
-	pid_t	child;
+	pid_t 	child;
+	int		ret;
 
 	if ((child = fork()) < 0)
 	{
 		sh_perror(SH_ERR1_FORK, "execution fork for pipe");
 		return (-1);
 	}
+	if (child == 0)
+	{
+		if (g_job_ctrl->interactive)
+		{
+			if ((ret = set_pgid_child(child)) != SUCCESS)
+				return (ret);
+		}
+	}
+	else
+	{
+		if (g_job_ctrl->interactive && set_pgid_parent(child) != SUCCESS)
+			return (-1);
+	}
+
+	// ft_dprintf(g_term_fd, "Fork: pid: %d\tppid: %d\tpgid: %d\n", getpid(), getppid(), getpgid(getpid()));
 	return (child);
 }
 
@@ -154,13 +170,25 @@ int				sh_execute_pipe(t_ast_node *node, t_context *context)
 		sh_env_update_ret_value(context->shell, ret);
 	else if (!create_all_pipe(pipes.nb_pipe - 1, &pipes, node->children, context))
 	{
-		while (i++ < pipes.nb_cmd)
-			if (waitpid(-1, &ret, 0) == pipes.tab_pid[pipes.nb_cmd - 1])
-				sh_env_update_ret_value_wait_result(context, ret);
+		if (g_job_ctrl->interactive)
+		{
+			if (g_job_ctrl->curr_job->foreground == 0)
+					ret = job_put_in_bg(g_job_ctrl->curr_job, 0);
+			else if (job_put_in_fg(g_job_ctrl->curr_job, 0, &ret) != SUCCESS)
+				return (FAILURE);
+			sh_env_update_ret_value_wait_result(context, ret);
+		}
+		else
+		{
+			// ft_dprintf(g_term_fd, "WFLAGS: %d\n", context->wflags);
+			while (i++ < pipes.nb_cmd)
+				if (waitpid(-1, &ret, context->wflags) == pipes.tab_pid[pipes.nb_cmd - 1])
+					sh_env_update_ret_value_wait_result(context, ret);
+		}
 	}
 	else
 		sh_env_update_ret_value(context->shell, ret);
 	free(pipes.tab_pds);
 	free(pipes.tab_pid);
-	return (ret);
+	return (SUCCESS);
 }

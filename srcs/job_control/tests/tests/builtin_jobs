@@ -1,0 +1,27 @@
+jobs
+jobs -l
+jobs -l -p
+jobs -lp
+jobs -lp -l -p
+jobs -x
+jobs -l -p -x
+jobs -x -p -l
+jobs -lxp
+jobs -lpx
+
+jobs --
+jobs -
+jobs - -l
+jobs - -x
+jobs -l -- -x
+jobs -l -- -p
+
+jobs %1
+jobs %%
+jobs %1 %2
+jobs -p %1
+jobs -l %1
+jobs %1 %% %2 %%
+jobs %1 -l
+jobs %1 -x
+jobs -l -- %1

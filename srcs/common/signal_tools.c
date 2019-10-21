@@ -3,29 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   signal_tools.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/22 10:38:19 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/20 17:19:59 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/10/10 01:26:10 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
-
-void	transmit_sig(int signal)
-{
-	(void)signal;
-//	if (isatty(0) && g_glob.command_line.dy_str)
-//	{
-//		get_down_from_command(&g_glob.command_line);
-//		reset_command_line(g_glob.command_line.shell, &g_glob.command_line);
-//		sh_env_update_ret_value_and_question(g_glob.command_line.shell,
-//			SH_RET_CTRL_C);
-//		render_command_line(&g_glob.command_line, 0, 1);
-//		sh_set_term_sig(0);
-//		ioctl(0, TIOCSTI, "\x03");
-//	}
-}
 
 void	transmit_sig_and_exit(int signal)
 {
@@ -41,10 +26,11 @@ void	transmit_sig_and_exit(int signal)
 void	handle_stp(int sgnl)
 {
 	(void)sgnl;
-	sh_reset_shell(0);
-	signal(SIGTSTP, SIG_DFL);
-	if (ioctl(0, TIOCSTI, "\x1a") == -1)
-		exit(sh_reset_shell(1));
+	// sh_reset_shell(0);
+	// signal(SIGTSTP, SIG_DFL);
+	// if (ioctl(0, TIOCSTI, "\x1a") == -1)
+	// 	exit(sh_reset_shell(1));
+	ft_dprintf(g_term_fd, "%sReceived SIGTSTP from pid: %d%s\n", RED, getpid(), EOC);
 }
 
 void	handle_cont(int sgnl)

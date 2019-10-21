@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_21.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/30 15:48:56 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/06 22:54:26 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/21 08:50:10 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@
 # include "sh_shortcuts.h"
 # include "sh_history.h"
 # include "sh_redirection.h"
+# include "sh_job_control.h"
 
 # define SUCCESS		0
 # define ERROR			1
@@ -87,7 +88,7 @@
 # define PIPE_OUT		0
 
 /*
-** Colors macros
+** Colors defines
 */
 # define COLOR_BLACK	"\033[1;30m"
 # define COLOR_RED		"\033[1;31m"
@@ -97,8 +98,9 @@
 # define COLOR_PINK		"\033[1;35m"
 # define COLOR_CYAN		"\033[1;36m"
 # define COLOR_GREY		"\033[1;37m"
+# define COL_MAGENTA	"\033[0;35m"
+# define COL_B_MAGENTA	"\033[1;35m"
 # define COLOR_END		"\033[1;0m"
-
 /*
 ** ANSI color constants
 */
@@ -156,6 +158,13 @@ struct				s_shell
 };
 
 /*
+** Added by mdaoud
+** This the variable that points to the terminal fd
+*/
+
+int		g_term_fd;
+
+/*
 ********************************************************************************
 */
 
@@ -177,6 +186,7 @@ void				free_execution_tools(
 	t_list **tokens, t_ast_node **ast_root, t_ast_node **cst_root);
 int					execute_command(
 	t_shell *shell, char *command, int should_add);
+//int					sh_exec_binaire(t_context *context);
 
 /*
 ** free_all.c
@@ -245,8 +255,9 @@ int					sh_process_noncanonical_mode(t_shell *shell);
 ** set_signals.c
 */
 void				reset_signals(void);
-void				sigtstp_handler(int signal);
 void				init_signals(void);
+void				set_signals_pipe(void);
+void				reset_signals_and_or(void);
 
 /*
 ** sh_split_path.c
@@ -263,7 +274,7 @@ int					clear_all(void);
 /*
 ** signal_tools.c
 */
-void				transmit_sig(int signal);
+// void				handler_sigint(int signal);
 void				transmit_sig_and_exit(int signal);
 void				handle_stp(int sgnl);
 void				handle_cont(int sgnl);

@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/14 13:41:08 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/20 17:15:14 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/09 23:49:46 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int		sh_set_term_sig(int value)
 		g_glob.term.c_lflag &= ~(ISIG);
 	else
 		g_glob.term.c_lflag |= ISIG;
-		if (tcsetattr(0, TCSADRAIN, &g_glob.term) == -1)
+	if (tcsetattr(g_term_fd, TCSANOW, &g_glob.term) == -1)
 	{
 		return (sh_perror("Could not modify this terminal attributes",
 			"sh_init_terminal"));
@@ -59,22 +59,22 @@ int		sh_init_terminal(t_shell *shell, char **env)
 {
 	if (sh_init_terminal_database(env))
 		return (1);
-	if (tcgetattr(0, &g_glob.term_init) == -1)
+	if (tcgetattr(g_term_fd, &g_glob.term_init) == -1)
 		return (sh_perror(SH_ERR1_TERM_CPY, "sh_init_terminal"));
-	if (tcgetattr(0, &shell->term) == -1)
+	if (tcgetattr(g_term_fd, &shell->term) == -1)
 		return (sh_perror(SH_ERR1_TERM_CPY, "sh_init_terminal"));
 	shell->term.c_lflag &= ~(ICANON);
 	shell->term.c_lflag &= ~(ECHO);
+	// shell->term.c_lflag |= (ISIG);
 	shell->term.c_lflag &= ~(ISIG);
-//	shell->term.c_lflag |= ISIG;
 	shell->term.c_cc[VMIN] = 1;
 	shell->term.c_cc[VTIME] = 0;
-	if (tcsetattr(0, TCSADRAIN, &shell->term) == -1)
+	if (tcsetattr(g_term_fd, TCSANOW, &shell->term) == -1)
 	{
 		return (sh_perror("Could not modify this terminal attributes",
 			"sh_init_terminal"));
 	}
-	if (ioctl(0, TIOCGWINSZ, &g_glob.winsize) == -1)
+	if (ioctl(g_term_fd, TIOCGWINSZ, &g_glob.winsize) == -1)
 		return (1);
 	g_glob.term = shell->term;
 	return (0);

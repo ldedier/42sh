@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_builtin_set.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/21 18:00:32 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/29 01:06:11 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/08 15:17:39 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,9 +183,6 @@ static int	sh_builtin_set_print(t_context *context)
 
 int			sh_builtin_set(t_context *context)
 {
-	int		i;
-
-	i = 0;
 	if (context->params->current_size == 1)
 		return (sh_builtin_set_print(context));
 	else

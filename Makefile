@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
+#    By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/10/17 17:58:48 by jdugoudr         ###   ########.fr        #
+#    Updated: 2019/10/21 09:02:56 by jdugoudr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,7 @@ VPATH		= $(INCLUDESDIR) \
 			  $(SRCDIR)/exec \
 			  $(SRCDIR)/expansions \
 			  $(SRCDIR)/grammar \
+			  $(SRCDIR)/job_control \
 			  $(SRCDIR)/lexer \
 			  $(SRCDIR)/parser \
 			  $(SRCDIR)/parser/productions \
@@ -62,7 +63,7 @@ SRCS			 =	debug.c first_sets.c grammar.c init_cfg.c \
 ################################################################
 SRCS			+=	sh_traverse.c sh_traverse_default.c \
 					sh_traverse_semicol.c sh_traverse_pipe_line.c \
-					sh_traverse_assignment_word.c \
+					sh_traverse_assignment_word.c sh_traverse_ampersand.c \
 					sh_traverse_simple_command.c \
 					sh_traverse_io_file.c \
 					sh_traverse_cmd_name.c sh_traverse_cmd_word.c \
@@ -120,7 +121,7 @@ SRCS			+=	main.c index.c init.c shell_tools.c \
 					set_signals.c canonical_mode.c history.c home.c \
 					init_tabs.c non_canonical_mode.c hash_binaries.c \
 					check_term.c signal_tools.c execute_command.c \
-					t_entry.c sh_split_path.c
+					t_entry.c sh_split_path.c sh_exec_binaire.c
 
 ################################################################
 ########					PARSER						########
@@ -263,13 +264,14 @@ SRCS			+=	sh_vars_tools_1.c sh_vars_tools_2.c \
 ########						EXEC					########
 ################################################################
 SRCS			+=	sh_execute.c \
+					sh_execute_and_or.c \
 					sh_execute_binary.c \
 					sh_execute_builtin.c \
 					sh_execute_pipe.c \
 					sh_execute_prefix_postfix.c \
 					t_context.c sh_debug.c \
 					sh_execute_redirection.c \
-					sh_execute_pipe_tool.c
+					sh_execute_pipe_tools.c
 
 ################################################################
 ########					REDIRECTION					########
@@ -294,7 +296,9 @@ SRCS			+=	sh_builtin.c sh_builtin_pwd.c \
 					sh_builtin_hash.c sh_builtin_hash_tools.c \
 					sh_builtin_bonus.c sh_builtin_parser.c \
 					sh_builtin_test.c sh_builtin_test_unary.c \
-					sh_builtin_test_binary.c \
+					sh_builtin_test_binary.c sh_builtin_jobs.c \
+					sh_builtin_jobs_tools.c \
+					sh_builtin_fg.c sh_builtin_bg.c \
 					sh_builtin_fc.c \
 					sh_builtin_fc_l_synopsis.c \
 					sh_builtin_fc_s_synopsis.c \
@@ -328,9 +332,22 @@ SRCS			 +=	sh_perror.c \
 					sh_perror2.c \
 
 ################################################################
+########				JOB_CONTROL						########
+################################################################
+SRCS			+=	jobs_init.c job_add.c process_add.c \
+					str_tab_duplicate.c str_tab_print.c str_tab_free.c \
+					job_control_free.c job_wait.c job_is_continued.c \
+					job_put_in_bg.c job_put_in_fg.c job_is_completed.c \
+					job_is_stopped.c job_check_changes.c job_free.c \
+					job_print_status.c job_notify.c job_print.c \
+					jobs_error_free.c set_pgid_child.c set_pgid_parent.c \
+					jobs_create_cmds.c jobs_free_cmds.c jobs_print_cmds.c
+
+################################################################
 ########					INCLUDES					########
 ################################################################
-INCLUDES			=	sh_21.h \
+INCLUDES		=	sh_21.h \
+					sh_job_control.h \
 					sh_lexer.h \
 					sh_tokens.h \
 					sh_parser.h \
@@ -353,7 +370,7 @@ INC 			=	-I $(INCLUDESDIR) -I $(LIBFTDIR) -I $(LIBFTDIR)/$(PRINTFDIR)
 
 EOC = \033[0m
 ifeq ($(OS),Linux)
-	CFLAGS = -DPATH=$(PWD) $(INC)
+	CFLAGS = -DPATH=$(PWD) $(INC) -Wall -Werror -Wextra
 	OK_COLOR = \033[1;32m
 	FLAGS_COLOR = \033[1;34m
 	#COMP_COLOR =

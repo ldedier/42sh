@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   compute_lr_tables.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 17:49:25 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/22 16:45:42 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/10/09 02:34:36 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,10 +96,10 @@ void	sh_fill_tables_by_transition(t_state *state, t_transition *transition,
 			[transition->symbol->id].action_enum == E_ACTION_SHIFT)
 		ft_printf("SHIFT SHIFT CONFLICT\n");
 
-		parser->lr_tables[state->index]
-			[transition->symbol->id].action_enum = E_ACTION_SHIFT;
-		parser->lr_tables[state->index]
-			[transition->symbol->id].action_union.state = transition->state;
+	parser->lr_tables[state->index]
+		[transition->symbol->id].action_enum = E_ACTION_SHIFT;
+	parser->lr_tables[state->index]
+		[transition->symbol->id].action_union.state = transition->state;
 }
 
 void	sh_fill_tables_by_state(t_state *state, t_lr_parser *parser)

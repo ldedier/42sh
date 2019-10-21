@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_traverse_tools_get_separator.c                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:07:03 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/07 16:07:17 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/09 19:11:54 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,7 @@ int 	sh_get_separator_op(
 	if (separator->symbol->id == sh_index(LEX_TOK_SEMICOL))
 		return (sh_traverse_semicol(to_execute, context));
 	if (separator->symbol->id == sh_index(LEX_TOK_AND))
-	{
-		ft_dprintf(STDERR_FILENO, "sh_get_separator_op: sorry & is not yet implement\n");
-		return (ERROR);
-	}
+		return (sh_traverse_ampersand(to_execute, context));
 	return (FAILURE);
 }
 

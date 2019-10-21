@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_builtin.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 11:36:31 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/10 00:52:35 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/20 05:40:49 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,14 @@
 # define SH_BUILTIN_H
 
 # if __APPLE__ && __MACH__
-#  define NB_BUILTINS	16
+#  define NB_BUILTINS	19
 # else
-#  define NB_BUILTINS	15
+#  define NB_BUILTINS	18
 # endif
+
+# include "sh_grammar.h"
+# include "sh_21.h"
+# include "sh_job_control.h"
 
 # define NB_FLAG_UNARY	15
 # define NB_FLAG_BINARY	8
@@ -374,5 +378,21 @@ int					sh_builtin_unset(t_context *context);
 ** sh_builtin_verbose.c
 */
 int					sh_builtin_verbose(t_context *context);
+
+/*
+** sh_builtin_jobs
+*/
+int					sh_builtin_jobs(t_context *context);
+int					parse_jobs_args(char **argv, int j_lst[], int *opt);
+
+/*
+** sh_builtin_fg
+*/
+int					sh_builtin_fg(t_context *context);
+
+/*
+** sh_builtin_bg
+*/
+int					sh_builtin_bg(t_context *context);
 
 #endif
