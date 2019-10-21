@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 17:31:19 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/21 11:55:49 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/21 14:49:25 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,14 @@ int 		sh_execute_simple_command(t_ast_node *father_node, t_context *context)
 		ret = sh_slash_cmd(context);
 	if (ret == SUCCESS)
 	{
+		if (sh_pre_execution() != SUCCESS)
+			return (FAILURE);
 		if (context->builtin)
 			ret = sh_execute_builtin(father_node, context);
 		else
 			ret = sh_exec_binaire(father_node, context);
+		if (sh_post_execution() != SUCCESS)
+			return (FAILURE);
 	}
 	return (ret);
 }

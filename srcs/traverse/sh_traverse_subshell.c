@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/02 10:03:30 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/21 11:38:04 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/21 14:48:20 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,6 @@ int		sh_traverse_subshell(t_ast_node *node, t_context *context)
 			return (FAILURE);
 		if (g_job_ctrl->interactive)
 		{
-			if (sh_pre_execution() != SUCCESS)
-				return (FAILURE);
 			if (g_job_ctrl->curr_job->foreground)
 			{
 				if (job_put_in_fg(g_job_ctrl->curr_job, 0, &ret) != SUCCESS)

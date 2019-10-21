@@ -6,7 +6,7 @@
 /*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/17 17:32:45 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/18 10:37:34 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/21 14:31:25 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,33 @@ int	loop_traverse_redirection(t_ast_node *node, t_context *context)
 	return (ret);
 }
 
+int	loop_traverse_compound_redirection(t_ast_node *node, t_context *context)
+{
+	int	ret;
+
+	ret = SUCCESS;
+	context->phase = E_TRAVERSE_PHASE_EXPANSIONS;
+	while (context->phase <= E_TRAVERSE_PHASE_EXECUTE)
+	{
+		if ((ret = sh_traverse_tools_browse_redirection(node, context)))
+		{
+			if (sh_reset_redirection(&(context->redirections)) != SUCCESS)
+				return (FAILURE);
+			return (ret);
+		}
+		context->phase += 1;
+	}
+	return (ret);
+}
+
 int	sh_traverse_tools_browse_redirection(t_ast_node *node, t_context *context)
 {
 	t_list		*ptr;
 	t_ast_node	*child;
 	int			ret;
-
+	
+	if (node == NULL)
+		return (SUCCESS);
 	ptr = node->children;
 	ret = SUCCESS;
 	while (ptr != NULL)

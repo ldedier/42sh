@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 15:06:13 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/21 11:49:01 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/21 14:00:10 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,16 +63,23 @@ static int	execute_builting_in_bg(t_context *context)
 **		any value returned by a builtin function
 */
 
+void	handle_int(int signo)
+{
+	if (signo == SIGINT)
+		get_down_from_command(&g_glob.command_line);
+}
+
 int			sh_execute_builtin(t_ast_node *father_node, t_context *context)
 {
 	int		res;
 
-	if (g_job_ctrl->interactive && sh_reset_shell(0) != SUCCESS)
-		return (FAILURE);
+//	if (g_job_ctrl->interactive && sh_reset_shell(0) != SUCCESS)
+//		return (FAILURE);
 	if (context->cmd_type == (SIMPLE_NODE | BG_NODE))
 		res = execute_builting_in_bg(context);
 	else
 	{
+		signal(SIGINT, handle_int);
 		if ((res = loop_traverse_redirection(father_node, context)) != SUCCESS)
 		{
 			sh_env_update_ret_value(context->shell, res);
@@ -86,7 +93,5 @@ int			sh_execute_builtin(t_ast_node *father_node, t_context *context)
 		sh_env_update_ret_value(context->shell, BLT_TEST_ERROR);
 	else
 		sh_env_update_ret_value(context->shell, SH_RET_ERROR);
-	if (g_job_ctrl->interactive && sh_set_shell_back(0) == ATTR_ERROR)
-		return (sh_perror("Could not modify this terminal attributes", NULL));
 	return (res);
 }

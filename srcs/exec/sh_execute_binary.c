@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/19 11:14:49 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/21 09:41:13 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/21 13:51:50 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,9 @@ void		sh_execute_binary(t_ast_node *father_node, t_context *context)
 {
 	int	res;
 
-//	if (sh_pre_execution() != SUCCESS)
-//		exit(FAILURE);
+	reset_signals();
 	if ((res = loop_traverse_redirection(father_node, context)) == SUCCESS)
 	{
-		reset_signals();
 		execve(context->path, (char **)context->params->tbl,
 			(char **)context->env->tbl);
 		res = SH_RET_NOT_EXECUTABLE;
@@ -30,7 +28,5 @@ void		sh_execute_binary(t_ast_node *father_node, t_context *context)
 	}
 	sh_reset_redirection(&context->redirections);
 	sh_free_all(context->shell);
-//	if (sh_post_execution() != SUCCESS)
-//		exit(FAILURE);
 	exit(res);
 }

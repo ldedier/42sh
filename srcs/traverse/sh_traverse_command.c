@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/02 00:35:13 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/09 10:49:41 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/21 14:49:24 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,35 +38,58 @@ static int	apply_expansion_to_children(t_list *lst_child, t_context *context)
 ** Check what kind of compound command we have and if we have
 ** redirection_list to apply
 */
+void handle_int(int digno);
 static int	compound_and_redirection(t_ast_node *node, t_context *context)
 {
 	t_ast_node	*child;
-	t_list		*compound_redir;
+	t_ast_node	*compound_redir;
+	t_list		*lst_redi;
 	int			ret;
+	int			(*func)(t_ast_node *, t_context *);
 	
 	child = node->children->content;
 	child = child->children->content;
-	compound_redir = NULL;
+	if (node->children->next)
+		compound_redir = node->children->next->content;
+	else
+		compound_redir = NULL;
 	if (node->children->next)
 	{
 		if ((ret = apply_expansion_to_children(node->children->next, context)) != SUCCESS)
 			return (ret);
-		context->phase = E_TRAVERSE_PHASE_REDIRECTIONS;
-		if ((ret = sh_traverse_tools_browse(node->children->next->content, context)) != SUCCESS)
-		{
-			if (sh_reset_redirection(&context->redirections))
-				return (FAILURE);
-			return (ret);
-		}
-		compound_redir = context->redirections;
-		context->redirections = NULL;
+//		context->phase = E_TRAVERSE_PHASE_REDIRECTIONS;
+//		if ((ret = sh_traverse_tools_browse(node->children->next->content, context)) != SUCCESS)
+//		{
+//			if (sh_reset_redirection(&context->redirections))
+//				return (FAILURE);
+//			return (ret);
+//		}
+//		compound_redir = context->redirections;
+//		context->redirections = NULL;
 	}
-//	ret = g_grammar[child->symbol->id].traverse(child, context);
+	if (sh_pre_execution())
+		return (FAILURE);
 	if (child->symbol->id == sh_index(SUBSHELL))
-		ret = sh_traverse_subshell(child, context);
+		func = &sh_traverse_subshell;
+		/*ret = sh_traverse_subshell(child, context);*/
 	else if (child->symbol->id == sh_index(BRACE_GROUP))
-		ret = sh_traverse_brace_group(child, context);
-	if (sh_reset_redirection(&compound_redir))
+	{
+		signal(SIGINT, handle_int);
+		func = &sh_traverse_brace_group;
+		/*ret = sh_traverse_brace_group(child, context);*/
+	}
+	if ((ret = loop_traverse_compound_redirection(compound_redir, context)))
+	{
+		if (sh_post_execution())
+			return (FAILURE);
+		return (ret);
+	}
+	if (sh_post_execution())
+		return (FAILURE);
+	lst_redi = context->redirections;
+	context->redirections = NULL;
+	ret = func(child, context);
+	if (sh_reset_redirection(&lst_redi))
 		return (FAILURE);
 	return (ret);
 }

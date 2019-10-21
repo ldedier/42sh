@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 11:19:41 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/21 10:53:44 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/21 13:53:45 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,6 @@ int			sh_traverse_io_file(t_ast_node *node, t_context *context)
 	}
 	if (context->phase == E_TRAVERSE_PHASE_REDIRECTIONS)
 	{
-	ft_dprintf(1, "traverse_io_file phase redirections\n");
 		ret = get_io_file_return(redir_child, filename, context);
 		if (ret)
 			sh_env_update_ret_value(context->shell, ret);
