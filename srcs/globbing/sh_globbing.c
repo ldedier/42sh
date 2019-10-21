@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 13:31:28 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/21 04:34:01 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/21 05:55:50 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,12 @@ int			sh_expansions_globbing(t_context *context, t_ast_node *father, t_dy_tab *q
 	init_path(&path, str);
 	pattern_matching(path, (t_list**)regexp_tab->tbl, quotes, &matches);
 	if (matches)
+	{
+		if (sh_verbose_globbing())
+			ft_lstput_fd(matches, 2);
 		sh_expansions_globbing_matches(&head, matches);
+		ft_dy_tab_empty(quotes);
+	}
 	free_regexp_tab(&regexp_tab);
 	// 	head = head->next;
 	// }

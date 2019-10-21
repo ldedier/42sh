@@ -6,11 +6,41 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 03:34:30 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/21 04:38:04 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/21 05:54:07 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
+
+static void	remove_quotes_in_value(char *str)
+{
+	int			i;
+	char		quoted;
+
+	i = 0;
+	quoted = 0;
+	while (str[i])
+	{
+		if (str[i] == '\'' || str[i] == '\\' || str[i] == '"')
+		{
+			quoted = str[i];
+			ft_strdelchar(str, i);
+		}
+		else if (quoted == '\\')
+		{
+			i++;
+			quoted = 0;
+		}
+		else if (quoted)
+		{
+			while (str[i] != quoted)
+				i++;
+			ft_strdelchar(str, i);
+		}
+		else
+			i += 1;
+	}
+}
 
 static int	create_regexp(t_list **regexp_list, char *str, int start, int i)
 {
@@ -26,8 +56,9 @@ static int	create_regexp(t_list **regexp_list, char *str, int start, int i)
 	}
 	regexp->type = REG_STR;
 	regexp->start = start;
-	regexp->len = i - start;
 	regexp->value = value;
+	remove_quotes_in_value(value);
+	regexp->len = ft_strlen(value);
 	return (SUCCESS);
 }
 
