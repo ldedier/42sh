@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 13:31:28 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/21 00:00:37 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/21 04:34:01 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,6 @@ static int	sh_expansions_globbing_matches(t_list **head, t_list *matches)
 {
 	t_ast_node	*node;
 
-	// if (sh_verbose_globbing() || 1)
-	// 	{ft_lstput_fd(matches, 2); ft_dprintf(2, "\n");}
-	// ft_lstput_fd(matches, 2); ft_dprintf(2, "\n");
 	node = (t_ast_node*)(*head)->content;
 	free(node->token->value);
 	if (!(node->token->value = ft_strdup((char*)matches->content)))
@@ -78,8 +75,24 @@ static int	sh_expansions_globbing_matches(t_list **head, t_list *matches)
 		(*head) = (*head)->next;
 		matches = matches->next;
 	}
-	ft_lstdel(&matches, NULL);
+	ft_lstdel(&matches, NULL); // need to free content ??
 	return (SUCCESS);
+}
+
+static void	free_regexp_tab(t_dy_tab **regexp_tab)
+{
+	int			i;
+	t_list		**list_tab;
+
+	i = 0;
+	list_tab = (t_list**)(*regexp_tab)->tbl;
+	while (list_tab[i])	
+	{
+		ft_lstdel(list_tab + i, &t_regexp_free);
+		i++;
+	}
+	ft_dy_tab_del_ptr(*regexp_tab);
+	*regexp_tab = NULL;
 }
 
 /*
@@ -94,6 +107,7 @@ int			sh_expansions_globbing(t_context *context, t_ast_node *father, t_dy_tab *q
 	t_list		*matches;
 	t_dy_tab	*regexp_tab;
 	char		*path;
+	int			ret;
 
 	head = father->children;
 	regexp_tab = NULL;
@@ -102,22 +116,19 @@ int			sh_expansions_globbing(t_context *context, t_ast_node *father, t_dy_tab *q
 	// need t ofind a solution t go threought every field splited fields, with no repeat for non splitted fields
 	// while (head)
 	// {
-		child = (t_ast_node*)head->content;
-		if (child->symbol->id != sh_index(LEX_TOK_WORD)) // Are TERM_WORD only valid tokens ?? Assignment_word ?
-		{
-			return (SUCCESS);
-			// head = head->next;
-			// continue ;
-		}
-		str = child->token->value;
-		sh_regexp_parse(str, &regexp_tab);
-		if (regexp_tab) //modify
-		{
-			init_path(&path, str);
-			pattern_matching(path, (t_list**)regexp_tab->tbl, quotes, &matches);
-			if (matches)
-				sh_expansions_globbing_matches(&head, matches);
-		}
+	child = (t_ast_node*)head->content;
+	if (child->symbol->id != sh_index(LEX_TOK_WORD)) // Are TERM_WORD only valid tokens ?? Assignment_word ?
+		return (SUCCESS);
+	str = child->token->value;
+	if ((ret = sh_regexp_parse(str, &regexp_tab)))// leaks ?
+		return (ret);
+	if (!regexp_tab) // no pattern expressions found ? Necessary / Usefull ??
+		return (SUCCESS);
+	init_path(&path, str);
+	pattern_matching(path, (t_list**)regexp_tab->tbl, quotes, &matches);
+	if (matches)
+		sh_expansions_globbing_matches(&head, matches);
+	free_regexp_tab(&regexp_tab);
 	// 	head = head->next;
 	// }
 	(void)context;

@@ -49,10 +49,46 @@ int							sh_is_pattern_matching(
 	char *name, t_list *regexp_head);
 
 /*
+** sh_pattern_matching_brace.c
+*/
+int							sh_pattern_matching_brace(
+	char *name, t_regexp *regexp, int *i);
+
+/*
+** sh_pattern_matching_star.c
+*/
+int							sh_pattern_matching_star(
+	char *name, t_regexp *regexp, int *i, t_list *regexp_head);
+
+/*
 ** sh_regexp_parse.c
 */
 int							sh_regexp_parse(
 	char *str, t_dy_tab **regexp_tab);
+
+/*
+** sh_regexp_parse_new_brace.c
+*/
+int							sh_regexp_parse_new_brace(
+	char *str, int *i, t_list **regexp_list);
+
+/*
+** sh_regexp_parse_new_quest.c
+*/
+int							sh_regexp_parse_new_quest(
+	int *i, t_list **regexp_list);
+
+/*
+** sh_regexp_parse_new_star.c
+*/
+int							sh_regexp_parse_new_star(
+	int *i, t_list **regexp_list);
+
+/*
+** sh_regexp_parse_new_string.c
+*/
+int							sh_regexp_parse_new_string(
+	char *str, int *i, t_list **regexp_list);
 
 /*
 ** t_regexp.c
@@ -60,5 +96,6 @@ int							sh_regexp_parse(
 t_regexp					*t_regexp_new_push(t_list **regexp_list);
 void						t_regexp_show_list(t_list *head);
 void						t_regexp_show(t_regexp *regexp);
+void						t_regexp_free(void *ptr, size_t size);
 
 #endif

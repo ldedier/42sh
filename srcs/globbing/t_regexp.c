@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 23:26:35 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/16 07:30:21 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/21 04:30:01 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,15 @@ void			t_regexp_show(t_regexp *regexp)
 		ft_dprintf(2, "REG_BRACE : ");
 	ft_dprintf(2, "%.*s", regexp->len, regexp->value);
 	// ft_dprintf(2, "start : %d || len : %d\n", regexp->start, regexp->len);
+}
+
+void		t_regexp_free(void *ptr, size_t size)
+{
+	t_regexp	*regexp;
+
+	regexp = (t_regexp*)ptr;
+	if (regexp->value)
+		free(regexp->value);
+	free(regexp);
+	(void)size;
 }

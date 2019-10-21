@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/10/16 07:42:12 by jmartel          ###   ########.fr        #
+#    Updated: 2019/10/21 04:57:23 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -324,7 +324,13 @@ SRCS			 +=	sh_expansions.c \
 ################################################################
 SRCS			+=	sh_globbing.c \
 					sh_regexp_parse.c \
+					sh_regexp_parse_new_string.c \
+					sh_regexp_parse_new_brace.c \
+					sh_regexp_parse_new_quest.c \
+					sh_regexp_parse_new_star.c \
 					sh_pattern_matching.c \
+					sh_pattern_matching_star.c \
+					sh_pattern_matching_brace.c \
 					t_regexp.c
 
 ################################################################
