@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 15:06:13 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/21 08:50:38 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/21 11:49:01 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,20 +66,20 @@ static int	execute_builting_in_bg(t_context *context)
 int			sh_execute_builtin(t_ast_node *father_node, t_context *context)
 {
 	int		res;
-	(void)father_node;
 
 	if (g_job_ctrl->interactive && sh_reset_shell(0) != SUCCESS)
 		return (FAILURE);
-//	if ((res = loop_traverse_redirection(father_node, context)) != SUCCESS)
-//	{
-//		sh_env_update_ret_value(context->shell, res);
-//		return (res);
-//	}
-//	res = context->builtin(context);
 	if (context->cmd_type == (SIMPLE_NODE | BG_NODE))
 		res = execute_builting_in_bg(context);
 	else
+	{
+		if ((res = loop_traverse_redirection(father_node, context)) != SUCCESS)
+		{
+			sh_env_update_ret_value(context->shell, res);
+			return (res);
+		}
 		res = context->builtin(context);
+	}
 	if (res == SUCCESS)
 		sh_env_update_ret_value(context->shell, SH_RET_SUCCESS);
 	else if (res == BLT_TEST_ERROR)

@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 17:11:16 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/21 08:48:10 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/21 09:28:52 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,9 +109,13 @@ int 				sh_execute_simple_command(t_ast_node *father_node, t_context *context);
 /*
 ** sh_execute_binary.c
 */
-void				sh_execute_binary(t_context *context);
-//void				sh_execute_binary(t_ast_node *father_node, t_context *context);
+//void				sh_execute_binary(t_context *context);
+void				sh_execute_binary(t_ast_node *father_node, t_context *context);
 
+/*
+** sh_exec_binaire.c
+*/
+int					sh_exec_binaire(t_ast_node *father_node, t_context *context);
 /*
 ** sh_execute_builtin.c
 */

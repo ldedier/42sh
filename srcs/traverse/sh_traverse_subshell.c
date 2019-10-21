@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/02 10:03:30 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/18 15:28:24 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/21 11:38:04 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,6 @@ int		sh_traverse_subshell(t_ast_node *node, t_context *context)
 	}
 	else
 	{
-		/*ret = search_term(node->children->next->content, context);*/
 		if (set_pgid_child(getpid()) != SUCCESS)
 			return (FAILURE);
 		g_job_ctrl->interactive = 0;
@@ -136,7 +135,6 @@ int		sh_traverse_brace_group(t_ast_node *node, t_context *context)
 	int	ret;
 
 	sh_traverse_tools_show_traverse_start(node, context);
-	/*ret = search_term(node->children->next->content, context);*/
 	ret = search_term(node, context);
 	sh_traverse_tools_show_traverse_ret_value(node, context, ret);
 	return (ret);

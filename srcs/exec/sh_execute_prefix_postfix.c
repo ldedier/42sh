@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/31 12:20:31 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/18 10:12:00 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/21 11:58:53 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	sh_reset_signals_post_exec(void)
 	signal(SIGWINCH, handle_resize);
 }
 
-int		sh_pre_execution()
+int		sh_pre_execution(void)
 {
 	if (g_job_ctrl->interactive)
 	{
