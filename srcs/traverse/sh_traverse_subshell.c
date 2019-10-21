@@ -6,7 +6,7 @@
 /*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/02 10:03:30 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/09 11:57:45 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/15 12:04:46 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,17 +33,19 @@ static int	get_last_separator(t_ast_node *curr_node)
 		if (last_separator->symbol->id == sh_index(SEPARATOR_OP))
 		{
 			last_separator = last_separator->children->content;
-			ft_printf("we've got a separator ! it's ");// delete it
+			/*ft_printf("we've got a separator ! it's ");// delete it*/
 			if (last_separator->symbol->id == sh_index(LEX_TOK_AND))
 			{
-				ft_printf("-%c-\n", '&');// delete it
+				/*ft_printf("-%c-\n", '&');// delete it*/
 				return (1);
 			}
 			else if (last_separator->symbol->id == sh_index(LEX_TOK_SEMICOL))
-				ft_printf("-%c-\n", ';');// delete it
+				/*ft_printf("-%c-\n", ';');// delete it*/
+				;
 		}
 		else
-			ft_printf("-well this is a separtor not yet manage like linebreak or something ..-\n");// delete it
+			return (ERROR);
+			/*ft_printf("-well this is a separtor not yet manage like linebreak or something ..-\n");// delete it*/
 	}
 	return (0);
 }
