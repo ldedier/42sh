@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 07:35:43 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/20 06:56:25 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/21 02:15:24 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,18 @@ static int	sh_pattern_matching_quest(char *name, t_regexp *regexp, int *i)
 	return (SUCCESS);
 }
 
-static int	sh_pattern_matching_brace_dash(char *name, t_regexp *regexp, int *i, int *j, int not)
+/*
+** sh_pattern_matching_brace_dash:
+**	Parse content of a brace pattern with for [...a-b...] or [!...a-b...].
+**	WARNING : returned values are not as usual, check next section.
+**
+**	Returned Values:
+**		SUCCESS : name[*i] match current pattern
+**		ERROR : If pattern is invalid
+**		FAILURE : name[*i] do not match current pattern
+*/
+
+static int	sh_pattern_matching_brace_dash(char *name, t_regexp *regexp, int *i, int *j)
 {
 	char		a;
 	char		b;
@@ -40,55 +51,78 @@ static int	sh_pattern_matching_brace_dash(char *name, t_regexp *regexp, int *i, 
 	// ft_dprintf(2, "name : %s |||| a : %c || b : %c || not : %d\n", name + *i, a, b, not);
 	if (b < a)
 		return (ERROR);
-	(*j) += 3;
+	(*j) += 2;
 	while (a <= b)
 	{
-		if (!not && name[*i] == a)
+		if (name[*i] == a)
 		{
-			// ft_dprintf(2, "match name[i] <> a : %c\n", name[*i], a);
 			(*i) += 1;
 			return (SUCCESS);
 		}
-		else if (not && name[*i] == a)
-		{
-			// ft_dprintf(2, "match excluded char : name[i] <> a : %c\n", name[*i], a);
-			return (ERROR);
-		}
 		a++;
 	}
-	if (not)
+	return (FAILURE);
+}
+
+static int	sh_pattern_matching_brace_dash_not(char *name, t_regexp *regexp, int *i, int *j)
+{
+	char		a;
+	char		b;
+
+	a = regexp->value[*j];
+	b = regexp->value[*j + 2];
+	(*j) += 2;
+	while (a <= b)
 	{
-		(*i) += 1;
-		return (SUCCESS);
+		if (name[*i] == a)
+			return (ERROR);
+		a++;
 	}
-	return (ERROR);
+	return (SUCCESS);
 }
 
 static int	sh_pattern_matching_brace(char *name, t_regexp *regexp, int *i)
 {
 	int		not;
 	int		j;
+	int		ret;
 
 	j = 1;
+	not = regexp->value[j] == '!' && j++ ? 1 : 0;
+	if (regexp->value[j] == ']' && !regexp->value[j + 1])
+		return (ERROR);
 	while (regexp->value[j] && regexp->value[j] != ']')
 	{
-		not = 0;
-		if (regexp->value[j] == '!' && j++)
-			not = 1;
+		ft_dprintf(2, "new loop in brace : name = %s (%d) || regexp->value : %s (%d)|| not : %d\n", name, *i, regexp->value, j, not);
 		if (regexp->value[j + 1] == '-' && regexp->value[j + 2])
 		{
-			if (sh_pattern_matching_brace_dash(name, regexp, i, &j, not) == SUCCESS)
-				return (SUCCESS);
+			if (not)
+			{
+				if (sh_pattern_matching_brace_dash_not(name, regexp, i, &j))
+					return (ERROR);
+			}
+			else
+			{
+				ret = sh_pattern_matching_brace_dash(name, regexp, i, &j);
+				if (ret == SUCCESS || ret == ERROR)
+					return (ret);
+			}
 		}
 		else
 		{
 			if ((!not && regexp->value[j] == name[*i]) || (not && regexp->value[j] != name[*i]))
 			{
+				// ft_dprintf(2, "brace matched : name[*i] = %c || regexp->value : %c || not : %d\n", name[*i], regexp->value[j], not);
 				(*i) += 1;
 				return (SUCCESS);
 			}
 		}
 		j++;
+	}
+	if (not) // check value[j] content ? 
+	{
+		(*i) += 1;
+		return (SUCCESS);
 	}
 	return (ERROR);
 }
@@ -107,7 +141,9 @@ static int	sh_pattern_matching_star(char *name, t_regexp *regexp, int *i, t_list
 		return (SUCCESS);
 	}
 	next_regexp = (t_regexp*)regexp_head->next->content;
-	if (next_regexp->type == REG_STR)
+	if (next_regexp->type == REG_STAR)
+		return (SUCCESS);
+	else if (next_regexp->type == REG_STR)
 	{
 		save = next_regexp->value[next_regexp->len];
 		next_regexp->value[next_regexp->len] = '\0';
@@ -178,13 +214,17 @@ int			sh_is_pattern_matching(char *name, t_list *regexp_head)
 		}
 		else
 			return (ERROR);
+		ft_dprintf(2, RED"returned : %d\n"EOC, ret);
 		if (ret)
 			return (ret);
 		regexp_head = regexp_head->next;
 	}
+	ft_dprintf(2, "entering 1\n");
 	while (regexp_head && ((t_regexp*)regexp_head->content)->type == REG_STAR)
 		regexp_head = regexp_head->next;
+	ft_dprintf(2, "entering 2\n");
 	if (regexp_head || name[i])
 		return (ERROR);
+	ft_dprintf(2, "entering 3\n");
 	return (SUCCESS);
 }

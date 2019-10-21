@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 13:31:28 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/20 07:48:54 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/21 00:00:37 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	pattern_matching(char *path, t_list **regexp_list, t_dy_tab *quotes, 
 		if (sh_is_pattern_matching(dirent->d_name, *regexp_list) == SUCCESS)
 		{
 			new_path = ft_strjoin_path(path, dirent->d_name); //protect && leaks
-			ft_dprintf(2, "path : %s || new path : %s\n", path, new_path);
+			// ft_dprintf(2, "path : %s || new path : %s\n", path, new_path);
 			if (regexp_list[1])
 			{
 				if (sh_verbose_globbing())

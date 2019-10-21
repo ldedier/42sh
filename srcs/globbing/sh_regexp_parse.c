@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 23:53:16 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/20 07:42:32 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/21 01:38:22 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int		sh_regexp_parse_new_string(char *str, int *i, t_list **regexp_list)
 	quoted = 0;
 	while (str[*i])
 	{
-		ft_dprintf(2, "while : str[*i] : %c (%d)\n", str[*i], *i);
+		ft_dprintf(2, "while : str[*i] : %c (%d) || quoted L: %c\n", str[*i], *i, quoted);
 		if (str[*i] == '\'' || str[*i] == '\\' || str[*i] == '"')
 		{
 			quoted = str[*i];
@@ -39,7 +39,10 @@ static int		sh_regexp_parse_new_string(char *str, int *i, t_list **regexp_list)
 			quoted = 0;
 		}
 		else if (quoted == '\\')
+		{
 			(*i) += 1;
+			quoted = 0;
+		}
 		else if (str[*i] == '?' || str[*i] == '[' || str[*i] == '*')
 			break ;
 		else
@@ -80,7 +83,6 @@ static int		sh_regexp_parse_new_bracket(char *str, int *i, t_list **regexp_list)
 	regexp->len = *i - start + 1;
 	regexp->value = str + start;
 	(*i)++;
-	ft_dprintf(2, "i : %d\n", *i);
 	return (SUCCESS);
 }
 
