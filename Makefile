@@ -6,7 +6,7 @@
 #    By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/10/22 11:32:03 by jdugoudr         ###   ########.fr        #
+#    Updated: 2019/10/22 11:37:56 by jdugoudr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -271,7 +271,8 @@ SRCS			+=	sh_execute.c \
 					sh_execute_prefix_postfix.c \
 					t_context.c sh_debug.c \
 					sh_execute_redirection.c \
-					sh_execute_pipe_tools.c
+					sh_execute_pipe_tools.c \
+					sh_execute_compound_command.c
 
 ################################################################
 ########					REDIRECTION					########

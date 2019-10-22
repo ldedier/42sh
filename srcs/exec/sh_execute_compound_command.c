@@ -6,7 +6,7 @@
 /*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 10:16:20 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/22 11:08:39 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/22 11:51:40 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,8 @@ int	sh_execute_compound_command(t_ast_node *node, t_context *context)
 	t_ast_node	*compound_redir;
 	t_list		*lst_redi;
 
-	if (node->parent->children->next)
-		compound_redir = node->parent->children->next->content;
+	if (node->parent->parent->children->next)
+		compound_redir = node->parent->parent->children->next->content;
 	else
 		compound_redir = NULL;
 	if ((ret = loop_traverse_compound_redirection(compound_redir, context)))

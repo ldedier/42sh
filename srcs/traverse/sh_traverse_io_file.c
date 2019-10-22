@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 11:19:41 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/21 13:53:45 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/22 12:33:42 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,6 @@ int			sh_traverse_io_file(t_ast_node *node, t_context *context)
 	filename = filename_child->token->value;
 	if (context->phase == E_TRAVERSE_PHASE_EXPANSIONS)
 	{
-	ft_dprintf(1, "traverse_io_file phase expansions\n");
 		filename = ft_strdup(filename);
 		ret = sh_expansions(context, filename_child);
 		if (ret == SUCCESS
