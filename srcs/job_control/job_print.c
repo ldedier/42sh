@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 04:42:10 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/22 08:35:07 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/22 18:47:00 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,14 @@ static void		print_process_status(t_process *p, int opt, int fd)
 		ft_dprintf(fd, "%d  ", p->pid);
 	if (status == -1 || WIFCONTINUED(status))
 		ft_dprintf(fd, "%-19s", "Running");
-	if (WIFEXITED(status) && WEXITSTATUS(status) == 0)
+	else if (WIFEXITED(status) && WEXITSTATUS(status) == 0)
 		ft_dprintf(fd, "%-19s", "Done");
 	else if (WIFEXITED(status))
 		ft_dprintf(fd, "%s %-16d", "Exit", WEXITSTATUS(status));
 	else if (WIFSIGNALED(status))
-		ft_dprintf(fd, "%-19s", strsignal(WTERMSIG(status)));
+		ft_dprintf(fd, "%-19s", sys_siglist[WTERMSIG(status)]);
 	else if (WIFSTOPPED(status))
-		ft_dprintf(fd, "%-19s", strsignal(WSTOPSIG(status)));
+		ft_dprintf(fd, "%-19s", sys_siglist[WSTOPSIG(status)]);
 }
 
 static void		print_job_status(t_job *j, int opt, int fd)
@@ -62,14 +62,14 @@ static void		print_job_status(t_job *j, int opt, int fd)
 		ft_dprintf(fd, "%d  ",j->first_process->pid);
 	else if (status == -1 || WIFCONTINUED(status))
 		ft_dprintf(fd, "%-19s", "Running");
-	if (WIFEXITED(status) && WEXITSTATUS(status) == 0)
+	else if (WIFEXITED(status) && WEXITSTATUS(status) == 0)
 		ft_dprintf(fd, "%-19s", "Done");
 	else if (WIFEXITED(status))
 		ft_dprintf(fd, "%s %-14d", "Exit", WEXITSTATUS(status));
 	else if (WIFSIGNALED(status))
-		ft_dprintf(fd, "%-19s", strsignal(WTERMSIG(status)));
+		ft_dprintf(fd, "%-19s", sys_siglist[WTERMSIG(status)]);
 	else if (WIFSTOPPED(status))
-		ft_dprintf(fd, "%-19s", strsignal(WSTOPSIG(status)));
+		ft_dprintf(fd, "%-19s", sys_siglist[WSTOPSIG(status)]);
 	ft_dprintf(fd, "%s\n", j->command);
 }
 
