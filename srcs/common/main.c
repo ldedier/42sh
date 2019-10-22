@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 17:59:53 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/09 02:14:43 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/22 16:11:05 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ static int	main_exit_value(t_shell *shell, int ret)
 	// mdaoud: 0 or g_term_fd?
 	if (isatty(0) && ret_save != 2)
 		ft_dprintf(2, "exit\n");
+	if (g_term_fd != -1)
+		close (g_term_fd);
 	return (ret);
 }
 
