@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_traverse_command.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/02 00:35:13 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/22 10:37:13 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/22 18:54:20 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,28 +50,15 @@ static int	compound_and_redirection(t_ast_node *node, t_context *context)
 	{
 		if ((ret = apply_expansion_to_children(node->children->next, context)) != SUCCESS)
 			return (ret);
-//		context->phase = E_TRAVERSE_PHASE_REDIRECTIONS;
-//		if ((ret = sh_traverse_tools_browse(node->children->next->content, context)) != SUCCESS)
-//		{
-//			if (sh_reset_redirection(&context->redirections))
-//				return (FAILURE);
-//			return (ret);
-//		}
-//		compound_redir = context->redirections;
-//		context->redirections = NULL;
 	}
 	if (sh_pre_execution())
 		return (FAILURE);
 	if (child->symbol->id == sh_index(SUBSHELL))
 		ret = sh_traverse_subshell(child, context);
-		/*func = &sh_traverse_subshell;*/
-		/*ret = sh_traverse_subshell(child, context);*/
 	else if (child->symbol->id == sh_index(BRACE_GROUP))
 	{
 		signal(SIGINT, handle_int);
 		ret = sh_execute_compound_command(child, context);
-		/*func = &sh_traverse_brace_group;*/
-		/*ret = sh_traverse_brace_group(child, context);*/
 	}
 	if (sh_post_execution())
 		return (FAILURE);

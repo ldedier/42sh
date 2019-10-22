@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_execute_compound_command.c                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 10:16:20 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/22 11:51:40 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/22 18:49:21 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,17 @@ static int	get_last_separator(t_ast_node *curr_node)
 	}
 	return (0);
 }
+
+/*
+** search_term
+** compound_list node can be a newline_list follow by a term node and separator
+** need to have at least a term node.
+**
+** So we skip all newline_list to go to the term node.
+** Have to check of the proper separator.
+** A term can be a list of and_or break by separator node.
+** A separator can be ';' '&' 'line_break' or 'newline_list'
+*/
 
 static int	search_term(t_ast_node *node, t_context *context)
 {
