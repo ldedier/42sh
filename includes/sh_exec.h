@@ -101,6 +101,15 @@ int					sh_execute_builtin(t_context *context);
 int					sh_execute_pipe(t_ast_node *node, t_context *context);
 
 /*
+** sh_execute_pipe_tool.c
+*/
+void				close_all_pipe_but_one(
+	int nb_pipe, int curr_cmd, int **tab_pds);
+void				close_and_free(
+	int curr_cmd, t_pipe *pipes, t_context *context);
+void				close_one_pipe(int curr, t_pipe *pipes);
+
+/*
 ** sh_execute_prefix_postfix.c
 */
 int					sh_pre_execution();
@@ -119,12 +128,4 @@ int					t_context_init(t_context *context, t_shell *shell);
 void				t_context_free_content(t_context *context);
 void				t_context_reset(t_context *context);
 
-/*
-** sh_execute_pipe_tool.c
-*/
-void				close_one_pipe(int curr, t_pipe *pipes);
-void				close_and_free(
-		int curr_cmd, t_pipe *pipes, t_context *context);
-void				close_all_pipe_but_one(
-		int nb_pipe, int curr_cmd, int **tab_pds);
 #endif

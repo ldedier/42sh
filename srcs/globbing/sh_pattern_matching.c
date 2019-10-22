@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 07:35:43 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/21 07:58:27 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/22 20:12:18 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int			sh_is_pattern_matching(char *name, t_list *regexp_head)
 		if (ret)
 			return (ret);
 		if (sh_verbose_globbing())
-			{ft_dprintf(2, BLUE"\t%s : matched : (", name); t_regexp_show(regexp);ft_dprintf(2, ")\n");}
+			{ft_dprintf(2, BLUE"\t%s : matched : (", name); t_regexp_show(regexp);ft_dprintf(2, ")\n"EOC);}
 		regexp_head = regexp_head->next;
 	}
 	while (regexp_head && ((t_regexp*)regexp_head->content)->type == REG_STAR)

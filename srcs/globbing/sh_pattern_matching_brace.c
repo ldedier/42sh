@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 04:48:28 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/21 08:05:11 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/22 22:19:48 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ static int	unquoted(char *name, t_regexp *regexp, int *i, int *j, int not)
 {
 	int		ret;
 
-	if (regexp->value[*j + 1] == '-' && regexp->value[*j + 2])
+	if (regexp->value[*j + 1] == '-' && regexp->value[*j + 2] != ']')
 		ret = sh_pattern_matching_brace_dash(name, regexp, i, j, not);
 	else
 		ret = sh_pattern_matching_brace_simple(name, regexp, i, j, not);

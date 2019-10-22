@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/05 10:59:30 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/16 01:29:36 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/22 22:02:50 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int			sh_expansions(t_context *context, t_ast_node *node)
 	if (!ret)
 		ret = sh_expansions_splitting(context, node, quotes);
 	if (!ret)
-		ret = sh_expansions_globbing(context, node->parent, quotes);
+		ret = sh_expansions_globbing(context, node, quotes);
 	if (!ret)
 		sh_expansions_quote_removal((t_quote**)quotes->tbl);
 	if (ret == ERROR || ret == FAILURE)

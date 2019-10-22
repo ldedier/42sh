@@ -40,7 +40,7 @@ struct						s_regexp
 ** sh_globbing.c
 */
 int							sh_expansions_globbing(
-	t_context *context, t_ast_node *father, t_dy_tab *quotes);
+	t_context *context, t_ast_node *node, t_dy_tab *quotes);
 
 /*
 ** sh_pattern_matching.c
