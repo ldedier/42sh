@@ -34,7 +34,6 @@ static void	sh_env_update_ret_value_treat_sig(t_context *context, int sig)
 		sh_perror("Segmentation fault", context->params->tbl[0]);
 		sh_env_update_ret_value(context->shell, sig);
 	}
-
 	sh_env_update_ret_value(context->shell, SH_RET_SIG_RECEIVED + sig);
 	return ;
 }

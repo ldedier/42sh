@@ -78,6 +78,27 @@
 //	return (ret);
 //}
 
+static int	child_part(t_ast_node *node, t_context *context)
+{
+	int		ret;
+
+	ret = 0;
+	if (g_job_ctrl->interactive)
+	{
+		if (set_pgid_child(getpid()) != SUCCESS)
+			exit (FAILURE);
+	}
+	//if (set_pgid_child(getpid()) != SUCCESS);
+	//		return (FAILURE);
+	reset_signals();
+	g_job_ctrl->interactive = 0;
+	/*ret = search_term(node, context);*/
+	ret = sh_execute_compound_command(node, context);
+	sh_free_all(context->shell);
+	if (ret != SUCCESS)
+		exit(ret);
+	exit(context->shell->ret_value);
+}
 /*
 ** sh_traverse_subshell
 ** We execute here what a subshell do.
@@ -92,10 +113,10 @@ static int	parents_part(pid_t pid, t_context *context)
 	int	ret;
 
 	ret = 0;
-	if (set_pgid_parent(pid) != SUCCESS)
-		return (FAILURE);
 	if (g_job_ctrl->interactive)
 	{
+		if (set_pgid_parent(pid) != SUCCESS)
+			return (FAILURE);
 		if (g_job_ctrl->curr_job->foreground)
 		{
 			if (job_put_in_fg(g_job_ctrl->curr_job, 0, &ret) != SUCCESS)
@@ -122,16 +143,7 @@ int		sh_traverse_subshell(t_ast_node *node, t_context *context)
 		return (parents_part(pid, context));
 	else
 	{
-		if (set_pgid_child(getpid()) != SUCCESS)
-			return (FAILURE);
-		reset_signals();
-		g_job_ctrl->interactive = 0;
-		/*ret = search_term(node, context);*/
-		ret = sh_execute_compound_command(node, context);
-		sh_free_all(context->shell);
-		if (ret != SUCCESS)
-			exit(ret);
-		exit(context->shell->ret_value);
+		child_part(node, context);
 	}
 	return (0);
 }

@@ -32,7 +32,7 @@ int		sh_pre_execution(void)
 				"sh_pre_execution"));
 		// sh_process_execute_close_pipes(context);
 	}
-	// ft_dprintf(g_term_fd, "%sPRE EXECUTION%s\n", COL_MAGENTA, EOC);
+	 ft_dprintf(g_term_fd, "%sPRE EXECUTION%s\n", COL_MAGENTA, EOC);
 	sh_reset_signals_pre_exec();
 	return (SUCCESS);
 }
@@ -45,7 +45,7 @@ int		sh_post_execution(void)
 			return (sh_perror("Could not modify this terminal attributes",
 				"sh_post_execution"));
 	}
-	// ft_dprintf(g_term_fd, "%sPOST EXECUTION%s\n", COL_MAGENTA, EOC);
+	ft_dprintf(g_term_fd, "%sPOST EXECUTION%s\n", COL_MAGENTA, EOC);
 	sh_reset_signals_post_exec();
 	return (SUCCESS);
 }
