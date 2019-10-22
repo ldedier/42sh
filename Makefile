@@ -6,7 +6,7 @@
 #    By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/10/21 09:02:56 by jdugoudr         ###   ########.fr        #
+#    Updated: 2019/10/22 11:32:03 by jdugoudr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -296,9 +296,10 @@ SRCS			+=	sh_builtin.c sh_builtin_pwd.c \
 					sh_builtin_hash.c sh_builtin_hash_tools.c \
 					sh_builtin_bonus.c sh_builtin_parser.c \
 					sh_builtin_test.c sh_builtin_test_unary.c \
-					sh_builtin_test_binary.c sh_builtin_jobs.c \
-					sh_builtin_jobs_tools.c \
-					sh_builtin_fg.c sh_builtin_bg.c \
+					sh_builtin_test_binary.c \
+					sh_builtin_jobs.c sh_builtin_jobs_tools.c\
+					sh_builtin_fg.c \
+					sh_builtin_bg.c \
 					sh_builtin_fc.c \
 					sh_builtin_fc_l_synopsis.c \
 					sh_builtin_fc_s_synopsis.c \
@@ -334,14 +335,15 @@ SRCS			 +=	sh_perror.c \
 ################################################################
 ########				JOB_CONTROL						########
 ################################################################
-SRCS			+=	jobs_init.c job_add.c process_add.c \
+SRCS			+=	jobs_init.c job_add.c process_add.c job_tools.c \
 					str_tab_duplicate.c str_tab_print.c str_tab_free.c \
 					job_control_free.c job_wait.c job_is_continued.c \
 					job_put_in_bg.c job_put_in_fg.c job_is_completed.c \
 					job_is_stopped.c job_check_changes.c job_free.c \
 					job_print_status.c job_notify.c job_print.c \
 					jobs_error_free.c set_pgid_child.c set_pgid_parent.c \
-					jobs_create_cmds.c jobs_free_cmds.c jobs_print_cmds.c
+					jobs_create_cmds.c jobs_free_cmds.c jobs_print_cmds.c \
+					job_sign_tools.c
 
 ################################################################
 ########					INCLUDES					########

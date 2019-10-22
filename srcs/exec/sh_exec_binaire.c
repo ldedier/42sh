@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 17:31:33 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/21 13:49:34 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/22 11:31:30 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ static int		sh_exec_parent_part(pid_t cpid, t_context *context)
 		// ft_dprintf(g_term_fd, "waitflags: %d\n", context->wflags);
 		waitpid(cpid, &ret, context->wflags);
 	}
+	// ft_dprintf(g_term_fd, "RET: %#X (%d)\n", ret, ret);
 	sh_env_update_ret_value_wait_result(context, ret);
 	// to ldedier: Signals can come from outside the terminal (kill)
 	// Not sure if we can make the difference between ctrl_c or kill (SIGINT)

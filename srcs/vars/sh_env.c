@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/14 14:52:02 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/14 05:41:15 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/21 11:45:01 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,12 @@ static void	sh_env_update_ret_value_treat_sig(t_context *context, int sig)
 		sh_perror("Killed: 9", context->params->tbl[0]);
 	else if (sig == 10)
 		sh_perror("Bus error", context->params->tbl[0]);
-	else if (sig == 11)
+	// mdaoud Je sais pas pourquoi, mais segfault est exitvalue(0) et signalvalue(139)
+	else if (sig == 139)
+	{
 		sh_perror("Segmentation fault", context->params->tbl[0]);
+		sh_env_update_ret_value(context->shell, sig);
+	}
 
 	sh_env_update_ret_value(context->shell, SH_RET_SIG_RECEIVED + sig);
 	return ;
@@ -46,6 +50,8 @@ void		sh_env_update_ret_value_wait_result(t_context *context, int res)
 	t_shell		*shell;
 
 	shell = context->shell;
+	// ft_dprintf(g_term_fd, YELLOW"update: %#X (%d)\n"EOC);
+	// ft_dprintf(g_term_fd, YELLOW"exit value: %d, signal: %d\n"EOC, SH_RET_VALUE_EXIT_STATUS(res), SH_RET_VALUE_SIG_RECEIVED(res));
 	if (!shell->ret_value_set)
 	{
 		if (SH_RET_VALUE_SIG_RECEIVED(res))

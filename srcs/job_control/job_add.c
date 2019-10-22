@@ -38,16 +38,19 @@ static int	find_available_job_number(void)
 
 static void	init_job_values(t_job *j, int n, int bg)
 {
+
 	j->first_process = NULL;
 	j->next = NULL;
 	j->signal_num = 0;
 	j->notified = 0;
 	j->pgid = 0;
-	// j->simple_cmd = 1;
+	j->foreground = (bg == 0 ? 1 : 0);
+	j->sign = ' ';
+	if (bg)
+		job_added_update_sign(j);
 	j->number = n;
 	g_job_ctrl->job_num[n] = 1;
 	g_job_ctrl->curr_job = j;
-	j->foreground = !bg;
 }
 
 /*

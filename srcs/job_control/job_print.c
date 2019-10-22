@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 04:42:10 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/18 14:25:24 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/22 08:35:07 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,68 +32,67 @@ static int		job_has_same_status(t_job *j)
 	return (1);
 }
 
-static void		print_process_status(t_process *p, int pid_flag)
+static void		print_process_status(t_process *p, int opt, int fd)
 {
 	int		status;
-	int	print_fd;
 
-	print_fd = (pid_flag == 0 ? STDOUT_FILENO : g_term_fd);
 	status = p->status;
 	// ft_dprintf(g_term_fd, "<%d>: %#X (%d)\n", p->pid, p->status, p->status);
+	if (opt)
+		ft_dprintf(fd, "%d  ", p->pid);
 	if (status == -1 || WIFCONTINUED(status))
-		ft_dprintf(print_fd, "Running    ");
+		ft_dprintf(fd, "%-19s", "Running");
+	if (WIFEXITED(status) && WEXITSTATUS(status) == 0)
+		ft_dprintf(fd, "%-19s", "Done");
 	else if (WIFEXITED(status))
-		ft_dprintf(print_fd, "Done       ");
+		ft_dprintf(fd, "%s %-16d", "Exit", WEXITSTATUS(status));
 	else if (WIFSIGNALED(status))
-		ft_dprintf(print_fd, "%-11s", strsignal(WTERMSIG(status)));
+		ft_dprintf(fd, "%-19s", strsignal(WTERMSIG(status)));
 	else if (WIFSTOPPED(status))
-		ft_dprintf(print_fd, "%-11s", strsignal(WSTOPSIG(status)));
+		ft_dprintf(fd, "%-19s", strsignal(WSTOPSIG(status)));
 }
 
-static void		print_job_status(t_job *j, int pid_flag)
+static void		print_job_status(t_job *j, int opt, int fd)
 {
 	int	status;
-	int	print_fd;
 
-	print_fd = (pid_flag == 0 ? STDOUT_FILENO : g_term_fd);
-	ft_dprintf(print_fd, "[%d]  ", j->number);
+	ft_dprintf(fd, "[%d]  %c ", j->number, j->sign);
 	status = j->first_process->status;
-	if (j->first_process->next == NULL && pid_flag)
-		ft_dprintf(print_fd, "%d  ",j->first_process->pid);
+	if (j->first_process->next == NULL && opt)
+		ft_dprintf(fd, "%d  ",j->first_process->pid);
 	else if (status == -1 || WIFCONTINUED(status))
-		ft_dprintf(print_fd, "Running    ");
-	if (WIFEXITED(status))
-		ft_dprintf(print_fd, "Done       ");
+		ft_dprintf(fd, "%-19s", "Running");
+	if (WIFEXITED(status) && WEXITSTATUS(status) == 0)
+		ft_dprintf(fd, "%-19s", "Done");
+	else if (WIFEXITED(status))
+		ft_dprintf(fd, "%s %-14d", "Exit", WEXITSTATUS(status));
 	else if (WIFSIGNALED(status))
-		ft_dprintf(print_fd, "%-11s", strsignal(WTERMSIG(status)));
+		ft_dprintf(fd, "%-19s", strsignal(WTERMSIG(status)));
 	else if (WIFSTOPPED(status))
-		ft_dprintf(print_fd, "%-11s", strsignal(WSTOPSIG(status)));
-	ft_dprintf(print_fd, "%s\n", j->command);
+		ft_dprintf(fd, "%-19s", strsignal(WSTOPSIG(status)));
+	ft_dprintf(fd, "%s\n", j->command);
 }
 
-static void		print_job_differant_status(t_job *j, int pid_flag)
+static void		print_job_differant_status(t_job *j, int opt, int fd)
 {
 	t_process	*p;
-	int			print_fd;
 
-	print_fd = (pid_flag == 0 ? STDOUT_FILENO : g_term_fd);
 	p = j->first_process;
-	ft_dprintf(print_fd, "[%d]  ", j->number);
+	ft_dprintf(fd, "[%d]  %c ", j->number, j->sign);
 	while (p->next != NULL)
 	{
-		print_process_status(p, pid_flag);
-		ft_dprintf(print_fd, "\"%s|\"\n     ", p->cmd);
+		print_process_status(p, opt, fd);
+		ft_dprintf(fd, "\"%s|\"\n       ", p->cmd);
 		p = p->next;
 	}
-	print_process_status(p, pid_flag);
-	ft_dprintf(print_fd, "\"%s\"\n", p->cmd);
+	print_process_status(p, opt, fd);
+	ft_dprintf(fd, "\"%s\"\n", p->cmd);
 }
 
-
-void			job_print(t_job *j, int pid_flag)
+void			job_print(t_job *j, int opt, int fd)
 {
-	if (job_has_same_status(j))
-		print_job_status(j, pid_flag);
+	if (job_has_same_status(j) && opt == 0)
+		print_job_status(j, opt, fd);
 	else
-		print_job_differant_status(j, pid_flag);
+		print_job_differant_status(j, opt, fd);
 }

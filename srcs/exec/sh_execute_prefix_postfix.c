@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/31 12:20:31 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/21 14:37:16 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/22 11:25:48 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static void	sh_reset_signals_pre_exec(void)
 {
+	// sleep (5);
 	signal(SIGWINCH, SIG_DFL);
 }
 
