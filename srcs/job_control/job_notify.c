@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 01:05:04 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/20 13:10:52 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/21 16:36:02 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void		handle_job_completed(t_job *j, t_job *tmp, t_job *j_next)
 	g_job_ctrl->job_num[j->number] = 0;
 	sign = j->sign;
 	if (j->foreground == 0)
-		job_print(j, 1);
+		job_print(j, 0, g_term_fd);
 	if (tmp)
 		tmp->next = j_next;
 	else
@@ -66,25 +66,12 @@ void			job_notify(void)
 		j_next = j->next;
 		// If the job is completed, report to user and remove the job from the list.
 		if (job_is_completed(j))
-		{
-				handle_job_completed(j, tmp, j_next);
-			// // ft_dprintf(g_term_fd, "JOB [%d] completed\n", j->number);
-			// g_job_ctrl->job_num[j->number] = 0;
-			// if (j->foreground == 0)
-			// 	job_print(j, 1);
-			// if (tmp)
-			// 	tmp->next = j_next;
-			// else
-			// 	g_job_ctrl->first_job = j_next;
-			// if (g_job_ctrl->curr_job == j)
-			// 	g_job_ctrl->curr_job = NULL;
-			// job_free(j);
-		}
+			handle_job_completed(j, tmp, j_next);
 		// If the job has stopped (but not completed), report to the user (only once)
 		else if (job_is_stopped(j) && !j->notified)
 		{
 			job_set_plus_sign(j);
-			job_print(j, 1);
+			job_print(j, 1, g_term_fd);
 			j->foreground = 0;
 			j->notified = 1;
 			tmp = j;
@@ -92,7 +79,7 @@ void			job_notify(void)
 		// If the job was continued after being stopped, report to the user (only once)
 		else if (job_is_continued(j) && !j->notified)
 		{
-			job_print(j, 1);
+			job_print(j, 1, g_term_fd);
 			j->notified = 1;
 			tmp = j;
 		}

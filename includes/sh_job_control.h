@@ -131,7 +131,7 @@ int				job_is_continued(t_job *j);
 int				job_is_stopped(t_job *j);
 void			job_notify(void);
 void			job_print_status(t_job *j, const char *new_status);
-void			job_print(t_job *j, int pid_flag);
+void			job_print(t_job *j, int opt, int fd);
 int				job_put_in_bg(t_job *j, int cont);
 int				job_put_in_fg(t_job *j, int cont, int *res);
 void			job_wait(t_job *j, int *res);
@@ -148,7 +148,16 @@ char			**str_tab_duplicate(char **from);	//put in libft
 void			str_tab_free(char **str);			//put in libft
 void			str_tab_print(char **char_tab);		//put in libft
 
+/*
+** job_tools.c
+*/
+t_job			*job_get_by_num(int num);
 t_job			*job_get_by_sign(char c);
+
+/*
+** job_sign_tools.c
+*/
+
 void			job_reset_sign(char c);
 void			job_set_plus_sign(t_job *j);
 void			job_added_update_sign(t_job *j);

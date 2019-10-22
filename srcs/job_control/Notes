@@ -6,29 +6,7 @@ What to return in case of max job num exceeded.
 (ERROR or STP_CMD_LINE)
 Both these value corrupt the current prompt output.
 ===================================================================
-Jobs, fg, bg options!
-===================================================================
-test when shell is running in bg
-===================================================================
-Signals are working properly with/without pipes.
-Reworked bg, fg (Corrected the running status not being updated after calls to bg, fg.
-Seperated signals handlers depending on phase (One for the shell, one for executing simple commands.
-To do:
-Rework the signal handling code (Test it then clean it up)
-Handle the AND_OR nods when ampersand character is present.
-Make sure the (jc_enable) condition is present when it needs to be.
-Added the '%' character to the builtins.
-Test how the shell as well as the jobs reacts to outside signaling (via kill).
-builtin commands that end with &
-non-interative shell with signals (./42sh < In then ctrl_z or ctrl_c)
-TEST TEST TEST
-===================================================================
 sleep & (leaks)
-42sh < in6 launched from within 42sh
-===================================================================
-sleep 10 || ls then ctrl_z segfault cuz these need to be 2 seperate jobs
-===================================================================
-fg prints the job command as well
 ===================================================================
 ls & ls && sleep 1 & ls -l
 then ps right away.
@@ -42,10 +20,6 @@ Check what happens when ctrl_z ctrl_c with sleep 10 || ls
 ===================================================================
 Check what happens with outside signaling to sleep 10 || ls and sleep 10 && ls
 ===================================================================
-sending SIGCONT to a background stopped process does not update the status.
-===================================================================
-HANDLE SIGCONT
-===================================================================
 ls | sleep 3 || ls, ctrl_z quitts shell
 ===================================================================
 FIX POST_PREFIX IN PIPE_EXECUTE
@@ -55,3 +29,5 @@ Ret value of command after fg, (sleep then ctrl_c)
 Leaks when builtis return error
 ===================================================================
 segfault when adding a slep 30 &
+===================================================================
+fg , bg exit with error if job control is not active.

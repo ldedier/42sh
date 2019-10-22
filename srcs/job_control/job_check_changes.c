@@ -36,7 +36,7 @@ static int	update_process_info(t_job *j, t_process *p, int status)
 	}
 	if (WIFSIGNALED (status))
 	{
-		// ft_dprintf(g_term_fd, "<%d> SIGNALED \n", p->pid);
+		// ft_dprintf(g_term_fd, "<%d> SIGNALED by %d (%d)\n", p->pid, status, WTERMSIG(status));
 		j->notified = 0;
 		j->signal_num = WTERMSIG(status);
 	}

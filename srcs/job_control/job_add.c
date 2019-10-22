@@ -36,27 +36,6 @@ static int	find_available_job_number(void)
 	return (-1);
 }
 
-// static void	init_job_sign(t_job *j, int bg)
-// {
-// 	t_job	*tmp;
-
-// 	j->sign = ' ';
-// 	if (bg)
-// 	{
-// 		tmp = job_get_by_sign('+');
-// 		if (tmp == NULL || !job_is_stopped(tmp))
-// 			job_set_plus_sign(j);
-// 		else
-// 		{
-// 			tmp = job_get_by_sign('-');
-// 			if (tmp == NULL || !job_is_stopped(tmp))
-// 			{
-// 				job_reset_sign('-');
-// 				j->sign = '-';
-// 			}
-// 		}
-// 	}
-// }
 static void	init_job_values(t_job *j, int n, int bg)
 {
 
