@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/16 05:23:32 by jmartel           #+#    #+#              #
-#    Updated: 2019/10/23 02:34:38 by jmartel          ###   ########.fr        #
+#    Updated: 2019/10/23 04:10:37 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,25 +54,25 @@ launch "Globbing"
 	cd ${pwd}
 
 	launch_show "Simple"
-	test_launch 'cd sandbox' 'echo *'
-	test_launch 'cd sandbox' 'echo */*'
-	test_launch 'cd sandbox' 'echo */*/'
-	test_launch 'cd sandbox' 'echo */*/*'
-	test_launch 'cd sandbox' 'echo [a]/*/*'
-	test_launch 'cd sandbox' 'echo [!ab]/*/*'
-	test_launch 'cd sandbox' 'echo [!a-X]/*/*'
-	test_launch 'cd sandbox' 'echo [!a-x]/*/*'
-	test_launch 'cd sandbox' 'echo [a-x]/*/*'
-	test_launch 'cd sandbox' 'echo ?*'
-	test_launch 'cd sandbox' 'echo *?'
-	test_launch 'cd sandbox' 'echo ?*?'
-	test_launch 'cd sandbox' 'echo .*'
-	test_launch 'cd sandbox' 'echo ./*'
+	test_launch 'cd sandbox' 'ls *'
+	test_launch 'cd sandbox' 'ls */*'
+	test_launch 'cd sandbox' 'ls */*/ | wc'
+	test_launch 'cd sandbox' 'ls */*/*'
+	test_launch 'cd sandbox' 'ls [a]/*/*'
+	test_launch 'cd sandbox' 'ls [!ab]/*/*'
+	test_launch 'cd sandbox' 'ls [!a-X]/*/*'
+	test_launch 'cd sandbox' 'ls [!a-x]/*/*'
+	test_launch 'cd sandbox' 'ls [a-x]/*/*'
+	test_launch 'cd sandbox' 'ls ?*'
+	test_launch 'cd sandbox' 'ls *?'
+	test_launch 'cd sandbox' 'ls ?*?'
+	test_launch 'cd sandbox' 'ls .*'
+	test_launch 'cd sandbox' 'ls ./*'
 
 	launch_show "brace"
-	test_launch 'cd sandbox' 'echo [a] ; echo $?' 'echo [a]* ; echo $?' 'echo [!a] ; echo $?'
-	test_launch 'cd sandbox' 'echo [a-a][a-a] ; echo $?' 'echo [!a][!a] ; echo $?' 'echo [!] ; echo $?'
-	test_launch 'cd sandbox' 'echo [a-aa-ab-bb-b] ; echo $?' 'echo [!a-aa-ab-bb-b] ; echo $?' 'echo [!a-a!a-a!b-bb-b] ; echo $?' 'echo [!a-aa-ab-b!b!-b] ; echo $?'
+	test_launch 'cd sandbox' 'echo [a] ; echo $?' 'echo [a]* ; echo $?' 'echo [!a] |wc ; echo $?'
+	test_launch 'cd sandbox' 'echo [a-a][a-a] | wc  ; echo $?' 'echo [!a][!a] | wc ; echo $?' 'echo [!] ; echo $?'
+	test_launch 'cd sandbox' 'echo [a-aa-ab-bb-b] | wc  ; echo $?' 'echo [!a-aa-ab-bb-b] | wc ; echo $?' 'echo [!a-a!a-a!b-bb-b] ; echo $?' 'echo [!a-aa-ab-b!b!-b] ; echo $?'
 	test_launch 'cd sandbox' 'echo [!] ; echo $?' 'echo [\!] ; echo $?' 'echo [!\!] ; echo $?' 'echo [!!] ; echo $?'
 
 	launch_show "brace quoted"
