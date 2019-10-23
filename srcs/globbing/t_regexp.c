@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 23:26:35 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/21 05:30:21 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/23 03:17:59 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ t_regexp		*t_regexp_new_push(t_list **regexp_list)
 	t_list		*lst;
 
 	if (!(regexp = malloc(sizeof(*regexp))))
-		return (NULL); //perrror
+		return (sh_perrorn(SH_ERR1_MALLOC, "t_regexp_new_push (1)"));
 	if (!(lst = ft_lstnew(regexp, sizeof(*regexp))))
 	{
 		free(regexp);
-		return (NULL); //perrror
+		return (sh_perrorn(SH_ERR1_MALLOC, "t_regexp_new_push (2)"));
 	}
 	ft_lstadd_last(regexp_list, lst);
 	return (regexp);
@@ -52,6 +52,9 @@ void			t_regexp_show(t_regexp *regexp)
 		ft_dprintf(2, "REG_QUEST");
 	else if (regexp->type == REG_BRACE)
 		ft_dprintf(2, "REG_BRACE : %s", regexp->value);
+	else if (regexp->type == REG_FINAL_SLASH)
+		ft_dprintf(2, "REG_FINAL_SLASH");
+
 }
 
 void		t_regexp_free(void *ptr, size_t size)

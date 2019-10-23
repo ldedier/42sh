@@ -6,11 +6,23 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 13:31:28 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/22 21:42:54 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/23 03:20:26 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
+
+static int	check_for_final_slash(t_list *regexp_list, t_dirent *dirent)
+{
+	t_regexp	*regexp;
+
+	regexp = (t_regexp*)regexp_list->content;
+	if (regexp->type != REG_FINAL_SLASH)
+		return (SUCCESS);
+	else if (!(DT_DIR == dirent->d_type))
+		return(ERROR);
+	return (SUCCESS);
+}
 
 static int	pattern_matching(char *path, t_list **regexp_list, t_dy_tab *quotes, t_list **matchs)
 {
@@ -26,6 +38,8 @@ static int	pattern_matching(char *path, t_list **regexp_list, t_dy_tab *quotes, 
 		return (ERROR); // perrror ? permissions 
 	while ((dirent = readdir(dir)))
 	{
+		if (check_for_final_slash(*regexp_list, dirent))
+			continue ;
 		if (sh_verbose_globbing())
 			ft_dprintf(2, "working on path : %s/%s\n", path, dirent->d_name);
 		if (sh_is_pattern_matching(dirent->d_name, *regexp_list) == SUCCESS)
@@ -111,10 +125,10 @@ int			sh_expansions_globbing(t_context *context, t_ast_node *node, t_dy_tab *quo
 	// Need to see for quote removal
 	// need t ofind a solution t go threought every field splited fields, with no repeat for non splitted fields
 	str = node->token->value;
+	if (!ft_strpbrk(str, "?[*"))
+		return (SUCCESS);
 	if ((ret = sh_regexp_parse(str, &regexp_tab)))// leaks ?
 		return (ret);
-	if (!regexp_tab) // no pattern expressions found ? Necessary / Usefull ??
-		return (SUCCESS);
 	init_path(&path, str);
 	pattern_matching(path, (t_list**)regexp_tab->tbl, quotes, &matches); //ret value ?
 	if (matches)

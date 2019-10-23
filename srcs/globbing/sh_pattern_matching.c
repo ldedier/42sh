@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 07:35:43 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/22 20:12:18 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/23 03:19:50 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ int			sh_is_pattern_matching(char *name, t_list *regexp_head)
 	i = 0;
 	ret = SUCCESS;
 	regexp = (t_regexp*)regexp_head->content;
+	if (regexp->type == REG_FINAL_SLASH)
+		regexp_head = regexp_head->next;
 	if (*name == '.' && (regexp->type != REG_STR || regexp->value[0] != '.'))
 		return (ERROR);
 	while (regexp_head && name[i])
@@ -54,8 +56,6 @@ int			sh_is_pattern_matching(char *name, t_list *regexp_head)
 			ret = sh_pattern_matching_brace(name, regexp, &i);
 		else if (regexp->type == REG_STAR)
 			ret = sh_pattern_matching_star(name, regexp, &i, regexp_head);
-		else
-			return (ERROR);
 		if (ret)
 			return (ret);
 		if (sh_verbose_globbing())

@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 23:13:55 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/16 07:29:23 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/23 03:04:07 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ enum						e_regexp_type
 	REG_STR,
 	REG_STAR,
 	REG_QUEST,
-	REG_BRACE
+	REG_BRACE,
+	REG_FINAL_SLASH
 };
 
 struct						s_regexp

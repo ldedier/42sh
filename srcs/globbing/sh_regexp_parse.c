@@ -6,11 +6,38 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 23:53:16 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/21 04:38:54 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/23 03:17:17 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
+
+static int	check_for_final_slash(char *str, t_list **regexp_tab, int i)
+{
+	t_regexp	*regexp;
+	t_list		*lst;
+
+	if (str[ft_strlen(str) - 1] != '/')
+		return (SUCCESS);
+	if (!(regexp = malloc(sizeof(*regexp))))
+		return (sh_perror(SH_ERR1_MALLOC, "check_for_final_slash (1)"));
+	if (!(lst = ft_lstnew(regexp, sizeof(*regexp))))
+	{
+		free(regexp);
+		return (sh_perror(SH_ERR1_MALLOC, "check_for_final_slash (2)"));
+	}
+	regexp->type = REG_FINAL_SLASH;
+	regexp->start = 0;
+	regexp->len = 0;
+	regexp->value = NULL;
+	lst->content = regexp;
+	lst->next = regexp_tab[i];
+	regexp_tab[i] = lst;
+	if (sh_verbose_globbing())
+		t_regexp_show_list(regexp_tab[i]);
+	return (SUCCESS);
+}
+
 
 static int		sh_regexp_parse_component(char *str, t_list **regexp_list)
 {
@@ -46,8 +73,6 @@ int		sh_regexp_parse(char *str, t_dy_tab **regexp_tab)
 	t_list	**list_tab;
 
 	i = 0;
-	if (!ft_strpbrk(str, "?[*"))
-		return (SUCCESS);
 	if (*str == '.' && *str == '/')
 		str += 2;
 	else if (*str == '/')
@@ -68,7 +93,8 @@ int		sh_regexp_parse(char *str, t_dy_tab **regexp_tab)
 		ret = sh_regexp_parse_component(split[i], &(list_tab[i]));
 		i++;
 	}
-	// leaks on split
-	// ft_strtab_free(split);
+	check_for_final_slash(str, list_tab, i - 1);
+	// leaks on split ??
+	ft_strtab_free(split);
 	return (ret);
 }
