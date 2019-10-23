@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/02 00:35:13 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/23 10:58:46 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/23 12:14:30 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static int	apply_expansion_to_children(t_list *lst_child, t_context *context)
 ** Check what kind of compound command we have and if we have
 ** redirection_list to apply
 */
-void handle_int(int digno);
+
 static int	compound_and_redirection(t_ast_node *node, t_context *context)
 {
 	t_ast_node	*child;

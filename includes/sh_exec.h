@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 17:11:16 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/23 11:29:08 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/23 12:10:06 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,26 +101,40 @@ void				print_redirection(t_redirection *redirection);
 void				print_redirection_list(t_list *list);
 
 /*
+** sh_exec_binaire.c
+*/
+int					sh_exec_binaire(
+	t_ast_node *father_node, t_context *context);
+
+/*
 ** sh_execute.c
 */
-//int 				sh_execute_simple_command(t_context *context);
-int 				sh_execute_simple_command(t_ast_node *father_node, t_context *context);
+int 				sh_execute_simple_command(
+	t_ast_node *father_node, t_context *context);
+
+/*
+** sh_execute_and_or.c
+*/
+int					sh_execute_and_or(
+	t_ast_node *node, t_context *context);
 
 /*
 ** sh_execute_binary.c
 */
-//void				sh_execute_binary(t_context *context);
-void				sh_execute_binary(t_ast_node *father_node, t_context *context);
+void				sh_execute_binary(
+	t_ast_node *father_node, t_context *context);
 
-/*
-** sh_exec_binaire.c
-*/
-int					sh_exec_binaire(t_ast_node *father_node, t_context *context);
 /*
 ** sh_execute_builtin.c
 */
-//int					sh_execute_builtin(t_context *context);
-int					sh_execute_builtin(t_ast_node *father_node, t_context *context);
+void				handle_int(int signo);
+int					sh_execute_builtin(
+	t_ast_node *father_node, t_context *context);
+
+/*
+** sh_execute_pipe copy.c
+*/
+int					sh_execute_pipe(t_ast_node *node, t_context *context);
 
 /*
 ** sh_execute_pipe.c
@@ -130,14 +144,11 @@ int					sh_execute_pipe(t_ast_node *node, t_context *context);
 /*
 ** sh_execute_pipe_tools.c
 */
-void				close_all_pipe_but_one(int n_pipe, int cmd, int **tab_pds);
-void				close_and_free(int cmd, t_pipe *pipes, t_context *context);
+void				close_all_pipe_but_one(
+	int nb_pipe, int curr_cmd, int **tab_pds);
+void				close_and_free(
+	int curr_cmd, t_pipe *pipes, t_context *context);
 void				close_one_pipe(int curr, t_pipe *pipes);
-
-/*
-** sh_execute_and_or.c
-*/
-int					sh_execute_and_or(t_ast_node *node, t_context *context);
 
 /*
 ** sh_execute_prefix_postfix.c
@@ -150,13 +161,6 @@ int					sh_post_execution(void);
 */
 int 				sh_execute_redirection(t_list *lst, t_redirection *el);
 
-/*
-** sh_execute_compound_command.c
-*/
-//int					sh_execute_compound_command(
-//		t_ast_node *node, t_context *context, t_ast_node **compound_redir, t_list **lst_redi);
-//int					sh_execute_compound_command(
-//		t_ast_node *node, t_context *context);
 /*
 ** t_context.c
 */

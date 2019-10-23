@@ -176,6 +176,11 @@ void				show_alias(char *str);
 int					sh_builtin_alias_show(t_context *context);
 
 /*
+** sh_builtin_bg.c
+*/
+int					sh_builtin_bg(t_context *context);
+
+/*
 ** sh_builtin_cd.c
 */
 int					sh_builtin_cd(t_context *context);
@@ -278,6 +283,11 @@ int					sh_builtin_fc_s_synopsis(
 	t_context *context, t_fc_options *opts);
 
 /*
+** sh_builtin_fg.c
+*/
+int					sh_builtin_fg(t_context *context);
+
+/*
 ** sh_builtin_hash.c
 */
 int					sh_builtin_hash(t_context *context);
@@ -291,6 +301,16 @@ void				sh_builtin_hash_empty_table(t_shell *shell);
 int					sh_builtin_hash_show(t_shell *shell);
 void				sh_builtin_hash_update_stats(
 	t_hash_table *table, t_binary_stats *stats);
+
+/*
+** sh_builtin_jobs.c
+*/
+int					sh_builtin_jobs(t_context *context);
+
+/*
+** sh_builtin_jobs_tools.c
+*/
+int					parse_jobs_args(char **argv, int j_lst[], int *opt);
 
 /*
 ** sh_builtin_parser.c
@@ -378,21 +398,5 @@ int					sh_builtin_unset(t_context *context);
 ** sh_builtin_verbose.c
 */
 int					sh_builtin_verbose(t_context *context);
-
-/*
-** sh_builtin_jobs
-*/
-int					sh_builtin_jobs(t_context *context);
-int					parse_jobs_args(char **argv, int j_lst[], int *opt);
-
-/*
-** sh_builtin_fg
-*/
-int					sh_builtin_fg(t_context *context);
-
-/*
-** sh_builtin_bg
-*/
-int					sh_builtin_bg(t_context *context);
 
 #endif

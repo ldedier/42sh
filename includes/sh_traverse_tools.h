@@ -24,6 +24,26 @@ int		sh_traverse_tools_browse(t_ast_node *node, t_context *context);
 int		sh_traverse_tools_search(t_ast_node *node, int searched_symbol_id);
 
 /*
+** sh_traverse_tools_browse_redirection.c
+*/
+int		loop_traverse_redirection(t_ast_node *node, t_context *context);
+int		loop_traverse_compound_redirection(
+	t_ast_node *node, t_context *context);
+int		sh_traverse_tools_browse_redirection(
+	t_ast_node *node, t_context *context);
+
+/*
+** sh_traverse_tools_compound.c
+*/
+int		sh_traverse_tools_search_term(
+	t_ast_node *node, t_context *context);
+int		sh_traverse_tools_compound_redir(
+	t_ast_node *node,
+	t_context *context,
+	t_ast_node **compound_redir,
+	t_list **lst_redi);
+
+/*
 ** sh_traverse_tools_debug.c
 */
 char	*t_phase_name(t_phase phase);
@@ -97,14 +117,4 @@ int		sh_traverse_sc_check_perm_quiet(char *path);
 int		sh_traverse_sc_check_perm(
 	t_context *context, char *path, char *command_name);
 
-int	sh_traverse_tools_browse_redirection(t_ast_node *node, t_context *context);
-int	loop_traverse_compound_redirection(t_ast_node *node, t_context *context);
-int	loop_traverse_redirection(t_ast_node *node, t_context *context);
-
-/*
-** sh_traverse_tools_compound.c
-*/
-int	sh_traverse_tools_search_term(t_ast_node *node, t_context *context);
-int	sh_traverse_tools_compound_redir(
-		t_ast_node *node, t_context *context, t_ast_node **compound_redir, t_list **lst_redi);
 #endif
