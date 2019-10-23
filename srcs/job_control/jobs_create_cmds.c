@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/03 07:59:34 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/18 15:01:37 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/23 09:07:40 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,22 +87,43 @@ static int	add_job_cmd(t_job_cmd *cmd)
 	return (SUCCESS);
 }
 
-// static int	next_sep_is_ampersand(t_list *ptr)
-// {
-// 	t_list		*it;
-// 	t_symbol_id	id;
+static int		token_break(t_symbol_id id)
+{
+	return (id == END_OF_INPUT || id == LEX_TOK_SEMICOL || id == LEX_TOK_AND
+		|| id == LEX_TOK_AND_IF || id == LEX_TOK_OR_IF);
+}
 
-// 	it = ptr;
-// 	id = ((t_token *)(ptr->content))->id;
-// 	while (id != END_OF_INPUT && id != LEX_TOK_SEMICOL)
-// 	{
-// 		if (id == LEX_TOK_AND)
-// 			return (1);
-// 		it = it->next;
-// 		id = ((t_token *)(it->content))->id;
-// 	}
-// 	return (0);
-// }
+static t_list	*create_compound_cmd(t_list *e, t_symbol_id start_symb)
+{
+	int				count;
+	t_symbol_id 	stop_sym;
+	t_symbol_id		id;
+	// t_token			*t;
+
+	// ft_dprintf(g_term_fd, "compound\n");
+	// t = (t_token *)(e->content);
+	id = ((t_token *)(e->content))->id;
+	if (id == LEX_TOK_OPN_PAR)
+		stop_sym = LEX_TOK_CLS_PAR;
+	else if (id == LEX_TOK_LBRACE)
+		stop_sym = LEX_TOK_RBRACE;
+	count = 1;
+	// ft_printf("Start symblol: ");
+	// sh_print_token(t, g_glob.cfg);
+	while (!token_break(id) && count >= 1)
+	{
+		id = ((t_token *)(e->content))->id;
+		// t = (t_token *)(e->content);
+		// ft_printf("Keep going\n");
+		// sh_print_token(t, g_glob.cfg);
+		if (id == stop_sym)
+			count--;
+		else if (id == start_symb)
+			count++;
+		e = e->next;
+	}
+	return (e);
+}
 
 int			jobs_create_cmds(t_list *token_list)
 {
@@ -114,16 +135,14 @@ int			jobs_create_cmds(t_list *token_list)
 	if (g_job_ctrl->interactive == 0)
 		return (SUCCESS);
 	s = token_list;
-	// sh_print_token_list(token_list, g_glob.cfg);
 	while (s != NULL && ((t_token *)(s->content))->id != END_OF_INPUT)
 	{
 		e = s;
 		id = ((t_token *)(e->content))->id;
-		while (id != END_OF_INPUT && id != LEX_TOK_SEMICOL && id != LEX_TOK_AND)
+		while (!token_break(id))
 		{
-			if ((id == LEX_TOK_AND_IF || id == LEX_TOK_OR_IF))
-				// && !next_sep_is_ampersand(e))
-					break ;
+			if (id == LEX_TOK_OPN_PAR || id == LEX_TOK_LBRACE)
+				e = create_compound_cmd(e, id);
 			e = e->next;
 			id = ((t_token *)(e->content))->id;
 		}
@@ -133,6 +152,6 @@ int			jobs_create_cmds(t_list *token_list)
 		add_job_cmd(cmd);
 		s = e->next;
 	}
-	// jobs_print_cmds();
+	jobs_print_cmds();
 	return (SUCCESS);
 }
