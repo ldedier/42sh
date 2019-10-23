@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/17 12:44:00 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/21 09:19:47 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int		sh_traverse_simple_command(t_ast_node *node, t_context *context)
 		}
 		context->phase += 1;
 	}
-	ret = sh_execute_simple_command(context);
+	ret = sh_execute_simple_command(node, context);
 	if (sh_reset_redirection(&(context->redirections)) != SUCCESS)
 		return (FAILURE);
 	if (!ret)

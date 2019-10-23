@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/30 15:48:56 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/17 00:16:29 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/21 08:50:10 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,7 +186,7 @@ void				free_execution_tools(
 	t_list **tokens, t_ast_node **ast_root, t_ast_node **cst_root);
 int					execute_command(
 	t_shell *shell, char *command, int should_add);
-int					sh_exec_binaire(t_context *context);
+//int					sh_exec_binaire(t_context *context);
 
 /*
 ** free_all.c

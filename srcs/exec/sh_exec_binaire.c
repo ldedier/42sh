@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 17:31:33 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/21 07:40:04 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/22 11:31:30 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 #include "sh_21.h"
 #include "sh_job_control.h"
 
-static int		sh_exec_child_part(t_context *context)
+static int		sh_exec_child_part(t_ast_node *father_node, t_context *context)
 {
 	pid_t	cpid;
 	int		ret;
@@ -36,7 +36,7 @@ static int		sh_exec_child_part(t_context *context)
 		if ((ret = set_pgid_child(cpid)) != SUCCESS)
 			return (ret);
 	}
-	sh_execute_binary(context);
+	sh_execute_binary(father_node, context);
 	return (SUCCESS);
 }
 
@@ -84,20 +84,21 @@ static int		sh_exec_parent_part(pid_t cpid, t_context *context)
 ** Then the parent will put the job in the foreground, and wait for it.
 */
 
-int		sh_exec_binaire(t_context *context)
+//int		sh_exec_binaire(t_context *context)
+int		sh_exec_binaire(t_ast_node *father_node, t_context *context)
 {
 	pid_t		cpid;
 
-	if (g_job_ctrl->interactive && g_job_ctrl->curr_job->foreground)
-		if (sh_pre_execution() != SUCCESS)
-			return (FAILURE);
+//	if (g_job_ctrl->interactive && g_job_ctrl->curr_job->foreground)
+//		if (sh_pre_execution() != SUCCESS)
+//			return (FAILURE);
 	// Since we already fork for each command in a pipeline, we don't need to fork again.
 	if (IS_PIPE(context->cmd_type))
-		sh_execute_binary(context);
+		sh_execute_binary(father_node, context);
 	if ((cpid = fork()) == -1)
 		return (sh_perror(SH_ERR1_FORK, "sh_process_process_execute"));
 	if (cpid == 0)
-		return (sh_exec_child_part(context));
+		return (sh_exec_child_part(father_node, context));
 	else
 		return (sh_exec_parent_part(cpid, context));
 	return (SUCCESS);

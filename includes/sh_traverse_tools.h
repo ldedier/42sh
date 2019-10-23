@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 11:47:31 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/07 16:02:05 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/21 14:31:12 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,5 +96,9 @@ int		sh_traverse_sc_search_in_path(t_context *context);
 int		sh_traverse_sc_check_perm_quiet(char *path);
 int		sh_traverse_sc_check_perm(
 	t_context *context, char *path, char *command_name);
+
+int	sh_traverse_tools_browse_redirection(t_ast_node *node, t_context *context);
+int	loop_traverse_compound_redirection(t_ast_node *node, t_context *context);
+int	loop_traverse_redirection(t_ast_node *node, t_context *context);
 
 #endif

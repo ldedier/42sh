@@ -6,13 +6,24 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/19 11:14:49 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/25 13:28:39 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/22 11:56:09 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 #include "sh_job_control.h"
 
+//<<<<<<< HEAD
+//void		sh_execute_binary(t_ast_node *father_node, t_context *context)
+////void		sh_execute_binary(t_context *context)
+//{
+//	int	res;
+//
+//	reset_signals();
+//	if ((res = loop_traverse_redirection(father_node, context)) == SUCCESS)
+//	{
+//		execve(context->path, (char **)context->params->tbl,
+//=======
 static int		sh_no_slash_cmd(t_context *context)
 {
 	if ((context->builtin = sh_builtin_find(context)))
@@ -42,7 +53,8 @@ static int		sh_slash_cmd(t_context *context)
 	return (SUCCESS);
 }
 
-void		sh_execute_binary(t_context *context)
+void		sh_execute_binary(t_ast_node *father_node, t_context *context)
+//void		sh_execute_binary(t_context *context)
 {
 	int		ret;
 
@@ -63,10 +75,14 @@ void		sh_execute_binary(t_context *context)
 		if (ret != SUCCESS)
 			exit(context->shell->ret_value);
 	}
-	execve(context->path, (char **)context->params->tbl,
-			(char **)context->env->tbl);
-	sh_perror(((char **)context->params->tbl)[0], SH_ERR1_EXECVE_FAIL);
+	if ((ret = loop_traverse_redirection(father_node, context)) == SUCCESS)
+	{
+		execve(context->path, (char **)context->params->tbl,
+				(char **)context->env->tbl);
+			ret = SH_RET_NOT_EXECUTABLE;
+			sh_perror(((char **)context->params->tbl)[0], SH_ERR1_EXECVE_FAIL);
+	}
 	sh_reset_redirection(&context->redirections);
 	sh_free_all(context->shell);
-	exit(SH_RET_NOT_EXECUTABLE);
+	exit(ret);
 }
