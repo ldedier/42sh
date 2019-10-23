@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/02 10:03:30 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/22 18:49:39 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/23 09:31:18 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,16 +65,12 @@ static int	parents_part(pid_t pid, t_context *context)
 int		sh_traverse_subshell(t_ast_node *node, t_context *context)
 {
 	pid_t	pid;
-	int		ret;
 
-	ret = 0;
 	if ((pid = fork()) < 0)
 		return (sh_perror_err(SH_ERR1_FORK, "can't fork for subshell"));
 	else if (pid)
 		return (parents_part(pid, context));
 	else
-	{
 		child_part(node, context);
-	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/03 07:59:34 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/23 09:07:40 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/23 09:52:51 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,18 +110,23 @@ static t_list	*create_compound_cmd(t_list *e, t_symbol_id start_symb)
 	count = 1;
 	// ft_printf("Start symblol: ");
 	// sh_print_token(t, g_glob.cfg);
-	while (!token_break(id) && count >= 1)
+	// ft_printf("\n");
+	e = e->next;
+	while (id != END_OF_INPUT && count > 0)
 	{
 		id = ((t_token *)(e->content))->id;
 		// t = (t_token *)(e->content);
-		// ft_printf("Keep going\n");
 		// sh_print_token(t, g_glob.cfg);
+		// ft_printf("	count: %d, Keep going\n", count);
 		if (id == stop_sym)
 			count--;
 		else if (id == start_symb)
 			count++;
 		e = e->next;
 	}
+	// ft_printf("After compound: ");
+	// sh_print_token((t_token *)(e->content), g_glob.cfg);
+	// ft_printf("\ncount: %d\n", count);
 	return (e);
 }
 
@@ -142,7 +147,10 @@ int			jobs_create_cmds(t_list *token_list)
 		while (!token_break(id))
 		{
 			if (id == LEX_TOK_OPN_PAR || id == LEX_TOK_LBRACE)
+			{
 				e = create_compound_cmd(e, id);
+				break ;
+			}
 			e = e->next;
 			id = ((t_token *)(e->content))->id;
 		}

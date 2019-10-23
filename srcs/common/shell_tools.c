@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/14 13:59:30 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/22 15:56:59 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/23 09:30:15 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,31 +14,23 @@
 
 int		sh_reset_shell(int ret)
 {
-	if (tcsetattr(g_term_fd, TCSADRAIN, &g_glob.term_init) == -1)
+	if (tcsetattr(g_term_fd, TCSADRAIN, &g_glob.term_init) < 0)
 	{
 		sh_perror("Could not modify this terminal attributes",
-				"sh_pre_execution");
+				"sh_reset_shell");
 		return (ATTR_ERROR);
 	}
-	// if ((g_glob.term_init.c_lflag & ISIG) != 0)
-	// 	ft_dprintf(2, "%sISIG SET\n%s", COLOR_BLUE, EOC);
-	// else
-	// 	ft_dprintf(2, "%sISIG USET\n%s", COLOR_BLUE, EOC);
 	return (ret);
 }
 
 int		sh_set_shell_back(int ret)
 {
-	if (tcsetattr(g_term_fd, TCSADRAIN, &g_glob.term) == -1)
+	if (tcsetattr(g_term_fd, TCSADRAIN, &g_glob.term) < 0)
 	{
 		sh_perror("Could not modify this terminal attributes",
-				"sh_pre_execution");
+				"sh_set_shell_back");
 		return (ATTR_ERROR);
 	}
-	// if ((g_glob.term.c_lflag & ISIG) == 0)
-	// 	ft_dprintf(2, "%sISIG UNSET\n%s", COLOR_BLUE, EOC);
-	// else
-	// 	ft_dprintf(2, "%sISIG SET\n%s", COLOR_BLUE, EOC);
 	return (ret);
 }
 
