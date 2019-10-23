@@ -6,7 +6,7 @@
 #    By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/10/22 11:37:56 by jdugoudr         ###   ########.fr        #
+#    Updated: 2019/10/23 11:29:54 by jdugoudr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -71,7 +71,8 @@ SRCS			+=	sh_traverse.c sh_traverse_default.c \
 					sh_traverse_io_redirect.c sh_traverse_io_here.c \
 					sh_traverse_io_here_canonical.c \
 					sh_traverse_and_or.c sh_traverse_list.c \
-					sh_traverse_command.c sh_traverse_subshell.c
+					sh_traverse_command.c sh_traverse_subshell.c \
+					sh_traverse_brace.c
 
 ################################################################
 ########				COMMAND_LINE					########
@@ -111,7 +112,8 @@ SRCS			+=	sh_traverse_tools_browse.c \
 					sh_traverse_tools_get_heredoc.c \
 					sh_traverse_tools_io_here_redirection.c \
 					sh_traverse_tools_get_separator.c \
-					sh_traverse_tools_get_exec_node.c
+					sh_traverse_tools_get_exec_node.c \
+					sh_traverse_tools_compound.c
 
 ################################################################
 ########					COMMON						########
@@ -271,8 +273,8 @@ SRCS			+=	sh_execute.c \
 					sh_execute_prefix_postfix.c \
 					t_context.c sh_debug.c \
 					sh_execute_redirection.c \
-					sh_execute_pipe_tools.c \
-					sh_execute_compound_command.c
+					sh_execute_pipe_tools.c
+				#	sh_execute_compound_command.c
 
 ################################################################
 ########					REDIRECTION					########

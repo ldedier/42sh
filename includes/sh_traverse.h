@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:35:27 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/09 19:09:11 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/23 11:17:13 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,4 +131,8 @@ int		sh_traverse_simple_command(t_ast_node *node, t_context *context);
 int		sh_traverse_subshell(t_ast_node *node, t_context *context);
 int		sh_traverse_brace_group(t_ast_node *node, t_context *context);
 
+/*
+** sh_traverse_brace.c
+*/
+int		sh_traverse_brace(t_ast_node *node, t_context *context);
 #endif

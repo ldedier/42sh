@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 17:11:16 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/22 10:30:27 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/23 11:29:08 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,8 +153,10 @@ int 				sh_execute_redirection(t_list *lst, t_redirection *el);
 /*
 ** sh_execute_compound_command.c
 */
-int					sh_execute_compound_command(
-		t_ast_node *node, t_context *context);
+//int					sh_execute_compound_command(
+//		t_ast_node *node, t_context *context, t_ast_node **compound_redir, t_list **lst_redi);
+//int					sh_execute_compound_command(
+//		t_ast_node *node, t_context *context);
 /*
 ** t_context.c
 */

@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/02 00:35:13 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/22 18:54:20 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/23 10:58:46 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static int	compound_and_redirection(t_ast_node *node, t_context *context)
 	else if (child->symbol->id == sh_index(BRACE_GROUP))
 	{
 		signal(SIGINT, handle_int);
-		ret = sh_execute_compound_command(child, context);
+		ret = sh_traverse_brace(child, context);
 	}
 	if (sh_post_execution())
 		return (FAILURE);

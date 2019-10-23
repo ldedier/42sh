@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/02 10:03:30 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/23 10:01:07 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/23 11:27:09 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 static int	child_part(t_ast_node *node, t_context *context)
 {
-	int		ret;
+	int			ret;
+	t_ast_node	*compound_redir;
+	t_list		*lst_redi;
 
 	ret = 0;
 	if (g_job_ctrl->interactive)
@@ -24,7 +26,12 @@ static int	child_part(t_ast_node *node, t_context *context)
 	}
 	reset_signals();
 	g_job_ctrl->interactive = 0;
-	ret = sh_execute_compound_command(node, context);
+	if ((ret = sh_traverse_tools_compound_redir(
+					node, context, &compound_redir, &lst_redi)))
+		return (ret);
+	ret = sh_traverse_tools_search_term(node, context);
+	if (sh_reset_redirection(&lst_redi))
+		return (FAILURE);
 	sh_free_all(context->shell);
 	if (ret != SUCCESS)
 		exit(ret);
