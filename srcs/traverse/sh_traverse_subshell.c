@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/02 10:03:30 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/23 09:31:18 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/23 10:01:07 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static int	parents_part(pid_t pid, t_context *context)
 			return (FAILURE);
 	}
 	else
-		waitpid(pid, &ret, 0);
+		waitpid(pid, &ret, context->wflags);
 	sh_env_update_ret_value_wait_result(context, ret);
 	return (SUCCESS);
 }

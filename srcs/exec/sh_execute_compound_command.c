@@ -6,13 +6,13 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 10:16:20 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/22 18:49:21 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/23 10:02:25 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-static int	get_last_separator(t_ast_node *curr_node)
+static void	get_last_separator(t_ast_node *curr_node)
 {
 	t_ast_node	*last_separator;
 
@@ -27,16 +27,11 @@ static int	get_last_separator(t_ast_node *curr_node)
 			if (last_separator->symbol->id == sh_index(LEX_TOK_AND))
 			{
 				g_job_ctrl->ampersand_eol = 1;
-				return (1);
 			}
 			else if (last_separator->symbol->id == sh_index(LEX_TOK_SEMICOL))
 				g_job_ctrl->ampersand_eol = 0;
 		}
-		else
-			return (ERROR);
-			/*ft_printf("-well this is a separtor not yet manage like linebreak or something ..-\n");// delete it*/
 	}
-	return (0);
 }
 
 /*
@@ -66,7 +61,7 @@ static int	search_term(t_ast_node *node, t_context *context)
 		curr_node = el->content;
 		if (curr_node->symbol->id == sh_index(COMPOUND_LIST))
 		{
-			get_last_separator(curr_node);//check retrun value to know if they are '&' at the end
+			get_last_separator(curr_node);
 			el = curr_node->children;
 			curr_node = el->content;
 		}

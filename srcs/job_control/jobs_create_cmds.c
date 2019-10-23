@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/03 07:59:34 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/23 09:52:51 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/23 09:55:58 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,6 +160,6 @@ int			jobs_create_cmds(t_list *token_list)
 		add_job_cmd(cmd);
 		s = e->next;
 	}
-	jobs_print_cmds();
+	// jobs_print_cmds();
 	return (SUCCESS);
 }

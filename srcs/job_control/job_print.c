@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 04:42:10 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/22 18:47:00 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/23 09:55:14 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ static void		print_process_status(t_process *p, int opt, int fd)
 	int		status;
 
 	status = p->status;
-	// ft_dprintf(g_term_fd, "<%d>: %#X (%d)\n", p->pid, p->status, p->status);
 	if (opt)
 		ft_dprintf(fd, "%d  ", p->pid);
 	if (status == -1 || WIFCONTINUED(status))
@@ -82,11 +81,11 @@ static void		print_job_differant_status(t_job *j, int opt, int fd)
 	while (p->next != NULL)
 	{
 		print_process_status(p, opt, fd);
-		ft_dprintf(fd, "\"%s|\"\n       ", p->cmd);
+		ft_dprintf(fd, "%s|\n       ", p->cmd);
 		p = p->next;
 	}
 	print_process_status(p, opt, fd);
-	ft_dprintf(fd, "\"%s\"\n", p->cmd);
+	ft_dprintf(fd, "%s\n", p->cmd);
 }
 
 void			job_print(t_job *j, int opt, int fd)
