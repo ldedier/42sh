@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/14 14:52:02 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/21 11:45:01 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/23 10:11:31 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,27 @@
 
 static void	sh_env_update_ret_value_treat_sig(t_context *context, int sig)
 {
-	if (sig == 1)
+	if (sig == SIGABRT)
 		sh_perror("Abort : 1", context->params->tbl[0]);
-	else if (sig == 2)
-		;
-	else if (sig == 3)
+	else if (sig == SIGQUIT)
 		sh_perror("Quit : 3", context->params->tbl[0]);
-	else if (sig == 4)
+	else if (sig == SIGILL)
 		sh_perror("Illegal instruction : 4", context->params->tbl[0]);
-	else if (sig == 8)
+	else if (sig == SIGFPE)
 		sh_perror("Floating point exception: 8", context->params->tbl[0]);
-	else if (sig == 9)
+	else if (sig == SIGKILL)
 		sh_perror("Killed: 9", context->params->tbl[0]);
-	else if (sig == 10)
+	else if (sig == SIGBUS)
 		sh_perror("Bus error", context->params->tbl[0]);
-	// mdaoud Je sais pas pourquoi, mais segfault est exitvalue(0) et signalvalue(139)
+	else if (sig == SIGSEGV)
+		sh_perror("Segmentation fault", context->params->tbl[0]);
 	else if (sig == 139)
 	{
 		sh_perror("Segmentation fault", context->params->tbl[0]);
 		sh_env_update_ret_value(context->shell, sig);
+		return ;
 	}
 	sh_env_update_ret_value(context->shell, SH_RET_SIG_RECEIVED + sig);
-	return ;
 }
 
 /*
@@ -55,7 +54,6 @@ void		sh_env_update_ret_value_wait_result(t_context *context, int res)
 	{
 		if (SH_RET_VALUE_SIG_RECEIVED(res))
 		{
-			// mdaoud: To handle stopped processes.
 			if (WIFSTOPPED(res))
 				sh_env_update_ret_value_treat_sig(context, WSTOPSIG(res));
 			else

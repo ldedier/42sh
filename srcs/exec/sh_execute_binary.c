@@ -13,17 +13,6 @@
 #include "sh_21.h"
 #include "sh_job_control.h"
 
-//<<<<<<< HEAD
-//void		sh_execute_binary(t_ast_node *father_node, t_context *context)
-////void		sh_execute_binary(t_context *context)
-//{
-//	int	res;
-//
-//	reset_signals();
-//	if ((res = loop_traverse_redirection(father_node, context)) == SUCCESS)
-//	{
-//		execve(context->path, (char **)context->params->tbl,
-//=======
 static int		sh_no_slash_cmd(t_context *context)
 {
 	if ((context->builtin = sh_builtin_find(context)))
@@ -54,7 +43,6 @@ static int		sh_slash_cmd(t_context *context)
 }
 
 void		sh_execute_binary(t_ast_node *father_node, t_context *context)
-//void		sh_execute_binary(t_context *context)
 {
 	int		ret;
 
