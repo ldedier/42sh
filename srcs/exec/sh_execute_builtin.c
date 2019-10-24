@@ -37,7 +37,7 @@ static int	execute_parent_part(pid_t cpid)
 			return (ret);
 		if ((ret = job_put_in_bg(g_job_ctrl->curr_job, 0)) != SUCCESS)
 			return (FAILURE);
-		g_job_ctrl->job_added = 0;
+		// g_job_ctrl->job_added = 0;
 	}
 	return (SUCCESS);
 }

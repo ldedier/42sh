@@ -95,6 +95,7 @@ int			job_add(int bg)
 	t_job	*it;
 	int		n;
 
+	ft_printf("ADDING \n");
 	n = find_available_job_number();
 	if (n < 0)
 		return (jobs_error_free("Maximum number of jobs exceeded",
@@ -104,8 +105,8 @@ int			job_add(int bg)
 	init_job_values(j, n, bg);
 	if (get_job_cmd_str(j) < 0)
 		return (FAILURE);
-	// ft_printf("%sAdded job [%d] %s ", CYAN, g_job_ctrl->curr_job->number, g_job_ctrl->curr_job->command);
-	// ft_printf("in %s%s\n",j->foreground == 1 ? "foreground" : "background", COLOR_END);
+	ft_printf("%sAdded job [%d] %s ", CYAN, g_job_ctrl->curr_job->number, g_job_ctrl->curr_job->command);
+	ft_printf("in %s%s\n",j->foreground == 1 ? "foreground" : "background", COLOR_END);
 	// Add the newly created job at the end of the job list.
 	if (g_job_ctrl->first_job == NULL)
 	{

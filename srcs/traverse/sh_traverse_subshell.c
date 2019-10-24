@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/02 10:03:30 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/23 10:01:07 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/23 10:46:45 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,7 @@ static int	child_part(t_ast_node *node, t_context *context)
 		exit(ret);
 	exit(context->shell->ret_value);
 }
-/*
-** sh_traverse_subshell
-** We execute here what a subshell do.
-** We fork to have a "subshell"
-**
-** A subshell node can only have, at least and at most,
-** '(' 'compund_list' and ')' children.
-** So we can directly go to compound_list node.
-*/
+
 static int	parents_part(pid_t pid, t_context *context)
 {
 	int	ret;
@@ -61,6 +53,16 @@ static int	parents_part(pid_t pid, t_context *context)
 	sh_env_update_ret_value_wait_result(context, ret);
 	return (SUCCESS);
 }
+
+/*
+** sh_traverse_subshell
+** We execute here what a subshell do.
+** We fork to have a "subshell"
+**
+** A subshell node can only have, at least and at most,
+** '(' 'compund_list' and ')' children.
+** So we can directly go to compound_list node.
+*/
 
 int		sh_traverse_subshell(t_ast_node *node, t_context *context)
 {
