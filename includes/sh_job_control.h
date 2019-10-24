@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sh_job_control.h                                      :+:      :+:    :+:   */
+/*   sh_job_control.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 17:45:00 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/17 00:13:11 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/24 17:20:05 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,4 +164,13 @@ void			job_added_update_sign(t_job *j);
 t_job			*job_get_unsigned(void);
 void			job_exited_update_sign(char j_sign);
 
+int	next_sep_is_ampersand(t_list *ptr);
+t_list	*create_brace_cmd(t_list *e);
+t_list	*create_subshell_cmd(t_list *e);
+t_list	*create_compound_cmd(t_list *e, t_symbol_id start_symb);
+
+
+
 #endif
+
+

@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/03 07:59:34 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/23 11:31:43 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/24 17:28:59 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,23 @@ static int		token_break(t_symbol_id id)
 		|| id == LEX_TOK_AND_IF || id == LEX_TOK_OR_IF);
 }
 
+// static int	next_sep_is_ampersand(t_list *ptr)
+// {
+// 	t_list		*it;
+// 	t_symbol_id	id;
+
+// 	it = ptr;
+// 	id = ((t_token *)(ptr->content))->id;
+// 	while (id != END_OF_INPUT && id != LEX_TOK_SEMICOL)
+// 	{
+// 		if (id == LEX_TOK_AND)
+// 			return (1);
+// 		it = it->next;
+// 		id = ((t_token *)(it->content))->id;
+// 	}
+// 	return (0);
+// }
+
 // static t_list	*create_compound_cmd(t_list *e, t_symbol_id start_symb)
 // {
 // 	int				count;
@@ -106,7 +123,7 @@ static int		token_break(t_symbol_id id)
 // 	if (id == LEX_TOK_OPN_PAR)
 // 		stop_sym = LEX_TOK_CLS_PAR;
 // 	else if (id == LEX_TOK_LBRACE)
-// 		stop_sym = LEX_TOK_RBRACE;
+// 		return (create_braces_cmd(e));
 // 	count = 1;
 // 	// ft_printf("Start symblol: ");
 // 	// sh_print_token(t, g_glob.cfg);
@@ -144,13 +161,23 @@ int			jobs_create_cmds(t_list *token_list)
 	{
 		e = s;
 		id = ((t_token *)(e->content))->id;
+		if ((id == LEX_TOK_LBRACE && !next_sep_is_ampersand(e)) || (id == LEX_TOK_RBRACE))
+		{
+			s = e->next;
+			continue ;
+		}
 		while (!token_break(id))
 		{
-			// if (id == LEX_TOK_OPN_PAR || id == LEX_TOK_LBRACE)
-			// if (id == LEX_TOK_OPN_PAR)
+			if (id == LEX_TOK_OPN_PAR)
+			{
+				e = create_compound_cmd(e, id);
+				break ;
+			}
+			// if (id == LEX_TOK_LBRACE && !next_sep_is_ampersand(e))
 			// {
-			// 	e = create_compound_cmd(e, id);
+			// 	s = e->next;
 			// 	break ;
+
 			// }
 			e = e->next;
 			id = ((t_token *)(e->content))->id;
