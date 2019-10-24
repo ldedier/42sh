@@ -432,15 +432,13 @@ int					execute_vshortcut(
 int					is_printable_utf8_byte(unsigned char c);
 int					get_inclusion(
 	t_command_line *command_line, t_motion_inclusion inclusion);
-int					get_motion_awaiting_shortcut(
-	t_command_line *command_line,
-	int *motion_res,
-	t_vshortcut *motion_shortcut);
 int					execute_motion_awaiting_shortcut(
 	t_command_line *command_line,
 	t_vshortcut *vshortcut,
 	char c,
 	char cmd_character);
+int					get_motion_suffix_char(
+	t_command_line *command_line, char *suffix_char);
 int					execute_vim_command(
 	t_command_line *command_line, char cmd_character);
 

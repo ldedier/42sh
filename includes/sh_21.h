@@ -186,7 +186,6 @@ void				free_execution_tools(
 	t_list **tokens, t_ast_node **ast_root, t_ast_node **cst_root);
 int					execute_command(
 	t_shell *shell, char *command, int should_add);
-//int					sh_exec_binaire(t_context *context);
 
 /*
 ** free_all.c
@@ -256,8 +255,6 @@ int					sh_process_noncanonical_mode(t_shell *shell);
 */
 void				reset_signals(void);
 void				init_signals(void);
-void				set_signals_pipe(void);
-void				reset_signals_and_or(void);
 
 /*
 ** sh_split_path.c
@@ -274,7 +271,6 @@ int					clear_all(void);
 /*
 ** signal_tools.c
 */
-// void				handler_sigint(int signal);
 void				transmit_sig_and_exit(int signal);
 void				handle_stp(int sgnl);
 void				handle_cont(int sgnl);
