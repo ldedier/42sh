@@ -1,43 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   jobs_create_cmds_tools.c                           :+:      :+:    :+:   */
+/*   jobs_create_compound_str.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/24 17:02:42 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/24 17:23:42 by mdaoud           ###   ########.fr       */
+/*   Created: 2019/10/25 10:02:45 by mdaoud            #+#    #+#             */
+/*   Updated: 2019/10/25 10:15:48 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-int	next_sep_is_ampersand(t_list *ptr)
-{
-	t_list		*it;
-	t_symbol_id	id;
-	int			count;
-
-	it = ptr;
-	count = 1;
-	id = ((t_token *)(ptr->content))->id;
-	while (id != END_OF_INPUT)
-	{
-		if (id == LEX_TOK_RBRACE)
-			count--;
-		if (id == LEX_TOK_LBRACE)
-			count++;
-		if (id == LEX_TOK_AND && count == 0)
-			return (1);
-		else if (id == LEX_TOK_SEMICOL && count == 0)
-			return (0);
-		it = it->next;
-		id = ((t_token *)(it->content))->id;
-	}
-	return (0);
-}
-
-t_list	*create_brace_cmd(t_list *e)
+t_list	*create_brace_str(t_list *e)
 {
 	int				count;
 	t_symbol_id		id;
@@ -69,7 +44,7 @@ t_list	*create_brace_cmd(t_list *e)
 	return (e);
 }
 
-t_list	*create_subshell_cmd(t_list *e)
+t_list	*create_subshell_str(t_list *e)
 {
 	int				count;
 	t_symbol_id		id;
@@ -102,7 +77,7 @@ t_list	*create_subshell_cmd(t_list *e)
 	return (e);
 }
 
-t_list	*create_compound_cmd(t_list *e, t_symbol_id start_symb)
+t_list	*jobs_create_compound_str(t_list *e, t_symbol_id start_symb)
 {
 	// int				count;
 	t_symbol_id		id;
@@ -113,7 +88,6 @@ t_list	*create_compound_cmd(t_list *e, t_symbol_id start_symb)
 	(void)start_symb;
 	id = ((t_token *)(e->content))->id;
 	if (id == LEX_TOK_OPN_PAR)
-		return (create_subshell_cmd(e));
-	// else if (id == LEX_TOK_LBRACE)
-	return (create_brace_cmd(e));
+		return (create_subshell_str(e));
+	return (create_brace_str(e));
 }

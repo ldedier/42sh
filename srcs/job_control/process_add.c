@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 00:38:06 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/18 09:04:30 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/25 09:54:27 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ static int	create_process_cmd(t_job *j, t_process *p, int first_p)
 		str = str + 1;
 	}
 	ft_strcpy(p->cmd, str);
-	// if (!first_p)
 	return (SUCCESS);
 }
 

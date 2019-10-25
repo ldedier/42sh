@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 15:54:02 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/19 05:52:14 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/25 09:59:59 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static int		sh_traverse_and_or_call_sons_exec(t_ast_node *node,
 	int			ret;
 
 	if (!should_execute(*prev_symbol, context->shell->ret_value))
-		return (SUCCESS);
+		return (jobs_free_str());
 	// Each pipeline is a job.
 	if (g_job_ctrl->interactive)
 	{
@@ -73,9 +73,7 @@ static int		sh_traverse_and_or_call_sons_exec(t_ast_node *node,
 		context->shell->ret_value_set = 0;
 		sh_env_update_ret_value(context->shell, 2);
 	}
-	if (ret == FAILURE || ret == STOP_CMD_LINE)
-		return (ret);
-	if (!context->shell->running)
+	if (ret == FAILURE || ret == STOP_CMD_LINE || !context->shell->running)
 		return (ret);
 	return (SUCCESS);
 }

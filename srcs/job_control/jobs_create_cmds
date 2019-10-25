@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/03 07:59:34 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/24 17:28:59 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/25 09:43:12 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,18 +161,18 @@ int			jobs_create_cmds(t_list *token_list)
 	{
 		e = s;
 		id = ((t_token *)(e->content))->id;
-		if ((id == LEX_TOK_LBRACE && !next_sep_is_ampersand(e)) || (id == LEX_TOK_RBRACE))
-		{
-			s = e->next;
-			continue ;
-		}
+		// if ((id == LEX_TOK_LBRACE && !next_sep_is_ampersand(e)) || (id == LEX_TOK_RBRACE))
+		// {
+		// 	s = e->next;
+		// 	continue ;
+		// }
 		while (!token_break(id))
 		{
-			if (id == LEX_TOK_OPN_PAR)
-			{
-				e = create_compound_cmd(e, id);
-				break ;
-			}
+			// if (id == LEX_TOK_OPN_PAR)
+			// {
+			// 	e = create_compound_cmd(e, id);
+			// 	break ;
+			// }
 			// if (id == LEX_TOK_LBRACE && !next_sep_is_ampersand(e))
 			// {
 			// 	s = e->next;
