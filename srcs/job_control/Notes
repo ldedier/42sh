@@ -32,4 +32,7 @@ segfault when adding a slep 30 &
 ===================================================================
 fg , bg exit with error if job control is not active.
 ===================================================================
-ls || pwd ; echo hi | sleep 5 &
+builtins with fifos (fg and bg)
+
+===================================================================
+( sfsdf sdf  & segfault cuz it's not checked for syntax error.

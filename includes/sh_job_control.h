@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 17:45:00 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/25 10:15:55 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/26 12:35:44 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ struct	s_job_control
 	t_job_cmd		*job_cmd;
 	t_job			*first_job;
 	t_job			*curr_job;
+	t_list			*tokens;
 };
 
 t_job_control	*g_job_ctrl;
@@ -148,6 +149,9 @@ char			**str_tab_duplicate(char **from);	//put in libft
 void			str_tab_free(char **str);			//put in libft
 void			str_tab_print(char **char_tab);		//put in libft
 int				jobs_free_str(void);
+char			*ft_strtok_pipe(char *str, char *delim);
+void			jobs_copy_tokens(t_list *tokens);
+void			jobs_free_tokens(void);
 
 /*
 ** job_tools.c

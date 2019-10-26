@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 00:38:06 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/25 09:54:27 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/26 15:11:56 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,14 @@ static int	create_process_cmd(t_job *j, t_process *p, int first_p)
 
 	ft_memset(p->cmd, MAX_PROCESS_LEN, '\0');
 	if (first_p)
-		str = ft_strtok(j->cmd_copy, "|");
+		str = ft_strtok_pipe(j->cmd_copy, "|");
 	else
 	{
-		str = ft_strtok(NULL, "|");
+		str = ft_strtok_pipe(NULL, "|");
 		str = str + 1;
 	}
 	ft_strcpy(p->cmd, str);
+	// free(str);
 	return (SUCCESS);
 }
 

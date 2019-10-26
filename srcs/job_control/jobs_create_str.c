@@ -95,6 +95,6 @@ int				jobs_create_str(t_list *token_list)
 		return (SUCCESS);
 	s = token_list;
 	s_token_loop(s);
-	jobs_print_cmds();
+	// jobs_print_cmds();
 	return (SUCCESS);
 }

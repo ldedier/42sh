@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 17:04:13 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/18 11:46:48 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/25 12:43:47 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,7 @@ static t_job	*get_active_job(void)
 {
 	t_job	*j;
 
-	if (g_job_ctrl->first_job == NULL ||
-		g_job_ctrl->first_job == g_job_ctrl->curr_job)
+	if (g_job_ctrl->first_job == NULL)
 	{
 		sh_perror("fg: current", "no such job");
 		return (NULL);
@@ -54,7 +53,7 @@ int			sh_builtin_fg(t_context *context)
 		return (ERROR);
 	mark_job_as_running(active_job);
 	if (sh_pre_execution() != SUCCESS)
-		return (FAILURE);
+		return (FAILURE);	//put back
 	ft_dprintf(g_term_fd, "[%d]  %s\n",
 		active_job->number, active_job->command);
 	if (job_put_in_fg(active_job, 1, &res) != SUCCESS)

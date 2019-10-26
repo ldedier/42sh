@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 08:21:00 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/18 12:24:10 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/25 18:26:27 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,6 @@ static pid_t 		fork_for_pipe(void)
 		if (g_job_ctrl->interactive && set_pgid_parent(child) != SUCCESS)
 			return (-1);
 	}
-
-	// ft_dprintf(g_term_fd, "Fork: pid: %d\tppid: %d\tpgid: %d\n", getpid(), getppid(), getpgid(getpid()));
 	return (child);
 }
 
@@ -61,7 +59,7 @@ static int		child_exec(
 	else
 		ret = SUCCESS;
 	if (ret == SUCCESS)
-		ret = sh_traverse_simple_command(to_execute, context);
+		ret = sh_traverse_command(to_execute, context);
 	/*ft_dprintf(2, "on close_and_free\n");*/
 	close_and_free(curr_cmd, pipes, context);
 	if (ret == SUCCESS)
@@ -172,6 +170,9 @@ int				sh_execute_pipe(t_ast_node *node, t_context *context)
 	{
 		if (g_job_ctrl->interactive)
 		{
+			if (g_job_ctrl->curr_job->foreground)
+				if (sh_pre_execution() != SUCCESS)
+					return (FAILURE);
 			if (g_job_ctrl->curr_job->foreground == 0)
 					ret = job_put_in_bg(g_job_ctrl->curr_job, 0);
 			else if (job_put_in_fg(g_job_ctrl->curr_job, 0, &ret) != SUCCESS)

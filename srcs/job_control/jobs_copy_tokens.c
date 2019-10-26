@@ -1,43 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   job_tools.c                                        :+:      :+:    :+:   */
+/*   jobs_copy_tokens.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/20 05:57:09 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/26 15:38:26 by mdaoud           ###   ########.fr       */
+/*   Created: 2019/10/26 11:53:10 by mdaoud            #+#    #+#             */
+/*   Updated: 2019/10/26 12:23:29 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-t_job			*job_get_by_num(int num)
+void		jobs_copy_tokens(t_list *tokens)
 {
-	t_job	*j;
+	t_list	*it;
+	t_list	*node;
 
-	if (num >= MAX_JOBS || num < 0 || !g_job_ctrl->interactive)
-		return (NULL);
-	j = g_job_ctrl->first_job;
-	if (j == NULL)
-		return (NULL);
-	while (j != NULL && j->number != num)
-		j = j->next;
-	if (g_job_ctrl->curr_job == j)
-		return (NULL);
-	return (j);
-}
-
-t_job		*job_get_by_sign(char c)
-{
-	t_job	*j;
-
+	// sh_print_token_list(tokens, g_glob.cfg);
 	if (!g_job_ctrl->interactive)
-		return (NULL);
-	j = g_job_ctrl->first_job;
-	while (j != NULL && j->sign != c)
-		j = j->next;
-	return (j);
+		return ;
+	it = tokens;
+	while (it != NULL)
+	{
+			node = ft_lstnew_value(it->content, sizeof(t_token));
+			// ((t_token *)node->content)->ast_node = NULL;
+			ft_lstadd_last(&(g_job_ctrl->tokens),node);
+		it = it->next;
+	}
 }
-
-

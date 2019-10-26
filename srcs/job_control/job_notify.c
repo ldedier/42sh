@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 01:05:04 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/21 16:36:02 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/26 15:24:51 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void		handle_job_completed(t_job *j, t_job *tmp, t_job *j_next)
 	g_job_ctrl->job_num[j->number] = 0;
 	sign = j->sign;
 	if (j->foreground == 0)
-		job_print(j, 0, g_term_fd);
+		job_print(j, 1, g_term_fd);
 	if (tmp)
 		tmp->next = j_next;
 	else

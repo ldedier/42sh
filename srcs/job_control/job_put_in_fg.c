@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/20 23:22:03 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/18 15:22:17 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/25 12:30:23 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@
 
 int			job_put_in_fg(t_job *j, int cont, int *ret)
 {
-	// ft_dprintf(g_term_fd, "%sJob [%d] in control\n%s", COLOR_YELLOW, j->number, EOC);
 	if (cont && kill (- j->pgid, SIGCONT) < 0)
 	{
 		return (jobs_error_free("kill",
@@ -37,6 +36,7 @@ int			job_put_in_fg(t_job *j, int cont, int *ret)
 		return (jobs_error_free("tcsetpgrp",
 			"Could not put the job in the foreground", 0, FAILURE));
 	}
+	// ft_dprintf(g_term_fd, "%sJob [%d] in control\n%s", COLOR_YELLOW, j->number, EOC);
 	j->foreground = 1;
 	// Wait for the job
 	job_wait(j, ret);

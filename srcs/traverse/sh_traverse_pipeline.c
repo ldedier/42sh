@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/19 05:55:02 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/25 12:00:22 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,18 @@ static int		sh_traverse_pipe_sequence(t_ast_node *node, t_context *context)
 	sh_traverse_tools_show_traverse_start(node, context);
 	if (ft_lstlen(node->children) > 1)
 	{
-		// We already fork for each command in a pipeline, so when we get to exec_binaire
-		// We don't need to fork again, that's why we mark the node as a (PIPE_NODE).
-		// This way when we get to exec_binaire, we call execve without forking again.
+		if (g_job_ctrl->interactive && !g_job_ctrl->job_added)
+		{
+			ft_dprintf(g_term_fd, YELLOW"Adding job in pipe\n"EOC);
+			if (job_add(IS_BG(context->cmd_type)) != SUCCESS)
+				return (FAILURE);
+			g_job_ctrl->job_added = 1;
+		}
 		context->cmd_type |= PIPE_NODE;
 		ret = sh_execute_pipe(node, context);
 		context->cmd_type &= ~PIPE_NODE;
+		if (g_job_ctrl->interactive)
+			g_job_ctrl->job_added = 0;
 	}
 	else
 		ret = sh_traverse_command(node->children->content, context);

@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 01:52:35 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/08 18:40:23 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/26 15:34:55 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ void		job_free(t_job *j)
 		return ;
 	free(j->command);
 	j->command = NULL;
+	free(j->cmd_copy);
+	j->cmd_copy = NULL;
 	p = j->first_process;
 	while(p != NULL)
 	{
