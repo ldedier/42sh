@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/31 12:20:31 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/26 14:49:43 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/27 12:22:31 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int		sh_pre_execution(void)
 			return (FAILURE);
 	}
 	else
-		ft_dprintf(g_term_fd, "%sNON-INTERACTIVE SHELL%s\n", COL_MAGENTA, EOC);
+		// ft_dprintf(g_term_fd, "%sNON-INTERACTIVE SHELL%s\n", COL_MAGENTA, EOC);
 
 	// ft_dprintf(g_term_fd, "%sPRE EXECUTION%s\n", COL_MAGENTA, EOC);
 	sh_reset_signals_pre_exec();
@@ -46,7 +46,7 @@ int		sh_post_execution(void)
 			return (FAILURE);
 	}
 	else
-		ft_dprintf(g_term_fd, "%sNON-INTERACTIVE SHELL%s\n", COL_MAGENTA, EOC);
+		// ft_dprintf(g_term_fd, "%sNON-INTERACTIVE SHELL%s\n", COL_MAGENTA, EOC);
 
 	// ft_dprintf(g_term_fd, "%sPOST EXECUTION%s\n", COL_MAGENTA, EOC);
 	sh_reset_signals_post_exec();

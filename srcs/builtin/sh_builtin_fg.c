@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 17:04:13 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/25 12:43:47 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/27 11:52:33 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,37 +27,55 @@ static void		mark_job_as_running (t_job *j)
 	j->notified = 0;
 }
 
-static t_job	*get_active_job(void)
+static int	sh_execute_fg(t_job *j, t_context *context)
 {
-	t_job	*j;
+	int		res;
 
-	if (g_job_ctrl->first_job == NULL)
-	{
-		sh_perror("fg: current", "no such job");
-		return (NULL);
-	}
-	j = g_job_ctrl->first_job;
-	while (j->next != NULL && j->next->next != NULL)
-		j = j->next;
-	return (j);
+	if (sh_pre_execution() != SUCCESS)
+		return (FAILURE);
+	mark_job_as_running(j);
+	ft_dprintf(g_term_fd, "[%d]  %s\n",
+		j->number, j->command);
+	if (job_put_in_fg(j, 1, &res) != SUCCESS)
+		return (FAILURE);
+	// job_notify();
+	sh_env_update_ret_value_wait_result(context, res);
+	ft_printf("\nrevalue: %d\n", context->shell->ret_value);
+	return (SUCCESS);
 }
 
 int			sh_builtin_fg(t_context *context)
 {
-	t_job	*active_job;
-	int		res;
+	t_job	*j;
+	int		i;
+	int		job_lst[MAX_JOBS];
 
-	res = 0;
-	active_job = get_active_job();
-	if (active_job == NULL)
+	if (!g_job_ctrl->interactive)
+		return (sh_perror_err("fg", "no job control in this shell"));
+	i = -1;
+	while (++i < MAX_JOBS)
+		job_lst[i] = -2;
+	if ((parse_fg_args((char **)context->params->tbl, job_lst)) != SUCCESS)
 		return (ERROR);
-	mark_job_as_running(active_job);
-	if (sh_pre_execution() != SUCCESS)
-		return (FAILURE);	//put back
-	ft_dprintf(g_term_fd, "[%d]  %s\n",
-		active_job->number, active_job->command);
-	if (job_put_in_fg(active_job, 1, &res) != SUCCESS)
-		return (FAILURE);
-	sh_env_update_ret_value_wait_result(context, res);
+	if (job_lst[0] == -2)
+		job_lst[0] = 0;
+	// ft_printf("numbrs: ");
+	// for (int j = 0; job_lst[j] != -2; j++)
+	// 	ft_printf("[%d] ", job_lst[j]);
+	// ft_printf("\n");
+	i = 0;
+	while (job_lst[i] != -2)
+	{
+		if ((j = fg_get_job_by_spec(job_lst[i])) == NULL)
+			return (ERROR);
+		// ft_dprintf(g_term_fd, "[%d]  %s\n",
+		// j->number, j->command);
+		context->shell->ret_value_set = 0;
+		if (sh_execute_fg(j, context) != SUCCESS)
+			return (FAILURE);
+		if (context->shell->ret_value == 130)
+			return (SUCCESS);
+		i++;
+	}
 	return (SUCCESS);
 }

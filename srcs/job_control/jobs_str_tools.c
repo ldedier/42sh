@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 17:02:42 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/25 11:17:42 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/27 12:36:50 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,12 @@ int			next_sep_is_ampersand(t_list *ptr)
 		}
 		else
 		{
-			if (id == LEX_TOK_AND)
+			if (id == LEX_TOK_AND || id == LEX_TOK_PIPE)
 			{
 				if (count == 0)
-				{
-
 					return (1);
-				}
 			}
-			else if (id == LEX_TOK_SEMICOL)
+			else if (token_break(id))
 			{
 				if (count == 0)
 					return (0);

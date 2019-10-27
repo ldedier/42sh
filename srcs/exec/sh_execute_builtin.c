@@ -22,7 +22,9 @@ static int	execute_child_part(pid_t cpid, t_context *context)
 		if ((ret = set_pgid_child(cpid)) != SUCCESS)
 			return (ret);
 	}
+	g_job_ctrl->interactive = 0;
 	ret = context->builtin(context);
+	g_job_ctrl->interactive = 1;
 	sh_free_all(context->shell);
 	return(ret);
 }
@@ -92,8 +94,11 @@ int			sh_execute_builtin(t_ast_node *father_node, t_context *context)
 	{
 		if (sh_pre_execution() != SUCCESS)
 			return (FAILURE);
-		signal(SIGINT, handle_int);
-		jobs_free_str();
+		if (g_job_ctrl->interactive)
+		{
+			signal(SIGINT, handle_int);
+			jobs_free_str();
+		}
 		if ((res = loop_traverse_redirection(father_node, context)) != SUCCESS)
 		{
 			if (sh_post_execution() != SUCCESS)

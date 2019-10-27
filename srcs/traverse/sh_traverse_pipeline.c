@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sh_traverse_pipe_line.c                            :+:      :+:    :+:   */
+/*   sh_traverse_pipeline.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/25 12:00:22 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/27 12:11:16 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int		sh_traverse_pipe_sequence(t_ast_node *node, t_context *context)
 	{
 		if (g_job_ctrl->interactive && !g_job_ctrl->job_added)
 		{
-			ft_dprintf(g_term_fd, YELLOW"Adding job in pipe\n"EOC);
+			// ft_dprintf(g_term_fd, YELLOW"Adding job in pipe\n"EOC);
 			if (job_add(IS_BG(context->cmd_type)) != SUCCESS)
 				return (FAILURE);
 			g_job_ctrl->job_added = 1;

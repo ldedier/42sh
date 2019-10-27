@@ -31,7 +31,8 @@ static t_job_cmd	*create_job_cmd(t_list *s, t_list *e)
 	while (s != e)
 	{
 		if (((t_token *)(s->content))->id == LEX_TOK_RBRACE
-		&& s->next && ((t_token *)(s->next->content))->id != LEX_TOK_AND)
+			&& s->next && ((t_token *)(s->next->content))->id != LEX_TOK_AND
+			&& ((t_token *)(s->next->content))->id != LEX_TOK_PIPE)
 		{
 			s = s->next;
 			continue ;
@@ -58,10 +59,12 @@ static int			s_token_loop(t_list *s)
 	t_list		*e;
 	t_symbol_id	id;
 
+	e = NULL;
 	while (s != NULL && ((t_token *)(s->content))->id != END_OF_INPUT)
 	{
 		if (((t_token *)(s->content))->id == LEX_TOK_LBRACE
-			&& !next_sep_is_ampersand(s->next))
+			&& !next_sep_is_ampersand(s->next)
+			&& e && ((t_token *)(e->content))->id != LEX_TOK_PIPE)
 			{
 				// ft_dprintf(g_term_fd, "NO AMPERSAND\n");
 				s = s->next;
@@ -95,6 +98,6 @@ int				jobs_create_str(t_list *token_list)
 		return (SUCCESS);
 	s = token_list;
 	s_token_loop(s);
-	// jobs_print_cmds();
+	jobs_print_cmds();
 	return (SUCCESS);
 }

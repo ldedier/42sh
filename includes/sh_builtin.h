@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 11:36:31 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/20 05:40:49 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/27 11:52:09 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,6 +181,12 @@ int					sh_builtin_alias_show(t_context *context);
 int					sh_builtin_bg(t_context *context);
 
 /*
+** sh_builtin_bg_tools.c
+*/
+int					parse_bg_spec(char *str, int j_lst[], int *it);
+int					parse_bg_args(char **argv, int job_lst[]);
+t_job				*bg_get_job_by_spec(int num);
+/*
 ** sh_builtin_cd.c
 */
 int					sh_builtin_cd(t_context *context);
@@ -311,6 +317,13 @@ int					sh_builtin_jobs(t_context *context);
 ** sh_builtin_jobs_tools.c
 */
 int					parse_jobs_args(char **argv, int j_lst[], int *opt);
+
+/*
+** sh_builtin_fg.c
+*/
+int					parse_fg_spec(char *str, int j_lst[], int *it);
+int					parse_fg_args(char **argv, int job_lst[]);
+t_job				*fg_get_job_by_spec(int num);
 
 /*
 ** sh_builtin_parser.c

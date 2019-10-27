@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 08:21:00 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/25 18:26:27 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/27 12:21:49 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,12 @@ static int		child_exec(
 	else
 		ret = SUCCESS;
 	if (ret == SUCCESS)
+	{
+		g_job_ctrl->interactive = 0;
 		ret = sh_traverse_command(to_execute, context);
+	}
 	/*ft_dprintf(2, "on close_and_free\n");*/
+	g_job_ctrl->interactive = 1;
 	close_and_free(curr_cmd, pipes, context);
 	if (ret == SUCCESS)
 		return (context->shell->ret_value);
