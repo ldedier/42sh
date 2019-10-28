@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/19 11:14:49 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/22 11:56:09 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/28 10:15:51 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void		sh_execute_binary(t_ast_node *father_node, t_context *context)
 	// ft_dprintf(g_term_fd, "%sExecuting %s", GREEN, (char **)context->params->tbl[0]);
 	// ft_dprintf(g_term_fd, "\tpid: %d, ppid: %d, pgid: %d%s\n",
 	// 	getpid(), getppid(), getpgid(getpid()), EOC);
-
+	close(g_term_fd);//need to close tty to not duplicate if we call ./42sh from a ./42sh
 	if (!ft_strchr(context->params->tbl[0], '/'))
 	{
 		ret = sh_no_slash_cmd(context);

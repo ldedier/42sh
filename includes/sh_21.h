@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/30 15:48:56 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/21 08:50:10 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/28 10:25:50 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,11 @@
 # define BONUS_REDIRECT_SIGNAL		1
 # define BONUS_DOLLAR_VARIABLE		1
 # define BONUS_TILDE_EXP			1
+
+/*
+** The tty can only be open on the fd :
+*/
+# define TTY_FD	10
 
 typedef struct s_shell		t_shell;
 

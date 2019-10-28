@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 17:59:53 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/22 16:11:05 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/28 10:26:11 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,13 @@ int			main(int argc, char **argv, char **env)
 		return (FAILURE);
 	if ((g_term_fd = open("/dev/tty", O_RDWR)) < 0)
 		return (sh_perror(SH_ERR1_TTY, "main"));
+	if (g_term_fd != TTY_FD)
+	{
+		if (sh_check_open_fd(0, TTY_FD) >= 0 || dup2(g_term_fd, TTY_FD) < 0)
+			return (sh_perror(SH_ERR1_TTY, "Can't open fd 10"));//ca segfault
+		close(g_term_fd);
+		g_term_fd = TTY_FD;
+	}
 	if (!isatty(STDIN_FILENO))
 		ret = sh_process_canonical_mode(&shell, env);
 	else
