@@ -6,19 +6,19 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 17:02:42 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/27 12:36:50 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/28 13:46:39 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-int			next_sep_is_ampersand(t_list *ptr)
+int			next_sep_is_ampersand(t_list *ptr, t_list **rbrace)
 {
 	t_list		*it;
 	t_symbol_id	id;
 	int			count;
 
-	it = ptr;
+	it = ptr->next;
 	count = 1;
 	id = ((t_token *)(it->content))->id;
 	while (id != END_OF_INPUT)
@@ -27,6 +27,8 @@ int			next_sep_is_ampersand(t_list *ptr)
 		if (id == LEX_TOK_RBRACE)
 		{
 			count--;
+			if (count == 0)
+				*rbrace = it;
 			// ft_printf("\'}\' so count : %d\n", count);
 		}
 		if (id == LEX_TOK_LBRACE)

@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/03 07:59:34 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/25 09:43:12 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/28 15:14:52 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,39 @@ static int		token_break(t_symbol_id id)
 // 	return (e);
 // }
 
+static t_list	*create_subshell_cmd(t_list *e)
+{
+	int				count;
+	t_symbol_id		id;
+	// t_token			*t;
+
+	// ft_dprintf(g_term_fd, "compound\n");
+	// t = (t_token *)(e->content);
+
+	// ft_printf("Start symblol: ");
+	// sh_print_token(t, g_glob.cfg);
+	// ft_printf("\n");
+	id = ((t_token *)(e->content))->id;
+	count = 1;
+	e = e->next;
+	while (id != END_OF_INPUT && count > 0)
+	{
+		id = ((t_token *)(e->content))->id;
+		// t = (t_token *)(e->content);
+		// sh_print_token(t, g_glob.cfg);
+		// ft_printf("	count: %d, Keep going\n", count);
+		if (id == LEX_TOK_CLS_PAR)
+			count--;
+		else if (id == LEX_TOK_OPN_PAR)
+			count++;
+		e = e->next;
+	}
+	// ft_printf("After compound: ");
+	// sh_print_token((t_token *)(e->content), g_glob.cfg);
+	// ft_printf("\ncount: %d\n", count);
+	return (e);
+}
+
 int			jobs_create_cmds(t_list *token_list)
 {
 	t_list		*s;
@@ -168,18 +201,19 @@ int			jobs_create_cmds(t_list *token_list)
 		// }
 		while (!token_break(id))
 		{
-			// if (id == LEX_TOK_OPN_PAR)
-			// {
-			// 	e = create_compound_cmd(e, id);
-			// 	break ;
-			// }
+			if (id == LEX_TOK_OPN_PAR)
+			{
+				e = create_subshell_cmd(e);
+				// break ;
+			}
 			// if (id == LEX_TOK_LBRACE && !next_sep_is_ampersand(e))
 			// {
 			// 	s = e->next;
 			// 	break ;
 
 			// }
-			e = e->next;
+			else
+				e = e->next;
 			id = ((t_token *)(e->content))->id;
 		}
 		cmd = create_job_cmd(s, e);
@@ -188,6 +222,6 @@ int			jobs_create_cmds(t_list *token_list)
 		add_job_cmd(cmd);
 		s = e->next;
 	}
-	jobs_print_cmds();
+	// jobs_print_cmds();
 	return (SUCCESS);
 }

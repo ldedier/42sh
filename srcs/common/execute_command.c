@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/15 16:08:40 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/26 15:13:16 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/28 15:04:40 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,22 @@ static int	sh_process_command(t_shell *shell, char *command)
 			ret = sh_perror(SH_ERR1_MALLOC, "sh_process_command (1)");
 		ft_lstdel(&tokens, sh_free_token_lst);
 	}
+	// jobs_create_cmds(g_job_ctrl->tokens);
+
 	else if ((ret = sh_parser(shell, &tokens, &ast_root, &cst_root)))
 	{
 		sh_perror_err("syntax error", NULL);
 		if (sh_env_update_ret_value_and_question(shell, ret) == FAILURE)
 			ret = sh_perror(SH_ERR1_MALLOC, "sh_process_command (2)");
 		ft_lstdel(&tokens, sh_free_token_lst);
-		jobs_free_tokens();
+		// jobs_free_tokens();
 	}
 	else
 	{
-		jobs_create_str(g_job_ctrl->tokens);	//Protect
+		// jobs_create_str(g_job_ctrl->tokens);	//Protect
+		// jobs_create_cmds(g_job_ctrl->tokens);
 		// ft_lstdel(&(g_job_ctrl->tokens), sh_free_token_lst);
-		jobs_free_tokens();
+		// jobs_free_tokens();
 		// g_job_ctrl->tokens = NULL;
 		ret = sh_process_traverse(shell, ast_root);
 		free_execution_tools(&tokens, &ast_root, &cst_root);

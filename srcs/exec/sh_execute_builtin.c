@@ -13,7 +13,7 @@
 #include "sh_21.h"
 
 
-static int	execute_child_part(pid_t cpid, t_context *context)
+static int	execute_child_part(pid_t cpid, t_ast_node *parent_node, t_context *context)
 {
 	int		ret;
 
@@ -22,7 +22,10 @@ static int	execute_child_part(pid_t cpid, t_context *context)
 		if ((ret = set_pgid_child(cpid)) != SUCCESS)
 			return (ret);
 	}
+	reset_signals();
 	g_job_ctrl->interactive = 0;
+	if ((ret = loop_traverse_redirection(parent_node, context)) != SUCCESS)
+		return (ret);
 	ret = context->builtin(context);
 	g_job_ctrl->interactive = 1;
 	sh_free_all(context->shell);
@@ -41,7 +44,7 @@ static int	execute_parent_part(pid_t cpid)
 	return (SUCCESS);
 }
 
-static int	execute_builtin_in_bg(t_context *context)
+static int	execute_builtin_in_bg(t_ast_node *parent_node, t_context *context)
 {
 	pid_t	cpid;
 	int		ret;
@@ -55,7 +58,7 @@ static int	execute_builtin_in_bg(t_context *context)
 	if ((cpid = fork()) < -1)
 		return (sh_perror(SH_ERR1_FORK, "sh_execute_builtin"));
 	else if (cpid == 0)
-		exit (execute_child_part(cpid, context));
+		exit (execute_child_part(cpid, parent_node, context));
 	else
 	{
 		ret = execute_parent_part(cpid);
@@ -84,12 +87,12 @@ void	handle_int(int signo)
 	}
 }
 
-int			sh_execute_builtin(t_ast_node *father_node, t_context *context)
+int			sh_execute_builtin(t_ast_node *parent_node, t_context *context)
 {
 	int		res;
 
 	if (context->cmd_type == (SIMPLE_NODE | BG_NODE))
-		res = execute_builtin_in_bg(context);
+		res = execute_builtin_in_bg(parent_node,context);
 	else
 	{
 		if (sh_pre_execution() != SUCCESS)
@@ -99,7 +102,7 @@ int			sh_execute_builtin(t_ast_node *father_node, t_context *context)
 			signal(SIGINT, handle_int);
 			jobs_free_str();
 		}
-		if ((res = loop_traverse_redirection(father_node, context)) != SUCCESS)
+		if ((res = loop_traverse_redirection(parent_node, context)) != SUCCESS)
 		{
 			if (sh_post_execution() != SUCCESS)
 				return (FAILURE);

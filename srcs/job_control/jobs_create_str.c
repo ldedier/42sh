@@ -30,13 +30,13 @@ static t_job_cmd	*create_job_cmd(t_list *s, t_list *e)
 	str = NULL;
 	while (s != e)
 	{
-		if (((t_token *)(s->content))->id == LEX_TOK_RBRACE
-			&& s->next && ((t_token *)(s->next->content))->id != LEX_TOK_AND
-			&& ((t_token *)(s->next->content))->id != LEX_TOK_PIPE)
-		{
-			s = s->next;
-			continue ;
-		}
+		// if (((t_token *)(s->content))->id == LEX_TOK_LBRACE
+		// 	&& s->next && ((t_token *)(s->next->content))->id != LEX_TOK_AND
+		// 	&& ((t_token *)(s->next->content))->id != LEX_TOK_PIPE)
+		// {
+		// 	s = s->next;
+		// 	continue ;
+		// }
 		if ((tmp = create_cmd_word((t_token *)s->content)) == NULL)
 			return (NULL);
 		if (str == NULL)
@@ -53,6 +53,39 @@ static t_job_cmd	*create_job_cmd(t_list *s, t_list *e)
 	return (job_cmd);
 }
 
+static t_list		*handle_pipe_tok(t_list *e)
+{
+	t_symbol_id		id;
+	int				count;
+
+	count = 0;
+	// ft_dprintf(g_term_fd, "PIPE TOK\n");
+	id = ((t_token *)(e->content))->id;
+	while (id != END_OF_INPUT)
+	{
+		if (id == LEX_TOK_OPN_PAR || id == LEX_TOK_LBRACE)
+		{
+			count++;
+			// ft_dprintf(g_term_fd, "OPEN: %d\n", count);
+		}
+		else if (id == LEX_TOK_CLS_PAR || id == LEX_TOK_RBRACE)
+		{
+			count--;
+			// ft_dprintf(g_term_fd, "CLOSE: %d\n", count);
+		}
+		else
+			// ft_dprintf(g_term_fd, "SOMETHING ELSE\n");
+		if (token_break(id) && count == 0)
+		{
+			// ft_dprintf(g_term_fd, "TOKEN BREAK\n");
+			return (e);
+		}
+		e = e->next;
+		id = ((t_token *)(e->content))->id;
+	}
+	return (e);
+}
+
 static int			s_token_loop(t_list *s)
 {
 	t_job_cmd	*j_cmd;
@@ -62,20 +95,14 @@ static int			s_token_loop(t_list *s)
 	e = NULL;
 	while (s != NULL && ((t_token *)(s->content))->id != END_OF_INPUT)
 	{
-		if (((t_token *)(s->content))->id == LEX_TOK_LBRACE
-			&& !next_sep_is_ampersand(s->next)
-			&& e && ((t_token *)(e->content))->id != LEX_TOK_PIPE)
-			{
-				// ft_dprintf(g_term_fd, "NO AMPERSAND\n");
-				s = s->next;
-				continue ;
-			}
 		e = s;
 		id = ((t_token *)(e->content))->id;
 		while (!token_break(id))
 		{
-			if (id == LEX_TOK_OPN_PAR || id == LEX_TOK_LBRACE)
-				e = jobs_create_compound_str(e, id);
+			if (id == LEX_TOK_PIPE)
+				e = handle_pipe_tok(e);
+			else if (id == LEX_TOK_OPN_PAR || id == LEX_TOK_LBRACE)
+				e = jobs_create_compound_str(&s, e, id);
 			else
 				e = e->next;
 			id = ((t_token *)(e->content))->id;
