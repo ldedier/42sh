@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 17:04:13 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/22 18:47:43 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/27 11:40:36 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,40 +29,6 @@ static void		builtin_jobs_no_spec(int opt)
 		j = j->next;
 	}
 }
-
-// static t_job	*get_jobs_job(int num)
-// {
-// 	char	msg[100];
-// 	t_job	*j;
-// 	char	*str;
-
-// 	ft_strcpy(msg, "%");
-// 	j = NULL;
-// 	if (num > 0)
-// 	{
-// 		j = job_get_by_num(num);
-// 		if (j == NULL)
-// 		{
-// 			str = ft_itoa(num);
-// 			ft_strcat(msg, str);
-// 			free(str);
-// 			sh_perror2("jobs", msg, "no such job");
-// 		}
-// 	}
-// 	else if (num == 0)
-// 	{
-// 		j = job_get_by_sign('+');
-// 		if (j == NULL)
-// 			sh_perror2("jobs", msg, "no current job");
-// 	}
-// 	else if (num == -1)
-// 	{
-// 		j = job_get_by_sign('-');
-// 		if (j == NULL)
-// 			sh_perror2("jobs", msg, "no previous job");
-// 	}
-// 	return (j);
-// }
 
 static t_job	*jobs_get_job_to_print(int num)
 {

@@ -1,34 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   job_free.c                                         :+:      :+:    :+:   */
+/*   jobs_copy_tokens.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/28 01:52:35 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/26 15:34:55 by mdaoud           ###   ########.fr       */
+/*   Created: 2019/10/26 11:53:10 by mdaoud            #+#    #+#             */
+/*   Updated: 2019/10/26 12:23:29 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "sh_job_control.h"
+#include "sh_21.h"
 
-void		job_free(t_job *j)
+void		jobs_copy_tokens(t_list *tokens)
 {
-	t_process	*p;
-	t_process	*p_next;
+	t_list	*it;
+	t_list	*node;
 
-	if (j == NULL)
+	// sh_print_token_list(tokens, g_glob.cfg);
+	if (!g_job_ctrl->interactive)
 		return ;
-	free(j->command);
-	j->command = NULL;
-	free(j->cmd_copy);
-	j->cmd_copy = NULL;
-	p = j->first_process;
-	while(p != NULL)
+	it = tokens;
+	while (it != NULL)
 	{
-		p_next = p->next;
-		free(p);
-		p = p_next;
+			node = ft_lstnew_value(it->content, sizeof(t_token));
+			// ((t_token *)node->content)->ast_node = NULL;
+			ft_lstadd_last(&(g_job_ctrl->tokens),node);
+		it = it->next;
 	}
-	free(j);
 }

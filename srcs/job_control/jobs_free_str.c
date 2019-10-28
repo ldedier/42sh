@@ -1,34 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   job_free.c                                         :+:      :+:    :+:   */
+/*   jobs_free_str.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/28 01:52:35 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/26 15:34:55 by mdaoud           ###   ########.fr       */
+/*   Created: 2019/10/25 09:54:53 by mdaoud            #+#    #+#             */
+/*   Updated: 2019/10/25 09:58:36 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "sh_job_control.h"
+#include "sh_21.h"
 
-void		job_free(t_job *j)
+int		jobs_free_str(void)
 {
-	t_process	*p;
-	t_process	*p_next;
+	t_job_cmd	*tmp;
 
-	if (j == NULL)
-		return ;
-	free(j->command);
-	j->command = NULL;
-	free(j->cmd_copy);
-	j->cmd_copy = NULL;
-	p = j->first_process;
-	while(p != NULL)
+	tmp = g_job_ctrl->job_cmd;
+	g_job_ctrl->job_cmd = g_job_ctrl->job_cmd->next;
+	if (tmp)
 	{
-		p_next = p->next;
-		free(p);
-		p = p_next;
+		free(tmp->str);
+		free(tmp);
 	}
-	free(j);
+	return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 01:05:04 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/21 16:36:02 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/27 11:15:12 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void		handle_job_completed(t_job *j, t_job *tmp, t_job *j_next)
 	g_job_ctrl->job_num[j->number] = 0;
 	sign = j->sign;
 	if (j->foreground == 0)
-		job_print(j, 0, g_term_fd);
+		job_print(j, 1, g_term_fd);
 	if (tmp)
 		tmp->next = j_next;
 	else
@@ -70,7 +70,9 @@ void			job_notify(void)
 		// If the job has stopped (but not completed), report to the user (only once)
 		else if (job_is_stopped(j) && !j->notified)
 		{
-			job_set_plus_sign(j);
+			if (j->sign != '+')
+				job_set_plus_sign(j);
+			ft_dprintf(g_term_fd, "\n");	//for newline after ctrl_z
 			job_print(j, 1, g_term_fd);
 			j->foreground = 0;
 			j->notified = 1;

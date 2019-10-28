@@ -6,13 +6,13 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/20 06:00:38 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/22 09:25:01 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/25 12:44:16 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-void		job_reset_sign(char c)
+void			job_reset_sign(char c)
 {
 	t_job	*j;
 
@@ -40,7 +40,7 @@ void			job_set_plus_sign(t_job *j)
 		j->sign = '+';
 }
 
-t_job		*job_get_unsigned(void)
+t_job			*job_get_unsigned(void)
 {
 	t_job	*res;
 	t_job	*j;
@@ -58,7 +58,7 @@ t_job		*job_get_unsigned(void)
 	return (res);
 }
 
-void		job_added_update_sign(t_job *j)
+void			job_added_update_sign(t_job *j)
 {
 	t_job	*tmp;
 
@@ -76,7 +76,7 @@ void		job_added_update_sign(t_job *j)
 	}
 }
 
-void		job_exited_update_sign(char j_sign)
+void			job_exited_update_sign(char j_sign)
 {
 	t_job	*tmp;
 

@@ -31,3 +31,7 @@ Leaks when builtis return error
 segfault when adding a slep 30 &
 ===================================================================
 fg , bg exit with error if job control is not active.
+===================================================================
+builtins with fifos (fg and bg)
+===================================================================
+( ls | wc ) | { ls ; sleep 5 }

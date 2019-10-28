@@ -6,7 +6,7 @@
 #    By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/10/23 11:29:54 by jdugoudr         ###   ########.fr        #
+#    Updated: 2019/10/26 19:45:41 by mdaoud           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,7 +62,7 @@ SRCS			 =	debug.c first_sets.c grammar.c init_cfg.c \
 ########					TRAVERSE					########
 ################################################################
 SRCS			+=	sh_traverse.c sh_traverse_default.c \
-					sh_traverse_semicol.c sh_traverse_pipe_line.c \
+					sh_traverse_semicol.c sh_traverse_pipeline.c \
 					sh_traverse_assignment_word.c sh_traverse_ampersand.c \
 					sh_traverse_simple_command.c \
 					sh_traverse_io_file.c \
@@ -123,7 +123,7 @@ SRCS			+=	main.c index.c init.c shell_tools.c \
 					set_signals.c canonical_mode.c history.c home.c \
 					init_tabs.c non_canonical_mode.c hash_binaries.c \
 					check_term.c signal_tools.c execute_command.c \
-					t_entry.c sh_split_path.c sh_exec_binaire.c
+					t_entry.c sh_split_path.c sh_execute_binary.c
 
 ################################################################
 ########					PARSER						########
@@ -265,9 +265,9 @@ SRCS			+=	sh_vars_tools_1.c sh_vars_tools_2.c \
 ################################################################
 ########						EXEC					########
 ################################################################
-SRCS			+=	sh_execute.c \
+SRCS			+=	sh_execute_simple_command.c \
 					sh_execute_and_or.c \
-					sh_execute_binary.c \
+					sh_execute_execve.c \
 					sh_execute_builtin.c \
 					sh_execute_pipe.c \
 					sh_execute_prefix_postfix.c \
@@ -301,8 +301,8 @@ SRCS			+=	sh_builtin.c sh_builtin_pwd.c \
 					sh_builtin_test.c sh_builtin_test_unary.c \
 					sh_builtin_test_binary.c \
 					sh_builtin_jobs.c sh_builtin_jobs_tools.c\
-					sh_builtin_fg.c \
-					sh_builtin_bg.c \
+					sh_builtin_fg.c sh_builtin_fg_tools.c \
+					sh_builtin_bg.c sh_builtin_bg_tools.c \
 					sh_builtin_fc.c \
 					sh_builtin_fc_l_synopsis.c \
 					sh_builtin_fc_s_synopsis.c \
@@ -345,8 +345,10 @@ SRCS			+=	jobs_init.c job_add.c process_add.c job_tools.c \
 					job_is_stopped.c job_check_changes.c job_free.c \
 					job_print_status.c job_notify.c job_print.c \
 					jobs_error_free.c set_pgid_child.c set_pgid_parent.c \
-					jobs_create_cmds.c jobs_free_cmds.c jobs_print_cmds.c \
-					job_sign_tools.c
+					jobs_free_cmds.c jobs_print_cmds.c ft_strtok_pipe.c \
+					job_sign_tools.c jobs_free_str.c jobs_str_tools.c \
+					jobs_create_str.c jobs_create_compound_str.c \
+					jobs_copy_tokens.c jobs_free_tokens.c
 
 ################################################################
 ########					INCLUDES					########

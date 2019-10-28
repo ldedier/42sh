@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/31 16:05:53 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/21 13:04:14 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/25 12:30:27 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@
 
 //static void	handler_sigint(int signo)
 //{
-//	if (signo == SIGINT) 
+//	if (signo == SIGINT)
 //	{
 //		get_down_from_command(&g_glob.command_line);
 //	}

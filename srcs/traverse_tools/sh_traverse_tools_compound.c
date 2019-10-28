@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_traverse_tools_compound.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 11:23:48 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/23 11:27:11 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/25 12:20:07 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,8 @@ int	sh_traverse_tools_compound_redir(
 		*compound_redir = NULL;
 	if ((ret = loop_traverse_compound_redirection(*compound_redir, context)))
 	{
-		if (sh_post_execution())
-			return (FAILURE);
+		// if (sh_post_execution())
+		// 	return (FAILURE);
 		return (ret);
 	}
 	*lst_redi = context->redirections;

@@ -1,34 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   job_free.c                                         :+:      :+:    :+:   */
+/*   jobs_free_tokens.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/28 01:52:35 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/26 15:34:55 by mdaoud           ###   ########.fr       */
+/*   Created: 2019/10/26 12:27:52 by mdaoud            #+#    #+#             */
+/*   Updated: 2019/10/26 14:59:39 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "sh_job_control.h"
+#include "sh_21.h"
 
-void		job_free(t_job *j)
+void		jobs_free_tokens(void)
 {
-	t_process	*p;
-	t_process	*p_next;
+	t_list	*ptr;
+	t_list	*l_next;
+	// t_token	*t;
+	// t_list	*ptr;
 
-	if (j == NULL)
+	if (!g_job_ctrl->interactive)
 		return ;
-	free(j->command);
-	j->command = NULL;
-	free(j->cmd_copy);
-	j->cmd_copy = NULL;
-	p = j->first_process;
-	while(p != NULL)
+	ptr = g_job_ctrl->tokens;
+	while (ptr != NULL)
 	{
-		p_next = p->next;
-		free(p);
-		p = p_next;
+		l_next = ptr->next;
+		free(ptr->content);
+		free(ptr);
+		ptr = l_next;
 	}
-	free(j);
+	// free(g_job_ctrl->tokens);
+	g_job_ctrl->tokens = NULL;
 }

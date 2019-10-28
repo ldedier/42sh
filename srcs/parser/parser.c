@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/04 21:42:55 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/19 05:43:14 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/26 12:35:44 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,27 +21,27 @@
 ** This SHOULD be replaced by a better and safer function.
 */
 
-static void		check_ampersand_at_eoc(t_list *token_lst)
-{
-	t_list	*ptr;
-	t_token	*tok;
+// static void		check_ampersand_at_eoc(t_list *token_lst)
+// {
+// 	t_list	*ptr;
+// 	t_token	*tok;
 
-	ptr = token_lst;
-	if (token_lst == NULL)
-		return ;
-	while (ptr->next != NULL)
-	{
-		tok = (t_token *)ptr->next->content;
-		if (tok->id == END_OF_INPUT && (((t_token *)ptr->content)->id == LEX_TOK_AND))
-		{
-			g_job_ctrl->ampersand_eol = WNOHANG;
-			return ;
-		}
-		else
-			g_job_ctrl->ampersand_eol = 0;
-		ptr = ptr->next;
-	}
-}
+// 	ptr = token_lst;
+// 	if (token_lst == NULL)
+// 		return ;
+// 	while (ptr->next != NULL)
+// 	{
+// 		tok = (t_token *)ptr->next->content;
+// 		if (tok->id == END_OF_INPUT && (((t_token *)ptr->content)->id == LEX_TOK_AND))
+// 		{
+// 			g_job_ctrl->ampersand_eol = WNOHANG;
+// 			return ;
+// 		}
+// 		else
+// 			g_job_ctrl->ampersand_eol = 0;
+// 		ptr = ptr->next;
+// 	}
+// }
 
 int		sh_is_term(t_symbol *symbol)
 {
@@ -82,8 +82,6 @@ int		sh_parse_token_list(t_lr_parser *parser, t_list **tokens,
 	}
 }
 
-
-
 int		sh_parser(t_shell *shell, t_list **tokens,
 	t_ast_node **ast_root, t_ast_node **cst_root)
 {
@@ -93,9 +91,10 @@ int		sh_parser(t_shell *shell, t_list **tokens,
 //	sh_populate_token(&token, LEX_TOK_NEWLINE, 0);
 //	ft_lstaddnew_last(tokens, &token, sizeof(t_token));
 	sh_populate_token(&token, END_OF_INPUT, 0);
+	// sh_copy_token_list(*tokens, g_glob.cfg);
 	ft_lstaddnew_last(tokens, &token, sizeof(t_token));
-	jobs_create_cmds(*tokens);	//Protect
-	check_ampersand_at_eoc(*tokens);
+	// check_ampersand_at_eoc(*tokens);
+	jobs_copy_tokens(*tokens);
 	if (sh_verbose_ast())
 	{
 		ft_dprintf(2, "input tokens: ");

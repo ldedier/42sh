@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 17:04:13 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/18 11:44:29 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/27 11:55:47 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,54 +27,52 @@ static void		mark_job_as_running (t_job *j)
 	j->notified = 0;
 }
 
-static t_job	*get_active_job(void)
+static int	sh_execute_bg(t_job *j, t_context *context)
 {
-	t_job	*j;
-	t_job	*it;
-	t_job	*prev;
-
-	if (g_job_ctrl->first_job == g_job_ctrl->curr_job)
+	if (!job_is_stopped(j))
 	{
-		sh_perror("bg: current", "no such job");
-		return (NULL);
+		return (sh_perror_err("bg", "job already running in background"));
 	}
-	j = g_job_ctrl->first_job;
-	it = NULL;
-	while (j->next != NULL)
-	{
-		prev = j;
-		if (job_is_stopped(j))
-			it = j;
-		j = j->next;
-	}
-	if (it == NULL)
-	{
-		sh_perror("bg", NULL);
-		ft_dprintf(2, "job [%d] already running in background\n", prev->number);
-		return (NULL);
-	}
-	return (it);
-}
-
-int				sh_builtin_bg(t_context *context)
-{
-	t_job	*j;
-
-	(void)context;
-	j = get_active_job();
-	if (j == NULL)
-		return (ERROR);
-	ft_dprintf(g_term_fd, "%sActive job: [%d] \"%s\"%s\n", YELLOW, j->number, j->command, EOC);
-	if (kill(- j->pgid, SIGCONT) < 0)
-	{
-		ft_dprintf(STDERR_FILENO, "kill SIGCONT\n");
-		return (ERROR);
-	}
-	j->foreground = 0;
 	mark_job_as_running(j);
-	// job_print_status(j, "Continued");
 	ft_dprintf(g_term_fd, "[%d]  %s &\n",
 		j->number, j->command);
+	sh_env_update_ret_value_wait_result(context, SUCCESS);
+	return (SUCCESS);
+}
+
+int			sh_builtin_bg(t_context *context)
+{
+	t_job	*j;
+	int		i;
+	int		job_lst[MAX_JOBS];
+
+	if (!g_job_ctrl->interactive)
+		return (sh_perror_err("bg", "no job control in this shell"));
+	i = -1;
+	while (++i < MAX_JOBS)
+		job_lst[i] = -2;
+	if ((parse_bg_args((char **)context->params->tbl, job_lst)) != SUCCESS)
+		return (ERROR);
+	if (job_lst[0] == -2)
+		job_lst[0] = 0;
+	// ft_printf("numbrs: ");
+	// for (int j = 0; job_lst[j] != -2; j++)
+	// 	ft_printf("[%d] ", job_lst[j]);
+	// ft_printf("\n");
+	i = 0;
+	while (job_lst[i] != -2)
+	{
+		if ((j = bg_get_job_by_spec(job_lst[i])) == NULL)
+			return (ERROR);
+		// ft_dprintf(g_term_fd, "[%d]  %s\n",
+		// j->number, j->command);
+		context->shell->ret_value_set = 0;
+		if (sh_execute_bg(j, context) != SUCCESS)
+			return (ERROR);
+		if (context->shell->ret_value == 130)
+			return (SUCCESS);
+		i++;
+	}
 	return (SUCCESS);
 }
 

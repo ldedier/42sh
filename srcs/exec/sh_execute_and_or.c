@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 15:54:02 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/19 05:52:14 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/25 16:04:47 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,25 +57,15 @@ static int		sh_traverse_and_or_call_sons_exec(t_ast_node *node,
 	int			ret;
 
 	if (!should_execute(*prev_symbol, context->shell->ret_value))
-		return (SUCCESS);
-	// Each pipeline is a job.
-	if (g_job_ctrl->interactive)
-	{
-		if ((ret = job_add(IS_BG(context->cmd_type))) != SUCCESS)
-			return (ret);
-		g_job_ctrl->job_added = 1;
-	}
+		return (jobs_free_str());
 	ret = sh_traverse_pipeline(node, context);
-	g_job_ctrl->job_added = 0;
 	// ft_dprintf(g_term_fd, "%sRet after pipeline: %#X (%d)\n%s",BLUE, context->shell->ret_value, context->shell->ret_value, EOC);
 	if (ret == BLT_TEST_ERROR || context->shell->ret_value == BLT_TEST_ERROR)
 	{
 		context->shell->ret_value_set = 0;
 		sh_env_update_ret_value(context->shell, 2);
 	}
-	if (ret == FAILURE || ret == STOP_CMD_LINE)
-		return (ret);
-	if (!context->shell->running)
+	if (ret == FAILURE || ret == STOP_CMD_LINE || !context->shell->running)
 		return (ret);
 	return (SUCCESS);
 }

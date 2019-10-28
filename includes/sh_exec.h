@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 17:11:16 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/23 12:10:06 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/25 16:02:50 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,9 +101,9 @@ void				print_redirection(t_redirection *redirection);
 void				print_redirection_list(t_list *list);
 
 /*
-** sh_exec_binaire.c
+** sh_execute_binary.c
 */
-int					sh_exec_binaire(
+int					sh_execute_binary(
 	t_ast_node *father_node, t_context *context);
 
 /*
@@ -119,9 +119,9 @@ int					sh_execute_and_or(
 	t_ast_node *node, t_context *context);
 
 /*
-** sh_execute_binary.c
+** sh_execute_execve.c
 */
-void				sh_execute_binary(
+void				sh_execute_execve(
 	t_ast_node *father_node, t_context *context);
 
 /*

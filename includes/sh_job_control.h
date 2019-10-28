@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sh_job_control.h                                      :+:      :+:    :+:   */
+/*   sh_job_control.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 17:45:00 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/17 00:13:11 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/26 12:35:44 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ struct	s_job_control
 	t_job_cmd		*job_cmd;
 	t_job			*first_job;
 	t_job			*curr_job;
+	t_list			*tokens;
 };
 
 t_job_control	*g_job_ctrl;
@@ -135,7 +136,7 @@ void			job_print(t_job *j, int opt, int fd);
 int				job_put_in_bg(t_job *j, int cont);
 int				job_put_in_fg(t_job *j, int cont, int *res);
 void			job_wait(t_job *j, int *res);
-int				jobs_create_cmds(t_list *token_list);
+// int				jobs_create_cmds(t_list *token_list);
 int				jobs_error_free(const char *err, const char *suff,
 				int to_free, int ret);
 void			jobs_free_cmds(void);
@@ -147,6 +148,10 @@ int				set_pgid_parent(int cpid);
 char			**str_tab_duplicate(char **from);	//put in libft
 void			str_tab_free(char **str);			//put in libft
 void			str_tab_print(char **char_tab);		//put in libft
+int				jobs_free_str(void);
+char			*ft_strtok_pipe(char *str, char *delim);
+void			jobs_copy_tokens(t_list *tokens);
+void			jobs_free_tokens(void);
 
 /*
 ** job_tools.c
@@ -164,4 +169,27 @@ void			job_added_update_sign(t_job *j);
 t_job			*job_get_unsigned(void);
 void			job_exited_update_sign(char j_sign);
 
+/*
+** jobs_str_tools.c
+*/
+int				next_sep_is_ampersand(t_list *ptr);
+int				token_break(t_symbol_id id);
+int				add_job_cmd(t_job_cmd *cmd);
+char			*create_cmd_word(t_token *t);
+
+/*
+** jobs_create_compound_str.c
+*/
+t_list			*create_brace_str(t_list *e);
+t_list			*create_subshell_str(t_list *e);
+t_list			*jobs_create_compound_str(t_list *e, t_symbol_id start_symb);
+
+/*
+** jobs_create_str.c
+*/
+int				jobs_create_str(t_list *token_list);
+
+
 #endif
+
+
