@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_job_control.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jdugoudr <jdugoudr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 17:45:00 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/28 17:09:10 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/28 18:45:02 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,6 +191,11 @@ t_list			*jobs_create_compound_str(t_list **s, t_list *e, t_symbol_id start_symb
 int				jobs_create_str(t_list *token_list);
 
 // int			jobs_create_cmds(t_list *token_list);
+
+/*
+** jobs_create_strings
+*/
+char	*jobs_string_default(t_ast_node *node);
 
 
 #endif
