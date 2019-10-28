@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/05 15:37:31 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/28 06:26:25 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/28 17:28:50 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,11 +115,6 @@ int			sh_main_init_env(t_shell *shell, char **env)
 		i++;
 	}
 	shell->env = tbl;
-	if (!(shell->saved_env = ft_dy_tab_cpy_str(shell->env)))
-	{
-		ft_dy_tab_del_ptr(tbl);
-		return (sh_perror(SH_ERR1_MALLOC, "sh_main_init_env"));
-	}
 	if (sh_main_init_env_special_vars(shell) == FAILURE)
 	{
 		ft_dy_tab_del_ptr(shell->env);
@@ -127,6 +122,11 @@ int			sh_main_init_env(t_shell *shell, char **env)
 		ft_dy_tab_del_ptr(shell->saved_env);
 		shell->saved_env = NULL;
 		return (FAILURE);
+	}
+	if (!(shell->saved_env = ft_dy_tab_cpy_str(shell->env)))
+	{
+		ft_dy_tab_del_ptr(tbl);
+		return (sh_perror(SH_ERR1_MALLOC, "sh_main_init_env"));
 	}
 	return (SUCCESS);
 }
@@ -157,7 +157,7 @@ int			sh_main_init_vars(t_shell *shell)
 	}
 	if (ft_dy_tab_add_str(shell->vars, "#=0"))
 		return (sh_perror(SH_ERR1_MALLOC, "sh_main_init_vars (2)"));
-	if (BONUS_DOLLAR_VARIABLE)
+	if (BONUS_DOLLAR_VARIABLE)//can we not just expande $? with shell->ret_value ?? instead of having a specific env var ?
 	{
 		pid = getpid();
 		if (!(buff = ft_itoa(pid)))
