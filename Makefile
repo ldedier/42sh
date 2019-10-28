@@ -6,7 +6,7 @@
 #    By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/10/28 14:24:24 by mdaoud           ###   ########.fr        #
+#    Updated: 2019/10/28 17:11:36 by mdaoud           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -348,9 +348,9 @@ SRCS			+=	jobs_init.c job_add.c process_add.c job_tools.c \
 					jobs_free_cmds.c jobs_print_cmds.c ft_strtok_pipe.c \
 					job_sign_tools.c jobs_free_str.c \
 					jobs_copy_tokens.c jobs_free_tokens.c \
-					jobs_create_cmds.c jobs_create_cmds_tools.c
-					# jobs_create_str.c jobs_create_compound_str.c \
+					jobs_create_str.c jobs_create_compound_str.c \
 					jobs_str_tools.c \
+					# jobs_create_cmds.c jobs_create_cmds_tools.c
 
 ################################################################
 ########					INCLUDES					########
