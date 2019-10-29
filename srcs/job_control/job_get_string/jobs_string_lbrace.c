@@ -6,7 +6,7 @@
 /*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/29 09:41:53 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/29 09:44:33 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/29 16:24:40 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	jobs_string_lbrace(t_ast_node *node, char **str)
 {
 	(void)node;
-	if ((*str = ft_strjoin_free(*str, "{", 1)) == NULL)
+	if ((*str = ft_strjoin_free(*str, "{ ", 1)) == NULL)
 		return (ERROR);
 	return (SUCCESS);
 }

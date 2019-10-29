@@ -6,7 +6,7 @@
 /*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/29 10:00:52 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/29 10:01:34 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/29 16:26:57 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	jobs_string_bang(t_ast_node *node, char **str)
 {
 	(void)node;
-	if ((*str = ft_strjoin_free(*str, "!", 1)) == NULL)
+	if ((*str = ft_strjoin_free(*str, "! ", 1)) == NULL)
 		return (ERROR);
 	return (SUCCESS);
 }
