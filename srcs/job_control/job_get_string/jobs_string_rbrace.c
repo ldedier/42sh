@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   jobs_string_rbtace.c                               :+:      :+:    :+:   */
+/*   jobs_string_rbrace.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/29 09:45:16 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/29 09:45:35 by jdugoudr         ###   ########.fr       */
+/*   Created: 2019/10/29 14:20:08 by jdugoudr          #+#    #+#             */
+/*   Updated: 2019/10/29 14:20:41 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-int	jobs_string_lbrace(t_ast_node *node, char **str)
+int	jobs_string_rbrace(t_ast_node *node, char **str)
 {
 	(void)node;
 	if ((*str = ft_strjoin_free(*str, "}", 1)) == NULL)

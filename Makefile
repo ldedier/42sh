@@ -6,7 +6,7 @@
 #    By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/10/28 17:11:36 by mdaoud           ###   ########.fr        #
+#    Updated: 2019/10/29 12:49:16 by jdugoudr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +39,7 @@ VPATH		= $(INCLUDESDIR) \
 			  $(SRCDIR)/expansions \
 			  $(SRCDIR)/grammar \
 			  $(SRCDIR)/job_control \
+			  $(SRCDIR)/job_control/job_get_string \
 			  $(SRCDIR)/lexer \
 			  $(SRCDIR)/parser \
 			  $(SRCDIR)/parser/productions \
@@ -350,6 +351,15 @@ SRCS			+=	jobs_init.c job_add.c process_add.c job_tools.c \
 					jobs_copy_tokens.c jobs_free_tokens.c \
 					jobs_create_str.c jobs_create_compound_str.c \
 					jobs_str_tools.c \
+					jobs_string_default.c jobs_string_opn_par.c \
+					jobs_string_cls_par.c jobs_string_lbrace.c \
+					jobs_string_rbrace.c jobs_string_and.c \
+					jobs_string_pipe.c jobs_string_and_if.c \
+					jobs_string_or_if.c jobs_string_semicol.c \
+					jobs_string_bang.c jobs_string_less.c \
+					jobs_string_great.c jobs_string_dgreat.c \
+					jobs_string_dless.c jobs_string_less_and.c \
+					jobs_string_great_and.c jobs_string_word.c
 					# jobs_create_cmds.c jobs_create_cmds_tools.c
 
 ################################################################
