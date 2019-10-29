@@ -63,20 +63,40 @@ static void	init_job_values(t_job *j, int n, int bg)
 **	then free it from the linked list (it becomes "ls | wc" -> "echo hello")
 */
 
-static int	get_job_cmd_str(t_job *j)
-{
-	t_job_cmd	*temp;
+// static int	get_job_cmd_str(t_job *j)
+// {
+// 	t_job_cmd	*temp;
 
-	j->command = ft_strdup(g_job_ctrl->job_cmd->str);
-	if (j->command == NULL)
-	{
-		free(j);
-		return (sh_perror(SH_ERR1_MALLOC, "job add"));
-	}
-	temp = g_job_ctrl->job_cmd;
-	g_job_ctrl->job_cmd = g_job_ctrl->job_cmd->next;
-	free(temp->str);
-	free(temp);
+// 	j->command = ft_strdup(g_job_ctrl->job_cmd->str);
+// 	if (j->command == NULL)
+// 	{
+// 		free(j);
+// 		return (sh_perror(SH_ERR1_MALLOC, "job add"));
+// 	}
+// 	temp = g_job_ctrl->job_cmd;
+// 	g_job_ctrl->job_cmd = g_job_ctrl->job_cmd->next;
+// 	free(temp->str);
+// 	free(temp);
+// 	j->cmd_copy = ft_strdup(j->command);
+// 	if (j->cmd_copy == NULL)
+// 	{
+// 		free(j->command);
+// 		free(j);
+// 		return (sh_perror(SH_ERR1_MALLOC, "job add"));
+// 	}
+// 	return (SUCCESS);
+// }
+
+static int		get_job_string(t_ast_node *node, t_job *j)
+{
+	char		*str;
+	t_symbol_id	id;
+
+	str = NULL;
+	id = node->symbol->id;
+	g_grammar[id].get_job_string(node, &str); // Protect
+	ft_dprintf(g_term_fd, BLUE"%s\n"EOC, str);
+	j->command = str;
 	j->cmd_copy = ft_strdup(j->command);
 	if (j->cmd_copy == NULL)
 	{
@@ -103,17 +123,12 @@ int			job_add(t_ast_node *node, int bg)
 	int		n;
 
 	n = find_available_job_number();
-	char		*str;
-	str = NULL;
-	t_symbol_id id = node->symbol->id;
-	g_grammar[id].get_job_string(node, &str);
-	ft_dprintf(g_term_fd, BLUE"%s\n"EOC, str);
 	if (n < 0)
 		return (sh_perror_err("Maxumum number of jobs exceeded", "job add"));
 	if ((j = malloc(sizeof(t_job))) == NULL)
 		return (sh_perror(SH_ERR1_MALLOC, "job add"));
 	init_job_values(j, n, bg);
-	if (get_job_cmd_str(j) != SUCCESS)
+	if (get_job_string(node, j) != SUCCESS)
 		return (FAILURE);
 	// ft_printf("%sAdded job [%d] %s ", CYAN, g_job_ctrl->curr_job->number, g_job_ctrl->curr_job->command);
 	// ft_printf("in %s%s\n",j->foreground == 1 ? "foreground" : "background", COLOR_END);

@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 08:21:00 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/29 15:52:16 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/29 16:49:08 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,11 +176,13 @@ int				sh_execute_pipe(t_ast_node *node, t_context *context)
 			if (g_job_ctrl->curr_job->foreground)
 				if (sh_pre_execution() != SUCCESS)
 					return (FAILURE);
-			if (g_job_ctrl->curr_job->foreground == 0
-				&& (job_put_in_bg(g_job_ctrl->curr_job) != SUCCESS))
+			if (g_job_ctrl->curr_job->foreground == 0)
+			{
+				if ((ret = job_put_in_bg(g_job_ctrl->curr_job)) != SUCCESS)
 					return (FAILURE);
-			else if ((i = job_put_in_fg(g_job_ctrl->curr_job, 0, &ret)) != SUCCESS)
-				return (i);
+			}
+			else if ((job_put_in_fg(g_job_ctrl->curr_job, 0, &ret)) != SUCCESS)
+				return (FAILURE);
 			sh_env_update_ret_value_wait_result(context, ret);
 		}
 		else

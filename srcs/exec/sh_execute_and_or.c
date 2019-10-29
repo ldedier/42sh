@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 15:54:02 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/29 12:40:50 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/29 16:56:02 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ static int		sh_traverse_and_or_call_sons_exec(t_ast_node *node,
 	int			ret;
 
 	if (!should_execute(*prev_symbol, context->shell->ret_value))
-		return (jobs_free_str());
+		// return (jobs_free_str());
+		return (SUCCESS);
 	ret = sh_traverse_pipeline(node, context);
 	if (ret == BLT_TEST_ERROR || context->shell->ret_value == BLT_TEST_ERROR)
 	{

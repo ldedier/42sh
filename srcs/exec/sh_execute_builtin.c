@@ -98,10 +98,7 @@ int			sh_execute_builtin(t_ast_node *parent_node, t_context *context)
 		if (sh_pre_execution() != SUCCESS)
 			return (FAILURE);
 		if (g_job_ctrl->interactive)
-		{
 			signal(SIGINT, handle_int);
-			jobs_free_str();
-		}
 		if ((res = loop_traverse_redirection(parent_node, context)) != SUCCESS)
 		{
 			if (sh_post_execution() != SUCCESS)
