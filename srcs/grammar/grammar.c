@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 14:19:01 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/29 15:35:11 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/29 16:06:22 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,10 @@ t_grammar_holder g_grammar[NB_SYMBOLS] = {
 	{"for", 0, 1, NULL, &sh_traverse_default, &jobs_string_default},
 	{"in", 0, 1, NULL, &sh_traverse_default, &jobs_string_default},
 	{"TERM_TOKEN", 0, 1, NULL, &sh_traverse_default, &jobs_string_default},
-	{"TERM_WORD", 0, 1, NULL, &sh_traverse_default, &jobs_string_default},
-	{"TERM_ASSIGNMENT_WORD", 0, 1, NULL, &sh_traverse_assignment_word, &jobs_string_default},
-	{"TERM_NAME", 0, 1, NULL, &sh_traverse_default, &jobs_string_default},
-	{"TERM_IO_NUMBER", 0, 1, NULL, &sh_traverse_default, &jobs_string_default},
+	{"TERM_WORD", 0, 1, NULL, &sh_traverse_default, &jobs_string_word},
+	{"TERM_ASSIGNMENT_WORD", 0, 1, NULL, &sh_traverse_assignment_word, &jobs_string_word},
+	{"TERM_NAME", 0, 1, NULL, &sh_traverse_default, &jobs_string_word},
+	{"TERM_IO_NUMBER", 0, 1, NULL, &sh_traverse_default, &jobs_string_word},
 	{"_EOI_", 0, 1, NULL, &sh_traverse_default, &jobs_string_default},
 	{"ε", 0, 1, NULL, &sh_traverse_default, &jobs_string_default},
 	{"PROGRAM", 0, 1, &sh_init_prod_program, &sh_traverse_default, &jobs_string_default},
