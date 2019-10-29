@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 04:42:10 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/29 14:49:10 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/29 15:05:50 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ static void		print_job_status(t_job *j, int opt, int fd)
 {
 	int	status;
 
-	if (j == NULL || j->first_process == NULL)
-		return ;
+	// if (j == NULL || j->first_process == NULL)
+	// 	return ;
 	ft_dprintf(fd, "[%d]  %c ", j->number, j->sign);
 	status = j->first_process->status;
 	if (j->first_process->next == NULL && opt)
@@ -79,8 +79,8 @@ static void		print_job_differant_status(t_job *j, int opt, int fd)
 {
 	t_process	*p;
 
-	if (j == NULL || j->first_process == NULL)
-		return ;
+	// if (j == NULL || j->first_process == NULL)
+	// 	return ;
 	p = j->first_process;
 	ft_dprintf(fd, "[%d]  %c ", j->number, j->sign);
 	while (p->next != NULL)

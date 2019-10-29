@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 08:21:00 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/29 14:57:47 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/29 15:52:16 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,6 @@ int				sh_execute_pipe(t_ast_node *node, t_context *context)
 	int			i;
 	t_pipe		pipes;
 
-	i = 0;
 	ret = ERROR;
 	pipes.nb_pipe = ft_lstlen(node->children) / 2;
 	pipes.nb_cmd = pipes.nb_pipe + 1;
@@ -180,12 +179,13 @@ int				sh_execute_pipe(t_ast_node *node, t_context *context)
 			if (g_job_ctrl->curr_job->foreground == 0
 				&& (job_put_in_bg(g_job_ctrl->curr_job) != SUCCESS))
 					return (FAILURE);
-			else if (job_put_in_fg(g_job_ctrl->curr_job, 0, &ret) != SUCCESS)
-				return (FAILURE);
+			else if ((i = job_put_in_fg(g_job_ctrl->curr_job, 0, &ret)) != SUCCESS)
+				return (i);
 			sh_env_update_ret_value_wait_result(context, ret);
 		}
 		else
 		{
+			i = 0;
 			// ft_dprintf(g_term_fd, "WFLAGS: %d\n", context->wflags);
 			while (i++ < pipes.nb_cmd)
 				if (waitpid(-1, &ret, context->wflags) == pipes.tab_pid[pipes.nb_cmd - 1])

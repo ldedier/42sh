@@ -54,6 +54,7 @@ static int		sh_exec_child_part(t_ast_node *father_node, t_context *context)
 static int		sh_exec_parent_part(pid_t cpid, t_context *context)
 {
 	int		ret;
+	int		fun_ret;
 
 	if (g_job_ctrl->interactive)
 	{
@@ -64,8 +65,8 @@ static int		sh_exec_parent_part(pid_t cpid, t_context *context)
 			if ((ret = job_put_in_bg(g_job_ctrl->curr_job)) != SUCCESS)
 				return (ret);
 		}
-		else if (job_put_in_fg(g_job_ctrl->curr_job, 0, &ret) != SUCCESS)
-			return (FAILURE);
+		else if ((fun_ret = job_put_in_fg(g_job_ctrl->curr_job, 0, &ret)) != SUCCESS)
+			return (fun_ret);
 	}
 	else
 		waitpid(cpid, &ret, context->wflags);
@@ -85,14 +86,24 @@ int		sh_execute_binary(t_ast_node *father_node, t_context *context)
 {
 	pid_t		cpid;
 	int			ret;
-
 	// Since we already fork for each command in a pipeline, we don't need to fork again.
 	if (IS_PIPE(context->cmd_type))
 		sh_execute_execve(father_node, context);
 	if (g_job_ctrl->interactive && !g_job_ctrl->job_added)
 	{
+		// if (father_node == NULL)
+		// 	ft_printf("NULL\n");
+		// else
+		// {
+		// 	char		*str;
+		// 	str = NULL;
+		// 	t_symbol_id id = father_node->symbol->id;
+
+		// 	g_grammar[id].get_job_string(father_node, &str);
+		// 	ft_printf("%s\n", str);
+
+		// }
 		// ft_dprintf(g_term_fd, YELLOW"Adding job in binary\n"EOC);
-		// char *str = context->current_command_node->
 		if ((ret = job_add(IS_BG(context->cmd_type))) != SUCCESS)
 			return (ret);
 		g_job_ctrl->job_added = 1;

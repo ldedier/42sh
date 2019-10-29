@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   jobs_string_word.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/29 10:10:41 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/29 10:12:51 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/29 15:48:02 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 
 int	jobs_string_word(t_ast_node *node, char **str)
 {
+	// ft_dprintf(g_term_fd, "WORD\n");
+	// node->token->
+	// ft_dprintf(g_term_fd, "value: %s\n", node->token->value);
 	if ((*str = ft_strjoin_free(*str, node->token->value, 1)) == NULL)
 		return (ERROR);
 	return (SUCCESS);

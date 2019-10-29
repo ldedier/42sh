@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/02 10:03:30 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/29 14:51:19 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/29 15:52:49 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ static int	child_part(t_ast_node *node, t_context *context)
 static int	parents_part(pid_t pid, t_context *context)
 {
 	int	ret;
+	int	fun_ret;
 
 	ret = 0;
 	if (g_job_ctrl->interactive)
@@ -52,8 +53,8 @@ static int	parents_part(pid_t pid, t_context *context)
 		{
 			if (sh_pre_execution() != SUCCESS)
 				return (FAILURE);
-			if (job_put_in_fg(g_job_ctrl->curr_job, 0, &ret) != SUCCESS)
-				return (FAILURE);
+			if ((fun_ret = job_put_in_fg(g_job_ctrl->curr_job, 0, &ret)) != SUCCESS)
+				return (fun_ret);
 		}
 		else if (job_put_in_bg(g_job_ctrl->curr_job) != SUCCESS)
 			return (FAILURE);

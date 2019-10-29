@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   grammar.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 14:19:01 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/29 15:28:45 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/29 15:35:11 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,8 +121,8 @@ t_grammar_holder g_grammar[NB_SYMBOLS] = {
 	{"SIMPLE_COMMAND", 0, 1, &sh_init_prod_simple_command,
 		&sh_traverse_default, &jobs_string_default},
 		// &sh_traverse_simple_command},
-	{"CMD_NAME", 0, 1, &sh_init_prod_cmd_name, &sh_traverse_cmd_name, &jobs_string_default},
-	{"CMD_WORD", 0, 1, &sh_init_prod_cmd_word, &sh_traverse_cmd_word, &jobs_string_default},
+	{"CMD_NAME", 0, 1, &sh_init_prod_cmd_name, &sh_traverse_cmd_name, &jobs_string_word},
+	{"CMD_WORD", 0, 1, &sh_init_prod_cmd_word, &sh_traverse_cmd_word, &jobs_string_word},
 	{"CMD_PREFIX", 0, 1, &sh_init_prod_cmd_prefix, &sh_traverse_cmd_prefix, &jobs_string_default},
 	{"CMD_SUFFIX", 1, 1, &sh_init_prod_cmd_suffix, &sh_traverse_cmd_suffix, &jobs_string_default},
 	{"REDIRECT_LIST", 0, 1, &sh_init_prod_redirect_list, &sh_traverse_default, &jobs_string_default},
