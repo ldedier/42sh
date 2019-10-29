@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/25 10:02:45 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/27 20:03:44 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/28 14:04:36 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,28 @@ t_list	*create_subshell_str(t_list *e)
 	return (e);
 }
 
-t_list	*jobs_create_compound_str(t_list *e, t_symbol_id start_symb)
+t_list	*handle_brace_tok(t_list **s, t_list *e)
+{
+	t_list	*rbrace;
+	t_list	*ptr;
+
+	rbrace = NULL;
+	if (!next_sep_is_ampersand(e, &rbrace))
+	{
+		ptr = e;
+		while (ptr && ptr->next != rbrace)
+			ptr = ptr->next;
+		ptr->next = rbrace->next;
+		free(rbrace);
+		ptr = *s;
+		*s = (*s)->next;
+		e = e->next;
+		return (e);
+	}
+	return (create_brace_str(e));
+}
+
+t_list	*jobs_create_compound_str(t_list **s, t_list *e, t_symbol_id start_symb)
 {
 	// int				count;
 	t_symbol_id		id;
@@ -89,5 +110,5 @@ t_list	*jobs_create_compound_str(t_list *e, t_symbol_id start_symb)
 	id = ((t_token *)(e->content))->id;
 	if (id == LEX_TOK_OPN_PAR)
 		return (create_subshell_str(e));
-	return (create_brace_str(e));
+	return (handle_brace_tok(s, e));
 }

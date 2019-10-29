@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_job_control.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jdugoudr <jdugoudr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 17:45:00 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/26 12:35:44 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/29 10:14:46 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,10 +169,11 @@ void			job_added_update_sign(t_job *j);
 t_job			*job_get_unsigned(void);
 void			job_exited_update_sign(char j_sign);
 
+
 /*
 ** jobs_str_tools.c
 */
-int				next_sep_is_ampersand(t_list *ptr);
+int				next_sep_is_ampersand(t_list *ptr, t_list **rbrace);
 int				token_break(t_symbol_id id);
 int				add_job_cmd(t_job_cmd *cmd);
 char			*create_cmd_word(t_token *t);
@@ -182,12 +183,37 @@ char			*create_cmd_word(t_token *t);
 */
 t_list			*create_brace_str(t_list *e);
 t_list			*create_subshell_str(t_list *e);
-t_list			*jobs_create_compound_str(t_list *e, t_symbol_id start_symb);
+t_list			*jobs_create_compound_str(t_list **s, t_list *e, t_symbol_id start_symb);
 
 /*
 ** jobs_create_str.c
 */
 int				jobs_create_str(t_list *token_list);
+
+// int			jobs_create_cmds(t_list *token_list);
+
+/*
+** jobs_create_strings
+*/
+//char	*jobs_string_default(t_ast_node *node);
+int				jobs_string_default(t_ast_node *node, char **str);
+int				jobs_string_opn_par(t_ast_node *node, char **str);
+int				jobs_string_cls_par(t_ast_node *node, char **str);
+int				jobs_string_lbrace(t_ast_node *node, char **str);
+int				jobs_string_rbrace(t_ast_node *node, char **str);
+int				jobs_string_and(t_ast_node *node, char **str);
+int				jobs_string_pipe(t_ast_node *node, char **str);
+int				jobs_string_and_if(t_ast_node *node, char **str);
+int				jobs_string_or_if(t_ast_node *node, char **str);
+int				jobs_string_semicol(t_ast_node *node, char **str);
+int				jobs_string_bang(t_ast_node *node, char **str);
+int				jobs_string_less(t_ast_node *node, char **str);
+int				jobs_string_great(t_ast_node *node, char **str);
+int				jobs_string_dgreat(t_ast_node *node, char **str);
+int				jobs_string_dless(t_ast_node *node, char **str);
+int				jobs_string_less_and(t_ast_node *node, char **str);
+int				jobs_string_great_and(t_ast_node *node, char **str);
+int				jobs_string_word(t_ast_node *node, char **str);
 
 
 #endif

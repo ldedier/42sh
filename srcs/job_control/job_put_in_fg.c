@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/20 23:22:03 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/27 11:15:34 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/28 16:03:15 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,9 @@ int			job_put_in_fg(t_job *j, int cont, int *ret)
 {
 	if (cont && kill (- j->pgid, SIGCONT) < 0)
 	{
-		return (jobs_error_free("kill",
-			"Could not send SIGCONT to the process", 0, FAILURE));
+		return (sh_perror_err("fg", "Could not send SIGCONT to the process"));
+		// return (jobs_error_free("kill",
+		// 	"Could not send SIGCONT to the process", 0, ERROR));
 	}
 	if (tcsetpgrp(g_term_fd, j->pgid) < 0)
 	{

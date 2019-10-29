@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 17:04:13 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/27 11:52:33 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/28 16:04:00 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,18 @@ static void		mark_job_as_running (t_job *j)
 static int	sh_execute_fg(t_job *j, t_context *context)
 {
 	int		res;
+	int		retvalue;
 
 	if (sh_pre_execution() != SUCCESS)
 		return (FAILURE);
 	mark_job_as_running(j);
 	ft_dprintf(g_term_fd, "[%d]  %s\n",
 		j->number, j->command);
-	if (job_put_in_fg(j, 1, &res) != SUCCESS)
-		return (FAILURE);
+	if ((retvalue = job_put_in_fg(j, 1, &res)) != SUCCESS)
+		return (retvalue);
 	// job_notify();
 	sh_env_update_ret_value_wait_result(context, res);
-	ft_printf("\nrevalue: %d\n", context->shell->ret_value);
+	// ft_printf("\nrevalue: %d\n", context->shell->ret_value);
 	return (SUCCESS);
 }
 
@@ -49,6 +50,7 @@ int			sh_builtin_fg(t_context *context)
 	t_job	*j;
 	int		i;
 	int		job_lst[MAX_JOBS];
+	int		ret;
 
 	if (!g_job_ctrl->interactive)
 		return (sh_perror_err("fg", "no job control in this shell"));
@@ -71,8 +73,8 @@ int			sh_builtin_fg(t_context *context)
 		// ft_dprintf(g_term_fd, "[%d]  %s\n",
 		// j->number, j->command);
 		context->shell->ret_value_set = 0;
-		if (sh_execute_fg(j, context) != SUCCESS)
-			return (FAILURE);
+		if ((ret = sh_execute_fg(j, context)) != SUCCESS)
+			return (ret);
 		if (context->shell->ret_value == 130)
 			return (SUCCESS);
 		i++;
