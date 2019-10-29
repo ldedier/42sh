@@ -6,7 +6,7 @@
 /*   By: jdugoudr <jdugoudr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 17:45:00 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/28 18:45:02 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/29 10:14:46 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,7 +195,25 @@ int				jobs_create_str(t_list *token_list);
 /*
 ** jobs_create_strings
 */
-char	*jobs_string_default(t_ast_node *node);
+//char	*jobs_string_default(t_ast_node *node);
+int				jobs_string_default(t_ast_node *node, char **str);
+int				jobs_string_opn_par(t_ast_node *node, char **str);
+int				jobs_string_cls_par(t_ast_node *node, char **str);
+int				jobs_string_lbrace(t_ast_node *node, char **str);
+int				jobs_string_rbrace(t_ast_node *node, char **str);
+int				jobs_string_and(t_ast_node *node, char **str);
+int				jobs_string_pipe(t_ast_node *node, char **str);
+int				jobs_string_and_if(t_ast_node *node, char **str);
+int				jobs_string_or_if(t_ast_node *node, char **str);
+int				jobs_string_semicol(t_ast_node *node, char **str);
+int				jobs_string_bang(t_ast_node *node, char **str);
+int				jobs_string_less(t_ast_node *node, char **str);
+int				jobs_string_great(t_ast_node *node, char **str);
+int				jobs_string_dgreat(t_ast_node *node, char **str);
+int				jobs_string_dless(t_ast_node *node, char **str);
+int				jobs_string_less_and(t_ast_node *node, char **str);
+int				jobs_string_great_and(t_ast_node *node, char **str);
+int				jobs_string_word(t_ast_node *node, char **str);
 
 
 #endif

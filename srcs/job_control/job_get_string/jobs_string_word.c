@@ -1,27 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   jobs_string_default.c                              :+:      :+:    :+:   */
+/*   jobs_string_word.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdugoudr <jdugoudr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/28 18:31:00 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/29 09:30:07 by jdugoudr         ###   ########.fr       */
+/*   Created: 2019/10/29 10:10:41 by jdugoudr          #+#    #+#             */
+/*   Updated: 2019/10/29 10:12:51 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-int	jobs_string_default(t_ast_node *node, char **str)
+int	jobs_string_word(t_ast_node *node, char **str)
 {
-	t_list	*lst;
-
-	lst = node->children;
-	while (lst)
-	{
-		if (lst->content->get_job_string(lst->content, str) != SUCCESS)
-			return (ERROR);
-		lst = lst->next;
-	}
+	if ((*str = ft_strjoin_free(*str, node->token->value, 1)) == NULL)
+		return (ERROR);
 	return (SUCCESS);
 }
