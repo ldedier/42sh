@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/05 15:41:50 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/18 14:56:24 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/29 14:44:18 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,12 @@ static int		sh_await_command(t_shell *shell)
 	}
 	shell->exec_depth = 0;
 	ret = execute_command(shell, g_glob.command_line.dy_str->str, 1);
+	if (ret != SUCCESS)
+	{
+		job_notify();
+		jobs_free_cmds();	//remove after job_str is in the ast.
+		return (ret);
+	}
 	if (g_job_ctrl->interactive)
 	{
 		jobs_free_cmds();

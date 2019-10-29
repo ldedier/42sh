@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 15:54:02 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/25 16:04:47 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/29 12:40:50 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ static int		sh_traverse_and_or_call_sons_exec(t_ast_node *node,
 	if (!should_execute(*prev_symbol, context->shell->ret_value))
 		return (jobs_free_str());
 	ret = sh_traverse_pipeline(node, context);
-	// ft_dprintf(g_term_fd, "%sRet after pipeline: %#X (%d)\n%s",BLUE, context->shell->ret_value, context->shell->ret_value, EOC);
 	if (ret == BLT_TEST_ERROR || context->shell->ret_value == BLT_TEST_ERROR)
 	{
 		context->shell->ret_value_set = 0;
@@ -102,8 +101,6 @@ int		sh_execute_and_or(t_ast_node *node, t_context *context)
 	prev_symbol = -1;
 	while (ptr != NULL && context->shell->running)
 	{
-		// we need this condition because with the cmd: cmd1 || cmd2 &
-		// Only the cmd2 is affected by the '&'
 		if (ptr->next == NULL)
 		{
 			context->cmd_type |= (g_job_ctrl->ampersand ? BG_NODE : 0);

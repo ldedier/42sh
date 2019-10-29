@@ -69,14 +69,21 @@ static int	get_job_cmd_str(t_job *j)
 
 	j->command = ft_strdup(g_job_ctrl->job_cmd->str);
 	if (j->command == NULL)
-		return (jobs_error_free(SH_ERR1_MALLOC, "job_add", 1, FAILURE));
+	{
+		free(j);
+		return (sh_perror(SH_ERR1_MALLOC, "job add"));
+	}
 	temp = g_job_ctrl->job_cmd;
 	g_job_ctrl->job_cmd = g_job_ctrl->job_cmd->next;
-	j->cmd_copy = ft_strdup(j->command);
-	if (j->cmd_copy == NULL)
-		return (jobs_error_free(SH_ERR1_MALLOC, "job_add", 1, FAILURE));
 	free(temp->str);
 	free(temp);
+	j->cmd_copy = ft_strdup(j->command);
+	if (j->cmd_copy == NULL)
+	{
+		free(j->command);
+		free(j);
+		return (sh_perror(SH_ERR1_MALLOC, "job add"));
+	}
 	return (SUCCESS);
 }
 
@@ -96,13 +103,13 @@ int			job_add(int bg)
 	int		n;
 
 	n = find_available_job_number();
+	// n = -1;
 	if (n < 0)
-		return (jobs_error_free("Maximum number of jobs exceeded",
-			"job_add", 0, STOP_CMD_LINE));
+		return (sh_perror_err("Maxumum number of jobs exceeded", "job add"));
 	if ((j = malloc(sizeof(t_job))) == NULL)
-		return (jobs_error_free(SH_ERR1_MALLOC, "job_add", 1, FAILURE));
+		return (sh_perror(SH_ERR1_MALLOC, "job add"));
 	init_job_values(j, n, bg);
-	if (get_job_cmd_str(j) < 0)
+	if (get_job_cmd_str(j) != SUCCESS)
 		return (FAILURE);
 	// ft_printf("%sAdded job [%d] %s ", CYAN, g_job_ctrl->curr_job->number, g_job_ctrl->curr_job->command);
 	// ft_printf("in %s%s\n",j->foreground == 1 ? "foreground" : "background", COLOR_END);

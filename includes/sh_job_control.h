@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_job_control.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdugoudr <jdugoudr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 17:45:00 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/29 10:14:46 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/29 14:50:50 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ int				job_is_stopped(t_job *j);
 void			job_notify(void);
 void			job_print_status(t_job *j, const char *new_status);
 void			job_print(t_job *j, int opt, int fd);
-int				job_put_in_bg(t_job *j, int cont);
+int				job_put_in_bg(t_job *j);
 int				job_put_in_fg(t_job *j, int cont, int *res);
 void			job_wait(t_job *j, int *res);
 // int				jobs_create_cmds(t_list *token_list);

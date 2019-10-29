@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:00:19 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/22 11:08:08 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/29 12:33:02 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ int 	get_node_to_exec(t_ast_node *node, t_context *context,
 		{
 			g_job_ctrl->job_added = 0;
 			g_job_ctrl->ampersand = 0;
-			// For each SEPERATOR_OP, we need a new job.
 			context->cmd_type = SIMPLE_NODE;
 			context->wflags = 0;
 			ret = f(node_to_exec, curr_node->children->content, context);
@@ -55,7 +54,6 @@ int 	get_node_to_exec(t_ast_node *node, t_context *context,
 			node_to_exec = curr_node;
 		lst = lst->next;
 	}
-	// For the last command.
 	g_job_ctrl->job_added = 0;
 	context->wflags = 0;
 	context->cmd_type = SIMPLE_NODE;

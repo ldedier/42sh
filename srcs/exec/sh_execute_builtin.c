@@ -38,7 +38,7 @@ static int	execute_parent_part(pid_t cpid)
 	{
 		if (set_pgid_parent(cpid) != SUCCESS)
 			return (FAILURE);
-		if (job_put_in_bg(g_job_ctrl->curr_job, 0) != SUCCESS)
+		if (job_put_in_bg(g_job_ctrl->curr_job) != SUCCESS)
 			return (FAILURE);
 	}
 	return (SUCCESS);
@@ -51,8 +51,8 @@ static int	execute_builtin_in_bg(t_ast_node *parent_node, t_context *context)
 
 	if (g_job_ctrl->interactive && !g_job_ctrl->job_added)
 	{
-		if (job_add(IS_BG(context->cmd_type)) != SUCCESS)
-			return (FAILURE);
+		if ((ret = job_add(IS_BG(context->cmd_type))) != SUCCESS)
+			return (ret);
 		g_job_ctrl->job_added = 1;
 	}
 	if ((cpid = fork()) < -1)

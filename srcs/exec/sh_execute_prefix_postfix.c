@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/31 12:20:31 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/28 16:16:47 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/29 10:28:40 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int		sh_pre_execution(void)
 	{
 		if (sh_reset_shell(0) < 0)
 			return (FAILURE);
-		// ft_dprintf(g_term_fd, "%sPRE EXECUTION%s\n", COL_MAGENTA, EOC);
+		ft_dprintf(g_term_fd, "%sPRE EXECUTION%s\n", COL_MAGENTA, EOC);
 		sh_reset_signals_pre_exec();
 	}
 	else
@@ -45,7 +45,7 @@ int		sh_post_execution(void)
 	{
 		if (sh_set_shell_back(0) < 0)
 			return (FAILURE);
-		// ft_dprintf(g_term_fd, "%sPOST EXECUTION%s\n", COL_MAGENTA, EOC);
+		ft_dprintf(g_term_fd, "%sPOST EXECUTION%s\n", COL_MAGENTA, EOC);
 		sh_reset_signals_post_exec();
 	}
 	else

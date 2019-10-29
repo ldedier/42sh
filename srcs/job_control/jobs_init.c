@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 23:24:10 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/26 12:02:20 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/29 12:31:45 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,28 +27,24 @@ static void		init_jc_values(void)
 	g_job_ctrl->job_added = 0;
 	g_job_ctrl->ampersand_eol = 0;
 	g_job_ctrl->ampersand = 0;
-	// This is where we print all job-control realted messages
-	// g_term_fd = open("/dev/tty", O_RDWR); //Protect
 }
 
 static int		jc_set_process_group(void)
 {
 	g_job_ctrl->shell_pgid = getpid();
-	// Put the shell in its own process group
 	if (setpgid (g_job_ctrl->shell_pgid, g_job_ctrl->shell_pgid) < 0)
 	{
 		free(g_job_ctrl);
 		return (sh_perror("setpgid",
 			"Could not put the shell in its own process group"));
 	}
-	// Take control of the terminal
 	if (tcsetpgrp(g_term_fd, g_job_ctrl->shell_pgid) < 0)
 	{
 		free(g_job_ctrl);
 		return (sh_perror("tcsetpgrp",
 			"Could not take control of the terminal"));
 	}
-	return (EXIT_SUCCESS);
+	return (SUCCESS);
 }
 
 /*
@@ -64,24 +60,20 @@ int				jobs_init(void)
 	if (g_job_ctrl == NULL)
 		return (sh_perror(SH_ERR1_MALLOC, "jobs_init"));
 	init_jc_values();
-	// Check whether the shell in run interactively
-	// g_job_ctrl->interactive = 0;
 	g_job_ctrl->interactive = isatty(STDIN_FILENO);
 
 	if (g_job_ctrl->interactive)
 	{
-		// If the shell in run as a background process, quit.
-		if(tcgetpgrp (g_term_fd) != (g_job_ctrl->shell_pgid = getpgrp ()))
+		if (tcgetpgrp (g_term_fd) != (g_job_ctrl->shell_pgid = getpgrp ()))
 			if (kill (- g_job_ctrl->shell_pgid, SIGHUP) < 0)
 			{
 				free(g_job_ctrl);
 				return (sh_perror("kill", "Could not properly close the shell"));
 			}
-		signal(SIGTTOU, SIG_IGN);	//	signal handling needs rework
+		signal(SIGTTOU, SIG_IGN);
 		if (jc_set_process_group() < 0)
 			return (FAILURE);
 		return (SUCCESS);
 	}
-	// free(g_job_ctrl);
 	return (SUCCESS);
 }

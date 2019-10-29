@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/02 10:03:30 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/28 15:40:06 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/29 14:51:19 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static int	parents_part(pid_t pid, t_context *context)
 			if (job_put_in_fg(g_job_ctrl->curr_job, 0, &ret) != SUCCESS)
 				return (FAILURE);
 		}
-		else if (job_put_in_bg(g_job_ctrl->curr_job, 0) != SUCCESS)
+		else if (job_put_in_bg(g_job_ctrl->curr_job) != SUCCESS)
 			return (FAILURE);
 	}
 	else
@@ -85,7 +85,7 @@ int		sh_traverse_subshell(t_ast_node *node, t_context *context)
 		return (child_part(node, context));
 	if (g_job_ctrl->interactive && !g_job_ctrl->job_added)
 	{
-		if (job_add(IS_BG(context->cmd_type)) != SUCCESS)
+		if ((ret = job_add(IS_BG(context->cmd_type))) != SUCCESS)
 			return (FAILURE);
 		g_job_ctrl->job_added = 1;
 	}
