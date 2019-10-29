@@ -96,14 +96,18 @@ static int	get_job_cmd_str(t_job *j)
 ** If not, we add it the tail of the job list.
 */
 
-int			job_add(int bg)
+int			job_add(t_ast_node *node, int bg)
 {
 	t_job	*j;
 	t_job	*it;
 	int		n;
 
 	n = find_available_job_number();
-	// n = -1;
+	char		*str;
+	str = NULL;
+	t_symbol_id id = node->symbol->id;
+	g_grammar[id].get_job_string(node, &str);
+	ft_dprintf(g_term_fd, BLUE"%s\n"EOC, str);
 	if (n < 0)
 		return (sh_perror_err("Maxumum number of jobs exceeded", "job add"));
 	if ((j = malloc(sizeof(t_job))) == NULL)

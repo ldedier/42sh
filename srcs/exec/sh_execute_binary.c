@@ -91,20 +91,12 @@ int		sh_execute_binary(t_ast_node *father_node, t_context *context)
 		sh_execute_execve(father_node, context);
 	if (g_job_ctrl->interactive && !g_job_ctrl->job_added)
 	{
-		// if (father_node == NULL)
-		// 	ft_printf("NULL\n");
-		// else
-		// {
-		// 	char		*str;
-		// 	str = NULL;
-		// 	t_symbol_id id = father_node->symbol->id;
-
-		// 	g_grammar[id].get_job_string(father_node, &str);
-		// 	ft_printf("%s\n", str);
-
-		// }
-		// ft_dprintf(g_term_fd, YELLOW"Adding job in binary\n"EOC);
-		if ((ret = job_add(IS_BG(context->cmd_type))) != SUCCESS)
+		// char		*str;
+		// str = NULL;
+		// t_symbol_id id = father_node->symbol->id;
+		// g_grammar[id].get_job_string(father_node, &str);
+		// ft_printf("%s\n", str);
+		if ((ret = job_add(father_node, IS_BG(context->cmd_type))) != SUCCESS)
 			return (ret);
 		g_job_ctrl->job_added = 1;
 	}

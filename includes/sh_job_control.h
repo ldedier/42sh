@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 17:45:00 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/29 16:28:02 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/29 16:38:14 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ struct	s_job_control
 
 t_job_control	*g_job_ctrl;
 
-int				job_add(int fg);
+int				job_add(t_ast_node *node, int fg);
 int				job_check_changes(pid_t cpid, int status);
 void			job_control_free(void);
 void			job_free(t_job *j);

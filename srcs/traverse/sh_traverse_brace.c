@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 10:34:50 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/29 14:51:16 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/29 16:31:37 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	sh_traverse_brace(t_ast_node *node, t_context *context)
 	if (g_job_ctrl->interactive && IS_BG(context->cmd_type))
 	{
 		ft_dprintf(g_term_fd, YELLOW"Adding job in brace\n"EOC);
-		if ((ret = job_add(IS_BG(context->cmd_type))) != SUCCESS)
+		if ((ret = job_add(node, IS_BG(context->cmd_type))) != SUCCESS)
 			return (ret);
 		g_job_ctrl->job_added = 1;
 		ret = sh_execute_brace_bg(node, context);

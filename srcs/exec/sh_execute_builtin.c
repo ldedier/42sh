@@ -51,7 +51,7 @@ static int	execute_builtin_in_bg(t_ast_node *parent_node, t_context *context)
 
 	if (g_job_ctrl->interactive && !g_job_ctrl->job_added)
 	{
-		if ((ret = job_add(IS_BG(context->cmd_type))) != SUCCESS)
+		if ((ret = job_add(parent_node, IS_BG(context->cmd_type))) != SUCCESS)
 			return (ret);
 		g_job_ctrl->job_added = 1;
 	}
