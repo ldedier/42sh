@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 13:41:34 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/30 17:11:09 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/30 17:32:34 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,12 +88,13 @@ pid_t 		fork_for_pipe(void)
 	** jdugoudr : comme ca le deuxieme fork fail
 	** Et ca crash, si le premier fork fail, ca marche bien.
 	*/
-	// static int	i = 0;
-	// if (i == 1)
-	// {
-	// 	sh_perror(SH_ERR1_FORK, "execution fork for pipe");
-	// 	return (-1);
-	// }
+	 static int	i = 0;
+	 if (i == 1)
+	 {
+	 	sh_perror(SH_ERR1_FORK, "execution fork for pipe");
+	 	return (-1);
+	 }
+	 i++;
 	/*
 	** remet ce qui est avant pour faire fork fail
 	*/
@@ -119,6 +120,23 @@ pid_t 		fork_for_pipe(void)
 	return (child);
 }
 
+/*
+** close_all_pipe
+** close all pipe for shell process if
+** needed if an error appear during fork
+*/
+static void		close_all_pipe(t_pipe *pipes)
+{
+	int		i;
+
+	i = 0;
+	while (i < pipes->nb_pipe)
+	{
+		close(pipes->tab_pds[i][INPUT]);
+		close(pipes->tab_pds[i][OUTPUT]);
+		i++;
+	}
+}
 
 /*
 ** creat_all_pipe
@@ -141,6 +159,7 @@ int		create_all_pipe(int nb_pipe, t_pipe *pipes, t_list *lst_psequences,
 		if (ret != SUCCESS)
 		{
 			ft_dprintf(g_term_fd, "waiting for unfinished children after fork fails\n");
+			close_all_pipe(pipes);
 			while (++i < pipes->nb_cmd)
 			{
 				if (pipes->tab_pid[i] != 0)
@@ -153,26 +172,9 @@ int		create_all_pipe(int nb_pipe, t_pipe *pipes, t_list *lst_psequences,
 	if (pipe(pds))
 	{
 		sh_perror(SH_ERR1_PIPE, "execution commande pipe");
-		return (-1);	//Pourquoi -1 ici?
+		return (ERROR);	//Pourquoi -1 ici?
 	}
 	pipes->tab_pds[nb_pipe] = pds;
 	return (create_all_pipe(nb_pipe - 1, pipes, lst_psequences, context));
 }
 
-/*
-** close_all_pipe
-** close all pipe for shell process if
-** needed if an error appear during fork
-*/
-void		close_all_pipe(t_pipe *pipes)
-{
-	int		i;
-
-	i = 0;
-	while (i < pipes->nb_pipe)
-	{
-		close(pipes->tab_pds[i][INPUT]);
-		close(pipes->tab_pds[i][OUTPUT]);
-		i++;
-	}
-}
