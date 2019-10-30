@@ -6,7 +6,7 @@
 #    By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/10/29 17:00:28 by mdaoud           ###   ########.fr        #
+#    Updated: 2019/10/30 20:15:59 by mdaoud           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -274,7 +274,8 @@ SRCS			+=	sh_execute_simple_command.c \
 					sh_execute_prefix_postfix.c \
 					t_context.c sh_debug.c \
 					sh_execute_redirection.c \
-					sh_execute_pipe_tools.c
+					sh_execute_pipe_tools.c \
+					sh_execute_pipe_close_tools.c
 				#	sh_execute_compound_command.c
 
 ################################################################
@@ -344,7 +345,7 @@ SRCS			+=	jobs_init.c job_add.c process_add.c job_tools.c \
 					job_control_free.c job_wait.c job_is_continued.c \
 					job_put_in_bg.c job_put_in_fg.c job_is_completed.c \
 					job_is_stopped.c job_check_changes.c job_free.c \
-					job_notify.c job_print.c \
+					job_notify.c job_print.c jobs_terminate.c \
 					jobs_error_free.c set_pgid_child.c set_pgid_parent.c \
 					job_sign_tools.c ft_strtok_pipe.c \
 					jobs_string_default.c jobs_string_opn_par.c \

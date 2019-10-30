@@ -53,40 +53,6 @@ static void	init_job_values(t_job *j, int n, int bg)
 	g_job_ctrl->curr_job = j;
 }
 
-/*
-** Our g_job_ctrol->job_cmd contains a linked list of strings that-
-**	represent the command.
-** example : "ls" -> "ls | wc" -> "echo hello"
-** Every time we add a job, we take the g_job_ctrol->job_cmd->str.
-** Then we free it and point g_job_ctrol->job_cmd to the next one.
-** In the example we take the "ls", put it in the job,
-**	then free it from the linked list (it becomes "ls | wc" -> "echo hello")
-*/
-
-// static int	get_job_cmd_str(t_job *j)
-// {
-// 	t_job_cmd	*temp;
-
-// 	j->command = ft_strdup(g_job_ctrl->job_cmd->str);
-// 	if (j->command == NULL)
-// 	{
-// 		free(j);
-// 		return (sh_perror(SH_ERR1_MALLOC, "job add"));
-// 	}
-// 	temp = g_job_ctrl->job_cmd;
-// 	g_job_ctrl->job_cmd = g_job_ctrl->job_cmd->next;
-// 	free(temp->str);
-// 	free(temp);
-// 	j->cmd_copy = ft_strdup(j->command);
-// 	if (j->cmd_copy == NULL)
-// 	{
-// 		free(j->command);
-// 		free(j);
-// 		return (sh_perror(SH_ERR1_MALLOC, "job add"));
-// 	}
-// 	return (SUCCESS);
-// }
-
 static int		get_job_string(t_ast_node *node, t_job *j)
 {
 	char		*str;
@@ -95,7 +61,6 @@ static int		get_job_string(t_ast_node *node, t_job *j)
 	str = NULL;
 	id = node->symbol->id;
 	g_grammar[id].get_job_string(node, &str); // Protect
-	ft_dprintf(g_term_fd, BLUE"%s\n"EOC, str);
 	j->command = str;
 	j->cmd_copy = ft_strdup(j->command);
 	if (j->cmd_copy == NULL)
@@ -123,8 +88,9 @@ int			job_add(t_ast_node *node, int bg)
 	int		n;
 
 	n = find_available_job_number();
+	// n = -1;
 	if (n < 0)
-		return (sh_perror_err("Maxumum number of jobs exceeded", "job add"));
+		return (sh_perror_err("Maxumum number of jobs exceeded", NULL));
 	if ((j = malloc(sizeof(t_job))) == NULL)
 		return (sh_perror(SH_ERR1_MALLOC, "job add"));
 	init_job_values(j, n, bg);

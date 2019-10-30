@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 01:15:12 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/26 15:33:00 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/30 22:56:44 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void			job_control_free(void)
 	}
 	if (g_job_ctrl == NULL)
 		return ;
+	// jobs_terminate();
 	j = g_job_ctrl->first_job;
 	while (j != NULL)
 	{

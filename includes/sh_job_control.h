@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 17:45:00 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/29 16:59:11 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/30 20:14:11 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,19 +129,14 @@ void			job_print(t_job *j, int opt, int fd);
 int				job_put_in_bg(t_job *j);
 int				job_put_in_fg(t_job *j, int cont, int *res);
 void			job_wait(t_job *j, int *res);
-// int				jobs_create_cmds(t_list *token_list);
-int				jobs_error_free(const char *err, const char *suff,
-				int to_free, int ret);
-void			jobs_free_cmds(void);
 int				jobs_init(void);
-void			jobs_print_cmds(void);
+void			jobs_terminate(void);
 int				process_add(pid_t pid);
 int				set_pgid_child(int cpid);
 int				set_pgid_parent(int cpid);
-char			**str_tab_duplicate(char **from);	//put in libft
-void			str_tab_free(char **str);			//put in libft
-void			str_tab_print(char **char_tab);		//put in libft
-int				jobs_free_str(void);
+char			**str_tab_duplicate(char **from);
+void			str_tab_free(char **str);
+void			str_tab_print(char **char_tab);
 char			*ft_strtok_pipe(char *str, char *delim);
 
 /*
@@ -153,7 +148,6 @@ t_job			*job_get_by_sign(char c);
 /*
 ** job_sign_tools.c
 */
-
 void			job_reset_sign(char c);
 void			job_set_plus_sign(t_job *j);
 void			job_added_update_sign(t_job *j);
@@ -164,7 +158,6 @@ void			job_exited_update_sign(char j_sign);
 /*
 ** jobs_create_strings
 */
-//char	*jobs_string_default(t_ast_node *node);
 int				jobs_string_default(t_ast_node *node, char **str);
 int				jobs_string_opn_par(t_ast_node *node, char **str);
 int				jobs_string_cls_par(t_ast_node *node, char **str);

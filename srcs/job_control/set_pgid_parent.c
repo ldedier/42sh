@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 18:30:51 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/13 23:50:11 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/30 20:22:44 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@ int				set_pgid_parent(int cpid)
 	if (g_job_ctrl->curr_job->pgid == 0)
 		g_job_ctrl->curr_job->pgid = cpid;
 	if (setpgid(cpid, g_job_ctrl->curr_job->pgid) < 0)
-		return (jobs_error_free("setpgid",
-			"Could not add the process to a process group", 0, ERROR));
-	// ft_dprintf(g_term_fd, " Added process\t%s, pid: %d, pgid: %d to job [%d]\n", g_job_ctrl->curr_job->command, cpid, getpgid(cpid), g_job_ctrl->curr_job->number);
+		return (sh_perror("Could not add the process to a process group",
+			"setpgid"));
 	return (SUCCESS);
 }

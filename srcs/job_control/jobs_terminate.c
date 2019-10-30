@@ -1,22 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   jc_error_free.c                                    :+:      :+:    :+:   */
+/*   jobs_terminate.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/28 02:00:14 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/08 16:17:44 by mdaoud           ###   ########.fr       */
+/*   Created: 2019/10/30 20:10:52 by mdaoud            #+#    #+#             */
+/*   Updated: 2019/10/30 21:47:12 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "sh_job_control.h"
-#include "sh_perror.h"
+#include "sh_21.h"
 
-int		jobs_error_free(const char *err, const char *suff, int to_free, int ret)
+void			jobs_terminate(void)
 {
-	if (to_free)
-		job_control_free();
-	sh_perror(err, suff);
-	return (ret);
+	t_job	*j;
+
+	if (g_job_ctrl && g_job_ctrl->interactive)
+	{
+		j = g_job_ctrl->first_job;
+		while (j != NULL)
+		{
+			if (j->pgid != 0)
+			{
+				kill (- j->pgid, SIGCONT);
+				kill (- j->pgid, SIGHUP);
+			}
+			j = j->next;
+		}
+	}
 }
