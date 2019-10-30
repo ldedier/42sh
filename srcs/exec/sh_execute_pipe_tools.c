@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sh_execute_pipe_tool.c                             :+:      :+:    :+:   */
+/*   sh_execute_pipe_tools.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 13:41:34 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/18 08:19:24 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/30 12:52:18 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,4 +77,84 @@ void		close_one_pipe(int curr, t_pipe *pipes)
 		close(pipes->tab_pds[curr][INPUT]);
 		close(pipes->tab_pds[curr][OUTPUT]);
 	}
+}
+
+pid_t 		fork_for_pipe(void)
+{
+	pid_t 	child;
+	int		ret;
+
+	/*
+	** jdugoudr : comme ca le deuxieme fork fail
+	** Et ca crash, si le premier fork fail, ca marche bien.
+	*/
+	// static int	i = 0;
+	// if (i == 1)
+	// {
+	// 	sh_perror(SH_ERR1_FORK, "execution fork for pipe");
+	// 	return (-1);
+	// }
+	/*
+	** remet ce qui est avant pour faire fork fail
+	*/
+	if ((child = fork()) < 0)
+	{
+		sh_perror(SH_ERR1_FORK, "execution fork for pipe");
+		return (-1);
+	}
+	// i++; // remete ca aussi
+	if (child == 0)
+	{
+		if (g_job_ctrl->interactive)
+		{
+			if ((ret = set_pgid_child(child)) != SUCCESS)
+				return (ret);
+		}
+	}
+	else
+	{
+		if (g_job_ctrl->interactive && set_pgid_parent(child) != SUCCESS)
+			return (-1);
+	}
+	return (child);
+}
+
+
+/*
+** creat_all_pipe
+** If we have a intern problems like can't fork,
+** we have to wait for created process.
+*/
+
+int		create_all_pipe(int nb_pipe, t_pipe *pipes, t_list *lst_psequences,
+			t_context *context)
+{
+	int	pds[2];
+	int	ret;
+	int	i;
+
+	i = -1;
+	if (nb_pipe == -1)
+	{
+		ret = loop_pipe_exec(0, pipes, lst_psequences, context);
+		ft_dprintf(g_term_fd, "loop pipe exec ret: %d\n", ret);
+		if (ret != SUCCESS)
+		{
+			ft_dprintf(g_term_fd, "waiting for unfinished children after fork fails\n");
+			while (++i < pipes->nb_cmd)
+			{
+				if (pipes->tab_pid[i] != 0)
+					waitpid(pipes->tab_pid[i], &ret, WNOHANG);
+			}
+			return (ret);
+		}
+		return (ret);
+	}
+	if (pipe(pds))
+	{
+		sh_perror(SH_ERR1_PIPE, "execution commande pipe");
+		return (-1);	//Pourquoi -1 ici?
+	}
+	pipes->tab_pds[nb_pipe] = pds;
+	return (create_all_pipe(nb_pipe - 1, pipes, lst_psequences, context));
 }

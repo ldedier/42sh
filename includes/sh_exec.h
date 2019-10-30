@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 17:11:16 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/25 16:02:50 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/30 12:17:08 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,16 +140,19 @@ int					sh_execute_pipe(t_ast_node *node, t_context *context);
 ** sh_execute_pipe.c
 */
 int					sh_execute_pipe(t_ast_node *node, t_context *context);
-
+int					loop_pipe_exec(int curr_cmd, t_pipe *pipes,
+						t_list *lst_sequences, t_context *context);
 /*
 ** sh_execute_pipe_tools.c
 */
-void				close_all_pipe_but_one(
-	int nb_pipe, int curr_cmd, int **tab_pds);
-void				close_and_free(
-	int curr_cmd, t_pipe *pipes, t_context *context);
+void				close_all_pipe_but_one(int nb_pipe, int curr_cmd,
+						int **tab_pds);
+void				close_and_free(int curr_cmd, t_pipe *pipes,
+						t_context *context);
 void				close_one_pipe(int curr, t_pipe *pipes);
-
+pid_t 				fork_for_pipe(void);
+int					create_all_pipe(int nb_pipe, t_pipe *pipes,
+						t_list *lst_psequences, t_context *context);
 /*
 ** sh_execute_prefix_postfix.c
 */

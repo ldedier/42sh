@@ -6,37 +6,11 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 08:21:00 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/29 16:49:08 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/30 12:42:13 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
-
-static pid_t 		fork_for_pipe(void)
-{
-	pid_t 	child;
-	int		ret;
-
-	if ((child = fork()) < 0)
-	{
-		sh_perror(SH_ERR1_FORK, "execution fork for pipe");
-		return (-1);
-	}
-	if (child == 0)
-	{
-		if (g_job_ctrl->interactive)
-		{
-			if ((ret = set_pgid_child(child)) != SUCCESS)
-				return (ret);
-		}
-	}
-	else
-	{
-		if (g_job_ctrl->interactive && set_pgid_parent(child) != SUCCESS)
-			return (-1);
-	}
-	return (child);
-}
 
 /*
 ** child_exec
@@ -63,7 +37,6 @@ static int		child_exec(
 		g_job_ctrl->interactive = 0;
 		ret = sh_traverse_command(to_execute, context);
 	}
-	/*ft_dprintf(2, "on close_and_free\n");*/
 	g_job_ctrl->interactive = 1;
 	close_and_free(curr_cmd, pipes, context);
 	if (ret == SUCCESS)
@@ -77,7 +50,7 @@ static int		child_exec(
 ** fork and execute in the child process the current pipe sequence.
 */
 
-static int		loop_pipe_exec(
+int		loop_pipe_exec(
 	int curr_cmd, t_pipe *pipes, t_list *lst_sequences, t_context *context)
 {
 	int			ret;
@@ -107,40 +80,34 @@ static int		loop_pipe_exec(
 	return (SUCCESS);
 }
 
-/*
-** creat_all_pipe
-** If we have a intern problems like can't fork,
-** we have to wait for created process.
-*/
-
-static int		create_all_pipe(
-		int nb_pipe, t_pipe *pipes, t_list *lst_psequences, t_context *context)
+static int		pipe_wait(t_context *context, t_pipe *pipes)
 {
-	int	pds[2];
 	int	ret;
 	int	i;
 
-	i = 0;
-	if (nb_pipe == -1)
+	if (g_job_ctrl->interactive)
 	{
-		ret = loop_pipe_exec(0, pipes, lst_psequences, context);
-		if (ret != SUCCESS)
+		if (g_job_ctrl->curr_job->foreground)
+			if (sh_pre_execution() != SUCCESS)
+				return (FAILURE);
+		if (g_job_ctrl->curr_job->foreground == 0)
 		{
-			while (i < pipes->nb_cmd)
-				waitpid(pipes->tab_pid[i++], &ret, 0);
-			return (ERROR);
+			if ((ret = job_put_in_bg(g_job_ctrl->curr_job)) != SUCCESS)
+				return (FAILURE);
 		}
-		return (ret);
+		else if ((job_put_in_fg(g_job_ctrl->curr_job, 0, &ret)) != SUCCESS)
+			return (FAILURE);
+		sh_env_update_ret_value_wait_result(context, ret);
 	}
-	if (pipe(pds))
+	else
 	{
-		sh_perror(SH_ERR1_PIPE, "execution commande pipe");
-		return (-1);
+		i = 0;
+		while (i++ < pipes->nb_cmd)
+			if (waitpid(-1, &ret, context->wflags) == pipes->tab_pid[pipes->nb_cmd - 1])
+				sh_env_update_ret_value_wait_result(context, ret);
 	}
-	pipes->tab_pds[nb_pipe] = pds;
-	return (create_all_pipe(nb_pipe - 1, pipes, lst_psequences, context));
+	return (SUCCESS);
 }
-
 /*
 ** sh_execute_pipe
 ** This the execution file of pipe.
@@ -158,44 +125,24 @@ static int		create_all_pipe(
 int				sh_execute_pipe(t_ast_node *node, t_context *context)
 {
 	int			ret;
-	int			i;
 	t_pipe		pipes;
 
-	ret = ERROR;
 	pipes.nb_pipe = ft_lstlen(node->children) / 2;
 	pipes.nb_cmd = pipes.nb_pipe + 1;
-	pipes.tab_pid = NULL;
-	pipes.tab_pds = NULL;
 	if ((pipes.tab_pds = malloc(pipes.nb_pipe * sizeof(int *))) == NULL
 			|| (pipes.tab_pid = malloc(pipes.nb_cmd * sizeof(pid_t))) == NULL)
-		sh_env_update_ret_value(context->shell, ret);
-	else if (!create_all_pipe(pipes.nb_pipe - 1, &pipes, node->children, context))
-	{
-		if (g_job_ctrl->interactive)
-		{
-			if (g_job_ctrl->curr_job->foreground)
-				if (sh_pre_execution() != SUCCESS)
-					return (FAILURE);
-			if (g_job_ctrl->curr_job->foreground == 0)
-			{
-				if ((ret = job_put_in_bg(g_job_ctrl->curr_job)) != SUCCESS)
-					return (FAILURE);
-			}
-			else if ((job_put_in_fg(g_job_ctrl->curr_job, 0, &ret)) != SUCCESS)
-				return (FAILURE);
-			sh_env_update_ret_value_wait_result(context, ret);
-		}
-		else
-		{
-			i = 0;
-			// ft_dprintf(g_term_fd, "WFLAGS: %d\n", context->wflags);
-			while (i++ < pipes.nb_cmd)
-				if (waitpid(-1, &ret, context->wflags) == pipes.tab_pid[pipes.nb_cmd - 1])
-					sh_env_update_ret_value_wait_result(context, ret);
-		}
-	}
+		ret = FAILURE;
+	ret = -1;
+	while (++ret < pipes.nb_cmd)
+		pipes.tab_pid[ret] = 0;
+	if (!(ret = create_all_pipe(pipes.nb_pipe - 1, &pipes, node->children, context)))
+		ret = pipe_wait(context, &pipes);
 	else
+	{
+		ft_dprintf(g_term_fd, "create_all pipes failed ret: %d\n", ret);
 		sh_env_update_ret_value(context->shell, ret);
+		return (ret);
+	}
 	free(pipes.tab_pds);
 	free(pipes.tab_pid);
 	return (SUCCESS);
