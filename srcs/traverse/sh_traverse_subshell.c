@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/02 10:03:30 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/29 16:31:48 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/30 11:29:00 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,6 @@ static int	parents_part(pid_t pid, t_context *context)
 	}
 	else
 		waitpid(pid, &ret, context->wflags);
-	// if (sh_post_execution() != SUCCESS)
-	// 			return (FAILURE);
 	sh_env_update_ret_value_wait_result(context, ret);
 	return (SUCCESS);
 }
@@ -86,8 +84,8 @@ int		sh_traverse_subshell(t_ast_node *node, t_context *context)
 		return (child_part(node, context));
 	if (g_job_ctrl->interactive && !g_job_ctrl->job_added)
 	{
-		if ((ret = job_add(node, IS_BG(context->cmd_type))) != SUCCESS)
-			return (FAILURE);
+		if ((ret = job_add(node->parent, IS_BG(context->cmd_type))) != SUCCESS)
+			return (ret);
 		g_job_ctrl->job_added = 1;
 	}
 	if ((pid = fork()) < 0)
@@ -102,10 +100,3 @@ int		sh_traverse_subshell(t_ast_node *node, t_context *context)
 		child_part(node, context);
 	return (0);
 }
-
-
-// ls | (sleep 90)
-
-// pipe->fork ->fork->fork
-// shell->pipe : job_wait
-// shell->job_wait->pipe->waitpid(0)->subhsell->waitpid(0)->binary
