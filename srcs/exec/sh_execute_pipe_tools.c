@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 13:41:34 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/30 12:52:18 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/30 17:11:09 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,4 +157,22 @@ int		create_all_pipe(int nb_pipe, t_pipe *pipes, t_list *lst_psequences,
 	}
 	pipes->tab_pds[nb_pipe] = pds;
 	return (create_all_pipe(nb_pipe - 1, pipes, lst_psequences, context));
+}
+
+/*
+** close_all_pipe
+** close all pipe for shell process if
+** needed if an error appear during fork
+*/
+void		close_all_pipe(t_pipe *pipes)
+{
+	int		i;
+
+	i = 0;
+	while (i < pipes->nb_pipe)
+	{
+		close(pipes->tab_pds[i][INPUT]);
+		close(pipes->tab_pds[i][OUTPUT]);
+		i++;
+	}
 }
