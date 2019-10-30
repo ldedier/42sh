@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 08:21:00 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/30 12:42:13 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/30 17:20:53 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,19 +129,30 @@ int				sh_execute_pipe(t_ast_node *node, t_context *context)
 
 	pipes.nb_pipe = ft_lstlen(node->children) / 2;
 	pipes.nb_cmd = pipes.nb_pipe + 1;
+	pipes.tab_pid = NULL;
 	if ((pipes.tab_pds = malloc(pipes.nb_pipe * sizeof(int *))) == NULL
 			|| (pipes.tab_pid = malloc(pipes.nb_cmd * sizeof(pid_t))) == NULL)
 		ret = FAILURE;
-	ret = -1;
-	while (++ret < pipes.nb_cmd)
-		pipes.tab_pid[ret] = 0;
-	if (!(ret = create_all_pipe(pipes.nb_pipe - 1, &pipes, node->children, context)))
-		ret = pipe_wait(context, &pipes);
 	else
 	{
-		ft_dprintf(g_term_fd, "create_all pipes failed ret: %d\n", ret);
-		sh_env_update_ret_value(context->shell, ret);
-		return (ret);
+			ret = -1;
+		while (++ret < pipes.nb_cmd)
+			pipes.tab_pid[ret] = 0;
+		if (!(ret = create_all_pipe(pipes.nb_pipe - 1, &pipes, node->children, context)))
+			ret = pipe_wait(context, &pipes);
+		else
+		{
+			ft_dprintf(g_term_fd, "create_all pipes failed ret: %d\n", ret);
+			sh_env_update_ret_value(context->shell, ret);
+			int i = 0;
+			while (i < pipes.nb_cmd)
+			{
+				if (pipes.tab_pds[i] > 0)
+					waitpid(pipes.tab_pid[i], &ret, 0);
+				i++;
+			}
+			return (ret);
+		}
 	}
 	free(pipes.tab_pds);
 	free(pipes.tab_pid);
