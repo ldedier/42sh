@@ -6,7 +6,7 @@
 #    By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/10/30 20:15:59 by mdaoud           ###   ########.fr        #
+#    Updated: 2019/10/31 08:12:25 by jdugoudr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -346,7 +346,7 @@ SRCS			+=	jobs_init.c job_add.c process_add.c job_tools.c \
 					job_put_in_bg.c job_put_in_fg.c job_is_completed.c \
 					job_is_stopped.c job_check_changes.c job_free.c \
 					job_notify.c job_print.c jobs_terminate.c \
-					jobs_error_free.c set_pgid_child.c set_pgid_parent.c \
+					set_pgid_child.c set_pgid_parent.c \
 					job_sign_tools.c ft_strtok_pipe.c \
 					jobs_string_default.c jobs_string_opn_par.c \
 					jobs_string_cls_par.c jobs_string_lbrace.c \
@@ -357,7 +357,7 @@ SRCS			+=	jobs_init.c job_add.c process_add.c job_tools.c \
 					jobs_string_great.c jobs_string_dgreat.c \
 					jobs_string_dless.c jobs_string_less_and.c \
 					jobs_string_great_and.c jobs_string_word.c
-
+#jobs_error_free.c 
 ################################################################
 ########					INCLUDES					########
 ################################################################
