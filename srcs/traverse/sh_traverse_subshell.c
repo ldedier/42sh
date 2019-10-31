@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/02 10:03:30 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/30 18:00:28 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/31 08:38:48 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ static int	parents_part(pid_t pid, t_context *context)
 			return (FAILURE);
 		if (g_job_ctrl->curr_job->foreground)
 		{
-			if (sh_pre_execution() != SUCCESS)
-				return (FAILURE);
+//			if (sh_pre_execution() != SUCCESS)//to mdaoud : I remove that since I add it in traverse_command
+//				return (FAILURE);
 			if ((fun_ret = job_put_in_fg(g_job_ctrl->curr_job, 0, &ret)) != SUCCESS)
 				return (fun_ret);
 		}
