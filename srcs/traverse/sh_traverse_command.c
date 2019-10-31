@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/02 00:35:13 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/25 18:26:40 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/30 22:58:11 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,6 @@ static int	compound_and_redirection(t_ast_node *node, t_context *context)
 		if ((ret = apply_expansion_to_children(node->children->next, context)) != SUCCESS)
 			return (ret);
 	}
-	// if (sh_pre_execution())
-	// 	return (FAILURE);
 	if (child->symbol->id == sh_index(SUBSHELL))
 		ret = sh_traverse_subshell(child, context);
 	else if (child->symbol->id == sh_index(BRACE_GROUP))
@@ -60,8 +58,6 @@ static int	compound_and_redirection(t_ast_node *node, t_context *context)
 		signal(SIGINT, handle_int);
 		ret = sh_traverse_brace(child, context);
 	}
-	// if (sh_post_execution())
-	// 	return (FAILURE);
 	return (ret);
 }
 
@@ -79,7 +75,7 @@ int			sh_traverse_command(t_ast_node *node, t_context *context)
 
 	ret = 0;
 	child = node->children->content;
-	sh_traverse_tools_show_traverse_start(node, context);//mettre node pour parcourir eventuel redirection
+	sh_traverse_tools_show_traverse_start(node, context);
 	if (child->symbol->id == sh_index(SIMPLE_COMMAND))
 		ret = sh_traverse_simple_command(child, context);
 	else if (child->symbol->id == sh_index(COMPOUND_COMMAND))

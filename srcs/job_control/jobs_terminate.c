@@ -1,30 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   jobs_free_cmds.c                                   :+:      :+:    :+:   */
+/*   jobs_terminate.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/03 17:49:52 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/26 15:03:51 by mdaoud           ###   ########.fr       */
+/*   Created: 2019/10/30 20:10:52 by mdaoud            #+#    #+#             */
+/*   Updated: 2019/10/30 21:47:12 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
-#include "sh_job_control.h"
 
-void			jobs_free_cmds(void)
+void			jobs_terminate(void)
 {
-	t_job_cmd	*ptr;
+	t_job	*j;
 
-	if (g_job_ctrl->interactive == 0)
-		return ;
-	ptr = g_job_ctrl->job_cmd;
-	while (g_job_ctrl->job_cmd != NULL)
+	if (g_job_ctrl && g_job_ctrl->interactive)
 	{
-		ptr = g_job_ctrl->job_cmd->next;
-		free(g_job_ctrl->job_cmd->str);
-		free(g_job_ctrl->job_cmd);
-		g_job_ctrl->job_cmd = ptr;
+		j = g_job_ctrl->first_job;
+		while (j != NULL)
+		{
+			if (j->pgid != 0)
+			{
+				kill (- j->pgid, SIGCONT);
+				kill (- j->pgid, SIGHUP);
+			}
+			j = j->next;
+		}
 	}
 }

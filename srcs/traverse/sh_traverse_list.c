@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/28 16:49:38 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/19 05:59:06 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/29 12:32:51 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ int			sh_traverse_list(t_ast_node *node, t_context *context)
 	int			ret;
 	t_ast_node	*last_separator;
 
-	// This is to check if the command ends with an ampersand (&).
 	g_job_ctrl->ampersand_eol = 0;
 	if (node->children->next)
 	{

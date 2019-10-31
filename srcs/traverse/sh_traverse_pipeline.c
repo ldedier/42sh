@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/28 15:11:53 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/30 12:52:49 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,16 @@ static int		sh_traverse_pipe_sequence(t_ast_node *node, t_context *context)
 	{
 		if (g_job_ctrl->interactive && !g_job_ctrl->job_added)
 		{
-			if (job_add(IS_BG(context->cmd_type)) != SUCCESS)
-				return (FAILURE);
+			if ((ret = job_add(node, IS_BG(context->cmd_type))) != SUCCESS)
+			{
+				sh_env_update_ret_value(context->shell, ret);
+				return (ret);
+			}
 			g_job_ctrl->job_added = 1;
 		}
 		context->cmd_type |= PIPE_NODE;
 		ret = sh_execute_pipe(node, context);
+		// ft_dprintf(g_term_fd, "after execute_pipe: %d\n", ret);
 		context->cmd_type &= ~PIPE_NODE;
 		if (g_job_ctrl->interactive)
 			g_job_ctrl->job_added = 0;

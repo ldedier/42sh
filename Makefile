@@ -6,7 +6,7 @@
 #    By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/10/28 14:24:24 by mdaoud           ###   ########.fr        #
+#    Updated: 2019/10/31 08:12:25 by jdugoudr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +39,7 @@ VPATH		= $(INCLUDESDIR) \
 			  $(SRCDIR)/expansions \
 			  $(SRCDIR)/grammar \
 			  $(SRCDIR)/job_control \
+			  $(SRCDIR)/job_control/job_get_string \
 			  $(SRCDIR)/lexer \
 			  $(SRCDIR)/parser \
 			  $(SRCDIR)/parser/productions \
@@ -273,7 +274,8 @@ SRCS			+=	sh_execute_simple_command.c \
 					sh_execute_prefix_postfix.c \
 					t_context.c sh_debug.c \
 					sh_execute_redirection.c \
-					sh_execute_pipe_tools.c
+					sh_execute_pipe_tools.c \
+					sh_execute_pipe_close_tools.c
 				#	sh_execute_compound_command.c
 
 ################################################################
@@ -343,15 +345,19 @@ SRCS			+=	jobs_init.c job_add.c process_add.c job_tools.c \
 					job_control_free.c job_wait.c job_is_continued.c \
 					job_put_in_bg.c job_put_in_fg.c job_is_completed.c \
 					job_is_stopped.c job_check_changes.c job_free.c \
-					job_print_status.c job_notify.c job_print.c \
-					jobs_error_free.c set_pgid_child.c set_pgid_parent.c \
-					jobs_free_cmds.c jobs_print_cmds.c ft_strtok_pipe.c \
-					job_sign_tools.c jobs_free_str.c \
-					jobs_copy_tokens.c jobs_free_tokens.c \
-					jobs_create_cmds.c jobs_create_cmds_tools.c
-					# jobs_create_str.c jobs_create_compound_str.c \
-					jobs_str_tools.c \
-
+					job_notify.c job_print.c jobs_terminate.c \
+					set_pgid_child.c set_pgid_parent.c \
+					job_sign_tools.c ft_strtok_pipe.c \
+					jobs_string_default.c jobs_string_opn_par.c \
+					jobs_string_cls_par.c jobs_string_lbrace.c \
+					jobs_string_rbrace.c jobs_string_and.c \
+					jobs_string_pipe.c jobs_string_and_if.c \
+					jobs_string_or_if.c jobs_string_semicol.c \
+					jobs_string_bang.c jobs_string_less.c \
+					jobs_string_great.c jobs_string_dgreat.c \
+					jobs_string_dless.c jobs_string_less_and.c \
+					jobs_string_great_and.c jobs_string_word.c
+#jobs_error_free.c 
 ################################################################
 ########					INCLUDES					########
 ################################################################

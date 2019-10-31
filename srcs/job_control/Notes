@@ -2,35 +2,10 @@ If user tries to close 42sh while there are jobs running
 warn first time
 second time send SIGHUP to all jobs
 ===================================================================
-What to return in case of max job num exceeded.
-(ERROR or STP_CMD_LINE)
-Both these value corrupt the current prompt output.
-===================================================================
-sleep & (leaks)
-===================================================================
-ls & ls && sleep 1 & ls -l
-then ps right away.
-tcsetpgrp could not put shell back in control
-===================================================================
-ls & ls -l & ls || sleep 3
-weird output (Art abstrait)
-===================================================================
 Check what happens when ctrl_z ctrl_c with sleep 10 || ls
 (interactive or not)
 ===================================================================
 Check what happens with outside signaling to sleep 10 || ls and sleep 10 && ls
-===================================================================
-ls | sleep 3 || ls, ctrl_z quitts shell
-===================================================================
-FIX POST_PREFIX IN PIPE_EXECUTE
-===================================================================
-Ret value of command after fg, (sleep then ctrl_c)
-===================================================================
-Leaks when builtis return error
-===================================================================
-segfault when adding a slep 30 &
-===================================================================
-fg , bg exit with error if job control is not active.
 ===================================================================
 builtins with fifos (fg and bg)
 ===================================================================

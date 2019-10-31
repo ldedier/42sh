@@ -1,22 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   jc_error_free.c                                    :+:      :+:    :+:   */
+/*   jobs_string_cls_par.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/28 02:00:14 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/08 16:17:44 by mdaoud           ###   ########.fr       */
+/*   Created: 2019/10/29 09:40:29 by jdugoudr          #+#    #+#             */
+/*   Updated: 2019/10/29 16:24:28 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "sh_job_control.h"
-#include "sh_perror.h"
+#include "sh_21.h"
 
-int		jobs_error_free(const char *err, const char *suff, int to_free, int ret)
+int	jobs_string_cls_par(t_ast_node *node, char **str)
 {
-	if (to_free)
-		job_control_free();
-	sh_perror(err, suff);
-	return (ret);
+	(void)node;
+	if ((*str = ft_strjoin_free(*str, ") ", 1)) == NULL)
+		return (ERROR);
+	return (SUCCESS);
 }

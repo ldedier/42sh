@@ -53,30 +53,22 @@ static void	init_job_values(t_job *j, int n, int bg)
 	g_job_ctrl->curr_job = j;
 }
 
-/*
-** Our g_job_ctrol->job_cmd contains a linked list of strings that-
-**	represent the command.
-** example : "ls" -> "ls | wc" -> "echo hello"
-** Every time we add a job, we take the g_job_ctrol->job_cmd->str.
-** Then we free it and point g_job_ctrol->job_cmd to the next one.
-** In the example we take the "ls", put it in the job,
-**	then free it from the linked list (it becomes "ls | wc" -> "echo hello")
-*/
-
-static int	get_job_cmd_str(t_job *j)
+static int		get_job_string(t_ast_node *node, t_job *j)
 {
-	t_job_cmd	*temp;
+	char		*str;
+	t_symbol_id	id;
 
-	j->command = ft_strdup(g_job_ctrl->job_cmd->str);
-	if (j->command == NULL)
-		return (jobs_error_free(SH_ERR1_MALLOC, "job_add", 1, FAILURE));
-	temp = g_job_ctrl->job_cmd;
-	g_job_ctrl->job_cmd = g_job_ctrl->job_cmd->next;
+	str = NULL;
+	id = node->symbol->id;
+	g_grammar[id].get_job_string(node, &str); // Protect
+	j->command = str;
 	j->cmd_copy = ft_strdup(j->command);
 	if (j->cmd_copy == NULL)
-		return (jobs_error_free(SH_ERR1_MALLOC, "job_add", 1, FAILURE));
-	free(temp->str);
-	free(temp);
+	{
+		free(j->command);
+		free(j);
+		return (sh_perror(SH_ERR1_MALLOC, "job add"));
+	}
 	return (SUCCESS);
 }
 
@@ -89,20 +81,20 @@ static int	get_job_cmd_str(t_job *j)
 ** If not, we add it the tail of the job list.
 */
 
-int			job_add(int bg)
+int			job_add(t_ast_node *node, int bg)
 {
 	t_job	*j;
 	t_job	*it;
 	int		n;
 
 	n = find_available_job_number();
+	// n = -1;
 	if (n < 0)
-		return (jobs_error_free("Maximum number of jobs exceeded",
-			"job_add", 0, STOP_CMD_LINE));
+		return (sh_perror_err("Maxumum number of jobs exceeded", NULL));
 	if ((j = malloc(sizeof(t_job))) == NULL)
-		return (jobs_error_free(SH_ERR1_MALLOC, "job_add", 1, FAILURE));
+		return (sh_perror(SH_ERR1_MALLOC, "job add"));
 	init_job_values(j, n, bg);
-	if (get_job_cmd_str(j) < 0)
+	if (get_job_string(node, j) != SUCCESS)
 		return (FAILURE);
 	// ft_printf("%sAdded job [%d] %s ", CYAN, g_job_ctrl->curr_job->number, g_job_ctrl->curr_job->command);
 	// ft_printf("in %s%s\n",j->foreground == 1 ? "foreground" : "background", COLOR_END);

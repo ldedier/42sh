@@ -1,27 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   jobs_free_str.c                                    :+:      :+:    :+:   */
+/*   jobs_string_and.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/25 09:54:53 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/25 09:58:36 by mdaoud           ###   ########.fr       */
+/*   Created: 2019/10/29 09:50:13 by jdugoudr          #+#    #+#             */
+/*   Updated: 2019/10/29 16:26:07 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-int		jobs_free_str(void)
+int	jobs_string_and(t_ast_node *node, char **str)
 {
-	t_job_cmd	*tmp;
-
-	tmp = g_job_ctrl->job_cmd;
-	g_job_ctrl->job_cmd = g_job_ctrl->job_cmd->next;
-	if (tmp)
-	{
-		free(tmp->str);
-		free(tmp);
-	}
+	(void)node;
+	if ((*str = ft_strjoin_free(*str, "& ", 1)) == NULL)
+		return (ERROR);
 	return (SUCCESS);
 }

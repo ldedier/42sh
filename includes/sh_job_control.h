@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 17:45:00 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/28 14:23:24 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/30 20:14:11 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@
 typedef struct s_process		t_process;
 typedef struct s_job			t_job;
 typedef struct s_job_control	t_job_control;
-typedef struct s_job_cmd		t_job_cmd;
 typedef struct termios			t_term;
 
 /*
@@ -75,11 +74,6 @@ struct	s_job
 	t_job			*next;
 };
 
-struct	s_job_cmd
-{
-	char			*str;
-	t_job_cmd		*next;
-};
 
 /*
 **	Out global structure for job control.
@@ -115,7 +109,6 @@ struct	s_job_control
 	char			ampersand;
 	pid_t			shell_pgid;
 	int				job_num[MAX_JOBS];
-	t_job_cmd		*job_cmd;
 	t_job			*first_job;
 	t_job			*curr_job;
 	t_list			*tokens;
@@ -123,7 +116,7 @@ struct	s_job_control
 
 t_job_control	*g_job_ctrl;
 
-int				job_add(int fg);
+int				job_add(t_ast_node *node, int fg);
 int				job_check_changes(pid_t cpid, int status);
 void			job_control_free(void);
 void			job_free(t_job *j);
@@ -133,25 +126,18 @@ int				job_is_stopped(t_job *j);
 void			job_notify(void);
 void			job_print_status(t_job *j, const char *new_status);
 void			job_print(t_job *j, int opt, int fd);
-int				job_put_in_bg(t_job *j, int cont);
+int				job_put_in_bg(t_job *j);
 int				job_put_in_fg(t_job *j, int cont, int *res);
 void			job_wait(t_job *j, int *res);
-// int				jobs_create_cmds(t_list *token_list);
-int				jobs_error_free(const char *err, const char *suff,
-				int to_free, int ret);
-void			jobs_free_cmds(void);
 int				jobs_init(void);
-void			jobs_print_cmds(void);
+void			jobs_terminate(void);
 int				process_add(pid_t pid);
 int				set_pgid_child(int cpid);
 int				set_pgid_parent(int cpid);
-char			**str_tab_duplicate(char **from);	//put in libft
-void			str_tab_free(char **str);			//put in libft
-void			str_tab_print(char **char_tab);		//put in libft
-int				jobs_free_str(void);
+char			**str_tab_duplicate(char **from);
+void			str_tab_free(char **str);
+void			str_tab_print(char **char_tab);
 char			*ft_strtok_pipe(char *str, char *delim);
-void			jobs_copy_tokens(t_list *tokens);
-void			jobs_free_tokens(void);
 
 /*
 ** job_tools.c
@@ -162,7 +148,6 @@ t_job			*job_get_by_sign(char c);
 /*
 ** job_sign_tools.c
 */
-
 void			job_reset_sign(char c);
 void			job_set_plus_sign(t_job *j);
 void			job_added_update_sign(t_job *j);
@@ -171,26 +156,26 @@ void			job_exited_update_sign(char j_sign);
 
 
 /*
-** jobs_str_tools.c
+** jobs_create_strings
 */
-// int				next_sep_is_ampersand(t_list *ptr, t_list **rbrace);
-// int				token_break(t_symbol_id id);
-// int				add_job_cmd(t_job_cmd *cmd);
-// char			*create_cmd_word(t_token *t);
-
-/*
-** jobs_create_compound_str.c
-*/
-// t_list			*create_brace_str(t_list *e);
-// t_list			*create_subshell_str(t_list *e);
-// t_list			*jobs_create_compound_str(t_list **s, t_list *e, t_symbol_id start_symb);
-
-/*
-** jobs_create_str.c
-*/
-// int				jobs_create_str(t_list *token_list);
-
-int			jobs_create_cmds(t_list *token_list);
+int				jobs_string_default(t_ast_node *node, char **str);
+int				jobs_string_opn_par(t_ast_node *node, char **str);
+int				jobs_string_cls_par(t_ast_node *node, char **str);
+int				jobs_string_lbrace(t_ast_node *node, char **str);
+int				jobs_string_rbrace(t_ast_node *node, char **str);
+int				jobs_string_and(t_ast_node *node, char **str);
+int				jobs_string_pipe(t_ast_node *node, char **str);
+int				jobs_string_and_if(t_ast_node *node, char **str);
+int				jobs_string_or_if(t_ast_node *node, char **str);
+int				jobs_string_semicol(t_ast_node *node, char **str);
+int				jobs_string_bang(t_ast_node *node, char **str);
+int				jobs_string_less(t_ast_node *node, char **str);
+int				jobs_string_great(t_ast_node *node, char **str);
+int				jobs_string_dgreat(t_ast_node *node, char **str);
+int				jobs_string_dless(t_ast_node *node, char **str);
+int				jobs_string_less_and(t_ast_node *node, char **str);
+int				jobs_string_great_and(t_ast_node *node, char **str);
+int				jobs_string_word(t_ast_node *node, char **str);
 
 
 #endif

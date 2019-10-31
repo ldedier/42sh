@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 17:59:53 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/28 10:26:11 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/31 08:21:19 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int			main(int argc, char **argv, char **env)
 	if (g_term_fd != TTY_FD)
 	{
 		if (sh_check_open_fd(0, TTY_FD) >= 0 || dup2(g_term_fd, TTY_FD) < 0)
-			return (sh_perror(SH_ERR1_TTY, "Can't open fd 10"));//ca segfault
+			return (sh_perror(SH_ERR1_TTY, "Can't open fd 10"));
 		close(g_term_fd);
 		g_term_fd = TTY_FD;
 	}

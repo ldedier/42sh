@@ -1,19 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   job_print_status.c                                 :+:      :+:    :+:   */
+/*   jobs_string_semicol.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/21 15:30:50 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/09 01:42:40 by mdaoud           ###   ########.fr       */
+/*   Created: 2019/10/29 09:59:39 by jdugoudr          #+#    #+#             */
+/*   Updated: 2019/10/29 16:26:44 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
-#include "sh_job_control.h"
 
-void			job_print_status(t_job *j, const char *new_status)
+int	jobs_string_semicol(t_ast_node *node, char **str)
 {
-	ft_dprintf(g_term_fd, "[%d]\t%s\n", j->number, new_status);
+	(void)node;
+	if ((*str = ft_strjoin_free(*str, "; ", 1)) == NULL)
+		return (ERROR);
+	return (SUCCESS);
 }

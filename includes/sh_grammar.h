@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 12:43:07 by ldedier           #+#    #+#             */
-/*   Updated: 2019/07/02 23:17:52 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/29 14:07:42 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct		s_grammar_holder
 	char			relevant;
 	int				(*init_prod)(t_cfg *, t_symbol *);
 	int				(*traverse)(t_ast_node *this, t_context *context);
+	int 			(*get_job_string)(t_ast_node *node, char **str);
 }					t_grammar_holder;
 
 t_grammar_holder	g_grammar[NB_SYMBOLS];

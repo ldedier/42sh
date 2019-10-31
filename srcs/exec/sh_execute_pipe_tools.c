@@ -1,80 +1,84 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sh_execute_pipe_tool.c                             :+:      :+:    :+:   */
+/*   sh_execute_pipe_tools.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 13:41:34 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/18 08:19:24 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/30 21:36:58 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-/*
-** close_all_pipe_but_one
-** As we create pipe in shell process, all child process
-** have a reference to all the pipe.
-** Before execution we close all unused pipe.
-*/
-
-void		close_all_pipe_but_one(int nb_pipe, int curr_cmd, int **tab_pds)
+pid_t 		fork_for_pipe(void)
 {
-	int	i;
+	pid_t 	child;
+	int		ret;
 
-	i = 0;
-	while (i < nb_pipe)
+	if ((child = fork()) < 0)
 	{
-		if (i == curr_cmd)
-			close(tab_pds[i][INPUT]);
-		else if (i == curr_cmd - 1)
-			close(tab_pds[i][OUTPUT]);
-		else
+		sh_perror(SH_ERR1_FORK, "execution fork for pipe");
+		return (-1);
+	}
+	if (child == 0)
+	{
+		if (g_job_ctrl->interactive)
 		{
-			close(tab_pds[i][OUTPUT]);
-			close(tab_pds[i][INPUT]);
+			if ((ret = set_pgid_child(child)) != SUCCESS)
+				return (ret);
 		}
-		i++;
 	}
+	else
+	{
+		if (g_job_ctrl->interactive && set_pgid_parent(child) != SUCCESS)
+			return (-1);
+	}
+	return (child);
 }
 
 /*
-** close_and_free
-** After the execution, we have to close used pipe, to send a signal
-** at the other side of the pipe
-** free to not have any leaks
+** creat_all_pipe
+** If we have a intern problems like can't fork,
+** we have to wait for created process.
 */
 
-void		close_and_free(int curr_cmd, t_pipe *pipes, t_context *context)
+int		create_all_pipe(int nb_pipe, t_pipe *pipes, t_list *lst_psequences,
+			t_context *context)
 {
-	sh_reset_redirection(&context->redirections);
-	sh_free_all(context->shell);
-	if (pipes->nb_pipe > curr_cmd)
+	int	pds[2];
+	int	ret;
+
+	if (nb_pipe == -1)
 	{
-		close(pipes->tab_pds[curr_cmd][OUTPUT]);
-		close(STDOUT_FILENO);
+		ret = loop_pipe_exec(0, pipes, lst_psequences, context);
+		if (ret != SUCCESS)
+		{
+			close_all_pipes(pipes);
+			kill (- pipes->tab_pid[0], SIGHUP);
+			return (ret);
+		}
+		return (ret);
 	}
-	if (curr_cmd > 0)
+	if (pipe(pds))
 	{
-		close(pipes->tab_pds[curr_cmd - 1][INPUT]);
-		close(STDIN_FILENO);
+		sh_perror(SH_ERR1_PIPE, "execution commande pipe");
+		return (ERROR);	//Pourquoi -1 ici?
 	}
-	free(pipes->tab_pds);
-	free(pipes->tab_pid);
+	pipes->tab_pds[nb_pipe] = pds;
+	return (create_all_pipe(nb_pipe - 1, pipes, lst_psequences, context));
 }
 
-/*
-** close_one_pipe
-** In the shell process we need to close pipe
-** just after fork the associate command
-*/
-
-void		close_one_pipe(int curr, t_pipe *pipes)
+int			pipe_fail_protocol(t_context *context, int ret)
 {
-	if (curr < pipes->nb_pipe)
+	ft_dprintf(g_term_fd, "create_all pipes failed ret: %d\n", ret);
+	sh_post_execution();
+	if (tcsetpgrp(g_term_fd, g_job_ctrl->shell_pgid) < 0)
 	{
-		close(pipes->tab_pds[curr][INPUT]);
-		close(pipes->tab_pds[curr][OUTPUT]);
+		return (sh_perror("tcsetpgrp",
+			"Could not give the shell control of the terminal"));
 	}
+	sh_env_update_ret_value(context->shell, ret);
+	return (ret);
 }
