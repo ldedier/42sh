@@ -6,11 +6,11 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 17:45:00 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/30 20:14:11 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/31 17:19:32 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef	SH_JOB_CONTROL_H
+#ifndef SH_JOB_CONTROL_H
 # define SH_JOB_CONTROL_H
 
 # include "libft.h"
@@ -34,84 +34,70 @@ typedef struct termios			t_term;
 ** @pid: the pid of the process.
 ** @next: pointer to the next process in the job.
 */
-struct	s_process
+struct			s_process
 {
-	char			completed;
-	char			continued;
-	char			stopped;
-	char			cmd[MAX_PROCESS_LEN];
-	int				status;
-	pid_t			pid;
-	t_process		*next;
+	char		completed;
+	char		continued;
+	char		stopped;
+	char		cmd[MAX_PROCESS_LEN];
+	int			status;
+	pid_t		pid;
+	t_process	*next;
 };
 
 /*
 ** Out job structure.
-** @notified:	0: the job is done or stopped, but the user is not yet notified.
-** 				1: the job is done or stopped, user is notified (will not be notified again).
+** @notified:
+**	0: the job is done or stopped, but the user is not yet notified.
+**	1: the job is done or stopped, user is notified.
 ** @command: the string that represent the command, for example "ls | wc".
-** @signal_num: If the job has been stopped/ended by a signal. the signal_num will hold
-**		the signal number of the last signal that was sent to any process in the job.
+** @signal_num: last signal that was sent to any process in the job.
 ** @foregroud:	1: job is in the forground. 0 otherwise.
-** @simple_cmd: 1: if the job is only a simple command. 0 otherwise (piped/and_or command).
 ** @number: the job number (1->MAX_JOBS)
-** @pgid: the process group id of the job (the same as the pid of the job leader)
+** @pgid: the process group id of the job (pid of the job leader)
 **	the job leader is always the first process in that job.
 ** @first_process: the head of the process list in the job.
 ** @next: pointer the next job.
 */
-struct	s_job
+struct			s_job
 {
-	char			notified;
-	char			*command;
-	char			*cmd_copy;
-	char			signal_num;	//Don't think this is needed anymore
-	char			sign;
-	char			foreground;
-	int				number;
-	pid_t			pgid;
-	t_process		*first_process;
-	t_job			*next;
+	char		notified;
+	char		*command;
+	char		*cmd_copy;
+	char		signal_num;
+	char		sign;
+	char		foreground;
+	int			number;
+	pid_t		pgid;
+	t_process	*first_process;
+	t_job		*next;
 };
-
 
 /*
 **	Out global structure for job control.
 **	interactive: 1 if the shell is running interactively, 0 otherwise.
 **		A shell running non-interactively should not handle job control.
-**		"./42sh < in" is a non-interacive shell.
-**	job_added: a boolean. If at some point we add a job, we should not add another one
-**		before current the command is done.
-**		example: in command "ls" we add the job at the simple command level.
-**		in command "ls | wc" we add it at the pipeline level, we set the job_added at 1
-**			so that in the simple command level we don't add another job for "ls".
-**	ampersand_eol : in the parser.c we check the list of tokens to see if the command
-**		ends with "&"
-**		(This should be changed because it won't work for subshell commands like
-**		ls ; (sleep 5 &).
+**	job_added: a boolean. If at some point we add a job,
+**		we should not add another one before the commande is finished executing
 ** shell_pgid: The group pid of our shell (the shell has its own group
 **		and it's the only process in it).
 **	term_fd: the fd of the terminal where we write all of the job messages
 **		Such as "[1] Stopped" when we press a ctrl_z.
-**	job_count and job_num: variables to get the right job number when we add a job.
-**	job_cmd: this will be a linked list of strings that represent the commands.
-**		for example: ls ; ls | wc & echo hi
-**		Will have 3 nods, "ls" -> "ls | wc" -> "echo hi".
-**		This is needed to for the "jobs" builtin and message reporting about jobs status.
+**	job_count and job_num: variables to get the first free job number.
 **	first_job: This is the head of our jobs list (linked list also).
 **	current_job: Last added job where we add our processes.
 */
-struct	s_job_control
+struct			s_job_control
 {
-	char			interactive;
-	char			job_added;
-	char			ampersand_eol;
-	char			ampersand;
-	pid_t			shell_pgid;
-	int				job_num[MAX_JOBS];
-	t_job			*first_job;
-	t_job			*curr_job;
-	t_list			*tokens;
+	char		interactive;
+	char		job_added;
+	char		ampersand_eol;
+	char		ampersand;
+	pid_t		shell_pgid;
+	int			job_num[MAX_JOBS];
+	t_job		*first_job;
+	t_job		*curr_job;
+	t_list		*tokens;
 };
 
 t_job_control	*g_job_ctrl;
@@ -154,7 +140,6 @@ void			job_added_update_sign(t_job *j);
 t_job			*job_get_unsigned(void);
 void			job_exited_update_sign(char j_sign);
 
-
 /*
 ** jobs_create_strings
 */
@@ -177,7 +162,4 @@ int				jobs_string_less_and(t_ast_node *node, char **str);
 int				jobs_string_great_and(t_ast_node *node, char **str);
 int				jobs_string_word(t_ast_node *node, char **str);
 
-
 #endif
-
-

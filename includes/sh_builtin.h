@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 11:36:31 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/27 11:52:09 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/31 17:09:14 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,19 +50,19 @@
 /*
 ** Macros for export builtin
 */
-#define EXPORT_MSG			"declare -x" // need to be changed to "export"
-#define EXPORT_USAGE		"name[=word]"
-#define EXPORT_P_OPT		0
-#define EXPORT_P_OPT_USAGE	"print all exported variables (default option)"
+# define EXPORT_MSG			"declare -x" // need to be changed to "export"
+# define EXPORT_USAGE		"name[=word]"
+# define EXPORT_P_OPT		0
+# define EXPORT_P_OPT_USAGE	"print all exported variables (default option)"
 
 /*
 ** Macros for alias builtin
 */
 
-#define ALIAS_MSG			"alias"
-#define ALIAS_USAGE			"[alias-name[=string]...]"
-#define ALIAS_P_OPT			0
-#define ALIAS_P_OPT_USAGE	"print all alias stored (default option)"
+# define ALIAS_MSG			"alias"
+# define ALIAS_USAGE		"[alias-name[=string]...]"
+# define ALIAS_P_OPT		0
+# define ALIAS_P_OPT_USAGE	"print all alias stored (default option)"
 
 enum	e_built_test_unary {TEST_B, TEST_C, TEST_D, TEST_E, TEST_F, TEST_G,
 	TEST_L, TEST_P, TEST_R, TEST_SS, TEST_S, TEST_U, TEST_W, TEST_X, TEST_Z};
@@ -347,10 +347,10 @@ int					sh_builtin_pwd(t_context *context);
 */
 int					print_options_minus(t_shell *shell);
 int					print_options_plus(t_shell *shell);
-int					fill_option_value(
-	int **address_ptr, int *value_ptr, int *address, int value);
-int					get_option(
-	t_shell *shell, char *option_name, int  **option, int *value);
+int					fill_option_value(int **address_ptr, int *value_ptr,
+						int *address, int value);
+int					get_option(t_shell *shell, char *option_name,
+						int **option, int *value);
 int					add_option(t_context *context, int index);
 int					remove_option(t_context *context, int index);
 int					sh_builtin_set_param(t_context *context, int *index);

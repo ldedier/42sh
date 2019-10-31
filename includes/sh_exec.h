@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 17:11:16 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/30 18:48:40 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/31 17:07:37 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@
 
 extern pid_t g_parent;
 
-typedef struct		s_redirection t_redirection;
+typedef struct s_redirection	t_redirection;
 typedef enum		e_phase
 {
 	E_TRAVERSE_PHASE_INTERACTIVE_REDIRECTIONS,
@@ -63,7 +63,7 @@ typedef enum		e_phase
 
 typedef struct		s_context
 {
-	char			wflags;	//wait_flags for non-interactive shell
+	char			wflags;
 	int				cmd_type;
 	t_shell			*shell;
 	struct termios	*term;
@@ -109,7 +109,7 @@ int					sh_execute_binary(
 /*
 ** sh_execute.c
 */
-int 				sh_execute_simple_command(
+int					sh_execute_simple_command(
 	t_ast_node *father_node, t_context *context);
 
 /*
@@ -145,7 +145,7 @@ int					loop_pipe_exec(int curr_cmd, t_pipe *pipes,
 /*
 ** sh_execute_pipe_tools.c
 */
-pid_t 				fork_for_pipe(void);
+pid_t				fork_for_pipe(void);
 int					create_all_pipe(int nb_pipe, t_pipe *pipes,
 						t_list *lst_psequences, t_context *context);
 int					pipe_fail_protocol(t_context *context, int ret);
@@ -169,7 +169,7 @@ int					sh_post_execution(void);
 /*
 ** sh_execute_redirection.c
 */
-int 				sh_execute_redirection(t_list *lst, t_redirection *el);
+int					sh_execute_redirection(t_list *lst, t_redirection *el);
 
 /*
 ** t_context.c

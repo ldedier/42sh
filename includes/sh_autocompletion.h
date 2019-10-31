@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_autocompletion.h                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/22 14:59:37 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/05 14:00:31 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/10/31 17:04:34 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ typedef struct		s_exec
 	t_ast_node		*cst_root;
 }					t_exec;
 
-typedef struct		t_choice_filler
+typedef struct		s_choice_filler
 {
 	char			*transformed_path;
 	char			*path;
@@ -144,7 +144,7 @@ void				process_autocompletion_switch(
 int					substitute_command_str_from_str(
 	t_command_line *command_line, char *from, char *str);
 int					substitute_command_str(
-	t_shell *shell ,t_command_line *command_line, char *str);
+	t_shell *shell, t_command_line *command_line, char *str);
 
 /*
 ** arrows_vertical.c
