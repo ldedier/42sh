@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 17:04:13 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/28 16:04:00 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/31 16:13:20 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ static int	sh_execute_fg(t_job *j, t_context *context)
 	int		res;
 	int		retvalue;
 
+	res = SUCCESS;
 	if (sh_pre_execution() != SUCCESS)
 		return (FAILURE);
 	mark_job_as_running(j);
@@ -39,9 +40,7 @@ static int	sh_execute_fg(t_job *j, t_context *context)
 		j->number, j->command);
 	if ((retvalue = job_put_in_fg(j, 1, &res)) != SUCCESS)
 		return (retvalue);
-	// job_notify();
 	sh_env_update_ret_value_wait_result(context, res);
-	// ft_printf("\nrevalue: %d\n", context->shell->ret_value);
 	return (SUCCESS);
 }
 
@@ -61,17 +60,11 @@ int			sh_builtin_fg(t_context *context)
 		return (ERROR);
 	if (job_lst[0] == -2)
 		job_lst[0] = 0;
-	// ft_printf("numbrs: ");
-	// for (int j = 0; job_lst[j] != -2; j++)
-	// 	ft_printf("[%d] ", job_lst[j]);
-	// ft_printf("\n");
 	i = 0;
 	while (job_lst[i] != -2)
 	{
 		if ((j = fg_get_job_by_spec(job_lst[i])) == NULL)
 			return (ERROR);
-		// ft_dprintf(g_term_fd, "[%d]  %s\n",
-		// j->number, j->command);
 		context->shell->ret_value_set = 0;
 		if ((ret = sh_execute_fg(j, context)) != SUCCESS)
 			return (ret);
