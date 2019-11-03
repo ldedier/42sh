@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/31 16:05:53 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/31 17:44:55 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/02 14:07:31 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,9 @@ void			handler_sighup(int signo)
 	if (signo == SIGHUP)
 	{
 		jobs_terminate();
-		sh_post_execution();
+		sh_reset_shell(0);
+		if (g_term_fd != -1)
+			close (g_term_fd);
 		exit(128 + SIGHUP);
 	}
 }
@@ -42,13 +44,16 @@ static void		handler_terminating_sig(int signo)
 {
 	if (signo == SIGALRM || signo == SIGEMT || signo == SIGIO ||
 		signo == SIGPIPE || signo == SIGPROF || signo == SIGUSR1 ||
-		signo == SIGUSR2 || signo == SIGVTALRM || signo == SIGALRM ||
+		signo == SIGUSR2 || signo == SIGVTALRM || signo == SIGABRT ||
 		signo == SIGBUS || signo == SIGFPE || signo == SIGILL ||
 		signo == SIGIOT || signo == SIGSEGV || signo == SIGSYS ||
-		signo == SIGTRAP || signo == SIGXCPU || signo == SIGXFSZ)
+		signo == SIGTRAP || signo == SIGXCPU || signo == SIGXFSZ ||
+		signo == SIGSTKFLT || signo == SIGPWR)
 		{
 			jobs_terminate();
-			sh_post_execution();
+			sh_reset_shell(0);
+			if (g_term_fd != -1)
+				close (g_term_fd);
 			exit(128 + signo);
 		}
 }
@@ -63,6 +68,8 @@ static void		set_term_sig_handler(void)
 	signal(SIGUSR1, handler_terminating_sig);
 	signal(SIGUSR2, handler_terminating_sig);
 	signal(SIGVTALRM, handler_terminating_sig);
+	signal(SIGSTKFLT, handler_terminating_sig);
+	signal(SIGPWR, handler_terminating_sig);
 }
 
 static void		set_core_sig_handler(void)
