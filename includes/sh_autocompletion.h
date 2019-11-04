@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/22 14:59:37 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/05 14:00:31 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/04 19:16:25 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -316,5 +316,6 @@ void				update_autocompletion_head_right(
 	t_command_line *command_line);
 int					process_autocompletion_right(
 	t_command_line *command_line);
+int         free_file_ret(t_file *file, int ret);
 
 #endif

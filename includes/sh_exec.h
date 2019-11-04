@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 17:11:16 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/04 18:58:33 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/04 19:38:39 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,6 +177,5 @@ int					sh_execute_simple_command(
 int					t_context_init(t_context *context, t_shell *shell);
 void				t_context_free_content(t_context *context);
 void				t_context_reset(t_context *context);
-
 pid_t	fork_for_pipe(void);
 #endif

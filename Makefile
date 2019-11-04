@@ -6,7 +6,7 @@
 #    By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/11/04 18:51:16 by ldedier          ###   ########.fr        #
+#    Updated: 2019/11/04 19:44:42 by ldedier          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,6 @@ VPATH		= $(INCLUDESDIR) \
 			  $(SRCDIR)/traverse_tools \
 			  $(SRCDIR)/redirection \
 			  $(SRCDIR)/vars
-
 
 SPEED = -j1
 LIBFT = $(LIBFTDIR)/libft.a
@@ -186,15 +185,21 @@ SRCS			+=	sh_prod_and_or.c sh_prod_brace_group.c \
 ################################################################
 ########					AUTOCOMPLETE				########
 ################################################################
-SRCS			+=	add_choices_from_dir.c auto_completion.c \
+SRCS			+=	add_choices_from_dir.c \
+					add_choices_tools.c \
+					auto_completion.c \
 					populate_choices.c populate_word_by_index.c \
+					populate_word_by_index_no_parsing.c \
+					debug_word.c \
 					preprocess_choice_add.c arrow_tools.c \
 					render_choices.c add_choices_builtins.c \
 					left_arrow.c right_arrow.c arrows_vertical.c \
 					fill_buffer.c render_choices_tools.c file_tables.c \
 					fill_buffer_from_tables.c add_file_tools.c \
 					auto_completion_tools.c escape.c \
-					add_choices_from_expansions.c
+					add_choices_from_expansions.c \
+					add_choices_from_expansions_tools.c \
+					exec_tools.c
 
 ################################################################
 ########					SHORTCUTS					########
