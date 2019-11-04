@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/24 22:43:23 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/24 20:57:27 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/04 20:45:37 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,23 +58,6 @@ int		process_shift(t_key_buffer *buffer, t_command_line *command_line)
 	return (SUCCESS);
 }
 
-int		await_stream(int fd)
-{
-	fd_set			set;
-	struct timeval	timeout;
-	int				ret;
-
-	FD_ZERO(&set);
-	FD_SET(fd, &set);
-	timeout.tv_sec = 0;
-	timeout.tv_usec = 0;
-	ret = select(1, &set, NULL, NULL, &timeout);
-	if (ret == 1)
-		return (1);
-	else
-		return (0);
-}
-
 int		process_keys(t_key_buffer *buffer, t_shell *shell,
 			t_command_line *command_line)
 {
@@ -121,29 +104,26 @@ int		process_get_keys(t_key_buffer *buffer,
 	return (KEEP_READ);
 }
 
-int		get_keys(t_shell *shell, t_command_line *command_line)
+int		get_keys(t_shell *shell, t_command_line *cl)
 {
 	int				res;
 
-	ft_bzero(command_line->buffer.buff, READ_BUFF_SIZE);
-	command_line->buffer.progress = 0;
-	command_line->buffer.last_char_input = -1;
-	command_line->buffer.persistent = 1;
+	ft_bzero(cl->buffer.buff, READ_BUFF_SIZE);
+	cl->buffer.progress = 0;
+	cl->buffer.last_char_input = -1;
+	cl->buffer.persistent = 1;
 	while (1)
 	{
-		if (read(0, &command_line->buffer.buff[
-			command_line->buffer.progress++], 1) < 0)
-		{
+		if (read(0, &cl->buffer.buff[cl->buffer.progress++], 1) < 0)
 			return (sh_perror(SH_ERR1_READ, "get_keys"));
-		}
-		//sh_print_buffer(command_line->buffer);
-		if ((res = process_get_keys(&command_line->buffer, shell, command_line)) != KEEP_READ)
+		//sh_print_buffer(cl->buffer);
+		if ((res = process_get_keys(&cl->buffer, shell, cl)) != KEEP_READ)
 			return (res);
-		if (command_line->buffer.progress >= READ_BUFF_SIZE
-			|| (command_line->buffer.progress &&
-				should_flush_buffer(command_line->buffer, command_line)))
+		if (cl->buffer.progress >= READ_BUFF_SIZE
+			|| (cl->buffer.progress &&
+				should_flush_buffer(cl->buffer, cl)))
 		{
-			flush_keys(&command_line->buffer);
+			flush_keys(&cl->buffer);
 		}
 	}
 }

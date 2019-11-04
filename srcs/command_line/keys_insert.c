@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 14:17:03 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/13 13:57:42 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/04 21:17:29 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,49 +23,6 @@ int		process_enter(t_command_line *command_line)
 		render_command_line(command_line, 0, 1);
 	}
 	return (1);
-}
-
-int		process_process_keys_ret(t_key_buffer *buffer,
-			t_shell *shell, t_command_line *command_line)
-{
-	int ret;
-
-	if (buffer->buff[0] == 10)
-	{
-		if (process_enter(command_line) == 0)
-			return (SUCCESS);
-	}
-	else if (buffer->buff[0] == 4)
-	{
-		if (process_ctrl_d(shell, command_line) != KEEP_READ)
-			return (CTRL_D);
-	}
-	else if (buffer->buff[0] == 9)
-	{
-		if (process_tab(shell, command_line) != SUCCESS)
-			return (FAILURE);
-		flush_keys(buffer);
-	}
-	else if (buffer->buff[0] == 3)
-	{
-		ret = (process_ctrl_c(shell, command_line));
-		return (flush_keys_ret(buffer, ret));
-	}
-	return (KEEP_READ);
-}
-
-int		process_keys_ret(t_key_buffer *buffer, t_shell *shell,
-			t_command_line *command_line)
-{
-	int ret;
-
-	if ((ret = process_process_keys_ret(buffer, shell, command_line))
-		!= KEEP_READ)
-		return (ret);
-	else
-		return (KEEP_READ);
-	flush_keys(buffer);
-	return (KEEP_READ);
 }
 
 int		process_key_insert_printable_utf8(t_key_buffer *buffer,
@@ -93,16 +50,9 @@ int		process_key_insert_printable_utf8(t_key_buffer *buffer,
 	return (SUCCESS);
 }
 
-int		process_keys_insert(t_key_buffer *buffer,
-		t_shell *shell, t_command_line *command_line)
+int		insert_keys(t_key_buffer *buffer, t_shell *shell,
+			t_command_line *command_line)
 {
-	int ret;
-
-//	sh_print_buffer(*buffer);
-	cancel_autocompletion(buffer, command_line);
-	if (command_line->edit_style == E_EDIT_STYLE_READLINE &&
-		(ret = process_keys_readline(buffer, shell, command_line)) != KEEP_READ)
-		return (ret);
 	if (is_printable_utf8(buffer->buff, buffer->progress))
 	{
 		if (process_key_insert_printable_utf8(buffer,
@@ -123,7 +73,23 @@ int		process_keys_insert(t_key_buffer *buffer,
 			return (FAILURE);
 	}
 	else
+		return (KEEP_READ);
+	return (SUCCESS);
+}
+
+int		process_keys_insert(t_key_buffer *buffer,
+		t_shell *shell, t_command_line *command_line)
+{
+	int ret;
+
+	cancel_autocompletion(buffer, command_line);
+	if (command_line->edit_style == E_EDIT_STYLE_READLINE &&
+		(ret = process_keys_readline(buffer, shell, command_line)) != KEEP_READ)
+		return (ret);
+	if ((ret = insert_keys(buffer, shell, command_line) == KEEP_READ))
 		return (process_keys_ret(buffer, shell, command_line));
+	else if (ret)
+		return (ret);
 	flush_keys(buffer);
 	return (KEEP_READ);
 }

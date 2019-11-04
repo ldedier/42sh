@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/07 02:49:01 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/05 14:17:10 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/04 21:29:49 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,19 +37,6 @@ int		process_escape(t_shell *shell, t_command_line *command_line,
 	flush_keys(buffer);
 	return (SUCCESS);
 }
-
-/*
-int		process_i(t_shell *shell, t_command_line *command_line,
-			t_key_buffer *buffer)
-{
-	command_line->mode = E_MODE_INSERT;
-	if (update_prompt(shell, command_line))
-		return (FAILURE);
-	render_command_line(command_line, 0, 1);
-	flush_keys(buffer);
-	return (SUCCESS);
-}
-*/
 
 int		process_v(t_shell *shell, t_command_line *command_line,
 			t_key_buffer *buffer)

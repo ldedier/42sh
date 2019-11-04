@@ -6,7 +6,7 @@
 #    By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/11/04 19:44:42 by ldedier          ###   ########.fr        #
+#    Updated: 2019/11/04 21:39:57 by ldedier          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -94,7 +94,10 @@ SRCS			+=	keys.c cursor_motion.c edit_command.c \
 					sh_get_cursor_position.c eof_percent.c \
 					update_prompt_cwd.c keys_insert_tools.c keys_flush.c \
 					keys_debug.c screen_tools.c get_char_len.c \
-					saves.c keys_readline.c
+					saves.c t_save.c keys_readline.c get_down_from_command.c \
+					keys_tools.c keys_ret.c command_count.c restore_save.c \
+					save_command_line.c
+
 #sh_clipboard.c sh_command_line_tools.c
 #					sh_clipboard_tools.c
 

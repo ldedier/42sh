@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 13:45:53 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/06 12:15:08 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/04 20:21:39 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ int		go_up_to_prompt(int width, int cursor)
 	str = tgetstr("up", NULL);
 	i = 0;
 	ft_dprintf(g_glob.command_line.fd, " ");
-//	ft_dprintf(2, "OUAI: %d\n", get_research_nb_lines(&g_glob.command_line));
 	val = ((get_true_cursor_pos_prev_prompt(cursor)) / width)
 		- g_glob.command_line.scrolled_lines;
 	while (i < val && i < g_glob.winsize.ws_row
