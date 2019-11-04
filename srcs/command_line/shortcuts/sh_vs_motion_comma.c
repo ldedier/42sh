@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 11:02:58 by ldedier           #+#    #+#             */
-/*   Updated: 2019/03/28 11:02:58 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/04 18:03:17 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 /*
 ** sh_vs_motion_comma.c
-**	
+**
 **	repeat the last ft_command, reversing it (f->F), (t<->T)
 **	also ignore the count value
 */

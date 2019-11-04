@@ -6,7 +6,7 @@
 #    By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/11/04 13:30:00 by jdugoudr         ###   ########.fr        #
+#    Updated: 2019/11/04 18:51:16 by ldedier          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -200,6 +200,8 @@ SRCS			+=	add_choices_from_dir.c auto_completion.c \
 ########					SHORTCUTS					########
 ################################################################
 SRCS			+=	vshortcuts.c \
+					execute_vshortcuts.c \
+					vshortcuts_tools.c \
 					sh_vshortcut_hashtag.c \
 					sh_vs_motion_space.c \
 					sh_vshortcut_v.c \

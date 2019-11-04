@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 11:02:58 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/20 12:10:13 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/04 18:29:19 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,12 @@
 
 /*
 ** sh_vshortcut_hashtag.c
-**	
+**
 **	comment current command line and send it to execution
 */
 
-int		sh_vshortcut_hashtag(t_command_line *command_line, int dummy, int dummy_2)
+int		sh_vshortcut_hashtag(t_command_line *command_line, int dummy,
+		int dummy_2)
 {
 	int ret;
 

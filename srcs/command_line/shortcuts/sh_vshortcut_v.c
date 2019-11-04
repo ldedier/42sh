@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 11:02:58 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/20 13:01:00 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/04 18:44:23 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 /*
 ** sh_vshortcut_v.c
-**	
+**
 **	copy the content of the command_line in a temp file, open it with vim
 **	then execute the content of it
 */
 
-static char	*get_to_edit(t_command_line *command_line)
+static char		*get_to_edit(t_command_line *command_line)
 {
 	t_fc_operand	fc;
 	t_dlist			*entry_ptr;
@@ -39,7 +39,8 @@ static char	*get_to_edit(t_command_line *command_line)
 		return (command_line->dy_str->str);
 }
 
-int		sh_vshortcut_v(t_command_line *command_line, int dummy, int dummy_2)
+int				sh_vshortcut_v(t_command_line *command_line,
+		int dummy, int dummy_2)
 {
 	int		fd;
 	int		ret;
@@ -50,7 +51,7 @@ int		sh_vshortcut_v(t_command_line *command_line, int dummy, int dummy_2)
 	if (!(to_edit = get_to_edit(command_line)))
 		return (ERROR);
 	if ((fd = open(EDIT_FILE, O_CREAT | O_WRONLY | O_TRUNC, S_IRWXU)) == -1)
-	   	return (sh_perror(SH_ERR1_EDIT, "sh_builtin_fc_fill_text"));
+		return (sh_perror(SH_ERR1_EDIT, "sh_builtin_fc_fill_text"));
 	ft_dprintf(fd, "%s\n", to_edit);
 	if (sh_execute_editor("vim", command_line->shell) != SUCCESS)
 		return (FAILURE);

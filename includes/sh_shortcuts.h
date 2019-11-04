@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 00:41:35 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/19 00:41:35 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/04 18:54:20 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 # define VSHORTCUTS			"# vjklhwWeEbB^$0|fFtT;,aAiIrRcCSxXdDyYpPuU"
 # define MAX_EDIT_COUNTER	5
+
 
 typedef enum			s_motion_inclusion
 {
@@ -76,6 +77,9 @@ typedef struct			s_vshortcut
 	t_vshortcut_type	type;
 	t_motion_inclusion	inclusion;
 }						t_vshortcut;
+
+
+t_vshortcut g_vshortcuts_arr[0xff];
 
 /*
 ********************************************************************************
