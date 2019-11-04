@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/22 14:40:58 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/11 21:04:39 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/04 15:54:38 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ int		print_after_command_line(t_command_line *command_line,
 	else if (command_line->searcher.active)
 	{
 		to_go_up = get_down_from_command(command_line);
-	//	ft_dprintf(2, "togoup: %d\n", to_go_up);
 		if (render_research(command_line))
 			return (FAILURE);
 		go_up_left(to_go_up);
@@ -326,7 +325,7 @@ int		render_command_line(t_command_line *command_line,
 {
 	char	*str;
 
-	if (!isatty(0) || !command_line)
+	if (!isatty(0) || !command_line || g_glob.winsize.ws_row <= 1)
 		return (SUCCESS);
 	go_up_to_prompt(g_glob.winsize.ws_col, g_glob.cursor);
 	// ret = sh_scroll_command_line(command_line, g_glob.cursor, cursor_inc);

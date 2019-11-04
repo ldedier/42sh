@@ -259,6 +259,7 @@ int					sh_process_noncanonical_mode(t_shell *shell);
 ** set_signals.c
 */
 void				reset_signals(void);
+void				handler_sighup(int signo);
 void				init_signals(void);
 
 /*

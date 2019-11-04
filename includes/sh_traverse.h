@@ -115,7 +115,7 @@ int		sh_traverse_io_redirect(t_ast_node *node, t_context *context);
 int		sh_traverse_list(t_ast_node *node, t_context *context);
 
 /*
-** sh_traverse_pipe_line.c
+** sh_traverse_pipeline.c
 */
 int		sh_traverse_pipeline(t_ast_node *node, t_context *context);
 

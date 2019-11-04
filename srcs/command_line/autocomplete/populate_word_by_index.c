@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 12:04:02 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/09 18:38:15 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/04 16:09:20 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,7 +189,7 @@ int		populate_parsed_word_by_index(t_shell *shell, char *command,
 		ret = populate_word_from_lexer(&exec->tokens, index, &exec->word);
 	if (!ret)
 		ret = sh_parser(shell, &exec->tokens, &exec->ast_root, &exec->cst_root);
-	if (ret)
+	if (ret == FAILURE)
 	{
 		ft_lstdel(&exec->tokens, sh_free_token_lst);
 		exec->ast_root = NULL;

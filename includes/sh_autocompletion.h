@@ -144,7 +144,7 @@ void				process_autocompletion_switch(
 int					substitute_command_str_from_str(
 	t_command_line *command_line, char *from, char *str);
 int					substitute_command_str(
-	t_shell *shell ,t_command_line *command_line, char *str);
+	t_shell *shell, t_command_line *command_line, char *str);
 
 /*
 ** arrows_vertical.c
@@ -165,6 +165,7 @@ int					process_completion(
 	t_command_line *command_line, t_word word);
 void				print_dy_tab(t_dy_tab *dtab);
 int					sh_free_turn_exec(t_exec *exec, int ret);
+void				init_exec(t_exec *exec);
 int					process_tab(
 	t_shell *shell, t_command_line *command_line);
 
