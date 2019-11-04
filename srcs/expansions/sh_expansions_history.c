@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 12:01:07 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/09 02:36:16 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/04 17:26:15 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,9 @@ int		sh_expansions_history(t_shell *shell, t_command_line *command_line,
 		else if (command_line->dy_str->str[i] == '!'
 				&& !backslashed && !single_quoted
 				&& (i != (int)command_line->dy_str->current_size - 1
-					&& !ft_iswhite(command_line->dy_str->str[i + 1])))
+				&& !ft_iswhite(command_line->dy_str->str[i + 1]))
+				&& (i == 0 || command_line->dy_str->str[i - 1] != '[')
+				)
 		{
 			*expanded = 1;
 			if ((ret = sh_history_expand(shell, command_line, &i,
