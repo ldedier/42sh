@@ -1,6 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sh_traverse_tools_io_here_redirection.c            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/11/04 12:33:12 by jdugoudr          #+#    #+#             */
+/*   Updated: 2019/11/04 14:09:24 by jdugoudr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "sh_21.h"
 
-static int 		sh_redirection_for_heredoc(char *str, t_redirection *redirection, t_context *context)
+static int	sh_redirection_for_heredoc(
+		char *str, t_redirection *redirection, t_context *context)
 {
 	int				fds[2];
 
@@ -16,13 +29,16 @@ static int 		sh_redirection_for_heredoc(char *str, t_redirection *redirection, t
 	}
 	return (SUCCESS);
 }
-int 	sh_traverse_tools_io_here_redirection(t_ast_node *node, t_context *context)
-{
-	int 			ret;
-	t_redirection 	redir;
 
-	if ((ret = sh_redirection_for_heredoc(node->token->value, &redir, context)) == SUCCESS)
+int			sh_traverse_tools_io_here_redirection(
+		t_ast_node *node, t_context *context)
+{
+	int				ret;
+	t_redirection	red;
+
+	if ((ret = sh_redirection_for_heredoc(
+					node->token->value, &red, context)) == SUCCESS)
 		ret = sh_add_redirection_file(
-			redir.type, context->redirected_fd, redir.fd, &context->redirections);
+			red.type, context->redirected_fd, red.fd, &context->redirections);
 	return (ret);
 }

@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/02 10:03:30 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/31 08:38:48 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/04 11:56:55 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	child_part(t_ast_node *node, t_context *context)
 	if (g_job_ctrl->interactive)
 	{
 		if (set_pgid_child(getpid()) != SUCCESS)
-			exit (FAILURE);
+			exit(FAILURE);
 	}
 	reset_signals();
 	g_job_ctrl->interactive = 0;
@@ -51,9 +51,7 @@ static int	parents_part(pid_t pid, t_context *context)
 			return (FAILURE);
 		if (g_job_ctrl->curr_job->foreground)
 		{
-//			if (sh_pre_execution() != SUCCESS)//to mdaoud : I remove that since I add it in traverse_command
-//				return (FAILURE);
-			if ((fun_ret = job_put_in_fg(g_job_ctrl->curr_job, 0, &ret)) != SUCCESS)
+			if ((fun_ret = job_put_in_fg(g_job_ctrl->curr_job, 0, &ret)))
 				return (fun_ret);
 		}
 		else if (job_put_in_bg(g_job_ctrl->curr_job) != SUCCESS)
@@ -75,7 +73,7 @@ static int	parents_part(pid_t pid, t_context *context)
 ** So we can directly go to compound_list node.
 */
 
-int		sh_traverse_subshell(t_ast_node *node, t_context *context)
+int			sh_traverse_subshell(t_ast_node *node, t_context *context)
 {
 	pid_t	pid;
 	int		ret;
@@ -84,7 +82,7 @@ int		sh_traverse_subshell(t_ast_node *node, t_context *context)
 		return (child_part(node, context));
 	if (g_job_ctrl->interactive && !g_job_ctrl->job_added)
 	{
-		if ((ret = job_add(node->parent->parent, IS_BG(context->cmd_type))) != SUCCESS)
+		if ((ret = job_add(node->parent->parent, IS_BG(context->cmd_type))))
 			return (ret);
 		g_job_ctrl->job_added = 1;
 	}

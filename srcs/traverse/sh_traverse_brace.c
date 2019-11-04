@@ -6,13 +6,13 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 10:34:50 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/31 08:13:44 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/04 12:22:15 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-static int		braces_child_part(t_ast_node *node, t_context *context)
+static int	braces_child_part(t_ast_node *node, t_context *context)
 {
 	t_list		*lst_redi;
 	t_ast_node	*compound_redir;
@@ -23,7 +23,7 @@ static int		braces_child_part(t_ast_node *node, t_context *context)
 	reset_signals();
 	g_job_ctrl->interactive = 0;
 	if ((ret = sh_traverse_tools_compound_redir(
-					node, context, &compound_redir , &lst_redi)))
+					node, context, &compound_redir, &lst_redi)))
 		return (ret);
 	ret = sh_traverse_tools_search_term(node, context);
 	if (sh_reset_redirection(&lst_redi))
@@ -31,7 +31,7 @@ static int		braces_child_part(t_ast_node *node, t_context *context)
 	return (SUCCESS);
 }
 
-static int		braces_parent_part(pid_t cpid, t_context *context)
+static int	braces_parent_part(pid_t cpid, t_context *context)
 {
 	int	ret;
 
@@ -49,26 +49,21 @@ static int		braces_parent_part(pid_t cpid, t_context *context)
 	return (SUCCESS);
 }
 
-static int		sh_execute_brace_bg(t_ast_node *node, t_context *context)
+static int	sh_execute_brace_bg(t_ast_node *node, t_context *context)
 {
 	pid_t	cpid;
 	int		ret;
 
 	if ((cpid = fork()) < 0)
 		return (sh_perror_err(SH_ERR1_FORK, "can't fork for braces"));
-	// if (sh_pre_execution() != SUCCESS)
-	// 	return (FAILURE);
 	else if (cpid == 0)
-		exit (braces_child_part(node, context));
+		exit(braces_child_part(node, context));
 	else
 		ret = braces_parent_part(cpid, context);
-	// if (sh_post_execution() != SUCCESS)
-	// 	return (FAILURE);
 	return (ret);
 }
 
-
-int	sh_traverse_brace(t_ast_node *node, t_context *context)
+int			sh_traverse_brace(t_ast_node *node, t_context *context)
 {
 	int			ret;
 	t_ast_node	*compound_redir;
@@ -78,8 +73,7 @@ int	sh_traverse_brace(t_ast_node *node, t_context *context)
 	if (g_job_ctrl->interactive && IS_BG(context->cmd_type))
 	{
 		ft_dprintf(g_term_fd, YELLOW"Adding job in brace\n"EOC);
-		if ((ret = job_add(node->parent->parent, IS_BG(context->cmd_type))) != SUCCESS)
-		/*if ((ret = job_add(node, IS_BG(context->cmd_type))) != SUCCESS)*/
+		if ((ret = job_add(node->parent->parent, IS_BG(context->cmd_type))))
 			return (ret);
 		g_job_ctrl->job_added = 1;
 		ret = sh_execute_brace_bg(node, context);
@@ -87,7 +81,7 @@ int	sh_traverse_brace(t_ast_node *node, t_context *context)
 		return (ret);
 	}
 	if ((ret = sh_traverse_tools_compound_redir(
-					node, context, &compound_redir , &lst_redi)))
+					node, context, &compound_redir, &lst_redi)))
 		return (ret);
 	ret = sh_traverse_tools_search_term(node, context);
 	if (sh_reset_redirection(&lst_redi))

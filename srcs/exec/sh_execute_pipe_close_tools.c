@@ -6,12 +6,11 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 18:37:05 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/30 22:57:34 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/31 17:59:46 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
-
 
 /*
 ** close_all_pipe_but_one
@@ -20,7 +19,7 @@
 ** Before execution we close all unused pipe.
 */
 
-void		close_all_pipes_but_one(int nb_pipe, int curr_cmd, int **tab_pds)
+void	close_all_pipes_but_one(int nb_pipe, int curr_cmd, int **tab_pds)
 {
 	int	i;
 
@@ -47,7 +46,7 @@ void		close_all_pipes_but_one(int nb_pipe, int curr_cmd, int **tab_pds)
 ** free to not have any leaks
 */
 
-void		close_pipes_and_free(int curr_cmd, t_pipe *pipes, t_context *context)
+void	close_pipes_and_free(int curr_cmd, t_pipe *pipes, t_context *context)
 {
 	sh_reset_redirection(&context->redirections);
 	sh_free_all(context->shell);
@@ -65,14 +64,13 @@ void		close_pipes_and_free(int curr_cmd, t_pipe *pipes, t_context *context)
 	free(pipes->tab_pid);
 }
 
-
 /*
 ** close_one_pipe
 ** In the shell process we need to close pipe
 ** just after fork the associate command
 */
 
-void		close_one_pipe(int curr, t_pipe *pipes)
+void	close_one_pipe(int curr, t_pipe *pipes)
 {
 	if (curr < pipes->nb_pipe)
 	{
@@ -81,14 +79,13 @@ void		close_one_pipe(int curr, t_pipe *pipes)
 	}
 }
 
-
 /*
 ** close_all_pipe
 ** close all pipe for shell process if
 ** needed if an error appear during fork
 */
 
-void		close_all_pipes(t_pipe *pipes)
+void	close_all_pipes(t_pipe *pipes)
 {
 	int		i;
 

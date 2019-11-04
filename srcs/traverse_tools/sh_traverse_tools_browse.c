@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 12:06:49 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/17 18:21:34 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/04 13:34:45 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,26 +17,6 @@
 **		Call successively all node childrens
 **		It do not change the node->children value
 */
-
-//int		sh_traverse_tools_browse(t_ast_node *node, t_context *context)
-//{
-//	t_list		*ptr;
-//	t_ast_node	*child;
-//	int			ret;
-//
-//	ptr = node->children;
-//	ret = SUCCESS;
-//	while (ptr != NULL)
-//	{
-//		child = (t_ast_node *)ptr->content;
-//		if ((ret = g_grammar[child->symbol->id].traverse(child, context)))
-//			break ;
-//		if (child->children && (ret = sh_traverse_tools_browse(child, context)))
-//			break ;
-//		ptr = ptr->next;
-//	}
-//	return (ret);
-//}
 
 int		sh_traverse_tools_browse(t_ast_node *node, t_context *context)
 {
@@ -54,7 +34,8 @@ int		sh_traverse_tools_browse(t_ast_node *node, t_context *context)
 		{
 			if ((ret = g_grammar[child->symbol->id].traverse(child, context)))
 				break ;
-			if (child->children && (ret = sh_traverse_tools_browse(child, context)))
+			if (child->children
+					&& (ret = sh_traverse_tools_browse(child, context)))
 				break ;
 		}
 		ptr = ptr->next;

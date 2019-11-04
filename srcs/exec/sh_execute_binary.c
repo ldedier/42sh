@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sh_execute_binary.c                                  :+:      :+:    :+:   */
+/*   sh_execute_binary.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/07/19 11:14:49 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/28 10:38:05 by jdugoudr         ###   ########.fr       */
+/*   Created: 2019/11/04 11:49:50 by jdugoudr          #+#    #+#             */
+/*   Updated: 2019/11/04 11:51:39 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ static int		sh_exec_child_part(t_ast_node *father_node, t_context *context)
 ** If the command is piped or is an and_or command,
 **	we don't need to put the child in a process group.
 ** Because it will be forked from within another fork.
-** If the shell is non-interactive, we use a simple wait with context->wait_flag-
-**	which had been set before.
+** If the shell is non-interactive, we use a simple wait
+**	with context->wait_flag- which had been set before.
 */
 
 static int		sh_exec_parent_part(pid_t cpid, t_context *context)
@@ -65,7 +65,7 @@ static int		sh_exec_parent_part(pid_t cpid, t_context *context)
 			if ((ret = job_put_in_bg(g_job_ctrl->curr_job)) != SUCCESS)
 				return (ret);
 		}
-		else if ((fun_ret = job_put_in_fg(g_job_ctrl->curr_job, 0, &ret)) != SUCCESS)
+		else if ((fun_ret = job_put_in_fg(g_job_ctrl->curr_job, 0, &ret)))
 			return (fun_ret);
 	}
 	else
@@ -81,20 +81,16 @@ static int		sh_exec_parent_part(pid_t cpid, t_context *context)
 ** The parent will also put the child in its own process group.
 ** Then the parent will put the job in the foreground, and wait for it.
 */
-int		sh_execute_binary(t_ast_node *father_node, t_context *context)
+
+int				sh_execute_binary(t_ast_node *father_node, t_context *context)
 {
 	pid_t		cpid;
 	int			ret;
-	// Since we already fork for each command in a pipeline, we don't need to fork again.
+
 	if (IS_PIPE(context->cmd_type))
 		sh_execute_execve(father_node, context);
 	if (g_job_ctrl->interactive && !g_job_ctrl->job_added)
 	{
-		// char		*str;
-		// str = NULL;
-		// t_symbol_id id = father_node->symbol->id;
-		// g_grammar[id].get_job_string(father_node, &str);
-		// ft_printf("%s\n", str);
 		if ((ret = job_add(father_node, IS_BG(context->cmd_type))) != SUCCESS)
 			return (ret);
 		g_job_ctrl->job_added = 1;

@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 17:11:16 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/30 18:48:40 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/04 11:37:51 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,6 @@ void				sh_execute_execve(
 /*
 ** sh_execute_builtin.c
 */
-void				handle_int(int signo);
 int					sh_execute_builtin(
 	t_ast_node *father_node, t_context *context);
 
@@ -169,7 +168,7 @@ int					sh_post_execution(void);
 /*
 ** sh_execute_redirection.c
 */
-int 				sh_execute_redirection(t_list *lst, t_redirection *el);
+int 				sh_execute_redirection(t_redirection *el);
 
 /*
 ** t_context.c

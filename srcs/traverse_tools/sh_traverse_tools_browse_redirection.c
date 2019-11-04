@@ -6,7 +6,7 @@
 /*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/17 17:32:45 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/22 11:43:54 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/04 13:45:06 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,27 @@ static t_ast_node	*to_simple_command(t_ast_node *node)
 	return (node);
 }
 
-int	loop_traverse_redirection(t_ast_node *node, t_context *context)
+static int			find_cmd_tokens(t_ast_node *child, t_context *context)
+{
+	int	ret;
+
+	ret = SUCCESS;
+	if (child->symbol->id == sh_index(CMD_SUFFIX)
+			|| child->symbol->id == sh_index(CMD_PREFIX))
+	{
+		if ((ret = sh_traverse_tools_browse_redirection(
+						child, context)))
+		{
+			if (sh_reset_redirection(&(context->redirections)))
+				return (FAILURE);
+			return (ret);
+		}
+	}
+	return (ret);
+}
+
+int					loop_traverse_redirection(
+		t_ast_node *node, t_context *context)
 {
 	t_list		*ptr;
 	t_ast_node	*child;
@@ -40,16 +60,8 @@ int	loop_traverse_redirection(t_ast_node *node, t_context *context)
 		while (ptr)
 		{
 			child = ptr->content;
-			if (child->symbol->id == sh_index(CMD_SUFFIX)
-					|| child->symbol->id == sh_index(CMD_PREFIX))
-			{
-				if ((ret = sh_traverse_tools_browse_redirection(child, context)))
-				{
-					if (sh_reset_redirection(&(context->redirections)) != SUCCESS)
-						return (FAILURE);
-					return (ret);
-				}
-			}
+			if ((ret = find_cmd_tokens(child, context)))
+				return (ret);
 			ptr = ptr->next;
 		}
 		context->phase += 1;
@@ -57,7 +69,8 @@ int	loop_traverse_redirection(t_ast_node *node, t_context *context)
 	return (ret);
 }
 
-int	loop_traverse_compound_redirection(t_ast_node *node, t_context *context)
+int					loop_traverse_compound_redirection(
+		t_ast_node *node, t_context *context)
 {
 	int	ret;
 
@@ -76,12 +89,13 @@ int	loop_traverse_compound_redirection(t_ast_node *node, t_context *context)
 	return (ret);
 }
 
-int	sh_traverse_tools_browse_redirection(t_ast_node *node, t_context *context)
+int					sh_traverse_tools_browse_redirection(
+		t_ast_node *node, t_context *context)
 {
 	t_list		*ptr;
 	t_ast_node	*child;
 	int			ret;
-	
+
 	if (node == NULL)
 		return (SUCCESS);
 	ptr = node->children;
@@ -91,7 +105,8 @@ int	sh_traverse_tools_browse_redirection(t_ast_node *node, t_context *context)
 		child = ptr->content;
 		if ((ret = g_grammar[child->symbol->id].traverse(child, context)))
 			break ;
-		if (child->children && (ret = sh_traverse_tools_browse_redirection(child, context)))
+		if (child->children
+				&& (ret = sh_traverse_tools_browse_redirection(child, context)))
 			break ;
 		ptr = ptr->next;
 	}

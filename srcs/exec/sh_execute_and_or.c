@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 15:54:02 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/30 11:20:07 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/31 18:02:21 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,10 @@ static int		should_execute(int prev_symb, int ret)
 
 	ret_sig = SH_RET_VALUE_SIG_RECEIVED(ret);
 	ret_exit = SH_RET_VALUE_EXIT_STATUS(ret);
-
 	if (prev_symb == -1)
 		return (1);
-	// ft_dprintf(g_term_fd, "%sRet in AND_OR: %#X (%d)\n%s",BLUE, ret, ret, EOC);
-	// ft_dprintf(g_term_fd, "%sexit status: %d, signal status: %d%s\n",BLUE, ret_exit, ret_sig, EOC);
 	if (prev_symb == sh_index(LEX_TOK_AND_IF))
 		return (!ret);
-	// cmd1 || cmd2 : we don't execute cmd2 if cmd1 was killed by a SIGINT (130).
 	else if (g_job_ctrl->interactive)
 	{
 		result = ret_exit || (ret_sig != 130 && ret_sig != 0);
@@ -74,8 +70,9 @@ static int		sh_traverse_and_or_call_sons_exec(t_ast_node *node,
 ** This function set the env variable with the return value of the
 ** and_or node execution.
 */
+
 static int		sh_traverse_and_or_process_phase(
-	t_context *context, int prev_symbol, t_list *ptr)
+		t_context *context, int prev_symbol, t_list *ptr)
 {
 	int			ret;
 	t_ast_node	*child;
@@ -91,7 +88,7 @@ static int		sh_traverse_and_or_process_phase(
 	return (KEEP_READ);
 }
 
-int		sh_execute_and_or(t_ast_node *node, t_context *context)
+int				sh_execute_and_or(t_ast_node *node, t_context *context)
 {
 	t_list		*ptr;
 	int			ret;
@@ -107,8 +104,8 @@ int		sh_execute_and_or(t_ast_node *node, t_context *context)
 			context->wflags = (g_job_ctrl->ampersand ? WNOHANG : 0);
 		}
 		if ((ret = sh_traverse_and_or_process_phase(
-			context, prev_symbol, ptr)) != KEEP_READ)
-				return (ret);
+						context, prev_symbol, ptr)) != KEEP_READ)
+			return (ret);
 		if ((ptr = (ptr)->next))
 		{
 			prev_symbol = ((t_ast_node*)ptr->content)->symbol->id;

@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:35:27 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/23 12:14:06 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/04 13:28:59 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ typedef char *(*t_heredoc_func)(const char *);
 
 struct				s_heredoc
 {
+	char			*here_res;
 	char			*stop;
 	int				*apply_expansion;
 	t_heredoc_func	func;

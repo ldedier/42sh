@@ -1,21 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sh_execute_builtin.c                                  :+:      :+:    :+:   */
+/*   sh_execute_builtin.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/06/11 15:06:13 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/21 14:00:10 by jdugoudr         ###   ########.fr       */
+/*   Created: 2019/11/04 11:34:44 by jdugoudr          #+#    #+#             */
+/*   Updated: 2019/11/04 11:40:56 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-
-static int	execute_child_part(pid_t cpid, t_ast_node *parent_node, t_context *context)
+static int	execute_child_part(
+		pid_t cpid, t_ast_node *parent_node, t_context *context)
 {
-	int		ret;
+	int	ret;
 
 	if (g_job_ctrl->interactive)
 	{
@@ -29,7 +29,7 @@ static int	execute_child_part(pid_t cpid, t_ast_node *parent_node, t_context *co
 	ret = context->builtin(context);
 	g_job_ctrl->interactive = 1;
 	sh_free_all(context->shell);
-	return(ret);
+	return (ret);
 }
 
 static int	execute_parent_part(pid_t cpid)
@@ -58,7 +58,7 @@ static int	execute_builtin_in_bg(t_ast_node *parent_node, t_context *context)
 	if ((cpid = fork()) < -1)
 		return (sh_perror(SH_ERR1_FORK, "sh_execute_builtin"));
 	else if (cpid == 0)
-		exit (execute_child_part(cpid, parent_node, context));
+		exit(execute_child_part(cpid, parent_node, context));
 	else
 	{
 		ret = execute_parent_part(cpid);
@@ -66,6 +66,27 @@ static int	execute_builtin_in_bg(t_ast_node *parent_node, t_context *context)
 			g_job_ctrl->job_added = 0;
 	}
 	return (ret);
+}
+
+static int	executing_builtin(t_ast_node *parent_node, t_context *context)
+{
+	int	res;
+
+	if (sh_pre_execution() != SUCCESS)
+		return (FAILURE);
+	if (g_job_ctrl->interactive)
+		signal(SIGINT, handle_int);
+	if ((res = loop_traverse_redirection(parent_node, context)) != SUCCESS)
+	{
+		if (sh_post_execution() != SUCCESS)
+			return (FAILURE);
+		sh_env_update_ret_value(context->shell, res);
+		return (res);
+	}
+	res = context->builtin(context);
+	if (sh_post_execution() != SUCCESS)
+		return (FAILURE);
+	return (res);
 }
 
 /*
@@ -78,38 +99,14 @@ static int	execute_builtin_in_bg(t_ast_node *parent_node, t_context *context)
 **		any value returned by a builtin function
 */
 
-void	handle_int(int signo)
-{
-	if (signo == SIGINT)
-	{
-		get_down_from_command(&g_glob.command_line);
-		g_glob.command_line.interrupted = 1;
-	}
-}
-
 int			sh_execute_builtin(t_ast_node *parent_node, t_context *context)
 {
 	int		res;
 
 	if (context->cmd_type == (SIMPLE_NODE | BG_NODE))
-		res = execute_builtin_in_bg(parent_node,context);
+		res = execute_builtin_in_bg(parent_node, context);
 	else
-	{
-		if (sh_pre_execution() != SUCCESS)
-			return (FAILURE);
-		if (g_job_ctrl->interactive)
-			signal(SIGINT, handle_int);
-		if ((res = loop_traverse_redirection(parent_node, context)) != SUCCESS)
-		{
-			if (sh_post_execution() != SUCCESS)
-				return (FAILURE);
-			sh_env_update_ret_value(context->shell, res);
-			return (res);
-		}
-		res = context->builtin(context);
-		if (sh_post_execution() != SUCCESS)
-			return (FAILURE);
-	}
+		res = executing_builtin(parent_node, context);
 	if (res == SUCCESS)
 		sh_env_update_ret_value(context->shell, SH_RET_SUCCESS);
 	else if (res == BLT_TEST_ERROR)

@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 11:19:41 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/22 12:33:42 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/04 12:11:39 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,11 @@ static int	sh_process_file_lessand(char *filename, t_context *context)
 }
 
 /*
- * get_io_file_return
- * dispatch to right function follow
- * input/output with file/agregation redirection
+** get_io_file_return
+** dispatch to right function follow
+** input/output with file/agregation redirection
 */
+
 static int	get_io_file_return(t_ast_node *redir_child,
 			char *filename, t_context *context)
 {
@@ -103,11 +104,12 @@ static int	get_io_file_return(t_ast_node *redir_child,
 }
 
 /*
- * sh_traverse_io_file
- * We get here file and aggregation redirection and
- * add the given id or the created file fd to the list
- * of redirection we will run.
+** sh_traverse_io_file
+** We get here file and aggregation redirection and
+** add the given id or the created file fd to the list
+** of redirection we will run.
 */
+
 int			sh_traverse_io_file(t_ast_node *node, t_context *context)
 {
 	t_ast_node	*redir_child;
@@ -119,23 +121,18 @@ int			sh_traverse_io_file(t_ast_node *node, t_context *context)
 	filename_child = node->children->next->content;
 	filename_child = filename_child->children->content;
 	filename = filename_child->token->value;
+	ret = SUCCESS;
 	if (context->phase == E_TRAVERSE_PHASE_EXPANSIONS)
 	{
 		filename = ft_strdup(filename);
-		ret = sh_expansions(context, filename_child);
-		if (ret == SUCCESS
-					&& (filename_child->parent->children->next 
+		if ((ret = sh_expansions(context, filename_child)) == SUCCESS
+					&& (filename_child->parent->children->next
 						|| !filename_child->token->value[0]))
 			ret = sh_perror_err(SH_AMB_REDIRECT, filename);
 		free(filename);
-		return (ret);
 	}
-	if (context->phase == E_TRAVERSE_PHASE_REDIRECTIONS)
-	{
-		ret = get_io_file_return(redir_child, filename, context);
-		if (ret)
+	else if (context->phase == E_TRAVERSE_PHASE_REDIRECTIONS)
+		if ((ret = get_io_file_return(redir_child, filename, context)))
 			sh_env_update_ret_value(context->shell, ret);
-		return (ret);
-	}
-	return (SUCCESS);
+	return (ret);
 }

@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/05 12:43:22 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/09/27 23:06:33 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/04 12:32:53 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,15 @@ static int	is_valid_var(char c)
 static int	sh_traverse_io_here_expansion(
 		char **str, int *cursor, t_context *context)
 {
-	int ret;
+	int			ret;
 	t_dy_tab	*quotes;
 
 	if ((*str)[*cursor] == '$' && is_valid_var((*str)[*cursor + 1]))
 	{
 		if (!(quotes = ft_dy_tab_new(1)))
 			return (sh_perror(SH_ERR1_MALLOC, "sh_traverse_io_here_expansion"));
-		ret = sh_expansions_process(str, (*str) + *cursor, context, cursor, quotes);
+		ret = sh_expansions_process(
+				str, (*str) + *cursor, context, cursor, quotes);
 		ft_dy_tab_del_ptr(quotes);
 		context->shell->running = 1;
 		if (ret != SUCCESS && ret != STOP_CMD_LINE)

@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/30 12:52:49 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/04 12:14:05 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 ** We check what if we have pipe to do in the
 ** pipe sequence.
 */
+
 static int		sh_traverse_pipe_sequence(t_ast_node *node, t_context *context)
 {
 	int	ret;
@@ -35,7 +36,6 @@ static int		sh_traverse_pipe_sequence(t_ast_node *node, t_context *context)
 		}
 		context->cmd_type |= PIPE_NODE;
 		ret = sh_execute_pipe(node, context);
-		// ft_dprintf(g_term_fd, "after execute_pipe: %d\n", ret);
 		context->cmd_type &= ~PIPE_NODE;
 		if (g_job_ctrl->interactive)
 			g_job_ctrl->job_added = 0;
@@ -57,6 +57,7 @@ static int		sh_traverse_pipe_sequence(t_ast_node *node, t_context *context)
 **
 ** We update the env question_mark at this point.
 */
+
 int				sh_traverse_pipeline(t_ast_node *node, t_context *context)
 {
 	int			ret;

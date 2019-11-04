@@ -6,15 +6,15 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 13:41:34 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/30 21:36:58 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/31 17:57:27 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-pid_t 		fork_for_pipe(void)
+pid_t	fork_for_pipe(void)
 {
-	pid_t 	child;
+	pid_t	child;
 	int		ret;
 
 	if ((child = fork()) < 0)
@@ -56,7 +56,7 @@ int		create_all_pipe(int nb_pipe, t_pipe *pipes, t_list *lst_psequences,
 		if (ret != SUCCESS)
 		{
 			close_all_pipes(pipes);
-			kill (- pipes->tab_pid[0], SIGHUP);
+			kill(-pipes->tab_pid[0], SIGHUP);
 			return (ret);
 		}
 		return (ret);
@@ -64,13 +64,13 @@ int		create_all_pipe(int nb_pipe, t_pipe *pipes, t_list *lst_psequences,
 	if (pipe(pds))
 	{
 		sh_perror(SH_ERR1_PIPE, "execution commande pipe");
-		return (ERROR);	//Pourquoi -1 ici?
+		return (ERROR);
 	}
 	pipes->tab_pds[nb_pipe] = pds;
 	return (create_all_pipe(nb_pipe - 1, pipes, lst_psequences, context));
 }
 
-int			pipe_fail_protocol(t_context *context, int ret)
+int		pipe_fail_protocol(t_context *context, int ret)
 {
 	ft_dprintf(g_term_fd, "create_all pipes failed ret: %d\n", ret);
 	sh_post_execution();

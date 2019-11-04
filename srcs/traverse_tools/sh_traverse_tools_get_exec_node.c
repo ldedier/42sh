@@ -6,11 +6,25 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:00:19 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/29 12:33:02 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/04 14:08:40 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
+
+static int	process_node_to_exec(
+		t_ast_node *node_to_exec, t_context *context, int ret)
+{
+	g_job_ctrl->job_added = 0;
+	context->wflags = 0;
+	context->cmd_type = SIMPLE_NODE;
+	if (node_to_exec && ret == SUCCESS)
+	{
+		g_job_ctrl->ampersand = g_job_ctrl->ampersand_eol;
+		ret = sh_traverse_and_or(node_to_exec, context);
+	}
+	return (ret);
+}
 
 /*
 ** get_node_to_exec :
@@ -27,13 +41,13 @@
 ** If they are no separator, we just call the next level on the ast.
 */
 
-int 	get_node_to_exec(t_ast_node *node, t_context *context,
+int			get_node_to_exec(t_ast_node *node, t_context *context,
 		t_symbol_id symbol, int (*f)(t_ast_node *, t_ast_node *, t_context *))
 {
-	t_list 		*lst;
+	t_list		*lst;
 	t_ast_node	*curr_node;
 	t_ast_node	*node_to_exec;
-	int 		ret;
+	int			ret;
 
 	lst = node->children;
 	node_to_exec = NULL;
@@ -54,14 +68,5 @@ int 	get_node_to_exec(t_ast_node *node, t_context *context,
 			node_to_exec = curr_node;
 		lst = lst->next;
 	}
-	g_job_ctrl->job_added = 0;
-	context->wflags = 0;
-	context->cmd_type = SIMPLE_NODE;
-	if (node_to_exec && ret == SUCCESS)
-	{
-		g_job_ctrl->ampersand = g_job_ctrl->ampersand_eol;
-		ret = sh_traverse_and_or(node_to_exec, context);
-	}
-	return (ret);
+	return (process_node_to_exec(node_to_exec, context, ret));
 }
-

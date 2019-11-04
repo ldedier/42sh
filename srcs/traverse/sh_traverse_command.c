@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/02 00:35:13 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/31 15:58:32 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/04 12:25:50 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,11 @@
 ** We apply expansion here for all possible redirection of
 ** the command (grammar)
 */
+
 static int	apply_expansion_to_children(t_list *lst_child, t_context *context)
 {
 	t_ast_node	*child;
-	int 		ret;
+	int			ret;
 
 	while (lst_child)
 	{
@@ -48,7 +49,7 @@ static int	compound_and_redirection(t_ast_node *node, t_context *context)
 	child = child->children->content;
 	if (node->children->next)
 	{
-		if ((ret = apply_expansion_to_children(node->children->next, context)) != SUCCESS)
+		if ((ret = apply_expansion_to_children(node->children->next, context)))
 			return (ret);
 	}
 	if (sh_pre_execution() != SUCCESS)
@@ -66,16 +67,18 @@ static int	compound_and_redirection(t_ast_node *node, t_context *context)
 }
 
 /*
- * sh_traverse_command
+** sh_traverse_command
 ** This is the dispatcher of command (grammar) node
 ** Just check what type of command we have and call the
 ** right traverse.
-** If we have compound_command (like subshell), we can have some pipe to apply here.
+** If we have compound_command (like subshell), we can have some pipe to
+** apply here.
 */
+
 int			sh_traverse_command(t_ast_node *node, t_context *context)
 {
-	t_ast_node *child;
-	int 		ret;
+	t_ast_node	*child;
+	int			ret;
 
 	ret = 0;
 	child = node->children->content;

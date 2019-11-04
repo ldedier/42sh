@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 17:45:00 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/30 20:14:11 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/04 11:39:55 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,10 @@ void			job_added_update_sign(t_job *j);
 t_job			*job_get_unsigned(void);
 void			job_exited_update_sign(char j_sign);
 
+/*
+** handle_no_fork.c
+*/
+void				handle_int(int signo);
 
 /*
 ** jobs_create_strings
@@ -177,7 +181,5 @@ int				jobs_string_less_and(t_ast_node *node, char **str);
 int				jobs_string_great_and(t_ast_node *node, char **str);
 int				jobs_string_word(t_ast_node *node, char **str);
 
-
 #endif
-
 

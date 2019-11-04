@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 08:21:00 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/30 23:00:44 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/10/31 17:52:22 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 ** Apply pipe redirection and call next level on ast, simple_command
 */
 
-static int		child_exec(
+static int	child_exec(
 		int curr_cmd, t_pipe *pipes, t_ast_node *to_execute, t_context *context)
 {
 	int	ret;
@@ -42,7 +42,7 @@ static int		child_exec(
 	return (ret);
 }
 
-static int		pipe_wait(t_context *context, t_pipe *pipes)
+static int	pipe_wait(t_context *context, t_pipe *pipes)
 {
 	int	ret;
 	int	i;
@@ -76,7 +76,7 @@ static int		pipe_wait(t_context *context, t_pipe *pipes)
 ** fork and execute in the child process the current pipe sequence.
 */
 
-int		loop_pipe_exec(
+int			loop_pipe_exec(
 	int curr_cmd, t_pipe *pipes, t_list *lst_sequences, t_context *context)
 {
 	int			ret;
@@ -119,8 +119,7 @@ int		loop_pipe_exec(
 ** ERROR otherwise
 */
 
-
-int				sh_execute_pipe(t_ast_node *node, t_context *context)
+int			sh_execute_pipe(t_ast_node *node, t_context *context)
 {
 	int			ret;
 	t_pipe		pipes;

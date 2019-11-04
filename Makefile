@@ -6,7 +6,7 @@
 #    By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/10/31 08:12:25 by jdugoudr         ###   ########.fr        #
+#    Updated: 2019/11/04 13:30:00 by jdugoudr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -104,7 +104,6 @@ SRCS			+=	keys.c cursor_motion.c edit_command.c \
 ################################################################
 SRCS			+=	sh_traverse_tools_browse.c \
 					sh_traverse_tools_browse_redirection.c \
-					sh_traverse_tools_reset.c \
 					sh_traverse_tools_debug.c \
 					sh_traverse_tools_io_file.c \
 					sh_traverse_tools_io_here_expansion.c \
@@ -356,7 +355,8 @@ SRCS			+=	jobs_init.c job_add.c process_add.c job_tools.c \
 					jobs_string_bang.c jobs_string_less.c \
 					jobs_string_great.c jobs_string_dgreat.c \
 					jobs_string_dless.c jobs_string_less_and.c \
-					jobs_string_great_and.c jobs_string_word.c
+					jobs_string_great_and.c jobs_string_word.c \
+					sh_handle_no_fork.c
 #jobs_error_free.c 
 ################################################################
 ########					INCLUDES					########

@@ -1,20 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sh_traverse_cmd_prefix.c                           :+:      :+:    :+:   */
+/*   handle_no_fork.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/20 10:44:22 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/04 12:13:28 by jdugoudr         ###   ########.fr       */
+/*   Created: 2019/11/04 11:40:13 by jdugoudr          #+#    #+#             */
+/*   Updated: 2019/11/04 11:46:30 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-int			sh_traverse_cmd_prefix(t_ast_node *node, t_context *context)
+void	handle_int(int signo)
 {
-	(void)node;
-	(void)context;
-	return (SUCCESS);
+	if (signo == SIGINT)
+	{
+		get_down_from_command(&g_glob.command_line);
+		g_glob.command_line.interrupted = 1;
+	}
 }

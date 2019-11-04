@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/07 04:55:29 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/25 17:49:30 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/04 12:41:47 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,9 @@ int		sh_process_file_output(char *filename,
 	if (fd == ERROR)
 		return (ERROR);
 	if ((fd = open(filename, options, 0644)) < 0)
-	{
-		// sh_post_execution();
 		return (sh_perror_err("open: error while opening", filename));
-	}
-	if (sh_add_redirection_file(OUTPUT, context->redirected_fd, fd,
-		&context->redirections))
+	if (sh_add_redirection_file(
+				OUTPUT, context->redirected_fd, fd, &context->redirections))
 		return (FAILURE);
 	return (SUCCESS);
 }
@@ -61,12 +58,9 @@ int		sh_process_file_input(char *filename,
 	if (fd == ERROR)
 		return (ERROR);
 	if ((fd = open(filename, options)) < 0)
-	{
-		// sh_post_execution();
 		return (sh_perror_err("open: error while opening", filename));
-	}
-	if (sh_add_redirection_file(INPUT, context->redirected_fd, fd,
-		&context->redirections))
+	if (sh_add_redirection_file(
+				INPUT, context->redirected_fd, fd, &context->redirections))
 		return (FAILURE);
 	return (SUCCESS);
 }
