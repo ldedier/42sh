@@ -56,7 +56,7 @@ launch "Globbing"
 	launch_show "Simple"
 	test_launch 'cd sandbox' 'ls *'
 	test_launch 'cd sandbox' 'ls */*'
-	test_launch 'cd sandbox' 'ls */*/ | wc'
+	test_launch 'cd sandbox' 'ls */*/ '
 	test_launch 'cd sandbox' 'ls */*/*'
 	test_launch 'cd sandbox' 'ls [a]/*/*'
 	test_launch 'cd sandbox' 'ls [!ab]/*/*'
@@ -70,9 +70,9 @@ launch "Globbing"
 	test_launch 'cd sandbox' 'ls ./*'
 
 	launch_show "brace"
-	test_launch 'cd sandbox' 'echo [a] ; echo $?' 'echo [a]* ; echo $?' 'echo [!a] |wc ; echo $?'
-	test_launch 'cd sandbox' 'echo [a-a][a-a] | wc  ; echo $?' 'echo [!a][!a] | wc ; echo $?' 'echo [!] ; echo $?'
-	test_launch 'cd sandbox' 'echo [a-aa-ab-bb-b] | wc  ; echo $?' 'echo [!a-aa-ab-bb-b] | wc ; echo $?' 'echo [!a-a!a-a!b-bb-b] ; echo $?' 'echo [!a-aa-ab-b!b!-b] ; echo $?'
+	test_launch 'cd sandbox' 'echo [a] ; echo $?' 'echo [a]* ; echo $?' 'echo [!a]  ; echo $?'
+	test_launch 'cd sandbox' 'echo [a-a][a-a]   ; echo $?' 'echo [!a][!a]  ; echo $?' 'echo [!] ; echo $?'
+	test_launch 'cd sandbox' 'echo [a-aa-ab-bb-b]   ; echo $?' 'echo [!a-aa-ab-bb-b]  ; echo $?' 'echo [!a-a!a-a!b-bb-b] ; echo $?' 'echo [!a-aa-ab-b!b!-b] ; echo $?'
 	test_launch 'cd sandbox' 'echo [!] ; echo $?' 'echo [\!] ; echo $?' 'echo [!\!] ; echo $?' 'echo [!!] ; echo $?'
 
 	launch_show "brace quoted"
@@ -86,7 +86,8 @@ launch "Globbing"
 	test_launch 'cd sandbox' 'echo *' 'echo *' 'echo .*' 'echo ./*' 'echo **' 'echo ***'
 	test_launch 'cd sandbox' 'echo \*'
 	test_launch 'cd sandbox' 'echo ../**/../**' 'echo [a]*[b] ; echo $?' 'echo [!a]*[!b] ; echo $?' 'echo ?*? ; echo $?'
-
+	test_launch 'cd sandbox' 'echo */*/' 'echo */*'
+	test_launch 'cd sandbox' 'echo /*/*' 'echo /*/*/'
 
 	launch_show "question mark"
 	test_launch 'cd sandbox' 'ls file?' 'ls file?*'
