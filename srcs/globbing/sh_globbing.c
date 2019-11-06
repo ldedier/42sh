@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 13:31:28 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/06 03:59:32 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/06 04:12:50 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,12 @@ static int	pattern_matching_push(t_list **matches, t_list *new)
 		head = head->next;
 	}
 	if (prev == NULL)
-		head->next = new;
+	{
+		new->next = head;
+		*matches = new;
+	}
+	else if (head == NULL)
+		prev->next = new;
 	else
 	{
 		prev->next = new;
