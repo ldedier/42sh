@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 07:35:43 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/06 22:24:13 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/06 22:35:52 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,16 @@ int			sh_is_pattern_matching(char *name, t_list *regexp_head)
 	return (SUCCESS);
 }
 
+/*
+** check_for_final_slash:
+**	If final slash had been specified, only directories and symlinks pointing
+**	a directorie shall be kept.
+**
+**	Returned Values:
+**		SUCCESS : File can be valid
+**		ERROR : File cannot be valid
+*/
+
 static int	check_for_final_slash(t_list *regexp_list, char *path)
 {
 	t_regexp	*regexp;
@@ -60,10 +70,7 @@ static int	check_for_final_slash(t_list *regexp_list, char *path)
 	if (regexp->type != REG_FINAL_SLASH)
 		return (SUCCESS);
 	if (lstat(path, &st) == -1)
-	{
-		ft_dprintf(2, "lstat returned and error on : %s\n", path); // need to check if error appear with bad permissions befor deleting
-		return (FAILURE); // Check that returned value
-	}
+		return (ERROR);
 	if (!S_ISDIR(st.st_mode))
 	{
 		if (sh_verbose_globbing())
@@ -71,6 +78,18 @@ static int	check_for_final_slash(t_list *regexp_list, char *path)
 		return(ERROR);
 	}
 	return (SUCCESS);
+}
+
+static void	pattern_matching_push_find_place(t_list **head, t_list **prev, char *filename)
+{
+	while (*head)
+	{
+		if (ft_strcmp((char*)(*head)->content, filename) > 0)
+			return ;
+		(*prev) = *head;
+		(*head) = (*head)->next;
+	}
+	return ;
 }
 
 static int	pattern_matching_push(t_list **matches, t_list *new)
@@ -85,13 +104,7 @@ static int	pattern_matching_push(t_list **matches, t_list *new)
 	}
 	head = *matches;
 	prev = NULL;
-	while (head)
-	{
-		if (ft_strcmp((char*)head->content, (char*)new->content) > 0)
-			break ;
-		prev = head;
-		head = head->next;
-	}
+	pattern_matching_push_find_place(&head, &prev, (char*)new->content);
 	if (prev == NULL)
 	{
 		new->next = head;

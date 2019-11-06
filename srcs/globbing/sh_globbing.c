@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 13:31:28 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/06 05:15:18 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/07 00:21:59 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,16 @@ static void	free_regexp_tab(t_dy_tab **regexp_tab)
 
 /*
 ** pattern matching (globing) : *, ?, [], !, intervals with '-'
+**
+**	FAILURE : malloc errors
+**	SUCCESS : returned even if no globbinghad been processed, for any reasons
 */
 
-int			sh_expansions_globbing(t_context *context, t_ast_node *node, t_dy_tab *quotes)
+// Need to see for quote removal
+// need t ofind a solution t go threought every field splited fields, with no repeat for non splitted fields
+
+int			sh_expansions_globbing(
+	t_context *context, t_ast_node *node, t_dy_tab *quotes)
 {
 	char		*str;
 	t_list		*matches;
@@ -70,15 +77,18 @@ int			sh_expansions_globbing(t_context *context, t_ast_node *node, t_dy_tab *quo
 
 	regexp_tab = NULL;
 	matches = NULL;
-	// Need to see for quote removal
-	// need t ofind a solution t go threought every field splited fields, with no repeat for non splitted fields
 	str = node->token->value;
 	if (!ft_strpbrk(str, "?[*"))
 		return (SUCCESS);
-	if ((ret = sh_regexp_parse(str, &regexp_tab)))// leaks ?
+	if ((ret = sh_regexp_parse(str, &regexp_tab)) == FAILURE)// leaks ?
 		return (ret);
+	else if (ret == ERROR)
+		return (SUCCESS);
 	init_path(&path, str);
-	sh_expansions_pattern_matching(path, (t_list**)regexp_tab->tbl, &matches); //ret value ?
+	ret = sh_expansions_pattern_matching(path, (t_list**)regexp_tab->tbl, &matches);
+	if (ret == FAILURE)
+		return (FAILURE);
+	free(path);
 	// need to free path
 	if (matches)
 	{
