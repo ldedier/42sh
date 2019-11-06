@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 07:35:43 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/06 05:48:04 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/06 22:24:13 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,17 +51,23 @@ int			sh_is_pattern_matching(char *name, t_list *regexp_head)
 	return (SUCCESS);
 }
 
-static int	check_for_final_slash(t_list *regexp_list, t_dirent *dirent)
+static int	check_for_final_slash(t_list *regexp_list, char *path)
 {
 	t_regexp	*regexp;
-
+	struct stat	st;
+	
 	regexp = (t_regexp*)regexp_list->content;
 	if (regexp->type != REG_FINAL_SLASH)
 		return (SUCCESS);
-	else if (!(DT_DIR == dirent->d_type))
+	if (lstat(path, &st) == -1)
+	{
+		ft_dprintf(2, "lstat returned and error on : %s\n", path); // need to check if error appear with bad permissions befor deleting
+		return (FAILURE); // Check that returned value
+	}
+	if (!S_ISDIR(st.st_mode))
 	{
 		if (sh_verbose_globbing())
-			ft_dprintf(2, RED"\t%s is not a directory\n"EOC, dirent->d_name);
+			ft_dprintf(2, RED"\t%s is not a directory\n"EOC, path);
 		return(ERROR);
 	}
 	return (SUCCESS);
@@ -121,6 +127,8 @@ static int	pattern_matching_read_directory(char *path, t_list **regexp_list, t_l
 			new_path = ft_strjoin_free(new_path, "/", 1);
 		if (!new_path)
 			return (sh_perror(SH_ERR1_MALLOC, "pattern_matching")); // leaks ??
+		if (check_for_final_slash(*regexp_list, new_path))
+			return (SUCCESS);
 		if (regexp_list[1])
 		{
 			if (sh_verbose_globbing())
@@ -169,8 +177,6 @@ int			sh_expansions_pattern_matching(
 		return (SUCCESS); // perrror ? permissions
 	while ((dirent = readdir(dir)))
 	{
-		if (check_for_final_slash(*regexp_list, dirent))
-			continue ;
 		if (sh_verbose_globbing())
 			ft_dprintf(2, "working on path : %s/%s\n", path, dirent->d_name);
 		ret = pattern_matching_read_directory(path, regexp_list, matchs, dirent);
