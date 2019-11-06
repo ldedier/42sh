@@ -147,6 +147,7 @@ void				close_all_pipes(t_pipe *pipes);
 /*
 ** sh_execute_pipe_tools.c
 */
+pid_t				fork_for_pipe(void);
 int					create_all_pipe(
 	int nb_pipe,
 	t_pipe *pipes,
@@ -177,7 +178,5 @@ int					sh_execute_simple_command(
 int					t_context_init(t_context *context, t_shell *shell);
 void				t_context_free_content(t_context *context);
 void				t_context_reset(t_context *context);
-
-pid_t				fork_for_pipe(void);
 
 #endif
