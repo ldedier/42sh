@@ -14,7 +14,7 @@
 import os
 import re;
 
-format = "^(void|int|char|t_*|unsigned int|unsigned long)"
+format = "^(void|int|char|t_*|unsigned int|unsigned long|pid_t)"
 
 ignored_files=["grammar.c","main.c", "sh_builtin_bonus.c"]
 
@@ -64,6 +64,8 @@ def read_dir(dir):
 
 ## format_dir_datas
 ##      create from formated string, ready to print in header, read_dir datas
+##		Added condition to ignore global variable declaration than could create problems
+##			Now any function starting by g_ is ignored, but a message is prompted.
 def format_dir_datas(dir_data, tab_offset):
     res = ""
     max_tabs = tab_offset
@@ -86,6 +88,9 @@ def format_dir_datas(dir_data, tab_offset):
         for function in dir_data[file]:
             str = function["type"]
             str += "\t" * (max_tabs - (len(function["type"]) // 4))
+            if (function["name"][0] == "g" and function["name"][1] == '_'):
+                print("Global var declaration found and ignored : " + function["name"])
+                continue ;
             str += function["name"]
             str += ";\n"
             if (len(str) + 3 * max_tabs >= 80):

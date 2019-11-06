@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 01:47:50 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/21 17:55:33 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/04 17:06:32 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,17 +58,22 @@ int		substitute_command_str_from_str(t_command_line *command_line,
 	return (SUCCESS);
 }
 
-int		substitute_command_str(t_shell *shell ,t_command_line *command_line,
+int		substitute_command_str(t_shell *shell, t_command_line *command_line,
 			char *str)
 {
 	t_exec	exec;
+	int		ret;
 
-	if (populate_parsed_word_by_index(shell, command_line->dy_str->str,
-		command_line->current_index, &exec))
-		return (sh_free_turn_exec(&exec, FAILURE));
+	if ((ret = populate_parsed_word_by_index(shell, command_line->dy_str->str,
+		command_line->current_index, &exec)))
+	{
+		if (ret == FAILURE)
+			return (sh_free_turn_exec(&exec, FAILURE));
+		else
+			init_exec(&exec);
+	}
 	if (process_substitute_command(command_line, str, exec.word, 0))
 		return (sh_free_turn_exec(&exec, FAILURE));
 	sh_free_turn_exec(&exec, FAILURE);
 	return (SUCCESS);	
 }
-

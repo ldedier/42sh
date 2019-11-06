@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 23:28:27 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/21 17:58:12 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/04 17:16:46 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,18 +83,30 @@ int		sh_free_turn_exec(t_exec *exec, int ret)
 	return (ret);
 }
 
+void	init_exec(t_exec *exec)
+{
+	exec->ast_root = NULL;
+	exec->cst_root = NULL;
+}
+
 int		process_tab(t_shell *shell, t_command_line *command_line)
 {
 	int		ret;
 	t_exec	exec;
 
+	init_exec(&exec);
 	ret = 0;
 	command_line->autocompletion.choices_common_len = -1;
 	if (!command_line->autocompletion.active)
 	{
 		if ((ret = populate_parsed_word_by_index(shell,
 			command_line->dy_str->str, command_line->current_index, &exec)))
-			return (sh_free_turn_exec(&exec, ret == FAILURE));
+		{
+			if (ret == FAILURE)
+				return (sh_free_turn_exec(&exec, 1));
+			else
+				init_exec(&exec);
+		}
 		ft_dlstdel(&command_line->autocompletion.choices, &free_file_dlst);
 		if (populate_choices_from_word(command_line, shell, &exec.word))
 			return (sh_free_turn_exec(&exec, 1));
