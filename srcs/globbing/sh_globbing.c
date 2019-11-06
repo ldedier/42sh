@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 13:31:28 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/23 03:48:12 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/06 03:59:32 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,35 @@ static int	check_for_final_slash(t_list *regexp_list, t_dirent *dirent)
 		return (SUCCESS);
 	else if (!(DT_DIR == dirent->d_type))
 		return(ERROR);
+	return (SUCCESS);
+}
+
+static int	pattern_matching_push(t_list **matches, t_list *new)
+{
+	t_list	*head;
+	t_list	*prev;
+
+	if (!*matches)
+	{
+		*matches = new;
+		return (SUCCESS);
+	}
+	head = *matches;
+	prev = NULL;
+	while (head)
+	{
+		if (ft_strcmp((char*)head->content, (char*)new->content) > 0)
+			break ;
+		prev = head;
+		head = head->next;
+	}
+	if (prev == NULL)
+		head->next = new;
+	else
+	{
+		prev->next = new;
+		new->next = head;
+	}
 	return (SUCCESS);
 }
 
@@ -60,7 +89,7 @@ static int	pattern_matching(char *path, t_list **regexp_list, t_dy_tab *quotes, 
 			{
 				if (sh_verbose_globbing())
 					ft_dprintf(2, GREEN"\t\tfound valid path : %s\n"EOC, new_path);
-				ft_lstadd_last(matchs, ft_lstnew(new_path, ft_strlen(new_path) + 1)); // protect lst_new malloc
+				pattern_matching_push(matchs, ft_lstnew(new_path, ft_strlen(new_path) + 1)); // protect lst_new malloc
 			}
 		}
 		else  if (sh_verbose_globbing())
@@ -82,6 +111,7 @@ static int	init_path(char **path, char *str)
 
 static int	sh_expansions_globbing_matches(t_ast_node *node, t_list *matches)
 {
+	// sh_expansions_globbing_matches_sort(matches);
 	free(node->token->value);
 	if (!(node->token->value = ft_strdup((char*)matches->content)))
 		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_globbing_matches (1)"));
