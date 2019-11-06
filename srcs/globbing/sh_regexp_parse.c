@@ -6,11 +6,22 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 23:53:16 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/23 03:17:17 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/06 05:44:58 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
+
+/*
+** check_for_final_slash:
+**	If str finish with a '/' character, it add a REG_FINAL_SLASH t_regexp,
+**	at the begining of last pattern list of regexp_tab.
+**	In verbose mode it show the modified last regexp_list.
+**
+**	Returned Values:
+**		SUCCESS
+**		FAILURE : malloc error
+*/
 
 static int	check_for_final_slash(char *str, t_list **regexp_tab, int i)
 {
@@ -38,7 +49,6 @@ static int	check_for_final_slash(char *str, t_list **regexp_tab, int i)
 	return (SUCCESS);
 }
 
-
 static int		sh_regexp_parse_component(char *str, t_list **regexp_list)
 {
 	int		i;
@@ -64,6 +74,17 @@ static int		sh_regexp_parse_component(char *str, t_list **regexp_list)
 		t_regexp_show_list(*regexp_list);
 	return (SUCCESS);
 }
+
+/*
+** sh_regexp_parse:
+**	Split path given around every '/' char. For every part it create a t_list
+**	contaning t_regexp struct. These lists are stored in a t_dy_tab regexp_tab.
+**
+**	Returned Values :
+**		SUCCESS
+**		ERROR : Can't parse patterns, globbing shall not be performed
+**		FAILURE : malloc error
+*/
 
 int		sh_regexp_parse(char *str, t_dy_tab **regexp_tab)
 {

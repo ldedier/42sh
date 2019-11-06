@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/10/23 03:23:50 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/06 05:07:40 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -334,6 +334,8 @@ SRCS			+=	sh_globbing.c \
 					sh_regexp_parse_new_star.c \
 					sh_pattern_matching.c \
 					sh_pattern_matching_star.c \
+					sh_pattern_matching_str.c \
+					sh_pattern_matching_quest.c \
 					sh_pattern_matching_brace.c \
 					t_regexp.c
 

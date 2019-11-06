@@ -48,6 +48,8 @@ int							sh_expansions_globbing(
 */
 int							sh_is_pattern_matching(
 	char *name, t_list *regexp_head);
+int							sh_expansions_pattern_matching(
+	char *path, t_list **regexp_list, t_list **matchs);
 
 /*
 ** sh_pattern_matching_brace.c
@@ -56,10 +58,22 @@ int							sh_pattern_matching_brace(
 	char *name, t_regexp *regexp, int *i);
 
 /*
+** sh_pattern_matching_quest.c
+*/
+int							sh_pattern_matching_quest(
+	char *name, t_regexp *regexp, int *i);
+
+/*
 ** sh_pattern_matching_star.c
 */
 int							sh_pattern_matching_star(
 	char *name, t_regexp *regexp, int *i, t_list *regexp_head);
+
+/*
+** sh_pattern_matching_str.c
+*/
+int							sh_pattern_matching_str(
+	char *name, t_regexp *regexp, int *i);
 
 /*
 ** sh_regexp_parse.c
