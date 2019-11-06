@@ -138,10 +138,19 @@ def create_header(header, datas):
     header_content += "#endif\n"
     return header_content
 
+
+## Write header is now checking that content to write is different of current header
+## content to avoid Makefile relinking by modifying files for nothing same things in files
 def write_header(header, content):
+    fdr = open(header, 'r')
+    initial_content = fdr.read()
+    fdr.close()
+    if (initial_content == content):
+    	return
     fd_header = open(header, "w")
     fd_header.write(content)
     fd_header.close()
+    print("Updated : " + header)
 
 def automatic_header(dir, header, tab_offset):
     if (verbose):
