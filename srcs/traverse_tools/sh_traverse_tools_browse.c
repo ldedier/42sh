@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 12:06:49 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/29 10:58:04 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/04 13:34:45 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,15 @@ int		sh_traverse_tools_browse(t_ast_node *node, t_context *context)
 	while (ptr != NULL)
 	{
 		child = (t_ast_node *)ptr->content;
-		if ((ret = g_grammar[child->symbol->id].traverse(child, context)))
-			break ;
-		if (child->children && (ret = sh_traverse_tools_browse(child, context)))
-			break ;
+		if (child->symbol->id != sh_index(IO_REDIRECT)
+				|| context->phase == E_TRAVERSE_PHASE_INTERACTIVE_REDIRECTIONS)
+		{
+			if ((ret = g_grammar[child->symbol->id].traverse(child, context)))
+				break ;
+			if (child->children
+					&& (ret = sh_traverse_tools_browse(child, context)))
+				break ;
+		}
 		ptr = ptr->next;
 	}
 	return (ret);

@@ -1,0 +1,9 @@
+{
+   all tgetent and tgetstre leaks
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:*alloc
+   ...
+   obj:/lib/x86_64-linux-gnu/libtinfo.so.5.9
+   ...
+}

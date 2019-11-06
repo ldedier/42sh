@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 12:01:07 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/20 02:04:37 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/06 21:18:59 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,13 @@ static int ft_word_delim_len(char *str, int delim)
 char	*ft_strdup_word_delim(char *str, int delim)
 {
 	char	*res;
-	int		i;
+	// int		i;
 	int		len;
 
 	len = ft_word_delim_len(str, delim);
 	if (!(res = ft_strnew(len)))
 		return (sh_perrorn(SH_ERR1_MALLOC, "ft_strdup_word_delim"));
-	i = 0;
+	// i = 0;
 	ft_strncpy(res, str, len);
 	res[len] = '\0';
 	return (res);

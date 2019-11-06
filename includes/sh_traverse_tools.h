@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 11:47:31 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/07 16:02:05 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/04 13:31:22 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,26 @@ int		sh_traverse_tools_browse(t_ast_node *node, t_context *context);
 int		sh_traverse_tools_search(t_ast_node *node, int searched_symbol_id);
 
 /*
+** sh_traverse_tools_browse_redirection.c
+*/
+int		loop_traverse_redirection( t_ast_node *node, t_context *context);
+int		loop_traverse_compound_redirection(
+	t_ast_node *node, t_context *context);
+int		sh_traverse_tools_browse_redirection(
+	t_ast_node *node, t_context *context);
+
+/*
+** sh_traverse_tools_compound.c
+*/
+int		sh_traverse_tools_search_term(
+	t_ast_node *node, t_context *context);
+int		sh_traverse_tools_compound_redir(
+	t_ast_node *node,
+	t_context *context,
+	t_ast_node **compound_redir,
+	t_list **lst_redi);
+
+/*
 ** sh_traverse_tools_debug.c
 */
 char	*t_phase_name(t_phase phase);
@@ -36,7 +56,7 @@ void	sh_traverse_tools_show_traverse_ret_value(
 /*
 ** sh_traverse_tools_get_exec_node.c
 */
-int 	get_node_to_exec(
+int		get_node_to_exec(
 	t_ast_node *node,
 	t_context *context,
 	t_symbol_id symbol,
@@ -53,7 +73,7 @@ char	*get_heredoc(
 /*
 ** sh_traverse_tools_get_separator.c
 */
-int 	sh_get_separator_op(
+int		sh_get_separator_op(
 	t_ast_node *to_execute, t_ast_node *separator, t_context *context);
 int		sh_get_separator(
 	t_ast_node *to_execute, t_ast_node *separator, t_context *context);
@@ -75,14 +95,8 @@ int		sh_traverse_io_here_phase_expansion(
 /*
 ** sh_traverse_tools_io_here_redirection.c
 */
-int 	sh_traverse_tools_io_here_redirection(
+int		sh_traverse_tools_io_here_redirection(
 	t_ast_node *node, t_context *context);
-
-/*
-** sh_traverse_tools_reset.c
-*/
-void	sh_traverse_tools_reset_context(t_context *context);
-void	sh_traverse_tools_reset_params(t_context *context);
 
 /*
 ** sh_traverse_tools_simple_command.c

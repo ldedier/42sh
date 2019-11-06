@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_builtin.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 11:36:31 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/10 00:52:35 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/27 11:52:09 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,14 @@
 # define SH_BUILTIN_H
 
 # if __APPLE__ && __MACH__
-#  define NB_BUILTINS	16
+#  define NB_BUILTINS	19
 # else
-#  define NB_BUILTINS	15
+#  define NB_BUILTINS	18
 # endif
+
+# include "sh_grammar.h"
+# include "sh_21.h"
+# include "sh_job_control.h"
 
 # define NB_FLAG_UNARY	15
 # define NB_FLAG_BINARY	8
@@ -172,6 +176,18 @@ void				show_alias(char *str);
 int					sh_builtin_alias_show(t_context *context);
 
 /*
+** sh_builtin_bg.c
+*/
+int					sh_builtin_bg(t_context *context);
+
+/*
+** sh_builtin_bg_tools.c
+*/
+int					parse_bg_spec(char *str, int j_lst[], int *it);
+int					parse_bg_args(char **argv, int job_lst[]);
+t_job				*bg_get_job_by_spec(int num);
+
+/*
 ** sh_builtin_cd.c
 */
 int					sh_builtin_cd(t_context *context);
@@ -274,6 +290,18 @@ int					sh_builtin_fc_s_synopsis(
 	t_context *context, t_fc_options *opts);
 
 /*
+** sh_builtin_fg.c
+*/
+int					sh_builtin_fg(t_context *context);
+
+/*
+** sh_builtin_fg_tools.c
+*/
+int					parse_fg_spec(char *str, int j_lst[], int *it);
+int					parse_fg_args(char **argv, int job_lst[]);
+t_job				*fg_get_job_by_spec(int num);
+
+/*
 ** sh_builtin_hash.c
 */
 int					sh_builtin_hash(t_context *context);
@@ -287,6 +315,16 @@ void				sh_builtin_hash_empty_table(t_shell *shell);
 int					sh_builtin_hash_show(t_shell *shell);
 void				sh_builtin_hash_update_stats(
 	t_hash_table *table, t_binary_stats *stats);
+
+/*
+** sh_builtin_jobs.c
+*/
+int					sh_builtin_jobs(t_context *context);
+
+/*
+** sh_builtin_jobs_tools.c
+*/
+int					parse_jobs_args(char **argv, int j_lst[], int *opt);
 
 /*
 ** sh_builtin_parser.c

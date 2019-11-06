@@ -3,79 +3,64 @@
 /*                                                        :::      ::::::::   */
 /*   sh_traverse_subshell.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/02 10:03:30 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/15 12:04:46 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/04 11:56:55 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-/*
-** search_term
-** compound_list node can be a newline_list follow by a term node and separator
-** need to have at least a term node.
-**
-** So we skip all newline_list to go to the term node.
-** Have to check of the proper separator.
-** A term can be a list of and_or break by separator node.
-** A separator can be ';' '&' 'line_break' or 'newline_list'
-*/
-static int	get_last_separator(t_ast_node *curr_node)
+static int	child_part(t_ast_node *node, t_context *context)
 {
-	t_ast_node	*last_separator;
+	int			ret;
+	t_ast_node	*compound_redir;
+	t_list		*lst_redi;
 
-	if (curr_node->children->next)
+	ret = 0;
+	if (g_job_ctrl->interactive)
 	{
-		last_separator = curr_node->children->next->content;
-		last_separator = last_separator->children->content;
-		if (last_separator->symbol->id == sh_index(SEPARATOR_OP))
-		{
-			last_separator = last_separator->children->content;
-			/*ft_printf("we've got a separator ! it's ");// delete it*/
-			if (last_separator->symbol->id == sh_index(LEX_TOK_AND))
-			{
-				/*ft_printf("-%c-\n", '&');// delete it*/
-				return (1);
-			}
-			else if (last_separator->symbol->id == sh_index(LEX_TOK_SEMICOL))
-				/*ft_printf("-%c-\n", ';');// delete it*/
-				;
-		}
-		else
-			return (ERROR);
-			/*ft_printf("-well this is a separtor not yet manage like linebreak or something ..-\n");// delete it*/
+		if (set_pgid_child(getpid()) != SUCCESS)
+			exit(FAILURE);
 	}
-	return (0);
+	reset_signals();
+	g_job_ctrl->interactive = 0;
+	if ((ret = sh_traverse_tools_compound_redir(
+					node, context, &compound_redir, &lst_redi)))
+		return (ret);
+	ret = sh_traverse_tools_search_term(node, context);
+	if (sh_reset_redirection(&lst_redi))
+		return (FAILURE);
+	g_job_ctrl->interactive = 1;
+	sh_free_all(context->shell);
+	if (ret != SUCCESS)
+		exit(ret);
+	exit(context->shell->ret_value);
 }
 
-static int	search_term(t_ast_node *node, t_context *context)
+static int	parents_part(pid_t pid, t_context *context)
 {
-	t_list		*el;
-	int			ret;
-	t_ast_node	*curr_node;
-	t_ast_node	*node_to_exec;
+	int	ret;
+	int	fun_ret;
 
-	el = node->children;
-	node_to_exec = NULL;
-	ret = SUCCESS;
-	while (el)
+	ret = 0;
+	if (g_job_ctrl->interactive)
 	{
-		curr_node = el->content;
-		if (curr_node->symbol->id == sh_index(COMPOUND_LIST))
+		if (set_pgid_parent(pid) != SUCCESS)
+			return (FAILURE);
+		if (g_job_ctrl->curr_job->foreground)
 		{
-			get_last_separator(curr_node);//check retrun value to know if they are '&' at the end
-			el = curr_node->children;
-			curr_node = el->content;
+			if ((fun_ret = job_put_in_fg(g_job_ctrl->curr_job, 0, &ret)))
+				return (fun_ret);
 		}
-		if (curr_node->symbol->id == sh_index(TERM))
-			break ;
-		el = el->next;
+		else if (job_put_in_bg(g_job_ctrl->curr_job) != SUCCESS)
+			return (FAILURE);
 	}
-	if (el)
-		ret = get_node_to_exec(curr_node, context, SEPARATOR, &sh_get_separator);
-	return (ret);
+	else
+		waitpid(pid, &ret, context->wflags);
+	sh_env_update_ret_value_wait_result(context, ret);
+	return (SUCCESS);
 }
 
 /*
@@ -87,38 +72,29 @@ static int	search_term(t_ast_node *node, t_context *context)
 ** '(' 'compund_list' and ')' children.
 ** So we can directly go to compound_list node.
 */
-int		sh_traverse_subshell(t_ast_node *node, t_context *context)
+
+int			sh_traverse_subshell(t_ast_node *node, t_context *context)
 {
 	pid_t	pid;
 	int		ret;
 
+	if (IS_PIPE(context->cmd_type))
+		return (child_part(node, context));
+	if (g_job_ctrl->interactive && !g_job_ctrl->job_added)
+	{
+		if ((ret = job_add(node->parent->parent, IS_BG(context->cmd_type))))
+			return (ret);
+		g_job_ctrl->job_added = 1;
+	}
 	if ((pid = fork()) < 0)
 		return (sh_perror_err(SH_ERR1_FORK, "can't fork for subshell"));
 	else if (pid)
 	{
-		waitpid(pid, &ret, 0);
-		sh_env_update_ret_value_wait_result(context, ret);
-		return (SUCCESS);
+		ret = parents_part(pid, context);
+		g_job_ctrl->job_added = 0;
+		return (ret);
 	}
 	else
-	{
-		/*ret = search_term(node->children->next->content, context);*/
-		ret = search_term(node, context);
-		sh_free_all(context->shell);
-		if (ret != SUCCESS)
-			exit(ret);
-		exit(context->shell->ret_value);
-	}
+		child_part(node, context);
 	return (0);
-}
-
-int		sh_traverse_brace_group(t_ast_node *node, t_context *context)
-{
-	int	ret;
-
-	sh_traverse_tools_show_traverse_start(node, context);
-	/*ret = search_term(node->children->next->content, context);*/
-	ret = search_term(node, context);
-	sh_traverse_tools_show_traverse_ret_value(node, context, ret);
-	return (ret);
 }

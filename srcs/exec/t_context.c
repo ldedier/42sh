@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_context.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 21:45:25 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/06 23:19:23 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/18 12:03:50 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ int			t_context_init(t_context *context, t_shell *shell)
 	ft_bzero(context, sizeof(t_context));
 	if (!(context->params = ft_dy_tab_new(5)))
 		return (sh_perror(SH_ERR1_MALLOC, "t_context_init"));
+	context->wflags = (g_job_ctrl->interactive ? WUNTRACED : 0);
+	context->cmd_type = SIMPLE_NODE;
 	context->path = NULL;
 	context->shell = shell;
 	context->env = shell->env;
@@ -60,7 +62,7 @@ void		t_context_free_content(t_context *context)
 
 void		t_context_reset(t_context *context)
 {
-	int     i;
+	int		i;
 
 	i = 0;
 	while (i < (int)context->params->current_size)

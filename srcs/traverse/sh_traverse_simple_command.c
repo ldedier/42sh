@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_traverse_simple_command.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/16 18:40:56 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/10/25 12:13:28 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int		sh_traverse_simple_command(t_ast_node *node, t_context *context)
 {
 	int		ret;
 
-//	context->phase = E_TRAVERSE_PHASE_REDIRECTIONS;
 	context->phase = E_TRAVERSE_PHASE_EXPANSIONS;
 	sh_traverse_tools_show_traverse_start(node, context);
 	while (context->phase <= E_TRAVERSE_PHASE_EXECUTE)
@@ -41,7 +40,7 @@ int		sh_traverse_simple_command(t_ast_node *node, t_context *context)
 		}
 		context->phase += 1;
 	}
-	ret = sh_execute_simple_command(context);
+	ret = sh_execute_simple_command(node, context);
 	if (sh_reset_redirection(&(context->redirections)) != SUCCESS)
 		return (FAILURE);
 	if (!ret)

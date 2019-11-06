@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_builtin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 19:04:16 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/06 23:15:03 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/09 16:58:30 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,9 @@ t_builtin_container		*get_builtins(void)
 		{ "unset", sh_builtin_unset },
 		{ "export", sh_builtin_unset },
 		{ "test", sh_builtin_test },
+		{ "jobs", sh_builtin_jobs},
+		{ "fg", sh_builtin_fg},
+		{ "bg", sh_builtin_bg},
 		{ "fc", sh_builtin_fc },
 		{ "alias", sh_builtin_alias },
 		{ "unalias", sh_builtin_unalias },

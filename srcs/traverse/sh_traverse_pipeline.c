@@ -1,57 +1,45 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sh_traverse_pipe_sequence.c                        :+:      :+:    :+:   */
+/*   sh_traverse_pipeline.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/09 15:27:20 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/04 12:14:05 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
 /*
-** pipe_to_do :
-** This function is called when we have pipes to execute.
-** We do here the first fork. That's mean, in this case, we have to add
-** this new process in the jobs list.
-*/
-//static int		pipe_to_do(t_ast_node *node, t_context *context)
-//{
-//	int		ret;
-//	int 	child;
-//
-//	if ((child = fork()) < 0)
-//		return (sh_perror(SH_ERR1_FORK, "execution fork for pipe"));
-//	else if (child)
-//	{
-//		waitpid(child, &ret, 0);
-//		sh_env_update_ret_value_wait_result(context, ret);
-//		return (SUCCESS);
-//	//	return (SH_RET_VALUE_EXIT_STATUS(ret));
-//	}
-//	else
-//	{
-//		ret = sh_execute_pipe(node, context);
-//		exit(ret);
-//	}
-//}
-
-/*
 ** sh_traverse_pipe_sequence :
 ** We check what if we have pipe to do in the
 ** pipe sequence.
 */
+
 static int		sh_traverse_pipe_sequence(t_ast_node *node, t_context *context)
 {
 	int	ret;
 
 	sh_traverse_tools_show_traverse_start(node, context);
 	if (ft_lstlen(node->children) > 1)
-		/*ret = pipe_to_do(node, context);*/
+	{
+		if (g_job_ctrl->interactive && !g_job_ctrl->job_added)
+		{
+			if ((ret = job_add(node, IS_BG(context->cmd_type))) != SUCCESS)
+			{
+				sh_env_update_ret_value(context->shell, ret);
+				return (ret);
+			}
+			g_job_ctrl->job_added = 1;
+		}
+		context->cmd_type |= PIPE_NODE;
 		ret = sh_execute_pipe(node, context);
+		context->cmd_type &= ~PIPE_NODE;
+		if (g_job_ctrl->interactive)
+			g_job_ctrl->job_added = 0;
+	}
 	else
 		ret = sh_traverse_command(node->children->content, context);
 	sh_traverse_tools_show_traverse_ret_value(node, context, ret);
@@ -69,6 +57,7 @@ static int		sh_traverse_pipe_sequence(t_ast_node *node, t_context *context)
 **
 ** We update the env question_mark at this point.
 */
+
 int				sh_traverse_pipeline(t_ast_node *node, t_context *context)
 {
 	int			ret;

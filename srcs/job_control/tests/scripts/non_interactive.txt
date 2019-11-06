@@ -1,0 +1,19 @@
+ls
+ls &
+ls -l
+ls -l &
+ls & ls -l
+ls & ls -l &
+ls ; ls -l &
+ls ; ls -l ;
+ls ; ls -l ; ls -l &
+ls ; ls -l ; pwd ; echo hello
+ls ; ls -l & echo hello
+ls || sleep 2
+ls || sleep 2
+ls && sleep 2
+ls && sleep 2 &
+sleep 10 || ls &
+pkill -INT sleep
+sleep 10 || ls &
+pkill -TSTP sleep

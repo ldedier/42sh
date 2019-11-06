@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_traverse.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:35:27 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/02 09:20:33 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/04 13:28:59 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ typedef char *(*t_heredoc_func)(const char *);
 
 struct				s_heredoc
 {
+	char			*here_res;
 	char			*stop;
 	int				*apply_expansion;
 	t_heredoc_func	func;
@@ -37,6 +38,12 @@ struct				s_heredoc
 int		sh_process_traverse(t_shell *shell, t_ast_node *ast_root);
 
 /*
+** sh_traverse_ampersand.c
+*/
+int		sh_traverse_ampersand(
+	t_ast_node *node_to_execute, t_context *context);
+
+/*
 ** sh_traverse_and_or.c
 */
 int		sh_traverse_and_or(t_ast_node *node, t_context *context);
@@ -45,6 +52,11 @@ int		sh_traverse_and_or(t_ast_node *node, t_context *context);
 ** sh_traverse_assignment_word.c
 */
 int		sh_traverse_assignment_word(t_ast_node *node, t_context *context);
+
+/*
+** sh_traverse_brace.c
+*/
+int		sh_traverse_brace(t_ast_node *node, t_context *context);
 
 /*
 ** sh_traverse_cmd_name.c
@@ -103,7 +115,7 @@ int		sh_traverse_io_redirect(t_ast_node *node, t_context *context);
 int		sh_traverse_list(t_ast_node *node, t_context *context);
 
 /*
-** sh_traverse_pipe_line.c
+** sh_traverse_pipeline.c
 */
 int		sh_traverse_pipeline(t_ast_node *node, t_context *context);
 
@@ -122,6 +134,5 @@ int		sh_traverse_simple_command(t_ast_node *node, t_context *context);
 ** sh_traverse_subshell.c
 */
 int		sh_traverse_subshell(t_ast_node *node, t_context *context);
-int		sh_traverse_brace_group(t_ast_node *node, t_context *context);
 
 #endif

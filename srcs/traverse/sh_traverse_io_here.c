@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 11:19:41 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/24 00:49:00 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/04 12:18:46 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ static int		sh_traverse_io_here_interactive(t_ast_node *node,
 		t_context *context, char *(*heredoc_func)(const char *))
 {
 	t_ast_node		*child;
-	char			*heredoc_res;
 	int				ret;
 	t_heredoc		heredoc_data;
 
@@ -59,17 +58,17 @@ static int		sh_traverse_io_here_interactive(t_ast_node *node,
 		(*heredoc_data.apply_expansion) = 0;
 	}
 	heredoc_data.stop = child->token->value;
-	if (!(heredoc_res = get_heredoc(context, &heredoc_data, &ret)))
+	if (!(heredoc_data.here_res = get_heredoc(context, &heredoc_data, &ret)))
 		return (ret);
 	if (ret == CTRL_D)
 		ret = sh_traverse_io_here_interactive_ctrl_d(child, context);
 	if (ret != FAILURE)
 	{
 		free(child->token->value);
-		child->token->value = heredoc_res;
+		child->token->value = heredoc_data.here_res;
 	}
 	else
-		free(heredoc_res);
+		free(heredoc_data.here_res);
 	return (ret);
 }
 
@@ -89,23 +88,16 @@ static int		sh_traverse_io_here_phase_interactive(
 				context, heredoc_func));
 }
 
-//si on rentre dans E_TRAVERSE_PHASE_REDIRECTION on est au niveau de simple command. On peux set un redirection
-//dans context
 int				sh_traverse_io_here(t_ast_node *node, t_context *context)
 {
-	// t_redirection	*redirection;
-	t_ast_node 		*first_child;
-	int				ret;
+	t_ast_node	*first_child;
+	int			ret;
 
-	// redirection = NULL;
 	sh_traverse_tools_show_traverse_start(node, context);
 	if (context->phase == E_TRAVERSE_PHASE_INTERACTIVE_REDIRECTIONS)
 		ret = sh_traverse_io_here_phase_interactive(node, context);
 	else if (context->phase == E_TRAVERSE_PHASE_EXPANSIONS)
-	{
-		ret = sh_traverse_io_here_phase_expansion(
-					/*redirection,*/ node, context);
-	}
+		ret = sh_traverse_io_here_phase_expansion(node, context);
 	else if (context->phase == E_TRAVERSE_PHASE_REDIRECTIONS)
 	{
 		first_child = node->children->next->content;

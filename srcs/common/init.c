@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/14 13:19:50 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/06 23:18:49 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/28 10:18:08 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,8 +121,9 @@ static int	sh_init_command_line(t_shell *shell, t_command_line *command_line)
 	command_line->context = E_CONTEXT_STANDARD;
 	command_line->edit_style = E_EDIT_STYLE_READLINE;
 	command_line->mode = E_MODE_INSERT;
-	if ((command_line->fd = open("/dev/tty", O_RDWR)) < 0)
-		return (sh_perror(SH_ERR1_TTY, "sh_init_command_line (1)"));
+	// if ((command_line->fd = open("/dev/tty", O_RDWR)) < 0)
+	// 	return (sh_perror(SH_ERR1_TTY, "sh_init_command_line (1)"));
+	command_line->fd = g_term_fd;
 	if (!(command_line->searcher.dy_str = ft_dy_str_new(63)))
 		return (sh_perror(SH_ERR1_MALLOC, "sh_init_command_line (2)"));
 	command_line->searcher.active = 0;

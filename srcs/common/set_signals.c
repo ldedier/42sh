@@ -3,87 +3,54 @@
 /*                                                        :::      ::::::::   */
 /*   set_signals.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/31 16:05:53 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/20 17:11:26 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/10/30 20:19:15 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
+#include "sys/signal.h"
+#include <stdio.h>
+#include <unistd.h>
+#include <signal.h>
+#include <string.h>
 
 void			reset_signals(void)
 {
 	int i;
 
+	// ft_dprintf(g_term_fd, "SIGNAL RESET\n");
 	i = 1;
-	while (i <= SIGUSR2)
+	while (i <= 31)
 		signal(i++, SIG_DFL);
+	signal(SIGTTOU, SIG_IGN);
+	signal(SIGTTIN, SIG_IGN);
 }
 
-void	sigtstp_handler(int signal)
+void			handler_sighup(int signo)
 {
-	if (g_parent)
+	if (signo == SIGHUP)
 	{
-		kill(g_parent, signal);
-		kill(g_parent, SIGTTIN);
-		kill(g_parent, SIGTTOU);
+		jobs_terminate();
+		sh_post_execution();
+		exit(128 + SIGHUP);
 	}
-	if (isatty(0) && g_glob.command_line.dy_str)
-	{
-		get_down_from_command(&g_glob.command_line);
-		g_glob.cursor = 0;
-		g_glob.command_line.dy_str->current_size = 0;
-		g_glob.command_line.current_index = 0;
-		ft_bzero(g_glob.command_line.dy_str->str,
-				g_glob.command_line.dy_str->max_size);
-		g_glob.command_line.nb_chars = 0;
-		render_command_line(&g_glob.command_line, 0, 1);
-	}
-}
-
-static void		init_signal2(void (*default_func)(int))
-{
-	signal(SIGURG, transmit_sig_no_motion);
-	signal(SIGTSTP, sigtstp_handler);
-	signal(SIGSTOP, handle_stp);
-	signal(SIGCONT, handle_cont);
-	signal(SIGCHLD, transmit_sig_no_motion);
-	signal(SIGTTIN, transmit_sig_no_motion);
-	signal(SIGTTOU, transmit_sig_no_motion);
-	signal(SIGIO, transmit_sig_no_motion);
-	signal(SIGXCPU, default_func);
-	signal(SIGXFSZ, default_func);
-	signal(SIGVTALRM, default_func);
-	signal(SIGPROF, default_func);
-	signal(SIGINFO, transmit_sig_no_motion);
-	signal(SIGUSR1, default_func);
-	signal(SIGUSR2, default_func);
 }
 
 void			init_signals(void)
 {
-	void (*default_func)(int);
+	int i;
 
-	if (BONUS_REDIRECT_SIGNAL)
-		default_func = default_sig_bonus;
-	else
-		default_func = default_sig;
-	signal(SIGWINCH, handle_resize);
-	signal(SIGQUIT, transmit_sig_no_motion);
-	signal(SIGKILL, default_func);
-	signal(SIGINT, transmit_sig);
-	signal(SIGHUP, default_func);
-	signal(SIGABRT, default_func);
-	signal(SIGILL, default_func);
-	signal(SIGTRAP, default_func);
-	signal(SIGEMT, default_func);
-	signal(SIGFPE, default_func);
-	signal(SIGBUS, default_func);
-	signal(SIGSEGV, default_func);
-	signal(SIGSYS, default_func);
-	signal(SIGPIPE, transmit_sig_and_die);
-	signal(SIGALRM, default_func);
-	signal(SIGTERM, transmit_sig_and_exit);
-	init_signal2(default_func);
+	i = 1;
+	while (i <= 31)
+		signal(i++, SIG_DFL);
+	signal(SIGTERM, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, SIG_IGN);
+	signal(SIGTTOU, SIG_IGN);
+	signal(SIGTTIN, SIG_IGN);
+	signal(SIGTSTP, SIG_IGN);
+	signal(SIGHUP, handler_sighup);
 }

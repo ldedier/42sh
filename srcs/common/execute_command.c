@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/15 16:08:40 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/01 21:18:03 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/10/29 16:55:01 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ static int	sh_process_command(t_shell *shell, char *command)
 			ret = sh_perror(SH_ERR1_MALLOC, "sh_process_command (1)");
 		ft_lstdel(&tokens, sh_free_token_lst);
 	}
+	// jobs_create_cmds(g_job_ctrl->tokens);
+
 	else if ((ret = sh_parser(shell, &tokens, &ast_root, &cst_root)))
 	{
 		sh_perror_err("syntax error", NULL);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_traverse_command.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/02 00:35:13 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/09 10:49:41 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/04 12:25:50 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,14 @@
 
 /*
 ** apply_expansion_to_children
-** We apply expansion here for all possible redirection of 
+** We apply expansion here for all possible redirection of
 ** the command (grammar)
 */
+
 static int	apply_expansion_to_children(t_list *lst_child, t_context *context)
 {
 	t_ast_node	*child;
-	int 		ret;
+	int			ret;
 
 	while (lst_child)
 	{
@@ -38,54 +39,50 @@ static int	apply_expansion_to_children(t_list *lst_child, t_context *context)
 ** Check what kind of compound command we have and if we have
 ** redirection_list to apply
 */
+
 static int	compound_and_redirection(t_ast_node *node, t_context *context)
 {
 	t_ast_node	*child;
-	t_list		*compound_redir;
 	int			ret;
-	
+
 	child = node->children->content;
 	child = child->children->content;
-	compound_redir = NULL;
 	if (node->children->next)
 	{
-		if ((ret = apply_expansion_to_children(node->children->next, context)) != SUCCESS)
+		if ((ret = apply_expansion_to_children(node->children->next, context)))
 			return (ret);
-		context->phase = E_TRAVERSE_PHASE_REDIRECTIONS;
-		if ((ret = sh_traverse_tools_browse(node->children->next->content, context)) != SUCCESS)
-		{
-			if (sh_reset_redirection(&context->redirections))
-				return (FAILURE);
-			return (ret);
-		}
-		compound_redir = context->redirections;
-		context->redirections = NULL;
 	}
-//	ret = g_grammar[child->symbol->id].traverse(child, context);
+	if (sh_pre_execution() != SUCCESS)
+		return (FAILURE);
 	if (child->symbol->id == sh_index(SUBSHELL))
 		ret = sh_traverse_subshell(child, context);
 	else if (child->symbol->id == sh_index(BRACE_GROUP))
-		ret = sh_traverse_brace_group(child, context);
-	if (sh_reset_redirection(&compound_redir))
-		return (FAILURE);
+	{
+		signal(SIGINT, handle_int);
+		ret = sh_traverse_brace(child, context);
+		if (sh_post_execution() != SUCCESS)
+			return (FAILURE);
+	}
 	return (ret);
 }
 
 /*
- * sh_traverse_command
+** sh_traverse_command
 ** This is the dispatcher of command (grammar) node
 ** Just check what type of command we have and call the
 ** right traverse.
-** If we have compound_command (like subshell), we can have some pipe to apply here.
+** If we have compound_command (like subshell), we can have some pipe to
+** apply here.
 */
+
 int			sh_traverse_command(t_ast_node *node, t_context *context)
 {
-	t_ast_node *child;
-	int 		ret;
+	t_ast_node	*child;
+	int			ret;
 
 	ret = 0;
 	child = node->children->content;
-	sh_traverse_tools_show_traverse_start(node, context);//mettre node pour parcourir eventuel redirection
+	sh_traverse_tools_show_traverse_start(node, context);
 	if (child->symbol->id == sh_index(SIMPLE_COMMAND))
 		ret = sh_traverse_simple_command(child, context);
 	else if (child->symbol->id == sh_index(COMPOUND_COMMAND))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/14 14:52:02 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/19 19:11:32 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/30 22:58:16 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,27 @@
 
 static void	sh_env_update_ret_value_treat_sig(t_context *context, int sig)
 {
-	if (sig == 1)
+	if (sig == SIGABRT)
 		sh_perror("Abort : 1", context->params->tbl[0]);
-	else if (sig == 2)
-		;
-	else if (sig == 3)
+	else if (sig == SIGQUIT)
 		sh_perror("Quit : 3", context->params->tbl[0]);
-	else if (sig == 4)
+	else if (sig == SIGILL)
 		sh_perror("Illegal instruction : 4", context->params->tbl[0]);
-	else if (sig == 8)
+	else if (sig == SIGFPE)
 		sh_perror("Floating point exception: 8", context->params->tbl[0]);
-	else if (sig == 9)
+	else if (sig == SIGKILL)
 		sh_perror("Killed: 9", context->params->tbl[0]);
-	else if (sig == 10)
+	else if (sig == SIGBUS)
 		sh_perror("Bus error", context->params->tbl[0]);
-	else if (sig == 11)
+	else if (sig == SIGSEGV)
 		sh_perror("Segmentation fault", context->params->tbl[0]);
+	else if (sig == 139)
+	{
+		sh_perror("Segmentation fault", context->params->tbl[0]);
+		sh_env_update_ret_value(context->shell, sig);
+		return ;
+	}
 	sh_env_update_ret_value(context->shell, SH_RET_SIG_RECEIVED + sig);
-	return ;
 }
 
 /*
@@ -45,11 +48,18 @@ void		sh_env_update_ret_value_wait_result(t_context *context, int res)
 	t_shell		*shell;
 
 	shell = context->shell;
+	// ft_dprintf(g_term_fd, YELLOW"update: %#X (%d)\n"EOC);
+	// ft_dprintf(g_term_fd, YELLOW"exit value: %d, signal: %d\n"EOC, SH_RET_VALUE_EXIT_STATUS(res), SH_RET_VALUE_SIG_RECEIVED(res));
 	if (!shell->ret_value_set)
 	{
 		if (SH_RET_VALUE_SIG_RECEIVED(res))
-			sh_env_update_ret_value_treat_sig(
-				context, SH_RET_VALUE_SIG_RECEIVED(res));
+		{
+			if (WIFSTOPPED(res))
+				sh_env_update_ret_value_treat_sig(context, WSTOPSIG(res));
+			else
+				sh_env_update_ret_value_treat_sig(
+					context, SH_RET_VALUE_SIG_RECEIVED(res));
+		}
 		if (sh_verbose_exec())
 		{
 			ft_dprintf(2, COLOR_CYAN"Process signal sent : %d\n"COLOR_END,

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
+#    By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/12/06 12:53:13 by jmartel           #+#    #+#              #
-#    Updated: 2019/10/07 00:41:33 by jmartel          ###   ########.fr        #
+#    Updated: 2019/10/15 03:05:44 by mdaoud           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ SRCS	=	./lst/ft_lstnew.c ./lst/ft_lstdelone.c \
 			./lst/ft_lstaddnew_ptr_last.c ./lst/ft_lstnew_value.c\
 			./lst/ft_lstpop.c ./lst/ft_lstpop_ptr.c \
 			./lst/ft_lstdel_value.c ./lst/ft_lstdel_ptr.c\
-			./lst/ft_lstpop_node.c ./lst/ft_lstaddnew_ptr_last_list.c 
+			./lst/ft_lstpop_node.c ./lst/ft_lstaddnew_ptr_last_list.c
 
 SRCS	+=	./math/ft_max.c ./math/ft_min.c ./math/ft_abs.c \
 			./math/ft_pow.c ./math/ft_roundf.c \
@@ -70,7 +70,7 @@ SRCS	+=	./str/ft_strlen.c ./str/ft_strdup.c \
 			./str/ft_strichr.c ./str/ft_strichr_last.c \
 			./str/ft_isseparator.c ./str/ft_chpbrk.c \
 			./str/ft_strnjoin_free.c ./str/ft_substitute_str.c \
-			./str/ft_strjoin_3_free.c
+			./str/ft_strjoin_3_free.c ./str/ft_strtok.c ./str/ft_strcontains.c \
 
 SRCS	+=	./str/ft_strtab_free.c ./str/ft_strtab_put.c \
 			./str/ft_strtab_len.c ./str/ft_strtab_new_line.c \
@@ -254,7 +254,7 @@ ifeq ($(DEBUG), 1)
 		CC += -g3
 endif
 
-all: 
+all:
 	@$(ECHO) "$(FLAGS_COLOR)Compiling with flags $(CFLAGS) $(EOC)"
 	@echo make -C . $(NAME)
 	@$(MAKE) -C . $(NAME)

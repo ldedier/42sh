@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sh_execute_pipe_tool.c                             :+:      :+:    :+:   */
+/*   sh_execute_pipe_close_tools.c                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/15 13:41:34 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/16 18:11:51 by jdugoudr         ###   ########.fr       */
+/*   Created: 2019/10/30 18:37:05 by mdaoud            #+#    #+#             */
+/*   Updated: 2019/10/31 17:59:46 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 ** Before execution we close all unused pipe.
 */
 
-void		close_all_pipe_but_one(int nb_pipe, int curr_cmd, int **tab_pds)
+void	close_all_pipes_but_one(int nb_pipe, int curr_cmd, int **tab_pds)
 {
 	int	i;
 
@@ -46,7 +46,7 @@ void		close_all_pipe_but_one(int nb_pipe, int curr_cmd, int **tab_pds)
 ** free to not have any leaks
 */
 
-void		close_and_free(int curr_cmd, t_pipe *pipes, t_context *context)
+void	close_pipes_and_free(int curr_cmd, t_pipe *pipes, t_context *context)
 {
 	sh_reset_redirection(&context->redirections);
 	sh_free_all(context->shell);
@@ -70,11 +70,30 @@ void		close_and_free(int curr_cmd, t_pipe *pipes, t_context *context)
 ** just after fork the associate command
 */
 
-void		close_one_pipe(int curr, t_pipe *pipes)
+void	close_one_pipe(int curr, t_pipe *pipes)
 {
 	if (curr < pipes->nb_pipe)
 	{
 		close(pipes->tab_pds[curr][INPUT]);
 		close(pipes->tab_pds[curr][OUTPUT]);
+	}
+}
+
+/*
+** close_all_pipe
+** close all pipe for shell process if
+** needed if an error appear during fork
+*/
+
+void	close_all_pipes(t_pipe *pipes)
+{
+	int		i;
+
+	i = 0;
+	while (i < pipes->nb_pipe)
+	{
+		close(pipes->tab_pds[i][INPUT]);
+		close(pipes->tab_pds[i][OUTPUT]);
+		i++;
 	}
 }

@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/11/06 05:07:40 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/06 21:19:26 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +39,8 @@ VPATH		= $(INCLUDESDIR) \
 			  $(SRCDIR)/expansions \
 			  $(SRCDIR)/globbing \
 			  $(SRCDIR)/grammar \
+			  $(SRCDIR)/job_control \
+			  $(SRCDIR)/job_control/job_get_string \
 			  $(SRCDIR)/lexer \
 			  $(SRCDIR)/parser \
 			  $(SRCDIR)/parser/productions \
@@ -61,8 +63,8 @@ SRCS			 =	debug.c first_sets.c grammar.c init_cfg.c \
 ########					TRAVERSE					########
 ################################################################
 SRCS			+=	sh_traverse.c sh_traverse_default.c \
-					sh_traverse_semicol.c sh_traverse_pipe_line.c \
-					sh_traverse_assignment_word.c \
+					sh_traverse_semicol.c sh_traverse_pipeline.c \
+					sh_traverse_assignment_word.c sh_traverse_ampersand.c \
 					sh_traverse_simple_command.c \
 					sh_traverse_io_file.c \
 					sh_traverse_cmd_name.c sh_traverse_cmd_word.c \
@@ -70,7 +72,8 @@ SRCS			+=	sh_traverse.c sh_traverse_default.c \
 					sh_traverse_io_redirect.c sh_traverse_io_here.c \
 					sh_traverse_io_here_canonical.c \
 					sh_traverse_and_or.c sh_traverse_list.c \
-					sh_traverse_command.c sh_traverse_subshell.c
+					sh_traverse_command.c sh_traverse_subshell.c \
+					sh_traverse_brace.c
 
 ################################################################
 ########				COMMAND_LINE					########
@@ -100,7 +103,7 @@ SRCS			+=	keys.c cursor_motion.c edit_command.c \
 ########				TRAVERSE_TOOLS					########
 ################################################################
 SRCS			+=	sh_traverse_tools_browse.c \
-					sh_traverse_tools_reset.c \
+					sh_traverse_tools_browse_redirection.c \
 					sh_traverse_tools_debug.c \
 					sh_traverse_tools_io_file.c \
 					sh_traverse_tools_io_here_expansion.c \
@@ -109,7 +112,8 @@ SRCS			+=	sh_traverse_tools_browse.c \
 					sh_traverse_tools_get_heredoc.c \
 					sh_traverse_tools_io_here_redirection.c \
 					sh_traverse_tools_get_separator.c \
-					sh_traverse_tools_get_exec_node.c
+					sh_traverse_tools_get_exec_node.c \
+					sh_traverse_tools_compound.c
 
 ################################################################
 ########					COMMON						########
@@ -119,7 +123,7 @@ SRCS			+=	main.c index.c init.c shell_tools.c \
 					set_signals.c canonical_mode.c history.c home.c \
 					init_tabs.c non_canonical_mode.c hash_binaries.c \
 					check_term.c signal_tools.c execute_command.c \
-					t_entry.c sh_split_path.c
+					t_entry.c sh_split_path.c sh_execute_binary.c
 
 ################################################################
 ########					PARSER						########
@@ -261,14 +265,17 @@ SRCS			+=	sh_vars_tools_1.c sh_vars_tools_2.c \
 ################################################################
 ########						EXEC					########
 ################################################################
-SRCS			+=	sh_execute.c \
-					sh_execute_binary.c \
+SRCS			+=	sh_execute_simple_command.c \
+					sh_execute_and_or.c \
+					sh_execute_execve.c \
 					sh_execute_builtin.c \
 					sh_execute_pipe.c \
 					sh_execute_prefix_postfix.c \
 					t_context.c sh_debug.c \
 					sh_execute_redirection.c \
-					sh_execute_pipe_tool.c
+					sh_execute_pipe_tools.c \
+					sh_execute_pipe_close_tools.c
+				#	sh_execute_compound_command.c
 
 ################################################################
 ########					REDIRECTION					########
@@ -294,6 +301,9 @@ SRCS			+=	sh_builtin.c sh_builtin_pwd.c \
 					sh_builtin_bonus.c sh_builtin_parser.c \
 					sh_builtin_test.c sh_builtin_test_unary.c \
 					sh_builtin_test_binary.c \
+					sh_builtin_jobs.c sh_builtin_jobs_tools.c\
+					sh_builtin_fg.c sh_builtin_fg_tools.c \
+					sh_builtin_bg.c sh_builtin_bg_tools.c \
 					sh_builtin_fc.c \
 					sh_builtin_fc_l_synopsis.c \
 					sh_builtin_fc_s_synopsis.c \
@@ -346,9 +356,32 @@ SRCS			 +=	sh_perror.c \
 					sh_perror2.c \
 
 ################################################################
+########				JOB_CONTROL						########
+################################################################
+SRCS			+=	jobs_init.c job_add.c process_add.c job_tools.c \
+					str_tab_duplicate.c str_tab_print.c str_tab_free.c \
+					job_control_free.c job_wait.c job_is_continued.c \
+					job_put_in_bg.c job_put_in_fg.c job_is_completed.c \
+					job_is_stopped.c job_check_changes.c job_free.c \
+					job_notify.c job_print.c jobs_terminate.c \
+					set_pgid_child.c set_pgid_parent.c \
+					job_sign_tools.c ft_strtok_pipe.c \
+					jobs_string_default.c jobs_string_opn_par.c \
+					jobs_string_cls_par.c jobs_string_lbrace.c \
+					jobs_string_rbrace.c jobs_string_and.c \
+					jobs_string_pipe.c jobs_string_and_if.c \
+					jobs_string_or_if.c jobs_string_semicol.c \
+					jobs_string_bang.c jobs_string_less.c \
+					jobs_string_great.c jobs_string_dgreat.c \
+					jobs_string_dless.c jobs_string_less_and.c \
+					jobs_string_great_and.c jobs_string_word.c \
+					sh_handle_no_fork.c
+#jobs_error_free.c 
+################################################################
 ########					INCLUDES					########
 ################################################################
-INCLUDES			=	sh_21.h \
+INCLUDES		=	sh_21.h \
+					sh_job_control.h \
 					sh_lexer.h \
 					sh_tokens.h \
 					sh_parser.h \
@@ -371,7 +404,7 @@ INC 			=	-I $(INCLUDESDIR) -I $(LIBFTDIR) -I $(LIBFTDIR)/$(PRINTFDIR)
 
 EOC = \033[0m
 ifeq ($(OS),Linux)
-	CFLAGS = -DPATH=$(PWD) $(INC)
+	CFLAGS = -DPATH=$(PWD) $(INC) -Wall -Werror -Wextra
 	OK_COLOR = \033[1;32m
 	FLAGS_COLOR = \033[1;34m
 	#COMP_COLOR =
