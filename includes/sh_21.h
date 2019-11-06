@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_21.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/30 15:48:56 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/28 10:25:50 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/06 21:25:17 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,140 +176,133 @@ int		g_term_fd;
 /*
 ** canonical_mode.c
 */
-int							sh_process_canonical_mode(
-	t_shell *shell, char **env);
+int					sh_process_canonical_mode(t_shell *shell, char **env);
 
 /*
 ** check_term.c
 */
-char						**get_operations(void);
-int							sh_check_term(void);
+char				**get_operations(void);
+int					sh_check_term(void);
 
 /*
 ** execute_command.c
 */
-void						free_execution_tools(
-	t_list **tokens,
-	t_ast_node **ast_root,
-	t_ast_node **cst_root);
-int							execute_command(
+void				free_execution_tools(
+	t_list **tokens, t_ast_node **ast_root, t_ast_node **cst_root);
+int					execute_command(
 	t_shell *shell, char *command, int should_add);
 
 /*
 ** free_all.c
 */
-void						sh_free_binary(t_binary *binary);
-void						sh_free_binary_lst(void *b, size_t dummy);
-void						free_file(t_file *file);
-void						free_file_dlst(void *f, size_t dummy);
-void						free_entry_dlst(void *e, size_t dummy);
-void						sh_free_all(t_shell *shell);
+void				sh_free_binary(t_binary *binary);
+void				sh_free_binary_lst(void *b, size_t dummy);
+void				free_file(t_file *file);
+void				free_file_dlst(void *f, size_t dummy);
+void				free_entry_dlst(void *e, size_t dummy);
+void				sh_free_all(t_shell *shell);
 
 /*
 ** hash_binaries.c
 */
-t_binary					*sh_new_binary(char *path, char *name);
-int							compare_str_to_binary(void *str, void *binary);
-int							sh_update_hash_table(
+t_binary			*sh_new_binary(char *path, char *name);
+int					compare_str_to_binary(void *str, void *binary);
+int					sh_update_hash_table(
 	t_shell *shell, char *path, char *name);
 
 /*
 ** history.c
 */
-void						print_history(t_history *history);
-int							sh_append_to_history(
+void				print_history(t_history *history);
+int					sh_append_to_history(
 	t_history *history, char *command, int append_file);
 
 /*
 ** home.c
 */
-char						*get_home_dup(t_shell *shell);
-int							process_subst_home(t_shell *shell, char **str);
+char				*get_home_dup(t_shell *shell);
+int					process_subst_home(t_shell *shell, char **str);
 
 /*
 ** index.c
 */
-int							sh_index_4(t_symbol_id id);
-int							sh_index_3(t_symbol_id id);
-int							sh_index_2(t_symbol_id id);
-int							sh_index(t_symbol_id id);
+int					sh_index_4(t_symbol_id id);
+int					sh_index_3(t_symbol_id id);
+int					sh_index_2(t_symbol_id id);
+int					sh_index(t_symbol_id id);
 
 /*
 ** init.c
 */
-int							sh_init_shell(t_shell *shell, char **env);
+int					sh_init_shell(t_shell *shell, char **env);
 
 /*
 ** init_tabs.c
 */
-int							sh_update_shell_lvl(t_shell *shell);
-int							sh_main_init_env(t_shell *shell, char **env);
-int							sh_main_init_vars(t_shell *shell);
+int					sh_update_shell_lvl(t_shell *shell);
+int					sh_main_init_env(t_shell *shell, char **env);
+int					sh_main_init_vars(t_shell *shell);
 
 /*
 ** init_term.c
 */
-int							sh_init_terminal_database(char **env);
-int							sh_set_term_sig(int value);
-int							sh_init_terminal(t_shell *shell, char **env);
+int					sh_init_terminal_database(char **env);
+int					sh_set_term_sig(int value);
+int					sh_init_terminal(t_shell *shell, char **env);
 
 /*
 ** non_canonical_mode.c
 */
-int							sh_process_noncanonical_mode(t_shell *shell);
+int					sh_process_noncanonical_mode(t_shell *shell);
 
 /*
 ** set_signals.c
 */
-void						reset_signals(void);
-void						handler_sighup(int signo);
-void						init_signals(void);
+void				reset_signals(void);
+void				handler_sighup(int signo);
+void				init_signals(void);
 
 /*
 ** sh_split_path.c
 */
-char						**sh_split_path(char const *path);
+char				**sh_split_path(char const *path);
 
 /*
 ** shell_tools.c
 */
-int							sh_reset_shell(int ret);
-int							sh_set_shell_back(int ret);
-int							clear_all(void);
+int					sh_reset_shell(int ret);
+int					sh_set_shell_back(int ret);
+int					clear_all(void);
 
 /*
 ** signal_tools.c
 */
-void						transmit_sig_and_exit(int signal);
-void						handle_stp(int sgnl);
-void						handle_cont(int sgnl);
+void				transmit_sig_and_exit(int signal);
+void				handle_stp(int sgnl);
+void				handle_cont(int sgnl);
 
 /*
 ** signals.c
 */
-pid_t g_parent = 0;  void	transmit_sig_no_motion(
-	int signal);
-void						transmit_sig_and_die(int signal);
-void						default_sig_bonus(int sgnl);
-void						default_sig(int sgnl);
-void						handle_resize(int signal);
+void				transmit_sig_and_die(int signal);
+void				default_sig_bonus(int sgnl);
+void				default_sig(int sgnl);
+void				handle_resize(int signal);
 
 /*
 ** t_entry.c
 */
-t_entry						*t_entry_new(int number, char *command);
-void						t_entry_free(t_entry *entry);
-void						t_entry_print(
-	t_entry *entry, int print_number);
+t_entry				*t_entry_new(int number, char *command);
+void				t_entry_free(t_entry *entry);
+void				t_entry_print(t_entry *entry, int print_number);
 
 /*
 ** tools.c
 */
-int							end_with_char(char *str, char c);
-int							get_file_in_dir(char *filename, char *dirname);
-int							get_path_from_absolute_path(
-	char *str, char **path);
-int							get_path_and_file_from_str(
+int					end_with_char(char *str, char c);
+int					get_file_in_dir(char *filename, char *dirname);
+int					get_path_from_absolute_path(char *str, char **path);
+int					get_path_and_file_from_str(
 	char *str, char **path, char **file);
 
 #endif
