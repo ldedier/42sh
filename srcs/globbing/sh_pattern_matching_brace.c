@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_pattern_matching_brace.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 04:48:28 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/07 06:17:29 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/07 18:57:40 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,9 +151,9 @@ int			sh_pattern_matching_brace(char *name, t_regexp *regexp, int *i)
 {
 	int		j;
 	int		ret;
-	char	quoted;
+	// char	quoted;	// mdaoud: variable "quoted" set but not
 
-	quoted = 0;
+	// quoted = 0;
 	j = regexp->value[1] == '!' ? 2 : 1;
 	if (regexp->value[j] == ']' && !regexp->value[j + 1])
 		return (ERROR);
