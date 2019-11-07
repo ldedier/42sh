@@ -6,13 +6,14 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 04:48:28 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/22 22:19:48 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/07 06:17:29 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-static int	sh_pattern_matching_brace_dash_not(char *name, t_regexp *regexp, int *i, int *j)
+static int	sh_pattern_matching_brace_dash_not(
+	char *name, t_regexp *regexp, int *i, int *j)
 {
 	char		a;
 	char		b;
@@ -40,11 +41,13 @@ static int	sh_pattern_matching_brace_dash_not(char *name, t_regexp *regexp, int 
 **		FAILURE : name[*i] do not match current pattern
 */
 
-static int	sh_pattern_matching_brace_dash(char *name, t_regexp *regexp, int *i, int *j, int not)
+static int	sh_pattern_matching_brace_dash(char *name, t_regexp *regexp, int *i, int *j)
 {
 	char		a;
 	char		b;
+	int			not;
 
+	not = regexp->value[1] == '!' ? 1 : 0;
 	if (not)
 		return (sh_pattern_matching_brace_dash_not(name, regexp, i, j));
 	a = regexp->value[*j];
@@ -71,8 +74,13 @@ static int	sh_pattern_matching_brace_dash(char *name, t_regexp *regexp, int *i, 
 **		ERROR : If pattern is invalid
 **		FAILURE : name[*i] do not match current pattern
 */
-static int	sh_pattern_matching_brace_simple(char *name, t_regexp *regexp, int *i, int *j, int not)
+
+static int	sh_pattern_matching_brace_simple(
+	char *name, t_regexp *regexp, int *i, int *j)
 {
+	int			not;
+
+	not = regexp->value[1] == '!' ? 1 : 0;
 	if (!not && regexp->value[*j] == name[*i])
 		return (SUCCESS);
 	if (not && regexp->value[*j] == name[*i])
@@ -80,13 +88,13 @@ static int	sh_pattern_matching_brace_simple(char *name, t_regexp *regexp, int *i
 	return (FAILURE);
 }
 
-static int	simple_quote(char *name, t_regexp *regexp, int *i, int *j, int not)
+static int	simple_quote(char *name, t_regexp *regexp, int *i, int *j)
 {
 	int		ret;
 
 	while (regexp->value[*j] && regexp->value[*j] != '\'')
 	{
-		ret = sh_pattern_matching_brace_simple(name, regexp, i, j, not);
+		ret = sh_pattern_matching_brace_simple(name, regexp, i, j);
 		if (ret != FAILURE)
 			return (ret);
 		*j += 1;
@@ -94,7 +102,7 @@ static int	simple_quote(char *name, t_regexp *regexp, int *i, int *j, int not)
 	return (FAILURE);
 }
 
-static int	double_quote(char *name, t_regexp *regexp, int *i, int *j, int not)
+static int	double_quote(char *name, t_regexp *regexp, int *i, int *j)
 {
 	int		ret;
 
@@ -102,7 +110,7 @@ static int	double_quote(char *name, t_regexp *regexp, int *i, int *j, int not)
 	{
 		if (regexp->value[*j] == '\\')
 			(j) += 1;
-		ret = sh_pattern_matching_brace_simple(name, regexp, i, j, not);
+		ret = sh_pattern_matching_brace_simple(name, regexp, i, j);
 		if (ret != FAILURE)
 			return (ret);
 		(*j) = 1;
@@ -110,55 +118,55 @@ static int	double_quote(char *name, t_regexp *regexp, int *i, int *j, int not)
 	return (FAILURE);
 }
 
-static int	backslash(char *name, t_regexp *regexp, int *i, int *j, int not)
+static int	backslash(char *name, t_regexp *regexp, int *i, int *j)
 {
 	int		ret;
 
 	(*j) += 1;
-	ret = sh_pattern_matching_brace_simple(name, regexp, i, j, not);
+	ret = sh_pattern_matching_brace_simple(name, regexp, i, j);
 	if (ret != FAILURE)
 		return (ret);
 	(*j)++;
 	return (FAILURE);
 }
 
-static int	unquoted(char *name, t_regexp *regexp, int *i, int *j, int not)
+static int	unquoted(char *name, t_regexp *regexp, int *i, int *j)
 {
 	int		ret;
 
 	if (regexp->value[*j + 1] == '-' && regexp->value[*j + 2] != ']')
-		ret = sh_pattern_matching_brace_dash(name, regexp, i, j, not);
+		ret = sh_pattern_matching_brace_dash(name, regexp, i, j);
 	else
-		ret = sh_pattern_matching_brace_simple(name, regexp, i, j, not);
+		ret = sh_pattern_matching_brace_simple(name, regexp, i, j);
 	(*j) += 1;
 	return (ret);
 }
 
 /*
-** During all process FAILURE return value is considered as a continue looking for matching pattern;
+**	During all process FAILURE return value is considered as a continue
+**	looking for matching pattern;
 */
+
 int			sh_pattern_matching_brace(char *name, t_regexp *regexp, int *i)
 {
-	int		not;
 	int		j;
 	int		ret;
 	char	quoted;
 
-	j = 1;
 	quoted = 0;
-	not = regexp->value[j] == '!' && j++ ? 1 : 0;
+	j = regexp->value[1] == '!' ? 2 : 1;
 	if (regexp->value[j] == ']' && !regexp->value[j + 1])
 		return (ERROR);
 	while (regexp->value[j] && regexp->value[j + 1])
 	{
 		if (regexp->value[j] == '"')
-			ret = double_quote(name, regexp, i, &j, not);
+			ret = double_quote(name, regexp, i, &j);
 		else if (regexp->value[j] == '\'')
-			ret = simple_quote(name, regexp, i, &j, not);
+			ret = simple_quote(name, regexp, i, &j);
 		else if (regexp->value[j] == '\\')
-			ret = backslash(name, regexp, i, &j, not);
+			ret = backslash(name, regexp, i, &j);
 		else
-			ret = unquoted(name, regexp, i, &j, not);
+			ret = unquoted(name, regexp, i, &j);
 		if (ret == SUCCESS || ret == ERROR)
 		{
 			if (ret == SUCCESS)
@@ -166,7 +174,7 @@ int			sh_pattern_matching_brace(char *name, t_regexp *regexp, int *i)
 			return (ret);
 		}
 	}
-	if (not) // check value[j] content ? 
+	if (regexp->value[1] == '!')
 	{
 		(*i) += 1;
 		return (SUCCESS);
