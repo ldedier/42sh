@@ -6,59 +6,21 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 07:35:43 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/06 22:35:52 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/07 04:07:37 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-int			sh_is_pattern_matching(char *name, t_list *regexp_head)
-{
-	t_regexp	*regexp;
-	int			i;
-	int			ret;
-
-	if (!regexp_head)
-		return (SUCCESS); // is it used ?
-	i = 0;
-	ret = SUCCESS;
-	regexp = (t_regexp*)regexp_head->content;
-	if (regexp->type == REG_FINAL_SLASH)
-		regexp_head = regexp_head->next;
-	if (*name == '.' && (regexp->type != REG_STR || regexp->value[0] != '.'))
-		return (ERROR);
-	while (regexp_head && name[i])
-	{
-		regexp = (t_regexp*)regexp_head->content;
-		if (regexp->type == REG_STR)
-			ret = sh_pattern_matching_str(name, regexp, &i);
-		else if (regexp->type == REG_QUEST)
-			ret = sh_pattern_matching_quest(name, regexp, &i);
-		else if (regexp->type == REG_BRACE)
-			ret = sh_pattern_matching_brace(name, regexp, &i);
-		else if (regexp->type == REG_STAR)
-			ret = sh_pattern_matching_star(name, regexp, &i, regexp_head);
-		if (ret)
-			return (ret);
-		if (sh_verbose_globbing())
-			{ft_dprintf(2, BLUE"\t%s : matched : (", name); t_regexp_show(regexp);ft_dprintf(2, ")\n"EOC);}
-		regexp_head = regexp_head->next;
-	}
-	while (regexp_head && ((t_regexp*)regexp_head->content)->type == REG_STAR)
-		regexp_head = regexp_head->next;
-	if (regexp_head || name[i])
-		return (ERROR);
-	return (SUCCESS);
-}
-
 /*
 ** check_for_final_slash:
 **	If final slash had been specified, only directories and symlinks pointing
 **	a directorie shall be kept.
+**	If an error occured path string wil be freed.
 **
 **	Returned Values:
-**		SUCCESS : File can be valid
-**		ERROR : File cannot be valid
+**		SUCCESS : File can match
+**		ERROR : File do not match
 */
 
 static int	check_for_final_slash(t_list *regexp_list, char *path)
@@ -70,52 +32,16 @@ static int	check_for_final_slash(t_list *regexp_list, char *path)
 	if (regexp->type != REG_FINAL_SLASH)
 		return (SUCCESS);
 	if (lstat(path, &st) == -1)
+	{
+		free(path);
 		return (ERROR);
+	}
 	if (!S_ISDIR(st.st_mode))
 	{
 		if (sh_verbose_globbing())
 			ft_dprintf(2, RED"\t%s is not a directory\n"EOC, path);
+		free(path);
 		return(ERROR);
-	}
-	return (SUCCESS);
-}
-
-static void	pattern_matching_push_find_place(t_list **head, t_list **prev, char *filename)
-{
-	while (*head)
-	{
-		if (ft_strcmp((char*)(*head)->content, filename) > 0)
-			return ;
-		(*prev) = *head;
-		(*head) = (*head)->next;
-	}
-	return ;
-}
-
-static int	pattern_matching_push(t_list **matches, t_list *new)
-{
-	t_list	*head;
-	t_list	*prev;
-
-	if (!*matches)
-	{
-		*matches = new;
-		return (SUCCESS);
-	}
-	head = *matches;
-	prev = NULL;
-	pattern_matching_push_find_place(&head, &prev, (char*)new->content);
-	if (prev == NULL)
-	{
-		new->next = head;
-		*matches = new;
-	}
-	else if (head == NULL)
-		prev->next = new;
-	else
-	{
-		prev->next = new;
-		new->next = head;
 	}
 	return (SUCCESS);
 }
@@ -152,11 +78,14 @@ static int	pattern_matching_read_directory(char *path, t_list **regexp_list, t_l
 		{
 			if (sh_verbose_globbing())
 				ft_dprintf(2, GREEN"\t\tfound valid path : %s\n"EOC, new_path);
-			pattern_matching_push(matchs, ft_lstnew(new_path, ft_strlen(new_path) + 1)); // protect lst_new malloc
+			return (pattern_matching_push_new(matchs, new_path));
 		}
 	}
 	else  if (sh_verbose_globbing())
+	{
+		free(path);
 		ft_dprintf(2, RED"\t\tfound invalid path : %s\n"EOC, dirent->d_name);
+	}
 	return (SUCCESS);
 }
 
@@ -194,7 +123,11 @@ int			sh_expansions_pattern_matching(
 			ft_dprintf(2, "working on path : %s/%s\n", path, dirent->d_name);
 		ret = pattern_matching_read_directory(path, regexp_list, matchs, dirent);
 		if (ret)
+		{
+			closedir(dir);
 			return (ret);
+		}
 	}
+	closedir(dir);
 	return (SUCCESS);
 }

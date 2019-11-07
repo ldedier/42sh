@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 13:31:28 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/07 00:21:59 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/07 04:06:34 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,11 @@ static int	init_path(char **path, char *str)
 
 static int	sh_expansions_globbing_matches(t_ast_node *node, t_list *matches)
 {
-	// sh_expansions_globbing_matches_sort(matches);
+	t_list	*start;
+
+	start = matches;
 	free(node->token->value);
-	if (!(node->token->value = ft_strdup((char*)matches->content)))
-		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_globbing_matches (1)"));
+	node->token->value = (char*)matches->content;	
 	matches = matches->next;
 	while (matches)
 	{
@@ -36,7 +37,8 @@ static int	sh_expansions_globbing_matches(t_ast_node *node, t_list *matches)
 			return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_globbing_matches (2)"));
 		matches = matches->next;
 	}
-	ft_lstdel(&matches, NULL); // need to free content ??
+	ft_dprintf(2, "deleting matches list\n");
+	ft_lstdel(&start, NULL);
 	return (SUCCESS);
 }
 

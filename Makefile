@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/11/06 21:19:26 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/07 04:18:47 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -343,6 +343,8 @@ SRCS			+=	sh_globbing.c \
 					sh_regexp_parse_new_quest.c \
 					sh_regexp_parse_new_star.c \
 					sh_pattern_matching.c \
+					sh_is_pattern_matching.c \
+					sh_pattern_matching_push_new.c \
 					sh_pattern_matching_star.c \
 					sh_pattern_matching_str.c \
 					sh_pattern_matching_quest.c \
@@ -381,23 +383,25 @@ SRCS			+=	jobs_init.c job_add.c process_add.c job_tools.c \
 ########					INCLUDES					########
 ################################################################
 INCLUDES		=	sh_21.h \
+					sh_autocompletion.h \
+					sh_builtin.h \
+					sh_command_line.h \
+					sh_exec.h \
+					sh_expansions.h \
+					sh_globbing.h \
+					sh_grammar.h \
+					sh_history.h \
 					sh_job_control.h \
 					sh_lexer.h \
-					sh_tokens.h \
 					sh_parser.h \
-					sh_grammar.h \
-				  	sh_command_line.h \
-					sh_autocompletion.h \
-					sh_expansions.h \
-					sh_history.h \
-					sh_exec.h\
-					sh_builtin.h \
+					sh_perror.h \
+					sh_productions.h \
+					sh_redirection.h \
+					sh_shortcuts.h \
+					sh_tokens.h \
 					sh_traverse.h \
 					sh_traverse_tools.h \
-					sh_expansions.h \
-					sh_perror.h \
-					sh_shortcuts.h \
-					sh_redirection.h
+					sh_vars.h
 
 OBJECTS			=	$(addprefix $(OBJDIR), $(SRCS:.c=.o))
 INC 			=	-I $(INCLUDESDIR) -I $(LIBFTDIR) -I $(LIBFTDIR)/$(PRINTFDIR)

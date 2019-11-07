@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 23:13:55 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/23 03:04:07 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/07 04:17:38 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ enum						e_regexp_type
 struct						s_regexp
 {
 	t_regexp_type	type;
-	int				start;
 	int				len;
 	char			*value;
 };
@@ -44,10 +43,14 @@ int							sh_expansions_globbing(
 	t_context *context, t_ast_node *node, t_dy_tab *quotes);
 
 /*
-** sh_pattern_matching.c
+** sh_is_pattern_matching.c
 */
 int							sh_is_pattern_matching(
 	char *name, t_list *regexp_head);
+
+/*
+** sh_pattern_matching.c
+*/
 int							sh_expansions_pattern_matching(
 	char *path, t_list **regexp_list, t_list **matchs);
 
@@ -56,6 +59,12 @@ int							sh_expansions_pattern_matching(
 */
 int							sh_pattern_matching_brace(
 	char *name, t_regexp *regexp, int *i);
+
+/*
+** sh_pattern_matching_push_new.c
+*/
+int							pattern_matching_push_new(
+	t_list **matches, char *path);
 
 /*
 ** sh_pattern_matching_quest.c

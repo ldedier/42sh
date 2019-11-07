@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 23:53:16 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/06 05:44:58 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/07 04:39:38 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ static int	check_for_final_slash(char *str, t_list **regexp_tab, int i)
 		return (sh_perror(SH_ERR1_MALLOC, "check_for_final_slash (2)"));
 	}
 	regexp->type = REG_FINAL_SLASH;
-	regexp->start = 0;
 	regexp->len = 0;
 	regexp->value = NULL;
 	lst->content = regexp;
@@ -49,7 +48,17 @@ static int	check_for_final_slash(char *str, t_list **regexp_tab, int i)
 	return (SUCCESS);
 }
 
-static int		sh_regexp_parse_component(char *str, t_list **regexp_list)
+/*
+** sh_regexp_parse_path_component:
+**	Parse part of the a path and try to create regexp_patterns.
+**
+**	Returned Values
+**		SUCCESS
+**		ERROR : Error in parsing a component that shall cancel globbing process
+**		FAILURE : Malloc error
+*/
+
+static int	sh_regexp_parse_path_component(char *str, t_list **regexp_list)
 {
 	int		i;
 	int		ret;
@@ -76,6 +85,33 @@ static int		sh_regexp_parse_component(char *str, t_list **regexp_list)
 }
 
 /*
+** init_split_table:
+**	Parse str string, to fill a split table, corresping to a path splitted
+**	around '/' characters.
+**	Function is ignoring any prefix in "./" and '/'.
+**
+**	Returned Values
+**		SUCCESS : Successfully field split table
+**		FAILURE : Malloc error
+*/
+
+static int	init_split_table(char *str, char ***split, t_dy_tab **regexp_tab)
+{
+	if (*str == '.' && *str == '/')
+		str += 2;
+	else if (*str == '/')
+		str++;
+	if (!(*split = ft_strsplit(str, '/')))
+		return (sh_perror(SH_ERR1_MALLOC, "init_split_table (1)"));
+	if (!(*regexp_tab = ft_dy_tab_new(ft_strtab_len(*split) + 1)))
+	{
+		ft_strtab_free(*split);
+		return (sh_perror(SH_ERR1_MALLOC, "init_split_table (2)"));
+	}
+	return (SUCCESS);
+}
+
+/*
 ** sh_regexp_parse:
 **	Split path given around every '/' char. For every part it create a t_list
 **	contaning t_regexp struct. These lists are stored in a t_dy_tab regexp_tab.
@@ -86,36 +122,26 @@ static int		sh_regexp_parse_component(char *str, t_list **regexp_list)
 **		FAILURE : malloc error
 */
 
-int		sh_regexp_parse(char *str, t_dy_tab **regexp_tab)
+int			sh_regexp_parse(char *str, t_dy_tab **regexp_tab)
 {
 	int		i;
 	int		ret;
 	char	**split;
 	t_list	**list_tab;
 
-	i = 0;
-	if (*str == '.' && *str == '/')
-		str += 2;
-	else if (*str == '/')
-		str++;
-	if (!(split = ft_strsplit(str, '/')))
-		return (FAILURE); // perror
-	if (!(*regexp_tab = ft_dy_tab_new(ft_strtab_len(split) + 1)))
-	{
-		ft_strtab_free(split);
-		return (FAILURE); // perror
-	}
+	if (init_split_table(str, &split, regexp_tab) == FAILURE)
+		return (FAILURE);
 	list_tab = (t_list**)(*regexp_tab)->tbl;
+	i = 0;
 	ret = SUCCESS;
 	while (split[i] && !ret)
 	{
 		ft_dy_tab_add_ptr(*regexp_tab, NULL);
 		list_tab[i] = NULL;
-		ret = sh_regexp_parse_component(split[i], &(list_tab[i]));
+		ret = sh_regexp_parse_path_component(split[i], &(list_tab[i]));
 		i++;
 	}
 	check_for_final_slash(str, list_tab, i - 1);
-	// leaks on split ??
 	ft_strtab_free(split);
 	return (ret);
 }
