@@ -40,7 +40,7 @@ struct						s_regexp
 ** sh_globbing.c
 */
 int							sh_expansions_globbing(
-	t_context *context, t_ast_node *node, t_dy_tab *quotes);
+	t_ast_node *node, t_dy_tab *quotes);
 
 /*
 ** sh_is_pattern_matching.c
@@ -121,5 +121,6 @@ t_regexp					*t_regexp_new_push(t_list **regexp_list);
 void						t_regexp_show_list(t_list *head);
 void						t_regexp_show(t_regexp *regexp);
 void						t_regexp_free(void *ptr, size_t size);
+void						t_regexp_free_tab(t_dy_tab **regexp_tab);
 
 #endif

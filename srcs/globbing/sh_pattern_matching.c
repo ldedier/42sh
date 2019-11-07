@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 07:35:43 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/07 04:07:37 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/07 05:02:22 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	check_for_final_slash(t_list *regexp_list, char *path)
 {
 	t_regexp	*regexp;
 	struct stat	st;
-	
+
 	regexp = (t_regexp*)regexp_list->content;
 	if (regexp->type != REG_FINAL_SLASH)
 		return (SUCCESS);
@@ -41,7 +41,7 @@ static int	check_for_final_slash(t_list *regexp_list, char *path)
 		if (sh_verbose_globbing())
 			ft_dprintf(2, RED"\t%s is not a directory\n"EOC, path);
 		free(path);
-		return(ERROR);
+		return (ERROR);
 	}
 	return (SUCCESS);
 }
@@ -55,25 +55,22 @@ static int	check_for_final_slash(t_list *regexp_list, char *path)
 **	Else, filename is invalid and current path is dropped.
 */
 
-static int	pattern_matching_read_directory(char *path, t_list **regexp_list, t_list **matchs, t_dirent *dirent)
+static int	pattern_matching_read_directory(
+	char *path, t_list **regexp_list, t_list **matchs, t_dirent *dirent)
 {
 	char	*new_path;
 
 	if (sh_is_pattern_matching(dirent->d_name, *regexp_list) == SUCCESS)
 	{
-		new_path = ft_strjoin_path(path, dirent->d_name); //protect && leaks
+		new_path = ft_strjoin_path(path, dirent->d_name);
 		if (new_path && ((t_regexp*)(*regexp_list)->content)->type == REG_FINAL_SLASH)
 			new_path = ft_strjoin_free(new_path, "/", 1);
 		if (!new_path)
-			return (sh_perror(SH_ERR1_MALLOC, "pattern_matching")); // leaks ??
+			return (sh_perror(SH_ERR1_MALLOC, "pattern_matching"));
 		if (check_for_final_slash(*regexp_list, new_path))
 			return (SUCCESS);
 		if (regexp_list[1])
-		{
-			if (sh_verbose_globbing())
-				ft_dprintf(2, "recursive call : %s\n", new_path);
 			sh_expansions_pattern_matching(new_path, regexp_list + 1, matchs);
-		}
 		else
 		{
 			if (sh_verbose_globbing())
@@ -81,11 +78,8 @@ static int	pattern_matching_read_directory(char *path, t_list **regexp_list, t_l
 			return (pattern_matching_push_new(matchs, new_path));
 		}
 	}
-	else  if (sh_verbose_globbing())
-	{
-		free(path);
+	else if (sh_verbose_globbing())
 		ft_dprintf(2, RED"\t\tfound invalid path : %s\n"EOC, dirent->d_name);
-	}
 	return (SUCCESS);
 }
 
@@ -116,12 +110,13 @@ int			sh_expansions_pattern_matching(
 	else
 		dir = opendir(path);
 	if (!dir)
-		return (SUCCESS); // perrror ? permissions
+		return (SUCCESS);
 	while ((dirent = readdir(dir)))
 	{
 		if (sh_verbose_globbing())
 			ft_dprintf(2, "working on path : %s/%s\n", path, dirent->d_name);
-		ret = pattern_matching_read_directory(path, regexp_list, matchs, dirent);
+		ret = pattern_matching_read_directory(
+			path, regexp_list, matchs, dirent);
 		if (ret)
 		{
 			closedir(dir);

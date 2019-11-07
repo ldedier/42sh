@@ -6,13 +6,14 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 01:26:28 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/07 01:27:15 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/07 05:31:59 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-static void	pattern_matching_push_find_place(t_list **head, t_list **prev, char *filename)
+static void	pattern_matching_push_find_place(
+	t_list **head, t_list **prev, char *filename)
 {
 	while (*head)
 	{
@@ -60,6 +61,7 @@ static void	pattern_matching_push(t_list **matches, t_list *new)
 **	FAILURE : malloc error
 **	SUCCESS : else
 */
+
 int			pattern_matching_push_new(t_list **matches, char *path)
 {
 	t_list	*new;

@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 23:53:16 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/07 04:39:38 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/07 05:28:20 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,5 +143,7 @@ int			sh_regexp_parse(char *str, t_dy_tab **regexp_tab)
 	}
 	check_for_final_slash(str, list_tab, i - 1);
 	ft_strtab_free(split);
+	if (ret)
+		t_regexp_free_tab(regexp_tab);
 	return (ret);
 }

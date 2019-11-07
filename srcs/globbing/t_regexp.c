@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 23:26:35 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/23 03:17:59 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/07 05:26:21 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ void			t_regexp_show_list(t_list *head)
 
 void			t_regexp_show(t_regexp *regexp)
 {
-
 	if (regexp->type == REG_STAR)
 		ft_dprintf(2, "REG_STAR");
 	else if (regexp->type == REG_STR)
@@ -54,10 +53,9 @@ void			t_regexp_show(t_regexp *regexp)
 		ft_dprintf(2, "REG_BRACE : %s", regexp->value);
 	else if (regexp->type == REG_FINAL_SLASH)
 		ft_dprintf(2, "REG_FINAL_SLASH");
-
 }
 
-void		t_regexp_free(void *ptr, size_t size)
+void			t_regexp_free(void *ptr, size_t size)
 {
 	t_regexp	*regexp;
 
@@ -66,4 +64,20 @@ void		t_regexp_free(void *ptr, size_t size)
 		free(regexp->value);
 	free(regexp);
 	(void)size;
+}
+
+void			t_regexp_free_tab(t_dy_tab **regexp_tab)
+{
+	int			i;
+	t_list		**list_tab;
+
+	i = 0;
+	list_tab = (t_list**)(*regexp_tab)->tbl;
+	while (list_tab[i])
+	{
+		ft_lstdel(list_tab + i, &t_regexp_free);
+		i++;
+	}
+	ft_dy_tab_del_ptr(*regexp_tab);
+	*regexp_tab = NULL;
 }
