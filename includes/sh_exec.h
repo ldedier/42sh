@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_exec.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 17:11:16 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/07 14:56:28 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/08 23:40:30 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ typedef struct		s_context
 {
 	char			wflags;	//wait_flags for non-interactive shell
 	int				cmd_type;
+	char			*cmd_string;
 	t_shell			*shell;
 	struct termios	*term;
 	t_dy_tab		*env;

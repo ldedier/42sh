@@ -53,20 +53,33 @@ static void	init_job_values(t_job *j, int n, int bg)
 	g_job_ctrl->curr_job = j;
 }
 
-static int		get_job_string(t_ast_node *node, t_job *j)
+static int		get_job_string(t_ast_node *node, char *str, t_job *j)
 {
-	char		*str;
+	char		*tmp;
 	t_symbol_id	id;
 
-	str = NULL;
-	id = node->symbol->id;
-	g_grammar[id].get_job_string(node, &str); // Protect
-	j->command = str;
-	j->cmd_copy = ft_strdup(j->command);
+	if (str != NULL)
+	{
+		j->command =ft_strdup(str);
+		j->cmd_copy = ft_strdup(str);
+		free(str);
+	}
+	else
+	{
+		tmp = NULL;
+		id = node->symbol->id;
+		if ((g_grammar[id].get_job_string(node, &tmp)) != SUCCESS)
+			return (ERROR);
+		j->command = tmp;
+		if (j->command == NULL)
+			return (sh_perror(SH_ERR1_MALLOC, "job add"));
+		j->cmd_copy = ft_strdup(j->command);
+	}
+	if (j->command == NULL)
+		return (sh_perror(SH_ERR1_MALLOC, "job add"));
 	if (j->cmd_copy == NULL)
 	{
 		free(j->command);
-		free(j);
 		return (sh_perror(SH_ERR1_MALLOC, "job add"));
 	}
 	return (SUCCESS);
@@ -81,7 +94,7 @@ static int		get_job_string(t_ast_node *node, t_job *j)
 ** If not, we add it the tail of the job list.
 */
 
-int			job_add(t_ast_node *node, int bg)
+int			job_add(t_ast_node *node, char *str, int bg)
 {
 	t_job	*j;
 	t_job	*it;
@@ -94,8 +107,11 @@ int			job_add(t_ast_node *node, int bg)
 	if ((j = malloc(sizeof(t_job))) == NULL)
 		return (sh_perror(SH_ERR1_MALLOC, "job add"));
 	init_job_values(j, n, bg);
-	if (get_job_string(node, j) != SUCCESS)
+	if (get_job_string(node, str, j) != SUCCESS)
+	{
+		free(j);
 		return (FAILURE);
+	}
 	// ft_printf("%sAdded job [%d] %s ", CYAN, g_job_ctrl->curr_job->number, g_job_ctrl->curr_job->command);
 	// ft_printf("in %s%s\n",j->foreground == 1 ? "foreground" : "background", COLOR_END);
 	// Add the newly created job at the end of the job list.
