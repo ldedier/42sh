@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 18:47:58 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/08 17:36:14 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/08 17:42:35 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int		is_printable_utf8_byte(unsigned char c)
 
 int		get_motion_suffix_char(t_command_line *command_line, char *s_char)
 {
-	int     stop;
+	int		stop;
 
 	stop = 0;
 	command_line->current_count = &command_line->motion_count;

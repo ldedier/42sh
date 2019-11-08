@@ -219,6 +219,27 @@ int					substitute_current_index(
 int					command_line_nb_rows(t_command_line *command_line);
 
 /*
+** copy_command_line.c
+*/
+void				process_termcaps_through_copy(
+	t_command_line *command_line,
+	t_utf8_copier *c,
+	char *str,
+	char *capability);
+void				process_termcaps_through_utf8_copy(
+	char *str, t_command_line *command_line, t_utf8_copier *c);
+void				process_copy_utf8_char(
+	char *str,
+	t_command_line *command_line,
+	int index,
+	t_utf8_copier *c);
+void				copy_last_part_of_command_line(
+	t_command_line *command_line,
+	t_utf8_copier *c,
+	int index,
+	char *str);
+
+/*
 ** copy_paste_delete.c
 */
 int					command_line_copy_all(t_command_line *command_line);
@@ -442,37 +463,24 @@ int					process_keys_ret(
 int					await_stream(int fd);
 
 /*
+** print_command_line.c
+*/
+void				process_print_command_line(
+	t_command_line *command_line, int empty_space);
+void				print_command_line(t_command_line *command_line);
+
+/*
 ** render_command_line.c
 */
 void				render_command_researched(
 	t_command_line *command_line);
 int					print_after_command_line(
 	t_command_line *command_line, int print_choices);
-int					get_command_line_starting_index2(int scrolled_lines);
-int					get_command_line_starting_index(
-	t_command_line *command_line);
-void				process_termcaps_through_copy(
-	t_command_line *command_line,
-	t_utf8_copier *c,
-	char *str,
-	char *capability);
-void				process_termcaps_through_utf8_copy(
-	char *str, t_command_line *command_line, t_utf8_copier *c);
-void				process_copy_utf8_char(
-	char *str,
-	t_command_line *command_line,
-	int index,
-	t_utf8_copier *c);
-void				process_print_command_line(
-	t_command_line *command_line, int empty_space);
-void				print_command_line(t_command_line *command_line);
 int					get_command_line_prefix_len(
 	t_command_line *command_line);
-int					should_elipse_end(
-	t_command_line *command_line, int scrolled_lines);
-int					sh_scroll_command_line(
-	t_command_line *command_line, int cursor, int cursor_inc);
 void				check_selection(t_command_line *command_line);
+int					print_pre_command_line(
+	t_command_line *command_line, int *ret);
 int					render_command_line(
 	t_command_line *command_line, int cursor_inc, int print_choices);
 
@@ -522,6 +530,21 @@ int					sh_init_entry_saves(t_entry *entry);
 */
 int					putchar_int(int i);
 int					process_clear(t_command_line *command_line);
+
+/*
+** scroll_command_line.c
+*/
+int					get_command_line_starting_index2(int scrolled_lines);
+int					get_command_line_starting_index(
+	t_command_line *command_line);
+int					should_elipse_end(
+	t_command_line *command_line, int scrolled_lines);
+int					get_scroll_to_add(
+	t_command_line *command_line,
+	int target_screen_line,
+	int research_nb_lines);
+int					sh_scroll_command_line(
+	t_command_line *command_line, int cursor, int cursor_inc);
 
 /*
 ** selection.c

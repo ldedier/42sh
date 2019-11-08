@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/11/07 15:04:32 by ldedier          ###   ########.fr        #
+#    Updated: 2019/11/08 19:08:54 by ldedier          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -98,7 +98,9 @@ SRCS			+=	keys.c cursor_motion.c edit_command.c \
 					keys_debug.c screen_tools.c get_char_len.c \
 					saves.c t_save.c keys_readline.c get_down_from_command.c \
 					keys_tools.c keys_ret.c command_count.c restore_save.c \
-					save_command_line.c
+					save_command_line.c scroll_command_line.c \
+					print_command_line.c copy_command_line.c \
+					pre_post_render.c
 
 #sh_clipboard.c sh_command_line_tools.c
 #					sh_clipboard_tools.c

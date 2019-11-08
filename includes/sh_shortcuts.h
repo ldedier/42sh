@@ -442,15 +442,13 @@ int					sh_vshortcut_y_maj(
 	t_command_line *command_line, int dummy, int dummy_2);
 
 /*
-** vshortcuts.c
-*/
-
-/*
 ** vshortcuts_tools.c
 */
 int					sh_get_single_char(char *c);
 int					ft_clamp(int min, int val, int max);
 int					is_printable_utf8_byte(unsigned char c);
+int					get_motion_suffix_char(
+	t_command_line *command_line, char *s_char);
 int					get_inclusion(
 	t_command_line *command_line, t_motion_inclusion inclusion);
 

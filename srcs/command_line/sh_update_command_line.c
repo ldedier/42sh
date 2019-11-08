@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 15:03:21 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/07 15:03:59 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/08 17:43:45 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	update_command_line_start(t_command_line *command_line)
 	render_command_line(command_line, -g_glob.cursor, 1);
 }
 
-void	update_command_line_index(t_command_line *command_line, int index)
+void		update_command_line_index(t_command_line *command_line, int index)
 {
 	int nb_chars;
 	int len;
@@ -46,7 +46,7 @@ void	update_command_line_index(t_command_line *command_line, int index)
 	render_command_line(command_line, -g_glob.cursor + nb_chars, 1);
 }
 
-void	update_command_line(t_command_line *command_line, int start)
+void		update_command_line(t_command_line *command_line, int start)
 {
 	if (start)
 		update_command_line_start(command_line);
