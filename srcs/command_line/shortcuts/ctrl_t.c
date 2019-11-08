@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 15:47:39 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/04 17:57:32 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/08 19:37:45 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,12 @@ static void		transpose_str(char *str, int index_a, int index_b)
 	int		len_b;
 	char	buff[5];
 
+
+	ft_printf(RED"\nINDEX: %d %d\n"EOC, index_a, index_b);
 	len_a = get_char_len_unprotected(index_a, (unsigned char *)str);
 	len_b = get_char_len_unprotected(index_b, (unsigned char *)str);
+	
+	ft_printf(YELLOW"\nLENGTH: %d %d\n"EOC, len_a, len_b);
 	ft_bzero(buff, sizeof(buff));
 	ft_strncpy(buff, &str[index_a], len_a);
 	ft_strncpy(&str[index_a], &str[index_b], len_b);
