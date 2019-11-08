@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 23:28:27 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/04 17:16:46 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/04 19:35:46 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,36 +65,11 @@ int		process_completion(t_command_line *command_line, t_word word)
 	return (ft_free_turn(str, 0));
 }
 
-void	print_dy_tab(t_dy_tab *dtab)
-{
-	int i;
-
-	i = 0;
-	while (i < (int)dtab->current_size)
-	{
-		ft_printf("%s\n", dtab->tbl[i]);
-		i++;
-	}
-}
-
-int		sh_free_turn_exec(t_exec *exec, int ret)
-{
-	free_execution_tools(&exec->tokens, &exec->ast_root, &exec->cst_root);
-	return (ret);
-}
-
-void	init_exec(t_exec *exec)
-{
-	exec->ast_root = NULL;
-	exec->cst_root = NULL;
-}
-
 int		process_tab(t_shell *shell, t_command_line *command_line)
 {
 	int		ret;
 	t_exec	exec;
 
-	init_exec(&exec);
 	ret = 0;
 	command_line->autocompletion.choices_common_len = -1;
 	if (!command_line->autocompletion.active)

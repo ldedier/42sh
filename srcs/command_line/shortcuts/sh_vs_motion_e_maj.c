@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 11:02:58 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/20 09:54:16 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/04 18:11:07 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@
 
 int		sh_vs_motion_e_maj(t_command_line *command_line, char dummy)
 {
-	int     i;
-	char    prev_type;
-	int     new_type;
-	int     nb_word_end;
+	int		i;
+	char	prev_type;
+	int		new_type;
+	int		nb_word_end;
 
 	(void)dummy;
 	if (command_line->current_index == (int)command_line->dy_str->current_size)

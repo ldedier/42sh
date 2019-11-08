@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 11:02:58 by ldedier           #+#    #+#             */
-/*   Updated: 2019/03/28 11:02:58 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/04 18:15:04 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,16 @@
 
 /*
 ** sh_vshortcut_a.c
-**	
+**
 **	go to the next character and get into insert mode
 */
 
 int		sh_vshortcut_a(t_command_line *command_line, int dummy, int dummy_2)
 {
 	int ret;
-	
+
 	(void)dummy;
 	(void)dummy_2;
-
 	command_line->mode = E_MODE_INSERT;
 	if (update_prompt(command_line->shell, command_line))
 		return (FAILURE);

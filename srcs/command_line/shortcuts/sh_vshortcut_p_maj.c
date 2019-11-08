@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 11:02:58 by ldedier           #+#    #+#             */
-/*   Updated: 2019/03/28 11:02:58 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/04 18:37:28 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,6 @@ int		sh_vshortcut_p_maj(t_command_line *command_line, int dummy, int dummy_2)
 
 	(void)dummy;
 	(void)dummy_2;
-//	if (command_line->current_index == 0)
-//	{
-		
-//	}
 	if (!command_line->clipboard)
 		return (SUCCESS);
 	nb_chars = ft_strlen_utf8(command_line->clipboard);

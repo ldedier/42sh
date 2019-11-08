@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/22 14:59:37 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/05 14:00:31 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/04 19:16:25 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,32 +97,42 @@ int					add_choices_builtins(t_shell *shell, t_word *word);
 /*
 ** add_choices_from_dir.c
 */
-void				add_node_next_to_node(t_dlist **node, t_dlist *to_add);
-int					sh_pass_filters(t_file *file, int types);
-char				*get_fullname(t_choice_filler *c, char *entry);
 int					process_add_choices_from_choice_filler(
 	t_shell *shell,
-	t_command_line *command_line,
+	t_command_line *cl,
 	char *entry,
 	t_choice_filler *c);
+int					close_dir_ret(DIR *dir, int ret);
 int					add_choices_from_dir(
 	t_shell *shell, t_choice_filler *c);
 
 /*
 ** add_choices_from_expansions.c
 */
-int					sh_match_key(
-	char *entry, char *to_compare, int *equal_index);
 int					populate_keys_from_dy_tab(
 	t_dy_tab *dtab, t_shell *shell, t_choice_filler *c);
-int					get_end_index(char *str, int index);
 int					process_fill_choice_filler_expansion(
 	t_choice_filler *c, int *last_dollar_index, int exp_braced);
 int					fill_choice_filler_expansion(
 	t_choice_filler *c, int *last_dollar_index);
-int					free_turn_choice_filler(t_choice_filler *c, int ret);
 int					populate_choices_from_expansions(
 	t_command_line *command_line, t_shell *shell, t_word *word);
+
+/*
+** add_choices_from_expansions_tools.c
+*/
+int					sh_match_key(
+	char *entry, char *to_compare, int *equal_index);
+int					get_end_index(char *str, int index);
+int					free_turn_choice_filler(t_choice_filler *c, int ret);
+
+/*
+** add_choices_tools.c
+*/
+void				add_node_next_to_node(t_dlist **node, t_dlist *to_add);
+int					free_file_ret(t_file *file, int ret);
+int					sh_pass_filters(t_file *file, int types);
+char				*get_fullname(t_choice_filler *c, char *entry);
 
 /*
 ** add_file_tools.c
@@ -163,9 +173,6 @@ int					process_completion_expand(
 	t_command_line *command_line, char *str, t_word word);
 int					process_completion(
 	t_command_line *command_line, t_word word);
-void				print_dy_tab(t_dy_tab *dtab);
-int					sh_free_turn_exec(t_exec *exec, int ret);
-void				init_exec(t_exec *exec);
 int					process_tab(
 	t_shell *shell, t_command_line *command_line);
 
@@ -176,6 +183,11 @@ char				*get_completion_str_file(t_file *file);
 char				*get_completion_str(t_command_line *command_line);
 
 /*
+** debug_word.c
+*/
+void				print_word(t_word *word);
+
+/*
 ** escape.c
 */
 int					sh_should_escape(char c);
@@ -183,6 +195,12 @@ int					sh_escaped_len(char *str);
 void				ft_strcat_escaped(char *dest, char *src);
 char				*ft_strdup_escaped(char *str);
 char				*ft_strjoin_escaped(char *s1, char *s2);
+
+/*
+** exec_tools.c
+*/
+int					sh_free_turn_exec(t_exec *exec, int ret);
+void				init_exec(t_exec *exec);
 
 /*
 ** file_tables.c
@@ -245,10 +263,23 @@ int					populate_choices_from_binaries(
 int					populate_choices_from_folder(
 	t_shell *shell, t_word *word, int types);
 int					populate_choices_from_word(
-	t_command_line *command_line, t_shell *shell, t_word *word);
+	t_command_line *cl, t_shell *shell, t_word *word);
 
 /*
 ** populate_word_by_index.c
+*/
+int					populate_word_from_lexer_no_token(
+	t_list **tokens, t_list **prev, t_word *word);
+void				populate_word_from_token(t_word *word, int index);
+void				populate_word_from_created_token(
+	t_word *word, int index);
+int					populate_word_from_lexer(
+	t_list **tokens, int index, t_word *word);
+int					populate_parsed_word_by_index(
+	t_shell *shell, char *command, int index, t_exec *exec);
+
+/*
+** populate_word_by_index_no_parsing.c
 */
 int					get_word_len(char *s, int index);
 int					process_populate_empty_word(t_word *word);
@@ -258,16 +289,6 @@ void				increment_word(
 	int i, int index, t_word *word, char *str);
 int					populate_word_by_index(
 	char *s, int index, t_word *word);
-int					populate_word_from_lexer_no_token(
-	t_list **tokens, t_list **prev, t_word *word);
-void				populate_word_from_token(t_word *word, int index);
-void				populate_word_from_created_token(
-	t_word *word, int index);
-void				print_word(t_word *word);
-int					populate_word_from_lexer(
-	t_list **tokens, int index, t_word *word);
-int					populate_parsed_word_by_index(
-	t_shell *shell, char *command, int index, t_exec *exec);
 
 /*
 ** preprocess_choice_add.c
