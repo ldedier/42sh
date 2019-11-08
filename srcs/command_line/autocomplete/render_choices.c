@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 02:33:03 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/05 14:44:19 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/04 19:36:18 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,27 +57,19 @@ int		render_choices(t_command_line *command_line, int *to_go_up)
 	tbl = update_file_tables(command_line);
 	update_back_nb_cols(command_line);
 	nb_visible_lines = command_line_visible_lines(command_line);
-//	ft_dprintf(2, "visible lines: %d\n", nb_visible_lines);
-//	ft_dprintf(2, "nb lines: %d\n", command_line->autocompletion.nb_lines);
-//	ft_dprintf(2, "nb cols: %d\n\n", command_line->autocompletion.nb_cols);
-//	ft_dprintf(2, "screen rows: %d\n\n", g_glob.winsize.ws_row);
-//	ft_dprintf(2, "nb_rows commandline: %d\n\n", command_line_nb_rows(command_line));
 	if (!sh_should_render_choices(command_line, nb_visible_lines))
-	{
-//		ft_dprintf(2, RED"OUAI \n"EOC);
 		return (SUCCESS);
-	}
 	*to_go_up = get_down_from_command(command_line);
 	if (!(print_buffer = new_print_buffer()))
 		return (sh_perror(SH_ERR1_MALLOC, "render_choices"));
 	if (nb_visible_lines + command_line_nb_rows(command_line)
 			> g_glob.winsize.ws_row)
 		fill_buffer_partial_from_tables(command_line,
-			print_buffer, tbl, max_len); //check ca.
+			print_buffer, tbl, max_len);
 	else
 		fill_buffer_from_tables(command_line, print_buffer, tbl, max_len);
 	ft_dprintf(0, print_buffer);
-	go_up_left(nb_visible_lines - 1); // ?
+	go_up_left(nb_visible_lines - 1);
 	free_tbl(tbl, command_line->autocompletion.nb_lines);
 	return (ft_free_turn(print_buffer, SUCCESS));
 }

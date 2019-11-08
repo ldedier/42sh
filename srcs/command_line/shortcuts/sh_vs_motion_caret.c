@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 11:02:58 by ldedier           #+#    #+#             */
-/*   Updated: 2019/03/28 11:02:58 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/04 18:03:04 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 /*
 ** sh_vs_motion_caret.c
-**	
+**
 ** go to the first non white character of the line
 ** if all characters are blanks, go to the last character
 */

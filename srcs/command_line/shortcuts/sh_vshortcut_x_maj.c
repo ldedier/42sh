@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 11:02:58 by ldedier           #+#    #+#             */
-/*   Updated: 2019/03/28 11:02:58 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/04 18:31:26 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 **
 **	delete the counth previous character before the cursor index
 **	and save it in the clipboard
-**	
 */
 
 void	go_back_count_characters(t_command_line *command_line,
@@ -48,7 +47,7 @@ int		sh_vshortcut_x_maj(t_command_line *command_line, int dummy, int dummy_2)
 	go_back_count_characters(command_line, &i, &len, &nb_chars);
 	command_line->current_index -= len;
 	ft_strdel(&command_line->clipboard);
-	if (!(command_line->clipboard = 
+	if (!(command_line->clipboard =
 		ft_strndup(&command_line->dy_str->str[command_line->current_index],
 			len)))
 	{

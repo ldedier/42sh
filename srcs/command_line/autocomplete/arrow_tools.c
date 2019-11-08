@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 01:47:50 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/04 17:06:32 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/04 19:06:27 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,5 +75,5 @@ int		substitute_command_str(t_shell *shell, t_command_line *command_line,
 	if (process_substitute_command(command_line, str, exec.word, 0))
 		return (sh_free_turn_exec(&exec, FAILURE));
 	sh_free_turn_exec(&exec, FAILURE);
-	return (SUCCESS);	
+	return (SUCCESS);
 }
