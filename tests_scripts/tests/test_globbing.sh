@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/16 05:23:32 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/07 00:23:41 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/08 01:26:05 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,28 +14,11 @@ launch "Globbing"
 	launch_show "Creating sandbox ..."
 
 	pwd=`pwd`
-	rm -rf sandbox
 
-	mkdir -p sandbox && cd sandbox
-	touch file1 file1file1 file1file1file1file1 file2 file3 file4 "[ab]" "[" "]" "[aa" "a]a" '!' file2file2 file2file2file2
-	touch '[' ']' '(' ')' x X xx XX xxx XXX xxxx XXXX 
-	touch '\' '\\' '\\\' '\\[\]' '\[' '\]' '\!'
-	for i in `seq 1 10` ; do
-		touch `echo "print('a' * $i)" | python3`
-		touch `echo "print('b' * $i)" | python3`
-		touch `echo "print('b' * $i)" | python3`
-		touch `echo "print('O' * $i)" | python3`
-	done
-	mkdir -p UUU/B/file2 ; touch UUU/B/file2/okalm 
-	mkdir -p 1/2/3/4/5/6/7/8/9/
-	for i in `seq 1 9` ; do
-		cd $i 
-		touch fils ok 123 '[' ']' '!' '*' '**' '\' '\\' 'VA' 'POS'
-		mkdir okalm
-		mkdir -p dir '""' quoted
-	done
-	for i in `seq 1 9` ; do cd .. ; done
-	
+	rm -rf sandbox
+	python3 srcs/globbing_sandbox.py
+
+	cd sandbox
 	for i_dir in `seq 0 5` ; do
 		mkdir -p dir_$i_dir
 		for i_file in `seq 3 12` ; do
@@ -74,6 +57,12 @@ launch "Globbing"
 	test_launch 'cd sandbox' 'echo [a-a][a-a]   ; echo $?' 'echo [!a][!a]  ; echo $?' 'echo [!] ; echo $?'
 	test_launch 'cd sandbox' 'echo [a-aa-ab-bb-b]   ; echo $?' 'echo [!a-aa-ab-bb-b]  ; echo $?' 'echo [!a-a!a-a!b-bb-b] ; echo $?' 'echo [!a-aa-ab-b!b!-b] ; echo $?'
 	test_launch 'cd sandbox' 'echo [!] ; echo $?' 'echo [\!] ; echo $?' 'echo [!\!] ; echo $?' 'echo [!!] ; echo $?'
+	test_launch 'cd sandbox' 'echo ["ab"]' "echo ['ab']"
+	test_launch 'cd sandbox' 'echo [""""]' 'echo [""]'
+	test_launch 'cd sandbox' 'echo ["a-b\""""b-b"]'
+	test_launch 'cd sandbox' 'echo [\"ab]' "echo [\'ab]" 'echo [\\ab]?' 'echo [\"ab]?' "echo [\'ab]?" 'echo [\\ab]?'
+	test_launch 'cd sandbox' 'echo []' 'echo [][]' 'echo ?[]?[]?' 'echo []?[]?[]'
+	test_launch 'cd sandbox' ''
 
 	launch_show "brace quoted"
 	test_launch 'cd sandbox' 'echo [!a-ba\ ]'
@@ -130,8 +119,6 @@ launch "Globbing"
 	test_launch 'cd sandbox' 'mkdir permission ; chmod 200 permission' 'echo ?????????? ; echo $?' 'echo ??????????/ ; echo $?' 'echo perm* ; echo $?' 'echo perm*/ ; echo $?' 'chmod 777 permission ; rm -r permission'
 	test_launch 'cd sandbox' 'mkdir permission ; chmod 100 permission' 'echo ?????????? ; echo $?' 'echo ??????????/ ; echo $?' 'echo perm* ; echo $?' 'echo perm*/ ; echo $?' 'chmod 777 permission ; rm -r permission'
 
-	rm -rf sandbox
-
 	launch_show "Correction"
 	test_launch 'mkdir -p empty ; cd empty' 'touch a? b* [c]; ls -1'
 	test_launch 'cd empty' 'echo a > aa && echo b > ab && cat -e a?'
@@ -165,5 +152,6 @@ launch "Globbing"
 	test_launch 'cd empty' 'echo [4-z][A-b]'
 	
 	rm -rf empty
+	# rm -rf sandbox
 
 finish
