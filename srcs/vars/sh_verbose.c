@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 13:16:38 by jmartel           #+#    #+#             */
-/*   Updated: 2019/07/22 23:30:50 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/16 01:07:56 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void		sh_verbose_update(t_shell *shell)
 	sh_verbose_update_check(shell, VERBOSE_EXPANSION, "verbose_expansion");
 	sh_verbose_update_check(shell, VERBOSE_PIPE, "verbose_pipe");
 	sh_verbose_update_check(shell, VERBOSE_TRAVERSE, "verbose_traverse");
+	sh_verbose_update_check(shell, VERBOSE_GLOBBING, "verbose_globbing");
 }
 
 /*
@@ -71,6 +72,20 @@ int			sh_verbose_traverse(void)
 int			sh_verbose_builtin(void)
 {
 	if (g_glob.verbose & VERBOSE_BUILTIN)
+		return (1);
+	return (0);
+}
+
+/*
+**	Check if verbose is active on in the given phase.
+**
+** Returned Values:
+**		True or False
+*/
+
+int			sh_verbose_globbing(void)
+{
+	if (g_glob.verbose & VERBOSE_GLOBBING)
 		return (1);
 	return (0);
 }

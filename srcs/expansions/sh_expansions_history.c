@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_expansions_history.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 12:01:07 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/04 17:39:27 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/06 21:39:14 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,9 @@ int		sh_expansions_history(t_shell *shell, t_command_line *command_line,
 				&& !ft_iswhite(command_line->dy_str->str[i + 1]))
 				&& !bracket)
 		{
+			// Added to fix globbing [!...] dedtection, need ldedier to check / improve it 
+			if (i > 0 && command_line->dy_str->str[i - 1] == '[')
+				return (SUCCESS);
 			*expanded = 1;
 			if ((ret = sh_history_expand(shell, command_line, &i,
 				&double_quoted)) != SUCCESS)

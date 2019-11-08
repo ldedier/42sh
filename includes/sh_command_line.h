@@ -200,6 +200,12 @@ int					process_right(
 	t_shell *shell, t_command_line *command_line);
 
 /*
+** command_count.c
+*/
+int					add_digit_and_update(
+	t_command_line *command_line, char c);
+
+/*
 ** command_line.c
 */
 void				flush_command_line(t_command_line *command_line);
@@ -235,7 +241,6 @@ int					go_up_to_prompt(int width, int cursor);
 */
 int					get_true_cursor_pos_prev_prompt(int cursor);
 int					get_true_cursor_pos(int cursor);
-int					get_down_from_command(t_command_line *command_line);
 void				replace_cursor_on_index(void);
 void				replace_cursor_after_render(void);
 
@@ -283,6 +288,11 @@ int					reset_command_line(
 	t_shell *shell, t_command_line *command_line);
 int					sh_get_command(
 	t_shell *shell, t_command_line *command_line);
+
+/*
+** get_down_from_command.c
+*/
+int					get_down_from_command(t_command_line *command_line);
 
 /*
 ** heredoc.c
@@ -338,7 +348,6 @@ int					process_escape_sequence(
 	t_key_buffer *buffer);
 int					process_shift(
 	t_key_buffer *buffer, t_command_line *command_line);
-int					await_stream(int fd);
 int					process_keys(
 	t_key_buffer *buffer,
 	t_shell *shell,
@@ -347,7 +356,7 @@ int					process_get_keys(
 	t_key_buffer *buffer,
 	t_shell *shell,
 	t_command_line *command_line);
-int					get_keys(t_shell *shell, t_command_line *command_line);
+int					get_keys(t_shell *shell, t_command_line *cl);
 
 /*
 ** keys_ctrl.c
@@ -374,15 +383,11 @@ int					should_flush_buffer(
 ** keys_insert.c
 */
 int					process_enter(t_command_line *command_line);
-int					process_process_keys_ret(
-	t_key_buffer *buffer,
-	t_shell *shell,
-	t_command_line *command_line);
-int					process_keys_ret(
-	t_key_buffer *buffer,
-	t_shell *shell,
-	t_command_line *command_line);
 int					process_key_insert_printable_utf8(
+	t_key_buffer *buffer,
+	t_shell *shell,
+	t_command_line *command_line);
+int					insert_keys(
 	t_key_buffer *buffer,
 	t_shell *shell,
 	t_command_line *command_line);
@@ -404,8 +409,6 @@ void				cancel_autocompletion(
 /*
 ** keys_others.c
 */
-int					add_digit_and_update(
-	t_command_line *command_line, char  c);
 int					replace_command_line(
 	t_key_buffer *buffer, t_command_line *command_line);
 int					process_keys_others(
@@ -420,6 +423,23 @@ int					process_keys_readline(
 	t_key_buffer *buffer,
 	t_shell *shell,
 	t_command_line *command_line);
+
+/*
+** keys_ret.c
+*/
+int					process_process_keys_ret(
+	t_key_buffer *buffer,
+	t_shell *shell,
+	t_command_line *command_line);
+int					process_keys_ret(
+	t_key_buffer *buffer,
+	t_shell *shell,
+	t_command_line *command_line);
+
+/*
+** keys_tools.c
+*/
+int					await_stream(int fd);
 
 /*
 ** render_command_line.c
@@ -475,21 +495,26 @@ int					process_research_history(
 	t_command_line *command_line, t_shell *shell);
 
 /*
+** restore_save.c
+*/
+int					process_restore_save(
+	t_command_line *command_line, t_save *save, int *ret);
+int					sh_restore_save(t_command_line *command_line);
+int					sh_restore_all_save(t_command_line *command_line);
+
+/*
+** save_command_line.c
+*/
+int					sh_save_command_line(t_command_line *command_line);
+int					sh_process_edit_counter(
+	t_command_line *command_line, int inc);
+int					sh_reset_saves(t_command_line *command_line);
+
+/*
 ** saves.c
 */
 t_list				**get_current_saves_stack(
 	t_command_line *command_line, t_entry **entry);
-t_save				*t_save_new(char *str, int index);
-int					sh_save_command_line(t_command_line *command_line);
-int					process_restore_save(
-	t_command_line *command_line, t_save *save, int *ret);
-void				t_save_free(t_save *save);
-void				t_save_free_list(void *s, size_t dummy);
-int					sh_restore_save(t_command_line *command_line);
-int					sh_restore_all_save(t_command_line *command_line);
-int					sh_process_edit_counter(
-	t_command_line *command_line, int inc);
-int					sh_reset_saves(t_command_line *command_line);
 int					sh_init_entry_saves(t_entry *entry);
 
 /*
@@ -565,12 +590,29 @@ int					process_shift_up(t_command_line *command_line);
 int					process_shift_down(t_command_line *command_line);
 
 /*
+** sh_update_command_line.c
+*/
+void				update_command_line_index(
+	t_command_line *command_line, int index);
+void				update_command_line(
+	t_command_line *command_line, int start);
+
+/*
+** t_save.c
+*/
+t_save				*t_save_new(char *str, int index);
+void				t_save_free(t_save *save);
+void				t_save_free_list(void *s, size_t dummy);
+
+/*
 ** update_prompt.c
 */
 int					update_prompt_context(
 	t_shell *shell, t_command_line *command_line, char **new_prompt);
 int					fill_prompt_command_mode(
 	char **new_prompt, t_command_line *command_line);
+int					update_prompt_mode(
+	t_command_line *command_line, char **new_prompt);
 int					update_prompt(
 	t_shell *shell, t_command_line *command_line);
 int					update_prompt_from_quote(
@@ -593,10 +635,6 @@ int					update_prompt_cwd(t_shell *shell, char **new_prompt);
 */
 int					update_prompt_cwd_home(char **new_prompt);
 int					process_escape(
-	t_shell *shell,
-	t_command_line *command_line,
-	t_key_buffer *buffer);
-int					process_i(
 	t_shell *shell,
 	t_command_line *command_line,
 	t_key_buffer *buffer);

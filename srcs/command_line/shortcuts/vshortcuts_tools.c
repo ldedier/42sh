@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 18:47:58 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/04 19:01:34 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/08 17:36:14 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,38 @@ int		is_printable_utf8_byte(unsigned char c)
 	return (c >= 32 && c <= 126 && !(c & 0b10000000));
 }
 
+int		get_motion_suffix_char(t_command_line *command_line, char *s_char)
+{
+	int     stop;
+
+	stop = 0;
+	command_line->current_count = &command_line->motion_count;
+	while (!stop)
+	{
+		if (sh_get_single_char(s_char))
+			return (FAILURE);
+		if (!is_printable_utf8_byte(*s_char))
+			return (SUCCESS);
+		if (ft_isdigit(*s_char) && (command_line->motion_count.active
+					|| *s_char != '0'))
+		{
+			if (add_digit_and_update(command_line, *s_char))
+				return (FAILURE);
+		}
+		else
+			stop = 1;
+	}
+	command_line->count.value *= command_line->motion_count.tmp_value;
+	command_line->motion_count.tmp_value = 1;
+	command_line->motion_count.active = 0;
+	return (SUCCESS);
+}
+
 int		get_inclusion(t_command_line *command_line,
-			t_motion_inclusion inclusion)
+		t_motion_inclusion inclusion)
 {
 	if ((inclusion == E_MOTION_COPY || inclusion == E_MOTION_INV)
-		&& command_line->last_ft_command.motion)
+			&& command_line->last_ft_command.motion)
 	{
 		if (command_line->last_ft_command.motion == &sh_vs_motion_t
 				|| command_line->last_ft_command.motion == &sh_vs_motion_f)

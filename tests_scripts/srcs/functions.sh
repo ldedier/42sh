@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/21 15:58:19 by jmartel           #+#    #+#              #
-#    Updated: 2019/10/14 22:31:58 by jmartel          ###   ########.fr        #
+#    Updated: 2019/10/23 02:17:35 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -100,8 +100,8 @@ diff_files()
 	res=`diff $1 $2`
 	if [ -n "$res" ] ; then
 		echo -e "${red}KO${eoc}"
+		echo -e "${yellow}`cat ${buffer}`${eoc}"
 		if [ -n "$verbose" ] ; then
-			echo -e "${yellow}`cat ${buffer}`${eoc}"
 			echo -e "${cyan}" `cat $1` "${eoc}"
 			echo -e "${cyan}" `cat $2` "${eoc}"
 		fi

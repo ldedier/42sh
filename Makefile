@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+         #
+#    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/11/04 21:39:57 by ldedier          ###   ########.fr        #
+#    Updated: 2019/11/07 15:04:32 by ldedier          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,7 @@ VPATH		= $(INCLUDESDIR) \
 			  $(SRCDIR)/common \
 			  $(SRCDIR)/exec \
 			  $(SRCDIR)/expansions \
+			  $(SRCDIR)/globbing \
 			  $(SRCDIR)/grammar \
 			  $(SRCDIR)/job_control \
 			  $(SRCDIR)/job_control/job_get_string \
@@ -85,6 +86,7 @@ SRCS			+=	keys.c cursor_motion.c edit_command.c \
 					update_prompt_tools.c keys_insert.c \
 					keys_others.c keys_ctrl.c cursor_tools.c \
 					selection.c sh_process_history.c \
+					sh_update_command_line.c \
 					heredoc.c research_history.c \
 					render_research.c heredoc_tools.c \
 					free_command_line.c sh_delete_command.c \
@@ -338,7 +340,28 @@ SRCS			 +=	sh_expansions.c \
 					sh_expansions_quote_removal.c \
 					sh_expansions_scan.c \
 					sh_expansions_history.c \
+					sh_expansions_cmd_subst.c \
+					sh_expansions_proc_subst_in.c \
+					sh_expansions_proc_subst_out.c \
 					t_quote.c
+
+################################################################
+########					GLOBBING					########
+################################################################
+SRCS			+=	sh_globbing.c \
+					sh_regexp_parse.c \
+					sh_regexp_parse_new_string.c \
+					sh_regexp_parse_new_brace.c \
+					sh_regexp_parse_new_quest.c \
+					sh_regexp_parse_new_star.c \
+					sh_pattern_matching.c \
+					sh_is_pattern_matching.c \
+					sh_pattern_matching_push_new.c \
+					sh_pattern_matching_star.c \
+					sh_pattern_matching_str.c \
+					sh_pattern_matching_quest.c \
+					sh_pattern_matching_brace.c \
+					t_regexp.c
 
 ################################################################
 ########					PERROR						########
@@ -372,23 +395,25 @@ SRCS			+=	jobs_init.c job_add.c process_add.c job_tools.c \
 ########					INCLUDES					########
 ################################################################
 INCLUDES		=	sh_21.h \
+					sh_autocompletion.h \
+					sh_builtin.h \
+					sh_command_line.h \
+					sh_exec.h \
+					sh_expansions.h \
+					sh_globbing.h \
+					sh_grammar.h \
+					sh_history.h \
 					sh_job_control.h \
 					sh_lexer.h \
-					sh_tokens.h \
 					sh_parser.h \
-					sh_grammar.h \
-				  	sh_command_line.h \
-					sh_autocompletion.h \
-					sh_expansions.h \
-					sh_history.h \
-					sh_exec.h\
-					sh_builtin.h \
+					sh_perror.h \
+					sh_productions.h \
+					sh_redirection.h \
+					sh_shortcuts.h \
+					sh_tokens.h \
 					sh_traverse.h \
 					sh_traverse_tools.h \
-					sh_expansions.h \
-					sh_perror.h \
-					sh_shortcuts.h \
-					sh_redirection.h
+					sh_vars.h
 
 OBJECTS			=	$(addprefix $(OBJDIR), $(SRCS:.c=.o))
 INC 			=	-I $(INCLUDESDIR) -I $(LIBFTDIR) -I $(LIBFTDIR)/$(PRINTFDIR)

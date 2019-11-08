@@ -14,7 +14,7 @@
 import os
 import re;
 
-format = "^(void|int|char|t_*|unsigned int|unsigned long)"
+format = "^(void|int|char|t_*|unsigned int|unsigned long|pid_t)"
 
 ignored_files=["grammar.c","main.c", "sh_builtin_bonus.c"]
 
@@ -64,6 +64,8 @@ def read_dir(dir):
 
 ## format_dir_datas
 ##      create from formated string, ready to print in header, read_dir datas
+##		Added condition to ignore global variable declaration than could create problems
+##			Now any function starting by g_ is ignored, but a message is prompted.
 def format_dir_datas(dir_data, tab_offset):
     res = ""
     max_tabs = tab_offset
@@ -86,6 +88,9 @@ def format_dir_datas(dir_data, tab_offset):
         for function in dir_data[file]:
             str = function["type"]
             str += "\t" * (max_tabs - (len(function["type"]) // 4))
+            if (function["name"][0] == "g" and function["name"][1] == '_'):
+                print("Global var declaration found and ignored : " + function["name"])
+                continue ;
             str += function["name"]
             str += ";\n"
             if (len(str) + 3 * max_tabs >= 80):
@@ -133,10 +138,19 @@ def create_header(header, datas):
     header_content += "#endif\n"
     return header_content
 
+
+## Write header is now checking that content to write is different of current header
+## content to avoid Makefile relinking by modifying files for nothing same things in files
 def write_header(header, content):
+    fdr = open(header, 'r')
+    initial_content = fdr.read()
+    fdr.close()
+    if (initial_content == content):
+    	return
     fd_header = open(header, "w")
     fd_header.write(content)
     fd_header.close()
+    print("Updated : " + header)
 
 def automatic_header(dir, header, tab_offset):
     if (verbose):
@@ -149,6 +163,7 @@ def automatic_header(dir, header, tab_offset):
 
 automatic_header("./srcs/lexer",                        "./includes/sh_lexer.h", 5)
 automatic_header("./srcs/expansions",           "./includes/sh_expansions.h", 0)
+automatic_header("./srcs/globbing",           "./includes/sh_globbing.h", 7)
 automatic_header("./srcs/traverse_tools",       "./includes/sh_traverse_tools.h", 0)
 automatic_header("./srcs/vars",                         "./includes/sh_vars.h", 0)
 automatic_header("./srcs/traverse",                     "./includes/sh_traverse.h", 0)

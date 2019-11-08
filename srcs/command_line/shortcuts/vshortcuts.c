@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 22:23:57 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/04 18:55:14 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/08 17:36:05 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,31 +57,3 @@ t_vshortcut	g_vshortcuts_arr[0xff] =
 	['u'] = {sh_vshortcut_u, NULL, E_VSHORTCUT_STANDARD, E_MOTION_NO_SAVE},
 	['U'] = {sh_vshortcut_u_maj, NULL, E_VSHORTCUT_STANDARD, E_MOTION_NO_SAVE}
 };
-
-int			get_motion_suffix_char(t_command_line *command_line,
-				char *suffix_char)
-{
-	int		stop;
-
-	stop = 0;
-	command_line->current_count = &command_line->motion_count;
-	while (!stop)
-	{
-		if (sh_get_single_char(suffix_char))
-			return (FAILURE);
-		if (!is_printable_utf8_byte(*suffix_char))
-			return (SUCCESS);
-		if (ft_isdigit(*suffix_char) && (command_line->motion_count.active
-			|| *suffix_char != '0'))
-		{
-			if (add_digit_and_update(command_line, *suffix_char))
-				return (FAILURE);
-		}
-		else
-			stop = 1;
-	}
-	command_line->count.value *= command_line->motion_count.tmp_value;
-	command_line->motion_count.tmp_value = 1;
-	command_line->motion_count.active = 0;
-	return (SUCCESS);
-}

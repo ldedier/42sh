@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/19 08:53:23 by ldedier           #+#    #+#             */
-/*   Updated: 2019/07/31 16:15:22 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/06 21:34:31 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-pid_t g_parent = 0;
+pid_t		g_parent = 0;
 
 void		transmit_sig_no_motion(int signal)
 {

@@ -9,6 +9,7 @@ log
 sandbox
 /b
 .historic
+empty
 
 /signal
 /signal.c

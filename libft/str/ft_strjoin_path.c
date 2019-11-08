@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:59:55 by jmartel           #+#    #+#             */
-/*   Updated: 2019/06/27 15:14:51 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/20 06:44:43 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char		*ft_strjoin_path_free(char *s1, char *s2, int opt)
 }
 
 /*
-** ft_strjoin_path_free:
+** ft_strjoin_path:
 **	Try to create a path by concatenating s1 and s2, adding '/' if needed
 **
 **	Return Value:
@@ -56,7 +56,7 @@ char		*ft_strjoin_path(char *s1, char *s2)
 		return (ft_strdup(s2));
 	else if (s2 == NULL || *s2 == 0)
 		return (ft_strdup(s1));
-	if (ft_strequ(s1, "/"))
+	if (s1[ft_strlen(s1) - 1] == '/')
 		return (ft_strjoin_free(s1, s2, 0));
 	res = (char*)malloc(sizeof(*res) * (ft_strlen(s1) + ft_strlen(s2) + 2));
 	if (res == NULL)

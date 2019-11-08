@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_21.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/30 15:48:56 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/28 10:25:50 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/06 21:38:55 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@
 # include "sh_traverse_tools.h"
 # include "sh_command_line.h"
 # include "sh_expansions.h"
+# include "sh_globbing.h"
 # include "sh_vars.h"
 # include "sh_shortcuts.h"
 # include "sh_history.h"
@@ -284,7 +285,6 @@ void				handle_cont(int sgnl);
 /*
 ** signals.c
 */
-void				transmit_sig_no_motion(int signal);
 void				transmit_sig_and_die(int signal);
 void				default_sig_bonus(int sgnl);
 void				default_sig(int sgnl);

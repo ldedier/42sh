@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 17:46:46 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/26 03:04:47 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/23 03:23:27 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@ enum					e_exp_type
 	EXP_CMD,
 	EXP_ARITH,
 	EXP_TILDE,
+	EXP_CMD_SUBST,
+	EXP_PROC_SUBST_IN, // >()
+	EXP_PROC_SUBST_OUT, // <()
 };
 
 typedef struct			s_quote
@@ -51,6 +54,17 @@ struct					s_expansion
 ** sh_expansions.c
 */
 int		sh_expansions(t_context *context, t_ast_node *node);
+
+/*
+** sh_expansions_cmd_subst.c
+*/
+int		sh_expansions_cmd_subst_detect_backquotes(char *start);
+int		sh_expansions_cmd_subst_detect_dollar(char *start);
+int		sh_expansions_cmd_subst_fill(t_expansion *exp, char *start);
+char	*get_string_from_fd(int fd);
+char 	*get_subshell_output(t_shell *shell, char *command);
+int		sh_expansions_cmd_subst_process(
+	t_context *context, t_expansion *exp);
 
 /*
 ** sh_expansions_field_splitting.c
@@ -103,6 +117,25 @@ char	*sh_expansions_parameter_get_param(
 	t_context *context, t_expansion *exp);
 int		sh_expansions_parameter_get_word(
 	t_context *context, t_expansion *exp, char *format, char **word);
+
+/*
+** sh_expansions_proc_subst_in.c
+*/
+int		sh_expansions_proc_subst_in_detect(char *start);
+int		sh_expansions_proc_subst_in_fill(t_expansion *exp, char *start);
+char	*sh_get_fd_string(int fd);
+char	*sh_get_process_subst_in(t_shell *shell, char *command);
+int		sh_expansions_proc_subst_in_process(
+	t_context *context, t_expansion *exp);
+
+/*
+** sh_expansions_proc_subst_out.c
+*/
+int		sh_expansions_proc_subst_out_detect(char *start);
+int		sh_expansions_proc_subst_out_fill(t_expansion *exp, char *start);
+char	*sh_get_process_subst_out(t_shell *shell, char *command);
+int		sh_expansions_proc_subst_out_process(
+	t_context *context, t_expansion *exp);
 
 /*
 ** sh_expansions_process.c
