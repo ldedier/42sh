@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 04:48:28 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/08 00:13:07 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/08 02:04:31 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,12 +92,13 @@ static int	simple_quote(char *name, t_regexp *regexp, int *i, int *j)
 {
 	int		ret;
 
+	(*j) += 1;
 	while (regexp->value[*j] && regexp->value[*j] != '\'')
 	{
 		ret = sh_pattern_matching_brace_simple(name, regexp, i, j);
 		if (ret != FAILURE)
 			return (ret);
-		*j += 1;
+		(*j) += 1;
 	}
 	return (FAILURE);
 }
@@ -106,6 +107,7 @@ static int	double_quote(char *name, t_regexp *regexp, int *i, int *j)
 {
 	int		ret;
 
+	(*j) += 1;
 	while (regexp->value[*j] && regexp->value[*j] != '"')
 	{
 		if (regexp->value[*j] == '\\')
@@ -113,7 +115,7 @@ static int	double_quote(char *name, t_regexp *regexp, int *i, int *j)
 		ret = sh_pattern_matching_brace_simple(name, regexp, i, j);
 		if (ret != FAILURE)
 			return (ret);
-		(*j) = 1;
+		(*j) += 1;
 	}
 	return (FAILURE);
 }
