@@ -42,7 +42,9 @@ static int	create_process_cmd(t_job *j, t_process *p, int first_p)
 		str = ft_strtok_pipe(NULL, "|");
 		str = str + 1;
 	}
-	ft_strcpy(p->cmd, str);
+	ft_strncpy(p->cmd, str, MAX_PROCESS_LEN);
+	if (p->cmd[MAX_PROCESS_LEN - 2]) //this is ok because we did memset. Use it insteed of strlen, to be faster
+		ft_strcpy(p->cmd + MAX_PROCESS_LEN - 5, "[...]");
 	return (SUCCESS);
 }
 
