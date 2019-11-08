@@ -1,5 +1,6 @@
 import os
 import	random
+import shutil
 
 filename_chars = "ABCDEFHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz\"\\\'?$%&*"
 
@@ -29,7 +30,7 @@ def create_random_directories():
 			for sub in range (max_subdir):
 				try :
 					dirname = random_filename(j)
-					os.mkdir(dirname)
+					os.makedirs(dirname)
 					os.chdir(dirname)
 					for files in range(subfiles):
 						open(random_filename(files), 'a').close()
@@ -41,10 +42,10 @@ def create_sandbox():
 	max_char = 126
 	max_subdir = 3
 	max_len = 10
-	try :
-		os.mkdir("./sandbox")
-	except :
-		pass
+
+	if (os.path.exists("sandbox")):
+		shutil.rmtree("./sandbox")
+		os.makedirs("./sandbox")
 	os.chdir("./sandbox")
 
 	for char in range(min_char, max_char + 1, 1):
@@ -52,10 +53,10 @@ def create_sandbox():
 			if (char % 2 == 0):
 				try :
 					path = chr(char) * len
-					os.mkdir(path)
+					os.makedirs(path)
 					for subdir in range (1, max_subdir):
 						path = path + "/" + chr(char) * len
-						os.mkdir(path)
+						os.makedirs(path)
 						open(path + "/" + chr(char - 1), 'a').close()
 						os.symlink("..", path + "/" + "link")
 				except :
@@ -72,13 +73,29 @@ def create_sandbox():
 
 brace_patterns = ["[]", "[a-A]", "[!a-A]", "[a-bc]", "abc", "[!!asd]", ""]
 stars_patterns = ["*", "*/", "*/*", "*/*/"]
-str_patterns = ["a", "b", "c", "d", "A", "B", "X", '"', "'", "\\", "\\\\", '""', '""', "AAA", "BBB"]
+str_patterns = ["", "a", "b", "c", "d", "A", "B", "X", '"', "'", "\\", "\\\\", '""', '""', "AAA", "BBB"]
 quest_patterns = ["?", "??", "???", "????", "\?\???", "\?", "'??'", '"??"']
 
-patterns = []
+# brace_patterns = ["[a-A]", "[!a-A]", "[a-bc]", ""]
+# stars_patterns = ["*", "*/", "*/*", "*/*/"]
+# str_patterns = ["", "a", "B", '"', "\\", '""', '""', "AA"]
+# quest_patterns = ["?", "??", "\?"]
+
+patterns = brace_patterns + stars_patterns + str_patterns + quest_patterns
 
 def random_token(tokens, lenght=1):
 	index = random.randint(0, len(tokens) - 1)
 	return (tokens[index])
 
-create_sandbox()
+def all_patterns():
+	lenght = len(patterns)
+	for a in range(lenght):
+		for b in range(lenght):
+			for c in range(lenght):
+				str = 'test_launch \'echo '
+				str += patterns[a] + patterns[b] + patterns[c]
+				str += '\''
+				print(str)
+
+# create_sandbox()
+all_patterns()
