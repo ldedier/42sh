@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/11/08 05:53:23 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/08 23:41:31 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -86,6 +86,7 @@ SRCS			+=	keys.c cursor_motion.c edit_command.c \
 					update_prompt_tools.c keys_insert.c \
 					keys_others.c keys_ctrl.c cursor_tools.c \
 					selection.c sh_process_history.c \
+					sh_update_command_line.c \
 					heredoc.c research_history.c \
 					render_research.c heredoc_tools.c \
 					free_command_line.c sh_delete_command.c \
@@ -95,7 +96,12 @@ SRCS			+=	keys.c cursor_motion.c edit_command.c \
 					sh_get_cursor_position.c eof_percent.c \
 					update_prompt_cwd.c keys_insert_tools.c keys_flush.c \
 					keys_debug.c screen_tools.c get_char_len.c \
-					saves.c keys_readline.c
+					saves.c t_save.c keys_readline.c get_down_from_command.c \
+					keys_tools.c keys_ret.c command_count.c restore_save.c \
+					save_command_line.c scroll_command_line.c \
+					print_command_line.c copy_command_line.c \
+					pre_post_render.c
+
 #sh_clipboard.c sh_command_line_tools.c
 #					sh_clipboard_tools.c
 
@@ -186,20 +192,28 @@ SRCS			+=	sh_prod_and_or.c sh_prod_brace_group.c \
 ################################################################
 ########					AUTOCOMPLETE				########
 ################################################################
-SRCS			+=	add_choices_from_dir.c auto_completion.c \
+SRCS			+=	add_choices_from_dir.c \
+					add_choices_tools.c \
+					auto_completion.c \
 					populate_choices.c populate_word_by_index.c \
+					populate_word_by_index_no_parsing.c \
+					debug_word.c \
 					preprocess_choice_add.c arrow_tools.c \
 					render_choices.c add_choices_builtins.c \
 					left_arrow.c right_arrow.c arrows_vertical.c \
 					fill_buffer.c render_choices_tools.c file_tables.c \
 					fill_buffer_from_tables.c add_file_tools.c \
 					auto_completion_tools.c escape.c \
-					add_choices_from_expansions.c
+					add_choices_from_expansions.c \
+					add_choices_from_expansions_tools.c \
+					exec_tools.c
 
 ################################################################
 ########					SHORTCUTS					########
 ################################################################
 SRCS			+=	vshortcuts.c \
+					execute_vshortcuts.c \
+					vshortcuts_tools.c \
 					sh_vshortcut_hashtag.c \
 					sh_vs_motion_space.c \
 					sh_vshortcut_v.c \

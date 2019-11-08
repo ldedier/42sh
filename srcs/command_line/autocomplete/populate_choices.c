@@ -6,18 +6,17 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 12:03:42 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/04 17:12:25 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/04 19:40:22 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-int		add_choices_path(t_shell *shell, t_word *word, char *path_str)
+int			add_choices_path(t_shell *shell, t_word *word, char *path_str)
 {
 	char			**path_split;
 	int				i;
 	t_choice_filler	c;
-
 
 	if (!(path_split = ft_strsplit(path_str, ':')))
 		return (1);
@@ -40,7 +39,7 @@ int		add_choices_path(t_shell *shell, t_word *word, char *path_str)
 	return (0);
 }
 
-int		populate_choices_from_binaries(t_shell *shell, t_word *word)
+int			populate_choices_from_binaries(t_shell *shell, t_word *word)
 {
 	char *path_str;
 
@@ -58,7 +57,8 @@ int		populate_choices_from_binaries(t_shell *shell, t_word *word)
 	return (0);
 }
 
-int		populate_choices_from_folder(t_shell *shell, t_word *word, int types)
+int			populate_choices_from_folder(t_shell *shell,
+	t_word *word, int types)
 {
 	char			*file;
 	t_choice_filler	c;
@@ -83,8 +83,8 @@ int		populate_choices_from_folder(t_shell *shell, t_word *word, int types)
 	return (ft_free_turn_3(file, c.transformed_path, c.path, SUCCESS));
 }
 
-static int populate_choices_from_binaries_then_folder(t_shell *shell,
-			t_command_line *command_line, t_word *word) 
+static int	populate_choices_from_binaries_then_folder(t_shell *shell,
+	t_command_line *command_line, t_word *word)
 {
 	if (populate_choices_from_binaries(shell, word))
 		return (1);
@@ -96,33 +96,31 @@ static int populate_choices_from_binaries_then_folder(t_shell *shell,
 	return (0);
 }
 
-int		populate_choices_from_word(t_command_line *command_line,
+int			populate_choices_from_word(t_command_line *cl,
 		t_shell *shell, t_word *word)
 {
 	t_symbol *symbol;
 
 	if (!(word->token->ast_node))
 	{
-		if (populate_choices_from_binaries_then_folder(shell,
-			command_line, word))
+		if (populate_choices_from_binaries_then_folder(shell, cl, word))
 			return (1);
 		return (0);
 	}
 	symbol = word->token->ast_node->parent->symbol;
 	if (symbol->id == sh_index(CMD_NAME))
 	{
-		if (populate_choices_from_binaries_then_folder(shell,
-			command_line, word))
+		if (populate_choices_from_binaries_then_folder(shell, cl, word))
 			return (1);
 	}
-	else if (symbol->id == sh_index(FILENAME))
+	else if (symbol->id == sh_index(FILENAME) &&
+		populate_choices_from_folder(shell, word, -1))
 	{
-		if (populate_choices_from_folder(shell, word, -1))
-			return (1);
+		return (1);
 	}
 	else if (populate_choices_from_folder(shell, word, -1))
 		return (1);
-	if (populate_choices_from_expansions(command_line, shell, word))
+	if (populate_choices_from_expansions(cl, shell, word))
 		return (1);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 11:02:58 by ldedier           #+#    #+#             */
-/*   Updated: 2019/03/28 11:02:58 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/04 18:12:21 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,15 @@
 
 /*
 ** sh_vs_motion_f.c
-**	
+**
 **	go to the counth occurence of c starting from command line current index
 */
 
 int		sh_vs_motion_f(t_command_line *command_line, char c)
 {
-	size_t i;
-	int found_char;
-	int last_found;
+	size_t	i;
+	int		found_char;
+	int		last_found;
 
 	if (!command_line->last_ft_command.locked)
 	{

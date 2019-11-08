@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_21.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/30 15:48:56 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/06 21:38:55 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/07 19:45:36 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,6 +261,7 @@ int					sh_process_noncanonical_mode(t_shell *shell);
 */
 void				reset_signals(void);
 void				handler_sighup(int signo);
+void				handler_sigwinch(int signo);
 void				init_signals(void);
 
 /*
