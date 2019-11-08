@@ -75,6 +75,7 @@ for arg in $@ ; do
 done
 
 make -C $path && cp "${path}/${exec}" . || exit
+if [ -n "$valgrind" ] ; then cp -R ${path}/${exec}.dSYM .
 
 source ${src_dir}/functions.sh
 
