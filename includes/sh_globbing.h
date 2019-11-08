@@ -43,6 +43,14 @@ int							sh_expansions_globbing(
 	t_ast_node *node, t_dy_tab *quotes);
 
 /*
+** sh_globbing_for_substring_removal.c
+*/
+int							parse_for_substring_removal(
+	char *word, t_list **regexp_list);
+int							sh_globbing_for_substring_removal(
+	char *param, char *word, t_list **matches);
+
+/*
 ** sh_is_pattern_matching.c
 */
 int							sh_is_pattern_matching(
@@ -87,6 +95,8 @@ int							sh_pattern_matching_str(
 /*
 ** sh_regexp_parse.c
 */
+int							sh_regexp_parse_path_component(
+	char *str, t_list **regexp_list);
 int							sh_regexp_parse(
 	char *str, t_dy_tab **regexp_tab);
 

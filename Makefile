@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/11/07 04:18:47 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/08 05:53:23 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -337,6 +337,7 @@ SRCS			 +=	sh_expansions.c \
 ########					GLOBBING					########
 ################################################################
 SRCS			+=	sh_globbing.c \
+					sh_globbing_for_substring_removal.c \
 					sh_regexp_parse.c \
 					sh_regexp_parse_new_string.c \
 					sh_regexp_parse_new_brace.c \

@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 16:41:00 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/06 05:47:57 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/08 06:03:54 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,6 +248,10 @@ int			sh_expansions_parameter_hash(
 	word = NULL;
 	if ((ret = sh_expansions_parameter_get_word(context, exp, format, &word)))
 		return (ret);
+	
+	t_list	*matches;
+	if (word)
+		sh_globbing_for_substring_removal(param, word, &matches);
 	if (!param)
 		exp->res = ft_dy_str_new_str("");
 	else if (!word || !*word)

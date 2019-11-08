@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 23:53:16 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/07 05:28:20 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/08 05:53:56 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static int	check_for_final_slash(char *str, t_list **regexp_tab, int i)
 **		FAILURE : Malloc error
 */
 
-static int	sh_regexp_parse_path_component(char *str, t_list **regexp_list)
+int			sh_regexp_parse_path_component(char *str, t_list **regexp_list)
 {
 	int		i;
 	int		ret;
