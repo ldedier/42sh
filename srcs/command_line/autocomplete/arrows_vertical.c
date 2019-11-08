@@ -6,13 +6,14 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 01:47:21 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/04 16:48:24 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/04 19:21:01 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-int		process_autocompletion_down(t_shell *shell, t_command_line *command_line)
+int		process_autocompletion_down(t_shell *shell,
+	t_command_line *command_line)
 {
 	t_file	*file;
 	t_file	*prev_file;

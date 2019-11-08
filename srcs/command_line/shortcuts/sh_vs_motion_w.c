@@ -6,16 +6,16 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 11:02:58 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/20 09:38:23 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/04 18:36:16 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-char	get_char_type_word(t_command_line *command_line, int index)
+char		get_char_type_word(t_command_line *command_line, int index)
 {
 	char starting_char;
-  
+
 	starting_char = command_line->dy_str->str[index];
 	if (ft_iswhite(starting_char) || starting_char == '\0')
 		starting_char = ' ';
@@ -26,7 +26,7 @@ char	get_char_type_word(t_command_line *command_line, int index)
 	return (starting_char);
 }
 
-char	get_char_type_word_readline(t_command_line *command_line, int index)
+char		get_char_type_word_readline(t_command_line *command_line, int index)
 {
 	char starting_char;
 
@@ -40,11 +40,11 @@ char	get_char_type_word_readline(t_command_line *command_line, int index)
 
 /*
 ** sh_vs_motion_w.c
-**	
+**
 **	go to the start of the counth next word
 */
 
-int		sh_vs_motion_w(t_command_line *command_line, char dummy)
+int			sh_vs_motion_w(t_command_line *command_line, char dummy)
 {
 	int		i;
 	char	prev_type;
@@ -71,7 +71,7 @@ int		sh_vs_motion_w(t_command_line *command_line, char dummy)
 	return (command_line->dy_str->current_size - 1);
 }
 
-int		sh_vs_motion_w_readline(t_command_line *command_line, char dummy)
+int			sh_vs_motion_w_readline(t_command_line *command_line, char dummy)
 {
 	int		i;
 	char	prev_type;

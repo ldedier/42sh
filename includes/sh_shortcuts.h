@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 00:41:35 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/19 00:41:35 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/04 18:54:20 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 # define VSHORTCUTS			"# vjklhwWeEbB^$0|fFtT;,aAiIrRcCSxXdDyYpPuU"
 # define MAX_EDIT_COUNTER	5
+
 
 typedef enum			s_motion_inclusion
 {
@@ -77,6 +78,9 @@ typedef struct			s_vshortcut
 	t_motion_inclusion	inclusion;
 }						t_vshortcut;
 
+
+t_vshortcut g_vshortcuts_arr[0xff];
+
 /*
 ********************************************************************************
 */
@@ -132,6 +136,26 @@ void				process_ctrl_x_x(t_command_line *command_line);
 ** ctrl_y.c
 */
 int					process_ctrl_y(t_command_line *command_line);
+
+/*
+** execute_vshortcuts.c
+*/
+int					execute_motion(
+	t_command_line *line, int index, int vi);
+int					execute_vsh_command(
+	t_command_line *command_line,
+	t_vshortcut *vshortcut,
+	char c,
+	int cmd_suffix);
+int					execute_vshortcut(
+	t_command_line *command_line, t_vshortcut *vshortcut, char c);
+int					execute_motion_awaiting_shortcut(
+	t_command_line *command_line,
+	t_vshortcut *vshortcut,
+	char c,
+	char cmd_character);
+int					execute_vim_command(
+	t_command_line *command_line, char cmd_character);
 
 /*
 ** sh_vim_options.c
@@ -336,6 +360,8 @@ int					sh_vshortcut_k(
 ** sh_vshortcut_p.c
 */
 char				*get_string_to_paste(t_command_line *command_line);
+int					sh_vshortcut_process_p(
+	t_command_line *command_line, char *to_paste);
 int					sh_vshortcut_p(
 	t_command_line *command_line, int dummy, int dummy_2);
 
@@ -416,30 +442,14 @@ int					sh_vshortcut_y_maj(
 	t_command_line *command_line, int dummy, int dummy_2);
 
 /*
-** vshortcuts.c
+** vshortcuts_tools.c
 */
 int					sh_get_single_char(char *c);
 int					ft_clamp(int min, int val, int max);
-int					execute_motion(
-	t_command_line *line, int index, int vi);
-int					execute_vsh_command(
-	t_command_line *command_line,
-	t_vshortcut *vshortcut,
-	char c,
-	int cmd_suffix);
-int					execute_vshortcut(
-	t_command_line *command_line, t_vshortcut *vshortcut, char c);
 int					is_printable_utf8_byte(unsigned char c);
+int					get_motion_suffix_char(
+	t_command_line *command_line, char *s_char);
 int					get_inclusion(
 	t_command_line *command_line, t_motion_inclusion inclusion);
-int					execute_motion_awaiting_shortcut(
-	t_command_line *command_line,
-	t_vshortcut *vshortcut,
-	char c,
-	char cmd_character);
-int					get_motion_suffix_char(
-	t_command_line *command_line, char *suffix_char);
-int					execute_vim_command(
-	t_command_line *command_line, char cmd_character);
 
 #endif

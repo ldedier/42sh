@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 11:02:58 by ldedier           #+#    #+#             */
-/*   Updated: 2019/03/28 11:02:58 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/04 18:30:34 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 /*
 ** sh_vshortcut_x.c
-**	
+**
 **	delete the counth next character following the cursor index
 **	and save it in the clipboard
 */
@@ -22,7 +22,7 @@
 int		advance_count_characters(t_command_line *command_line,
 			int *index, int *len, int *nb_chars)
 {
-	int res;
+	int	res;
 
 	*nb_chars = 0;
 	*len = 0;
@@ -42,12 +42,11 @@ int		advance_count_characters(t_command_line *command_line,
 	return (SUCCESS);
 }
 
-
 int		sh_vshortcut_x(t_command_line *command_line, int dummy, int dummy_2)
 {
-	int     i;
-	int     nb_chars;
-	int     len;
+	int		i;
+	int		nb_chars;
+	int		len;
 
 	(void)dummy;
 	(void)dummy_2;
