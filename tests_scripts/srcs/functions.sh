@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/21 15:58:19 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/08 07:33:57 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/09 00:52:16 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -245,7 +245,7 @@ test_launch()
 		valgrind_test
 	fi
 
-	rm "${res1_42sh}" "${res2_42sh}" "${res1_bash}" "${res2_bash}"
+	rm "${res1_42sh}" "${res2_42sh}" "${res1_bash}" "${res2_bash}" "${buffer}"
 }
 
 test_launch_pipe()
@@ -291,5 +291,5 @@ test_launch_pipe()
 		valgrind_test
 	fi
 
-	rm "${res1_42sh}" "${res2_42sh}" "${res1_bash}" "${res2_bash}"
+	rm "${res1_42sh}" "${res2_42sh}" "${res1_bash}" "${res2_bash}" "${buffer}"
 }
