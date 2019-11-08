@@ -56,27 +56,21 @@ static void	init_job_values(t_job *j, int n, int bg)
 static int		get_job_string(t_ast_node *node, char *str, t_job *j)
 {
 	char		*tmp;
-	t_symbol_id	id;
 
 	if (str != NULL)
-	{
-		j->command =ft_strdup(str);
-		j->cmd_copy = ft_strdup(str);
-		free(str);
-	}
+		j->command = ft_strdup(str);
 	else
 	{
 		tmp = NULL;
-		id = node->symbol->id;
-		if ((g_grammar[id].get_job_string(node, &tmp)) != SUCCESS)
+		if ((g_grammar[node->symbol->id].get_job_string(node, &tmp)))
 			return (ERROR);
 		j->command = tmp;
 		if (j->command == NULL)
 			return (sh_perror(SH_ERR1_MALLOC, "job add"));
-		j->cmd_copy = ft_strdup(j->command);
 	}
 	if (j->command == NULL)
 		return (sh_perror(SH_ERR1_MALLOC, "job add"));
+	j->cmd_copy = ft_strdup(j->command);
 	if (j->cmd_copy == NULL)
 	{
 		free(j->command);
@@ -101,7 +95,6 @@ int			job_add(t_ast_node *node, char *str, int bg)
 	int		n;
 
 	n = find_available_job_number();
-	// n = -1;
 	if (n < 0)
 		return (sh_perror_err("Maxumum number of jobs exceeded", NULL));
 	if ((j = malloc(sizeof(t_job))) == NULL)
