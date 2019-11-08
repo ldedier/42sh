@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_execute_binary.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 11:49:50 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/04 11:51:39 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/08 23:44:21 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,8 @@ int				sh_execute_binary(t_ast_node *father_node, t_context *context)
 		sh_execute_execve(father_node, context);
 	if (g_job_ctrl->interactive && !g_job_ctrl->job_added)
 	{
-		if ((ret = job_add(father_node, IS_BG(context->cmd_type))) != SUCCESS)
+		if ((ret = job_add(father_node, context->cmd_string,
+			IS_BG(context->cmd_type))) != SUCCESS)
 			return (ret);
 		g_job_ctrl->job_added = 1;
 	}
