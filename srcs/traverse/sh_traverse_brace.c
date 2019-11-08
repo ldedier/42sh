@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 10:34:50 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/04 12:22:15 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/08 23:37:17 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,29 +63,29 @@ static int	sh_execute_brace_bg(t_ast_node *node, t_context *context)
 	return (ret);
 }
 
-int			sh_traverse_brace(t_ast_node *node, t_context *context)
+int			sh_traverse_brace(t_ast_node *node, t_context *ctxt)
 {
 	int			ret;
 	t_ast_node	*compound_redir;
 	t_list		*lst_redi;
 
-	sh_traverse_tools_show_traverse_start(node, context);
-	if (g_job_ctrl->interactive && IS_BG(context->cmd_type))
+	sh_traverse_tools_show_traverse_start(node, ctxt);
+	if (g_job_ctrl->interactive && IS_BG(ctxt->cmd_type))
 	{
 		ft_dprintf(g_term_fd, YELLOW"Adding job in brace\n"EOC);
-		if ((ret = job_add(node->parent->parent, IS_BG(context->cmd_type))))
+		if ((ret = job_add(node->parent->parent, NULL, IS_BG(ctxt->cmd_type))))
 			return (ret);
 		g_job_ctrl->job_added = 1;
-		ret = sh_execute_brace_bg(node, context);
+		ret = sh_execute_brace_bg(node, ctxt);
 		g_job_ctrl->job_added = 0;
 		return (ret);
 	}
 	if ((ret = sh_traverse_tools_compound_redir(
-					node, context, &compound_redir, &lst_redi)))
+					node, ctxt, &compound_redir, &lst_redi)))
 		return (ret);
-	ret = sh_traverse_tools_search_term(node, context);
+	ret = sh_traverse_tools_search_term(node, ctxt);
 	if (sh_reset_redirection(&lst_redi))
 		return (FAILURE);
-	sh_traverse_tools_show_traverse_ret_value(node, context, ret);
+	sh_traverse_tools_show_traverse_ret_value(node, ctxt, ret);
 	return (ret);
 }
