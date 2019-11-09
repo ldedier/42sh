@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/16 05:23:32 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/08 01:26:05 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/09 09:18:31 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -153,5 +153,13 @@ launch "Globbing"
 	
 	rm -rf empty
 	# rm -rf sandbox
+
+  	mkdir "./test_globbing" && cd "./test_globbing" && touch 'a' 'b' 'c' 'd' 'e' 'f' '!' '^' && cd ..
+	launch_show "wesh tests"
+	test_launch 'cd "./test_globbing"' '../obj/write_arguments [abc\]def]'
+	test_launch 'cd "./test_globbing"' '../obj/write_arguments [abc\\\]def]'
+	test_launch 'cd "./test_globbing"' '../obj/write_arguments [abc\\\\\]def]'
+	test_launch 'cd "./test_globbing"' '../obj/write_arguments [abc\\\\\\\]def]"'
+	rm -rf test_globbing
 
 finish
