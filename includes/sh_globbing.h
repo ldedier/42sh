@@ -45,10 +45,8 @@ int							sh_expansions_globbing(
 /*
 ** sh_globbing_for_substring_removal.c
 */
-int							parse_for_substring_removal(
-	char *word, t_list **regexp_list);
-int							sh_globbing_for_substring_removal(
-	char *param, char *word, t_list **matches);
+int							sh_globbing_substring_removal_get_word(
+	char *param, char **word, t_expansion *exp, char *format);
 
 /*
 ** sh_is_pattern_matching.c

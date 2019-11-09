@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 21:49:08 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/10 05:24:59 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/09 06:27:09 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,13 @@ void		t_quote_show_tab(t_quote **quotes)
 	i = 0;
 	if (!quotes[i])
 		return ;
+	ft_dprintf(2, YELLOW);
 	while (quotes[i])
 	{
 		ft_dprintf(2, "%d : %c || ", quotes[i]->index, *(quotes[i]->c));
 		i++;
 	}
-	ft_dprintf(2, "\n");
+	ft_dprintf(2, "\n"EOC);
 	return ;
 }
 

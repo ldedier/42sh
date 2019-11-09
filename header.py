@@ -49,7 +49,7 @@ def read_dir(dir):
             if (re.search(format, line1) != None):
                 prototype = line1.rstrip()
                 if (verbose >= 2):
-                    print(prototype)
+                    print("\t" + prototype)
                 while (prototype[-1] != ")"):
                     buffer = fd.readline()
                     buffer = buffer.strip()

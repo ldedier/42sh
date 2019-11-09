@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 16:41:00 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/08 06:03:54 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/09 06:47:02 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,7 +207,8 @@ int			sh_expansions_parameter_plus(
 	int		ret;
 
 	param = sh_expansions_parameter_get_param(context, exp);
-	word = NULL;
+	if ((ret = sh_expansions_parameter_get_word(context, exp, format, &word)))
+		return (ret);
 	if (!param)
 		exp->res = ft_dy_str_new_str("");
 	else if (!*param)
@@ -245,13 +246,12 @@ int			sh_expansions_parameter_hash(
 	int		ret;
 
 	param = sh_expansions_parameter_get_param(context, exp);
-	word = NULL;
 	if ((ret = sh_expansions_parameter_get_word(context, exp, format, &word)))
 		return (ret);
-	
-	t_list	*matches;
-	if (word)
-		sh_globbing_for_substring_removal(param, word, &matches);
+	if (sh_globbing_substring_removal_get_word(param, &word, exp, format))
+		return (FAILURE);
+	if (sh_verbose_expansion())
+		ft_dprintf(2, "param : %s <> word : %s (%s)\n", param, word, format);
 	if (!param)
 		exp->res = ft_dy_str_new_str("");
 	else if (!word || !*word)
@@ -268,8 +268,6 @@ int			sh_expansions_parameter_hash(
 		ft_strdel(&word);
 	if (!exp->res)
 		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_parameter_hash"));
-	if (sh_verbose_expansion())
-		ft_dprintf(2, "param : %s <> word : %s <> format : %s\n", param, word, format);
 	return (SUCCESS);
 }
 
@@ -280,13 +278,13 @@ int			sh_expansions_parameter_percent(
 	char	*word;
 	char	*end;
 	char	save;
-	int		ret;
 
 	param = sh_expansions_parameter_get_param(context, exp);
-	if ((ret = sh_expansions_parameter_get_word(context, exp, format, &word)))
-		return (ret);
+	word = NULL;
+	if (sh_globbing_substring_removal_get_word(param, &word, exp, format))
+		return (FAILURE);
 	if (sh_verbose_expansion())
-		ft_dprintf(2, "param : %s <> word : %s\n", param, word);
+		ft_dprintf(2, "param : %s <> word : %s (%s)\n", param, word, format);
 	if (!param)
 		exp->res = ft_dy_str_new_str("");
 	else if (!word || !*word)
