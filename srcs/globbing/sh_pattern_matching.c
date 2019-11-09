@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 07:35:43 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/07 05:02:22 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/09 01:36:37 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,19 +110,19 @@ int			sh_expansions_pattern_matching(
 	else
 		dir = opendir(path);
 	if (!dir)
+	{
+		free(path);
 		return (SUCCESS);
-	while ((dirent = readdir(dir)))
+	}
+	ret = SUCCESS;
+	while ((dirent = readdir(dir)) && !ret)
 	{
 		if (sh_verbose_globbing())
 			ft_dprintf(2, "working on path : %s/%s\n", path, dirent->d_name);
 		ret = pattern_matching_read_directory(
 			path, regexp_list, matchs, dirent);
-		if (ret)
-		{
-			closedir(dir);
-			return (ret);
-		}
 	}
+	free(path);
 	closedir(dir);
-	return (SUCCESS);
+	return (ret);
 }
