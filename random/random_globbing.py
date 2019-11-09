@@ -88,7 +88,7 @@ def random_token(tokens, lenght=1):
 	index = random.randint(0, len(tokens) - 1)
 	return (tokens[index])
 
-def all_patterns(filename="random_test_globbing.sh"):
+def all_patterns(filename="all_test_globbing.sh"):
 	lenght = len(patterns)
 	fdw = open(filename, 'w')
 	for a in range(lenght):
