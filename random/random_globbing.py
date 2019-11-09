@@ -44,8 +44,9 @@ def create_sandbox():
 	max_len = 10
 
 	if (os.path.exists("sandbox")):
+		return
 		shutil.rmtree("./sandbox")
-		os.makedirs("./sandbox")
+	os.makedirs("./sandbox")
 	os.chdir("./sandbox")
 
 	for char in range(min_char, max_char + 1, 1):
@@ -71,15 +72,15 @@ def create_sandbox():
 	create_random_files()
 	create_random_directories()
 
-brace_patterns = ["[]", "[a-A]", "[!a-A]", "[a-bc]", "abc", "[!!asd]", ""]
-stars_patterns = ["*", "*/", "*/*", "*/*/"]
-str_patterns = ["", "a", "b", "c", "d", "A", "B", "X", '"', "'", "\\", "\\\\", '""', '""', "AAA", "BBB"]
-quest_patterns = ["?", "??", "???", "????", "\?\???", "\?", "'??'", '"??"']
-
-# brace_patterns = ["[a-A]", "[!a-A]", "[a-bc]", ""]
+# brace_patterns = ["[]", "[a-A]", "[!a-A]", "[a-bc]", "abc", "[!!asd]", ""]
 # stars_patterns = ["*", "*/", "*/*", "*/*/"]
-# str_patterns = ["", "a", "B", '"', "\\", '""', '""', "AA"]
-# quest_patterns = ["?", "??", "\?"]
+# str_patterns = ["", "a", "b", "c", "d", "A", "B", "X", '"', "'", "\\", "\\\\", '""', '""', "AAA", "BBB"]
+# quest_patterns = ["?", "??", "???", "????", "\?\???", "\?", "'??'", '"??"']
+
+brace_patterns = ["[a-A]", "[!a-A]", "[a-bc]", "", "/"]
+stars_patterns = ["*", "*/", "*/*", "*/*/", "/"]
+str_patterns = ["", "a", "B", '"', "\\", '""', '""', "AA", "/"]
+quest_patterns = ["?", "??", "\?", "/"]
 
 patterns = brace_patterns + stars_patterns + str_patterns + quest_patterns
 
@@ -87,8 +88,9 @@ def random_token(tokens, lenght=1):
 	index = random.randint(0, len(tokens) - 1)
 	return (tokens[index])
 
-def all_patterns():
+def all_patterns(filename="random_test_globbing.sh"):
 	lenght = len(patterns)
+	fdw = open(filename, 'w')
 	for a in range(lenght):
 		for b in range(lenght):
 			for c in range(lenght):
@@ -96,6 +98,8 @@ def all_patterns():
 				str += patterns[a] + patterns[b] + patterns[c]
 				str += '\''
 				print(str)
+				fdw.write(str + '\n')
+	fdw.close()
 
-# create_sandbox()
+create_sandbox()
 all_patterns()
