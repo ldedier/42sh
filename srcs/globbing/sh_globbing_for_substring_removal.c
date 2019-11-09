@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/08 05:50:11 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/09 07:07:13 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/09 08:26:48 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,15 +168,19 @@ int		sh_globbing_substring_removal_get_word(char *param, char **word, t_expansio
 		*word = ft_strstr(exp->expansion, format);
 		*word += ft_strlen(format);
 	}
-	if (!param || !*word || !**word)
-	{
-		if (!(*word = ft_strdup("")))
-			return (FAILURE);
+	if (!param || (*word && !**word))
 		return (SUCCESS);
-	}
+	// if (!*word)
+	// {
+	// 	if (!(*word = ft_strdup("")))
+	// 		return (FAILURE);
+	// 	return (SUCCESS);
+	// }
 	ret = sh_globbing_for_substring_removal(param, *word, &index, format);
 	if (ret == FAILURE)
 		return (ret);
+	if (*word)
+		ft_strdel(word);
 	if (ret == ERROR || index == -1)
 		*word = ft_strdup("");
 	else if (format[0] == '#')
