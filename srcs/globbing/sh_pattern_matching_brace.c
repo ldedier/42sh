@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 04:48:28 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/08 02:04:31 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/10 09:00:31 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int	sh_pattern_matching_brace_dash(char *name, t_regexp *regexp, int *i, 
 	char		b;
 	int			not;
 
-	not = regexp->value[1] == '!' ? 1 : 0;
+	not = regexp->value[0] == '!' ? 1 : 0;
 	if (not)
 		return (sh_pattern_matching_brace_dash_not(name, regexp, i, j));
 	a = regexp->value[*j];
@@ -80,7 +80,7 @@ static int	sh_pattern_matching_brace_simple(
 {
 	int			not;
 
-	not = regexp->value[1] == '!' ? 1 : 0;
+	not = regexp->value[0] == '!' ? 1 : 0;
 	if (!not && regexp->value[*j] == name[*i])
 		return (SUCCESS);
 	if (not && regexp->value[*j] == name[*i])
@@ -154,10 +154,10 @@ int			sh_pattern_matching_brace(char *name, t_regexp *regexp, int *i)
 	int		j;
 	int		ret;
 
-	j = regexp->value[1] == '!' ? 2 : 1;
-	if (regexp->value[j] == ']' && !regexp->value[j + 1])
+	j = regexp->value[0] == '!' ? 1 : 0;
+	if (!regexp->value[j])
 		return (ERROR);
-	while (regexp->value[j] && regexp->value[j + 1])
+	while (regexp->value[j])
 	{
 		if (regexp->value[j] == '"')
 			ret = double_quote(name, regexp, i, &j);
@@ -174,7 +174,7 @@ int			sh_pattern_matching_brace(char *name, t_regexp *regexp, int *i)
 			return (ret);
 		}
 	}
-	if (regexp->value[1] == '!')
+	if (regexp->value[0] == '!')
 	{
 		(*i) += 1;
 		return (SUCCESS);
