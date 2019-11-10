@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 13:33:24 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/10 06:36:30 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/10 08:54:34 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,6 @@ static int	sh_builtin_cd_rule8_b(char **curpath, char *param)
 			*find = '/';
 		}
 		ft_strdelchars(start, 0, end - start);
-		ft_dprintf(2, "new curpath : %s\n", *curpath);
 	}
 	if (sh_verbose_builtin())
 		ft_dprintf(2, MAGENTA"cd : removed .. : curpath = %s\n"EOC, *curpath);
