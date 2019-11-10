@@ -195,6 +195,7 @@ int					sh_builtin_cd(t_context *context);
 /*
 ** sh_builtin_cd_last_rules.c
 */
+int					sh_builtin_cd_check_perms(char *curpath, char *param);
 int					sh_builtin_cd_rule10(
 	t_context *context, char *curpath, t_args *args, char *param);
 
@@ -203,7 +204,7 @@ int					sh_builtin_cd_rule10(
 */
 int					sh_builtin_cd_rule7(
 	t_context *context, char **curpath, t_args *args);
-void				sh_builtin_cd_rule8(char **curpath);
+int					sh_builtin_cd_rule8(char **curpath, char *param);
 
 /*
 ** sh_builtin_cd_pre_rules.c

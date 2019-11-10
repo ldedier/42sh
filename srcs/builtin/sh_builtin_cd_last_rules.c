@@ -50,7 +50,7 @@ static int	sh_builtin_cd_update_pwd(
 }
 
 /*
-** sh_builtin_cd_rule10_check_perms:
+** sh_builtin_cd_check_perms:
 **	Check if file designated by path exists, user have sufficient permissions.
 **	Error messages are written on fderr.
 **
@@ -59,8 +59,7 @@ static int	sh_builtin_cd_update_pwd(
 **		ERROR : file is invalid
 */
 
-static int	sh_builtin_cd_rule10_check_perms(
-	t_context *context, char *curpath, char *param)
+int			sh_builtin_cd_check_perms(char *curpath, char *param)
 {
 	int			ret;
 	struct stat	st;
@@ -72,8 +71,6 @@ static int	sh_builtin_cd_rule10_check_perms(
 		ret = sh_perror2_err(SH_ERR1_NOT_A_DIR, "cd", param);
 	else if (access(curpath, X_OK))
 		ret = sh_perror2_err(SH_ERR1_PERM_DENIED, "cd", param);
-	if (ret)
-		sh_env_update_ret_value(context->shell, SH_RET_ERROR);
 	return (ret);
 }
 
@@ -106,7 +103,7 @@ int			sh_builtin_cd_rule10(
 	ret = SUCCESS;
 	if (curpath && *curpath)
 	{
-		ret = sh_builtin_cd_rule10_check_perms(context, curpath, param);
+		ret = sh_builtin_cd_check_perms(curpath, param);
 		if (!ret && curpath && *curpath)
 			if (chdir(curpath) == -1)
 				ret = sh_perror2(param, "cd", "unable to process");

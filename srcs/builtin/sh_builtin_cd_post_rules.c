@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 13:33:24 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/10 06:13:15 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/10 06:36:30 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static void	sh_builtin_cd_rule8_a(char **curpath)
 	return ;
 }
 
-static void	sh_builtin_cd_rule8_b(char **curpath)
+static int	sh_builtin_cd_rule8_b(char **curpath, char *param)
 {
 	char	*find;
 	char	*end;
@@ -82,12 +82,13 @@ static void	sh_builtin_cd_rule8_b(char **curpath)
 		{
 			while (*find == '/' && find > *curpath)
 				find--;
-			if (find == *curpath)
-				find++;
+			find++;
 			*find = 0;
 			start = ft_strrchr(*curpath, '/');
 			if (start == *curpath)
 				start++;
+			if (sh_builtin_cd_check_perms(*curpath, param))
+				return (ERROR);
 			*find = '/';
 		}
 		ft_strdelchars(start, 0, end - start);
@@ -95,7 +96,7 @@ static void	sh_builtin_cd_rule8_b(char **curpath)
 	}
 	if (sh_verbose_builtin())
 		ft_dprintf(2, MAGENTA"cd : removed .. : curpath = %s\n"EOC, *curpath);
-	return ;
+	return (SUCCESS);
 }
 
 static void	sh_builtin_cd_rule8_c(char **curpath)
@@ -121,14 +122,15 @@ static void	sh_builtin_cd_rule8_c(char **curpath)
 **		c - Simplify curpath by deleting any unecessary '/' (ex : "//foo//bar")
 **
 **	Returned Values:
-**		FAILURE
-**		ERROR
-**		SUCCESS
+**		ERROR : A file designated by curpath was invalid (cf rule 8b)
+**		SUCCESS : Everything is fine
 */
 
-void		sh_builtin_cd_rule8(char **curpath)
+int			sh_builtin_cd_rule8(char **curpath, char *param)
 {
 	sh_builtin_cd_rule8_a(curpath);
-	sh_builtin_cd_rule8_b(curpath);
+	if (sh_builtin_cd_rule8_b(curpath, param))
+		return (ERROR);
 	sh_builtin_cd_rule8_c(curpath);
+	return (SUCCESS);
 }
