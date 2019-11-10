@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 13:33:24 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/05 04:22:17 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/10 06:13:15 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int			sh_builtin_cd_rule7(
 		}
 	}
 	if (sh_verbose_builtin())
-		ft_dprintf(2, MAGENTA"cd : after rule_7 : curpath = %s\n"EOC, *curpath);;
+		ft_dprintf(2, MAGENTA"cd : after 7 : curpath = %s\n"EOC, *curpath);;
 	return (SUCCESS);
 }
 
@@ -57,10 +57,10 @@ static void	sh_builtin_cd_rule8_a(char **curpath)
 		ft_strdelchars(find, 0, 2);
 	while ((find = ft_strstr(*curpath, "/./")))
 		ft_strdelchars(find, 0, 2);
-	while ((find = ft_strrnstr(*curpath, "/.", 2)))
+	while ((find = ft_strrnstr(*curpath, "/.", 2)) && find != *curpath)
 		ft_strdelchars(find, 0, 2);
 	if (sh_verbose_builtin())
-		ft_dprintf(2, MAGENTA"cd : after deleting '.' : curpath = %s\n"EOC, *curpath);;
+		ft_dprintf(2, MAGENTA"cd : removed . : curpath = %s\n"EOC, *curpath);;
 	return ;
 }
 
@@ -70,14 +70,20 @@ static void	sh_builtin_cd_rule8_b(char **curpath)
 	char	*end;
 	char	*start;
 
-	while ((find = ft_strstr(*curpath, "/../"))
+	while (((find = ft_strstr(*curpath, "/../")))
 		|| (find = ft_strrnstr(*curpath, "/..", 3)))
 	{
 		end = find + 3;
-		if (find == *curpath)
+		if (find == *curpath && ft_strnstr(find, "/../", 4))
 			start = find;
+		else if (find == *curpath)
+			break ;
 		else
 		{
+			while (*find == '/' && find > *curpath)
+				find--;
+			if (find == *curpath)
+				find++;
 			*find = 0;
 			start = ft_strrchr(*curpath, '/');
 			if (start == *curpath)
@@ -85,9 +91,10 @@ static void	sh_builtin_cd_rule8_b(char **curpath)
 			*find = '/';
 		}
 		ft_strdelchars(start, 0, end - start);
+		ft_dprintf(2, "new curpath : %s\n", *curpath);
 	}
 	if (sh_verbose_builtin())
-		ft_dprintf(2, MAGENTA"cd : after deleting '..' : curpath = %s\n"EOC, *curpath);;
+		ft_dprintf(2, MAGENTA"cd : removed .. : curpath = %s\n"EOC, *curpath);
 	return ;
 }
 
@@ -101,6 +108,8 @@ static void	sh_builtin_cd_rule8_c(char **curpath)
 	len = ft_strlen(*curpath);
 	if (len > 1 && (*curpath)[len - 1] == '/')
 		ft_strdelchar(*curpath, len - 1);
+	if (sh_verbose_builtin())
+		ft_dprintf(2, MAGENTA"cd : removed // : curpath = %s\n"EOC, *curpath);
 	return ;
 }
 

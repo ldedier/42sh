@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/11 17:43:29 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/05 04:16:59 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/10 04:45:01 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	sh_builtin_cd_body(
 	if (!param)
 		param = *curpath;
 	if (sh_verbose_builtin())
-		ft_dprintf(2, MAGENTA"cd : after prerules : curpath = %s\n"EOC, *curpath);
+		ft_dprintf(2, MAGENTA"cd : after pre : curpath = %s\n"EOC, *curpath);
 	if (args[CD_L_OPT].priority > args[CD_P_OPT].priority)
 	{
 		sh_builtin_cd_rule7(context, curpath, args);
@@ -41,6 +41,8 @@ static int	sh_builtin_cd_body(
 **	The cd builtin shall change the working directory of the current shell.
 **	PWD and OLDPWD are updated. See posix procedure that I followed on :
 **	https://www.unix.com/man-page/posix/1posix/cd/
+**	Third unamed option is used as a boolean to store if we are an hyphen case:
+**	`cd -`, to show current path at the end of the function.
 **
 ** returned Values :
 **		ERROR
