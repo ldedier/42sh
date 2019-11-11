@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/11/11 03:14:53 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/11 03:22:07 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -304,7 +304,9 @@ SRCS			+=	sh_add_redirection.c \
 ################################################################
 SRCS			+=	sh_builtin.c sh_builtin_pwd.c \
 					sh_builtin_echo.c sh_builtin_exit.c \
-					sh_builtin_cd.c sh_builtin_cd_pre_rules.c \
+					sh_builtin_cd.c \
+					sh_builtin_cd_parser.c \
+					sh_builtin_cd_pre_rules.c \
 					sh_builtin_cd_rule_5.c \
 					sh_builtin_cd_rule_7.c \
 					sh_builtin_cd_rule_8.c \

@@ -6,61 +6,31 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 14:50:45 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/11 02:57:05 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/11 03:56:26 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-static int	sh_builtin_cd_parser_hyphen(
-	t_context *context, t_args *args, char **curpath, int i)
-{
-	char	*oldpwd;
-
-	if (!(oldpwd = sh_vars_get_value(context->env, NULL, "OLDPWD")))
-	{
-		sh_perror_err(SH_ERR1_ENV_NOT_SET, "OLDPWD");
-		return (ERROR);
-	}
-	if (!(*curpath = ft_strdup(oldpwd)))
-	{
-		sh_perror(SH_ERR1_MALLOC, "sh_builtin_cd_parser_hyphen");
-		return (FAILURE);
-	}
-	free(context->params->tbl[i]);
-	if (!(context->params->tbl[i] = ft_strdup(*curpath)))
-	{
-		ft_strdel(curpath);
-		return (sh_perror(SH_ERR1_MALLOC, "sh_builtin_cd_parser_hyphen"));
-	}
-	args[CD_HYPHEN_OPT].value = args;
-	return (SUCCESS);
-}
-
-int			sh_builtin_cd_parser(t_context *context, t_args *args,
-	int *index, char **curpath)
-{
-	int		ret;
-	char	**argv;
-
-	argv = (char**)context->params->tbl;
-	*curpath = NULL;
-	if (sh_builtin_parser(ft_strtab_len(argv), argv, args, index))
-		return (sh_builtin_usage(args, argv[0], CD_USAGE, context));
-	if (argv[*index] && argv[*index + 1])
-	{
-		return (sh_perror_err(argv[0], SH_ERR1_TOO_MANY_ARGS));
-	}
-	if (ft_strequ(argv[*index], "-"))
-		if ((ret = sh_builtin_cd_parser_hyphen(context, args, curpath, *index)))
-			return (ret);
-	if (!args[CD_P_OPT].value)
-	{
-		args[CD_L_OPT].value = &args;
-		args[CD_L_OPT].priority++;
-	}
-	return (SUCCESS);
-}
+/*
+** sh_builtin_pre_rules:
+**	1. If no directory operand is given and the HOME environment variable is
+**	empty or  undefined,  the  default  behavior  is  implementation-defined.
+**	2. If  no  directory operand is given and the HOME environment variable is
+**	set to a non-empty value, the cd utility shall behave as if the directory
+**	named in the HOME environment variable was specified as the operand.
+**	3. If the directory operand begins with a <slash> character, set curpath to
+**	the operand and proceed to step 7.
+**	4. If the first component of the directory operand is dot or dot-dot,
+**	proceed to step 6.
+**	5 : use CDPATH (see sh_builtin_cd_rule5)
+**	6 : Set curpath to directory operand (This correspond to condition 4).
+**
+**	Returned Values
+**		SUCCESS : Filled *curpath
+**		ERROR : Home not set
+**		FAILURE : malloc error
+*/
 
 int			sh_builtin_cd_pre_rules(
 	t_context *context, char *param, char **curpath, t_args *args)
@@ -68,9 +38,7 @@ int			sh_builtin_cd_pre_rules(
 	char	*home;
 
 	home = sh_vars_get_value(context->env, NULL, "HOME");
-	if (*curpath)
-		;
-	else if ((!param) && (!home || !*home))
+	if ((!param) && (!home || !*home))
 		return (sh_perror_err(SH_ERR1_ENV_NOT_SET, "HOME"));
 	else if (!param)
 		*curpath = ft_strdup(home);

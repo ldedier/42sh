@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/11 02:35:55 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/11 02:51:16 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/11 03:17:15 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,8 @@ static int	sh_builtin_cd_cdpath(
 	return (SUCCESS);
 }
 
-int			sh_builtin_cd_rule5(t_context *context, char **curpath, char *param, t_args *args)
+int			sh_builtin_cd_rule5(
+	t_context *context, char **curpath, char *param, t_args *args)
 {
 	char	*cdpath;
 
@@ -75,4 +76,3 @@ int			sh_builtin_cd_rule5(t_context *context, char **curpath, char *param, t_arg
 	}
 	return (sh_builtin_cd_cdpath(context, curpath, param, args));
 }
-
