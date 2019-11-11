@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/11 02:35:55 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/11 03:17:15 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/11 05:12:52 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,26 +53,42 @@ static int	sh_builtin_cd_cdpath(
 	ft_strtab_free(split);
 	if (path)
 		ft_strdel(&path);
-	if (!((*curpath) = ft_strdup(param)))
-		return (sh_perror(SH_ERR1_MALLOC, "sh_builtin_cd_cdpath"));
 	return (SUCCESS);
 }
+
+/*
+** sh_builtin_cd_rule5:
+**	5. Starting with the first pathname in the <colon>-separated pathnames of
+**	CDPATH (see the ENVIRONMENT VARIABLES section) if  the  pathname
+**	is non-null, test if the concatenation of that pathname, a <slash> character
+**	if that pathname did not end with a <slash> character, and the directory
+**	operand names a directory. If the pathname is null, test if the
+**	concatenation of dot, a <slash> character, and the  operand	names
+**	a directory. In either case, if the resulting string names an existing
+**	directory, set curpath to that string and proceed to step 7. Otherwise,
+**	repeat this step with the next pathname in CDPATH until all pathnames
+**	have been tested.
+**	6. Set curpath to the directory operand. (correspond to second condition)
+**
+**	Returned Values
+**		SUCCESS : Applied rule 5 and 6 successfully
+**		FAILURE : Malloc error
+*/
 
 int			sh_builtin_cd_rule5(
 	t_context *context, char **curpath, char *param, t_args *args)
 {
 	char	*cdpath;
+	int		ret;
 
 	cdpath = sh_vars_get_value(context->env, context->vars, "CDPATH");
-	if (!cdpath || !*cdpath)
+	ret = SUCCESS;
+	if (cdpath && *cdpath)
+		ret = sh_builtin_cd_cdpath(context, curpath, param, args);
+	if (!ret && !*curpath)
 	{
-		*curpath = ft_strjoin_path(".", param);
-		if (!curpath)
-		{
+		if (!(*curpath = ft_strdup(param)))
 			sh_perror(SH_ERR1_MALLOC, "sh_builtin_cd_rule5");
-			return (FAILURE);
-		}
-		return (SUCCESS);
 	}
-	return (sh_builtin_cd_cdpath(context, curpath, param, args));
+	return (ret);
 }
