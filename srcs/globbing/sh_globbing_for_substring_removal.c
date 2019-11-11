@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_globbing_for_substring_removal.c                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/08 05:50:11 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/09 08:26:48 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/09 17:35:58 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,20 +112,20 @@ static void	suffix_pattern_matching(char *param, int *index, t_list *regexp_list
 
 static int	sh_globbing_for_substring_removal(char *param, char *word, int *index, char *format)
 {
-    t_list      *regexp_list;
-    int         ret;
+	t_list		*regexp_list;
+	int			ret;
 
 	regexp_list = NULL;
-    if ((ret = parse_patterns(word, &regexp_list)) == FAILURE)
-        return (ret);
-    else if (ret == ERROR)
-        return (SUCCESS);
+	if ((ret = parse_patterns(word, &regexp_list)) == FAILURE)
+		return (ret);
+	else if (ret == ERROR)
+		return (SUCCESS);
 	if (format[0] == '%')
 		suffix_pattern_matching(param, index, regexp_list, format);
 	else
 		prefix_pattern_matching(param, index, regexp_list, format);
 	ft_lstdel(&regexp_list, &t_regexp_free);
-    return (SUCCESS);
+	return (SUCCESS);
 }
 
 /*

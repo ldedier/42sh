@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 11:34:44 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/09 00:59:26 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/09 18:25:43 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,10 @@ static int	execute_child_part(
 	reset_signals();
 	g_job_ctrl->interactive = 0;
 	if ((ret = loop_traverse_redirection(parent_node, context)) != SUCCESS)
+	{
+		sh_free_all(context->shell);
 		return (ret);
+	}
 	ret = context->builtin(context);
 	g_job_ctrl->interactive = 1;
 	sh_free_all(context->shell);

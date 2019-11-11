@@ -6,11 +6,22 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:00:19 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/04 14:08:40 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/11 01:21:10 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
+
+
+static int	command_ended_with_ctrl_c(t_context *context)
+{
+	int		ret;
+
+	ret = context->shell->ret_value;
+	if (ret == 130)
+		return (1);
+	return (0);
+}
 
 static int	process_node_to_exec(
 		t_ast_node *node_to_exec, t_context *context, int ret)
@@ -62,6 +73,8 @@ int			get_node_to_exec(t_ast_node *node, t_context *context,
 			context->cmd_type = SIMPLE_NODE;
 			context->wflags = 0;
 			ret = f(node_to_exec, curr_node->children->content, context);
+			if (command_ended_with_ctrl_c(context))
+				return (SUCCESS);
 			node_to_exec = NULL;
 		}
 		else
