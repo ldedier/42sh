@@ -157,15 +157,43 @@ int					sh_builtin_🐑(t_context *context);
 */
 
 /*
+** alias/sh_builtin_alias.c
+*/
+int					sh_builtin_alias(t_context *context);
+int					alias_valid_name(char *str);
+
+/*
+** alias/sh_builtin_alias_show.c
+*/
+void				show_alias(char *str);
+int					sh_builtin_alias_show(t_context *context);
+
+/*
+** bg/sh_builtin_bg.c
+*/
+int					sh_builtin_bg(t_context *context);
+
+/*
+** bg/sh_builtin_bg_tools.c
+*/
+int					parse_bg_spec(char *str, int j_lst[], int *it);
+int					parse_bg_args(char **argv, int job_lst[]);
+t_job				*bg_get_job_by_spec(int num);
+
+/*
 ** cd/sh_builtin_cd.c
 */
 int					sh_builtin_cd(t_context *context);
 
 /*
-** cd/sh_builtin_cd_pre_rules.c
+** cd/sh_builtin_cd_parser.c
 */
 int					sh_builtin_cd_parser(
 	t_context *context, t_args *args, int *index, char **curpath);
+
+/*
+** cd/sh_builtin_cd_pre_rules.c
+*/
 int					sh_builtin_cd_pre_rules(
 	t_context *context, char *param, char **curpath, t_args *args);
 
@@ -194,64 +222,23 @@ int					sh_builtin_cd_rule7(
 int					sh_builtin_cd_rule8(char **curpath, char *param);
 
 /*
-** sh_builtin.c
-*/
-t_builtin_container	*get_builtins(void);
-t_builtin			sh_builtin_find_name(char *name);
-t_builtin			sh_builtin_find(t_context *context);
-
-/*
-** sh_builtin_alias.c
-*/
-int					sh_builtin_alias(t_context *context);
-int					alias_valid_name(char *str);
-
-/*
-** sh_builtin_alias_show.c
-*/
-void				show_alias(char *str);
-int					sh_builtin_alias_show(t_context *context);
-
-/*
-** sh_builtin_bg.c
-*/
-int					sh_builtin_bg(t_context *context);
-
-/*
-** sh_builtin_bg_tools.c
-*/
-int					parse_bg_spec(char *str, int j_lst[], int *it);
-int					parse_bg_args(char **argv, int job_lst[]);
-t_job				*bg_get_job_by_spec(int num);
-
-/*
-** sh_builtin_echo.c
-*/
-int					sh_builtin_echo(t_context *context);
-
-/*
-** sh_builtin_exit.c
-*/
-int					sh_builtin_exit(t_context *context);
-
-/*
-** sh_builtin_export.c
+** export/sh_builtin_export.c
 */
 int					sh_builtin_export(t_context *context);
 
 /*
-** sh_builtin_export_show.c
+** export/sh_builtin_export_show.c
 */
 int					sh_builtin_export_show(t_context *context);
 
 /*
-** sh_builtin_fc.c
+** fc/sh_builtin_fc.c
 */
 int					invalid_argument(char *str, char c);
 int					sh_builtin_fc(t_context *context);
 
 /*
-** sh_builtin_fc_default_synopsis.c
+** fc/sh_builtin_fc_default_synopsis.c
 */
 int					sh_builtin_fc_fill_text(
 	t_history *history, t_dlist *from, t_dlist *to);
@@ -264,13 +251,13 @@ int					sh_builtin_fc_default_synopsis(
 	t_context *context, t_fc_options *opts);
 
 /*
-** sh_builtin_fc_get_entry.c
+** fc/sh_builtin_fc_get_entry.c
 */
 t_dlist				*get_entry_from_fc_operand(
 	t_history *history, t_fc_operand *op, int fc);
 
 /*
-** sh_builtin_fc_l_synopsis.c
+** fc/sh_builtin_fc_l_synopsis.c
 */
 int					get_true_rank(t_history *history, int number);
 int					get_listing_way(
@@ -284,14 +271,14 @@ int					sh_builtin_fc_l_synopsis(
 	t_context *context, t_fc_options *opts);
 
 /*
-** sh_builtin_fc_parse_operands.c
+** fc/sh_builtin_fc_parse_operands.c
 */
 int					sh_atoi_fc(char *str, int *error);
 int					parse_fc_operands(
 	t_context *context, int index, t_fc_options *options);
 
 /*
-** sh_builtin_fc_s_synopsis.c
+** fc/sh_builtin_fc_s_synopsis.c
 */
 char				*ft_substitute_occurences(
 	char *str, char *to_replace, char *replacement);
@@ -301,24 +288,24 @@ int					sh_builtin_fc_s_synopsis(
 	t_context *context, t_fc_options *opts);
 
 /*
-** sh_builtin_fg.c
+** fg/sh_builtin_fg.c
 */
 int					sh_builtin_fg(t_context *context);
 
 /*
-** sh_builtin_fg_tools.c
+** fg/sh_builtin_fg_tools.c
 */
 int					parse_fg_spec(char *str, int j_lst[], int *it);
 int					parse_fg_args(char **argv, int job_lst[]);
 t_job				*fg_get_job_by_spec(int num);
 
 /*
-** sh_builtin_hash.c
+** hash/sh_builtin_hash.c
 */
 int					sh_builtin_hash(t_context *context);
 
 /*
-** sh_builtin_hash_tools.c
+** hash/sh_builtin_hash_tools.c
 */
 int					sh_builtin_hash_add_utility(
 	t_context *context, char *utility);
@@ -328,14 +315,31 @@ void				sh_builtin_hash_update_stats(
 	t_hash_table *table, t_binary_stats *stats);
 
 /*
-** sh_builtin_jobs.c
+** jobs/sh_builtin_jobs.c
 */
 int					sh_builtin_jobs(t_context *context);
 
 /*
-** sh_builtin_jobs_tools.c
+** jobs/sh_builtin_jobs_tools.c
 */
 int					parse_jobs_args(char **argv, int j_lst[], int *opt);
+
+/*
+** sh_builtin.c
+*/
+t_builtin_container	*get_builtins(void);
+t_builtin			sh_builtin_find_name(char *name);
+t_builtin			sh_builtin_find(t_context *context);
+
+/*
+** sh_builtin_echo.c
+*/
+int					sh_builtin_echo(t_context *context);
+
+/*
+** sh_builtin_exit.c
+*/
+int					sh_builtin_exit(t_context *context);
 
 /*
 ** sh_builtin_parser.c
@@ -370,46 +374,6 @@ int					sh_builtin_set_args(t_context *context);
 int					sh_builtin_set(t_context *context);
 
 /*
-** sh_builtin_test.c
-*/
-int					sh_builtin_test(t_context *context);
-
-/*
-** sh_builtin_test_binary.c
-*/
-int					sh_builtin_test_binary(char **params, int ope);
-
-/*
-** sh_builtin_test_unary.c
-*/
-int					sh_builtin_test_unary(char **params, int arg);
-
-/*
-** sh_builtin_type.c
-*/
-int					sh_builtin_type(t_context *context);
-
-/*
-** sh_builtin_type_search.c
-*/
-int					sh_builtin_type_search_alias(
-	char *name, t_args args[], t_context *context);
-int					sh_builtin_type_search_reserved(
-	char *name, t_args args[]);
-int					sh_builtin_type_search_builtin(
-	char *name, t_args args[]);
-int					sh_builtin_type_search_hash(
-	t_context *context, char *name, t_args args[]);
-
-/*
-** sh_builtin_type_search_path.c
-*/
-int					sh_builtin_type_search_in_dir(
-	char *path, DIR *dir, t_context *context, char *name);
-int					sh_builtin_type_search_in_path(
-	t_context *context, char *name, t_args args[]);
-
-/*
 ** sh_builtin_unalias.c
 */
 int					sh_builtin_unalias(t_context *context);
@@ -423,5 +387,45 @@ int					sh_builtin_unset(t_context *context);
 ** sh_builtin_verbose.c
 */
 int					sh_builtin_verbose(t_context *context);
+
+/*
+** test/sh_builtin_test.c
+*/
+int					sh_builtin_test(t_context *context);
+
+/*
+** test/sh_builtin_test_binary.c
+*/
+int					sh_builtin_test_binary(char **params, int ope);
+
+/*
+** test/sh_builtin_test_unary.c
+*/
+int					sh_builtin_test_unary(char **params, int arg);
+
+/*
+** type/sh_builtin_type.c
+*/
+int					sh_builtin_type(t_context *context);
+
+/*
+** type/sh_builtin_type_search.c
+*/
+int					sh_builtin_type_search_alias(
+	char *name, t_args args[], t_context *context);
+int					sh_builtin_type_search_reserved(
+	char *name, t_args args[]);
+int					sh_builtin_type_search_builtin(
+	char *name, t_args args[]);
+int					sh_builtin_type_search_hash(
+	t_context *context, char *name, t_args args[]);
+
+/*
+** type/sh_builtin_type_search_path.c
+*/
+int					sh_builtin_type_search_in_dir(
+	char *path, DIR *dir, t_context *context, char *name);
+int					sh_builtin_type_search_in_path(
+	t_context *context, char *name, t_args args[]);
 
 #endif

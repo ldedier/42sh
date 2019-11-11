@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/11/11 03:22:07 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/12 00:39:42 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,8 +30,18 @@ LIBFTDIR = libft
 PRINTFDIR = ft_printf
 
 VPATH		= $(INCLUDESDIR) \
-			  $(SRCDIR)/builtin/cd \
 			  $(SRCDIR)/builtin \
+			  $(SRCDIR)/builtin/alias \
+			  $(SRCDIR)/builtin/bg \
+			  $(SRCDIR)/builtin/cd \
+			  $(SRCDIR)/builtin/fc \
+			  $(SRCDIR)/builtin/export \
+			  $(SRCDIR)/builtin/fc \
+			  $(SRCDIR)/builtin/fg \
+			  $(SRCDIR)/builtin/hash \
+			  $(SRCDIR)/builtin/jobs \
+			  $(SRCDIR)/builtin/test \
+			  $(SRCDIR)/builtin/type \
 			  $(SRCDIR)/command_line \
 			  $(SRCDIR)/command_line/autocomplete \
 			  $(SRCDIR)/command_line/shortcuts \
