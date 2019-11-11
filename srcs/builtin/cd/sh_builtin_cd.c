@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/11 17:43:29 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/11 03:45:25 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/12 00:32:56 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,10 @@
 **	informations.
 **
 **	Returned Values :
-**		SUCCESS : 
-**		ERROR : 
-**		FAILURE : 
+**		SUCCESS : Successfuly changed directory
+**		ERROR : File is invalid for some reasons
+**		FAILURE : malloc error
 */
-// fill ret val
 
 static int	sh_builtin_cd_body(
 	t_context *context, t_args *args, int index, char **curpath)
@@ -37,7 +36,8 @@ static int	sh_builtin_cd_body(
 	if (!param)
 		param = *curpath;
 	if (sh_verbose_builtin())
-		ft_dprintf(2, MAGENTA"cd : after rules 1 - 4 : curpath = %s\n"EOC, *curpath);
+		ft_dprintf(
+			2, MAGENTA"cd : after rules 1 - 4 : curpath = %s\n"EOC, *curpath);
 	if (args[CD_L_OPT].priority > args[CD_P_OPT].priority)
 	{
 		sh_builtin_cd_rule7(context, curpath, args);

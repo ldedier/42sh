@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 13:33:24 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/11 03:09:15 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/12 00:26:21 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static void	sh_builtin_cd_rule8_c(char **curpath)
 **		c - Simplify curpath by deleting any unecessary '/' (ex : "//foo//bar")
 **
 **	Returned Values:
-**		ERROR : file designated by *curpath do no exists
+**		ERROR : file designated by *curpath do no exists (Error message shown)
 **		SUCCESS : Everything is fine
 */
 

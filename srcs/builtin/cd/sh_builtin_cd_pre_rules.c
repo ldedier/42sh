@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 14:50:45 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/11 03:56:26 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/12 00:13:55 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 **	4. If the first component of the directory operand is dot or dot-dot,
 **	proceed to step 6.
 **	5 : use CDPATH (see sh_builtin_cd_rule5)
-**	6 : Set curpath to directory operand (This correspond to condition 4).
+**	6 : Set curpath to directory operand (Applied in sh_builtin_cd_rule5).
 **
 **	Returned Values
 **		SUCCESS : Filled *curpath
@@ -45,7 +45,7 @@ int			sh_builtin_cd_pre_rules(
 	else if (*param == '/')
 		*curpath = ft_strdup(param);
 	else if (*param == '.' || ft_strnstr(param, "..", 2))
-		*curpath = ft_strdup(param); // rule 6
+		*curpath = ft_strdup(param);
 	else
 		return (sh_builtin_cd_rule5(context, curpath, param, args));
 	if (!*curpath)

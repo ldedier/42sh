@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 12:05:14 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/25 07:20:46 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/12 00:24:50 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ char		*sh_builtin_pwd_physical(void)
 ** sh_builtin_pwd_logical:
 **	Return an absolute pathname, not containing any dot or dot-dot.
 **	Symlinks may appear in the path.
+**	Print error messages if needed.
 **
 **	returned Values :
 **		NULL : Malloc error
@@ -55,7 +56,11 @@ char		*sh_builtin_pwd_logical(t_dy_tab *env)
 
 	pwd = sh_vars_get_value(env, NULL, "PWD");
 	if (pwd && *pwd == '/' && !ft_strchr(pwd, '.'))
-		return (ft_strdup(pwd));
+	{
+		if (!(pwd = ft_strdup(pwd)))
+			return (sh_perrorn(SH_ERR1_MALLOC, "sh_builtin_pwd_logical"));
+		return (pwd);
+	}
 	else
 		return (sh_builtin_pwd_physical());
 }
@@ -94,7 +99,7 @@ int			sh_builtin_pwd(t_context *context)
 		pwd = sh_builtin_pwd_logical(context->env);
 	if (!pwd)
 		return (FAILURE);
-	ft_dprintf(FD_OUT, "%s\n", pwd);
+	ft_putstrn(pwd);
 	free(pwd);
 	return (SUCCESS);
 }

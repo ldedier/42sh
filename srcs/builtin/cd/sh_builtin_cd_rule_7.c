@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/11 02:58:10 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/11 02:59:59 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/12 00:19:25 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,8 @@
 **	between them if needed.
 **
 **	Returned Values:
-**		FAILURE
 **		ERROR : Can't get current working directory (sh_builtin_pwd)
-**		SUCCESS
+**		SUCCESS : Can continue process
 */
 
 int			sh_builtin_cd_rule7(
@@ -34,8 +33,7 @@ int			sh_builtin_cd_rule7(
 	{
 		if (**curpath != '/')
 		{
-			pwd = sh_builtin_pwd_logical(context->env);
-			if (!pwd)
+			if (!(pwd = sh_builtin_pwd_logical(context->env)))
 			{
 				free(*curpath);
 				return (ERROR);
