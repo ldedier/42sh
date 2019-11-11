@@ -6,53 +6,76 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/11 02:35:55 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/11 05:12:52 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/11 06:18:00 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
+//TO DEL
+#include <string.h>
+
+/*
+** sh_builtin_cd_cdpath_check_perm:
+**	Check if file designated by path exists, is a directory, and user have
+**	right permissions to open it.
+**
+**	Returned Values :
+**		SUCCESS : Everything is allright
+**		ERROR : On of the condition is invalid.
+*/
+
+static int	sh_builtin_cd_cdpath_check_perm(
+	char *path, char **curpath, t_args *args)
+{
+	struct stat	st;
+
+	if ((stat(path, &st)))
+		return (ERROR);
+	if (!S_ISDIR(st.st_mode))
+		return (ERROR);
+	if (access(path, X_OK))
+		return (ERROR);
+	*curpath = path;
+	args[CD_HYPHEN_OPT].value = &args;
+	return (SUCCESS);
+}
+
+/*
+**	5. Starting with the first pathname in the <colon>-separated pathnames of
+**	CDPATH (see the ENVIRONMENT VARIABLES section) if  the  pathname
+**	is non-null, test if the concatenation of that pathname, a <slash> character
+**	if that pathname did not end with a <slash> character, and the directory
+**	operand names a directory. If the pathname is null, test if the
+**	concatenation of dot, a <slash> character, and the  operand	names
+**	a directory. In either case, if the resulting string names an existing
+**	directory, set curpath to that string and proceed to step 7. Otherwise,
+**	repeat this step with the next pathname in CDPATH until all pathnames
+**	have been tested.
+*/
+
 static int	sh_builtin_cd_cdpath(
 	t_context *context, char **curpath, char *param, t_args *args)
 {
-	char		*cdpath;
-	char		**split;
-	int			i;
-	char		*path;
-	struct stat	st;
+	char	*cdpath;
+	char	*dir;
+	char	*path;
 
-	if (!(cdpath = sh_vars_get_value(context->env, context->vars, "CDPATH")))
-		return (SUCCESS);
-	if (!(split = ft_strsplit(cdpath, ':')))
-		return (sh_perror(SH_ERR1_MALLOC, "sh_builtin_cd_cdpath"));
-	i = 0;
+	cdpath = sh_vars_get_value(context->env, context->vars, "CDPATH");
 	path = NULL;
-	while (split[i])
+	while ((dir = strsep(&cdpath, ":")))
 	{
-		i++;
 		if (path)
 			ft_strdel(&path);
-		if (!split[i - 1] && !*split[i - 1])
-			continue ;
-		if (!(path = ft_strjoin_path(split[i - 1], param)))
-		{
-			ft_strtab_free(split);
+		if (*dir)
+			path = ft_strjoin_path(dir, param);
+		else
+			path = ft_strjoin_path(".", param);
+		if (!path)
 			return (sh_perror(SH_ERR1_MALLOC, "sh_builtin_cd_cdpath"));
-		}
-		if ((stat(path, &st)))
-			continue ;
-		if (!S_ISDIR(st.st_mode))
-			continue ;
-		if (access(path, X_OK))
-			continue ;
-		*curpath = path;
-		args[CD_HYPHEN_OPT].value = &args;
-		ft_strtab_free(split);
-		return (SUCCESS);
+		if (sh_builtin_cd_cdpath_check_perm(path, curpath, args) == SUCCESS)
+			break ;
 	}
-	ft_strtab_free(split);
-	if (path)
-		ft_strdel(&path);
 	return (SUCCESS);
 }
 
