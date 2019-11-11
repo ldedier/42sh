@@ -37,6 +37,18 @@ static int	sh_builtin_cd_body(
 	return (ret);
 }
 
+static void	sh_builtin_cd_init_args(t_args *args)
+{
+	const t_args model[] = {
+		{E_ARGS_BOOL, 'P', NULL, NULL, CD_P_OPT_USAGE, 0},
+		{E_ARGS_BOOL, 'L', NULL, NULL, CD_L_OPT_USAGE, 0},
+		{E_ARGS_BOOL, 0, NULL, NULL, NULL, 0},
+		{E_ARGS_END, 0, NULL, NULL, NULL, 0},
+	};
+
+	ft_memcpy(args, model, sizeof(model));
+}
+
 /*
 ** sh_builtin_cd:
 **	The cd builtin shall change the working directory of the current shell.
@@ -56,13 +68,9 @@ int			sh_builtin_cd(t_context *context)
 	char	*curpath;
 	int		index;
 	int		ret;
-	t_args	args[] = {
-		{E_ARGS_BOOL, 'P', NULL, NULL, CD_P_OPT_USAGE, 0},
-		{E_ARGS_BOOL, 'L', NULL, NULL, CD_L_OPT_USAGE, 0},
-		{E_ARGS_BOOL, 0, NULL, NULL, NULL, 0},
-		{E_ARGS_END, 0, NULL, NULL, NULL, 0},
-	};
+	t_args	args[4];
 
+	sh_builtin_cd_init_args(args);
 	if ((ret = sh_builtin_cd_parser(context, args, &index, &curpath)))
 		return (ret);
 	return (sh_builtin_cd_body(context, args, index, &curpath));

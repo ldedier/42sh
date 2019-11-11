@@ -157,6 +157,43 @@ int					sh_builtin_🐑(t_context *context);
 */
 
 /*
+** cd/sh_builtin_cd.c
+*/
+int					sh_builtin_cd(t_context *context);
+
+/*
+** cd/sh_builtin_cd_pre_rules.c
+*/
+int					sh_builtin_cd_parser(
+	t_context *context, t_args *args, int *index, char **curpath);
+int					sh_builtin_cd_pre_rules(
+	t_context *context, char *param, char **curpath, t_args *args);
+
+/*
+** cd/sh_builtin_cd_rule_10.c
+*/
+int					sh_builtin_cd_check_perms(char *curpath, char *param);
+int					sh_builtin_cd_rule10(
+	t_context *context, char *curpath, t_args *args, char *param);
+
+/*
+** cd/sh_builtin_cd_rule_5.c
+*/
+int					sh_builtin_cd_rule5(
+	t_context *context, char **curpath, char *param, t_args *args);
+
+/*
+** cd/sh_builtin_cd_rule_7.c
+*/
+int					sh_builtin_cd_rule7(
+	t_context *context, char **curpath, t_args *args);
+
+/*
+** cd/sh_builtin_cd_rule_8.c
+*/
+int					sh_builtin_cd_rule8(char **curpath, char *param);
+
+/*
 ** sh_builtin.c
 */
 t_builtin_container	*get_builtins(void);
@@ -186,33 +223,6 @@ int					sh_builtin_bg(t_context *context);
 int					parse_bg_spec(char *str, int j_lst[], int *it);
 int					parse_bg_args(char **argv, int job_lst[]);
 t_job				*bg_get_job_by_spec(int num);
-
-/*
-** sh_builtin_cd.c
-*/
-int					sh_builtin_cd(t_context *context);
-
-/*
-** sh_builtin_cd_last_rules.c
-*/
-int					sh_builtin_cd_check_perms(char *curpath, char *param);
-int					sh_builtin_cd_rule10(
-	t_context *context, char *curpath, t_args *args, char *param);
-
-/*
-** sh_builtin_cd_post_rules.c
-*/
-int					sh_builtin_cd_rule7(
-	t_context *context, char **curpath, t_args *args);
-int					sh_builtin_cd_rule8(char **curpath, char *param);
-
-/*
-** sh_builtin_cd_pre_rules.c
-*/
-int					sh_builtin_cd_parser(
-	t_context *context, t_args *args, int *index, char **curpath);
-int					sh_builtin_cd_pre_rules(
-	t_context *context, char *param, char **curpath, t_args *args);
 
 /*
 ** sh_builtin_echo.c
