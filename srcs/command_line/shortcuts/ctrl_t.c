@@ -38,16 +38,30 @@ static void		transpose_str(char *str, int index_a, int index_b)
 	int		len_b;
 	char	buff[5];
 
-
-	ft_printf(RED"\nINDEX: %d %d\n"EOC, index_a, index_b);
 	len_a = get_char_len_unprotected(index_a, (unsigned char *)str);
 	len_b = get_char_len_unprotected(index_b, (unsigned char *)str);
-	
-	ft_printf(YELLOW"\nLENGTH: %d %d\n"EOC, len_a, len_b);
 	ft_bzero(buff, sizeof(buff));
 	ft_strncpy(buff, &str[index_a], len_a);
 	ft_strncpy(&str[index_a], &str[index_b], len_b);
 	ft_strncpy(&str[index_a + len_b], buff, len_a);
+}
+
+static void		prepare_transpose_motion(t_command_line *command_line,
+		int *motion, int index_a, int index_b)
+{
+	if (command_line->current_index == 0)
+	{
+		*motion = get_char_len(index_b,
+			(unsigned char *)command_line->dy_str->str);
+	}
+	else
+	{
+		command_line->current_index += get_char_len(index_b,
+			(unsigned char *)command_line->dy_str->str) - get_char_len(index_a,
+				(unsigned char *)command_line->dy_str->str);
+		*motion = get_char_len(index_a,
+			(unsigned char *)command_line->dy_str->str);
+	}
 }
 
 int				process_ctrl_t(t_command_line *command_line)
@@ -62,12 +76,7 @@ int				process_ctrl_t(t_command_line *command_line)
 	if ((ret = sh_save_command_line(command_line)) != SUCCESS)
 		return (ret);
 	fill_indexes(command_line, &index_a, &index_b);
-	motion = index_b - index_a;
-	if (index_a == 0)
-	{
-		motion += get_char_len(index_b,
-			(unsigned char *)command_line->dy_str->str);
-	}
+	prepare_transpose_motion(command_line, &motion, index_a, index_b);
 	transpose_str(command_line->dy_str->str, index_a, index_b);
 	execute_motion(command_line,
 		command_line->current_index + motion, 0);
