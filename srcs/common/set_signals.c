@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/31 16:05:53 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/07 19:43:38 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/11 01:33:12 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,9 @@ void			reset_signals(void)
 {
 	int i;
 
-	// ft_dprintf(g_term_fd, "SIGNAL RESET\n");
 	i = 1;
 	while (i <= 31)
 		signal(i++, SIG_DFL);
-	signal(SIGTTOU, SIG_IGN);
-	signal(SIGTTIN, SIG_IGN);
 }
 
 void			handler_sighup(int signo)
