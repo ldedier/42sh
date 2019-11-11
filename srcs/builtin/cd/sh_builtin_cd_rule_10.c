@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 07:20:20 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/12 00:33:19 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/12 00:47:07 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static int	sh_builtin_cd_update_pwd(
 	if (!pwd)
 		return (ERROR);
 	ret = SUCCESS;
-	if (!(old_pwd = sh_vars_get_value(context->env, NULL, "PWD")))
+	if ((old_pwd = sh_vars_get_value(context->env, NULL, "PWD")))
 		ret = sh_vars_assign_key_val(
 			context->saved_env, NULL, "OLDPWD", old_pwd);
 	if (!ret)
