@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 03:46:18 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/10 09:02:02 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/10 10:07:46 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,13 +83,13 @@ static void	parse_new_brace_find_end(
 	}
 	while (str[*i] && str[*i] != ']')
 	{
-		if (str[*i] == '\'' || str[*i] == '\\' || str[*i] == '"')
+		if (*quoted)
+			new_brace_quoted(str, i, quoted);
+		else if (str[*i] == '\'' || str[*i] == '\\' || str[*i] == '"')
 		{
 			*quoted = str[*i];
 			(*i) += 1;
 		}
-		else if (*quoted)
-			new_brace_quoted(str, i, quoted);
 		else
 			(*i)++;
 	}
