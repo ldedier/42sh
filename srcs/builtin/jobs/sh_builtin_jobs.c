@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 17:04:13 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/27 11:40:36 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/12 16:37:55 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,6 @@ int				sh_builtin_jobs(t_context *context)
 	int		opt;
 	int		job_num_lst[MAX_JOBS];
 
-	if (g_job_ctrl->interactive == 0)
-		return (SUCCESS);
 	opt = -1;
 	while (++opt < MAX_JOBS)
 		job_num_lst[opt] = -2;

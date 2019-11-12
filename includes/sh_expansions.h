@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_expansions.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 17:46:46 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/23 03:23:27 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/12 04:55:50 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,17 @@ int		sh_expansions(t_context *context, t_ast_node *node);
 /*
 ** sh_expansions_cmd_subst.c
 */
+int 	get_subshell_output(t_context *context, char *command, char **str);
+int		sh_expansions_cmd_subst_process(
+	t_context *context, t_expansion *exp);
+
+/*
+** sh_expansions_cmd_subst_tools.c
+*/
 int		sh_expansions_cmd_subst_detect_backquotes(char *start);
 int		sh_expansions_cmd_subst_detect_dollar(char *start);
 int		sh_expansions_cmd_subst_fill(t_expansion *exp, char *start);
 char	*get_string_from_fd(int fd);
-char 	*get_subshell_output(t_shell *shell, char *command);
-int		sh_expansions_cmd_subst_process(
-	t_context *context, t_expansion *exp);
 
 /*
 ** sh_expansions_field_splitting.c

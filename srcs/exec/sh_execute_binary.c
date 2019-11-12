@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 11:49:50 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/08 23:44:21 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/12 16:32:21 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ static int		sh_exec_parent_part(pid_t cpid, t_context *context)
 	else
 		waitpid(cpid, &ret, context->wflags);
 	sh_env_update_ret_value_wait_result(context, ret);
-	g_glob.command_line.interrupted = WIFSIGNALED(ret) || WIFSTOPPED(ret);
 	return (SUCCESS);
 }
 

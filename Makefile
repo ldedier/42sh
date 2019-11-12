@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
+#    By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/11/12 00:39:42 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/12 15:30:51 by mdaoud           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -360,7 +360,7 @@ SRCS			 +=	sh_expansions.c \
 					sh_expansions_cmd_subst.c \
 					sh_expansions_proc_subst_in.c \
 					sh_expansions_proc_subst_out.c \
-					t_quote.c
+					t_quote.c sh_expansions_cmd_subst_tools.c
 
 ################################################################
 ########					GLOBBING					########

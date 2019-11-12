@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 17:45:00 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/11/08 23:32:57 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/12 05:28:35 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ struct	s_job_control
 	t_job			*first_job;
 	t_job			*curr_job;
 	t_list			*tokens;
+	t_shell			*shell;
 };
 
 t_job_control	*g_job_ctrl;
