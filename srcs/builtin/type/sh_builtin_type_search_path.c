@@ -6,13 +6,13 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/04 21:46:10 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/12 07:29:11 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-static int	sh_builtin_type_search_in_dir_found(char *path, DIR *dir,
+static int	search_in_dir_check_perm(char *path, DIR *dir,
 			t_dirent *dirent, t_context *context)
 {
 	char *buf;
@@ -28,21 +28,12 @@ static int	sh_builtin_type_search_in_dir_found(char *path, DIR *dir,
 		free(buf);
 		return (KEEP_READ);
 	}
+	if (context->path)
+		ft_strdel(&context->path);
 	context->path = buf;
 	closedir(dir);
 	return (SUCCESS);
 }
-
-/*
-** sh_traverse_sc_search_in_dir:
-**		Look for any executable matching the context->params->tbl[0],
-**		in the directory defined by path and dir
-**		If any valid match is ffound, context->path is filled
-**
-**		return :
-**		FAILURE : malloc error
-**		SUCCESS : any error occur
-*/
 
 int			sh_builtin_type_search_in_dir(
 	char *path, DIR *dir, t_context *context, char *name)
@@ -54,7 +45,7 @@ int			sh_builtin_type_search_in_dir(
 	{
 		if (ft_strequ(dirent->d_name, name))
 		{
-			if ((ret = sh_builtin_type_search_in_dir_found(path, dir,
+			if ((ret = search_in_dir_check_perm(path, dir,
 				dirent, context)) != KEEP_READ)
 				return (ret);
 			else
@@ -65,61 +56,51 @@ int			sh_builtin_type_search_in_dir(
 	return (ERROR);
 }
 
-/*
-** sh_traverse_sc_search_in_path:
-**	Use the PATH env variable to look for any executable named like
-**	context->params->tbl[0], with correct execution rights.
-**	If it found a valid match, context->path is filled with path of executable
-**	return :
-**		FAILURE : malloc error
-**		ERROR : $PATH is empty
-**		SUCCESS : Any error occured
-*/
-
-int			sh_builtin_type_search_in_path(t_context *context, char *name, t_args args[])
+static int	show_success_message(
+	t_context *context, t_args *args, char *name, int *found)
 {
-	char	**split;
-	int		i;
-	DIR		*dir;
-	char	*buffer;
-	int		ret;
-	int		found;
+	(*found) += 1;
+	if (args[TYPE_P_OPT].priority > args[TYPE_T_OPT].priority)
+		ft_dprintf(FD_OUT, "%s\n", context->path);
+	else if (args[TYPE_T_OPT].value)
+		ft_dprintf(FD_OUT, "file\n");
+	else
+		ft_dprintf(FD_OUT, "%s is %s\n", name, context->path);
+	if (args[TYPE_A_OPT].value)
+		return (KEEP_READ);
+	else
+		return (SUCCESS);
+}
 
-	if (!(buffer = sh_vars_get_value(context->env, context->vars, "PATH")))
-		return (ERROR);
-	if (!(split = ft_strsplit(buffer, ':')))
-		return (FAILURE);
-	i = 0;
+//TO DEL
+#include <string.h>
+
+int			sh_builtin_type_search_in_path(
+	t_context *context, char *name, t_args args[])
+{
+	char		*env_path;
+	char		*path;
+	DIR			*dir;
+	int			found;
+	int			ret;
+
 	found = 0;
-	while (split[i])
+	if (!(env_path = sh_vars_get_value(context->env, context->vars, "PATH")))
+		return (ERROR);
+	path = NULL;
+	while ((path = strsep(&env_path, ":")))
 	{
-		if (context->path)
-			ft_strdel(&(context->path));
-		if (!(dir = opendir(split[i])))
-		{
-			i++;
-			continue ;
-		}
-		ret = sh_builtin_type_search_in_dir(split[i], dir, context, name);
-		i++;
 		if (ret == FAILURE)
-			return (FAILURE);
+			continue ;
+		if (!(dir = opendir(path)))
+			continue ;
+		ret = sh_builtin_type_search_in_dir(path, dir, context, name);
 		if (ret == SUCCESS && context->path)
-		{
-			found++;
-			if (args[TYPE_P_OPT].value && args[TYPE_P_OPT].priority > args[TYPE_T_OPT].priority)
-				ft_dprintf(FD_OUT, "%s\n", context->path);
-			else if (args[TYPE_T_OPT].value)
-				ft_dprintf(FD_OUT, "file\n");
-			else
-				ft_dprintf(FD_OUT, "%s is %s\n", name, context->path);
-			if (args[TYPE_A_OPT].value)
-				continue ;
-			else
+			if (!show_success_message(context, args, name, &found))
 				break ;
-		}
 	}
-	ft_strtab_free(split);
+	if (ret == FAILURE)
+		return (FAILURE);
 	if (found)
 		return (SUCCESS);
 	return (ERROR);

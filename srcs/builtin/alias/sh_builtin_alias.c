@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/06 22:45:49 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/10 01:05:35 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/12 06:47:54 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,19 @@ static int	alias_treat_argument(t_context *context, char *arg)
 	}
 	return (SUCCESS);
 }
+
+
+/*
+** sh_builtin_alias:
+**
+**	As bash does, we do not check for write errors on stdou.
+**
+**	Returned Values
+**		SUCCESS : 
+**		ERROR : 
+**		FAILURE : 
+*/
+
 
 int			sh_builtin_alias(t_context *context)
 {
