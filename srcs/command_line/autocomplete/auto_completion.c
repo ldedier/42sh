@@ -78,16 +78,16 @@ int		process_tab(t_shell *shell, t_command_line *command_line)
 			command_line->dy_str->str, command_line->current_index, &exec)))
 		{
 			if (ret == FAILURE)
-				return (sh_free_turn_exec(&exec, 1));
+				return (sh_free_turn_exec_autocompletion(&exec, 1));
 			else
-				init_exec(&exec);
+				init_exec_autocompletion(&exec);
 		}
 		ft_dlstdel(&command_line->autocompletion.choices, &free_file_dlst);
 		if (populate_choices_from_word(command_line, shell, &exec.word))
-			return (sh_free_turn_exec(&exec, 1));
+			return (sh_free_turn_exec_autocompletion(&exec, 1));
 		if (command_line->autocompletion.choices != NULL)
 			ret = process_completion(command_line, exec.word);
-		sh_free_turn_exec(&exec, ret == FAILURE);
+		sh_free_turn_exec_autocompletion(&exec, ret == FAILURE);
 	}
 	else
 		process_autocompletion_down(shell, command_line);

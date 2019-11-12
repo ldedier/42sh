@@ -12,7 +12,7 @@
 
 #include "sh_21.h"
 
-int		populate_keys_from_dy_tab(t_dy_tab *dtab,
+int		populate_keys_from_dy_tab(t_dy_tab *dtab, t_command_line *command_line,
 	t_shell *shell, t_choice_filler *c)
 {
 	int		i;
@@ -29,8 +29,7 @@ int		populate_keys_from_dy_tab(t_dy_tab *dtab,
 			if (!(key = ft_strndup(dtab->tbl[i], equal_index)))
 				return (FAILURE);
 			if (process_add_choices_from_choice_filler(shell,
-					&g_glob.command_line,
-				key, c))
+				command_line, key, c))
 			{
 				free(key);
 				return (FAILURE);
@@ -50,6 +49,7 @@ int		process_fill_choice_filler_expansion(t_choice_filler *c,
 	if (!(c->path = ft_strndup(c->word->str, *last_dollar_index + 1)))
 		return (FAILURE);
 	end_index = get_end_index(c->word->str, *last_dollar_index + 1);
+	free(c->word->to_compare);
 	if (!(c->word->to_compare =
 		ft_strndup(&c->word->str[*last_dollar_index + 1],
 			end_index - (*last_dollar_index + 1))))
@@ -103,21 +103,20 @@ int		populate_choices_from_expansions(t_command_line *command_line,
 	t_choice_filler c;
 	int				dollar_index;
 
-	(void)command_line;
 	c.word = word;
 	c.types = -1;
 	c.suffix = NULL;
 	c.path = NULL;
-	c.word->to_compare = NULL;
+
 	if (fill_choice_filler_expansion(&c, &dollar_index))
 	{
 		if (dollar_index == -1)
 			return (SUCCESS);
 		return (free_turn_choice_filler(&c, FAILURE));
 	}
-	if (populate_keys_from_dy_tab(shell->env, shell, &c))
+	if (populate_keys_from_dy_tab(shell->env, command_line, shell, &c))
 		return (free_turn_choice_filler(&c, FAILURE));
-	if (populate_keys_from_dy_tab(shell->vars, shell, &c))
+	if (populate_keys_from_dy_tab(shell->vars, command_line, shell, &c))
 		return (free_turn_choice_filler(&c, FAILURE));
 	return (free_turn_choice_filler(&c, SUCCESS));
 }

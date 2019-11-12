@@ -29,7 +29,7 @@ int		process_process_keys_ret(t_key_buffer *buffer,
 	}
 	else if (buffer->buff[0] == 9)
 	{
-		if (process_tab(shell, command_line) != SUCCESS)
+		if (process_tab(shell, command_line) == FAILURE)
 			return (FAILURE);
 		flush_keys(buffer);
 	}

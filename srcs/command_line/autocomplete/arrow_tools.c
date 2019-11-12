@@ -73,7 +73,7 @@ int		substitute_command_str(t_shell *shell, t_command_line *command_line,
 			init_exec(&exec);
 	}
 	if (process_substitute_command(command_line, str, exec.word, 0))
-		return (sh_free_turn_exec(&exec, FAILURE));
-	sh_free_turn_exec(&exec, FAILURE);
+		return (sh_free_turn_exec_autocompletion(&exec, FAILURE));
+	sh_free_turn_exec_autocompletion(&exec, FAILURE);
 	return (SUCCESS);
 }

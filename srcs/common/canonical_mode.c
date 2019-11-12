@@ -48,7 +48,10 @@ static int		sh_process_read_canonical_mode(t_shell *shell)
 			return (ret);
 	}
 	if (shell->running && gnl_ret == -1)
+	{
+		free(info.line);
 		return (sh_perror("get_next_line error", "sh_process_read_canonical"));
+	}
 	if (shell->running)
 		free(info.line);
 	return (ret);

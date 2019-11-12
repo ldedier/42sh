@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 15:47:39 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/04 17:57:32 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/08 19:37:45 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,24 @@ static void		transpose_str(char *str, int index_a, int index_b)
 	ft_strncpy(&str[index_a + len_b], buff, len_a);
 }
 
+static void		prepare_transpose_motion(t_command_line *command_line,
+		int *motion, int index_a, int index_b)
+{
+	if (command_line->current_index == 0)
+	{
+		*motion = get_char_len(index_b,
+			(unsigned char *)command_line->dy_str->str);
+	}
+	else
+	{
+		command_line->current_index += get_char_len(index_b,
+			(unsigned char *)command_line->dy_str->str) - get_char_len(index_a,
+				(unsigned char *)command_line->dy_str->str);
+		*motion = get_char_len(index_a,
+			(unsigned char *)command_line->dy_str->str);
+	}
+}
+
 int				process_ctrl_t(t_command_line *command_line)
 {
 	int index_a;
@@ -58,12 +76,7 @@ int				process_ctrl_t(t_command_line *command_line)
 	if ((ret = sh_save_command_line(command_line)) != SUCCESS)
 		return (ret);
 	fill_indexes(command_line, &index_a, &index_b);
-	motion = index_b - index_a;
-	if (index_a == 0)
-	{
-		motion += get_char_len(index_b,
-			(unsigned char *)command_line->dy_str->str);
-	}
+	prepare_transpose_motion(command_line, &motion, index_a, index_b);
 	transpose_str(command_line->dy_str->str, index_a, index_b);
 	execute_motion(command_line,
 		command_line->current_index + motion, 0);
