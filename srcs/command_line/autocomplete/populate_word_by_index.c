@@ -102,9 +102,7 @@ int		populate_parsed_word_by_index(t_shell *shell, char *command,
 	exec->tokens = NULL;
 	if ((ret = sh_lexer(command, &exec->tokens,
 		shell, E_LEX_AUTOCOMPLETION)) != SUCCESS)
-	{
 		return (ret);
-	}
 	if (!ret)
 		ret = populate_word_from_lexer(&exec->tokens, index, &exec->word);
 	if (!ret)
