@@ -145,6 +145,12 @@
 */
 # define TTY_FD	10
 
+/*
+** The default terminal to launch the shell with
+*/
+
+# define DEFAULT_TERM "xterm-256color"
+
 typedef struct s_shell		t_shell;
 
 struct				s_shell
