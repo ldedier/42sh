@@ -33,6 +33,8 @@ int		render_command_line(t_command_line *command_line,
 
 	if (!isatty(0) || !command_line || g_glob.winsize.ws_row <= 1)
 		return (SUCCESS);
+	str = tgetstr("vi", NULL);
+	tputs(str, 1, putchar_int);
 	go_up_to_prompt(g_glob.winsize.ws_col, g_glob.cursor);
 	sh_scroll_command_line(command_line, g_glob.cursor, cursor_inc);
 	str = tgetstr("cd", NULL);
@@ -45,5 +47,7 @@ int		render_command_line(t_command_line *command_line,
 	replace_cursor_after_render();
 	if (print_after_command_line(command_line, print_choices) != SUCCESS)
 		return (FAILURE);
+	str = tgetstr("ve", NULL);
+	tputs(str, 1, putchar_int);
 	return (SUCCESS);
 }
