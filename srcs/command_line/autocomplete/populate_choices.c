@@ -43,7 +43,9 @@ int			populate_choices_from_binaries(t_shell *shell, t_word *word)
 {
 	char *path_str;
 
-	word->to_compare = word->str;
+	free(word->to_compare);
+	if (!(word->to_compare = ft_strdup(word->str)))
+		return (1);
 	if ((path_str = sh_vars_get_value(shell->env, NULL, "PATH")))
 	{
 		if (add_choices_path(shell, word, path_str))
@@ -74,10 +76,12 @@ int			populate_choices_from_folder(t_shell *shell,
 		free(file);
 		return (ft_free_turn(c.transformed_path, 1));
 	}
+	free(word->to_compare);
+	if (!(word->to_compare = ft_strdup(file)))
+		return (ft_free_turn_3(file, c.transformed_path, c.path, FAILURE));
 	if (!ft_strncmp(c.path, "~/", 2)
 			&& process_subst_home(shell, &c.transformed_path))
 		return (ft_free_turn_3(file, c.transformed_path, c.path, 1));
-	c.word->to_compare = file;
 	if (add_choices_from_dir(shell, &c))
 		return (ft_free_turn_3(file, c.transformed_path, c.path, FAILURE));
 	return (ft_free_turn_3(file, c.transformed_path, c.path, SUCCESS));
@@ -101,7 +105,7 @@ int			populate_choices_from_word(t_command_line *cl,
 {
 	t_symbol *symbol;
 
-	if (!(word->token->ast_node))
+	if (!(word->token))
 	{
 		if (populate_choices_from_binaries_then_folder(shell, cl, word))
 			return (1);
@@ -115,9 +119,7 @@ int			populate_choices_from_word(t_command_line *cl,
 	}
 	else if (symbol->id == sh_index(FILENAME) &&
 		populate_choices_from_folder(shell, word, -1))
-	{
 		return (1);
-	}
 	else if (populate_choices_from_folder(shell, word, -1))
 		return (1);
 	if (populate_choices_from_expansions(cl, shell, word))

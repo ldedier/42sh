@@ -35,10 +35,15 @@ int		populate_word_from_lexer_no_token(t_list **tokens, t_list **prev,
 	return (0);
 }
 
-void	populate_word_from_token(t_word *word, int index)
+int		populate_word_from_token(t_word *word, int index)
 {
-	word->str = word->token->value;
-	word->to_compare = word->token->value;
+	if (!(word->str = ft_strdup(word->token->value)))
+		return (FAILURE);
+	if (!(word->to_compare = ft_strdup(word->token->value)))
+	{
+		free(word->str);
+		return (FAILURE);
+	}
 	word->len = ft_strlen(word->str);
 	word->utf8_len = ft_strlen_utf8(word->str);
 	word->start_index = word->token->index_start;
@@ -46,18 +51,25 @@ void	populate_word_from_token(t_word *word, int index)
 	word->index_char_offset =
 		ft_strnlen_utf8(word->str, word->index_byte_offset);
 	word->start_index = word->token->index_start;
+	return (SUCCESS);
 }
 
-void	populate_word_from_created_token(t_word *word, int index)
+int		populate_word_from_created_token(t_word *word, int index)
 {
-	word->str = word->token->value;
-	word->to_compare = word->token->value;
+	if (!(word->str = ft_strdup(word->token->value)))
+		return (FAILURE);
+	if (!(word->to_compare = ft_strdup(word->token->value)))
+	{
+		free(word->str);
+		return (FAILURE);
+	}
 	word->len = 0;
 	word->utf8_len = 0;
 	word->start_index = 0;
 	word->index_byte_offset = 0;
 	word->index_char_offset = 0;
 	word->start_index = index;
+	return (SUCCESS);
 }
 
 int		populate_word_from_lexer(t_list **tokens, int index, t_word *word)
@@ -70,12 +82,12 @@ int		populate_word_from_lexer(t_list **tokens, int index, t_word *word)
 	{
 		if ((ret = populate_word_from_lexer_no_token(tokens, &prev, word)))
 			return (ret);
-		populate_word_from_created_token(word, index);
+		return (populate_word_from_created_token(word, index));
 	}
 	else
 	{
 		word->token = token;
-		populate_word_from_token(word, index);
+		return (populate_word_from_token(word, index));
 	}
 	return (0);
 }

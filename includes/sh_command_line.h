@@ -463,6 +463,15 @@ int					process_keys_ret(
 int					await_stream(int fd);
 
 /*
+** pre_post_render.c
+*/
+int					print_after_command_line(
+	t_command_line *command_line, int print_choices);
+void				check_selection(t_command_line *command_line);
+int					print_pre_command_line(
+	t_command_line *command_line, int *ret);
+
+/*
 ** print_command_line.c
 */
 void				process_print_command_line(
@@ -472,15 +481,8 @@ void				print_command_line(t_command_line *command_line);
 /*
 ** render_command_line.c
 */
-void				render_command_researched(
-	t_command_line *command_line);
-int					print_after_command_line(
-	t_command_line *command_line, int print_choices);
 int					get_command_line_prefix_len(
 	t_command_line *command_line);
-void				check_selection(t_command_line *command_line);
-int					print_pre_command_line(
-	t_command_line *command_line, int *ret);
 int					render_command_line(
 	t_command_line *command_line, int cursor_inc, int print_choices);
 
