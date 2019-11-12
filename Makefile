@@ -40,7 +40,7 @@ VPATH		= $(INCLUDESDIR) \
 			  $(SRCDIR)/builtin/fg \
 			  $(SRCDIR)/builtin/hash \
 			  $(SRCDIR)/builtin/jobs \
-			  $(SRCDIR)/builtin/test \
+			  $(SRCDIR)/builtin/btest \
 			  $(SRCDIR)/builtin/type \
 			  $(SRCDIR)/command_line \
 			  $(SRCDIR)/command_line/autocomplete \
