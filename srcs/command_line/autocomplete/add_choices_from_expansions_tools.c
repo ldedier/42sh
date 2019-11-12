@@ -58,6 +58,5 @@ int		free_turn_choice_filler(t_choice_filler *c, int ret)
 {
 	ft_strdel(&c->suffix);
 	ft_strdel(&c->path);
-	ft_strdel(&c->word->to_compare);
 	return (ret);
 }

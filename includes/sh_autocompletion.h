@@ -110,7 +110,10 @@ int					add_choices_from_dir(
 ** add_choices_from_expansions.c
 */
 int					populate_keys_from_dy_tab(
-	t_dy_tab *dtab, t_shell *shell, t_choice_filler *c);
+	t_dy_tab *dtab,
+	t_command_line *command_line,
+	t_shell *shell,
+	t_choice_filler *c);
 int					process_fill_choice_filler_expansion(
 	t_choice_filler *c, int *last_dollar_index, int exp_braced);
 int					fill_choice_filler_expansion(
@@ -199,8 +202,11 @@ char				*ft_strjoin_escaped(char *s1, char *s2);
 /*
 ** exec_tools.c
 */
+int					sh_free_turn_exec_autocompletion(
+	t_exec *exec, int ret);
 int					sh_free_turn_exec(t_exec *exec, int ret);
 void				init_exec(t_exec *exec);
+void				init_exec_autocompletion(t_exec *exec);
 
 /*
 ** file_tables.c
@@ -270,8 +276,8 @@ int					populate_choices_from_word(
 */
 int					populate_word_from_lexer_no_token(
 	t_list **tokens, t_list **prev, t_word *word);
-void				populate_word_from_token(t_word *word, int index);
-void				populate_word_from_created_token(
+int					populate_word_from_token(t_word *word, int index);
+int					populate_word_from_created_token(
 	t_word *word, int index);
 int					populate_word_from_lexer(
 	t_list **tokens, int index, t_word *word);
