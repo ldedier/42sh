@@ -85,6 +85,7 @@ char		*sh_get_process_subst_out(t_shell *shell, char *command)
 		close(fds[PIPE_IN]);
 		if (!(str = sh_get_fd_string(fds[PIPE_OUT])))
 			return (NULL);
+		ft_printf("remains to close fd after the command execution: %d\n", fds[PIPE_OUT]);
 		return (str);
 	}
 }

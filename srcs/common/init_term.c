@@ -17,13 +17,10 @@ int		sh_init_terminal_database(char **env)
 	char	*termtype;
 	int		success;
 
-	termtype = sh_env_get_value(env, "TERM");
-	if (termtype == NULL)
-	{
-		return (sh_perror("Specify a terminal type with 'export TERM'",
-				"sh_init_terminal_database"));
-	}
-	success = tgetent(NULL, termtype);
+	if ((termtype = sh_env_get_value(env, "TERM")))
+		success = tgetent(NULL, termtype);
+	else
+		success = tgetent(NULL, DEFAULT_TERM);
 	if (success < 0)
 	{
 		return (sh_perror("Could not access the termcap data base",
@@ -35,9 +32,7 @@ int		sh_init_terminal_database(char **env)
 					"sh_init_terminal_database"));
 	}
 	if (sh_check_term() != SUCCESS)
-	{
 		return (FAILURE);
-	}
 	return (SUCCESS);
 }
 
