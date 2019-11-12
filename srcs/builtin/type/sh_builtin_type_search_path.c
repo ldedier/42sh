@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/12 07:29:11 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/12 08:15:38 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,16 @@ int			sh_builtin_type_search_in_dir(
 	return (ERROR);
 }
 
+/*
+** show_success_message:
+**	ERROR means : continue reading in dir, because -a flag is on.
+**
+**	Returned Values
+**		SUCCESS : 
+**		ERROR : 
+**		FAILURE : 
+*/
+
 static int	show_success_message(
 	t_context *context, t_args *args, char *name, int *found)
 {
@@ -67,13 +77,10 @@ static int	show_success_message(
 	else
 		ft_dprintf(FD_OUT, "%s is %s\n", name, context->path);
 	if (args[TYPE_A_OPT].value)
-		return (KEEP_READ);
+		return (ERROR);
 	else
 		return (SUCCESS);
 }
-
-//TO DEL
-#include <string.h>
 
 int			sh_builtin_type_search_in_path(
 	t_context *context, char *name, t_args args[])
@@ -85,19 +92,20 @@ int			sh_builtin_type_search_in_path(
 	int			ret;
 
 	found = 0;
+	ft_strsep(NULL, 0);
 	if (!(env_path = sh_vars_get_value(context->env, context->vars, "PATH")))
 		return (ERROR);
 	path = NULL;
-	while ((path = strsep(&env_path, ":")))
+	ret = ERROR;
+	while ((path = ft_strsep(&env_path, ':')))
 	{
-		if (ret == FAILURE)
+		if (ret != ERROR)
 			continue ;
 		if (!(dir = opendir(path)))
 			continue ;
 		ret = sh_builtin_type_search_in_dir(path, dir, context, name);
 		if (ret == SUCCESS && context->path)
-			if (!show_success_message(context, args, name, &found))
-				break ;
+			ret = show_success_message(context, args, name, &found);
 	}
 	if (ret == FAILURE)
 		return (FAILURE);
