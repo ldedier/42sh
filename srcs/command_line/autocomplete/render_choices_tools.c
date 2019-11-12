@@ -50,7 +50,10 @@ int		ft_round(float a)
 
 int		lines_rendered_from_file(t_file *file)
 {
-	return (ft_max(1, (sh_get_file_len(file) / g_glob.winsize.ws_col) + 1));
+	int ret;
+
+	ret = ft_max(1, (sh_get_file_len(file) / (g_glob.winsize.ws_col + 1)) + 1);
+	return (ret);
 }
 
 int		command_line_visible_lines(t_command_line *command_line)
