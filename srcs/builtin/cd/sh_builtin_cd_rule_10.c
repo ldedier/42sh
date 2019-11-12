@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 07:20:20 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/12 00:47:07 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/12 01:04:00 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ int			sh_builtin_cd_check_perms(char *curpath, char *param)
 **
 **	Returned Values:
 **		FAILURE : malloc error
+**		ERROR : write error
 **		SUCCESS : Successfully changed current directory,
 **					and updated PWD and OLDPWD
 */
@@ -111,8 +112,16 @@ int			sh_builtin_cd_rule10(
 		if (!ret)
 			sh_builtin_cd_update_pwd(context, args, curpath);
 		if (!ret && args[CD_HYPHEN_OPT].value)
-			ft_dprintf(FD_OUT,
-				"%s\n", sh_vars_get_value(context->saved_env, NULL, "PWD"));
+		{
+			if (write(FD_OUT, NULL, 0))
+			{
+				return (sh_perror2_err("write error",
+					context->params->tbl[0], SH_ERR1_BAD_FD));
+			}
+			else
+				ft_dprintf(FD_OUT,
+					"%s\n", sh_vars_get_value(context->saved_env, NULL, "PWD"));
+		}
 	}
 	return (ret);
 }
