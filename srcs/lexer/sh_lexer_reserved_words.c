@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/06 01:28:29 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/09 02:59:53 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/10 06:14:25 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ int				sh_lexer_reserved_words(t_lexer *lexer, t_token *token)
 			;
 		else if (ft_strrchr(token->value, '=') && sh_expansions_variable_valid_name(token->value))
 		{
-			if (sh_verbose_builtin())
-				ft_dprintf(2, RED"%s : assignment word\n"EOC, token->value);
+			if (sh_verbose_lexer())
+				ft_dprintf(2, MAGENTA"%s : assignment word\n"EOC, token->value);
 			t_token_update_id(LEX_TOK_ASSIGNMENT_WORD, token);
 		}
 		else

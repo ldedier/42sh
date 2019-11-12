@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/11/08 23:41:31 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/12 00:39:42 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,17 @@ PRINTFDIR = ft_printf
 
 VPATH		= $(INCLUDESDIR) \
 			  $(SRCDIR)/builtin \
+			  $(SRCDIR)/builtin/alias \
+			  $(SRCDIR)/builtin/bg \
+			  $(SRCDIR)/builtin/cd \
+			  $(SRCDIR)/builtin/fc \
+			  $(SRCDIR)/builtin/export \
+			  $(SRCDIR)/builtin/fc \
+			  $(SRCDIR)/builtin/fg \
+			  $(SRCDIR)/builtin/hash \
+			  $(SRCDIR)/builtin/jobs \
+			  $(SRCDIR)/builtin/test \
+			  $(SRCDIR)/builtin/type \
 			  $(SRCDIR)/command_line \
 			  $(SRCDIR)/command_line/autocomplete \
 			  $(SRCDIR)/command_line/shortcuts \
@@ -302,10 +313,14 @@ SRCS			+=	sh_add_redirection.c \
 ########						BUILTIN					########
 ################################################################
 SRCS			+=	sh_builtin.c sh_builtin_pwd.c \
-					sh_builtin_$(ECHO).c sh_builtin_exit.c \
-					sh_builtin_cd.c sh_builtin_cd_pre_rules.c \
-					sh_builtin_cd_post_rules.c \
-					sh_builtin_cd_last_rules.c \
+					sh_builtin_echo.c sh_builtin_exit.c \
+					sh_builtin_cd.c \
+					sh_builtin_cd_parser.c \
+					sh_builtin_cd_pre_rules.c \
+					sh_builtin_cd_rule_5.c \
+					sh_builtin_cd_rule_7.c \
+					sh_builtin_cd_rule_8.c \
+					sh_builtin_cd_rule_10.c \
 					sh_builtin_type.c sh_builtin_type_search_path.c \
 					sh_builtin_type_search.c\
 					sh_builtin_verbose.c \

@@ -1,0 +1,117 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sh_builtin_cd_rule_5.c                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/11/11 02:35:55 by jmartel           #+#    #+#             */
+/*   Updated: 2019/11/11 06:18:00 by jmartel          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "sh_21.h"
+
+//TO DEL
+#include <string.h>
+
+/*
+** sh_builtin_cd_cdpath_check_perm:
+**	Check if file designated by path exists, is a directory, and user have
+**	right permissions to open it.
+**
+**	Returned Values :
+**		SUCCESS : Everything is allright
+**		ERROR : On of the condition is invalid.
+*/
+
+static int	sh_builtin_cd_cdpath_check_perm(
+	char *path, char **curpath, t_args *args)
+{
+	struct stat	st;
+
+	if ((stat(path, &st)))
+		return (ERROR);
+	if (!S_ISDIR(st.st_mode))
+		return (ERROR);
+	if (access(path, X_OK))
+		return (ERROR);
+	*curpath = path;
+	args[CD_HYPHEN_OPT].value = &args;
+	return (SUCCESS);
+}
+
+/*
+**	5. Starting with the first pathname in the <colon>-separated pathnames of
+**	CDPATH (see the ENVIRONMENT VARIABLES section) if  the  pathname
+**	is non-null, test if the concatenation of that pathname, a <slash> character
+**	if that pathname did not end with a <slash> character, and the directory
+**	operand names a directory. If the pathname is null, test if the
+**	concatenation of dot, a <slash> character, and the  operand	names
+**	a directory. In either case, if the resulting string names an existing
+**	directory, set curpath to that string and proceed to step 7. Otherwise,
+**	repeat this step with the next pathname in CDPATH until all pathnames
+**	have been tested.
+*/
+
+static int	sh_builtin_cd_cdpath(
+	t_context *context, char **curpath, char *param, t_args *args)
+{
+	char	*cdpath;
+	char	*dir;
+	char	*path;
+
+	cdpath = sh_vars_get_value(context->env, context->vars, "CDPATH");
+	path = NULL;
+	while ((dir = strsep(&cdpath, ":")))
+	{
+		if (path)
+			ft_strdel(&path);
+		if (*dir)
+			path = ft_strjoin_path(dir, param);
+		else
+			path = ft_strjoin_path(".", param);
+		if (!path)
+			return (sh_perror(SH_ERR1_MALLOC, "sh_builtin_cd_cdpath"));
+		if (sh_builtin_cd_cdpath_check_perm(path, curpath, args) == SUCCESS)
+			break ;
+	}
+	return (SUCCESS);
+}
+
+/*
+** sh_builtin_cd_rule5:
+**	5. Starting with the first pathname in the <colon>-separated pathnames of
+**	CDPATH (see the ENVIRONMENT VARIABLES section) if  the  pathname
+**	is non-null, test if the concatenation of that pathname, a <slash> character
+**	if that pathname did not end with a <slash> character, and the directory
+**	operand names a directory. If the pathname is null, test if the
+**	concatenation of dot, a <slash> character, and the  operand	names
+**	a directory. In either case, if the resulting string names an existing
+**	directory, set curpath to that string and proceed to step 7. Otherwise,
+**	repeat this step with the next pathname in CDPATH until all pathnames
+**	have been tested.
+**	6. Set curpath to the directory operand. (correspond to second condition)
+**
+**	Returned Values
+**		SUCCESS : Applied rule 5 and 6 successfully
+**		FAILURE : Malloc error
+*/
+
+int			sh_builtin_cd_rule5(
+	t_context *context, char **curpath, char *param, t_args *args)
+{
+	char	*cdpath;
+	int		ret;
+
+	cdpath = sh_vars_get_value(context->env, context->vars, "CDPATH");
+	ret = SUCCESS;
+	if (cdpath && *cdpath)
+		ret = sh_builtin_cd_cdpath(context, curpath, param, args);
+	if (!ret && !*curpath)
+	{
+		if (!(*curpath = ft_strdup(param)))
+			sh_perror(SH_ERR1_MALLOC, "sh_builtin_cd_rule5");
+	}
+	return (ret);
+}

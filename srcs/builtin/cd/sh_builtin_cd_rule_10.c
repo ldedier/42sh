@@ -1,13 +1,12 @@
-
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sh_builtin_cd_last_rules.c                         :+:      :+:    :+:   */
+/*   sh_builtin_cd_rule_10.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 07:20:20 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/04 21:32:52 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/12 00:47:07 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +17,7 @@
 **	Update the PWD and OLDPW env variables. New value depend of options given.
 **	If -P had been used, the getcwd (3) function will be used.
 **	Else, the current curpath var will be used.
+**	In physical mode pwd s freed because it was malloced by getcwd (3).
 **
 **	Returned Values:
 **		FAILURE : malloc error
@@ -37,9 +37,8 @@ static int	sh_builtin_cd_update_pwd(
 		pwd = sh_builtin_pwd_physical();
 	if (!pwd)
 		return (ERROR);
-	old_pwd = sh_vars_get_value(context->env, NULL, "PWD");
 	ret = SUCCESS;
-	if (old_pwd)
+	if ((old_pwd = sh_vars_get_value(context->env, NULL, "PWD")))
 		ret = sh_vars_assign_key_val(
 			context->saved_env, NULL, "OLDPWD", old_pwd);
 	if (!ret)
@@ -50,17 +49,16 @@ static int	sh_builtin_cd_update_pwd(
 }
 
 /*
-** sh_builtin_cd_rule10_check_perms:
+** sh_builtin_cd_check_perms:
 **	Check if file designated by path exists, user have sufficient permissions.
-**	Error messages are written on fderr.
+**	Error messages are written on fderr if needed.
 **
 **	Returned Values:
 **		SUCCESS : file is invalid
 **		ERROR : file is invalid
 */
 
-static int	sh_builtin_cd_rule10_check_perms(
-	t_context *context, char *curpath, char *param)
+int			sh_builtin_cd_check_perms(char *curpath, char *param)
 {
 	int			ret;
 	struct stat	st;
@@ -72,8 +70,6 @@ static int	sh_builtin_cd_rule10_check_perms(
 		ret = sh_perror2_err(SH_ERR1_NOT_A_DIR, "cd", param);
 	else if (access(curpath, X_OK))
 		ret = sh_perror2_err(SH_ERR1_PERM_DENIED, "cd", param);
-	if (ret)
-		sh_env_update_ret_value(context->shell, SH_RET_ERROR);
 	return (ret);
 }
 
@@ -91,6 +87,8 @@ static int	sh_builtin_cd_rule10_check_perms(
 **	the new directory, or on any parent of that directory, to determine
 **	the current working directory, the value of the PWD environment
 **	variable is unspecified.
+**	If hyphen option was filled, it print current working directory. This
+**	correspond to 'cd -' case, or if CDPATH search was successfull.
 **
 **	Returned Values:
 **		FAILURE : malloc error
@@ -106,8 +104,8 @@ int			sh_builtin_cd_rule10(
 	ret = SUCCESS;
 	if (curpath && *curpath)
 	{
-		ret = sh_builtin_cd_rule10_check_perms(context, curpath, param);
-		if (!ret && curpath && *curpath)
+		ret = sh_builtin_cd_check_perms(curpath, param);
+		if (!ret)
 			if (chdir(curpath) == -1)
 				ret = sh_perror2(param, "cd", "unable to process");
 		if (!ret)

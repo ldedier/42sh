@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/16 05:23:32 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/09 09:18:31 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/10 08:25:14 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -101,6 +101,9 @@ launch "Globbing"
 	test_launch 'cd sandbox' 'echo file"[!2-3]"'
 	test_launch 'cd sandbox' 'echo .*/"a"* '
 	test_launch 'echo /dev/*'
+	test_launch 'nocmd *'
+	test_launch 'nocmd */*'
+	test_launch 'nocmd */*/*'
 
 	launch_show "Permissions"
 	test_launch 'cd sandbox' 'touch permission ; chmod 700 permission' 'echo ?????????? ; echo $?' 'echo ??????????/ ; echo $?' 'echo perm* ; echo $?' 'chmod 777 permission ; rm permission'

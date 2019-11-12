@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/22 19:04:46 by jmartel           #+#    #+#              #
-#    Updated: 2019/08/30 15:03:55 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/10 06:38:43 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,7 +59,7 @@ launch "cd"
 	test_launch "cd ../../../../../../../../../../" 'echo $?'
 	test_launch "cd -P /var" 'echo $?' "pwd" 'echo $?'
 	test_launch "cd -L /var" 'echo $?' "pwd" 'echo $?'
-	test_launch 'mkdir -p sandbox ; cd sandbox ; echo $? ; ln -s ../sandbox  ./link' "cd ./link" 'echo $?' "ls -a ; pwd ; cd ../.. ; rm -r sandbox"
+	test_launch 'mkdir -p ./cdtest ; cd cdtest ; echo $? ; ln -s ../cdtest  ./link' "cd ./link" 'echo $?' "ls -a ; pwd ; cd ../.. ; rm -r cdtest"
 	test_launch "mkdir dir ; ln -s dir link" 'echo $?' "cd dir ; pwd ; pwd -P" "cd ../link ; pwd ; pwd -P" "cd -P ../link ; pwd ; pwd -P" "cd .. ; rm -r dir link"
 	test_launch "mkdir dir ; chmod 100 dir ; cd dir && pwd && cd .. ; chmod 777 dir ; rm -r dir" "rm -rf dir"
 	test_launch "mkdir dir ; chmod 600 dir ; cd dir && pwd && cd .. ; chmod 777 dir ; rm -r dir" "rm -rf dir"
@@ -82,17 +82,17 @@ launch "cd"
 	test_launch "OLDPWD=asd" "cd .. ; pwd" "cd - ; pwd" "cd - ; pwd"
 
 	launch_show "parser"
-	test_launch 'mkdir -p sandbox ; cd sandbox ; rm -f link ; ln -s sandbox link'
-	test_launch 'cd -P sandbox/link/link' 'echo $? ; pwd'
-	test_launch 'cd -P -P -P -L sandbox/link/link' 'echo $? ; pwd'
-	test_launch 'cd -P -P -P -L -- sandbox/link/link' 'echo $? ; pwd'
-	test_launch 'cd -P -P -P -L -- -P sandbox/link/link' 'echo $? ; pwd'
+	test_launch 'mkdir -p cdtest ; cd cdtest ; rm -f link ; ln -s cdtest link'
+	test_launch 'cd -P cdtest/link/link' 'echo $? ; pwd'
+	test_launch 'cd -P -P -P -L cdtest/link/link' 'echo $? ; pwd'
+	test_launch 'cd -P -P -P -L -- cdtest/link/link' 'echo $? ; pwd'
+	test_launch 'cd -P -P -P -L -- -P cdtest/link/link' 'echo $? ; pwd'
 	test_launch 'cd -P -P -P -L -- -P' 'echo $? ; pwd'
 	test_launch 'cd -P -P -P -L -- -E' 'echo $? ; pwd'
-	test_launch 'cd -P -P -P -E -- sandbox/link' 'echo $? ; pwd'
-	test_launch 'cd --ok sandbox/link' 'echo $? ; pwd'
-	test_launch 'cd --ok sandbox/link/' 'echo $? ; pwd'
-	test_launch 'rm -rf sandbox'
+	test_launch 'cd -P -P -P -E -- cdtest/link' 'echo $? ; pwd'
+	test_launch 'cd --ok cdtest/link' 'echo $? ; pwd'
+	test_launch 'cd --ok cdtest/link/' 'echo $? ; pwd'
+	test_launch 'rm -rf cdtest'
 
 	launch_show "arguments"
 	test_launch 'cd nodir' 'echo $? ; pwd'
@@ -122,12 +122,29 @@ launch "cd"
 	test_launch 'cd -P ././../..' 'echo $?' "pwd"
 	test_launch 'cd ...' 'echo $?' "pwd"
 	test_launch 'cd -P ...' 'echo $?' "pwd"
+	test_launch 'cd /. ; echo $? ; pwd'
+	test_launch 'cd /.. ; echo $? ; pwd'
+	test_launch 'cd /./ ; echo $? ; pwd'
+	test_launch 'cd /../ ; echo $? ; pwd'
+	test_launch 'cd /././ ; echo $? ; pwd'
+	test_launch 'cd /./../ ; echo $? ; pwd'
+	test_launch 'cd /.././ ; echo $? ; pwd'
 
 	launch_show "Old errors"
 	test_launch "cd ././../.." 'echo $?' "pwd"
 	test_launch 'cd -P ././../..' 'echo $?' "pwd"
 	test_launch 'cd ...' 'echo $?' "pwd"
 	test_launch 'cd -P ...' 'echo $?' "pwd"
+	test_launch 'cd .//..' 'echo $?' "pwd"
+	test_launch 'cd .//../' 'echo $?' "pwd"
+	test_launch 'cd .././../' 'echo $?' "pwd"
+	test_launch 'cd /./../' 'echo $?' "pwd"
+	test_launch 'cd /./../tmp' 'echo $?' "pwd"
+	test_launch 'cd okalm/..' 'echo $?' "pwd"
+	test_launch 'cd ./okalm/..' 'echo $?' "pwd"
+	test_launch 'cd ../okalm/..' 'echo $?' "pwd"
+	test_launch 'cd /../okalm/..' 'echo $?' "pwd"
+	test_launch 'cd ././.pwd/okalm/../..' 'echo $?' "pwd"
 
 #	launch_show "Deprecated"
 	# test_launch "PWD=" "OLDPWD=" "cd -" "cd -"

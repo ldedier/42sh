@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 03:46:18 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/07 04:53:50 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/10 10:07:46 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 ** create_regexp:
 **	Malloc and fill a t_list, containing a malloced t_regexp structure.
 **	regexp struct is filled using params given as argument.
+**	Using i - start - 1 in strndup not to copy the closing ']'.
 **
 **	Returned Values
 **		SUCCESS
@@ -27,7 +28,7 @@ static int	create_regexp(t_list **regexp_list, char *str, int start, int i)
 	t_regexp	*regexp;
 	char		*value;
 
-	if (!(value = ft_strndup(str + start, i - start)))
+	if (!(value = ft_strndup(str + start, i - start - 1)))
 		return (FAILURE);
 	if (!(regexp = t_regexp_new_push(regexp_list)))
 	{
@@ -82,13 +83,13 @@ static void	parse_new_brace_find_end(
 	}
 	while (str[*i] && str[*i] != ']')
 	{
-		if (str[*i] == '\'' || str[*i] == '\\' || str[*i] == '"')
+		if (*quoted)
+			new_brace_quoted(str, i, quoted);
+		else if (str[*i] == '\'' || str[*i] == '\\' || str[*i] == '"')
 		{
 			*quoted = str[*i];
 			(*i) += 1;
 		}
-		else if (*quoted)
-			new_brace_quoted(str, i, quoted);
 		else
 			(*i)++;
 	}
@@ -115,7 +116,7 @@ int			sh_regexp_parse_new_brace(char *str, int *i, t_list **regexp_list)
 	char		quoted;
 	int			first_closing;
 
-	start = *i;
+	start = *i + 1;
 	parse_new_brace_find_end(str, i, &first_closing, &quoted);
 	if (quoted)
 		return (ERROR);
@@ -128,6 +129,6 @@ int			sh_regexp_parse_new_brace(char *str, int *i, t_list **regexp_list)
 		}
 		*i = first_closing - 1;
 	}
-	(*i)++;
+	(*i) += 1;
 	return (create_regexp(regexp_list, str, start, *i));
 }
