@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/06 22:53:28 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/10 02:00:01 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/13 05:46:19 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ static int	show_get_min(char **min, char **alias)
 			if (ft_strcmp(*min, alias[i]) < 0)
 				new_min = alias[i];
 		}
-		else if (ft_strcmp(new_min, alias[i]) > 0 && ft_strcmp(*min, alias[i]) < 0)
+		else if (ft_strcmp(new_min, alias[i]) > 0
+			&& ft_strcmp(*min, alias[i]) < 0)
 			new_min = alias[i];
 		i++;
 	}
@@ -64,7 +65,7 @@ void		show_alias(char *str)
 		ft_putchar('\'');
 		while (equal[i])
 		{
-			if (equal[i] == '\'' || equal[i] == '\\')// || equal[i] == '\"')
+			if (equal[i] == '\'' || equal[i] == '\\')
 				ft_putchar('\\');
 			ft_putchar(equal[i]);
 			i++;
