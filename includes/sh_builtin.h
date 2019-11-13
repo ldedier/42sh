@@ -423,8 +423,6 @@ int					sh_builtin_type_search_hash(
 /*
 ** type/sh_builtin_type_search_path.c
 */
-int					sh_builtin_type_search_in_dir(
-	char *path, DIR *dir, t_context *context, char *name);
 int					sh_builtin_type_search_in_path(
 	t_context *context, char *name, t_args args[]);
 

@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/11 02:35:55 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/13 02:57:43 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/13 03:46:05 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ static int	sh_builtin_cd_cdpath(
 		if (sh_builtin_cd_cdpath_check_perm(path, curpath, args) == SUCCESS)
 			break ;
 	}
+	if (!dir && path)
+		ft_strdel(&path);
 	ft_strsep(NULL, NULL);
 	return (SUCCESS);
 }
