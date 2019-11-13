@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_expansions_proc_subst_out.c                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 14:29:58 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/15 07:58:19 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/13 09:26:33 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,41 +14,41 @@
 
 int			sh_expansions_proc_subst_out_detect(char *start)
 {
-    int     i;
-    int     quoted;
-    int     parenthesis;
+	int	i;
+	int	quoted;
+	int	parenthesis;
 
 	i = 0;
 	if (start[0] != '<' && start[1] == '(')
-        return (-1);
+		return (-1);
 	quoted = 0;
-    parenthesis = 1;
-    i++;
-    while (start[i] && parenthesis > 0)
-    {
-        if (start[i] == '\\' && start[i + 1])
-            i += 1;
-        else if (!quoted && (start[i] == '\'' || start[i] == '"'))
-            quoted = start[i];
-        else if (quoted && start[i] == quoted)
-            quoted = 0;
-        else if (!quoted && start[i] == ')')
-            parenthesis--;
-        i++;
-    }
-    if (!start[i] && parenthesis > 0)
-        return (-1);
-    return (i);
+	parenthesis = 1;
+	i++;
+	while (start[i] && parenthesis > 0)
+	{
+		if (start[i] == '\\' && start[i + 1])
+			i += 1;
+		else if (!quoted && (start[i] == '\'' || start[i] == '"'))
+			quoted = start[i];
+		else if (quoted && start[i] == quoted)
+			quoted = 0;
+		else if (!quoted && start[i] == ')')
+			parenthesis--;
+		i++;
+	}
+	if (!start[i] && parenthesis > 0)
+		return (-1);
+	return (i);
 }
 
 int			sh_expansions_proc_subst_out_fill(t_expansion *exp, char *start)
 {
-    int     i;
+	int		i;
 
 	i = sh_expansions_proc_subst_out_detect(start);
 	if (i == -1)
 		return (ERROR);
-    if (!(exp->original = ft_strndup(start, i)))
+	if (!(exp->original = ft_strndup(start, i)))
 		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_proc_subst_out_fill (1)"));
 	if (!(exp->expansion = ft_strndup(start + 2, i - 3)))
 		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_proc_subst_out_fill (2)"));
@@ -85,7 +85,9 @@ char		*sh_get_process_subst_out(t_shell *shell, char *command)
 		close(fds[PIPE_IN]);
 		if (!(str = sh_get_fd_string(fds[PIPE_OUT])))
 			return (NULL);
-		ft_printf("remains to close fd after the command execution: %d\n", fds[PIPE_OUT]);
+		// mdaoud: Pq cette ligne de printf? je l'ai comment out pcq ca cause des problemes.
+		// Ca imprime sur stdout du coup les tests donnent des erreurs.
+		// ft_printf("remains to close fd after the command execution: %d\n", fds[PIPE_OUT]);
 		return (str);
 	}
 }

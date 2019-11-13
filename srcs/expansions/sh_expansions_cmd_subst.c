@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 14:29:58 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/12 17:03:52 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/13 09:27:04 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,6 @@ static int	child_part(t_context *context, char *command, int fds[])
 	g_job_ctrl->interactive = 1;
 	close(fds[PIPE_IN]);
 	sh_free_all(context->shell);
-	// ft_dprintf(g_term_fd, "Child ret: %#X (%d)\n", context->shell->ret_value, context->shell->ret_value);
-	// if (ret)
-		// return (ret);
 	return (context->shell->ret_value);
 }
 
@@ -47,14 +44,8 @@ static int	parent_part(t_context *context, char **str, int fds[], int cpid)
 	sh_env_update_ret_value_wait_result(context, ret);
 	sh_env_update_question_mark(context->shell);
 	sh_post_execution();
-	// g_glob.command_line.interrupted = WIFSIGNALED(ret) || WIFSTOPPED(ret);
-	if (WIFEXITED(ret) && !WEXITSTATUS(ret))
-	{
-		if ((*str = get_string_from_fd(fds[PIPE_OUT])) == NULL)
-			return (FAILURE);
-	}
-	else
-		*str = ft_strdup("");
+	if ((*str = get_string_from_fd(fds[PIPE_OUT])) == NULL)
+		return (FAILURE);
 	if (WIFSIGNALED(ret) && (WTERMSIG(ret) == SIGINT))
 	{
 		close(fds[PIPE_OUT]);
