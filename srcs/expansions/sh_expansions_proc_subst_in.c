@@ -97,6 +97,7 @@ char		*sh_get_process_subst_in(t_shell *shell, char *command)
 		close(fds[PIPE_OUT]);
 		if (!(str = sh_get_fd_string(fds[PIPE_IN])))
 			return (NULL);
+		//wait(NULL);
 		return (str);
 	}
 }

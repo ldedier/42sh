@@ -58,7 +58,8 @@ int			sh_expansions_proc_subst_out_fill(t_expansion *exp, char *start)
 
 }
 
-char		*sh_get_process_subst_out(t_shell *shell, char *command)
+static char	*sh_get_process_subst_out(t_shell *shell,
+				char *command, t_list **redirections)
 {
 	char	*str;
 	int		fds[2];
@@ -81,11 +82,16 @@ char		*sh_get_process_subst_out(t_shell *shell, char *command)
 	}
 	else
 	{
-		//{ child => PID du subshell }
 		close(fds[PIPE_IN]);
 		if (!(str = sh_get_fd_string(fds[PIPE_OUT])))
 			return (NULL);
-		ft_printf("remains to close fd after the command execution: %d\n", fds[PIPE_OUT]);
+		(void)redirections;
+		if (sh_add_redirection_pipe(fds[PIPE_OUT], redirections))
+		{
+			free(str);
+			return (NULL);
+		}
+		wait(NULL); //to remove !
 		return (str);
 	}
 }
@@ -95,7 +101,8 @@ int			sh_expansions_proc_subst_out_process(t_context *context,
 {
 	char *str;
 	
-	if (!(str = sh_get_process_subst_out(context->shell, exp->expansion)))
+	if (!(str = sh_get_process_subst_out(context->shell, exp->expansion,
+		&context->redirections)))
 		return (FAILURE);
 	if (!(exp->res = ft_dy_str_new_str(str)))
 	{
