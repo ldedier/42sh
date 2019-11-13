@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/11 02:35:55 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/11 06:18:00 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/13 02:57:43 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ static int	sh_builtin_cd_cdpath_check_perm(
 		return (ERROR);
 	*curpath = path;
 	args[CD_HYPHEN_OPT].value = &args;
+	if (sh_verbose_builtin())
+		ft_dprintf(2, MAGENTA"cd : rule 5 : Filled *curpath using CDPATH\n"EOC);
 	return (SUCCESS);
 }
 
@@ -63,8 +65,9 @@ static int	sh_builtin_cd_cdpath(
 
 	cdpath = sh_vars_get_value(context->env, context->vars, "CDPATH");
 	path = NULL;
-	while ((dir = strsep(&cdpath, ":")))
+	while ((dir = ft_strsep(&cdpath, ":")))
 	{
+		ft_dprintf(2, "dir :%s (%c)\n", dir, *dir);
 		if (path)
 			ft_strdel(&path);
 		if (*dir)
@@ -76,6 +79,7 @@ static int	sh_builtin_cd_cdpath(
 		if (sh_builtin_cd_cdpath_check_perm(path, curpath, args) == SUCCESS)
 			break ;
 	}
+	ft_strsep(NULL, NULL);
 	return (SUCCESS);
 }
 
