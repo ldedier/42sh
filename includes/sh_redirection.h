@@ -50,9 +50,7 @@ int					sh_add_redirection_aggreg(
 	int redirected_fd,
 	int fd,
 	t_list **list);
-int					sh_add_redirection_pipe(
-	int fd,
-	t_list **list);
+int 				sh_add_redirection_pipe(int fd, t_list **list);
 
 /*
 ** sh_check_open_fd.c

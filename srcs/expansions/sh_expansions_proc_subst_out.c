@@ -55,7 +55,6 @@ int			sh_expansions_proc_subst_out_fill(t_expansion *exp, char *start)
 	exp->type = EXP_PROC_SUBST_OUT;
 	exp->process = &sh_expansions_proc_subst_out_process;
 	return (SUCCESS);
-
 }
 
 static char	*sh_get_process_subst_out(t_shell *shell,

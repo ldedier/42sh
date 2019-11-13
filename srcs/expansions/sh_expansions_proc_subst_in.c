@@ -70,7 +70,8 @@ char		*sh_get_fd_string(int fd)
 	return (str);
 }
 
-char		*sh_get_process_subst_in(t_shell *shell, char *command)
+char		*sh_get_process_subst_in(t_shell *shell, char *command,
+				t_list **redirections)
 {
 	char	*str;
 	int		fds[2];
@@ -83,6 +84,7 @@ char		*sh_get_process_subst_in(t_shell *shell, char *command)
 		return (sh_perrorn(SH_ERR1_FORK, "sh_get_process_subst_in"));
 	if (child == 0)
 	{
+		ft_printf("child pid: %zu\n", getpid());
 		if (dup2(fds[PIPE_OUT], STDIN_FILENO) < 0)
 			return (sh_perrorn(SH_ERR1_INTERN_ERR, "sh_get_process_subst_in"));
 		close(fds[PIPE_IN]);
@@ -94,10 +96,15 @@ char		*sh_get_process_subst_in(t_shell *shell, char *command)
 	else
 	{
 		//{ child => PID du subshell }
+		ft_printf("shell pid: %zu\n", getpid());
 		close(fds[PIPE_OUT]);
 		if (!(str = sh_get_fd_string(fds[PIPE_IN])))
 			return (NULL);
-		//wait(NULL);
+		if (sh_add_redirection_pipe(fds[PIPE_IN], redirections))
+		{
+			free(str);
+			return (NULL);
+		}
 		return (str);
 	}
 }
@@ -108,8 +115,11 @@ int			sh_expansions_proc_subst_in_process(t_context *context,
 
 	char *str;
 
-	if (!(str = sh_get_process_subst_in(context->shell, exp->expansion)))
+	if (!(str = sh_get_process_subst_in(context->shell, exp->expansion,
+		&context->redirections)))
+	{
 		return (FAILURE);
+	}
 	if (!(exp->res = ft_dy_str_new_str(str)))
 	{
 		free(str);

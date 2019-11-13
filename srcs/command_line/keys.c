@@ -115,7 +115,10 @@ int		get_keys(t_shell *shell, t_command_line *cl)
 	while (1)
 	{
 		if (read(0, &cl->buffer.buff[cl->buffer.progress++], 1) < 0)
+		{
+			ft_printf("%zu\n", getpid());
 			return (sh_perror(SH_ERR1_READ, "get_keys"));
+		}
 		//sh_print_buffer(cl->buffer);
 		if ((res = process_get_keys(&cl->buffer, shell, cl)) != KEEP_READ)
 			return (res);
