@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/16 05:23:32 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/10 08:25:14 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/13 10:41:38 by jdugoudr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -153,6 +153,10 @@ launch "Globbing"
 	test_launch 'cd empty' 'echo **'
 	test_launch 'cd empty' 'echo [!a-z]'
 	test_launch 'cd empty' 'echo [4-z][A-b]'
+
+	launch_show "Absolute path"
+	test_launch 'ls /de*'
+	test_launch 'ls ~/De*'
 	
 	rm -rf empty
 	# rm -rf sandbox
