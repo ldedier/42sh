@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 12:03:42 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/04 19:40:22 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/13 06:34:39 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,22 @@
 
 int			add_choices_path(t_shell *shell, t_word *word, char *path_str)
 {
-	char			**path_split;
-	int				i;
+	char			*path;
 	t_choice_filler	c;
 
-	if (!(path_split = ft_strsplit(path_str, ':')))
-		return (1);
-	i = 0;
 	c.word = word;
 	c.types = -1;
 	c.path = NULL;
 	c.suffix = NULL;
-	while (path_split[i])
+	while ((path = ft_strsep(&path_str, ":")))
 	{
-		c.transformed_path = path_split[i];
+		c.transformed_path = path;
 		if (add_choices_from_dir(shell, &c))
 		{
-			ft_strtab_free(path_split);
+			ft_strsep(NULL, NULL);
 			return (1);
 		}
-		i++;
 	}
-	ft_strtab_free(path_split);
 	return (0);
 }
 
