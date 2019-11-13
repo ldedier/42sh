@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/11 02:35:55 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/13 05:20:33 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/13 08:27:11 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	sh_builtin_cd_cdpath_check_perm(
 {
 	struct stat	st;
 
-	if ((stat(path, &st)))
+	if ((stat(path, &st) == -1))
 		return (ERROR);
 	if (!S_ISDIR(st.st_mode))
 		return (ERROR);
@@ -64,7 +64,6 @@ static int	sh_builtin_cd_cdpath(
 	path = NULL;
 	while ((dir = ft_strsep(&cdpath, ":")))
 	{
-		ft_dprintf(2, "dir :%s (%c)\n", dir, *dir);
 		if (path)
 			ft_strdel(&path);
 		if (*dir)
