@@ -344,9 +344,12 @@ int					sh_builtin_exit(t_context *context);
 /*
 ** sh_builtin_parser.c
 */
-int					sh_builtin_parser_is_boolean(t_args args[], char opt);
 int					sh_builtin_parser(
 	int argc, char **argv, t_args args[], int *index);
+
+/*
+** sh_builtin_parser_usage.c
+*/
 void				sh_builtin_parser_show(t_args args[]);
 int					sh_builtin_usage(
 	t_args args[], char *name, char *usage, t_context *context);

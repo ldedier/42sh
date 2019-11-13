@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/15 13:19:47 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/10 16:02:13 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/13 04:49:42 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,22 +85,7 @@ static int	paser_short_arg(char **argv, int *index, t_args args[])
 	return (SUCCESS);
 }
 
-int		sh_builtin_parser_is_boolean(t_args args[], char opt)
-{
-	while (args->type != E_ARGS_END)
-	{
-		if (args->name_short == opt)
-		{
-			if (args->value)
-				return (1);
-			return (0);
-		}
-		args++;
-	}
-	return (0);
-}
-
-int		sh_builtin_parser(int argc, char **argv, t_args args[], int *index)
+int			sh_builtin_parser(int argc, char **argv, t_args args[], int *index)
 {
 	int		ret;
 
@@ -124,48 +109,4 @@ int		sh_builtin_parser(int argc, char **argv, t_args args[], int *index)
 		(*index)++;
 	}
 	return (ret);
-}
-
-void	sh_builtin_parser_show(t_args args[])
-{
-	while (args && args->type != E_ARGS_END)
-	{
-		if (args->type == E_ARGS_BOOL)
-			ft_dprintf(2, "short : %c || long : %s || value : %p || priority : %d\n", args->name_short, args->name_long, args->value, args->priority);
-		else if (args->type == E_ARGS_INT)
-			ft_dprintf(2, "short : %c || long : %s || value : %d || priority : %d\n", args->name_short, args->name_long, args->value, args->priority);
-		else if (args->type == E_ARGS_STRING)
-			ft_dprintf(2, "short : %c || long : %s || value : %s || priority : %d\n", args->name_short, args->name_long, args->value, args->priority);
-		args++;
-	}
-}
-
-int		sh_builtin_usage(t_args args[], char *name, char *usage, t_context *context)
-{
-	int		i;
-	int		fd;
-
-	fd = FD_ERR;
-	if (isatty(2))
-		ft_dprintf(fd, SH_ERR_COLOR);
-	ft_dprintf(fd, "Usage: %s %s\n", name, usage);
-	i = 0;
-	while (args && args[i].type != E_ARGS_END)
-	{
-		if (args[i].name_short && args[i].name_long)
-			ft_dprintf(fd, "  -%c, --%s", args[i].name_short, args[i].name_long);
-		else if (args[i].name_short)
-			ft_dprintf(fd, "  -%c", args[i].name_short);
-		else if (args[i].name_long)
-			ft_dprintf(fd, "  --%s", args[i].name_long);
-		if (args[i].usage)
-			ft_dprintf(fd, ": %s", args[i].usage);
-		if (args[i].name_short || args[i].name_long || args[i].usage)
-			ft_dprintf(fd, "\n");
-		i++;
-	}
-	if (isatty(2))
-		ft_dprintf(fd, EOC);
-	sh_env_update_ret_value(context->shell, SH_RET_ARG_ERROR);
-	return (ERROR);
 }
