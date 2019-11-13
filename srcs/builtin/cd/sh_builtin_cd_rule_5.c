@@ -6,14 +6,11 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/11 02:35:55 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/13 03:46:05 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/13 05:20:33 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
-
-//TO DEL
-#include <string.h>
 
 /*
 ** sh_builtin_cd_cdpath_check_perm:

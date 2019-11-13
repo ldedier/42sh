@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_builtin_test.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/05 10:07:10 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/08/27 15:53:51 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/13 05:17:30 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,6 @@ int			sh_builtin_test(t_context *context)
 	else if (i == 3)
 		ret = three_params((char **)context->params->tbl + 1);
 	else
-		ret = four_params((char **)context->params->tbl + 1);	// if (ret > 1)
-	// 	sh_env_update_ret_value(context->shell, 2);
+		ret = four_params((char **)context->params->tbl + 1);
 	return (ret);
 }

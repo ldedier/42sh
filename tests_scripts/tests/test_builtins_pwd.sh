@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/22 19:04:59 by jmartel           #+#    #+#              #
-#    Updated: 2019/08/22 19:05:13 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/13 04:46:13 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ launch "pwd"
 	test_launch "cd sandbox/link/link" "pwd -L -P"
 	test_launch "cd sandbox/link/link" "pwd -L -P -L"
 
-launch "write pwd"
+	launch_show "write pwd"
 	test_launch "pwd 1>&-"
 	test_launch "pwd -E 1>&-"
 	test_launch "pwd -E 2>&-"

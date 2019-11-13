@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/22 19:04:46 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/10 06:38:43 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/13 03:55:22 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,8 @@ launch "cd"
 	test_launch 'CDPATH="/:$HOME:::::' 'cd srcs ; echo $? ; pwd' 'cd Desktop ; echo $? ; pwd' 'cd tmp ; echo $? ; pwd' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
 
 	test_launch "CDPATH=~/ cd Desktop ; pwd ; cd .. ; pwd"
+	test_launch "CDPATH=/bin:/:~/ cd Desktop ; pwd ; cd .. ; pwd"
+	test_launch "CDPATH=/bin:~/:/ cd Desktop ; pwd ; cd .. ; pwd" "cd tmp ; pwd ; cd .. ; pwd" 'cd Desktop ; pwd ; cd .. ; pwd'
 	test_launch "CDPATH=/:~/ cd Desktop ; pwd ; cd .. ; pwd"
 	test_launch "CDPATH=:~/ cd Desktop ; pwd ; cd .. ; pwd"
 	test_launch "CDPATH=~/ ; cd Desktop ; pwd ; cd .. ; pwd"
@@ -105,6 +107,7 @@ launch "cd"
 
 	launch_show "returned value"
 	test_launch "cd nodir" 'ech	o $?'
+	test_launch "cd nodir" 'echo $?'
 	test_launch "ln -s nowhere link"  "cd link" 'echo $?'
 	test_launch "rm link" "cd .." 'echo $?'
 	test_launch "cd" 'echo $?'

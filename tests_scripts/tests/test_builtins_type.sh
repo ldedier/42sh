@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/06/06 16:09:28 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/12 06:55:05 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/13 04:02:26 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,6 +59,16 @@ launch "type"
 	test_launch 'ls' 'type -a -t -p cd ls brew type while'
 	test_launch 'ls' 'type -a -t -p cd ls brewe type while'
 	test_launch 'ls' 'alias ls=ok' 'type -a -t -p cd ls brewe type while'
+
+	launch_show 'Especial'
+	test_launch 'unset PATH' 'PATH=/bin' 'type ls cd'
+	test_launch 'unset PATH' 'PATH=/' 'type ls cd'
+	test_launch 'PATH=$PATH:./' 'touch binary ; chmod 000 binary' 'type binary' 'chmod 777 binary ; rm -f binary'
+	test_launch 'PATH=$PATH:./' 'touch binary ; chmod 100 binary' 'type binary' 'chmod 777 binary ; rm -f binary'
+	test_launch 'PATH=$PATH:./' 'touch binary ; chmod 110 binary' 'type binary' 'chmod 777 binary ; rm -f binary'
+	test_launch 'PATH=$PATH:./' 'touch binary ; chmod 010 binary' 'type binary' 'chmod 777 binary ; rm -f binary'
+	test_launch 'PATH=$PATH:./' 'touch binary ; chmod 011 binary' 'type binary' 'chmod 777 binary ; rm -f binary'
+	test_launch 'PATH=$PATH:./' 'touch binary ; chmod 001 binary' 'type binary' 'chmod 777 binary ; rm -f binary'
 
 	launch_show 'tests added during code review'
 	test_launch 'shopt -s expand_aliases' 'ls' 'alias pwd=tamer' 'type cd ls while cp pwd'
