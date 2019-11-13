@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/22 19:04:46 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/13 03:55:22 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/13 08:53:55 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,20 @@ launch "cd"
 	test_launch "export CDPATH=/ ; cd tmp ; pwd ; cd .. ; pwd"
 	test_launch "export CDPATH=/: ; cd tmp ; pwd ; cd .. ; pwd"
 	test_launch "export CDPATH=/:. ; cd tmp ; pwd ; cd .. ; pwd"
+	test_launch "export CDPATH= ; cd tmp ; pwd ; cd .. ; pwd"
+	test_launch "export CDPATH=/bin/bin/bin:/ ; cd tmp ; pwd ; cd .. ; pwd"
+	test_launch 'export CDPATH=/bin:$HOME:/bin:/ ; cd Desktop ; pwd ; echo $?' 'cd tmp ; pwd ; echo $?' 'cd tmp ; pwd ; echo $?' 'cd .. ; pwd'
+	test_launch 'CDPATH=$PWD' 'cd / ; pwd' 'cd srcs ; echo $? ; pwd'
+	test_launch 'CDPATH=$PWD' 'cd .. ; pwd' 'cd srcs ; echo $? ; pwd'
 
+	launch_show "with symlinks"
+	rm -rf ./symbolic_link1 ./symbolic_link2 ./symbolic_link3 link good_link
+	ln -s ./symbolic_link1 ./symbolic_link2 ; ln -s ./symbolic_link2 ./symbolic_link3 ; ln -s ./symbolic_link3 ./symbolic_link1 ; ln -s nowhere link
+	ln -s ~/Desktop good_link
+	test_launch 'export CDPATH=:/:$PWD:$HOME:' 'cd .. ; cd symbolic_link2 ; echo $? ; pwd' 'cd / ; cd link ; echo $? ; pwd'
+	test_launch 'export CDPATH=:/:$PWD::' 'cd .. ; cd good_link ; echo $? ; pwd' 'cd .. ; echo $? ; pwd'
+
+	rm -rf ./symbolic_link1 ./symbolic_link2 ./symbolic_link3 link good_link
 
 	launch_show "simple"
 	test_launch "cd" 'echo $?' "pwd"
