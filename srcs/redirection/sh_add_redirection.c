@@ -21,11 +21,11 @@ static t_redirection	sh_new_redir(
 	redir.backup = -1;
 	redir.fd = fd;
 	redir.was_closed = -1;
-	if (redirected_fd == -1)
+	if (redirected_fd == -1 && type != PIPE)
 	{
 		if (type == INPUT)
 			redir.redirected_fd = STDIN_FILENO;
-		else
+		else if (type == OUTPUT)
 			redir.redirected_fd = STDOUT_FILENO;
 	}
 	else
@@ -94,4 +94,18 @@ int					sh_add_redirection_aggreg(
 		return (SUCCESS);
 	redirection = sh_new_redir(type, redirected_fd, fd);
 	return (sh_add_redirection(redirection, list));
+}
+
+int 				sh_add_redirection_pipe(int fd, t_list **list)
+{
+	t_redirection	redirection;
+
+	redirection = sh_new_redir(PIPE, -1, fd);
+	redirection.was_closed = 1;
+	if (ft_lstaddnew(list, &redirection, sizeof(t_redirection)))
+	{
+		sh_perror(SH_ERR1_MALLOC, "sh_add_redirection");
+		return (ERROR);
+	}
+	return (SUCCESS);
 }

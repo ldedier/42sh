@@ -19,7 +19,8 @@
 typedef enum		e_redirection_type
 {
 	INPUT,
-	OUTPUT
+	OUTPUT,
+	PIPE
 }					t_redirection_type;
 
 typedef struct			s_redirection
@@ -47,6 +48,9 @@ int 				sh_add_redirection_file(
 int					sh_add_redirection_aggreg(
 	t_redirection_type type,
 	int redirected_fd,
+	int fd,
+	t_list **list);
+int					sh_add_redirection_pipe(
 	int fd,
 	t_list **list);
 
