@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/05 01:23:20 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/13 08:25:16 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/13 08:38:09 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 **
 **	Returned Values
 **		SUCCESS : Found too many symlinks
-**		ERROR : Cylce stopped to early
+**		ERROR : Cycle stopped to early
 */
 
 int			check_for_symlink_loop(struct stat *st, char *path, int i)
