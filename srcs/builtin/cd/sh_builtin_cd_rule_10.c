@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 07:20:20 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/12 01:04:00 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/13 08:24:14 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,15 @@ int			sh_builtin_cd_check_perms(char *curpath, char *param)
 	struct stat	st;
 
 	ret = SUCCESS;
-	if (stat(curpath, &st) == -1)
-		ret = sh_perror_err(param, SH_ERR2_NO_SUCH_FILE_OR_DIR);
+	if (stat(curpath, &st) == -1 && lstat(curpath, &st) != -1)
+	{
+		if (check_for_symlink_loop(&st, curpath, 0) == SUCCESS)
+			ret = sh_perror2_err("too many levels of symbolic links", "cd", param);
+		else
+			ret = sh_perror2_err(param, "cd", SH_ERR2_NO_SUCH_FILE_OR_DIR);
+	}
+	else if (stat(curpath, &st) == -1)
+		ret = sh_perror2_err(param, "cd", SH_ERR2_NO_SUCH_FILE_OR_DIR);
 	else if (!S_ISDIR(st.st_mode))
 		ret = sh_perror2_err(SH_ERR1_NOT_A_DIR, "cd", param);
 	else if (access(curpath, X_OK))
