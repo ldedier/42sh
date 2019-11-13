@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 08:15:26 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/13 03:40:42 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/13 03:41:12 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,22 +38,6 @@ static char	*finish_cycle(t_strsep *sep)
 		restore_previous_delimiter(sep);
 	ft_bzero(sep, sizeof(*sep));
 	return (NULL);
-}
-
-static void	show_state(t_strsep *sep, int i)
-{
-	if (i)
-		ft_dprintf(2, "sep : %d\n", i);
-	if (sep->head)
-		ft_dprintf(2, "head : %s (%c)\n", sep->head, *sep->head);
-	else
-		ft_dprintf(2, "head : %s\n", sep->head);
-	if (sep->saved_start)
-		ft_dprintf(2, "saved_start : %p\n", *sep->saved_start);
-	if (sep->end)
-		ft_dprintf(2, "end : %p\n", sep->end);
-	if (sep->save)
-		ft_dprintf(2, "save : %c\n", sep->save);
 }
 
 /*
@@ -90,28 +74,21 @@ char		*ft_strsep(char **original_start, char *delim)
 	static t_strsep	sep;
 	char			*buffer;
 
-	// ft_dprintf(2, RED"NEW CYCLE !!\n"EOC);
 	if (!original_start || !*original_start)
 		return (finish_cycle(&sep));
-	// show_state(&sep, 1);
 	if (sep.saved_start != original_start)
 		init_cycle(&sep, original_start);
 	else if (sep.head && sep.head == sep.end)
 		return (finish_cycle(&sep));
-	// show_state(&sep, 2);
 	if (sep.save)
 		restore_previous_delimiter(&sep);
-	// show_state(&sep, 3);
 	if (!(buffer = ft_strpbrk(sep.head, delim)))
 	{
-		// ft_dprintf(2, RED"LAST CYCLE !!!!!!!\n"EOC);
 		buffer = sep.head;
 		sep.head = ft_strchr(sep.head, '\0');
 		return (buffer);
 	}
 	sep.save = *buffer;
 	*buffer = '\0';
-	// show_state(&sep, 4);
 	return (sep.head);
-	show_state(&sep, 4); //todel
 }
