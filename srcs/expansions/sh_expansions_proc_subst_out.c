@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 14:29:58 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/13 09:26:33 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/13 10:58:50 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,10 @@ char		*sh_get_process_subst_out(t_shell *shell, char *command)
 	}
 	else
 	{
-		//{ child => PID du subshell }
 		close(fds[PIPE_IN]);
 		if (!(str = sh_get_fd_string(fds[PIPE_OUT])))
 			return (NULL);
-		// mdaoud: Pq cette ligne de printf? je l'ai comment out pcq ca cause des problemes.
-		// Ca imprime sur stdout du coup les tests donnent des erreurs.
+		// mdaoud: un close oublie qq part?
 		// ft_printf("remains to close fd after the command execution: %d\n", fds[PIPE_OUT]);
 		return (str);
 	}
