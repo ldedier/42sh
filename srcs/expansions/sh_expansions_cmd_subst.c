@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 14:29:58 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/10 08:23:23 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/14 10:49:00 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,6 @@ char	*get_string_from_fd(int fd)
 	free(info.line);
 	if (!res)
 	{
-		ft_dprintf(2, "found nothing in pipe !\n");
 		if (!(res = ft_strnew(0)))
 			return (sh_perrorn(SH_ERR1_MALLOC, "get_string_from_fd"));
 	}
@@ -164,11 +163,19 @@ char 	*get_subshell_output(t_shell *shell, char *command)
 		return (sh_perrorn(SH_ERR1_FORK, "get_subshell_output"));
 	if (child == 0)
 	{
+		g_job_ctrl->interactive = 1;
+		if (sh_pre_execution() != SUCCESS)
+			exit (FAILURE);
+		g_job_ctrl->interactive = 0;
+		signal(SIGINT, handle_int);
 		if (dup2(fds[PIPE_IN], STDOUT_FILENO) < 0)
 			return (sh_perrorn(SH_ERR1_INTERN_ERR, "get_subshell_output"));
 		close(fds[PIPE_OUT]);
 		ret = execute_command(shell, command, 0);
 		close(fds[PIPE_IN]);
+		g_job_ctrl->interactive = 1;
+		if (sh_post_execution() != SUCCESS)
+			exit (FAILURE);
 		sh_free_all(shell);
 		exit(ret);
 	}
@@ -176,6 +183,7 @@ char 	*get_subshell_output(t_shell *shell, char *command)
 	{
 		//{ child => PID du subshell }
 		close(fds[PIPE_IN]);
+//		waitpid(child, &ret, 0);
 		str = get_string_from_fd(fds[PIPE_OUT]);
 		close(fds[PIPE_OUT]);
 		return (str);

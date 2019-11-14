@@ -6,7 +6,7 @@
 /*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 11:52:40 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/04 11:53:34 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/14 10:46:34 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void		sh_execute_execve(t_ast_node *father_node, t_context *context)
 	int		ret;
 
 	reset_signals();
-	close(g_term_fd);
 	if ((ret = loop_traverse_redirection(father_node, context)) == SUCCESS)
 	{
 		if (context->path == NULL)
@@ -29,6 +28,7 @@ void		sh_execute_execve(t_ast_node *father_node, t_context *context)
 		if (sh_traverse_sc_check_perm(context,
 					context->path, context->path) != SUCCESS)
 			exit(SH_RET_NO_PERM);
+		close(g_term_fd);
 		execve(context->path, (char **)context->params->tbl,
 				(char **)context->env->tbl);
 		ret = SH_RET_NOT_EXECUTABLE;
