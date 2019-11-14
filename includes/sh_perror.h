@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_perror.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 14:16:12 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/09 16:58:18 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/14 00:59:59 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@
 # define SH_BAD_SUBSTITUTE		"Bad subsitution"
 # define SH_AMB_REDIRECT		"Ambigous redirect"
 
+typedef struct s_lexer			t_lexer;
+
 /*
 ********************************************************************************
 */
@@ -66,6 +68,7 @@
 int		sh_perror(const char *error, const char *suffix);
 int		sh_perror_err(const char *error, const char *suffix);
 void	*sh_perrorn(const char *error, const char *suffix);
+int		sh_perror_unexpected_eof(t_lexer *lexer);
 
 /*
 ** sh_perror2.c
