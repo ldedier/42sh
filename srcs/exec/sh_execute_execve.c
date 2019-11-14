@@ -6,7 +6,7 @@
 /*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 11:52:40 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/14 10:46:34 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/14 16:03:02 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void		sh_execute_execve(t_ast_node *father_node, t_context *context)
 	reset_signals();
 	if ((ret = loop_traverse_redirection(father_node, context)) == SUCCESS)
 	{
+		if (!context->params->tbl || !context->params->tbl[0])
+			exit(SUCCESS);
 		if (context->path == NULL)
 		{
 			sh_perror_err(context->params->tbl[0], SH_ERR1_CMD_NOT_FOUND);
