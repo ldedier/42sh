@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 14:25:15 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/14 02:10:20 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/14 03:25:18 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,31 +57,38 @@ static int	sh_lexer_rule1_process_quoted(t_lexer *lexer)
 	return (LEX_OK);
 }
 
-// static int	sh_lexer_rule1_check_final_pipe(t_lexer *lexer)
-// {
-// 	t_list		*head;
-// 	t_list		*last_pipe;
+static int	sh_lexer_rule1_check_final_pipe(t_lexer *lexer)
+{
+	t_list		*head;
+	t_list		*last_pipe;
+	t_list		*last_word;
 
-// 	head = lexer->list;
-// 	last_pipe = NULL;
-// 	while (head)
-// 	{
-// 		if (((t_token*)head->content)->id == LEX_TOK_PIPE)
-// 			last_pipe = head;
-// 		head = head->next;
-// 	}
-// 	if (!last_pipe)
-// 		return (SUCCESS);
-// 	head = last_pipe->next;
-// 	while (head)
-// 	{
-// 		if (((t_token*)head->content)->id == LEX_TOK_WORD)
-// 			return (SUCCESS);
-// 		head = head->next;
-// 	}
-// 	lexer->quoted = '|';
-// 	return (ERROR);
-// }
+	head = lexer->list;
+	last_pipe = NULL;
+	last_word = NULL;
+	while (head)
+	{
+		if (((t_token*)head->content)->id == LEX_TOK_WORD)
+		{
+			if (last_pipe)
+				last_pipe = NULL;
+			last_word = head;
+		}
+		else if (((t_token*)head->content)->id == LEX_TOK_PIPE)
+		{
+			if (!last_word)
+				return (SUCCESS);
+			else
+				last_word = NULL;
+			last_pipe = head;
+		}
+		head = head->next;
+	}
+	if (!last_pipe)
+		return (SUCCESS);
+	lexer->quoted = '|';
+	return (ERROR);
+}
 
 /*
 ** sh_lexer_rule1:
@@ -107,7 +114,7 @@ int			sh_lexer_rule1(t_lexer *lexer)
 
 	if (lexer->c == '\0')
 	{
-		if (lexer->quoted > 0 || lexer->backslash) // || sh_lexer_rule1_check_final_pipe(lexer))
+		if (lexer->quoted > 0 || lexer->backslash)
 		{
 			if (!isatty(0) || lexer->mode == E_LEX_AUTOCOMPLETION)
 				return (sh_lexer_rule1_process_quoted(lexer));
@@ -119,6 +126,13 @@ int			sh_lexer_rule1(t_lexer *lexer)
 			return (ret);
 		else if (ret == LEX_CONTINUE)
 			return (LEX_OK);
+		if (sh_lexer_rule1_check_final_pipe(lexer))
+		{
+			if (!isatty(0) || lexer->mode == E_LEX_AUTOCOMPLETION)
+				return (sh_lexer_rule1_process_quoted(lexer));
+			else
+				return (sh_process_quoted(lexer));
+		}
 		return (LEX_END);
 	}
 	return (LEX_CONTINUE);
