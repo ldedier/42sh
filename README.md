@@ -1,5 +1,9 @@
 # 42sh : code your own shell !!
-<< Insert Description here >>
+This is a 42 school project.
+The purpose is to create our own shell from scratch, using only the really basics fuctions :
+  - functions from man 2
+  - library Termcaps
+  - getpwnam, tcgetpgrp and tcsetpgrp
 
 # Features :
 ####  Basic features
@@ -65,3 +69,9 @@
 
 ## Bonuses :
    - Handle utf-8 chars : see 🐑 builtin
+
+# Auteur :
+  - jmartel
+  - ldedier
+  - mdaoud
+  - jdugoudr
