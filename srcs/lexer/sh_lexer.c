@@ -85,7 +85,12 @@ int				sh_lexer(char *input, t_list **tokens, t_shell *shell,
 	{
 		t_token_free_list(&lexer.list);
 		if (ret == ERROR)
-			return (sh_perror_err("lexical error", NULL));
+		{
+			if (mode != E_LEX_AUTOCOMPLETION)
+				return (sh_perror_err("lexical error", NULL));
+			else
+				return (ERROR);
+		}
 		else if (ret == CTRL_C)
 			sh_env_update_ret_value(shell, SH_RET_SIG_RECEIVED + SIGINT);
 		else if (ret == CTRL_D)
