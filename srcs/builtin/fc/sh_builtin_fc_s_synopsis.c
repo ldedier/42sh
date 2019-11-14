@@ -144,7 +144,7 @@ int		sh_builtin_fc_s_synopsis(t_context *context, t_fc_options *opts)
 	entry = entry_ptr->content;
 	if (!(res = get_command_to_execute_fc(entry->command, substitution_str)))
 		return (sh_perror(SH_ERR1_MALLOC, "sh_builtin_fc_s_synopsis"));
-	ft_printf("%s\n", res);
+	ft_dprintf(2, "%s\n", res);
 	execute_command(context->shell, res, 1);
 	free(res);
 	context->shell->history.should_add = 0;

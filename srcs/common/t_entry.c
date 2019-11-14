@@ -34,7 +34,7 @@ void		t_entry_free(t_entry *entry)
 void		t_entry_print(t_entry *entry, int print_number)
 {
 	if (print_number)
-		ft_printf("%d\t%s\t\t(%p)\n", entry->number, entry->command, entry);
+		ft_printf("%d\t%s\n", entry->number, entry->command);
 	else
 		ft_printf("\t%s\n", entry->command);
 }

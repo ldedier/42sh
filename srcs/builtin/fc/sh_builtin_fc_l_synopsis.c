@@ -90,29 +90,18 @@ int		sh_builtin_fc_l_synopsis(t_context *context, t_fc_options *opts)
 
 	if (!opts->from.parsed)
 	{
-		ft_printf("auto opt from ! \n");
 		opts->from.un.integer = -16;
 		opts->from.type = E_FC_INTEGER;
 	}
 	if (!opts->to.parsed)
 	{
-		ft_printf("auto opt to ! \n");
 		opts->to.un.integer = -1;
 		opts->to.type = E_FC_INTEGER;
 	}
-//	ft_printf("HISTORY:\n");
-//	print_history(&context->shell->history);
-//	ft_printf("000000000000000000000000\n");
-//	print_fc_operand(&opts->from);
-//	print_fc_operand(&opts->to);
-	
 	if (!(from = get_entry_from_fc_operand(&context->shell->history, &opts->from, 1)))
 		return (sh_perror_err(SH_BLT_HISTORY_RANGE, NULL));
 	if (!(to = get_entry_from_fc_operand(&context->shell->history, &opts->to, 1)))
 		return (sh_perror_err(SH_BLT_HISTORY_RANGE, NULL));
-	
-//	ft_printf("FROM: %p\n", from->content);
-//	ft_printf("TO: %p\n", to->content);	
 	if (opts->opt_r)
 		swap_entries(&context->shell->history, &from, &to);
 	sh_builtin_fc_list(&context->shell->history, from, to, opts->opt_n);

@@ -1,0 +1,6 @@
+make
+[34;01mCompiling with flags -Wall -Werror -Wextra -I . -I ./ft_printf/ -g3 [0m
+make -C . libft.a
+make[2]: `libft.a' is up to date.
+[34;01mCompiling with flags -DPATH="/Users/ldedier/Projects/unix/42sh" -I includes -I libft -I libft/ft_printf -Wall -Werror -Wextra [0m
+make[1]: `42sh' is up to date.
