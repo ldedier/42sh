@@ -84,7 +84,7 @@ char		*sh_get_process_subst_in(t_shell *shell, char *command,
 		return (sh_perrorn(SH_ERR1_FORK, "sh_get_process_subst_in"));
 	if (child == 0)
 	{
-		ft_printf("child pid: %zu\n", getpid());
+//		ft_printf("child pid: %zu\n", getpid());
 		if (dup2(fds[PIPE_OUT], STDIN_FILENO) < 0)
 			return (sh_perrorn(SH_ERR1_INTERN_ERR, "sh_get_process_subst_in"));
 		close(fds[PIPE_IN]);
@@ -96,7 +96,7 @@ char		*sh_get_process_subst_in(t_shell *shell, char *command,
 	else
 	{
 		//{ child => PID du subshell }
-		ft_printf("shell pid: %zu\n", getpid());
+//		ft_printf("shell pid: %zu\n", getpid());
 		close(fds[PIPE_OUT]);
 		if (!(str = sh_get_fd_string(fds[PIPE_IN])))
 			return (NULL);
