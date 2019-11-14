@@ -12,6 +12,16 @@
 
 #include "sh_21.h"
 
+int		is_open(int fd)
+{
+	struct stat buf;
+
+	if (fstat(fd, &buf) == -1)
+		return (0);
+	else
+		return (1);
+}
+
 static int	is_saved(t_list *lst_redir, int fd)
 {
 	t_redirection	*redir;

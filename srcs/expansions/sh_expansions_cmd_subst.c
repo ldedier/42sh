@@ -187,15 +187,10 @@ int			sh_expansions_cmd_subst_process(t_context *context,
 {
 	char *str;
 
-	// insert your code here
-	// need to fill exp->res field (!! it is ft_dy_str)
-	// This res will later replace the exp->original string in the token value
 	(void)context;
 	(void)exp;
 	if (!(str = get_subshell_output(context->shell, exp->expansion)))
 		return (FAILURE);
-//	ft_dprintf(2, "command substitution detected : \n\t");
-//	t_expansion_show(exp);
 	if (!(exp->res = ft_dy_str_new_str(str)))
 	{
 		free(str);

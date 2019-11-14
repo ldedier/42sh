@@ -41,6 +41,8 @@ int			main(int argc, char **argv, char **env)
 
 	(void)argc;
 	(void)argv;
+	if (!is_open(0))
+		return (0);
 	init_signals();
 	if (jobs_init())
 		return (FAILURE);
