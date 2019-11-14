@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/02 10:03:30 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/13 10:26:17 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/14 10:48:50 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,6 @@ static int	parents_part(pid_t pid, t_context *context)
 			if ((fun_ret = job_put_in_fg(g_job_ctrl->curr_job, 0, &ret)))
 				return (fun_ret);
 		}
-		else if (job_put_in_bg(g_job_ctrl->curr_job) != SUCCESS)
-			return (FAILURE);
 	}
 	else
 		waitpid(pid, &ret, context->wflags);

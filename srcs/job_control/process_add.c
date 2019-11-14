@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 00:38:06 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/29 15:57:58 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/14 10:40:31 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,13 @@ static int	create_process_cmd(t_job *j, t_process *p, int first_p)
 	char	*str;
 
 	ft_memset(p->cmd, MAX_PROCESS_LEN, '\0');
+	if (!j->foreground)
+	{
+		ft_strncpy(p->cmd, j->command, MAX_PROCESS_LEN);
+		if (p->cmd[MAX_PROCESS_LEN - 2])
+			ft_strcpy(p->cmd + MAX_PROCESS_LEN - 5, "[...]");
+		return (SUCCESS);
+	}
 	if (first_p)
 		str = ft_strtok_pipe(j->cmd_copy, "|");
 	else
@@ -43,7 +50,7 @@ static int	create_process_cmd(t_job *j, t_process *p, int first_p)
 		str = str + 1;
 	}
 	ft_strncpy(p->cmd, str, MAX_PROCESS_LEN);
-	if (p->cmd[MAX_PROCESS_LEN - 2]) //this is ok because we did memset. Use it insteed of strlen, to be faster
+	if (p->cmd[MAX_PROCESS_LEN - 2])
 		ft_strcpy(p->cmd + MAX_PROCESS_LEN - 5, "[...]");
 	return (SUCCESS);
 }

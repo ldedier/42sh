@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 11:52:40 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/14 11:24:41 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/14 12:00:58 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static int	call_execve(t_context *context)
 {
 	int	ret;
 	
+	close(g_term_fd);
 	ret = SUCCESS;
 	if (context->path == NULL)
 	{

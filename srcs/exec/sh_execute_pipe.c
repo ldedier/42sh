@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 08:21:00 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/31 17:52:22 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/14 10:19:23 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,17 +52,19 @@ static int	pipe_wait(t_context *context, t_pipe *pipes)
 		if (g_job_ctrl->curr_job->foreground)
 			if (sh_pre_execution() != SUCCESS)
 				return (FAILURE);
-		if (g_job_ctrl->curr_job->foreground == 0)
-		{
-			if ((ret = job_put_in_bg(g_job_ctrl->curr_job)) != SUCCESS)
-				return (FAILURE);
-		}
-		else if ((job_put_in_fg(g_job_ctrl->curr_job, 0, &ret)) != SUCCESS)
+		// if (g_job_ctrl->curr_job->foreground == 0)
+		// {
+		// 	if ((ret = job_put_in_bg(g_job_ctrl->curr_job)) != SUCCESS)
+		// 		return (FAILURE);
+		// }
+		// else if ((job_put_in_fg(g_job_ctrl->curr_job, 0, &ret)) != SUCCESS)
+		if ((job_put_in_fg(g_job_ctrl->curr_job, 0, &ret)) != SUCCESS)
 			return (FAILURE);
 		sh_env_update_ret_value_wait_result(context, ret);
 		return (SUCCESS);
 	}
 	i = 0;
+	// ft_dprintf(g_term_fd, BLUE"Pipe waiting with flags: %d\n"EOC, context->wflags);
 	while (i++ < pipes->nb_cmd)
 		if (waitpid(-1, &ret, context->wflags) ==
 				pipes->tab_pid[pipes->nb_cmd - 1])

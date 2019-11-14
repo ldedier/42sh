@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 15:54:02 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/31 18:02:21 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/14 09:27:57 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,13 +96,9 @@ int				sh_execute_and_or(t_ast_node *node, t_context *context)
 
 	ptr = node->children;
 	prev_symbol = -1;
+	// ft_dprintf(g_term_fd, )
 	while (ptr != NULL && context->shell->running)
 	{
-		if (ptr->next == NULL)
-		{
-			context->cmd_type |= (g_job_ctrl->ampersand ? BG_NODE : 0);
-			context->wflags = (g_job_ctrl->ampersand ? WNOHANG : 0);
-		}
 		if ((ret = sh_traverse_and_or_process_phase(
 						context, prev_symbol, ptr)) != KEEP_READ)
 			return (ret);

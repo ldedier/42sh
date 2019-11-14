@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 11:49:50 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/12 16:32:21 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/14 10:16:34 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,16 +60,14 @@ static int		sh_exec_parent_part(pid_t cpid, t_context *context)
 	{
 		if (set_pgid_parent(cpid) != SUCCESS)
 			return (FAILURE);
-		else if (g_job_ctrl->curr_job->foreground == 0)
-		{
-			if ((ret = job_put_in_bg(g_job_ctrl->curr_job)) != SUCCESS)
-				return (ret);
-		}
-		else if ((fun_ret = job_put_in_fg(g_job_ctrl->curr_job, 0, &ret)))
+		if ((fun_ret = job_put_in_fg(g_job_ctrl->curr_job, 0, &ret)))
 			return (fun_ret);
 	}
 	else
+	{
+		// ft_dprintf(g_term_fd, BLUE"Binary waiting with flags: %d\n"EOC, context->wflags);
 		waitpid(cpid, &ret, context->wflags);
+	}
 	sh_env_update_ret_value_wait_result(context, ret);
 	return (SUCCESS);
 }

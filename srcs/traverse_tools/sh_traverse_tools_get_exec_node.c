@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:00:19 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/11 01:21:10 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/14 10:47:06 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ static int	process_node_to_exec(
 	context->cmd_type = SIMPLE_NODE;
 	if (node_to_exec && ret == SUCCESS)
 	{
-		g_job_ctrl->ampersand = g_job_ctrl->ampersand_eol;
+		if (g_job_ctrl->ampersand)
+			return(sh_traverse_ampersand(node_to_exec, context));
 		ret = sh_traverse_and_or(node_to_exec, context);
 	}
 	return (ret);
@@ -69,7 +70,6 @@ int			get_node_to_exec(t_ast_node *node, t_context *context,
 		if (curr_node->symbol->id == sh_index(symbol))
 		{
 			g_job_ctrl->job_added = 0;
-			g_job_ctrl->ampersand = 0;
 			context->cmd_type = SIMPLE_NODE;
 			context->wflags = 0;
 			ret = f(node_to_exec, curr_node->children->content, context);

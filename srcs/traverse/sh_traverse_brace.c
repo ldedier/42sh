@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 10:34:50 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/13 10:27:31 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/13 12:12:49 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ int			sh_traverse_brace(t_ast_node *node, t_context *ctxt)
 	sh_traverse_tools_show_traverse_start(node, ctxt);
 	if (g_job_ctrl->interactive && IS_BG(ctxt->cmd_type))
 	{
+		ft_dprintf(g_term_fd, YELLOW"Adding job in sh_traverse_ampersand\n"EOC);
 		if ((ret = job_add(node->parent->parent, NULL, IS_BG(ctxt->cmd_type))))
 			return (ret);
 		g_job_ctrl->job_added = 1;

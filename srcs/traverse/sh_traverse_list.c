@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/28 16:49:38 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/04 12:19:17 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/14 09:24:26 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,14 @@ int	sh_traverse_list(t_ast_node *node, t_context *context)
 	t_ast_node	*last_separator;
 	t_ast_node	*first_child;
 
-	g_job_ctrl->ampersand_eol = 0;
+	g_job_ctrl->ampersand = 0;
 	first_child = node->children->content;
 	if (node->children->next)
 	{
 		last_separator = node->children->next->content;
 		last_separator = last_separator->children->content;
 		if (last_separator->symbol->id == sh_index(LEX_TOK_AND))
-			g_job_ctrl->ampersand_eol = 1;
+			g_job_ctrl->ampersand = 1;
 	}
 	sh_traverse_tools_show_traverse_start(node, context);
 	ret = get_node_to_exec(

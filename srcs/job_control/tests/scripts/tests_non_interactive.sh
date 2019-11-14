@@ -7,7 +7,7 @@ pink=\\033[35m cyan=\\033[36m grey=\\033[37m eoc=\\033[0m
 # set -o xtrace
 # set -o verbose
 
-input="./non_interactive.txt"
+input=$1
 log_42="../logs/42sh.log"
 log_bash="../logs/bash.log"
 

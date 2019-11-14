@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 14:29:58 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/14 11:38:44 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/14 11:57:08 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ static int	child_part(t_context *context, char *command, int fds[])
 	close(fds[PIPE_OUT]);
 	sh_pre_execution();
 	g_job_ctrl->interactive = 0;
-	reset_signals();
-	signal(SIGTSTP, SIG_IGN);
+	// reset_signals();
+	// signal(SIGTSTP, SIG_IGN);
 	ret = execute_command(context->shell, command, 0);
 	g_job_ctrl->interactive = 1;
 	close(fds[PIPE_IN]);
@@ -44,13 +44,15 @@ static int	parent_part(t_context *context, char **str, int fds[], int cpid)
 	sh_env_update_ret_value_wait_result(context, ret);
 	sh_env_update_question_mark(context->shell);
 	sh_post_execution();
-	if ((*str = get_string_from_fd(fds[PIPE_OUT])) == NULL)
-		return (FAILURE);
 	if (WIFSIGNALED(ret) && (WTERMSIG(ret) == SIGINT))
 	{
 		close(fds[PIPE_OUT]);
+		if ((*str = ft_strdup("")) == NULL)
+			return (FAILURE);
 		return (context->shell->ret_value);
 	}
+	if ((*str = get_string_from_fd(fds[PIPE_OUT])) == NULL)
+		return (FAILURE);
 	close(fds[PIPE_OUT]);
 	return (SUCCESS);
 }
