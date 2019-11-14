@@ -24,7 +24,7 @@ int		sh_process_process_quoted(int old_context, t_lexer *lexer)
 			g_glob.command_line.interrupted = 1;
 			return (CTRL_C);
 		}
-		else if (ret != CTRL_D)
+		else if (ret == CTRL_D)
 			return (CTRL_D);
 	}
 	if (!(lexer->input = ft_strjoin_free(lexer->input,

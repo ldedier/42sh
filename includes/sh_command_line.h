@@ -17,10 +17,15 @@
 
 # define CWD_LEN			1000
 
+
 # define PROMPT				""
 # define BACKSLASH_PROMPT	""
 # define QUOTE_PROMPT		"quote"
 # define DQUOTE_PROMPT		"dquote"
+# define PIPE_PROMPT		"pipe"
+# define PROCSUBST_PROMPT	"procsubst"
+# define CMDSUBST_PROMPT	"cmdsubst"
+# define VARIABLE_PROMPT	"braceparam"
 
 # define COMMAND_PROMPT	"(vi"
 # define COUNT_PROMPT	"(arg:"
@@ -58,6 +63,11 @@ typedef enum		e_cl_context
 	E_CONTEXT_HEREDOC,
 	E_CONTEXT_DQUOTE,
 	E_CONTEXT_QUOTE,
+	E_CONTEXT_PRCSUBST_IN,
+	E_CONTEXT_PRCSUBST_OUT,
+	E_CONTEXT_CMDSUBST,
+	E_CONTEXT_VARIABLE,
+	E_CONTEXT_PIPE,
 	E_CONTEXT_BACKSLASH,
 }					t_cl_context;
 
