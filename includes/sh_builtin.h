@@ -159,8 +159,8 @@ int					sh_builtin_🐑(t_context *context);
 /*
 ** alias/sh_builtin_alias.c
 */
-int					sh_builtin_alias(t_context *context);
 int					alias_valid_name(char *str);
+int					sh_builtin_alias(t_context *context);
 
 /*
 ** alias/sh_builtin_alias_show.c
@@ -344,12 +344,15 @@ int					sh_builtin_exit(t_context *context);
 /*
 ** sh_builtin_parser.c
 */
-int					sh_builtin_parser_is_boolean(t_args args[], char opt);
 int					sh_builtin_parser(
 	int argc, char **argv, t_args args[], int *index);
+
+/*
+** sh_builtin_parser_usage.c
+*/
 void				sh_builtin_parser_show(t_args args[]);
 int					sh_builtin_usage(
-	t_args args[], char *name, char *usage, t_context *context);
+	t_args ag[], char *name, char *usage, t_context *context);
 
 /*
 ** sh_builtin_pwd.c
@@ -423,8 +426,6 @@ int					sh_builtin_type_search_hash(
 /*
 ** type/sh_builtin_type_search_path.c
 */
-int					sh_builtin_type_search_in_dir(
-	char *path, DIR *dir, t_context *context, char *name);
 int					sh_builtin_type_search_in_path(
 	t_context *context, char *name, t_args args[]);
 

@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/11 17:43:29 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/12 00:32:56 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/12 01:04:18 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 **
 **	Returned Values :
 **		SUCCESS : Successfuly changed directory
-**		ERROR : File is invalid for some reasons
+**		ERROR : File is invalid for some reasons, write error
 **		FAILURE : malloc error
 */
 

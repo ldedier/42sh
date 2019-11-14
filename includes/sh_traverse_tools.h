@@ -107,6 +107,7 @@ int		sh_traverse_sc_search_in_path(t_context *context);
 /*
 ** sh_traverse_tools_simple_command_check_perm.c
 */
+int		check_for_symlink_loop(struct stat *st, char *path, int i);
 int		sh_traverse_sc_check_perm_quiet(char *path);
 int		sh_traverse_sc_check_perm(
 	t_context *context, char *path, char *command_name);

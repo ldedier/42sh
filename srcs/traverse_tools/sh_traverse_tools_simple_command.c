@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sh_traverse_simple_command_tools.c                 :+:      :+:    :+:   */
+/*   sh_traverse_tools_simple_command.c                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/31 17:30:53 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/13 07:22:48 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,29 +118,24 @@ static int	sh_traverse_sc_search_in_dir(
 
 int			sh_traverse_sc_search_in_path(t_context *context)
 {
-	char	**split;
-	int		i;
 	DIR		*dir;
 	char	*buffer;
+	char	*path;
 
 	if (!(buffer = sh_vars_get_value(context->env, context->vars, "PATH")))
-		return (ERROR);
-	if (!(split = sh_split_path(buffer)))
-		return (FAILURE);
-	i = 0;
-	while (split[i])
+		return (ERROR); // check how to transform it for a look in ./
+	while ((path = ft_strsep(&buffer, ":")))
 	{
-		if (!(dir = opendir(split[i])))
-		{
-			i++;
+		if (!(dir = opendir(path)))
 			continue ;
-		}
-		if (sh_traverse_sc_search_in_dir(split[i], dir, context) == FAILURE)
+		if (sh_traverse_sc_search_in_dir(path, dir, context) == FAILURE)
+		{
+			ft_strsep(NULL, NULL);
 			return (FAILURE);
+		}
 		if (context->path)
 			break ;
-		i++;
 	}
-	ft_strtab_free(split);
+	ft_strsep(NULL, NULL);
 	return (SUCCESS);
 }

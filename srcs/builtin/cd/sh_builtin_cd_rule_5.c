@@ -6,14 +6,11 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/11 02:35:55 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/11 06:18:00 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/13 08:27:11 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
-
-//TO DEL
-#include <string.h>
 
 /*
 ** sh_builtin_cd_cdpath_check_perm:
@@ -30,7 +27,7 @@ static int	sh_builtin_cd_cdpath_check_perm(
 {
 	struct stat	st;
 
-	if ((stat(path, &st)))
+	if ((stat(path, &st) == -1))
 		return (ERROR);
 	if (!S_ISDIR(st.st_mode))
 		return (ERROR);
@@ -38,6 +35,8 @@ static int	sh_builtin_cd_cdpath_check_perm(
 		return (ERROR);
 	*curpath = path;
 	args[CD_HYPHEN_OPT].value = &args;
+	if (sh_verbose_builtin())
+		ft_dprintf(2, MAGENTA"cd : rule 5 : Filled *curpath using CDPATH\n"EOC);
 	return (SUCCESS);
 }
 
@@ -63,7 +62,7 @@ static int	sh_builtin_cd_cdpath(
 
 	cdpath = sh_vars_get_value(context->env, context->vars, "CDPATH");
 	path = NULL;
-	while ((dir = strsep(&cdpath, ":")))
+	while ((dir = ft_strsep(&cdpath, ":")))
 	{
 		if (path)
 			ft_strdel(&path);
@@ -76,6 +75,9 @@ static int	sh_builtin_cd_cdpath(
 		if (sh_builtin_cd_cdpath_check_perm(path, curpath, args) == SUCCESS)
 			break ;
 	}
+	if (!dir && path)
+		ft_strdel(&path);
+	ft_strsep(NULL, NULL);
 	return (SUCCESS);
 }
 

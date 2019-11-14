@@ -6,11 +6,22 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/04 21:46:13 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/09 05:58:51 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/12 07:05:26 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
+
+/*
+** sh_builtin_type_search_alias:
+**	Look in alias table if name match a declared alias.
+**	Reserved words list correspond to bash's list, not to our implementation.
+**	If found message shown depend on options specified.
+**
+**	Returned Values
+**		SUCCESS : matched an alias
+**		ERROR : do not matched any alias
+*/
 
 int			sh_builtin_type_search_alias(
 	char *name, t_args args[], t_context *context)
@@ -33,6 +44,17 @@ int			sh_builtin_type_search_alias(
 	}
 	return (ERROR);
 }
+
+/*
+** sh_builtin_type_search_reserved:
+**	Look in a constant table if name match an existing reserved word.
+**	Reserved words list correspond to bash's list, not to our implementation.
+**	If found message shown depend on options specified.
+**
+**	Returned Values
+**		SUCCESS : matched a builtin
+**		ERROR : do not matched any builtin
+*/
 
 int			sh_builtin_type_search_reserved(char *name, t_args args[])
 {
@@ -60,6 +82,16 @@ int			sh_builtin_type_search_reserved(char *name, t_args args[])
 	return (ERROR);
 }
 
+/*
+** sh_builtin_type_search_builtin:
+**	Look in builtin list if name match an existing builtin.
+**	If found message shown depend on options specified.
+**
+**	Returned Values
+**		SUCCESS : matched a builtin
+**		ERROR : do not matched any builtin
+*/
+
 int			sh_builtin_type_search_builtin(char *name, t_args args[])
 {
 	if (sh_builtin_find_name(name))
@@ -75,6 +107,16 @@ int			sh_builtin_type_search_builtin(char *name, t_args args[])
 	}
 	return (ERROR);
 }
+
+/*
+** sh_builtin_type_search_hash:
+**	Use hash table api function to look if name match and hashed binary.
+**	If found message shown depend on options specified.
+**
+**	Returned Values
+**		SUCCESS : matched a hashed binary
+**		ERROR : do not matched any hash
+*/
 
 int			sh_builtin_type_search_hash(
 	t_context *context, char *name, t_args args[])

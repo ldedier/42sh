@@ -1,0 +1,28 @@
+ls | wc ; echo $?
+ls noexist | wc ; echo $?
+ls | ls noexist ; echo $?
+nocmd | wc ; echo $?
+nocmd | wc & echo $?
+./nocmd | wc ; echo $?
+./nocmd | wc & echo $?
+ls | ./nocmd ; echo $?
+ls | ./nocmd & echo $?
+sleep 2 | ls | wc ; echo $?
+sleep 2 | ls | wc & echo $?
+ls | sleep2 ; echo $?
+ls | sleep2 & echo $?
+sleep 2 | ls ; echo $?
+sleep 2 | ls & echo $?
+
+ls | wc || echo "KO"
+ls | wc || echo "KO" &
+ls noexist | wc || echo "OK"
+ls noexist | wc || echo "OK" &
+ls | nocmd || echo "OK"
+ls | nocmd || echo "OK" &
+nocmd | ls || echo "KO"
+nocmd | ls || echo "KO" &
+./nocmd | ls || echo "KO"
+./nocmd | ls || echo "KO" &
+
+

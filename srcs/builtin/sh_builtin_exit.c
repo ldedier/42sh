@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 12:14:59 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/10 04:45:22 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/13 04:41:26 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int				sh_builtin_exit(t_context *context)
 	if (ret == -1)
 		ret = context->shell->ret_value;
 	if (sh_verbose_builtin())
-		ft_dprintf(2, 
+		ft_dprintf(2,
 		MAGENTA"exit: exit value set to : %d\n"EOC, ret);
 	sh_env_update_ret_value(context->shell, ret);
 	context->shell->running = 0;

@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 07:20:20 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/12 00:47:07 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/13 08:24:14 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,15 @@ int			sh_builtin_cd_check_perms(char *curpath, char *param)
 	struct stat	st;
 
 	ret = SUCCESS;
-	if (stat(curpath, &st) == -1)
-		ret = sh_perror_err(param, SH_ERR2_NO_SUCH_FILE_OR_DIR);
+	if (stat(curpath, &st) == -1 && lstat(curpath, &st) != -1)
+	{
+		if (check_for_symlink_loop(&st, curpath, 0) == SUCCESS)
+			ret = sh_perror2_err("too many levels of symbolic links", "cd", param);
+		else
+			ret = sh_perror2_err(param, "cd", SH_ERR2_NO_SUCH_FILE_OR_DIR);
+	}
+	else if (stat(curpath, &st) == -1)
+		ret = sh_perror2_err(param, "cd", SH_ERR2_NO_SUCH_FILE_OR_DIR);
 	else if (!S_ISDIR(st.st_mode))
 		ret = sh_perror2_err(SH_ERR1_NOT_A_DIR, "cd", param);
 	else if (access(curpath, X_OK))
@@ -92,6 +99,7 @@ int			sh_builtin_cd_check_perms(char *curpath, char *param)
 **
 **	Returned Values:
 **		FAILURE : malloc error
+**		ERROR : write error
 **		SUCCESS : Successfully changed current directory,
 **					and updated PWD and OLDPWD
 */
@@ -111,8 +119,16 @@ int			sh_builtin_cd_rule10(
 		if (!ret)
 			sh_builtin_cd_update_pwd(context, args, curpath);
 		if (!ret && args[CD_HYPHEN_OPT].value)
-			ft_dprintf(FD_OUT,
-				"%s\n", sh_vars_get_value(context->saved_env, NULL, "PWD"));
+		{
+			if (write(FD_OUT, NULL, 0))
+			{
+				return (sh_perror2_err("write error",
+					context->params->tbl[0], SH_ERR1_BAD_FD));
+			}
+			else
+				ft_dprintf(FD_OUT,
+					"%s\n", sh_vars_get_value(context->saved_env, NULL, "PWD"));
+		}
 	}
 	return (ret);
 }

@@ -6,11 +6,37 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/06 22:45:49 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/10 01:05:35 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/13 05:55:36 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
+
+static void	sh_builtin_alias_init_args(t_args *args)
+{
+	const t_args model[] = {
+		{E_ARGS_BOOL, 'p', NULL, NULL, ALIAS_P_OPT_USAGE, 0},
+		{E_ARGS_END, 0, NULL, NULL, NULL, 0},
+	};
+
+	ft_memcpy(args, model, sizeof(model));
+}
+
+int			alias_valid_name(char *str)
+{
+	int		i;
+
+	i = 0;
+	while (str[i] && str[i] != '=')
+	{
+		if (!(str[i] == '_' || ft_isalnum(str[i]) || str[i] == '!'
+			|| str[i] == '%' || str[i] == ','
+			|| str[i] == '@' || str[i] == '.'))
+			return (0);
+		i++;
+	}
+	return (1);
+}
 
 static int	alias_treat_argument(t_context *context, char *arg)
 {
@@ -31,21 +57,26 @@ static int	alias_treat_argument(t_context *context, char *arg)
 			return (sh_perror2_err(arg, "alias", "invalid alias name"));
 		if (sh_vars_assignment(context->alias, NULL, arg))
 			return (FAILURE);
+		if (sh_verbose_builtin())
+			ft_dprintf(2, MAGENTA"alias : created alias : %s\n"EOC, arg);
 	}
 	return (SUCCESS);
 }
+
+/*
+** sh_builtin_alias:
+**	As bash does, we do not check for write errors on stdout.
+*/
 
 int			sh_builtin_alias(t_context *context)
 {
 	char	**argv;
 	int		index;
-	t_args	args[] = {
-		{E_ARGS_BOOL, 'p', NULL, NULL, ALIAS_P_OPT_USAGE, 0},
-		{E_ARGS_END, 0, NULL, NULL, NULL, 0},
-	};
+	t_args	args[2];
 	int		buf;
 	int		ret;
 
+	sh_builtin_alias_init_args(args);
 	argv = (char**)context->params->tbl;
 	if (sh_builtin_parser(ft_strtab_len(argv), argv, args, &index))
 		return (sh_builtin_usage(args, argv[0], ALIAS_USAGE, context));
@@ -61,18 +92,4 @@ int			sh_builtin_alias(t_context *context)
 			ret = ERROR;
 	}
 	return (ret);
-}
-
-int			alias_valid_name(char *str)
-{
-	int		i;
-
-	i = 0;
-	while (str[i] && str[i] != '=')
-	{
-		if (!(str[i] == '_' || ft_isalnum(str[i])))
-			return (0);
-		i++;
-	}
-	return (1);
 }

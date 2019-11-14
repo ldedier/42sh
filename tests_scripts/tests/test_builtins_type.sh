@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    test_builtins_2.sh                                 :+:      :+:    :+:    #
+#    test_builtins_type.sh                              :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/06/06 16:09:28 by jmartel           #+#    #+#              #
-#    Updated: 2019/08/18 11:50:13 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/13 04:02:26 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,8 +56,41 @@ launch "type"
 	test_launch 'ls' 'alias ls=' 'type -t -p cd ls brew  type while'
 	test_launch 'ls' 'type -a -p -t cd ls brew  type while'
 	test_launch 'ls' 'alias ls=ok ''type -a -p -t cd ls brew  type while'
+	test_launch 'ls' 'type -a -t -p cd ls brew type while'
 	test_launch 'ls' 'type -a -t -p cd ls brewe type while'
 	test_launch 'ls' 'alias ls=ok' 'type -a -t -p cd ls brewe type while'
+
+	launch_show 'Especial'
+	test_launch 'unset PATH' 'PATH=/bin' 'type ls cd'
+	test_launch 'unset PATH' 'PATH=/' 'type ls cd'
+	test_launch 'PATH=$PATH:./' 'touch binary ; chmod 000 binary' 'type binary' 'chmod 777 binary ; rm -f binary'
+	test_launch 'PATH=$PATH:./' 'touch binary ; chmod 100 binary' 'type binary' 'chmod 777 binary ; rm -f binary'
+	test_launch 'PATH=$PATH:./' 'touch binary ; chmod 110 binary' 'type binary' 'chmod 777 binary ; rm -f binary'
+	test_launch 'PATH=$PATH:./' 'touch binary ; chmod 010 binary' 'type binary' 'chmod 777 binary ; rm -f binary'
+	test_launch 'PATH=$PATH:./' 'touch binary ; chmod 011 binary' 'type binary' 'chmod 777 binary ; rm -f binary'
+	test_launch 'PATH=$PATH:./' 'touch binary ; chmod 001 binary' 'type binary' 'chmod 777 binary ; rm -f binary'
+
+	launch_show 'tests added during code review'
+	test_launch 'shopt -s expand_aliases' 'ls' 'alias pwd=tamer' 'type cd ls while cp pwd'
+	test_launch 'shopt -s expand_aliases' 'ls' 'alias pwd=tamer' 'type cd -t ls while cp pwd'
+	test_launch 'shopt -s expand_aliases' 'ls' 'alias pwd=tamer' 'type cd -p ls while cp pwd'
+	test_launch 'shopt -s expand_aliases' 'ls' 'alias pwd=tamer' 'type cd -p -t ls while cp pwd'
+	test_launch 'shopt -s expand_aliases' 'ls' 'alias pwd=tamer' 'type cd -t -p ls while cp pwd'
+	test_launch 'shopt -s expand_aliases' 'ls' 'alias pwd=tamer' 'type cd ls while cp pwd nothing'
+	test_launch 'shopt -s expand_aliases' 'ls' 'alias pwd=tamer' 'type cd -t ls while cp pwd nothing'
+	test_launch 'shopt -s expand_aliases' 'ls' 'alias pwd=tamer' 'type cd -p ls while cp pwd nothing'
+	test_launch 'shopt -s expand_aliases' 'ls' 'alias pwd=tamer' 'type cd -p -t ls while cp pwd nothing'
+	test_launch 'shopt -s expand_aliases' 'ls' 'alias pwd=tamer' 'type cd -t -p ls while cp pwd nothing'
+	test_launch 'shopt -s expand_aliases' 'ls' 'alias pwd=tamer' 'type cd -a ls while cp pwd'
+	test_launch 'shopt -s expand_aliases' 'ls' 'alias pwd=tamer' 'type cd -a -t ls while cp pwd'
+	test_launch 'shopt -s expand_aliases' 'ls' 'alias pwd=tamer' 'type cd -a -p ls while cp pwd'
+	test_launch 'shopt -s expand_aliases' 'ls' 'alias pwd=tamer' 'type cd -a -p -t ls while cp pwd'
+	test_launch 'shopt -s expand_aliases' 'ls' 'alias pwd=tamer' 'type cd -a -t -p ls while cp pwd'
+	test_launch 'shopt -s expand_aliases' 'ls' 'alias pwd=tamer' 'type cd -a ls while cp pwd nothing'
+	test_launch 'shopt -s expand_aliases' 'ls' 'alias pwd=tamer' 'type cd -a -t ls while cp pwd nothing'
+	test_launch 'shopt -s expand_aliases' 'ls' 'alias pwd=tamer' 'type cd -a -p ls while cp pwd nothing'
+	test_launch 'shopt -s expand_aliases' 'ls' 'alias pwd=tamer' 'type cd -a -p -t ls while cp pwd nothing'
+	test_launch 'shopt -s expand_aliases' 'ls' 'alias pwd=tamer' 'type cd -a -t -p ls while cp pwd nothing'
 
 	launch_show "write"
 	test_launch "type 1>&-"

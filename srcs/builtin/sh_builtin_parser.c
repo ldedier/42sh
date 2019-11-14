@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/15 13:19:47 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/10 16:02:13 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/13 05:11:40 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ static int	parser_get_arg_content(t_args *args, char **argv, int *index)
 		args->value = argv[*index + 1];
 		*index += 1;
 		return (SUCCESS);
-		
 	}
 	return (SUCCESS);
 }
@@ -53,54 +52,51 @@ static int	paser_long_arg(char **argv, int *index, t_args args[])
 	return (ERROR);
 }
 
-static int	paser_short_arg(char **argv, int *index, t_args args[])
+static int	paser_short_arg_browse(
+	t_args *args, int *i, char **argv, int *index)
 {
-	int		i;
 	int		j;
 	int		found;
 
-	i = 1;
-	while (argv[*index][i])
+	j = 0;
+	found = 0;
+	while (args[j].type != E_ARGS_END)
 	{
-		found = 0;
-		j = 0;
-		while (args[j].type != E_ARGS_END)
+		if (args[j].name_short == argv[*index][*i])
 		{
-			if (args[j].name_short == argv[*index][i])
-			{
-				if (parser_get_arg_content(args + j, argv, index))
-					return (ERROR);
-				i++;
-				found = 1;
-				break ;
-			}
-			j++;
+			if (parser_get_arg_content(args + j, argv, index))
+				return (ERROR);
+			(*i) += 1;
+			found = 1;
+			break ;
 		}
-		if (found)
-			continue ;
-		ft_memmove(argv[*index] + 1, argv[*index] + i, 1);
+		j++;
+	}
+	if (!found)
+	{
+		ft_memmove(argv[*index] + 1, argv[*index] + *i, 1);
 		argv[*index][2] = 0;
 		return (sh_perror2_err(argv[*index], argv[0], "invalid option"));
 	}
 	return (SUCCESS);
 }
 
-int		sh_builtin_parser_is_boolean(t_args args[], char opt)
+static int	paser_short_arg(char **argv, int *index, t_args args[])
 {
-	while (args->type != E_ARGS_END)
+	int		i;
+	int		ret;
+
+	i = 1;
+	while (argv[*index][i])
 	{
-		if (args->name_short == opt)
-		{
-			if (args->value)
-				return (1);
-			return (0);
-		}
-		args++;
+		ret = paser_short_arg_browse(args, &i, argv, index);
+		if (ret == ERROR)
+			return (ERROR);
 	}
-	return (0);
+	return (SUCCESS);
 }
 
-int		sh_builtin_parser(int argc, char **argv, t_args args[], int *index)
+int			sh_builtin_parser(int argc, char **argv, t_args args[], int *index)
 {
 	int		ret;
 
@@ -124,48 +120,4 @@ int		sh_builtin_parser(int argc, char **argv, t_args args[], int *index)
 		(*index)++;
 	}
 	return (ret);
-}
-
-void	sh_builtin_parser_show(t_args args[])
-{
-	while (args && args->type != E_ARGS_END)
-	{
-		if (args->type == E_ARGS_BOOL)
-			ft_dprintf(2, "short : %c || long : %s || value : %p || priority : %d\n", args->name_short, args->name_long, args->value, args->priority);
-		else if (args->type == E_ARGS_INT)
-			ft_dprintf(2, "short : %c || long : %s || value : %d || priority : %d\n", args->name_short, args->name_long, args->value, args->priority);
-		else if (args->type == E_ARGS_STRING)
-			ft_dprintf(2, "short : %c || long : %s || value : %s || priority : %d\n", args->name_short, args->name_long, args->value, args->priority);
-		args++;
-	}
-}
-
-int		sh_builtin_usage(t_args args[], char *name, char *usage, t_context *context)
-{
-	int		i;
-	int		fd;
-
-	fd = FD_ERR;
-	if (isatty(2))
-		ft_dprintf(fd, SH_ERR_COLOR);
-	ft_dprintf(fd, "Usage: %s %s\n", name, usage);
-	i = 0;
-	while (args && args[i].type != E_ARGS_END)
-	{
-		if (args[i].name_short && args[i].name_long)
-			ft_dprintf(fd, "  -%c, --%s", args[i].name_short, args[i].name_long);
-		else if (args[i].name_short)
-			ft_dprintf(fd, "  -%c", args[i].name_short);
-		else if (args[i].name_long)
-			ft_dprintf(fd, "  --%s", args[i].name_long);
-		if (args[i].usage)
-			ft_dprintf(fd, ": %s", args[i].usage);
-		if (args[i].name_short || args[i].name_long || args[i].usage)
-			ft_dprintf(fd, "\n");
-		i++;
-	}
-	if (isatty(2))
-		ft_dprintf(fd, EOC);
-	sh_env_update_ret_value(context->shell, SH_RET_ARG_ERROR);
-	return (ERROR);
 }

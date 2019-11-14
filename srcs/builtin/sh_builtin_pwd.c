@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 12:05:14 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/12 00:24:50 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/13 04:44:00 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,17 @@ char		*sh_builtin_pwd_logical(t_dy_tab *env)
 		return (sh_builtin_pwd_physical());
 }
 
+static void	sh_builtin_pwd_init_args(t_args *args)
+{
+	const t_args model[] = {
+		{E_ARGS_BOOL, 'P', NULL, NULL, PWD_P_OPT_USAGE, 0},
+		{E_ARGS_BOOL, 'L', NULL, NULL, PWD_L_OPT_USAGE, 0},
+		{E_ARGS_END, 0, NULL, NULL, NULL, 0},
+	};
+
+	ft_memcpy(args, model, sizeof(model));
+}
+
 /*
 ** sh_builtin_pwd:
 **	Function called as the pwd builtin. First options are parsed,
@@ -81,19 +92,19 @@ int			sh_builtin_pwd(t_context *context)
 	int		index;
 	char	**argv;
 	char	*pwd;
-	t_args	args[] = {
-		{E_ARGS_BOOL, 'P', NULL, NULL, PWD_P_OPT_USAGE, 0},
-		{E_ARGS_BOOL, 'L', NULL, NULL, PWD_L_OPT_USAGE, 0},
-		{E_ARGS_END, 0, NULL, NULL, NULL, 0},
-	};
+	t_args	args[3];
 
+	sh_builtin_pwd_init_args(args);
 	argv = (char**)context->params->tbl;
 	if (sh_builtin_parser(ft_strtab_len(argv), argv, args, &index))
 		return (sh_builtin_usage(args, argv[0], PWD_USAGE, context));
 	if (write(FD_OUT, NULL, 0))
+	{
 		return (sh_perror2_err("write error",
 			"export", SH_ERR1_BAD_FD));
-	if (args[PWD_P_OPT].value && args[PWD_P_OPT].priority > args[PWD_L_OPT].priority)
+	}
+	if (args[PWD_P_OPT].value
+		&& args[PWD_P_OPT].priority > args[PWD_L_OPT].priority)
 		pwd = sh_builtin_pwd_physical();
 	else
 		pwd = sh_builtin_pwd_logical(context->env);

@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 16:18:16 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/05 17:46:24 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/13 05:21:21 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,23 @@ static int	sh_builtin_hash_process_utilities(t_context *context, int i)
 	return (SUCCESS);
 }
 
-int			sh_builtin_hash(t_context *context)
+static void	sh_builtin_hash_init_args(t_args *args)
 {
-	int		index;
-	char	**argv;
-	t_args	args[] = {
+	const t_args model[] = {
 		{E_ARGS_BOOL, 'r', NULL, NULL, HASH_R_OPT_USAGE, 0},
 		{E_ARGS_END, 0, NULL, NULL, NULL, 0},
 	};
 
+	ft_memcpy(args, model, sizeof(model));
+}
+
+int			sh_builtin_hash(t_context *context)
+{
+	int		index;
+	char	**argv;
+	t_args	args[2];
+
+	sh_builtin_hash_init_args(args);
 	argv = (char**)context->params->tbl;
 	if (sh_builtin_parser(ft_strtab_len(argv), argv, args, &index))
 		return (sh_builtin_usage(args, argv[0], HASH_USAGE, context));

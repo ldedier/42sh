@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:19:57 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/16 01:04:53 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/13 04:45:48 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,9 @@ static int	sh_builtin_verbose_process(
 	return (SUCCESS);
 }
 
-int			sh_builtin_verbose(t_context *context)
+static void	sh_builtin_verbose_init_args(t_args *args)
 {
-	int				index;
-	char			**argv;
-	t_args			args[] = {
+	const t_args model[] = {
 		{E_ARGS_BOOL, 'l', "lexer", NULL, NULL, 0},
 		{E_ARGS_BOOL, 'a', "ast", NULL, NULL, 0},
 		{E_ARGS_BOOL, 'p', "pipe", NULL, NULL, 0},
@@ -65,6 +63,16 @@ int			sh_builtin_verbose(t_context *context)
 		{E_ARGS_END, 0, NULL, NULL, NULL, 0},
 	};
 
+	ft_memcpy(args, model, sizeof(model));
+}
+
+int			sh_builtin_verbose(t_context *context)
+{
+	int				index;
+	char			**argv;
+	t_args			args[10];
+
+	sh_builtin_verbose_init_args(args);
 	argv = (char**)context->params->tbl;
 	if (sh_builtin_parser(ft_strtab_len(argv), argv, args, &index))
 		return (sh_builtin_usage(args, argv[0], VERBOSE_USAGE, context));

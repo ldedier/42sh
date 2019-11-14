@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/19 09:45:53 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/05 03:23:16 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/13 05:20:08 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,17 +94,25 @@ static int	sh_builtin_export_assign(t_context *context, char *arg)
 	return (SUCCESS);
 }
 
+static void	sh_builtin_export_init_args(t_args *args)
+{
+	const t_args model[] = {
+		{E_ARGS_BOOL, 'p', NULL, NULL, EXPORT_P_OPT_USAGE, 0},
+		{E_ARGS_END, 0, NULL, NULL, NULL, 0},
+	};
+
+	ft_memcpy(args, model, sizeof(model));
+}
+
 int			sh_builtin_export(t_context *context)
 {
 	char	**argv;
 	int		index;
-	t_args	args[] = {
-		{E_ARGS_BOOL, 'p', NULL, NULL, EXPORT_P_OPT_USAGE, 0},
-		{E_ARGS_END, 0, NULL, NULL, NULL, 0},
-	};
+	t_args	args[2];
 	int		buf;
 	int		ret;
 
+	sh_builtin_export_init_args(args);
 	argv = (char**)context->params->tbl;
 	if (sh_builtin_parser(ft_strtab_len(argv), argv, args, &index))
 		return (sh_builtin_usage(args, argv[0], EXPORT_USAGE, context));
