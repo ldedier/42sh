@@ -123,7 +123,8 @@ int		sh_expansions_history(t_shell *shell, t_command_line *command_line,
 		else if (command_line->dy_str->str[i] == '!'
 				&& !backslashed && !single_quoted
 				&& (i != (int)command_line->dy_str->current_size - 1
-				&& !ft_iswhite(command_line->dy_str->str[i + 1]))
+				&& !ft_iswhite(command_line->dy_str->str[i + 1])
+				&& command_line->dy_str->str[i + 1] != '=')
 				&& !bracket)
 		{
 			// Added to fix globbing [!...] dedtection, need ldedier to check / improve it 
