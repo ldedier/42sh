@@ -114,7 +114,7 @@ int		get_keys(t_shell *shell, t_command_line *cl)
 	cl->buffer.persistent = 1;
 	while (1)
 	{
-		if (read(0, &cl->buffer.buff[cl->buffer.progress++], 1) < 0)
+		if (read(g_term_fd, &cl->buffer.buff[cl->buffer.progress++], 1) < 0)
 		{
 			ft_printf("%zu\n", getpid());
 			return (sh_perror(SH_ERR1_READ, "get_keys"));
