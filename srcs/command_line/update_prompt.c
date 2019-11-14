@@ -37,9 +37,9 @@ int		update_prompt_context(t_shell *shell, t_command_line *command_line,
 		if (!(*new_prompt = ft_strdup(DQUOTE_PROMPT)))
 			return (sh_perror(SH_ERR1_MALLOC, "update_prompt"));
 	}
-	else if (command_line->context == E_CONTEXT_PRCSUBST_IN)
+	else if (command_line->context == E_CONTEXT_PIPE)
 	{
-		if (!(*new_prompt = ft_strdup(DQUOTE_PROMPT)))
+		if (!(*new_prompt = ft_strdup(PIPE_PROMPT)))
 			return (sh_perror(SH_ERR1_MALLOC, "update_prompt"));
 	}
 	else if (command_line->context == E_CONTEXT_PRCSUBST_OUT

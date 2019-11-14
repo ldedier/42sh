@@ -78,7 +78,9 @@ int		process_tab(t_shell *shell, t_command_line *command_line)
 			command_line->dy_str->str, command_line->current_index, &exec)))
 		{
 			if (ret == FAILURE)
-				return (sh_free_turn_exec_autocompletion(&exec, 1));
+				return (sh_free_turn_exec_autocompletion(&exec, FAILURE));
+			else if (!exec.word.str)
+				return (SUCCESS);
 			else
 				init_exec_autocompletion(&exec);
 		}
