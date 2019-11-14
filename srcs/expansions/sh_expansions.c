@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/05 10:59:30 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/14 09:52:32 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/14 10:04:04 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,21 +47,16 @@ int			sh_expansions(t_context *context, t_ast_node *node)
 		ret = sh_expansions_tilde(input, context, quotes, &ret);
 	if (!ret)
 		ret = sh_expansions_scan(input, index, context, quotes);
-//	ft_dprintf(2, "on arrive a expansion 1 %s %d\n", *input, ret);
 	if (sh_verbose_expansion() && (t_quote**)quotes->tbl[0])
 		ft_dprintf(2, "input : %s\n", *input);
 	if (!ret)
 		ret = sh_expansions_splitting(context, node, quotes);
-//	ft_dprintf(2, "on arrive a expansion 2 %s %d\n", *input, ret);
 	if (!ret)
 		ret = sh_expansions_globbing(node, quotes);
-//	ft_dprintf(2, "on arrive a expansion 3 %s %d\n", *input, ret);
 	if (!ret)
 		sh_expansions_quote_removal((t_quote**)quotes->tbl);
-//	ft_dprintf(2, "on arrive a expansion 4 %s %d\n", *input, ret);
 	if (ret == ERROR || ret == FAILURE)
 		sh_env_update_ret_value(context->shell, ret);
-//	ft_dprintf(2, "on arrive a expansion 5 %s %d\n", *input, ret);
 	ft_dy_tab_del_ptr(quotes);
 	if (ret)
 		return (ret);
