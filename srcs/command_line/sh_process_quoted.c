@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 14:21:18 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/01 16:28:00 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/14 00:47:05 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ int		sh_process_process_quoted(int old_context, t_lexer *lexer)
 int		sh_process_quoted(t_lexer *lexer)
 {
 	int old_context;
+	int	ret;
 
 	old_context = g_glob.command_line.context;
 	if (update_prompt_from_quote(lexer->shell, &g_glob.command_line,
@@ -52,5 +53,8 @@ int		sh_process_quoted(t_lexer *lexer)
 	}
 	else if (lexer->backslash)
 		lexer->backslash = 0;
-	return (sh_process_process_quoted(old_context, lexer));
+	ret = sh_process_process_quoted(old_context, lexer);
+	if (lexer->quoted != '\'' && lexer->quoted != '"')
+		lexer->quoted = 0;
+	return (ret);
 }
