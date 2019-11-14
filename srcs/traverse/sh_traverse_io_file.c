@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 11:19:41 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/04 12:11:39 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/14 10:48:36 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static int	sh_process_file_lessand(char *filename, t_context *context)
 	else
 	{
 		if (fd == -1)
-			return (sh_perror_err(filename, "ambiguous redirect"));
+			return (sh_perror_err(filename, SH_AMB_REDIRECT));
 		else
 		{
 			ft_dprintf(2, "%s%s: %s : %d%s\n", SH_ERR_COLOR,
@@ -129,6 +129,7 @@ int			sh_traverse_io_file(t_ast_node *node, t_context *context)
 					&& (filename_child->parent->children->next
 						|| !filename_child->token->value[0]))
 			ret = sh_perror_err(SH_AMB_REDIRECT, filename);
+	//	sh_print_ast_root(node);
 		free(filename);
 	}
 	else if (context->phase == E_TRAVERSE_PHASE_REDIRECTIONS)
