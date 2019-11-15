@@ -6,17 +6,30 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/21 16:00:41 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/15 06:51:55 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/15 07:11:26 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 launch "Lexer"
 	launch_show 'reserved_words'
-	test_launch '{ echo hi ; { ls } ; }' 'echo $?'
-	test_launch ' { echo lol } | { cat -e }' 'echo $?'
+	test_launch '{ echo hi ; { ls ; } }' 'echo $?'
+	test_launch ' { echo lol ; } | { cat -e ; }' 'echo $?'
 	test_launch 'echo {}' 'echo $?' 'echo { }' 'echo $?'
 	test_launch '{ export ABC=def; env|grep ABC; }; env|grep ABC|cat -e' 'echo $?'
 	test_launch '{ echo baz; echo buz >out2; } >out' 'cat out ; echo $? ; cat out2 ; echo $?' 'rm -f out out2'
+
+	launch_show	"Braces and parenthesis detection"
+	test_launch '( ! ls ) && pwd'
+	test_launch '( ! ls ) || pwd'
+	test_launch '( ! ls && pwd )'
+	test_launch '( ! ls || pwd )'
+	test_launch '( VAR=foo ) ; echo $VAR'
+	test_launch '( export VAR=foo ) ; echo $VAR'
+	test_launch '( nocmd )'
+	test_launch '( { echo jey ;} )' '( { echo jey ; } )'
+	test_launch '( echo jey } )'
+	test_launch '( echo jey } )'
+	test_launch '{ echo lol { }} | cat -e ; }'
 
 	launch_show "Quotes"
 	test_launch '"e"c"h"o lol' 'ls'
@@ -64,19 +77,6 @@ launch "Lexer"
 	launch_show "Random"
 	test_launch '"var=pwe"'
 	test_launch 'ls ""'
-
-	launch_show	"Braces and parenthesis detection"
-	test_launch '( ! ls ) && pwd'
-	test_launch '( ! ls ) || pwd'
-	test_launch '( ! ls && pwd )'
-	test_launch '( ! ls || pwd )'
-	test_launch '( VAR=foo ) ; echo $VAR'
-	test_launch '( export VAR=foo ) ; echo $VAR'
-	test_launch '( nocmd )'
-	test_launch '( { echo jey } )'
-	test_launch '( echo jey } )'
-	test_launch '( echo jey } )'
-	test_launch '{ echo lol { }} | cat -e ; }'
 
 	launch_show "unclosed pipe"
 	test_launch 'pwd | cat -e' 'pwd |' 'cat -e' 'echo $?'
