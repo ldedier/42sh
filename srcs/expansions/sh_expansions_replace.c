@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/03 14:59:23 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/09 06:26:05 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/15 11:29:21 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	sh_expansions_replace_update_quotes(t_expansion *exp, char *new, t_q
 		quotes[i]->c = new + quotes[i]->index;
 		i++;
 	}
-	if (sh_verbose_expansion())
+	if (sh_verbose_expansion() && quotes[i])
 	{
 		ft_dprintf(2, YELLOW"expansions replace : updated quote table\n"EOC);
 		t_quote_show_tab(quotes);
