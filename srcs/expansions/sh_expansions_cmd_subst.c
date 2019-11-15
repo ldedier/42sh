@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 14:29:58 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/15 12:06:15 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/15 13:39:00 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,7 @@ static int	child_part(t_context *context, char *command, int fds[])
 	int	ret;
 	
 	(void)ret;
-	if (setpgid(getpid(), g_job_ctrl->shell_pgid) < 0)
-		return (sh_perror("Could not add the process to a process group",
-			"sh_expansions_subst"));
+	reset_signals();
 	ret = SUCCESS;
 	g_job_ctrl->cmd_subst = 1;
 	if (dup2(fds[PIPE_IN], STDOUT_FILENO) < 0)
@@ -27,10 +25,12 @@ static int	child_part(t_context *context, char *command, int fds[])
 	close(fds[PIPE_OUT]);
 	if (IS_FG(context->cmd_type))
 		sh_pre_execution();
-	ft_dprintf(g_term_fd, YELLOW"Prefix in Subst\n"EOC);
+	// ft_dprintf(g_term_fd, YELLOW"Prefix in Subst\n"EOC);
 	g_job_ctrl->interactive = 0;
-	reset_signals();
+	// reset_signals();
 	ret = execute_command(context->shell, command, 0);
+	if (ret != SUCCESS)
+		return (ret);
 	g_job_ctrl->interactive = 1;
 	close(fds[PIPE_IN]);
 	sh_free_all(context->shell);
@@ -41,13 +41,10 @@ static int	parent_part(t_context *context, char **str, int fds[], int cpid)
 {
 	int	ret;
 
-	if (setpgid(cpid, g_job_ctrl->shell_pgid) < 0)
-		return (sh_perror("Could not add the process to a process group",
-			"sh_expansions_subst"));
 	ret = SUCCESS;
 	close(fds[PIPE_IN]);
-	signal(SIGINT, handle_int);
 	waitpid(cpid, &ret, 0);
+	signal(SIGINT, handle_int);
 	ft_dprintf(g_term_fd, "Done waiting\n");
 	sh_env_update_ret_value_wait_result(context, ret);
 	sh_env_update_question_mark(context->shell);
@@ -94,7 +91,10 @@ int 		get_subshell_output(t_context *context, char *command, char **str)
 	if (cpid == 0)
 		exit(child_part(context, command, fds));
 	else
+	{
+		// ft_dprintf(g_term_fd, "Shell pgid: %d\n<%d> Forked for expansion <%d>\n",g_job_ctrl->shell_pgid, getpid(), cpid);
 		return (parent_part(context, str, fds, cpid));
+	}
 }
 
 int			sh_expansions_cmd_subst_process(t_context *context,

@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/31 16:05:53 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/15 11:57:15 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/15 13:12:28 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,21 @@
 #include <unistd.h>
 #include <signal.h>
 #include <string.h>
+
+// int		process_ctrl_c(t_shell *shell, t_command_line *command_line)
+// {
+// 	process_cancel_autocompletion(command_line);
+// 	if (command_line->searcher.active == 0)
+// 	{
+// 		get_down_from_command(command_line);
+// 		reset_command_line(shell, command_line);
+// 	}
+// 	command_line->searcher.active = 0;
+// 	if (sh_env_update_ret_value_and_question(shell, SH_RET_CTRL_C))
+// 		return (FAILURE);
+// 	render_command_line(command_line, 0, 1);
+// 	return (CTRL_C);
+// }
 
 void			reset_signals(void)
 {
@@ -60,6 +75,7 @@ void			init_signals(void)
 	signal(SIGTERM, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, SIG_IGN);
+	// signal(SIGINT, handle_int);
 	signal(SIGTTOU, SIG_IGN);
 	signal(SIGTTIN, SIG_IGN);
 	signal(SIGTSTP, SIG_IGN);

@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 12:27:20 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/15 11:30:38 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/15 13:23:56 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static int	child_part(t_ast_node *node, t_context *context)
 	pid_t	cpid;
 	int		ret;
 	
+	reset_signals();
 	cpid = getpid();
 	context->wflags = 0;
 	if (g_job_ctrl->interactive)
@@ -25,9 +26,9 @@ static int	child_part(t_ast_node *node, t_context *context)
 		if ((ret = set_pgid_child(cpid)) != SUCCESS)
 			return (ret);
 	}
-	g_job_ctrl->interactive = 0;
+	// g_job_ctrl->interactive = 0;
 	ret = sh_execute_and_or(node, context);
-	g_job_ctrl->interactive = 1;
+	// g_job_ctrl->interactive = 1;
 	sh_free_all(context->shell);
 	return (ret);
 }
@@ -66,8 +67,8 @@ int	sh_traverse_ampersand(t_ast_node *node, t_context *context)
 
 	context->wflags = WNOHANG;
 	context->cmd_type |= BG_NODE;
-	// if (g_job_ctrl->cmd_subst)
-	// 	context->wflags = 0;
+	if (g_job_ctrl->cmd_subst)
+		context->wflags = 0;
 	if (g_job_ctrl->interactive && !g_job_ctrl->job_added)
 	{
 		if ((ret = job_add(node, NULL, 1)) != SUCCESS)
@@ -78,7 +79,10 @@ int	sh_traverse_ampersand(t_ast_node *node, t_context *context)
 		else if (cpid == 0)
 			exit(child_part(node, context));
 		else
+		{
+			// ft_dprintf(g_term_fd, "Shell pgid: %d\n<%d> Forked for ampersand <%d>\n", g_job_ctrl->shell_pgid, getpid(), cpid);
 			ret = parent_part(context, cpid);
+		}
 		if (g_job_ctrl->interactive)
 			g_job_ctrl->job_added = 0;
 		return (ret);

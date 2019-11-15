@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 21:45:25 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/14 13:10:56 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/15 12:20:40 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ int			t_context_init(t_context *context, t_shell *shell)
 	context->pid = 0;
 	context->redirected_fd = -1;
 	context->redirections = NULL;
+	g_job_ctrl->context = context;
 	return (SUCCESS);
 }
 
