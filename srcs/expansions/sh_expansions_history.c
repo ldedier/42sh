@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 12:01:07 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/06 21:39:14 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/15 08:37:38 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ int		sh_expansions_history(t_shell *shell, t_command_line *command_line,
 	single_quoted = 0;
 	backslashed = 0;
 	bracket = 0;
+	double_quoted = 0;
 	i = 0;
 	*expanded = 0;
 	while (i < (int)command_line->dy_str->current_size)
