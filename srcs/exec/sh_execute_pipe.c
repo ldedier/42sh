@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 08:21:00 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/11/14 10:19:23 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/14 12:25:39 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ static int	pipe_wait(t_context *context, t_pipe *pipes)
 		if (g_job_ctrl->curr_job->foreground)
 			if (sh_pre_execution() != SUCCESS)
 				return (FAILURE);
+		ft_dprintf(g_term_fd, YELLOW"Prefix in Pipe\n"EOC);
 		// if (g_job_ctrl->curr_job->foreground == 0)
 		// {
 		// 	if ((ret = job_put_in_bg(g_job_ctrl->curr_job)) != SUCCESS)

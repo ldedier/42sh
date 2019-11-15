@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 13:41:34 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/31 17:57:27 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/14 12:23:09 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,9 @@ int		create_all_pipe(int nb_pipe, t_pipe *pipes, t_list *lst_psequences,
 int		pipe_fail_protocol(t_context *context, int ret)
 {
 	ft_dprintf(g_term_fd, "create_all pipes failed ret: %d\n", ret);
-	sh_post_execution();
+	if (IS_FG(context->cmd_type))
+		sh_post_execution();
+	ft_dprintf(g_term_fd, YELLOW"Posfix in Builtin"EOC);	
 	if (tcsetpgrp(g_term_fd, g_job_ctrl->shell_pgid) < 0)
 	{
 		return (sh_perror("tcsetpgrp",

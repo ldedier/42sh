@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 11:49:50 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/14 10:16:34 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/14 12:25:29 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,11 @@ static int		sh_exec_child_part(t_ast_node *father_node, t_context *context)
 	if (g_job_ctrl->interactive)
 	{
 		if (g_job_ctrl->curr_job && g_job_ctrl->curr_job->foreground)
+		{
+			ft_dprintf(g_term_fd, YELLOW"Prefix in binary\n"EOC);
 			if (sh_pre_execution() != SUCCESS)
 				return (FAILURE);
+		}
 		if ((ret = set_pgid_child(cpid)) != SUCCESS)
 			return (ret);
 	}

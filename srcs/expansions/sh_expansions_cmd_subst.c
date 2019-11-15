@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 14:29:58 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/14 11:57:08 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/15 11:39:18 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,15 @@ static int	child_part(t_context *context, char *command, int fds[])
 	
 	(void)ret;
 	ret = SUCCESS;
+	g_job_ctrl->cmd_subst = 1;
 	if (dup2(fds[PIPE_IN], STDOUT_FILENO) < 0)
 		return (sh_perror(SH_ERR1_INTERN_ERR, "get_subshell_output"));
 	close(fds[PIPE_OUT]);
-	sh_pre_execution();
+	if (IS_FG(context->cmd_type))
+		sh_pre_execution();
+	ft_dprintf(g_term_fd, YELLOW"Prefix in Subst\n"EOC);
 	g_job_ctrl->interactive = 0;
-	// reset_signals();
-	// signal(SIGTSTP, SIG_IGN);
+	reset_signals();
 	ret = execute_command(context->shell, command, 0);
 	g_job_ctrl->interactive = 1;
 	close(fds[PIPE_IN]);
@@ -40,20 +42,39 @@ static int	parent_part(t_context *context, char **str, int fds[], int cpid)
 	(void)context;
 	ret = SUCCESS;
 	close(fds[PIPE_IN]);
+	signal(SIGINT, handle_int);
 	waitpid(cpid, &ret, 0);
+	ft_dprintf(g_term_fd, "Done waiting\n");
 	sh_env_update_ret_value_wait_result(context, ret);
 	sh_env_update_question_mark(context->shell);
-	sh_post_execution();
-	if (WIFSIGNALED(ret) && (WTERMSIG(ret) == SIGINT))
+	if (g_glob.command_line.interrupted ||
+	(WIFSIGNALED(ret) && (WTERMSIG(ret) == SIGINT)))
 	{
+		ft_dprintf(g_term_fd, "Expantion Signaled\n");
+		if (IS_FG(context->cmd_type))
+			sh_post_execution();
+		ft_dprintf(g_term_fd, YELLOW"Postix in Subst\n"EOC);
 		close(fds[PIPE_OUT]);
 		if ((*str = ft_strdup("")) == NULL)
 			return (FAILURE);
 		return (context->shell->ret_value);
 	}
+	ft_dprintf(g_term_fd, "Getting string from fd\n");
 	if ((*str = get_string_from_fd(fds[PIPE_OUT])) == NULL)
 		return (FAILURE);
+	ft_dprintf(g_term_fd, "Got string from fd\n");
+	if (IS_FG(context->cmd_type))
+		sh_post_execution();
+	ft_dprintf(g_term_fd, YELLOW"Postfix in Subst\n"EOC);
 	close(fds[PIPE_OUT]);
+	if (g_glob.command_line.interrupted)
+	{
+		ft_dprintf(g_term_fd, "Interrupted\n");
+		free(*str);
+		if ((*str = ft_strdup("")) == NULL)
+			return (FAILURE);
+		return (130);
+	}
 	return (SUCCESS);
 }
 

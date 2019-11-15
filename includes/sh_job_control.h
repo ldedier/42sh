@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 17:45:00 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/11/14 09:24:14 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/15 11:31:36 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,8 @@ struct	s_job_control
 	char			interactive;
 	char			job_added;
 	char			ampersand;
+	char			cmd_subst;
+	char			flag;
 	pid_t			shell_pgid;
 	int				job_num[MAX_JOBS];
 	t_job			*first_job;
@@ -116,7 +118,7 @@ struct	s_job_control
 
 t_job_control	*g_job_ctrl;
 
-int				job_add(t_ast_node *node, char *str, int fg);
+int				job_add(t_ast_node *node, char *str, int bg);
 int				job_check_changes(pid_t cpid, int status);
 void			job_control_free(void);
 void			job_free(t_job *j);

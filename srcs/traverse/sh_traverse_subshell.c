@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/02 10:03:30 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/14 10:48:50 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/14 12:25:47 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ static int	parents_part(pid_t pid, t_context *context)
 		{
 			if (sh_pre_execution() != SUCCESS)
 				return (FAILURE);
+			ft_dprintf(g_term_fd, YELLOW"Prefix in subshell\n"EOC);
 			if ((fun_ret = job_put_in_fg(g_job_ctrl->curr_job, 0, &ret)))
 				return (fun_ret);
 		}

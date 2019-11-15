@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 17:11:16 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/08 23:40:30 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/14 13:09:44 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@
 # define CMD_BG_FG				24
 
 # define IS_BG(x)				x & BG_NODE
+# define IS_FG(x)				!(x & BG_NODE)
 # define IS_PIPE(x)				x & PIPE_NODE
 # define IS_SIMPLE(x)			x & SIMPLE_NODE
 

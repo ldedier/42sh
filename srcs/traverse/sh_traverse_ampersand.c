@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 12:27:20 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/14 10:47:57 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/15 11:30:38 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,6 @@ static int	child_part(t_ast_node *node, t_context *context)
 	context->wflags = 0;
 	if (g_job_ctrl->interactive)
 	{
-		if (g_job_ctrl->curr_job && g_job_ctrl->curr_job->foreground)
-			if (sh_pre_execution() != SUCCESS)
-				return (FAILURE);
 		if ((ret = set_pgid_child(cpid)) != SUCCESS)
 			return (ret);
 	}
@@ -38,7 +35,6 @@ static int	child_part(t_ast_node *node, t_context *context)
 static int	parent_part(t_context *context, pid_t cpid)
 {
 	int		ret;
-	int		fun_ret;
 
 	if (g_job_ctrl->interactive)
 	{
@@ -49,8 +45,6 @@ static int	parent_part(t_context *context, pid_t cpid)
 			if ((ret = job_put_in_bg(g_job_ctrl->curr_job)) != SUCCESS)
 				return (ret);
 		}
-		else if ((fun_ret = job_put_in_fg(g_job_ctrl->curr_job, 0, &ret)))
-			return (fun_ret);
 	}
 	else
 		waitpid(cpid, &ret, context->wflags);
@@ -69,7 +63,11 @@ int	sh_traverse_ampersand(t_ast_node *node, t_context *context)
 	int		ret;
 	pid_t	cpid;
 
+
 	context->wflags = WNOHANG;
+	context->cmd_type |= BG_NODE;
+	// if (g_job_ctrl->cmd_subst)
+	// 	context->wflags = 0;
 	if (g_job_ctrl->interactive && !g_job_ctrl->job_added)
 	{
 		if ((ret = job_add(node, NULL, 1)) != SUCCESS)

@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 15:54:02 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/14 09:27:57 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/14 12:05:50 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int				sh_execute_and_or(t_ast_node *node, t_context *context)
 	while (ptr != NULL && context->shell->running)
 	{
 		if ((ret = sh_traverse_and_or_process_phase(
-						context, prev_symbol, ptr)) != KEEP_READ)
+				context, prev_symbol, ptr)) != KEEP_READ)
 			return (ret);
 		if ((ptr = (ptr)->next))
 		{
