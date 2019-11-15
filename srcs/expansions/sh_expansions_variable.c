@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 13:38:26 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/15 06:23:30 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/15 14:06:45 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,18 +107,25 @@ int			sh_expansions_variable_detect(char *start)
 
 static int	sh_expansions_fill_invalid_vars(t_expansion *exp, char *start)
 {
-	char	*end;
 	char	*value;
+	int		index;
+	char	quoted;
 
-	end = ft_strchr(start + 1, '$'); // improve end look : need to parse quotes
-	if (end)
-		value = ft_strndup(start, end - start);
-	else
-		value = ft_strdup(start);
+	index = 1;
+	quoted = 0;
+	while (start[index])
+	{
+		if (start[index] == '$' || start[index] == '\\'
+			|| start[index] == '\'' || start[index] == '\"')
+			break ;
+		index++;
+	}
+	value = ft_strndup(start, index);
 	if (!value)
 		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_fill_invalid_vars"));
 	exp->type = EXP_VAR;
 	exp->original = value;
+	exp->expansion = value;
 	exp->expansion = NULL;
 	exp->process = &sh_expansions_variable_process;
 	return (SUCCESS);
