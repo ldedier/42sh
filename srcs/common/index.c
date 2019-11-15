@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/12 13:49:28 by ldedier           #+#    #+#             */
-/*   Updated: 2019/06/07 03:02:57 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/15 11:31:01 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int		sh_index_2(t_symbol_id id)
 		return (sh_index_3(id));
 }
 
-int		sh_index(t_symbol_id id)
+int		sh_index(int id)
 {
 	if (id == LEX_TOK_UNKNOWN)
 		return (0);

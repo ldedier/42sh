@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/14 14:27:47 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/30 22:56:54 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/15 14:48:14 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	sh_free_all(t_shell *shell)
 {
 	job_control_free();
 	sh_free_parser(&shell->parser);
+	sh_free_parser(&shell->parser_ar);
 	sh_free_command_line(&g_glob.command_line);
 	ft_dlstdel(&shell->history.commands, free_entry_dlst);
 	if (shell->vars)

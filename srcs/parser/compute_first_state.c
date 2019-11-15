@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 12:21:04 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/22 16:34:21 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/15 14:31:20 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_state	*sh_compute_first_state(t_lr_parser *parser)
 		return (NULL);
 	if (!(first_item =
 			sh_new_item(parser->cfg.start_symbol.productions->content,
-				&parser->cfg.symbols[sh_index(END_OF_INPUT)])))
+				&parser->cfg.symbols[parser->cfg.eoi_index])))
 	{
 		free(first_state);
 		return (NULL);

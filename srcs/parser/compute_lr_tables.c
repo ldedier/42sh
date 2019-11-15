@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 17:49:25 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/09 02:34:36 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/15 14:46:24 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,6 @@ t_action	**sh_create_tables(t_lr_parser *parser)
 
 void	sh_fill_reduce(t_state *state, t_item *item, t_lr_parser *parser)
 {
-	int eoi_index;
-
-	eoi_index = sh_index(END_OF_INPUT);
 	if (parser->lr_tables[state->index]
 			[item->lookahead->id].action_enum == E_ACTION_REDUCE)
 	{
@@ -63,8 +60,8 @@ void	sh_fill_reduce(t_state *state, t_item *item, t_lr_parser *parser)
 		ft_printf("SHIFT REDUCE CONFLICT\n");
 	}
 	if (item->production->from == &parser->cfg.start_symbol
-			&& (item->lookahead->id == eoi_index))
-		parser->lr_tables[state->index][eoi_index].action_enum = E_ACTION_ACCEPT;
+			&& (item->lookahead->id == parser->cfg.eoi_index))
+		parser->lr_tables[state->index][parser->cfg.eoi_index].action_enum = E_ACTION_ACCEPT;
 	else
 	{
 		parser->lr_tables[state->index]

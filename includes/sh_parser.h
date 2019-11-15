@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 12:31:41 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/29 14:05:43 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/15 15:06:26 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # define KNOWN_ITERATIONS 2
 
 typedef struct s_ast_node	t_ast_node;
+typedef struct s_exec		t_exec;
 typedef struct s_shell		t_shell;
 typedef struct s_stack_item	t_stack_item;
 
@@ -118,10 +119,8 @@ typedef struct		s_lr_parser
 	t_ast_node		**tmp_ast_root;
 	t_ast_node		**tmp_cst_root;
 	t_list			**tmp_tokens;
-
 	t_list			**tmp_ast_builder_list;
 	t_ast_node		**tmp_replacing_ast_node;
-
 	int				nb_states;
 	int				index;
 
@@ -134,9 +133,10 @@ typedef struct		s_lr_parser
 /*
 ** ast_node_tools.c
 */
-t_ast_node			*sh_new_ast_node(t_symbol_id id, char *value);
+t_ast_node			*sh_new_ast_node(
+	t_symbol_id id, char *value, t_cfg *cfg);
 t_ast_node			*sh_add_to_ast_node(
-	t_ast_node *node, t_symbol_id id, char *value);
+	t_ast_node *node, t_symbol_id id, char *value, t_cfg *cfg);
 
 /*
 ** compute_closure.c
@@ -220,7 +220,7 @@ int					sh_compute_transitions(
 ** field_splitting_tools.c
 */
 t_ast_node			*sh_add_word_to_ast(
-	t_ast_node *previous_word, char *value);
+	t_ast_node *previous_word, char *value, t_cfg *cfg);
 void				sh_delete_node_from_parent(t_ast_node *node);
 
 /*
@@ -250,7 +250,10 @@ void				sh_free_production(void *p, size_t dummy);
 /*
 ** init_parsing.c
 */
-int					sh_init_parsing(t_lr_parser *parser);
+int					sh_init_parsing(
+	t_lr_parser *parser, t_cfg_initializer *cfgi);
+int					sh_init_parsing_posix(t_lr_parser *parser);
+int					sh_init_parsing_arithmetic(t_lr_parser *parser);
 
 /*
 ** lr_parse.c
@@ -285,10 +288,7 @@ int					sh_parse_token_list(
 	t_ast_node **ast_root,
 	t_ast_node **cst_root);
 int					sh_parser(
-	t_shell *shell,
-	t_list **tokens,
-	t_ast_node **ast_root,
-	t_ast_node **cst_root);
+	t_shell *shell, t_lr_parser *parser, t_exec *res);
 
 /*
 ** parser_debug.c

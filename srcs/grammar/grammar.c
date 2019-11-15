@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 14:19:01 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/29 16:17:46 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/15 10:19:21 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ t_grammar_holder g_grammar[NB_SYMBOLS] = {
 	{"|", 0, 1, NULL, &sh_traverse_default, &jobs_string_pipe},
 	{"&", 0, 1, NULL, &sh_traverse_default, &jobs_string_and},
 	{";", 0, 1, NULL, &sh_traverse_default, &jobs_string_semicol},
-	// {";", 0, 1, NULL, &sh_traverse_semicol},
 	{"<", 0, 1, NULL, &sh_traverse_default, &jobs_string_less},
 	{">", 0, 1, NULL, &sh_traverse_default, &jobs_string_great},
 	{"(", 0, 1, NULL, &sh_traverse_default, &jobs_string_opn_par},

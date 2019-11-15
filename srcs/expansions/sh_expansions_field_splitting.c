@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/27 16:47:32 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/10 05:48:13 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/15 16:02:32 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ static int	sh_splitting_non_white_ifs(t_ast_node *node, char *ifs, char *input, 
 			{
 				if (!(str = ft_strndup(input + start, i - start)))
 					return (sh_perror(SH_ERR1_MALLOC, "sh_splitting_non_white_ifs (1)"));
-				else if (!(node = sh_add_word_to_ast(node, str)))
+				else if (!(node = sh_add_word_to_ast(node, str, g_glob.cfg)))
 					return (sh_perror(SH_ERR1_MALLOC, "sh_splitting_non_white_ifs (2)"));
 				update_quotes((t_quote**)quotes->tbl, i, start, node);
 				if (sh_verbose_expansion())
@@ -121,7 +121,7 @@ static int	sh_splitting_non_white_ifs(t_ast_node *node, char *ifs, char *input, 
 	{
 		if (!(str = ft_strndup(input + start, i - start)))
 			return (sh_perror(SH_ERR1_MALLOC, "sh_splitting_non_white_ifs (1)"));
-		else if (!(node = sh_add_word_to_ast(node, str)))
+		else if (!(node = sh_add_word_to_ast(node, str, g_glob.cfg)))
 			return (sh_perror(SH_ERR1_MALLOC, "sh_splitting_non_white_ifs (2)"));
 		update_quotes((t_quote**)quotes->tbl, i, start, node);
 		if (sh_verbose_expansion())
@@ -183,7 +183,7 @@ static int	sh_expansions_splitting_default(t_ast_node *node, t_dy_tab *quotes)
 			{
 				if (sh_verbose_expansion())
 					ft_dprintf(2, "adding node : %s\n", node->token->value);
-				if (!(node = sh_add_word_to_ast(node, ft_strndup(input + start, i - start))))
+				if (!(node = sh_add_word_to_ast(node, ft_strndup(input + start, i - start), g_glob.cfg)))
 					return (FAILURE);
 				update_quotes((t_quote**)quotes->tbl, i, start, node);
 			}
@@ -198,7 +198,7 @@ static int	sh_expansions_splitting_default(t_ast_node *node, t_dy_tab *quotes)
 	}
 	if (start != i && start >= 0)
 	{
-		if (!(node = sh_add_word_to_ast(node, ft_strndup(input + start, i - start)))) //protect
+		if (!(node = sh_add_word_to_ast(node, ft_strndup(input + start, i - start), g_glob.cfg))) //protect
 			return (FAILURE);
 		if (sh_verbose_expansion())
 			ft_dprintf(2, "adding last node : %s\n", node->token->value);

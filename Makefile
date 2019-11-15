@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/11/13 04:52:24 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/15 17:51:19 by ldedier          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,6 +55,8 @@ VPATH		= $(INCLUDESDIR) \
 			  $(SRCDIR)/lexer \
 			  $(SRCDIR)/parser \
 			  $(SRCDIR)/parser/productions \
+			  $(SRCDIR)/arithmetic \
+			  $(SRCDIR)/arithmetic/productions \
 			  $(SRCDIR)/perror \
 			  $(SRCDIR)/traverse \
 			  $(SRCDIR)/traverse_tools \
@@ -411,6 +413,27 @@ SRCS			+=	jobs_init.c job_add.c process_add.c job_tools.c \
 					jobs_string_great_and.c jobs_string_word.c \
 					sh_handle_no_fork.c
 #jobs_error_free.c 
+
+################################################################
+########				ARITHMETIC						########
+################################################################
+SRCS			+=	 sh_ar_grammar.c sh_execute_arithmetic.c \
+					 sh_lexer_arithmetic.c \
+					 sh_traverse_and_or_ar.c \
+					 sh_traverse_comparison_ar.c \
+					 sh_traverse_expr_ar.c \
+					 sh_traverse_term_ar.c \
+					 sh_traverse_factor_ar.c
+
+
+
+################################################################
+########				AR_PRODUCTIONS					########
+################################################################
+SRCS			+=	sh_ar_prod_and_or.c sh_ar_prod_comparison.c \
+					sh_ar_prod_factor.c sh_ar_prod_arithmetic.c \
+					sh_ar_prod_expr.c sh_ar_prod_term.c
+
 ################################################################
 ########					INCLUDES					########
 ################################################################
@@ -433,6 +456,8 @@ INCLUDES		=	sh_21.h \
 					sh_tokens.h \
 					sh_traverse.h \
 					sh_traverse_tools.h \
+					sh_arithmetic.h \
+					sh_arithmetic_productions.h \
 					sh_vars.h
 
 OBJECTS			=	$(addprefix $(OBJDIR), $(SRCS:.c=.o))

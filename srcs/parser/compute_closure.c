@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 17:38:53 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/01 19:40:24 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/15 09:45:38 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,9 +116,7 @@ void	sh_compute_first_sets_str_append(char *first_sets, t_cfg *cfg,
 	t_list		*ptr;
 	int			i;
 	t_symbol	*symbol;
-	int			eps_index;
 
-	eps_index = sh_index(EPS);
 	i = 0;
 	while (i < cfg->nb_terms)
 		first_sets[i++] = 0;
@@ -127,14 +125,14 @@ void	sh_compute_first_sets_str_append(char *first_sets, t_cfg *cfg,
 	{
 		symbol = (t_symbol *)ptr->content;
 		sh_process_transitive_first_sets_2(first_sets, symbol, cfg);
-		if (!symbol->first_sets[eps_index])
+		if (!symbol->first_sets[cfg->epsilon_index])
 			return ;
 		ptr = ptr->next;
 	}
 	sh_process_transitive_first_sets_2(first_sets, append, cfg);
-	if (!append->first_sets[eps_index])
+	if (!append->first_sets[cfg->epsilon_index])
 		return ;
-	sh_process_transitive_first_set_2(first_sets, eps_index);
+	sh_process_transitive_first_set_2(first_sets, cfg->epsilon_index);
 }
 
 /*

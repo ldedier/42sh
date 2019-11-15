@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/15 16:08:40 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/13 12:35:45 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/15 15:08:48 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,35 +22,32 @@ void	free_execution_tools(t_list **tokens, t_ast_node **ast_root,
 
 static int	sh_process_command(t_shell *shell, char *command)
 {
-	t_list		*tokens;
 	int			ret;
-	t_ast_node	*ast_root;
-	t_ast_node	*cst_root;
+	t_exec		res;
 
-	ast_root = NULL;
-	cst_root = NULL;
-	tokens = NULL;
+	res.ast_root = NULL;
+	res.cst_root = NULL;
+	res.tokens = NULL;
 	sh_verbose_update(shell);
 	ret = 0;
-	if ((ret = sh_lexer(command, &tokens, shell, E_LEX_STANDARD)) != SUCCESS)
+	if ((ret = sh_lexer(command, &res.tokens, shell, E_LEX_STANDARD)) != SUCCESS)
 	{
 		if (sh_env_update_ret_value_and_question(shell, ret) == FAILURE)
 			ret = sh_perror(SH_ERR1_MALLOC, "sh_process_command (1)");
-		ft_lstdel(&tokens, sh_free_token_lst);
+		ft_lstdel(&res.tokens, sh_free_token_lst);
 	}
 	// jobs_create_cmds(g_job_ctrl->tokens);
-
-	else if ((ret = sh_parser(shell, &tokens, &ast_root, &cst_root)))
+	else if ((ret = sh_parser(shell, &shell->parser, &res)))
 	{
 		sh_perror_err("syntax error", NULL);
 		if (sh_env_update_ret_value_and_question(shell, ret) == FAILURE)
 			ret = sh_perror(SH_ERR1_MALLOC, "sh_process_command (2)");
-		ft_lstdel(&tokens, sh_free_token_lst);
+		ft_lstdel(&res.tokens, sh_free_token_lst);
 	}
 	else
 	{
-		ret = sh_process_traverse(shell, ast_root);
-		free_execution_tools(&tokens, &ast_root, &cst_root);
+		ret = sh_process_traverse(shell, res.ast_root);
+		free_execution_tools(&res.tokens, &res.ast_root, &res.cst_root);
 	}
 	return (ret);
 }

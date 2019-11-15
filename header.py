@@ -16,10 +16,10 @@ import re;
 
 format = "^(void|int|char|t_*|unsigned int|unsigned long|pid_t)"
 
-ignored_files=["grammar.c", "vshortcuts.c", "main.c", "sh_builtin_bonus.c"]
+ignored_files=["sh_ar_grammar.c", "grammar.c", "vshortcuts.c", "main.c", "sh_builtin_bonus.c"]
 
 ## Activate or unactivate verbose mode, you can define verbose level between 1 and 3.
-verbose = 0
+verbose = 3
 
 def read_subdir(dir, subdir, files):
     path = os.path.join(dir, subdir)
@@ -185,6 +185,8 @@ automatic_header("./srcs/globbing",           "./includes/sh_globbing.h", 7)
 automatic_header("./srcs/traverse_tools",       "./includes/sh_traverse_tools.h", 0)
 automatic_header("./srcs/vars",                         "./includes/sh_vars.h", 0)
 automatic_header("./srcs/traverse",                     "./includes/sh_traverse.h", 0)
+automatic_header("./srcs/arithmetic",                     "./includes/sh_arithmetic.h", 0)
+automatic_header("./srcs/arithmetic/productions",       "./includes/sh_arithmetic_productions.h", 0)
 automatic_header("./srcs/builtin",                      "./includes/sh_builtin.h", 0)
 automatic_header("./srcs/exec",                         "./includes/sh_exec.h", 5)
 automatic_header("./srcs/perror",                       "./includes/sh_perror.h", 0)

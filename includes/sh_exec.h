@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 17:11:16 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/08 23:40:30 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/15 17:30:09 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ typedef struct		s_context
 	t_ast_node		*current_pipe_sequence_node;
 	t_list			*redirections;
 	pid_t			pid;
+	int				arithmetic_error;
 }					t_context;
 
 typedef struct		s_pipe

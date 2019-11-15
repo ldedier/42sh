@@ -6,13 +6,13 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 20:10:04 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/13 12:34:17 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/15 15:56:13 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-t_ast_node	*sh_new_ast_node(t_symbol_id id, char *value)
+t_ast_node	*sh_new_ast_node(t_symbol_id id, char *value, t_cfg *cfg)
 {
 	t_ast_node	*res;
 	t_token		*token;
@@ -20,7 +20,7 @@ t_ast_node	*sh_new_ast_node(t_symbol_id id, char *value)
 	token = NULL;
 	if (value)
 	{
-		if (!(token = t_token_new_ptr(id, value)))
+		if (!(token = t_token_new_ptr(id, value, cfg)))
 			return (sh_perrorn(SH_ERR1_MALLOC, "new_ast_node (1)"));
 	}
 	if (!(res = malloc(sizeof(t_ast_node))))
@@ -45,11 +45,11 @@ t_ast_node	*sh_new_ast_node(t_symbol_id id, char *value)
 */
 
 t_ast_node	*sh_add_to_ast_node(t_ast_node *node, t_symbol_id id,
-				char *value)
+				char *value, t_cfg *cfg)
 {
 	t_ast_node *new_node;
 
-	if (!(new_node = sh_new_ast_node(id, value)))
+	if (!(new_node = sh_new_ast_node(id, value, cfg)))
 		return (NULL);
 	if (ft_lstaddnew_ptr_last(&node->children, new_node,
 		sizeof(t_ast_node *)))

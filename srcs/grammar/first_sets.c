@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/05 18:46:44 by ldedier           #+#    #+#             */
-/*   Updated: 2019/06/07 06:46:05 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/15 09:44:58 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int		sh_add_to_first_sets_by_prod(t_symbol *symbol,
 	{
 		prod_symbol = (t_symbol *)(ptr->content);
 		sh_process_transitive_first_sets(symbol, prod_symbol, changes, cfg);
-		if (!prod_symbol->first_sets[sh_index(EPS)])
+		if (!prod_symbol->first_sets[cfg->epsilon_index])
 			return (0);
 		ptr = ptr->next;
 	}
@@ -42,7 +42,7 @@ int		sh_add_to_first_sets(t_symbol *symbol, t_cfg *cfg)
 	{
 		production = (t_production *)(ptr->content);
 		if (sh_add_to_first_sets_by_prod(symbol, production, &changes, cfg))
-			sh_process_transitive_first_set(symbol, sh_index(EPS), &changes);
+			sh_process_transitive_first_set(symbol, cfg->epsilon_index, &changes);
 		ptr = ptr->next;
 	}
 	return (changes);
@@ -72,7 +72,7 @@ void	sh_init_process_first_sets(t_symbol *symbol, t_cfg *cfg)
 	if (sh_is_term(symbol, cfg))
 		symbol->first_sets[symbol->id] = 1;
 	else if (has_eps_prod(symbol))
-		symbol->first_sets[sh_index(EPS)] = 1;
+		symbol->first_sets[cfg->epsilon_index] = 1;
 }
 
 int		sh_compute_first_sets(t_cfg *cfg)

@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/07 15:38:10 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/10 05:32:09 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/15 15:56:43 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,14 @@ static int			sh_process_add_new_ast_node(t_list *ptr,
 ** returns the newly created node or NULL on errors
 */
 
-t_ast_node			*sh_add_word_to_ast(t_ast_node *previous_word, char *value)
+t_ast_node			*sh_add_word_to_ast(t_ast_node *previous_word, char *value, t_cfg *cfg)
 {
 	t_list		*ptr;
 	t_ast_node	*new_node;
 	int			ret;
 
 	ptr = previous_word->parent->children;
-	if (!(new_node = sh_new_ast_node(LEX_TOK_WORD, value)))
+	if (!(new_node = sh_new_ast_node(LEX_TOK_WORD, value, cfg)))
 	{
 		free(value);
 		return (NULL);

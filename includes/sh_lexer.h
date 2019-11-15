@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 11:08:27 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/10 05:57:56 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/15 15:55:16 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@
 
 typedef struct s_shell		t_shell;
 typedef struct s_ast_node	t_ast_node;
+typedef struct s_cfg		t_cfg;
 typedef struct s_token		t_token;
 
 typedef enum		e_lex_mode
@@ -185,15 +186,15 @@ void				t_lexer_show(t_lexer *lexer);
 /*
 ** t_token.c
 */
-void				t_token_update_id(int id, t_token *token);
-t_token				*t_token_new_ptr(int id, char *value);
-t_token				*t_token_new(int id, char *value);
+void				t_token_update_id(int id, t_token *token, t_cfg *cfg);
+t_token				*t_token_new_ptr(int id, char *value, t_cfg *cfg);
+t_token				*t_token_new(int id, char *value, t_cfg *cfg);
 void				t_token_free(t_token *token);
 
 /*
 ** t_token_list.c
 */
-t_list				*t_token_node_new(int id, char *value);
+t_list				*t_token_node_new(int id, char *value, t_cfg *cfg);
 void				t_token_free_list(t_list **head);
 void				sh_free_token_lst(void *t, size_t dummy);
 t_token				*sh_get_token_by_index(

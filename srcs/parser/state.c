@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 12:23:57 by ldedier           #+#    #+#             */
-/*   Updated: 2019/07/24 16:48:36 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/15 14:45:02 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ int		sh_add_item_to_state(t_lr_parser *parser, t_state *state, t_item *item)
 t_state		*sh_new_state(t_cfg *cfg)
 {
 	t_state		*res;
-	static int	index = 0;
 	int			i;
 
 	if (!(res = (t_state *)malloc(sizeof(t_state))))
@@ -63,7 +62,7 @@ t_state		*sh_new_state(t_cfg *cfg)
 	res->transitions = NULL;
 	res->items = NULL;
 	res->last_item_ptr = NULL;
-	res->index = index++;
+	res->index = cfg->state_index++;
 	i = 0;
 	while (i < cfg->nb_productions)
 		res->items_by_productions[i++] = NULL;
