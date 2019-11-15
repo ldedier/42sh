@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/07 16:11:41 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/09 05:19:23 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/15 04:49:01 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,11 +85,18 @@ int				sh_lexer(char *input, t_list **tokens, t_shell *shell,
 	{
 		t_token_free_list(&lexer.list);
 		if (ret == ERROR)
-			return (sh_perror_err("lexical error", NULL));
+		{
+			if (mode != E_LEX_AUTOCOMPLETION)
+				return (sh_perror_err("lexical error", NULL));
+			return (ERROR);
+		}
 		else if (ret == CTRL_C)
 			sh_env_update_ret_value(shell, SH_RET_SIG_RECEIVED + SIGINT);
 		else if (ret == CTRL_D)
+		{
 			sh_env_update_ret_value(shell, 2);
+			return (ERROR);
+		}
 		return (ret);
 	}
 	if (sh_verbose_lexer())

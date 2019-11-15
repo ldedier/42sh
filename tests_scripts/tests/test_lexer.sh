@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/21 16:00:41 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/09 09:18:20 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/14 05:06:31 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -70,7 +70,24 @@ launch "Lexer"
 	test_launch '( echo jey } )'
 	test_launch '( echo jey } )'
 	test_launch '{ echo lol { }} | cat -e ; }'
-  
+
+	launch_show "unclosed pipe"
+	test_launch 'pwd | cat -e' 'pwd |' 'cat -e' 'echo $?'
+	test_launch 'pwd |' 'cat -e' 'pwd' 'echo $?'
+	test_launch 'pwd |' 'echo $?'
+	test_launch 'pwd |' 'cat -e |' 'cat -e' 'echo $?'
+	test_launch 'ls | | pwd' 'echo $?'
+	test_launch 'ls | cat -e | ' 'echo $?'
+	test_launch '|' 'echo $?'
+
+	launch_show "unclosed expansions"
+	test_launch 'echo `ls'  'echo $?'
+	test_launch 'echo `ls' '-A' 'echo $?'
+	test_launch 'echo ${param' 'echo $?'
+	test_launch 'echo $(param' 'echo $?'
+	test_launch 'echo <(param' 'echo $?'
+	test_launch 'echo >(param' 'echo $?'
+
 finish
 
 rm -f file

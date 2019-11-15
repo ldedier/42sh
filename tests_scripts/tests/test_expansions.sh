@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/23 13:10:40 by jmartel           #+#    #+#              #
-#    Updated: 2019/10/10 10:08:55 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/15 06:31:08 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,6 @@ launch "Expansions"
 
 finish
 
-launch "Variables"
 	launch_show "Basic"
 	test_launch '=qsda'
 	test_launch 'var=okalm ; echo $var'
@@ -129,6 +128,11 @@ launch "Variables"
 	test_launch 'var="      spa     ces"' 'echo > $var' 'cat "$var"' 'rm -f "$var"'
 	test_launch 'var="      spa     ces"' 'echo > "$var"' 'cat "$var"' 'rm -f "$var"'
 	test_launch 'var=">file"' 'echo oklam $var' 'cat file ; rm -f file'
+
+	launch_show "invalid names"
+	test_launch 'var=tamer okalm=speculos' 'echo $%%$var ; echo $+++$+++ ; echo $$$----$okalm$++'
+	test_launch 'var=tamer okalm=speculos' 'echo \$var$%%$var' 'echo "$var$%%$novar$%%"'
+	test_launch 'var=tamer okalm=speculos' 'echo \$var$%%$var' 'echo "\$var\$%%\$novar\$%%"'
 
 # launch "Deprecated"
 	# launch "Hard"

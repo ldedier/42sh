@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/22 15:32:16 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/10 04:30:20 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/15 04:39:24 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,7 +50,7 @@ launch "alias"
 	test_launch 'shopt -s expand_aliases' 'alias a=alias' 'a aa="echo \"alias builtin redefined\""' 'aa'
 	test_launch 'shopt -s expand_aliases' 'alias b=c' 'alias c=d' 'alias d="echo shall works"' 'b'
 	test_launch 'shopt -s expand_aliases' 'alias e="g"' 'alias f="e"' 'alias g="echo infinite loop" ; e' 'g'
-	test_launch 'shopt -s expand_aliases' 'alias hello="echo \" Hello, world !\"' 'unalias hello' 'hello'
+	test_launch 'shopt -s expand_aliases' 'alias hello="echo \" Hello, world !\""' 'unalias hello' 'hello'
 	test_launch 'shopt -s expand_aliases' 'alias hello="echo okalm"' 'unalias -a' 'alias'
 
 	launch_show "old_errors"

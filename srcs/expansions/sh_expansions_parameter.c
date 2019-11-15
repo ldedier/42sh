@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 13:52:11 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/23 03:23:36 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/15 05:26:34 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int			sh_expansions_parameter_detect(char *start)
 	}
 	if (!start[i] && bracket > 0)
 		return (-1);
-	return (i);
+	return (i + 1);
 }
 
 /*
@@ -69,9 +69,9 @@ int			sh_expansions_parameter_fill(t_expansion *exp, char *start)
 
 	if ((i = sh_expansions_parameter_detect(start)) == -1)
 		return (ERROR);
-	if (!(exp->original = ft_strndup(start, i + 1)))
+	if (!(exp->original = ft_strndup(start, i)))
 		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_parameter_fill (1)"));
-	if (!(exp->expansion = ft_strndup(start + 2, i - 2)))
+	if (!(exp->expansion = ft_strndup(start + 2, i - 3)))
 		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_parameter_fill (2)"));
 	exp->type = EXP_PARAM;
 	exp->process = &sh_expansions_parameter_process;

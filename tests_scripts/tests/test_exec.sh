@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/21 16:00:41 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/13 08:30:47 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/15 06:18:55 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,21 @@ launch "exec"
 	test_launch 'echo "#!/bin/bash" >file' 'echo "echo lol" >> file' 'chmod 200 file' './file' 'chmod 777 file ; rm file'
 	test_launch 'echo "#!/bin/bash" >file' 'echo "echo lol" >> file' 'chmod 100 file' './file' 'chmod 777 file ; rm file'
 	test_launch 'echo "#!/bin/bash" >file' 'echo "echo lol" >> file' 'chmod 000 file' './file' 'chmod 777 file ; rm file'
+
+	launch_show "Path looking"
+	test_launch 'unset PATH' 'ls' 'echo $? ;find 1>/dev/null ; echo $?'
+	test_launch 'unset PATH' 'PATH='  'ls ; echo $?' 'find 1>/dev/null ; echo $?'
+	test_launch 'unset PATH' 'PATH=/bin:/usr/bin'  'ls ; echo $?' 'find 1>/dev/null ; echo $?'
+	test_launch 'unset PATH' 'PATH=:::/bin'  'ls ; echo $?' 'find 1>/dev/null ; echo $?'
+	test_launch 'unset PATH' 'PATH=:::/usr/bin'  'ls ; echo $?' 'find 1>/dev/null ; echo $?'
+	test_launch 'unset PATH' 'PATH=:::/usr/bin::::/bin'  'ls ; echo $?' 'find 1>/dev/null ; echo $?'
+	test_launch 'unset PATH' 'PATH=:/bin::/usr/bin::::'  'ls ; echo $?' 'find 1>/dev/null ; echo $?'
+	test_launch 'unset PATH' 'PATH=/bin::/usr/bin::::'  'ls ; echo $?' 'find 1>/dev/null ; echo $?'
+	test_launch 'unset PATH' 'PATH=::::/bin::/usr/bin::::'  'ls ; echo $?' 'find 1>/dev/null ; echo $?'
+	test_launch 'unset PATH' 'PATH=::::/bin:/usr/bin::::'  'ls ; echo $?' 'find 1>/dev/null ; echo $?'
+	test_launch 'unset PATH' 'PATH=::::/bin:/usr/bin'  'ls ; echo $?' 'find 1>/dev/null ; echo $?'
+	test_launch 'unset PATH' 'PATH=::::/bin:/usr/bin:::'  'ls ; echo $?' 'find 1>/dev/null ; echo $?'
+	test_launch 'unset PATH' 'PATH=::::/usr/bin:::/bin'  'ls ; echo $?' 'find 1>/dev/null ; echo $?'
 
 	launch_show "Symlinks"
 	test_launch 'ln -s ./symbolic_link1 ./symbolic_link2 ; ln -s ./symbolic_link2 ./symbolic_link3' 'ln -s ./symbolic_link3 ./symbolic_link1' 'cd ./symbolic_link1 ; echo $?' './symbolic_link1 ; echo $?' 'rm -rf ./symbolic_link1 ./symbolic_link2 ./symbolic_link3'
