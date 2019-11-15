@@ -6,11 +6,18 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/21 16:00:41 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/14 05:06:31 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/15 06:51:55 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 launch "Lexer"
+	launch_show 'reserved_words'
+	test_launch '{ echo hi ; { ls } ; }' 'echo $?'
+	test_launch ' { echo lol } | { cat -e }' 'echo $?'
+	test_launch 'echo {}' 'echo $?' 'echo { }' 'echo $?'
+	test_launch '{ export ABC=def; env|grep ABC; }; env|grep ABC|cat -e' 'echo $?'
+	test_launch '{ echo baz; echo buz >out2; } >out' 'cat out ; echo $? ; cat out2 ; echo $?' 'rm -f out out2'
+
 	launch_show "Quotes"
 	test_launch '"e"c"h"o lol' 'ls'
 	test_launch '"echo" lol' 'ls'
