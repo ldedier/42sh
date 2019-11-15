@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/23 13:10:40 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/15 08:12:52 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/15 13:35:15 by jdugoudr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -127,7 +127,7 @@ launch "Expansions"
 	test_launch 'var=">file"' 'echo oklam $var' 'cat file ; rm -f file'
 
 	launch_show "invalid names"
-	test_launch 'var=tamer okalm=speculos' 'echo $%%$var ; echo $+++$+++ ; echo $$$----$okalm$++'
+	test_launch 'var=tamer okalm=speculos' 'echo $%%$var ; echo $+++$+++ ; echo \$\$$&---$okalm$++'
 	test_launch 'var=tamer okalm=speculos' 'echo \$var$%%$var' 'echo "$var$%%$novar$%%"'
 	test_launch 'var=tamer okalm=speculos' 'echo \$var$%%$var' 'echo "\$var\$%%\$novar\$%%"'
 
