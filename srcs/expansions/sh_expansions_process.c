@@ -6,11 +6,30 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/03 14:58:45 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/10 03:10:11 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/15 12:08:04 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
+
+/*
+** strlen_dquote_unquote
+** This is a classique strlen but we need to stop
+** if a double quote appear either end of string.
+**
+** Return value:
+** The size of str until the end or '\0'
+*/
+
+//static int	strlen_dquote_unquote(const char *str)
+//{
+//	int	i;
+//
+//	i = 0;
+//	while (str[i] && str[i] != '"')
+//		i++;
+//	return (i);
+//}
 
 /*
 ** sh_expansions_init:
@@ -79,6 +98,7 @@ int			sh_expansions_process(
 		return (ret);
 	}
 	*index += ft_strlen(exp.res->str);
+//	*index += strlen_dquote_unquote(exp.res->str);
 	t_expansion_free_content(&exp);
 	return (SUCCESS);
 }

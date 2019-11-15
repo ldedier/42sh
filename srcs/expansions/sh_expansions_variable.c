@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 13:38:26 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/15 06:23:30 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/15 12:06:08 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,9 +108,21 @@ int			sh_expansions_variable_detect(char *start)
 static int	sh_expansions_fill_invalid_vars(t_expansion *exp, char *start)
 {
 	char	*end;
+	char	*end_quote;
+	char	*end_doll;
 	char	*value;
 
-	end = ft_strchr(start + 1, '$'); // improve end look : need to parse quotes
+	end_doll = ft_strchr(start + 1, '$'); // improve end look : need to parse quotes
+	end_quote = ft_strchr(start + 1, '"'); // improve end look : need to parse quotes
+	if (end_doll)
+	{
+		if (end_quote && end_quote < end_doll)
+			end = end_quote;
+		else
+			end = end_doll;
+	}
+	else
+		end = end_quote;
 	if (end)
 		value = ft_strndup(start, end - start);
 	else
