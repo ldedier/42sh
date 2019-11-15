@@ -6,18 +6,20 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 14:29:58 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/15 11:39:18 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/15 12:06:15 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
-
 
 static int	child_part(t_context *context, char *command, int fds[])
 {
 	int	ret;
 	
 	(void)ret;
+	if (setpgid(getpid(), g_job_ctrl->shell_pgid) < 0)
+		return (sh_perror("Could not add the process to a process group",
+			"sh_expansions_subst"));
 	ret = SUCCESS;
 	g_job_ctrl->cmd_subst = 1;
 	if (dup2(fds[PIPE_IN], STDOUT_FILENO) < 0)
@@ -39,7 +41,9 @@ static int	parent_part(t_context *context, char **str, int fds[], int cpid)
 {
 	int	ret;
 
-	(void)context;
+	if (setpgid(cpid, g_job_ctrl->shell_pgid) < 0)
+		return (sh_perror("Could not add the process to a process group",
+			"sh_expansions_subst"));
 	ret = SUCCESS;
 	close(fds[PIPE_IN]);
 	signal(SIGINT, handle_int);
