@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/06 22:45:49 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/13 05:55:36 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/15 14:18:46 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ static void	sh_builtin_alias_init_args(t_args *args)
 int			alias_valid_name(char *str)
 {
 	int		i;
+	char	*start;
 
 	i = 0;
 	while (str[i] && str[i] != '=')
@@ -35,6 +36,10 @@ int			alias_valid_name(char *str)
 			return (0);
 		i++;
 	}
+	if ((start = ft_strstr(str, "$(")) && sh_expansions_cmd_subst_detect_dollar(start) != -1)
+		return (0);
+	if ((start = ft_strchr(str, '`')) && sh_expansions_cmd_subst_detect_backquotes(start) != -1)
+		return (0);
 	return (1);
 }
 
