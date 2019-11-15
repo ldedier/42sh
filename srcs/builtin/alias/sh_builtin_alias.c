@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/06 22:45:49 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/15 14:18:46 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/15 14:23:02 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,13 @@ int			alias_valid_name(char *str)
 		i++;
 	}
 	if ((start = ft_strstr(str, "$(")) && sh_expansions_cmd_subst_detect_dollar(start) != -1)
-		return (0);
+		return (-1);
 	if ((start = ft_strchr(str, '`')) && sh_expansions_cmd_subst_detect_backquotes(start) != -1)
-		return (0);
+		return (-1);
+	if ((start = ft_strstr(str, "<(")) && sh_expansions_proc_subst_out_detect(start) != -1)
+		return (-1);
+	if ((start = ft_strstr(str, ">(")) && sh_expansions_proc_subst_in_detect(start) != -1)
+		return (-1);
 	return (1);
 }
 
@@ -58,8 +62,10 @@ static int	alias_treat_argument(t_context *context, char *arg)
 	}
 	else
 	{
-		if (!alias_valid_name(arg))
+		if (!(index = alias_valid_name(arg)))
 			return (sh_perror2_err(arg, "alias", "invalid alias name"));
+		if (index == -1)
+			return (sh_perror2_err(arg, "alias", "cannot alias substitutions"));
 		if (sh_vars_assignment(context->alias, NULL, arg))
 			return (FAILURE);
 		if (sh_verbose_builtin())
