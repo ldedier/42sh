@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 14:37:57 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/15 05:49:12 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/15 06:10:58 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ static int		sh_lexer_exp(t_lexer *lexer)
 	else if (start[0] == '$')
 	{
 		end = sh_expansions_variable_detect(start);
-		return (LEX_CONTINUE);
+		if (end == -1)
+			return (LEX_CONTINUE);
 	}
 	else
 		return (LEX_CONTINUE);

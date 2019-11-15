@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 13:38:26 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/06 04:15:18 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/15 06:23:30 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int			sh_expansions_variable_valid_name(char *name)
 **
 ** return :
 **		-1 : String given is invalid
-**		<0 : Lenght of the valid expansion detecteda
+**		>0 : Lenght of the valid expansion detecteda
 */
 
 int			sh_expansions_variable_detect(char *start)
@@ -105,6 +105,25 @@ int			sh_expansions_variable_detect(char *start)
 	return (i);
 }
 
+static int	sh_expansions_fill_invalid_vars(t_expansion *exp, char *start)
+{
+	char	*end;
+	char	*value;
+
+	end = ft_strchr(start + 1, '$'); // improve end look : need to parse quotes
+	if (end)
+		value = ft_strndup(start, end - start);
+	else
+		value = ft_strdup(start);
+	if (!value)
+		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_fill_invalid_vars"));
+	exp->type = EXP_VAR;
+	exp->original = value;
+	exp->expansion = NULL;
+	exp->process = &sh_expansions_variable_process;
+	return (SUCCESS);
+}
+
 /*
 ** sh_expansions_variable_fill:
 **	Try to fill type, expansion, original and process fields of a t_expansion
@@ -124,7 +143,7 @@ int			sh_expansions_variable_fill(t_expansion *exp, char *start)
 	int		i;
 
 	if ((i = sh_expansions_variable_detect(start)) == -1)
-		return (ERROR);
+		return (sh_expansions_fill_invalid_vars(exp, start));
 	if (i == 0)
 	{
 		exp->type = EXP_VAR;
@@ -157,6 +176,12 @@ int			sh_expansions_variable_process(t_context *context, t_expansion *exp)
 {
 	char	*value;
 
+	if (!exp->expansion)
+	{
+		if (!(exp->res = ft_dy_str_new_str(exp->original)))
+			return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_variable_process (1)"));
+		return (SUCCESS);
+	}
 	if (*exp->expansion != '#')
 		value = sh_vars_get_value(context->env, context->vars, exp->expansion);
 	else
