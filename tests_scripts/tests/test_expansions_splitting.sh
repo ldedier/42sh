@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/06/06 16:09:28 by jmartel           #+#    #+#              #
-#    Updated: 2019/09/12 23:48:11 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/15 21:20:30 by jdugoudr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,11 +22,12 @@ launch "Field splitting"
 		test_launch 'var="Okalmos     Specul     os"' 'echo $var'
 		test_launch 'IFS="A "' 'var="OkAlm   SpeculAs"' 'echo $var'
 		test_launch "var='\"Okalmos   Speculos\"'" 'echo $var'
-		test_launch 'IFS=AAAAAA''var=AAAAA' 'echo $var'
-		test_launch 'IFS=A''var=AAAAA' 'echo $var'
-		test_launch 'IFS=ABC''var=BAC' 'echo $var'
+		test_launch 'IFS=AAAAAA' 'var=AAAAA' 'echo $var'
+		test_launch 'IFS=A' 'var=AAAAA' 'echo $var'
+		test_launch 'IFS=ABC' 'var=BAC' 'echo $var'
 		test_launch 'var="OkAAAlmos speculAs" IFS=A\ ' 'echo $var'
-		test_launch 'IFS=ABC''var=B   A      C' 'echo $var'
+		test_launch 'IFS=ABC' 'var="B   A      C"' 'echo $var'
+		test_launch 'IFS="A"' 'var=AAAbonjour' 'echo $var'
 		test_launch 'var="echo tamer | cat -e"' '$var'
 
 	launch_show "IFS unset"

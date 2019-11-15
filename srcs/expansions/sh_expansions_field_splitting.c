@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/27 16:47:32 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/10 05:48:13 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/15 21:24:53 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,78 +58,6 @@ static int	sh_splitting_parse_ifs(char *ws, char *nws, char *ifs)
 	return (SUCCESS);
 }
 
-static int	sh_splitting_non_white_ifs(t_ast_node *node, char *ifs, char *input, t_dy_tab *quotes)
-{
-	char		ws[100];
-	char		nws[100];
-	int			i;
-	int			start;
-	char		*str;
-	int			first;
-
-	if (sh_splitting_parse_ifs(ws, nws, ifs))
-		return (ERROR);
-	i = 0;
-	if (sh_verbose_expansion())
-		ft_dprintf(2, "ifs : non white : %s && white : %s\n", nws, ws);
-	while (input[i] && ft_strchr(ws, input[i]))
-		i++;
-	start = i;
-	first = 1;
-	while (input[i])
-	{
-		if (sh_verbose_expansion())
-			ft_dprintf(2, "non white ifs : running %d (%c)\n", i, input[i]);
-		if (ft_strchr(nws, input[i]) || ft_strchr(ws, input[i]))
-		{
-			if (first)
-			{
-				input[i] = 0;
-				first = 0;
-				i++;
-				start = i;
-				if (sh_verbose_expansion())
-					ft_dprintf(2, "non white ifs : Added first node : %s\n", input);
-				continue ;
-			}
-			else
-			{
-				if (!(str = ft_strndup(input + start, i - start)))
-					return (sh_perror(SH_ERR1_MALLOC, "sh_splitting_non_white_ifs (1)"));
-				else if (!(node = sh_add_word_to_ast(node, str)))
-					return (sh_perror(SH_ERR1_MALLOC, "sh_splitting_non_white_ifs (2)"));
-				update_quotes((t_quote**)quotes->tbl, i, start, node);
-				if (sh_verbose_expansion())
-					ft_dprintf(2, "non white ifs : Added node : start : %d, i : %d\n", start, i);
-				i++;
-				if (sh_verbose_expansion())
-					ft_dprintf(2, "non white ifs : Added node : %s\n", str);
-			}
-			start = i;
-			if (ft_strchr(ws, input[i]))
-			{
-				while (input[i] && ft_strchr(ws, input[i]))
-					i++;
-				// i--;
-				start = i;
-			}
-		}
-		else
-			i++;
-	}
-	if (start != i)
-	{
-		if (!(str = ft_strndup(input + start, i - start)))
-			return (sh_perror(SH_ERR1_MALLOC, "sh_splitting_non_white_ifs (1)"));
-		else if (!(node = sh_add_word_to_ast(node, str)))
-			return (sh_perror(SH_ERR1_MALLOC, "sh_splitting_non_white_ifs (2)"));
-		update_quotes((t_quote**)quotes->tbl, i, start, node);
-		if (sh_verbose_expansion())
-			ft_dprintf(2, "non white ifs : Added last node : %s\n", str);
-	}
-	return (SUCCESS);
-}
-
 static void	decrease_quotes(t_quote **tbl)
 {
 	int		i;
@@ -141,6 +69,94 @@ static void	decrease_quotes(t_quote **tbl)
 		tbl[i]->c--;
 		i++;
 	}
+}
+
+static int 	sh_skip_ws(char *ws, char *input, int *i, t_dy_tab *quotes)
+{
+	while (input[*i] && ft_strchr(ws, input[*i]))
+	{
+		ft_strdelchar(input, *i);
+		decrease_quotes((t_quote**)quotes->tbl); // be carefull if used with IFS using quotes
+	}
+//	(void)quotes;
+//	while (input[*i] && ft_strchr(ws, input[*i]))
+//		*i += 1;
+	return (*i);
+}
+
+static int	sh_splitting_non_white_ifs(t_ast_node *node, char *ifs, char *input, t_dy_tab *quotes)
+{
+	char		ws[100];
+	char		nws[100];
+	int			i;
+	int			start;
+	char		*str;
+	int			first;
+
+	t_quote_is_original_quote(0, (t_quote **)quotes->tbl);
+	if (sh_splitting_parse_ifs(ws, nws, ifs))
+		return (ERROR);
+	i = 0;
+	if (sh_verbose_expansion())
+		ft_dprintf(2, "ifs : non white : %s && white : %s\n", nws, ws);
+	start = i;
+	first = 1;
+	while (input[i])
+	{
+		if (sh_verbose_expansion())
+			ft_dprintf(2, "non white ifs : running %d (%c)\n", i, input[i]);
+		start = sh_skip_ws(ws, input, &i, quotes);
+		if (!input[i])
+			break ;
+		else
+		{
+			while (input[i] && !ft_strchr(ifs, input[i]))
+				i++;
+			if ((input[i] == '\'' || input[i] == '"')
+					&& t_quote_is_original_quote(i, (t_quote **)quotes->tbl))
+			{
+				if (t_quote_get_offset(i, (t_quote**)quotes->tbl) != -1)
+				{
+					i = t_quote_get_offset(i, (t_quote**)quotes->tbl);
+					i++;
+				}
+				continue ;
+			}
+			if (input[i] && first)
+			{
+				if (i == 0 && ft_strchr(nws, input[i]))
+				{
+					if (!(str = ft_strndup(input + start, i - start)))
+						return (sh_perror(SH_ERR1_MALLOC, "sh_splitting_non_white_ifs (1)"));
+					else if (!(node = sh_add_word_to_ast(node, str)))
+						return (sh_perror(SH_ERR1_MALLOC, "sh_splitting_non_white_ifs (2)"));
+					update_quotes((t_quote**)quotes->tbl, i, start, node);
+				}
+				
+				input[i] = 0;
+				first = 0;
+				i++;
+				start = i;
+				continue ;
+			}
+			else if (first == 0)
+			{
+				if (!(str = ft_strndup(input + start, i - start)))
+					return (sh_perror(SH_ERR1_MALLOC, "sh_splitting_non_white_ifs (1)"));
+				else if (!(node = sh_add_word_to_ast(node, str)))
+					return (sh_perror(SH_ERR1_MALLOC, "sh_splitting_non_white_ifs (2)"));
+				update_quotes((t_quote**)quotes->tbl, i, start, node);
+				if (sh_verbose_expansion())
+					ft_dprintf(2, "non white ifs : Added node : start : %d, i : %d\n", start, i);
+				if (sh_verbose_expansion())
+					ft_dprintf(2, "non white ifs : Added node : %s\n", str);
+			}
+		}
+		start = i;
+		if (input[i])
+			i++;
+	}
+	return (SUCCESS);
 }
 
 static int	sh_expansions_splitting_default(t_ast_node *node, t_dy_tab *quotes)
@@ -227,7 +243,9 @@ int			sh_expansions_splitting(t_context *context, t_ast_node *node, t_dy_tab *qu
 {
 	char	*ifs;
 	int		ret;
+	static int i = 0;
 
+	i++;
 	if (!node || node->token->id == LEX_TOK_ASSIGNMENT_WORD)
 		return (SUCCESS); // node is null when called from heredocs
 	ifs = sh_vars_get_value(context->env, context->vars, "IFS");
