@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/06 22:45:49 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/15 14:23:02 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/15 14:41:02 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,17 @@ int			alias_valid_name(char *str)
 			return (0);
 		i++;
 	}
-	if ((start = ft_strstr(str, "$(")) && sh_expansions_cmd_subst_detect_dollar(start) != -1)
+	if ((start = ft_strstr(str, "$("))
+		&& sh_expansions_cmd_subst_detect_dollar(start) != -1)
 		return (-1);
-	if ((start = ft_strchr(str, '`')) && sh_expansions_cmd_subst_detect_backquotes(start) != -1)
+	if ((start = ft_strchr(str, '`'))
+		&& sh_expansions_cmd_subst_detect_backquotes(start) != -1)
 		return (-1);
-	if ((start = ft_strstr(str, "<(")) && sh_expansions_proc_subst_out_detect(start) != -1)
+	if ((start = ft_strstr(str, "<("))
+		&& sh_expansions_proc_subst_out_detect(start) != -1)
 		return (-1);
-	if ((start = ft_strstr(str, ">(")) && sh_expansions_proc_subst_in_detect(start) != -1)
+	if ((start = ft_strstr(str, ">("))
+		&& sh_expansions_proc_subst_in_detect(start) != -1)
 		return (-1);
 	return (1);
 }

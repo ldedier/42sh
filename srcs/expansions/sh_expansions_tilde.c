@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 13:56:29 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/15 11:39:17 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/15 15:06:36 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,6 @@ static int	sh_expansions_tilde_replace(
 
 	if (!ft_strequ(exp->res->str, exp->original))
 	{
-		ft_dprintf(2, "index : %d || exp->res : %s\n", *index, exp->res->str);
 		if (ft_dy_str_add_index(exp->res, '\'', ft_strlen(exp->res->str)))
 			return (FAILURE);
 		if (ft_dy_str_add_index(exp->res, '\'', 0))
@@ -228,7 +227,6 @@ int			sh_expansions_tilde_assignment(
 				return (ret);
 			original = *input;
 			index--;
-			ft_dprintf(2, "new current : %s\n", original + index);
 			process = 0;
 		}
 		else if (original[index] == ':')
