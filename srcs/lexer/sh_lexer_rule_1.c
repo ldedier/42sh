@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 14:25:15 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/14 03:25:18 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/15 05:15:48 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ static int	sh_lexer_rule1_process_quoted_start(t_lexer *lexer, int reading)
 	}
 	else if (lexer->backslash)
 		lexer->backslash = 0;
+	if (lexer->quoted == '|')
+		lexer->quoted = '\0';
 	return (SUCCESS);
 }
 
@@ -129,7 +131,10 @@ int			sh_lexer_rule1(t_lexer *lexer)
 		if (sh_lexer_rule1_check_final_pipe(lexer))
 		{
 			if (!isatty(0) || lexer->mode == E_LEX_AUTOCOMPLETION)
+			{
+				lexer->quoted = '|';
 				return (sh_lexer_rule1_process_quoted(lexer));
+			}
 			else
 				return (sh_process_quoted(lexer));
 		}

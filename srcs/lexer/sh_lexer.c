@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/07 16:11:41 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/14 03:18:57 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/15 04:49:01 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,7 @@ int				sh_lexer(char *input, t_list **tokens, t_shell *shell,
 		{
 			if (mode != E_LEX_AUTOCOMPLETION)
 				return (sh_perror_err("lexical error", NULL));
-			else
-				return (ERROR);
+			return (ERROR);
 		}
 		else if (ret == CTRL_C)
 			sh_env_update_ret_value(shell, SH_RET_SIG_RECEIVED + SIGINT);
