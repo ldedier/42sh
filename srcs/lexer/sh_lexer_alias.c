@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 01:10:36 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/15 10:10:39 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/15 10:18:28 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int			sh_lexer_alias(t_lexer *lexer, char *value)
 {
 	char	*alias;
 
-	if (lexer->tok_len == 0 || lexer->current_id != LEX_TOK_WORD || !lexer->first_word)
+	if (lexer->tok_len == 0 || lexer->current_id != LEX_TOK_WORD || !lexer->first_word || lexer->mode == E_LEX_AUTOCOMPLETION)
 		return (LEX_OK);
 	if (sh_vars_get_index(lexer->alias, value) == -1)
 		return (LEX_OK);
