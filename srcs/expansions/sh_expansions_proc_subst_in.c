@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 14:29:58 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/15 07:58:23 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/15 09:13:33 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,12 @@ int			sh_expansions_proc_subst_in_detect(char *start)
     int     parenthesis;
 
 	i = 0;
-	if (start[0] != '>' && start[1] == '(')
+	ft_dprintf(2, "start : %s\n", start);
+	if (start[0] != '>' || start[1] != '(')
         return (-1);
 	quoted = 0;
+	i = 2;
     parenthesis = 1;
-    i++;
     while (start[i] && parenthesis > 0)
     {
         if (start[i] == '\\' && start[i + 1])
@@ -32,6 +33,8 @@ int			sh_expansions_proc_subst_in_detect(char *start)
             quoted = start[i];
         else if (quoted && start[i] == quoted)
             quoted = 0;
+		else if (!quoted && start[i] == '(')
+            parenthesis++;
         else if (!quoted && start[i] == ')')
             parenthesis--;
         i++;
