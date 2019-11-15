@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/23 13:10:40 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/15 06:29:15 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/15 06:31:08 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,6 @@ launch "Expansions"
 
 finish
 
-launch "Variables"
 	launch_show "Basic"
 	test_launch '=qsda'
 	test_launch 'var=okalm ; echo $var'
