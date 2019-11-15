@@ -118,8 +118,13 @@ typedef struct		s_lr_parser
 	t_ast_node		**tmp_ast_root;
 	t_ast_node		**tmp_cst_root;
 	t_list			**tmp_tokens;
+
+	t_list			**tmp_ast_builder_list;
+	t_ast_node		**tmp_replacing_ast_node;
+
 	int				nb_states;
 	int				index;
+
 }					t_lr_parser;
 
 /*
@@ -150,10 +155,10 @@ t_symbol			*sh_get_next_non_terminal(
 int					sh_add_to_closure(
 	t_state *state,
 	t_symbol *new_item,
-	char first_sets[NB_TERMS],
+	char *first_sets,
 	t_lr_parser *parser);
 void				sh_compute_first_sets_str_append(
-	char first_sets[NB_TERMS], t_list *w, t_symbol *append);
+	char *first_sets, t_cfg *cfg, t_list *w, t_symbol *append);
 int					sh_process_compute_closure_item(
 	t_item *item, t_state *state, t_lr_parser *parser);
 int					sh_process_compute_closure(
@@ -227,6 +232,7 @@ void				sh_free_ast_builder(t_ast_builder *ast_builder);
 /*
 ** free_parser.c
 */
+void				t_symbol_free(t_symbol *symbol);
 void				sh_free_cfg(t_cfg *cfg);
 void				sh_free_parser(t_lr_parser *parser);
 
@@ -238,7 +244,6 @@ void				sh_free_stack_item_light(t_stack_item *stack_item);
 void				sh_free_stack_item(t_stack_item *stack_item);
 void				sh_free_stack_item_lst(void *si, size_t dummy);
 void				sh_free_stack_item_lst_light(void *si, size_t dummy);
-void				free_state_lst(void *s, size_t dummy);
 void				sh_free_lr_automata(t_lr_parser *parser);
 void				sh_free_production(void *p, size_t dummy);
 
@@ -271,7 +276,7 @@ int					sh_lr_parse(
 /*
 ** parser.c
 */
-int					sh_is_term(t_symbol *symbol);
+int					sh_is_term(t_symbol *symbol, t_cfg *cfg);
 void				sh_populate_token(
 	t_token *token, t_symbol_id id, int val);
 int					sh_parse_token_list(
@@ -288,37 +293,41 @@ int					sh_parser(
 /*
 ** parser_debug.c
 */
-void				sh_print_symbol_list(t_list *symbols);
-void				sh_print_production(t_production *production);
-void				print_non_terminal_production(t_symbol *symbol);
+void				sh_print_symbol_list(t_list *symbols, t_cfg *cfg);
+void				sh_print_production(
+	t_production *production, t_cfg *cfg);
+void				print_non_terminal_production(
+	t_symbol *symbol, t_cfg *cfg);
 void				print_non_terminals_productions(t_cfg *cfg);
-void				sh_process_print_set(t_cfg *cfg, char sets[NB_TERMS]);
+void				sh_process_print_set(t_cfg *cfg, char *sets);
 void				sh_print_first_set(t_cfg *cfg, t_symbol *symbol);
 void				sh_print_follow_set(t_cfg *cfg, t_symbol *symbol);
 void				print_follow_sets(t_cfg *cfg);
 void				print_first_sets(t_cfg *cfg);
-void				sh_print_item(t_item *item);
+void				sh_print_item(t_item *item, t_cfg *cfg);
 void				sh_print_transition(
-	t_transition *transition, int depth);
-void				sh_print_state(t_state *state, int depth);
+	t_transition *transition, t_cfg *cfg, int depth);
+void				sh_print_state(t_state *state, int depth, t_cfg *cfg);
 void				sh_print_lr_table(t_lr_parser *parser);
 void				sh_print_automata(t_lr_parser *parser, int depth);
-void				sh_print_stack_item(t_stack_item *stack_item);
+void				sh_print_stack_item(
+	t_stack_item *stack_item, t_cfg *cfg);
 void				sh_print_parser_state(
 	t_lr_parser *parser, t_list *tokens);
 void				sh_print_cfg(t_cfg *cfg);
 void				sh_print_ast_parser(t_lr_parser *parser);
 void				sh_print_parser(t_lr_parser *parser, int depth);
-void				sh_print_ast_builder(t_ast_builder *ast_builder);
+void				sh_print_ast_builder(
+	t_ast_builder *ast_builder, t_cfg *cfg);
 
 /*
 ** print_ast.c
 */
 char				*sh_color_depth(int i);
 void				sh_print_ast_child(
-	int depth, int *j, t_ast_node *child);
-void				sh_print_ast(t_ast_node *node, int depth);
-void				sh_print_ast_root(t_ast_node *node);
+	int depth, int *j, t_cfg *cfg, t_ast_node *child);
+void				sh_print_ast(t_ast_node *node, t_cfg *cfg, int depth);
+void				sh_print_ast_root(t_ast_node *node, t_cfg *cfg);
 
 /*
 ** productions/sh_prod_and_or.c
@@ -606,7 +615,8 @@ void				sh_init_ast_nodes(
 	t_ast_builder *ast_builder, t_token *token, t_symbol *symbol);
 t_ast_builder		*sh_new_ast_builder(
 	t_token *token, t_symbol *symbol);
-int					sh_is_replacing(t_ast_builder *ast_builder);
+int					sh_is_replacing(
+	t_ast_builder *ast_builder, t_cfg *cfg);
 
 /*
 ** shift.c
@@ -627,8 +637,8 @@ unsigned long		hash_item_next(void *i);
 unsigned long		hash_item(void *i);
 int					sh_add_item_to_state(
 	t_lr_parser *parser, t_state *state, t_item *item);
-t_state				*sh_new_state(void);
-void				sh_free_state(t_state *state);
+t_state				*sh_new_state(t_cfg *cfg);
+void				sh_free_state(t_state *state, t_cfg *cfg);
 
 /*
 ** transitive_first_sets.c
@@ -636,10 +646,13 @@ void				sh_free_state(t_state *state);
 void				sh_process_transitive_first_set(
 	t_symbol *symbol, int index, int *changes);
 void				sh_process_transitive_first_sets(
-	t_symbol *symbol, t_symbol *prod_symbol, int *changes);
+	t_symbol *symbol,
+	t_symbol *prod_symbol,
+	int *changes,
+	t_cfg *cfg);
 void				sh_process_transitive_first_set_2(
-	char first_sets[NB_TERMS], int index);
+	char *first_sets, int index);
 void				sh_process_transitive_first_sets_2(
-	char first_sets[NB_TERMS], t_symbol *prod_symbol);
+	char *first_sets, t_symbol *prod_symbol, t_cfg *cfg);
 
 #endif

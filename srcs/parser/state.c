@@ -52,7 +52,7 @@ int		sh_add_item_to_state(t_lr_parser *parser, t_state *state, t_item *item)
 	return (0);
 }
 
-t_state		*sh_new_state(void)
+t_state		*sh_new_state(t_cfg *cfg)
 {
 	t_state		*res;
 	static int	index = 0;
@@ -65,19 +65,19 @@ t_state		*sh_new_state(void)
 	res->last_item_ptr = NULL;
 	res->index = index++;
 	i = 0;
-	while (i < NB_PRODUCTIONS)
+	while (i < cfg->nb_productions)
 		res->items_by_productions[i++] = NULL;
 	return (res);
 }
 
-void		sh_free_state(t_state *state)
+void		sh_free_state(t_state *state, t_cfg *cfg)
 {
 	int i;
 
 	ft_lstdel_value(&state->items);
 	ft_lstdel_value(&state->transitions);
 	i = 0;
-	while (i < NB_PRODUCTIONS)
+	while (i < cfg->nb_productions)
 		ft_lstdel_ptr(&state->items_by_productions[i++]);
 	free(state);
 	state = NULL;

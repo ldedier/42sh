@@ -13,7 +13,7 @@
 #include "sh_21.h"
 
 int		sh_add_to_first_sets_by_prod(t_symbol *symbol,
-			t_production *production, int *changes)
+			t_production *production, int *changes, t_cfg *cfg)
 {
 	t_list		*ptr;
 	t_symbol	*prod_symbol;
@@ -22,7 +22,7 @@ int		sh_add_to_first_sets_by_prod(t_symbol *symbol,
 	while (ptr != NULL)
 	{
 		prod_symbol = (t_symbol *)(ptr->content);
-		sh_process_transitive_first_sets(symbol, prod_symbol, changes);
+		sh_process_transitive_first_sets(symbol, prod_symbol, changes, cfg);
 		if (!prod_symbol->first_sets[sh_index(EPS)])
 			return (0);
 		ptr = ptr->next;
@@ -30,7 +30,7 @@ int		sh_add_to_first_sets_by_prod(t_symbol *symbol,
 	return (1);
 }
 
-int		sh_add_to_first_sets(t_symbol *symbol)
+int		sh_add_to_first_sets(t_symbol *symbol, t_cfg *cfg)
 {
 	t_list			*ptr;
 	t_production	*production;
@@ -41,7 +41,7 @@ int		sh_add_to_first_sets(t_symbol *symbol)
 	while (ptr != NULL)
 	{
 		production = (t_production *)(ptr->content);
-		if (sh_add_to_first_sets_by_prod(symbol, production, &changes))
+		if (sh_add_to_first_sets_by_prod(symbol, production, &changes, cfg))
 			sh_process_transitive_first_set(symbol, sh_index(EPS), &changes);
 		ptr = ptr->next;
 	}
@@ -54,12 +54,12 @@ int		sh_process_first_sets(t_cfg *cfg)
 	int j;
 	int changes;
 
-	i = NB_TERMS;
+	i = cfg->nb_terms;
 	j = 0;
 	changes = 0;
-	while (j < NB_NOTERMS)
+	while (j < cfg->nb_noterms)
 	{
-		if (sh_add_to_first_sets(&cfg->symbols[i]))
+		if (sh_add_to_first_sets(&cfg->symbols[i], cfg))
 			changes = 1;
 		j++;
 		i++;
@@ -67,9 +67,9 @@ int		sh_process_first_sets(t_cfg *cfg)
 	return (changes);
 }
 
-void	sh_init_process_first_sets(t_symbol *symbol)
+void	sh_init_process_first_sets(t_symbol *symbol, t_cfg *cfg)
 {
-	if (sh_is_term(symbol))
+	if (sh_is_term(symbol, cfg))
 		symbol->first_sets[symbol->id] = 1;
 	else if (has_eps_prod(symbol))
 		symbol->first_sets[sh_index(EPS)] = 1;
@@ -80,9 +80,9 @@ int		sh_compute_first_sets(t_cfg *cfg)
 	int i;
 
 	i = 0;
-	while (i < NB_SYMBOLS)
+	while (i < cfg->nb_symbols)
 	{
-		sh_init_process_first_sets(&cfg->symbols[i]);
+		sh_init_process_first_sets(&cfg->symbols[i], cfg);
 		i++;
 	}
 	while (sh_process_first_sets(cfg))

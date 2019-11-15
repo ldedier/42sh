@@ -77,7 +77,7 @@ t_symbol	*sh_get_next_non_terminal(t_item *item, t_list **w_ptr)
 }
 
 int		sh_add_to_closure(t_state *state,
-			t_symbol *new_item, char first_sets[NB_TERMS], t_lr_parser *parser)
+			t_symbol *new_item, char *first_sets, t_lr_parser *parser)
 {
 	t_list			*ptr;
 	t_production	*production;
@@ -86,7 +86,7 @@ int		sh_add_to_closure(t_state *state,
 
 	changes = 0;
 	i = 0;
-	while (i < NB_TERMS)
+	while (i < parser->cfg.nb_terms)
 	{
 		if (first_sets[i])
 		{
@@ -110,7 +110,7 @@ int		sh_add_to_closure(t_state *state,
 	return (changes);
 }
 
-void	sh_compute_first_sets_str_append(char first_sets[NB_TERMS],
+void	sh_compute_first_sets_str_append(char *first_sets, t_cfg *cfg,
 		t_list *w, t_symbol *append)
 {
 	t_list		*ptr;
@@ -120,18 +120,18 @@ void	sh_compute_first_sets_str_append(char first_sets[NB_TERMS],
 
 	eps_index = sh_index(EPS);
 	i = 0;
-	while (i < NB_TERMS)
+	while (i < cfg->nb_terms)
 		first_sets[i++] = 0;
 	ptr = w;
 	while (ptr != NULL)
 	{
 		symbol = (t_symbol *)ptr->content;
-		sh_process_transitive_first_sets_2(first_sets, symbol);
+		sh_process_transitive_first_sets_2(first_sets, symbol, cfg);
 		if (!symbol->first_sets[eps_index])
 			return ;
 		ptr = ptr->next;
 	}
-	sh_process_transitive_first_sets_2(first_sets, append);
+	sh_process_transitive_first_sets_2(first_sets, append, cfg);
 	if (!append->first_sets[eps_index])
 		return ;
 	sh_process_transitive_first_set_2(first_sets, eps_index);
@@ -155,20 +155,27 @@ int		sh_process_compute_closure_item(t_item *item, t_state *state,
 	t_list		*w_ptr;
 	int			ret;
 	int			changes;
-	char		first_sets[NB_TERMS];
+	char		*first_sets;
 
+	if(!(first_sets = malloc(parser->cfg.nb_terms)))
+		return (1);
 	changes = 0;
 	if ((next_non_terminal = sh_get_next_non_terminal(item, &w_ptr)))
 	{
-		sh_compute_first_sets_str_append(first_sets, w_ptr, item->lookahead);
+		sh_compute_first_sets_str_append(first_sets, &parser->cfg,
+			w_ptr, item->lookahead);
 		if ((ret = sh_add_to_closure(state, next_non_terminal, first_sets, parser)))
 		{
 			if (ret == -1)
+			{
+				free(first_sets);
 				return (-1);
+			}
 			changes = 1;
 		}
 	}
 	item->parsed = !changes;
+	free(first_sets);
 	return (changes);
 }
 

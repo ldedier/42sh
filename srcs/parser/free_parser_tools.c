@@ -47,16 +47,12 @@ void	sh_free_stack_item_lst_light(void *si, size_t dummy)
 	sh_free_stack_item_light((t_stack_item *)si);
 }
 
-
-void	free_state_lst(void *s, size_t dummy)
-{
-	(void)dummy;
-	sh_free_state((t_state *)s);
-}
-
 void	sh_free_lr_automata(t_lr_parser *parser)
 {
-	ft_lstdel(&parser->states, free_state_lst);
+	t_state	*state;
+
+	while ((state = ft_lstpop_ptr(&parser->states)))
+		sh_free_state(state, &parser->cfg);
 }
 
 void	sh_free_production(void *p, size_t dummy)

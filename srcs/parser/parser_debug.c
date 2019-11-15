@@ -12,7 +12,7 @@
 
 #include "sh_21.h"
 
-void	sh_print_symbol_list(t_list *symbols)
+void	sh_print_symbol_list(t_list *symbols, t_cfg *cfg)
 {
 	t_list		*ptr;
 	int			start;
@@ -25,21 +25,21 @@ void	sh_print_symbol_list(t_list *symbols)
 		symbol = (t_symbol *)(ptr->content);
 		if (!start)
 			ft_printf(" ");
-		sh_print_symbol(symbol);
+		sh_print_symbol(symbol, cfg);
 		ptr = ptr->next;
 		start = 0;
 	}
 }
 
-void	sh_print_production(t_production *production)
+void	sh_print_production(t_production *production, t_cfg *cfg)
 {
-	sh_print_symbol(production->from);
+	sh_print_symbol(production->from, cfg);
 	ft_printf(" → ");
-	sh_print_symbol_list(production->symbols);
+	sh_print_symbol_list(production->symbols, cfg);
 	ft_printf("\t(%d)", production->index);
 }
 
-void	print_non_terminal_production(t_symbol *symbol)
+void	print_non_terminal_production(t_symbol *symbol, t_cfg *cfg)
 {
 	t_list			*ptr;
 	t_production	*production;
@@ -49,7 +49,7 @@ void	print_non_terminal_production(t_symbol *symbol)
 	{
 		production = (t_production *)ptr->content;
 		ft_printf("\t");
-		sh_print_production(production);
+		sh_print_production(production, cfg);
 		ft_printf("\n");
 		ptr = ptr->next;
 	}
@@ -60,33 +60,33 @@ void	print_non_terminals_productions(t_cfg *cfg)
 	int i;
 	int j;
 
-	i = NB_TERMS;
+	i = cfg->nb_terms;
 	j = 0;
 	ft_printf(BOLD UNDERLINE"PRODUCTIONS:\n\n"EOC);
-	while (j < NB_NOTERMS)
+	while (j < cfg->nb_noterms)
 	{
-		sh_print_symbol(&(cfg->symbols[i]));
+		sh_print_symbol(&(cfg->symbols[i]), cfg);
 		ft_printf(" : \n");
-		print_non_terminal_production(&cfg->symbols[i++]);
+		print_non_terminal_production(&cfg->symbols[i++], cfg);
 		j++;
 	}
 	ft_printf("\n");
 }
 
-void	sh_process_print_set(t_cfg *cfg, char sets[NB_TERMS])
+void	sh_process_print_set(t_cfg *cfg, char *sets)
 {
 	int i;
 	int first;
 
 	i = 0;
 	first = 1;
-	while (i < NB_TERMS)
+	while (i < cfg->nb_terms)
 	{
 		if (sets[i])
 		{
 			if (!first)
 				ft_printf(" ; ");
-			sh_print_symbol(&cfg->symbols[i]);
+			sh_print_symbol(&cfg->symbols[i], cfg);
 			first = 0;
 		}
 		i++;
@@ -96,7 +96,7 @@ void	sh_process_print_set(t_cfg *cfg, char sets[NB_TERMS])
 void	sh_print_first_set(t_cfg *cfg, t_symbol *symbol)
 {
 	ft_printf("first sets of ");
-	sh_print_symbol(symbol);
+	sh_print_symbol(symbol, cfg);
 	ft_printf(" :\n");
 	sh_process_print_set(cfg, symbol->first_sets);
 	ft_printf("\n\n");
@@ -105,7 +105,7 @@ void	sh_print_first_set(t_cfg *cfg, t_symbol *symbol)
 void	sh_print_follow_set(t_cfg *cfg, t_symbol *symbol)
 {
 	ft_printf("follow sets of ");
-	sh_print_symbol(symbol);
+	sh_print_symbol(symbol, cfg);
 	ft_printf(" :\n");
 	sh_process_print_set(cfg, symbol->follow_sets);
 	ft_printf("\n\n");
@@ -117,10 +117,10 @@ void	print_follow_sets(t_cfg *cfg)
 	int i;
 	int j;
 
-	i = NB_TERMS;
+	i = cfg->nb_terms;
 	j = 0;
 	ft_printf(BOLD UNDERLINE"FOLLOW SETS:\n\n"EOC);
-	while (j < NB_NOTERMS)
+	while (j < cfg->nb_noterms)
 	{
 		sh_print_follow_set(cfg, &cfg->symbols[i++]);
 		j++;
@@ -132,22 +132,22 @@ void	print_first_sets(t_cfg *cfg)
 	int i;
 	int j;
 
-	i = NB_TERMS;
+	i = cfg->nb_terms;
 	j = 0;
 	ft_printf(BOLD UNDERLINE"FIRST SETS:\n\n"EOC);
-	while (j < NB_NOTERMS)
+	while (j < cfg->nb_noterms)
 	{
 		sh_print_first_set(cfg, &cfg->symbols[i++]);
 		j++;
 	}
 }
 
-void	sh_print_item(t_item *item)
+void	sh_print_item(t_item *item, t_cfg *cfg)
 {
 	t_list		*ptr;
 	t_symbol	*symbol;
 
-	sh_print_symbol(item->production->from);
+	sh_print_symbol(item->production->from, cfg);
 	ft_printf(" → ");
 	ptr = item->production->symbols;
 	while (ptr != NULL)
@@ -155,30 +155,27 @@ void	sh_print_item(t_item *item)
 		if (ptr == item->progress)
 			ft_printf(BOLD"·"EOC);
 		symbol = (t_symbol *)ptr->content;
-		sh_print_symbol(symbol);
+		sh_print_symbol(symbol, cfg);
 		ptr = ptr->next;
 		//		ft_printf(" ");
 	}
 	if (ptr == item->progress)
 		ft_printf(BOLD"·"EOC);
 	ft_printf("\t(for symbol: [");
-	sh_print_symbol(item->lookahead);
+	sh_print_symbol(item->lookahead, cfg);
 	ft_printf("])\n");
 }
 
-void	sh_print_transition(t_transition *transition, int depth)
+void	sh_print_transition(t_transition *transition, t_cfg *cfg, int depth)
 {
-	if (transition->symbol->id == sh_index(LEX_TOK_CLS_PAR) || 1)
-	{
-		sh_print_symbol(transition->symbol);
-		ft_printf(" → ");
-		sh_print_state(transition->state, -1);
-		ft_printf("\n");
 		(void)depth;
-	}
+		sh_print_symbol(transition->symbol, cfg);
+		ft_printf(" → ");
+		sh_print_state(transition->state, -1, cfg);
+		ft_printf("\n");
 }
 
-void	sh_print_state(t_state *state, int depth)
+void	sh_print_state(t_state *state, int depth, t_cfg *cfg)
 {
 	t_list			*ptr;
 	t_item			*item;
@@ -194,7 +191,7 @@ void	sh_print_state(t_state *state, int depth)
 	while (ptr != NULL)
 	{
 		item = (t_item *)ptr->content;
-		sh_print_item(item);
+		sh_print_item(item, cfg);
 		ptr = ptr->next;
 	}
 	if (depth > 0)
@@ -204,7 +201,7 @@ void	sh_print_state(t_state *state, int depth)
 		while (ptr != NULL)
 		{
 			transition = (t_transition *)ptr->content;
-			sh_print_transition(transition, depth - 1);
+			sh_print_transition(transition, cfg, depth - 1);
 			ptr = ptr->next;
 		}
 	}
@@ -218,10 +215,10 @@ void	sh_print_lr_table(t_lr_parser *parser)
 
 	height = ft_lstlen(parser->states);
 	i = 0;
-	while (i < NB_SYMBOLS)
+	while (i < parser->cfg.nb_symbols)
 	{
 		ft_printf("\t");
-		sh_print_symbol(&parser->cfg.symbols[i]);
+		sh_print_symbol(&parser->cfg.symbols[i], &parser->cfg);
 		i++;
 	}
 	ft_printf("\n");
@@ -230,7 +227,7 @@ void	sh_print_lr_table(t_lr_parser *parser)
 	{
 		ft_printf("%#d", i);
 		j = 0;
-		while (j < NB_SYMBOLS)
+		while (j < parser->cfg.nb_symbols)
 		{
 			if (parser->lr_tables[i][j].action_enum == E_ACTION_ERROR)
 			{
@@ -266,21 +263,21 @@ void	sh_print_automata(t_lr_parser *parser, int depth)
 	while (ptr != NULL)
 	{
 		state = (t_state *)ptr->content;
-		sh_print_state(state, depth);
+		sh_print_state(state, depth, &parser->cfg);
 		ft_printf("/////////////////////////////////\n");
 		ptr = ptr->next;
 	}
 }
 
-void	sh_print_stack_item(t_stack_item *stack_item)
+void	sh_print_stack_item(t_stack_item *stack_item, t_cfg *cfg)
 {
 	if (stack_item->stack_enum == E_STACK_STATE_INDEX)
 	{
-		sh_print_state(stack_item->stack_union.state, -1);
+		sh_print_state(stack_item->stack_union.state, -1, cfg);
 	}
 	else
 	{
-		sh_print_ast_builder(stack_item->stack_union.ast_builder);
+		sh_print_ast_builder(stack_item->stack_union.ast_builder, cfg);
 	}
 }
 
@@ -295,7 +292,7 @@ void	sh_print_parser_state(t_lr_parser *parser, t_list *tokens)
 	ptr = parser->stack;
 	while (ptr != NULL)
 	{
-		sh_print_stack_item(ptr->content);
+		sh_print_stack_item(ptr->content, &parser->cfg);
 		ptr = ptr->next;
 	}
 	ft_printf("\n");
@@ -325,12 +322,12 @@ void	sh_print_parser(t_lr_parser *parser, int depth)
 	sh_print_lr_table(parser);
 }
 
-void	sh_print_ast_builder(t_ast_builder *ast_builder)
+void	sh_print_ast_builder(t_ast_builder *ast_builder, t_cfg *cfg)
 {
 //	ft_printf("\n-----------\n");
 //	ft_printf("AST_BUILDER\n\n");
 //	ft_printf("symbol: ");
-	sh_print_symbol(ast_builder->symbol);
+	sh_print_symbol(ast_builder->symbol, cfg);
 //	ft_printf("\n");
 //	ft_printf("ast tree: \n");
 //	sh_print_ast(ast_builder->ast_node, 0);

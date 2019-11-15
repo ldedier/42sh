@@ -12,17 +12,26 @@
 
 #include "sh_21.h"
 
+void	t_symbol_free(t_symbol *symbol)
+{
+	free(symbol->first_sets);
+	free(symbol->follow_sets);
+	ft_lstdel(&symbol->productions, sh_free_production);
+}
+
 void	sh_free_cfg(t_cfg *cfg)
 {
 	int i;
 
 	i = 0;
-	while (i < NB_SYMBOLS)
+	while (i < cfg->nb_symbols)
 	{
-		ft_lstdel(&cfg->symbols[i].productions, sh_free_production);
+		t_symbol_free(&cfg->symbols[i]);
 		i++;
 	}
-	ft_lstdel(&cfg->start_symbol.productions, sh_free_production);
+	t_symbol_free(&cfg->start_symbol);
+	free(cfg->symbols);
+	free(cfg->productions);
 }
 
 void	sh_free_parser(t_lr_parser *parser)

@@ -12,9 +12,9 @@
 
 #include "sh_21.h"
 
-void	sh_print_symbol(t_symbol *symbol)
+void	sh_print_symbol(t_symbol *symbol, t_cfg *cfg)
 {
-	if (sh_is_term(symbol))
+	if (sh_is_term(symbol, cfg))
 		ft_dprintf(2, "%s%s%s", BLUE, symbol->debug, EOC);
 	else
 		ft_dprintf(2, "%s%s%s", RED, symbol->debug, EOC);

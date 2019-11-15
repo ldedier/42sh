@@ -43,9 +43,9 @@
 // 	}
 // }
 
-int		sh_is_term(t_symbol *symbol)
+int		sh_is_term(t_symbol *symbol, t_cfg *cfg)
 {
-	return (symbol->id >= 0 && symbol->id < NB_TERMS);
+	return (symbol->id >= 0 && symbol->id < cfg->nb_terms);
 }
 
 void	sh_populate_token(t_token *token, t_symbol_id id,
@@ -73,9 +73,9 @@ int		sh_parse_token_list(t_lr_parser *parser, t_list **tokens,
 		{
 			ft_dprintf(2, "OK !\n");
 			ft_dprintf(2, "\nAST:\n");
-			sh_print_ast(*ast_root, 0);
-			// ft_dprintf(2, "\nCST:\n");
-			// sh_print_ast(*cst_root, 0);
+			sh_print_ast(*ast_root, &parser->cfg, 0);
+			ft_dprintf(2, "\nCST:\n");
+			sh_print_ast(*cst_root, &parser->cfg, 0);
 		}
 		ft_lstdel(&parser->stack, sh_free_stack_item_lst_light);
 		return (SUCCESS);

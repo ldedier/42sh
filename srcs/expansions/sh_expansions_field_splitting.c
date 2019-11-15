@@ -246,6 +246,6 @@ int			sh_expansions_splitting(t_context *context, t_ast_node *node, t_dy_tab *qu
 		ret = sh_splitting_non_white_ifs(node, ifs, node->token->value, quotes);
 	}
 	if (sh_verbose_expansion())
-		sh_print_ast_root(node);
+		sh_print_ast_root(node, g_glob.cfg);
 	return (ret);
 }

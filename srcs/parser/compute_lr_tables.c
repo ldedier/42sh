@@ -24,7 +24,7 @@ t_action	**sh_create_tables(t_lr_parser *parser)
 	i = 0;
 	while (i < parser->nb_states)
 	{
-		if (!(res[i] = (t_action *)malloc(NB_SYMBOLS * sizeof(t_action))))
+		if (!(res[i] = (t_action *)malloc(parser->cfg.nb_symbols * sizeof(t_action))))
 		{
 			while (--i)
 				free(res[i]);
@@ -32,7 +32,7 @@ t_action	**sh_create_tables(t_lr_parser *parser)
 			return (NULL);
 		}
 		j = 0;
-		while (j < NB_SYMBOLS)
+		while (j < parser->cfg.nb_symbols)
 			res[i][j++].action_enum = E_ACTION_ERROR;
 		i++;
 	}
@@ -48,14 +48,14 @@ void	sh_fill_reduce(t_state *state, t_item *item, t_lr_parser *parser)
 			[item->lookahead->id].action_enum == E_ACTION_REDUCE)
 	{
 		ft_printf("REDUCE REDUCE CONFLICT\n");
-		sh_print_state(state, 0);
+		sh_print_state(state, 0, &parser->cfg);
 		ft_printf("lookahead: ");
-		sh_print_symbol(item->lookahead);
+		sh_print_symbol(item->lookahead, &parser->cfg);
 		ft_printf("before:\n");
 		sh_print_production(parser->lr_tables[state->index]
-			[item->lookahead->id].action_union.production);
+			[item->lookahead->id].action_union.production, &parser->cfg);
 		ft_printf("after:\n");
-		sh_print_production(item->production);
+		sh_print_production(item->production, &parser->cfg);
 	}
 	else if (parser->lr_tables[state->index]
 			[item->lookahead->id].action_enum == E_ACTION_SHIFT)
@@ -83,14 +83,14 @@ void	sh_fill_tables_by_transition(t_state *state, t_transition *transition,
 		ft_printf("SHIFT REDUCE CONFLICT\n");
 		ft_printf("(%d)\n", transition->symbol->id);
 		ft_printf("for symbol: ");
-		sh_print_symbol(transition->symbol);
+		sh_print_symbol(transition->symbol, &parser->cfg);
 		ft_printf("\n");
-		sh_print_state(state, 0);
+		sh_print_state(state, 0, &parser->cfg);
 		ft_printf("before:\n");
 		sh_print_production(parser->lr_tables[state->index]
-			[transition->symbol->id].action_union.production);
+			[transition->symbol->id].action_union.production, &parser->cfg);
 		ft_printf("after:\n");
-		sh_print_state(transition->state, 0);
+		sh_print_state(transition->state, 0, &parser->cfg);
 	}
 	else if (parser->lr_tables[state->index]
 			[transition->symbol->id].action_enum == E_ACTION_SHIFT)

@@ -14,6 +14,8 @@
 
 int		sh_init_parsing(t_lr_parser *parser)
 {
+	t_cfg_initializer cfgi;
+
 	g_glob.cfg = &parser->cfg;
 	parser->states = NULL;
 	parser->last_state_ptr = NULL;
@@ -22,7 +24,11 @@ int		sh_init_parsing(t_lr_parser *parser)
 	parser->stack = NULL;
 	if (!(parser->states_by_items = ft_hash_table_new(100000)))
 		return (1);
-	if (init_context_free_grammar(&parser->cfg))
+	cfgi.nb_symbols = NB_SYMBOLS;
+	cfgi.nb_productions = NB_PRODUCTIONS;
+	cfgi.nb_terms = NB_TERMS;
+	cfgi.grammar_holder = g_grammar;
+	if (init_context_free_grammar(&parser->cfg, &cfgi))
 		return (1);
 	if (sh_compute_lr_automata(parser))
 		return (1);

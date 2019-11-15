@@ -77,11 +77,11 @@ int		sh_compute_lr_automata(t_lr_parser *parser)
 		return (sh_perror(SH_ERR1_MALLOC, "sh_compute_lr_automata (2)"));
 	if (ft_lstaddnew_ptr_last_list(&parser->states, first_state, sizeof(t_state *), &parser->last_state_ptr))
 	{
-		sh_free_state(first_state);
+		sh_free_state(first_state, &parser->cfg);
 		return (sh_perror(SH_ERR1_MALLOC, "sh_compute_lr_automata (2)"));
 	}
 	i = 1;
-	while ((ret = sh_compute_states(parser) == 1) && i++ < KNOWN_ITERATIONS)
+	while ((ret = sh_compute_states(parser) == 1))// && i++ < KNOWN_ITERATIONS)
 		;
 	if (ret == -1)
 		return (FAILURE);
