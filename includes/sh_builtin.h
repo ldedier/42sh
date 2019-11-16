@@ -219,7 +219,7 @@ int					sh_builtin_cd_rule7(
 /*
 ** cd/sh_builtin_cd_rule_8.c
 */
-int					sh_builtin_cd_rule8(char **curpath, char *param);
+int					sh_builtin_cd_rule8(char **curpath);
 
 /*
 ** export/sh_builtin_export.c

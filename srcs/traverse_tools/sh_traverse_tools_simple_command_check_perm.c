@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/05 01:23:20 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/13 08:38:09 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/16 17:43:55 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,10 @@ int			sh_traverse_sc_check_perm(t_context *context, char *path,
 	if (stat(path, &st) == -1 && lstat(path, &st) != -1)
 	{
 		if (check_for_symlink_loop(&st, path, 0) == SUCCESS)
+		{
+			sh_env_update_ret_value(context->shell, SH_RET_NOT_EXECUTABLE);
 			return (sh_perror_err(command_name, SH_ERR2_TOO_MANY_SYMLINK));
+		}
 		else
 			return (sh_perror_err(command_name, SH_ERR2_NO_SUCH_FILE_OR_DIR));
 	}
