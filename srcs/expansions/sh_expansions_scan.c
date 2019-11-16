@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/04 11:17:39 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/15 20:43:27 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/16 12:03:40 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ int			sh_expansions_scan(char **input, int index,
 	else
 	{
 		if (t_quote_add_new(quotes, index, (*input) + index))
-			return (sh_perror(SH_ERR1_MALLOC, "double_quote"));
+			return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_scan"));
 		index += 2;
 	}
 	return (sh_expansions_scan(input, index, context, quotes));

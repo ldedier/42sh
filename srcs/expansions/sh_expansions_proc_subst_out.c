@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 14:29:58 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/15 09:12:35 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/15 14:23:35 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int			sh_expansions_proc_subst_out_detect(char *start)
     int     parenthesis;
 
 	i = 0;
-	ft_dprintf(2, "start : %s\n", start);
 	if (start[0] != '<' || start[1] != '(')
         return (-1);
 	quoted = 0;

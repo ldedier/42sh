@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/16 05:23:32 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/13 10:41:38 by jdugoudr         ###   ########.fr        #
+#    Updated: 2019/11/15 15:23:00 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -168,5 +168,11 @@ launch "Globbing"
 	test_launch 'cd "./test_globbing"' '../obj/write_arguments [abc\\\\\]def]'
 	test_launch 'cd "./test_globbing"' '../obj/write_arguments [abc\\\\\\\]def]"'
 	rm -rf test_globbing
+
+	test_launch 'tester'
+	test_launch 'mkdir tester_dir ; cd tester_dir ; touch a b c d e f z "]" ' './obj/write_arguments [abc\]def]'
+	test_launch 'tester_dir' './obj/write_arguments [abc\\\]def]'
+	test_launch 'tester_dir' './obj/write_arguments [abc\\\\\]def]'
+	test_launch 'tester_dir' './obj/write_arguments [abc\\\\\\\]def]' 'cd .. ; rm -rf tester_dir'
 
 finish

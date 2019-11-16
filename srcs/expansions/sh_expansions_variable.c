@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 13:38:26 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/15 12:06:08 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/16 12:09:50 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,30 +107,23 @@ int			sh_expansions_variable_detect(char *start)
 
 static int	sh_expansions_fill_invalid_vars(t_expansion *exp, char *start)
 {
-	char	*end;
-	char	*end_quote;
-	char	*end_doll;
 	char	*value;
+	int		index;
 
-	end_doll = ft_strchr(start + 1, '$'); // improve end look : need to parse quotes
-	end_quote = ft_strchr(start + 1, '"'); // improve end look : need to parse quotes
-	if (end_doll)
+	index = 1;
+	while (start[index])
 	{
-		if (end_quote && end_quote < end_doll)
-			end = end_quote;
-		else
-			end = end_doll;
+		if (start[index] == '$' || start[index] == '\\'
+			|| start[index] == '\'' || start[index] == '\"')
+			break ;
+		index++;
 	}
-	else
-		end = end_quote;
-	if (end)
-		value = ft_strndup(start, end - start);
-	else
-		value = ft_strdup(start);
+	value = ft_strndup(start, index);
 	if (!value)
 		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_fill_invalid_vars"));
 	exp->type = EXP_VAR;
 	exp->original = value;
+	exp->expansion = value;
 	exp->expansion = NULL;
 	exp->process = &sh_expansions_variable_process;
 	return (SUCCESS);

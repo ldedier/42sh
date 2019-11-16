@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/21 16:00:41 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/15 07:11:26 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/15 10:10:09 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,6 +73,7 @@ launch "Lexer"
 	for i in `seq 1 11` ; do
 		test_launch_pipe ./tests_files/alias/alias_${i}
 	done
+	test_launch 'alias a=b b="ls ; a" '  'a' 'echo $?'
 
 	launch_show "Random"
 	test_launch '"var=pwe"'

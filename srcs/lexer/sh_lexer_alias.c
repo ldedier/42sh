@@ -6,33 +6,18 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 01:10:36 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/09 04:39:56 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/15 10:18:28 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
-
-static void	alias_clean_stack(t_lexer *lexer)
-{
-	t_list	*head;
-	t_list	*prev;
-
-	head = lexer->alias_stack;
-	while (head)
-	{
-		prev = head;
-		head = head->next;
-		free(prev);
-	}
-	lexer->alias_stack = NULL;
-}
 
 static int	alias_add_stack(t_lexer *lexer, char *value)
 {
 	t_list	*new;
 
 	if (!(new = ft_lstnew(value, sizeof(char*))))
-		return (LEX_FAIL);
+		return (sh_perror(SH_ERR1_MALLOC, "alias_add_stack"));
 	ft_lstadd_last(&(lexer->alias_stack), new);
 	return (SUCCESS);
 }
@@ -59,13 +44,10 @@ int			sh_lexer_alias(t_lexer *lexer, char *value)
 {
 	char	*alias;
 
-	if (lexer->tok_len == 0 || lexer->current_id != LEX_TOK_WORD || !lexer->first_word)
+	if (lexer->tok_len == 0 || lexer->current_id != LEX_TOK_WORD || !lexer->first_word || lexer->mode == E_LEX_AUTOCOMPLETION)
 		return (LEX_OK);
 	if (sh_vars_get_index(lexer->alias, value) == -1)
-	{
-		alias_clean_stack(lexer);
 		return (LEX_OK);
-	}
 	alias = sh_vars_get_value(lexer->alias, NULL, value);
 	if (sh_verbose_lexer())
 		ft_dprintf(2, GREEN"\talias detected : (%s) => (%s)\n"EOC, value, alias);

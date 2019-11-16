@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 13:56:29 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/06 05:18:37 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/15 15:06:36 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ static int	sh_expansions_init_tilde(char *original, t_expansion *exp)
 	if (!(exp->original = ft_strndup(start, i)))
 		return (sh_perror(SH_ERR1_MALLOC, "sh_exp_variable_detect_name (1)"));
 	exp->expansion = NULL;
-	exp->type = EXP_VAR;
+	exp->type = EXP_TILDE;
 	exp->process = &sh_expansions_tilde_process;
 	return (SUCCESS);
 }
@@ -149,9 +149,9 @@ static int	sh_expansions_tilde_replace(
 
 	if (!ft_strequ(exp->res->str, exp->original))
 	{
-		if (ft_dy_str_add_index(exp->res, '\'', *index))
+		if (ft_dy_str_add_index(exp->res, '\'', ft_strlen(exp->res->str)))
 			return (FAILURE);
-		if (ft_dy_str_add_index(exp->res, '\'', *index + ft_strlen(exp->res->str)))
+		if (ft_dy_str_add_index(exp->res, '\'', 0))
 			return (FAILURE);
 	}
 	ret = sh_expansions_replace(exp, input, *index, (t_quote**)quotes->tbl);
@@ -206,27 +206,31 @@ int			sh_expansions_tilde_assignment(
 	int		index;
 	char	*original;
 	int		ret;
+	char	quoted;
+	int		process;
 
 	original = *input;
-	if (!(index = ft_strchr(original, '=') - original))
-		return (ERROR);
-	if (original[index] == '=' && original[index + 1] == '~')
-	{
-		index++;
-		if ((ret = sh_expansions_tilde(input, context, quotes, &index)))
-			return (ret);
-		original = *input;
-	}
+	index = ft_strchr(original, '=') - original;
+	quoted = 0;
+	process = 1;
 	while (original[index])
 	{
-		if (original[index] == ':' && original[index + 1] == '~')
-		{
+		if (original[index] == '\\' && original[index + 1])
 			index++;
+		else if (quoted && original[index] == quoted)
+			quoted = 0;
+		else if (original[index] == '\'' || original[index] == '\"')
+			quoted = original[index];
+		else if (!quoted && original[index] == '~' && process)
+		{
 			if ((ret = sh_expansions_tilde(input, context, quotes, &index)))
 				return (ret);
-			index--;
 			original = *input;
+			index--;
+			process = 0;
 		}
+		else if (original[index] == ':')
+			process = 1;
 		index++;
 	}
 	return (SUCCESS);

@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/23 13:10:40 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/15 13:35:15 by jdugoudr         ###   ########.fr        #
+#    Updated: 2019/11/16 11:53:14 by jdugoudr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,6 @@ launch "Expansions"
 	test_launch '$novar ls'
 	test_launch	'$pwd $pwd'
 	test_launch "alias al='$var'" 'var="ls -a ; al"'
-
 	test_launch 'ahsdiouashdiuasdhioasjdopasdjoldniouhjnqwioejqnwoel=adisuhiduashnodklajsodiajlsdlkasasdhuasodiu' 'echo $ahsdiouashdiuasdhioasjdopasdjoldniouhjnqwioejqnwoel='
 
 	launch_show "Basic"
@@ -75,7 +74,7 @@ launch "Expansions"
 	test_launch 'var='\'''\''$HOME ; echo $var'
 	test_launch 'var='\''$HOME'\'' ; echo $var'
 	test_launch 'var=\"$HOME\" ; echo $var'
-	test_launch 'var='\sd\'\''$HOME ; echo $var'
+	test_launch 'var='\sd\'\'$HOME ; echo $var'
 	test_launch 'var=$ASD ; echo $var'
 	test_launch 'var=asd'\''$ASD'\'' ; echo $var'
 	test_launch 'var="Okalm os speculos"$USER ; echo $var'
@@ -113,7 +112,7 @@ launch "Expansions"
 	test_launch 'var=:~/:~/::: ; echo $var'
 
 	launch_show "Hybrid"
-	test_launch 'var=root' 'echo $(echo ~/) ; echo $(echo ~$var/)' 'echo ~$var/'
+	# test_launch 'var=root' 'echo $(echo ~/) ; echo $(echo ~$var/)' 'echo ~$var/'
 	test_launch 'shopt -s expand_aliases' 'alias cmd='"'"'cd ~/'"'" 'alias ; cmd ; echo $?' 'pwd'
 	test_launch 'ls -a ; !ls' 'ls ; !ls ; ls -a' 'alias ls=echo' '!ls'
 
@@ -130,6 +129,19 @@ launch "Expansions"
 	test_launch 'var=tamer okalm=speculos' 'echo $%%$var ; echo $+++$+++ ; echo \$\$$&---$okalm$++'
 	test_launch 'var=tamer okalm=speculos' 'echo \$var$%%$var' 'echo "$var$%%$novar$%%"'
 	test_launch 'var=tamer okalm=speculos' 'echo \$var$%%$var' 'echo "\$var\$%%\$novar\$%%"'
+	test_launch 'var=tamer okalm=speculos' 'echo $%%$var'
+	test_launch 'var=tamer okalm=speculos' 'echo $+++$+++'
+	test_launch 'var=tamer okalm=speculos' 'echo $\$\$+++$okalm$++'
+	test_launch 'var=tamer okalm=speculos' 'echo "\$var\$%%\$novar\$%%"'
+	test_launch 'var=tamer okalm=speculos' 'echo \$var$%%$var'
+	test_launch 'var=tamer okalm=speculos' 'echo "$var$%%$novar$%%"'
+	test_launch 'var=tamer okalm=speculos' 'echo \$var$%%$var'
+	test_launch 'echo %$%%%'
+	test_launch 'echo $var$%%%\$var'
+	test_launch 'echo "$%%%%"'
+	test_launch 'var=tamer okalm=dsadasd' 'echo %%%var$\++%%$okalm'
+	test_launch 'var=tamer okalm=dsa    d   a  sd' 'echo $okalm%%$%%$okalm%% '
+	test_launch 'var=tamer okalm=dsadasd' 'echo %++$++$var++%'
 
 # launch "Deprecated"
 	# launch "Hard"
