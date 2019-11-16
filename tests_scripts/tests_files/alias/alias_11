@@ -4,13 +4,5 @@ alias okalm="ls \
 -a"
 okalm
 
-alias okalm="ls 
--a"
-okalm
-
-alias okalm="ls
--a"
-okalm
-
 alias okalm="ls\
 -a"okalm
