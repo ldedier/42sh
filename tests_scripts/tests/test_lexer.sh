@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/21 16:00:41 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/15 10:10:09 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/15 18:10:18 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,26 @@ launch "Lexer"
 	test_launch 'echo {}' 'echo $?' 'echo { }' 'echo $?'
 	test_launch '{ export ABC=def; env|grep ABC; }; env|grep ABC|cat -e' 'echo $?'
 	test_launch '{ echo baz; echo buz >out2; } >out' 'cat out ; echo $? ; cat out2 ; echo $?' 'rm -f out out2'
+	test_launch '{ { { { ls ; } ; ls ; } ; } ; }' 'echo $?'
+	test_launch '{ { ls ; } ls ; }' 'echo $?'
+	test_launch '{ { ls ; } ; ls ; }' 'echo $?'
+	test_launch 'echo { { } }' 'echo } { } {'
+	test_launch 'echo { { { { }' 'echo } } } } {'
+	test_launch '{ ls | { cat -e ; } ; }'
+	test_launch '{ ls && { pwd ; } ; }'
+	test_launch '{ ls nowhere && { pwd ; } ; }'
+	test_launch '{ ls || { pwd ; } ; }'
+	test_launch '{ ls nowhere || { pwd ; } ; }'
+	test_launch '{ ls nowhere ; } ( { ls ; } )'
+	test_launch '{ ls nowhere ; } ; ( { ls ; } )'
+	test_launch '{ }'
+	test_launch '{ ; }'
+	test_launch 'shopt -s expand_aliases' 'alias a={' 'a ls ; }'
+	test_launch 'shopt -s expand_aliases' 'alias a="{ ls ; }"' 'a ; (pwd)'
+	test_launch 'shopt -s expand_aliases' 'alias okalm="{ ls"' "okalm;}"
+	test_launch 'shopt -s expand_aliases' 'alias a=\{ b=\ls c=\; d=\}' 'a b ; } ; echo $?' 'a b ; d ; echo $?'
+	test_launch 'shopt -s expand_aliases' 'alias a=\{ b=\ls c=\; d=\}' 'a pwd ; d ; ( c ) d'
+	test_launch 'shopt -s expand_aliases'
 
 	launch_show	"Braces and parenthesis detection"
 	test_launch '( ! ls ) && pwd'
@@ -73,7 +93,7 @@ launch "Lexer"
 	for i in `seq 1 11` ; do
 		test_launch_pipe ./tests_files/alias/alias_${i}
 	done
-	test_launch 'alias a=b b="ls ; a" '  'a' 'echo $?'
+	test_launch 'shopt -s expand_aliases' 'alias a=b b="ls ; a" '  'a' 'echo $?'
 
 	launch_show "Random"
 	test_launch '"var=pwe"'
