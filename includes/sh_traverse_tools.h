@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_traverse_tools.h                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 11:47:31 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/04 13:31:22 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/16 09:05:16 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 /*
 ** sh_traverse_tools_browse.c
 */
-int		sh_traverse_tools_browse(t_ast_node *node, t_context *context);
-int		sh_traverse_tools_search(t_ast_node *node, int searched_symbol_id);
+long	sh_traverse_tools_browse(t_ast_node *node, t_context *context);
+long	sh_traverse_tools_search(t_ast_node *node, int searched_symbol_id);
 
 /*
 ** sh_traverse_tools_browse_redirection.c
@@ -29,15 +29,15 @@ int		sh_traverse_tools_search(t_ast_node *node, int searched_symbol_id);
 int		loop_traverse_redirection( t_ast_node *node, t_context *context);
 int		loop_traverse_compound_redirection(
 	t_ast_node *node, t_context *context);
-int		sh_traverse_tools_browse_redirection(
+long	sh_traverse_tools_browse_redirection(
 	t_ast_node *node, t_context *context);
 
 /*
 ** sh_traverse_tools_compound.c
 */
-int		sh_traverse_tools_search_term(
+long	sh_traverse_tools_search_term(
 	t_ast_node *node, t_context *context);
-int		sh_traverse_tools_compound_redir(
+long	sh_traverse_tools_compound_redir(
 	t_ast_node *node,
 	t_context *context,
 	t_ast_node **compound_redir,
@@ -89,27 +89,27 @@ int		sh_process_file_input(
 /*
 ** sh_traverse_tools_io_here_expansion.c
 */
-int		sh_traverse_io_here_phase_expansion(
+long	sh_traverse_io_here_phase_expansion(
 	t_ast_node *node, t_context *context);
 
 /*
 ** sh_traverse_tools_io_here_redirection.c
 */
-int		sh_traverse_tools_io_here_redirection(
+long	sh_traverse_tools_io_here_redirection(
 	t_ast_node *node, t_context *context);
 
 /*
 ** sh_traverse_tools_simple_command.c
 */
-int		sh_traverse_sc_search_in_hash(t_context *context);
-int		sh_traverse_sc_search_in_path(t_context *context);
+long	sh_traverse_sc_search_in_hash(t_context *context);
+long	sh_traverse_sc_search_in_path(t_context *context);
 
 /*
 ** sh_traverse_tools_simple_command_check_perm.c
 */
 int		check_for_symlink_loop(struct stat *st, char *path, int i);
-int		sh_traverse_sc_check_perm_quiet(char *path);
-int		sh_traverse_sc_check_perm(
+long	sh_traverse_sc_check_perm_quiet(char *path);
+long	sh_traverse_sc_check_perm(
 	t_context *context, char *path, char *command_name);
 
 #endif

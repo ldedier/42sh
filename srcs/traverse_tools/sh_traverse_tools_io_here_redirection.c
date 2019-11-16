@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_traverse_tools_io_here_redirection.c            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 12:33:12 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/04 14:09:24 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/16 09:05:16 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	sh_redirection_for_heredoc(
 	return (SUCCESS);
 }
 
-int			sh_traverse_tools_io_here_redirection(
+long		sh_traverse_tools_io_here_redirection(
 		t_ast_node *node, t_context *context)
 {
 	int				ret;

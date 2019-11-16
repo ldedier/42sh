@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_traverse_tools_browse_redirection.c             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/17 17:32:45 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/04 13:45:06 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/16 09:05:16 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int					loop_traverse_compound_redirection(
 	return (ret);
 }
 
-int					sh_traverse_tools_browse_redirection(
+long		sh_traverse_tools_browse_redirection(
 		t_ast_node *node, t_context *context)
 {
 	t_list		*ptr;

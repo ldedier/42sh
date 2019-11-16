@@ -13,9 +13,9 @@
 #ifndef SH_ARITHMETIC_PRODUCTIONS_H
 # define SH_ARITHMETIC_PRODUCTIONS_H
 
-# define NB_PRODUCTIONS_AR	24
-# define NB_SYMBOLS_AR		24
-# define NB_TERMS_AR		18
+# define NB_PRODUCTIONS_AR	26
+# define NB_SYMBOLS_AR		25
+# define NB_TERMS_AR		19
 
 typedef enum e_symbol_id_ar
 {
@@ -35,6 +35,7 @@ typedef enum e_symbol_id_ar
 	LEX_TOK_AR_INTEGER,
 	LEX_TOK_AR_VARIABLE,
 	LEX_TOK_AR_INC,
+	LEX_TOK_AR_DEC,
 	END_OF_INPUT_AR,
 	EPS_AR,
 	ARITHMETIC_AR,

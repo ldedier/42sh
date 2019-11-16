@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/15 11:27:40 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/15 15:37:32 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/16 09:05:16 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ int		sh_ar_init_prod_term(t_cfg *cfg, t_symbol *symbol);
 /*
 ** sh_execute_arithmetic.c
 */
-int		sh_traverse_arithmetic(t_ast_node *node, t_context *context);
-int		sh_traverse_ar_root(t_context *context, t_ast_node *root);
+long	sh_traverse_arithmetic(t_ast_node *node, t_context *context);
+long	sh_traverse_ar_root(t_context *context, t_ast_node *root);
 int		sh_execute_arithmetic_fake(t_shell *shell, char *command);
 int		sh_execute_arithmetic(t_context *context, char *command);
 
@@ -65,37 +65,40 @@ int		sh_execute_arithmetic(t_context *context, char *command);
 t_token	*t_token_integer(int value);
 void	populate_test1(t_list **tokens, t_shell *shell);
 void	populate_test2(t_list **tokens, t_shell *shell);
+void	populate_test3(t_list **tokens, t_shell *shell);
 int		sh_lexer_arithmetic(
 	char *command, t_list **tokens, t_shell *shell);
 
 /*
 ** sh_traverse_and_or_ar.c
 */
-int		sh_traverse_and_or_ar(t_ast_node *node, t_context *context);
+long	sh_traverse_and_or_ar(t_ast_node *node, t_context *context);
 
 /*
-** sh_traverse_arithmetic.c
+** sh_traverse_arithmetic_ar.c
 */
-int		sh_traverse_arithmetic_ar(t_ast_node *node, t_context *context);
+long	sh_traverse_arithmetic_ar(t_ast_node *node, t_context *context);
 
 /*
 ** sh_traverse_comparison_ar.c
 */
-int		sh_traverse_comparison_ar(t_ast_node *node, t_context *context);
+long	sh_traverse_comparison_ar(t_ast_node *node, t_context *context);
 
 /*
 ** sh_traverse_expr_ar.c
 */
-int		sh_traverse_expr_ar(t_ast_node *node, t_context *context);
+long	sh_traverse_expr_ar(t_ast_node *node, t_context *context);
 
 /*
 ** sh_traverse_factor_ar.c
 */
-int		sh_traverse_factor_ar(t_ast_node *node, t_context *context);
+void	add_shell_var(char *variable, int to_add, t_context *context);
+long	get_integer_from_var(char *variable, t_context *context);
+long	sh_traverse_factor_ar(t_ast_node *node, t_context *context);
 
 /*
 ** sh_traverse_term_ar.c
 */
-int		sh_traverse_term_ar(t_ast_node *node, t_context *context);
+long	sh_traverse_term_ar(t_ast_node *node, t_context *context);
 
 #endif

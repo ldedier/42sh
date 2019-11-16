@@ -29,6 +29,7 @@ t_grammar_holder g_ar_grammar[NB_SYMBOLS_AR] = {
 	{"integer", 0, 1, NULL, &sh_traverse_default, NULL},
 	{"variable", 0, 1, NULL, &sh_traverse_default, NULL},
 	{"++", 0, 1, NULL, &sh_traverse_default, NULL},
+	{"--", 0, 1, NULL, &sh_traverse_default, NULL},
 	{"_EOI_", 0, 1, NULL, &sh_traverse_default, NULL},
 	{"ε", 0, 1, NULL, &sh_traverse_default, NULL},
 	{"ARITHMETIC", 0, 1, &sh_ar_init_prod_arithmetic,

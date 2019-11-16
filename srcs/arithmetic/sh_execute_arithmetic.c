@@ -6,14 +6,14 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/15 15:19:04 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/15 17:39:48 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/16 09:05:16 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
 
-int		sh_traverse_arithmetic(t_ast_node *node, t_context *context)
+long		sh_traverse_arithmetic(t_ast_node *node, t_context *context)
 {
 	if (!context->arithmetic_error)
 		return (g_ar_grammar[node->symbol->id].traverse(node, context));
@@ -21,7 +21,7 @@ int		sh_traverse_arithmetic(t_ast_node *node, t_context *context)
 		return (1);
 }
 
-int		sh_traverse_ar_root(t_context *context, t_ast_node *root)
+long		sh_traverse_ar_root(t_context *context, t_ast_node *root)
 {
 	context->arithmetic_error = 0;
 //	ft_printf("%d\n", root->symbol->id);

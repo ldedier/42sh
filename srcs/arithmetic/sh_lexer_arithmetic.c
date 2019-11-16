@@ -43,7 +43,7 @@ void	populate_test1(t_list **tokens, t_shell *shell)
 	token = t_token_new(LEX_TOK_AR_VARIABLE, "a", &shell->parser_ar.cfg);
 	ft_lstaddnew_ptr_last(tokens, token, sizeof(t_token *));
 
-	token = t_token_new(LEX_TOK_AR_INC, NULL, &shell->parser_ar.cfg);
+	token = t_token_new(LEX_TOK_AR_DEC, NULL, &shell->parser_ar.cfg);
 	ft_lstaddnew_ptr_last(tokens, token, sizeof(t_token *));
 
 	token = t_token_new(LEX_TOK_AR_MULTIPLY, NULL, &shell->parser_ar.cfg);
@@ -117,9 +117,9 @@ int		sh_lexer_arithmetic(char *command, t_list **tokens, t_shell *shell)
 
 	(void)command;
 	*tokens = NULL;
-//	populate_test1(tokens, shell);
+	populate_test1(tokens, shell);
 //	populate_test2(tokens, shell);
-	populate_test3(tokens, shell);
+//	populate_test3(tokens, shell);
 	token = t_token_new(END_OF_INPUT_AR, NULL, &shell->parser_ar.cfg);	
 	ft_lstaddnew_ptr_last(tokens, token, sizeof(t_token *));
 	sh_print_token_list(*tokens, &shell->parser_ar.cfg);

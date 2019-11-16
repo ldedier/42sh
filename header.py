@@ -14,7 +14,7 @@
 import os
 import re;
 
-format = "^(void|int|char|t_*|unsigned int|unsigned long|pid_t)"
+format = "^(void|int|char|t_*|unsigned int|long|unsigned long|pid_t)"
 
 ignored_files=["sh_ar_grammar.c", "grammar.c", "vshortcuts.c", "main.c", "sh_builtin_bonus.c"]
 

@@ -28,5 +28,13 @@ int		sh_ar_init_prod_factor(t_cfg *cfg, t_symbol *symbol)
 		LEX_TOK_AR_VARIABLE,
 		LEX_TOK_AR_INC))
 		return (1);
+	if (sh_add_prod(symbol, cfg, 2,
+		LEX_TOK_AR_DEC,
+		LEX_TOK_AR_VARIABLE))
+		return (1);
+	if (sh_add_prod(symbol, cfg, 2,
+		LEX_TOK_AR_VARIABLE,
+		LEX_TOK_AR_DEC))
+		return (1);
 	return (0);
 }

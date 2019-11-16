@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_traverse_io_redirect.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 21:27:03 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/04 13:53:20 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/16 09:05:16 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 **	Then call childrens
 */
 
-int		sh_traverse_io_redirect(t_ast_node *node, t_context *context)
+long		sh_traverse_io_redirect(t_ast_node *node, t_context *context)
 {
 	t_ast_node	*child;
 	int			ret;

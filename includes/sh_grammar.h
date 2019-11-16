@@ -79,7 +79,7 @@ typedef struct		s_grammar_holder
 	char			replacing;
 	char			relevant;
 	int				(*init_prod)(t_cfg *, t_symbol *);
-	int				(*traverse)(t_ast_node *this, t_context *context);
+	long			(*traverse)(t_ast_node *this, t_context *context);
 	int 			(*get_job_string)(t_ast_node *node, char **str);
 }					t_grammar_holder;
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_traverse_tools_compound.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 11:23:48 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/04 13:33:51 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/16 09:05:16 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static void	get_last_separator(t_ast_node *curr_node)
 ** A separator can be ';' '&' 'line_break' or 'newline_list'
 */
 
-int			sh_traverse_tools_search_term(
+long		sh_traverse_tools_search_term(
 		t_ast_node *node, t_context *context)
 {
 	t_list		*el;
@@ -75,7 +75,7 @@ int			sh_traverse_tools_search_term(
 	return (ret);
 }
 
-int			sh_traverse_tools_compound_redir(
+long		sh_traverse_tools_compound_redir(
 		t_ast_node *node, t_context *context,
 		t_ast_node **compound_redir, t_list **lst_redi)
 {

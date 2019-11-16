@@ -6,13 +6,13 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/15 17:47:05 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/15 18:05:46 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/16 09:05:16 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-int		sh_traverse_comparison_ar(t_ast_node *node, t_context *context)
+long		sh_traverse_comparison_ar(t_ast_node *node, t_context *context)
 {
 	t_ast_node *middle_node;
 	t_ast_node *first_node;
