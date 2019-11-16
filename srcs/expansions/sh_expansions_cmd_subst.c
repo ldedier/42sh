@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_expansions_cmd_subst.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 14:29:58 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/16 15:49:00 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/16 20:59:50 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,65 +14,65 @@
 
 int			sh_expansions_cmd_subst_detect_backquotes(char *start)
 {
-    int     i;
-    int     quoted;
-    int     back_quote;
+	int     i;
+	int     quoted;
+	int     back_quote;
 
 	if (start[0] != '`')
-        return (-1);
+		return (-1);
 	quoted = 0;
-    back_quote = 1;
-    i = 1;
-    while (start[i] && back_quote > 0)
-    {
-        if (start[i] == '\\' && start[i + 1])
-            i += 1;
-        else if (!quoted && (start[i] == '\'' || start[i] == '"'))
-            quoted = start[i];
-        else if (quoted && start[i] == quoted)
-            quoted = 0;
-        else if (!quoted && start[i] == '`')
-            back_quote--;
-        i++;
-    }
-    if (!start[i] && back_quote > 0)
-        return (-1);
-    return (i);
+	back_quote = 1;
+	i = 1;
+	while (start[i] && back_quote > 0)
+	{
+		if (start[i] == '\\' && start[i + 1])
+			i += 1;
+		else if (!quoted && (start[i] == '\'' || start[i] == '"'))
+			quoted = start[i];
+		else if (quoted && start[i] == quoted)
+			quoted = 0;
+		else if (!quoted && start[i] == '`')
+			back_quote--;
+		i++;
+	}
+	if (!start[i] && back_quote > 0)
+		return (-1);
+	return (i);
 }
 
 int			sh_expansions_cmd_subst_detect_dollar(char *start)
 {
-    int     i;
-    int     quoted;
-    int     parenthesis;
+	int     i;
+	int     quoted;
+	int     parenthesis;
 
 	quoted = 0;
 	if (start[0] != '$' || start[1] != '(')
-        return (-1);
-    parenthesis = 1;
-    i = 2;
-    while (start[i] && parenthesis > 0)
-    {
-        if (start[i] == '\\' && start[i + 1])
-            i += 1;
-        else if (!quoted && (start[i] == '\'' || start[i] == '"'))
-            quoted = start[i];
-        else if (quoted && start[i] == quoted)
-            quoted = 0;
-        else if (!quoted && start[i] == '(')
-            parenthesis++;
-        else if (!quoted && start[i] == ')')
-            parenthesis--;
-        i++;
-    }
-    if (!start[i] && parenthesis > 0)
-        return (-1);
-    return (i);
+		return (-1);
+	parenthesis = 1;
+	i = 2;
+	while (start[i] && parenthesis > 0)
+	{
+		if (start[i] == '\\' && start[i + 1])
+			i += 1;
+		else if (!quoted && (start[i] == '\'' || start[i] == '"'))
+			quoted = start[i];
+		else if (quoted && start[i] == quoted)
+			quoted = 0;
+		else if (!quoted && start[i] == '(')
+			parenthesis++;
+		else if (!quoted && start[i] == ')')
+			parenthesis--;
+		i++;
+	}
+	if (!start[i] && parenthesis > 0)
+		return (-1);
+	return (i);
 }
 
 int			sh_expansions_cmd_subst_fill(t_expansion *exp, char *start)
 {
-    int     i;
+	int     i;
 	int		pattern_len;
 
 	i = -1;

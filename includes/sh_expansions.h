@@ -109,6 +109,10 @@ int		sh_expansions_parameter_percent(
 	t_context *context, t_expansion *exp, char *format);
 
 /*
+** sh_expansions_parameter_str_removal.c
+*/
+
+/*
 ** sh_expansions_parameter_tools.c
 */
 int		sh_expansions_parameter_format(
@@ -169,9 +173,13 @@ int		sh_expansions_scan(
 ** sh_expansions_tilde.c
 */
 int		sh_expansions_tilde_detect(char *start);
-int		sh_expansions_tilde_process(t_context *context, t_expansion *exp);
 int		sh_expansions_tilde(
 	char **input, t_context *context, t_dy_tab *quotes, int *index);
+
+/*
+** sh_expansions_tilde_tools.c
+*/
+int		sh_expansions_tilde_process(t_context *context, t_expansion *exp);
 int		sh_expansions_tilde_assignment(
 	char **input, t_context *context, t_dy_tab *quotes);
 
@@ -183,6 +191,10 @@ int		sh_expansions_variable_detect(char *start);
 int		sh_expansions_variable_fill(t_expansion *exp, char *start);
 int		sh_expansions_variable_process(
 	t_context *context, t_expansion *exp);
+
+/*
+** sh_expansions_variable_detect.c
+*/
 
 /*
 ** t_expansion.c

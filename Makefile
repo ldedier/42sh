@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/11/13 04:52:24 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/16 21:04:53 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -351,9 +351,12 @@ SRCS			+=	sh_builtin.c sh_builtin_pwd.c \
 SRCS			 +=	sh_expansions.c \
 					sh_expansions_parameter.c \
 					sh_expansions_parameter_process.c \
+					sh_expansions_parameter_str_removal.c \
 					sh_expansions_parameter_tools.c \
 					sh_expansions_tilde.c \
-					sh_expansions_variable.c t_expansion.c \
+					sh_expansions_tilde_tools.c \
+					sh_expansions_variable.c \
+					sh_expansions_variable_detect.c \
 					sh_expansions_process.c sh_expansions_replace.c \
 					sh_expansions_field_splitting.c \
 					sh_expansions_quote_removal.c \
@@ -362,7 +365,7 @@ SRCS			 +=	sh_expansions.c \
 					sh_expansions_cmd_subst.c \
 					sh_expansions_proc_subst_in.c \
 					sh_expansions_proc_subst_out.c \
-					t_quote.c
+					t_expansion.c t_quote.c
 
 ################################################################
 ########					GLOBBING					########

@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 14:29:58 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/15 14:23:35 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/16 20:59:25 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,43 +14,43 @@
 
 int			sh_expansions_proc_subst_out_detect(char *start)
 {
-    int     i;
-    int     quoted;
-    int     parenthesis;
+	int     i;
+	int     quoted;
+	int     parenthesis;
 
 	i = 0;
 	if (start[0] != '<' || start[1] != '(')
-        return (-1);
+		return (-1);
 	quoted = 0;
 	i = 2;
-    parenthesis = 1;
-    while (start[i] && parenthesis > 0)
-    {
-        if (start[i] == '\\' && start[i + 1])
-            i += 1;
-        else if (!quoted && (start[i] == '\'' || start[i] == '"'))
-            quoted = start[i];
-        else if (quoted && start[i] == quoted)
-            quoted = 0;
+	parenthesis = 1;
+	while (start[i] && parenthesis > 0)
+	{
+		if (start[i] == '\\' && start[i + 1])
+			i += 1;
+		else if (!quoted && (start[i] == '\'' || start[i] == '"'))
+			quoted = start[i];
+		else if (quoted && start[i] == quoted)
+			quoted = 0;
 		else if (!quoted && start[i] == '(')
-            parenthesis++;
-        else if (!quoted && start[i] == ')')
-            parenthesis--;
-        i++;
-    }
-    if (!start[i] && parenthesis > 0)
-        return (-1);
-    return (i);
+			parenthesis++;
+		else if (!quoted && start[i] == ')')
+			parenthesis--;
+		i++;
+	}
+	if (!start[i] && parenthesis > 0)
+		return (-1);
+	return (i);
 }
 
 int			sh_expansions_proc_subst_out_fill(t_expansion *exp, char *start)
 {
-    int     i;
+	int     i;
 
 	i = sh_expansions_proc_subst_out_detect(start);
 	if (i == -1)
 		return (ERROR);
-    if (!(exp->original = ft_strndup(start, i)))
+	if (!(exp->original = ft_strndup(start, i)))
 		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_proc_subst_out_fill (1)"));
 	if (!(exp->expansion = ft_strndup(start + 2, i - 3)))
 		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_proc_subst_out_fill (2)"));
