@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/07 16:11:41 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/16 14:54:42 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/16 15:20:28 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,6 @@ static int		sh_lexer_run_rules(t_lexer *lexer)
 	lexer->c = lexer->input[lexer->tok_start + lexer->tok_len];
 	if (lexer->alias_stack && lexer->next_alias_index >= 0 && lexer->next_alias_index < lexer->tok_start + lexer->tok_len)
 	{
-		ft_dprintf(2, "next_alias_index : %d || current index : %d\n", lexer->next_alias_index, lexer->tok_start + lexer->tok_len);
-		ft_dprintf(2, "reset recursive alias detection\n");
 		lexer->next_alias_index = -1;
 		ft_lstdel(&lexer->alias_stack, NULL);
 	}

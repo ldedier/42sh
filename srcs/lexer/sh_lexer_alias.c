@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 01:10:36 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/16 14:51:08 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/16 15:20:23 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ int			sh_lexer_alias(t_lexer *lexer, char *value)
 	if (!lexer->input)
 		return (LEX_FAIL);
 	lexer->next_alias_index = lexer->tok_start + ft_strlen(alias);
-	ft_dprintf(2, "next alias index SET : %d\n", lexer->next_alias_index);
 	if (sh_verbose_lexer())
 		ft_dprintf(2, GREEN"\trestarting detection on new input : %s\n"EOC, lexer->input + lexer->tok_start);
 	t_lexer_reset(lexer, lexer->tok_start);

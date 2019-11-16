@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/21 16:00:41 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/16 15:05:05 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/16 15:17:42 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,12 +31,16 @@ launch "Lexer"
 	test_launch '{ ls nowhere ; } ; ( { ls ; } )'
 	test_launch '{ }'
 	test_launch '{ ; }'
-	test_launch 'shopt -s expand_aliases' 'alias a={' 'a ls ; }'
-	test_launch 'shopt -s expand_aliases' 'alias a="{ ls ; }"' 'a ; (pwd)'
-	test_launch 'shopt -s expand_aliases' 'alias okalm="{ ls"' "okalm;}"
-	test_launch 'shopt -s expand_aliases' 'alias a=\{ b=\ls c=\; d=\}' 'a b ; } ; echo $?' 'a b ; d ; echo $?'
-	test_launch 'shopt -s expand_aliases' 'alias a=\{ b=\ls c=\; d=\}' 'a pwd ; d ; ( c ) d'
-	test_launch 'shopt -s expand_aliases'
+	test_launch 'shopt -s expand_aliases ; alias a={' 'a ls ; }'
+	test_launch 'shopt -s expand_aliases ; alias a="{ ls ; }"' 'a ; (pwd)'
+	test_launch 'shopt -s expand_aliases ; alias okalm="{ ls"' "okalm;}"
+	test_launch 'shopt -s expand_aliases ; alias a=\{ b=\ls c=\; d=\}' 'a b ; } ; echo $?' 'a b ; d ; echo $?'
+	test_launch 'shopt -s expand_aliases ; alias a=\{ b=\ls c=\; d=\}' 'a pwd ; d ; ( c ) d'
+	test_launch 'shopt -s expand_aliases ; alias LongNameAlias1="ls ; ls ; LongNameAlias1"'
+	test_launch 'shopt -s expand_aliases ; alias LongNameAlias1="ls ; ls ; LongNameAlias2" LongNameAlias2="ls ; ls ; LongNameAlias1' 'LongNameAlias1' 'LongNameAlias2' 'LongNameAlias1 ; a' 'ls ; ls && LongNameAlias1'
+	test_launch 'shopt -s expand_aliases ; alias a="LongNameAlias1" LongNameAlias1="ls ; ls ; LongNameAlias2" LongNameAlias2="ls ; ls ; LongNameAlias1' '  LongNameAlias1 ;        a  '
+	test_launch 'shopt -s expand_aliases ; alias a="LongNameAlias1" LongNameAlias1="ls ; ls ; LongNameAlias2" LongNameAlias2="ls ; ls ; LongNameAlias1' '    a       '
+	test_launch 'shopt -s expand_aliases ; alias LongName1="ls ; ls ; a" a=b b="ls ; LongName2" LongName2="ls  ; c " c="d     ; ls" d=LongName1 ' 'a ; LongName1' 'd' 'ls ; LongName2'
 
 	launch_show	"Braces and parenthesis detection"
 	test_launch '( ! ls ) && pwd'
