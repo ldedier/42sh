@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_expansions_cmd_subst.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 14:29:58 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/14 10:49:00 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/16 15:49:00 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int			sh_expansions_cmd_subst_fill(t_expansion *exp, char *start)
 	}
 	if (i == -1)
 		return (ERROR);
-    if (!(exp->original = ft_strndup(start, i)))
+	if (!(exp->original = ft_strndup(start, i)))
 		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_cmd_subst_fill (1)"));
 	if (!(exp->expansion = ft_strndup(start + pattern_len, i - pattern_len - 1)))
 		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_cmd_subst_fill (2)"));
@@ -163,17 +163,15 @@ char 	*get_subshell_output(t_shell *shell, char *command)
 		return (sh_perrorn(SH_ERR1_FORK, "get_subshell_output"));
 	if (child == 0)
 	{
-		g_job_ctrl->interactive = 1;
 		if (sh_pre_execution() != SUCCESS)
 			exit (FAILURE);
-		g_job_ctrl->interactive = 0;
-		signal(SIGINT, handle_int);
+		reset_signals();
 		if (dup2(fds[PIPE_IN], STDOUT_FILENO) < 0)
 			return (sh_perrorn(SH_ERR1_INTERN_ERR, "get_subshell_output"));
 		close(fds[PIPE_OUT]);
+		g_job_ctrl->interactive = 0;
 		ret = execute_command(shell, command, 0);
 		close(fds[PIPE_IN]);
-		g_job_ctrl->interactive = 1;
 		if (sh_post_execution() != SUCCESS)
 			exit (FAILURE);
 		sh_free_all(shell);
@@ -181,9 +179,8 @@ char 	*get_subshell_output(t_shell *shell, char *command)
 	}
 	else
 	{
-		//{ child => PID du subshell }
 		close(fds[PIPE_IN]);
-//		waitpid(child, &ret, 0);
+		waitpid(child, &ret, 0);
 		str = get_string_from_fd(fds[PIPE_OUT]);
 		close(fds[PIPE_OUT]);
 		return (str);
