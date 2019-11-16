@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/21 16:00:41 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/15 16:20:53 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/16 17:46:14 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,7 @@ launch "exec"
 	test_launch 'echo "#!/bin/bash" >file' 'echo "echo lol" >> file' 'chmod 200 file' './file' 'chmod 777 file ; rm file'
 	test_launch 'echo "#!/bin/bash" >file' 'echo "echo lol" >> file' 'chmod 100 file' './file' 'chmod 777 file ; rm file'
 	test_launch 'echo "#!/bin/bash" >file' 'echo "echo lol" >> file' 'chmod 000 file' './file' 'chmod 777 file ; rm file'
+	test_launch 'touch file' './file' 'rm file'
 
 	launch_show "Path looking"
 	test_launch 'unset PATH' 'ls' 'echo $? ;find 1>/dev/null ; echo $?'

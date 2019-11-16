@@ -104,6 +104,7 @@ typedef struct		s_token
 /*
 ** sh_lexer.c
 */
+int					sh_lexer_error_ret_value(t_lexer *lexer, int ret);
 int					sh_lexer(
 	char *input, t_list **tokens, t_shell *shell, t_lex_mode mode);
 
