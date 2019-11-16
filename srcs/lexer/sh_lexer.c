@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/07 16:11:41 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/15 04:49:01 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/16 14:54:42 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static int		sh_lexer_run_rules(t_lexer *lexer)
 {
 	int				ret;
 	int				i;
-	static int		(*rules[LEX_RULES_LEN]) (t_lexer *) = {
+	static int		(*rules[LEX_RULES_LEN]) (t_lexer *) = { // cannot set to const ??
 		&sh_lexer_rule1,
 		&sh_lexer_rule2,
 		&sh_lexer_rule3,
@@ -64,6 +64,13 @@ static int		sh_lexer_run_rules(t_lexer *lexer)
 	if (sh_verbose_lexer())
 		ft_dprintf(2, COLOR_GREEN"\trule %2d applied\n"COLOR_END, i + 1);
 	lexer->c = lexer->input[lexer->tok_start + lexer->tok_len];
+	if (lexer->alias_stack && lexer->next_alias_index >= 0 && lexer->next_alias_index < lexer->tok_start + lexer->tok_len)
+	{
+		ft_dprintf(2, "next_alias_index : %d || current index : %d\n", lexer->next_alias_index, lexer->tok_start + lexer->tok_len);
+		ft_dprintf(2, "reset recursive alias detection\n");
+		lexer->next_alias_index = -1;
+		ft_lstdel(&lexer->alias_stack, NULL);
+	}
 	return (ret);
 }
 
@@ -74,6 +81,7 @@ int				sh_lexer(char *input, t_list **tokens, t_shell *shell,
 	int			ret;
 
 	ft_bzero(&lexer, sizeof(t_lexer));
+	lexer.next_alias_index = -1;
 	if (t_lexer_init(&lexer, mode, shell, input))
 		return (FAILURE);
 	ret = LEX_OK;
