@@ -32,7 +32,7 @@ t_grammar_holder g_ar_grammar[NB_SYMBOLS_AR] = {
 	{"_EOI_", 0, 1, NULL, &sh_traverse_default, NULL},
 	{"ε", 0, 1, NULL, &sh_traverse_default, NULL},
 	{"ARITHMETIC", 0, 1, &sh_ar_init_prod_arithmetic,
-		&sh_traverse_default, NULL},
+		&sh_traverse_arithmetic_ar, NULL},
 	{"AND_OR", 0, 1, &sh_ar_init_prod_and_or, &sh_traverse_and_or_ar, NULL},
 	{"COMPARISON", 0, 1, &sh_ar_init_prod_comparison, &sh_traverse_comparison_ar,
 		NULL},

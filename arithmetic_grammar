@@ -26,4 +26,6 @@ factor         :   INTEGER
 |                  VARIABLE
 |                  INC VARIABLE
 |                  VARIABLE INC
+|                  DEC VARIABLE
+|                  VARIABLE DEC
 ;

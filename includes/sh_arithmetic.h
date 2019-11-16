@@ -74,6 +74,11 @@ int		sh_lexer_arithmetic(
 int		sh_traverse_and_or_ar(t_ast_node *node, t_context *context);
 
 /*
+** sh_traverse_arithmetic.c
+*/
+int		sh_traverse_arithmetic_ar(t_ast_node *node, t_context *context);
+
+/*
 ** sh_traverse_comparison_ar.c
 */
 int		sh_traverse_comparison_ar(t_ast_node *node, t_context *context);

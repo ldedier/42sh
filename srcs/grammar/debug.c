@@ -22,12 +22,24 @@ void	sh_print_symbol(t_symbol *symbol, t_cfg *cfg)
 
 void	sh_print_token(t_token *token, t_cfg *cfg)
 {
-	if (token->id == LEX_TOK_WORD)
-		ft_dprintf(2, "%s%s %s", YELLOW, token->value, EOC);
-	else if (token->id == LEX_TOK_IO_NUMBER)
-		ft_dprintf(2, "IO_NUMBER: %s%s %s ", YELLOW, token->value, EOC);
+	if (cfg == g_glob.cfg)
+	{
+		if (token->id == LEX_TOK_WORD)
+			ft_dprintf(2, "%s%s %s", YELLOW, token->value, EOC);
+		else if (token->id == LEX_TOK_IO_NUMBER)
+			ft_dprintf(2, "IO_NUMBER: %s%s %s ", YELLOW, token->value, EOC);
+		else
+			ft_dprintf(2, "%s%s %s", YELLOW, cfg->symbols[token->index].debug, EOC);
+	}
 	else
-		ft_dprintf(2, "%s%s %s", YELLOW, cfg->symbols[token->index].debug, EOC);
+	{
+		if (token->index == LEX_TOK_AR_INTEGER)
+			ft_dprintf(2, "%s%d %s", YELLOW, token->token_union.ival, EOC);
+		else if (token->index == LEX_TOK_AR_VARIABLE)
+			ft_dprintf(2, "%s%s %s ", YELLOW, token->value, EOC);
+		else
+			ft_dprintf(2, "%s%s %s", YELLOW, cfg->symbols[token->index].debug, EOC);
+	}
 }
 
 void	sh_print_token_list(t_list *list, t_cfg *cfg)

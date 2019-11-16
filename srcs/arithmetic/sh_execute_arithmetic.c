@@ -15,7 +15,7 @@
 
 int		sh_traverse_arithmetic(t_ast_node *node, t_context *context)
 {
-	if (context->arithmetic_error)
+	if (!context->arithmetic_error)
 		return (g_ar_grammar[node->symbol->id].traverse(node, context));
 	else
 		return (1);
@@ -24,6 +24,9 @@ int		sh_traverse_arithmetic(t_ast_node *node, t_context *context)
 int		sh_traverse_ar_root(t_context *context, t_ast_node *root)
 {
 	context->arithmetic_error = 0;
+//	ft_printf("%d\n", root->symbol->id);
+//	sh_print_symbol(&context->shell->parser_ar.cfg.symbols[root->symbol->id],
+//		&context->shell->parser_ar.cfg);
 	return (sh_traverse_arithmetic(root, context));
 }
 

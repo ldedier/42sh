@@ -423,7 +423,8 @@ SRCS			+=	 sh_ar_grammar.c sh_execute_arithmetic.c \
 					 sh_traverse_comparison_ar.c \
 					 sh_traverse_expr_ar.c \
 					 sh_traverse_term_ar.c \
-					 sh_traverse_factor_ar.c
+					 sh_traverse_factor_ar.c \
+					 sh_traverse_arithmetic_ar.c
 
 
 
