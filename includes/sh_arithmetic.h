@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_arithmetic.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/15 11:27:40 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/16 09:05:16 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/17 19:43:29 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,71 @@ t_grammar_holder g_ar_grammar[NB_SYMBOLS_AR];
 /*
 ********************************************************************************
 */
+
+/*
+** lexer/sh_ar_lexer.c
+*/
+t_token	*t_token_integer(long value);
+int		sh_ar_lexer(char *expansion, t_list **tokens, t_shell *shell);
+
+/*
+** lexer/sh_ar_lexer_rule_1.c
+*/
+int		sh_ar_lexer_rule_1(t_lexer *lexer);
+
+/*
+** lexer/sh_ar_lexer_rule_2.c
+*/
+int		sh_ar_lexer_rule_2(t_lexer *lexer);
+
+/*
+** lexer/sh_ar_lexer_rule_3.c
+*/
+int		rule_3_is_valid_op_first_char(char c);
+int		sh_ar_lexer_rule_3(t_lexer *lexer);
+
+/*
+** lexer/sh_ar_lexer_rule_4.c
+*/
+int		sh_ar_lexer_rule_4(t_lexer *lexer);
+
+/*
+** lexer/sh_ar_lexer_rule_5.c
+*/
+int		sh_ar_lexer_rule_5(t_lexer *lexer);
+
+/*
+** lexer/sh_ar_lexer_rule_6.c
+*/
+int		sh_ar_lexer_rule_6(t_lexer *lexer);
+
+/*
+** lexer/sh_ar_lexer_rule_7.c
+*/
+int		sh_ar_lexer_rule_7(t_lexer *lexer);
+
+/*
+** lexer/sh_ar_lexer_rule_8.c
+*/
+int		sh_ar_lexer_rule_8(t_lexer *lexer);
+
+/*
+** lexer/sh_ar_lexer_rule_9.c
+*/
+int		sh_ar_lexer_rule_9(t_lexer *lexer);
+
+/*
+** lexer/t_ar_lexer.c
+*/
+void	t_ar_lexer_init(t_lexer *lexer, t_shell *shell, char *input);
+void	t_ar_lexer_reset(t_lexer *lexer, int tok_start);
+int		t_ar_lexer_add_token(t_lexer *lexer);
+void	t_ar_lexer_show(t_lexer *lexer);
+
+/*
+** lexer/t_ar_token.c
+*/
+void	t_ar_token_free(t_token *token);
 
 /*
 ** productions/sh_ar_prod_and_or.c
@@ -58,16 +123,6 @@ long	sh_traverse_arithmetic(t_ast_node *node, t_context *context);
 long	sh_traverse_ar_root(t_context *context, t_ast_node *root);
 int		sh_execute_arithmetic_fake(t_shell *shell, char *command);
 int		sh_execute_arithmetic(t_context *context, char *command);
-
-/*
-** sh_lexer_arithmetic.c
-*/
-t_token	*t_token_integer(int value);
-void	populate_test1(t_list **tokens, t_shell *shell);
-void	populate_test2(t_list **tokens, t_shell *shell);
-void	populate_test3(t_list **tokens, t_shell *shell);
-int		sh_lexer_arithmetic(
-	char *command, t_list **tokens, t_shell *shell);
 
 /*
 ** sh_traverse_and_or_ar.c

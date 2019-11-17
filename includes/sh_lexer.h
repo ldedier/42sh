@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 11:08:27 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/15 15:55:16 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/17 18:43:14 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,19 +77,12 @@ typedef struct		s_lexer
 	t_lex_mode		mode;
 }					t_lexer;
 
-typedef struct		s_token_union
-{
-	int				ival;
-	double			fval;
-	char			*str;
-}					t_token_union;
-
 typedef struct		s_token
 {
-	t_token_union	token_union;
 	t_symbol_id		id;
 	int				index;
 	char			*value;
+	long			lval;
 	char			expansion;
 	int				index_start;
 	int				index_end;

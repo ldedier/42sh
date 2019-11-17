@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/11/15 17:51:19 by ldedier          ###   ########.fr        #
+#    Updated: 2019/11/17 21:39:55 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,6 +57,7 @@ VPATH		= $(INCLUDESDIR) \
 			  $(SRCDIR)/parser/productions \
 			  $(SRCDIR)/arithmetic \
 			  $(SRCDIR)/arithmetic/productions \
+			  $(SRCDIR)/arithmetic/lexer \
 			  $(SRCDIR)/perror \
 			  $(SRCDIR)/traverse \
 			  $(SRCDIR)/traverse_tools \
@@ -418,15 +419,24 @@ SRCS			+=	jobs_init.c job_add.c process_add.c job_tools.c \
 ########				ARITHMETIC						########
 ################################################################
 SRCS			+=	 sh_ar_grammar.c sh_execute_arithmetic.c \
-					 sh_lexer_arithmetic.c \
-					 sh_traverse_and_or_ar.c \
-					 sh_traverse_comparison_ar.c \
-					 sh_traverse_expr_ar.c \
-					 sh_traverse_term_ar.c \
-					 sh_traverse_factor_ar.c \
-					 sh_traverse_arithmetic_ar.c
-
-
+					sh_ar_lexer.c \
+					sh_ar_lexer_rule_1.c \
+					sh_ar_lexer_rule_2.c \
+					sh_ar_lexer_rule_3.c \
+					sh_ar_lexer_rule_4.c \
+					sh_ar_lexer_rule_5.c \
+					sh_ar_lexer_rule_6.c \
+					sh_ar_lexer_rule_7.c \
+					sh_ar_lexer_rule_8.c \
+					sh_ar_lexer_rule_9.c \
+					t_ar_lexer.c \
+					t_ar_token.c \
+					sh_traverse_and_or_ar.c \
+					sh_traverse_comparison_ar.c \
+					sh_traverse_expr_ar.c \
+					sh_traverse_term_ar.c \
+					sh_traverse_factor_ar.c \
+					sh_traverse_arithmetic_ar.c
 
 ################################################################
 ########				AR_PRODUCTIONS					########

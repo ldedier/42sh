@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/05 19:04:06 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/14 19:17:50 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/17 18:40:59 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	sh_print_token(t_token *token, t_cfg *cfg)
 	else
 	{
 		if (token->index == LEX_TOK_AR_INTEGER)
-			ft_dprintf(2, "%s%d %s", YELLOW, token->token_union.ival, EOC);
+			ft_dprintf(2, "%s%d %s", YELLOW, token->lval, EOC);
 		else if (token->index == LEX_TOK_AR_VARIABLE)
 			ft_dprintf(2, "%s%s %s ", YELLOW, token->value, EOC);
 		else

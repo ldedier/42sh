@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_traverse_factor_ar.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/15 17:49:36 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/16 09:05:16 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/17 18:40:59 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	add_shell_var(char *variable, int to_add, t_context *context)
 	if (!(to_store = ft_ltoa(res, 10)))
 	{
 		sh_perror(SH_ERR1_MALLOC, "add_shell_var");
-		context->arithmetic_error = 2;
+		context->arithmetic_error = FAILURE;
 		return ;
 	}
 	if (sh_vars_assign_key_val(context->shell->env,
@@ -30,7 +30,7 @@ void	add_shell_var(char *variable, int to_add, t_context *context)
 	{
 		free(to_store);
 		sh_perror(SH_ERR1_MALLOC, "add_shell_var");
-		context->arithmetic_error = 2;
+		context->arithmetic_error = FAILURE;
 	}
 }
 
@@ -76,7 +76,7 @@ long		sh_traverse_factor_ar(t_ast_node *node, t_context *context)
 	if (ft_lstlen(node->children) == 1)
 	{
 		if (first_child->symbol->id == LEX_TOK_AR_INTEGER)
-			return (first_child->token->token_union.ival);
+			return (first_child->token->lval);
 		else
 			return (get_integer_from_var(first_child->token->value, context));
 	}

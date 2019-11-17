@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/14 13:19:50 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/15 17:36:53 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/17 21:45:26 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,8 +167,6 @@ int			sh_init_shell(t_shell *shell, char **env)
 		return (FAILURE);
 	if (sh_init_parsing_arithmetic(&shell->parser_ar) != SUCCESS)
 		return (FAILURE);
-	sh_execute_arithmetic_fake(shell, "10+1*7+1");
-	exit(sh_reset_shell(1));
 	if ((sh_init_history(&shell->history)) != SUCCESS)
 		return (FAILURE);
 	if (!(shell->binaries = ft_hash_table_new(BINARIES_TABLE_SIZE)))

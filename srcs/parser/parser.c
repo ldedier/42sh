@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/04 21:42:55 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/15 15:05:48 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/17 18:40:59 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int		sh_is_term(t_symbol *symbol, t_cfg *cfg)
 void	sh_populate_token(t_token *token, t_symbol_id id,
 		int val)
 {
-	token->token_union.ival = val;
+	token->lval = val;
 	token->id = id;
 	token->index = sh_index(id);
 	token->value = NULL;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_arithmetic_productions.h                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/15 10:58:15 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/15 14:36:38 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/17 18:48:48 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,35 +49,5 @@ typedef enum e_symbol_id_ar
 /*
 ********************************************************************************
 */
-
-/*
-** sh_ar_prod_and_or.c
-*/
-int		sh_ar_init_prod_and_or(t_cfg *cfg, t_symbol *symbol);
-
-/*
-** sh_ar_prod_arithmetic.c
-*/
-int		sh_ar_init_prod_arithmetic(t_cfg *cfg, t_symbol *symbol);
-
-/*
-** sh_ar_prod_comparison.c
-*/
-int		sh_ar_init_prod_comparison(t_cfg *cfg, t_symbol *symbol);
-
-/*
-** sh_ar_prod_expr.c
-*/
-int		sh_ar_init_prod_expr(t_cfg *cfg, t_symbol *symbol);
-
-/*
-** sh_ar_prod_factor.c
-*/
-int		sh_ar_init_prod_factor(t_cfg *cfg, t_symbol *symbol);
-
-/*
-** sh_ar_prod_term.c
-*/
-int		sh_ar_init_prod_term(t_cfg *cfg, t_symbol *symbol);
 
 #endif
