@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/14 13:19:50 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/28 10:18:08 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/17 16:29:15 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,49 +94,23 @@ static int	sh_init_history(t_history *history)
 	return (SUCCESS);
 }
 
-static void sh_init_count(t_command_count *count)
+int			sh_init_allocations(t_shell *shell, char **env)
 {
-	count->active = 0;
-	count->tmp_value = 1;
-}
-
-static int	sh_init_command_line(t_shell *shell, t_command_line *command_line)
-{
-	command_line->edit_counter = 0;
-	sh_init_count(&command_line->count);
-	sh_init_count(&command_line->motion_count);
-	command_line->current_count = &command_line->count;
-	command_line->shell = shell;
-	command_line->edit_line = NULL;
-	command_line->saves_stack = NULL;
-	command_line->last_ft_command.motion = NULL;
-	command_line->last_ft_command.locked = 0;
-	command_line->autocompletion.choices = NULL;
-	command_line->autocompletion.head = NULL;
-	command_line->autocompletion.active = 0;
-	command_line->interrupted = 0;
-	command_line->autocompletion.scrolled_lines = 0;
-	command_line->pinned_index = -1;
-	command_line->scrolled_lines = 0;
-	command_line->context = E_CONTEXT_STANDARD;
-	command_line->edit_style = E_EDIT_STYLE_READLINE;
-	command_line->mode = E_MODE_INSERT;
-	// if ((command_line->fd = open("/dev/tty", O_RDWR)) < 0)
-	// 	return (sh_perror(SH_ERR1_TTY, "sh_init_command_line (1)"));
-	command_line->fd = g_term_fd;
-	if (!(command_line->searcher.dy_str = ft_dy_str_new(63)))
-		return (sh_perror(SH_ERR1_MALLOC, "sh_init_command_line (2)"));
-	command_line->searcher.active = 0;
-	command_line->searcher.head = NULL;
-	command_line->searcher.unsuccessful = 0;
-	command_line->prompt = NULL;
-	command_line->to_append_str = NULL;
-	command_line->prev_prompt_len = -1;
-	if (update_prompt(shell, command_line) == FAILURE)
+	if (!(shell->alias = ft_dy_tab_new(5)))
 		return (FAILURE);
-	command_line->clipboard = NULL;
-	if (!(command_line->dy_str = ft_dy_str_new(63)))
-		return (sh_perror(SH_ERR1_MALLOC, "sh_init_command_line (3)"));
+	if (sh_main_init_env(shell, env) == FAILURE)
+		return (FAILURE);
+	if (sh_main_init_vars(shell) == FAILURE)
+		return (FAILURE);
+	if (sh_init_command_line(shell, &g_glob.command_line) != SUCCESS)
+		return (FAILURE);
+	shell->running = 1;
+	if (sh_init_parsing(&shell->parser) != SUCCESS)
+		return (FAILURE);
+	if ((sh_init_history(&shell->history)) != SUCCESS)
+		return (FAILURE);
+	if (!(shell->binaries = ft_hash_table_new(BINARIES_TABLE_SIZE)))
+		return (FAILURE);
 	return (SUCCESS);
 }
 
@@ -154,20 +128,7 @@ int			sh_init_shell(t_shell *shell, char **env)
 	shell->term = s;
 	shell->ret_value = 0;
 	shell->ret_value_set = 0;
-	if (!(shell->alias = ft_dy_tab_new(5)))
-		return (FAILURE);
-	if (sh_main_init_env(shell, env) == FAILURE)
-		return (FAILURE);
-	if (sh_main_init_vars(shell) == FAILURE)
-		return (FAILURE);
-	if (sh_init_command_line(shell, &g_glob.command_line) != SUCCESS)
-		return (FAILURE);
-	shell->running = 1;
-	if (sh_init_parsing(&shell->parser) != SUCCESS)
-		return (FAILURE);
-	if ((sh_init_history(&shell->history)) != SUCCESS)
-		return (FAILURE);
-	if (!(shell->binaries = ft_hash_table_new(BINARIES_TABLE_SIZE)))
+	if (sh_init_allocations(shell, env) == FAILURE)
 		return (FAILURE);
 	return (SUCCESS);
 }

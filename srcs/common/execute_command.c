@@ -6,18 +6,28 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/15 16:08:40 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/13 12:35:45 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/17 16:15:05 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-void	free_execution_tools(t_list **tokens, t_ast_node **ast_root,
+void		free_execution_tools(t_list **tokens, t_ast_node **ast_root,
 		t_ast_node **cst_root)
 {
 	sh_free_ast_node(cst_root, 0);
 	sh_free_ast_node(ast_root, 0);
 	ft_lstdel(tokens, sh_free_token_lst);
+}
+
+static void	sh_update_syntax_error(t_shell *shell, int *ret, t_list **tokens)
+{
+	sh_perror_err("syntax error", NULL);
+	if (sh_env_update_ret_value_and_question(shell, *ret) == FAILURE)
+		*ret = sh_perror(SH_ERR1_MALLOC, "sh_process_command (2)");
+	ft_lstdel(tokens, sh_free_token_lst);
+	if (!isatty(0))
+		shell->running = 0;
 }
 
 static int	sh_process_command(t_shell *shell, char *command)
@@ -39,16 +49,8 @@ static int	sh_process_command(t_shell *shell, char *command)
 		ft_lstdel(&tokens, sh_free_token_lst);
 	}
 	// jobs_create_cmds(g_job_ctrl->tokens);
-
 	else if ((ret = sh_parser(shell, &tokens, &ast_root, &cst_root)))
-	{
-		sh_perror_err("syntax error", NULL);
-		if (sh_env_update_ret_value_and_question(shell, ret) == FAILURE)
-			ret = sh_perror(SH_ERR1_MALLOC, "sh_process_command (2)");
-		ft_lstdel(&tokens, sh_free_token_lst);
-		if (!isatty(0))
-			shell->running = 0;
-	}
+		sh_update_syntax_error(shell, &ret, &tokens);
 	else
 	{
 		ret = sh_process_traverse(shell, ast_root);
@@ -57,7 +59,7 @@ static int	sh_process_command(t_shell *shell, char *command)
 	return (ret);
 }
 
-int		execute_command(t_shell *shell, char *command, int should_add)
+int			execute_command(t_shell *shell, char *command, int should_add)
 {
 	int		ret;
 	char	*dup;

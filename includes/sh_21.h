@@ -205,9 +205,13 @@ int					execute_command(
 void				sh_free_binary(t_binary *binary);
 void				sh_free_binary_lst(void *b, size_t dummy);
 void				free_file(t_file *file);
+void				sh_free_all(t_shell *shell);
+
+/*
+** free_all_dlist.c
+*/
 void				free_file_dlst(void *f, size_t dummy);
 void				free_entry_dlst(void *e, size_t dummy);
-void				sh_free_all(t_shell *shell);
 
 /*
 ** hash_binaries.c

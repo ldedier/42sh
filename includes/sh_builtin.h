@@ -341,15 +341,19 @@ int					parse_jobs_args(char **argv, int j_lst[], int *opt);
 /*
 ** set/sh_builtin_set.c
 */
+int					sh_builtin_set_param(t_context *context, int *index);
+int					sh_builtin_set_args(t_context *context);
+int					sh_builtin_set(t_context *context);
+
+/*
+** set/sh_builtin_set_options.c
+*/
 int					fill_option_value(
 	int **address_ptr, int *value_ptr, int *address, int value);
 int					get_option(
 	t_shell *shell, char *option_name, int **option, int *value);
 int					add_option(t_context *context, int index);
 int					remove_option(t_context *context, int index);
-int					sh_builtin_set_param(t_context *context, int *index);
-int					sh_builtin_set_args(t_context *context);
-int					sh_builtin_set(t_context *context);
 
 /*
 ** set/sh_builtin_set_print.c

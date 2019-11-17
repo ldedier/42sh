@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/11/17 16:02:45 by ldedier          ###   ########.fr        #
+#    Updated: 2019/11/17 16:21:32 by ldedier          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -111,7 +111,7 @@ SRCS			+=	keys.c cursor_motion.c edit_command.c \
 					keys_tools.c keys_ret.c command_count.c restore_save.c \
 					save_command_line.c scroll_command_line.c \
 					print_command_line.c copy_command_line.c \
-					pre_post_render.c
+					pre_post_render.c sh_init_command_line.c
 
 #sh_clipboard.c sh_command_line_tools.c
 #					sh_clipboard_tools.c
@@ -136,7 +136,7 @@ SRCS			+=	sh_traverse_tools_browse.c \
 ########					COMMON						########
 ################################################################
 SRCS			+=	main.c index.c init.c shell_tools.c \
-					free_all.c init_term.c signals.c \
+					free_all.c free_all_dlist.c init_term.c signals.c \
 					set_signals.c canonical_mode.c history.c home.c \
 					init_tabs.c non_canonical_mode.c hash_binaries.c \
 					check_term.c signal_tools.c execute_command.c \
