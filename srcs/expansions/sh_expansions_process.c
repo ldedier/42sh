@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/03 14:58:45 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/10 03:10:11 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/17 23:34:26 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ static int	sh_expansions_init(char *original, t_expansion *exp)
 		return (sh_expansions_proc_subst_out_fill(exp, original));
 	else if (ft_strnstr(original, ">(", 2))
 		return (sh_expansions_proc_subst_in_fill(exp, original));
+	else if (ft_strnstr(original, "$((", 3))
+		return (sh_expansions_arithmetic_fill(exp, original));
 	else if (ft_strnstr(original, "$(", 2) || *original == '`')
 		return (sh_expansions_cmd_subst_fill(exp, original));
 	else if (ft_strnstr(original, "$", 1))

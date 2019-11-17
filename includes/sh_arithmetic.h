@@ -121,7 +121,6 @@ int		sh_ar_init_prod_term(t_cfg *cfg, t_symbol *symbol);
 */
 long	sh_traverse_arithmetic(t_ast_node *node, t_context *context);
 long	sh_traverse_ar_root(t_context *context, t_ast_node *root);
-int		sh_execute_arithmetic_fake(t_shell *shell, char *command);
 int		sh_execute_arithmetic(t_context *context, char *command);
 
 /*

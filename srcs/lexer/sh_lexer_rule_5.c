@@ -6,12 +6,13 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 14:37:57 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/15 07:59:41 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/17 23:26:04 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
+// check but end shall never be equal to 0 !
 static int		sh_lexer_exp(t_lexer *lexer)
 {
 	char	*start;
@@ -24,6 +25,8 @@ static int		sh_lexer_exp(t_lexer *lexer)
 		end = sh_expansions_proc_subst_out_detect(start);
 	else if (ft_strnstr(start, ">(", 2))
 		end = sh_expansions_proc_subst_in_detect(start);
+	else if (ft_strnstr(start, "$((", 3))
+		end = sh_expansions_arithmetic_detect(start);
 	else if (ft_strnstr(start, "$(", 2))
 		end = sh_expansions_cmd_subst_detect_dollar(start);
 	else if (ft_strnstr(start, "${", 2))

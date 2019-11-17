@@ -56,6 +56,14 @@ struct					s_expansion
 int		sh_expansions(t_context *context, t_ast_node *node);
 
 /*
+** sh_expansions_arithmetic.c
+*/
+int		sh_expansions_arithmetic_detect(char *start);
+int		sh_expansions_arithmetic_fill(t_expansion *expansion, char *start);
+int		sh_expansions_arithmetic_process(
+	t_context *context, t_expansion *exp);
+
+/*
 ** sh_expansions_cmd_subst.c
 */
 int		sh_expansions_cmd_subst_detect_backquotes(char *start);
