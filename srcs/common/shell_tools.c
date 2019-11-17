@@ -20,6 +20,7 @@ int		sh_reset_shell(int ret)
 				"sh_reset_shell");
 		return (-1);
 	}
+	ft_dprintf(2, "setting shell back !\n");
 	return (ret);
 }
 
@@ -31,6 +32,7 @@ int		sh_set_shell_back(int ret)
 				"sh_set_shell_back");
 		return (-1);
 	}
+	ft_dprintf(2, "setting shell for termcaps !\n");
 	return (ret);
 }
 
