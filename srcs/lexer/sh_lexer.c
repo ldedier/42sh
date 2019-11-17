@@ -91,8 +91,6 @@ int				sh_lexer(char *input, t_list **tokens, t_shell *shell,
 	t_lexer		lexer;
 	int			ret;
 
-	ft_bzero(&lexer, sizeof(t_lexer));
-	lexer.next_alias_index = -1;
 	if (t_lexer_init(&lexer, mode, shell, input))
 		return (FAILURE);
 	ret = LEX_OK;
