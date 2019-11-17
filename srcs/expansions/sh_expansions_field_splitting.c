@@ -6,27 +6,11 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/27 16:47:32 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/15 21:24:53 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/17 19:11:00 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
-
-static void	update_quotes(t_quote **quotes, int i, int start, t_ast_node *node)
-{
-	int		q;
-
-	q = 0;
-	while (quotes[q] && quotes[q]->index < start)
-		q++;
-	while (quotes[q] && quotes[q]->index < i)
-	{
-		quotes[q]->c = node->token->value + quotes[q]->index - start;
-		quotes[q]->index = -1;
-		q++;
-	}
-	return ;
-}
 
 static int	sh_splitting_parse_ifs(char *ws, char *nws, char *ifs)
 {
@@ -71,90 +55,32 @@ static void	decrease_quotes(t_quote **tbl)
 	}
 }
 
-static int 	sh_skip_ws(char *ws, char *input, int *i, t_dy_tab *quotes)
-{
-	while (input[*i] && ft_strchr(ws, input[*i]))
-	{
-		ft_strdelchar(input, *i);
-		decrease_quotes((t_quote**)quotes->tbl); // be carefull if used with IFS using quotes
-	}
-//	(void)quotes;
-//	while (input[*i] && ft_strchr(ws, input[*i]))
-//		*i += 1;
-	return (*i);
-}
-
 static int	sh_splitting_non_white_ifs(t_ast_node *node, char *ifs, char *input, t_dy_tab *quotes)
 {
-	char		ws[100];
-	char		nws[100];
-	int			i;
-	int			start;
-	char		*str;
-	int			first;
+	t_split_data	data;
+	t_split_word 	word;
+	int				i;
+	int				ret;
 
-	t_quote_is_original_quote(0, (t_quote **)quotes->tbl);
-	if (sh_splitting_parse_ifs(ws, nws, ifs))
+	data.input = input;
+	data.not_first = 0;
+	data.skip_nws = 1;
+	data.quotes = (t_quote **)quotes->tbl;
+	if (sh_splitting_parse_ifs(data.ws, data.nws, ifs))
 		return (ERROR);
-	i = 0;
 	if (sh_verbose_expansion())
-		ft_dprintf(2, "ifs : non white : %s && white : %s\n", nws, ws);
-	start = i;
-	first = 1;
+		ft_dprintf(2, "ifs : non white : %s && white : %s\n", data.nws, data.ws);
+	if ((i = start_nws_split(&node, &data)) < 0)
+		return (FAILURE);
 	while (input[i])
 	{
 		if (sh_verbose_expansion())
 			ft_dprintf(2, "non white ifs : running %d (%c)\n", i, input[i]);
-		start = sh_skip_ws(ws, input, &i, quotes);
-		if (!input[i])
-			break ;
-		else
-		{
-			while (input[i] && !ft_strchr(ifs, input[i]))
-				i++;
-			if ((input[i] == '\'' || input[i] == '"')
-					&& t_quote_is_original_quote(i, (t_quote **)quotes->tbl))
-			{
-				if (t_quote_get_offset(i, (t_quote**)quotes->tbl) != -1)
-				{
-					i = t_quote_get_offset(i, (t_quote**)quotes->tbl);
-					i++;
-				}
-				continue ;
-			}
-			if (input[i] && first)
-			{
-				if (i == 0 && ft_strchr(nws, input[i]))
-				{
-					if (!(str = ft_strndup(input + start, i - start)))
-						return (sh_perror(SH_ERR1_MALLOC, "sh_splitting_non_white_ifs (1)"));
-					else if (!(node = sh_add_word_to_ast(node, str)))
-						return (sh_perror(SH_ERR1_MALLOC, "sh_splitting_non_white_ifs (2)"));
-					update_quotes((t_quote**)quotes->tbl, i, start, node);
-				}
-				
-				input[i] = 0;
-				first = 0;
-				i++;
-				start = i;
-				continue ;
-			}
-			else if (first == 0)
-			{
-				if (!(str = ft_strndup(input + start, i - start)))
-					return (sh_perror(SH_ERR1_MALLOC, "sh_splitting_non_white_ifs (1)"));
-				else if (!(node = sh_add_word_to_ast(node, str)))
-					return (sh_perror(SH_ERR1_MALLOC, "sh_splitting_non_white_ifs (2)"));
-				update_quotes((t_quote**)quotes->tbl, i, start, node);
-				if (sh_verbose_expansion())
-					ft_dprintf(2, "non white ifs : Added node : start : %d, i : %d\n", start, i);
-				if (sh_verbose_expansion())
-					ft_dprintf(2, "non white ifs : Added node : %s\n", str);
-			}
-		}
-		start = i;
-		if (input[i])
-			i++;
+		if ((ret = sh_get_next_word_nws(&data, &word, &i)) < 0)
+			return (FAILURE);
+		else if (ret == 1)
+			if ((ret = split_input(&node, &data, word.start, word.end)) != SUCCESS)
+				return (ret);
 	}
 	return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 17:46:46 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/23 03:23:27 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/17 19:14:49 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 ** Expansion header
 */
 typedef struct s_expansion	t_expansion;
+typedef struct s_split_data	t_split_data;
+typedef struct s_split_word	t_split_word;
 typedef enum e_exp_type		t_exp_type;
 
 enum					e_exp_type
@@ -46,6 +48,21 @@ struct					s_expansion
 	int					(*process)(t_context *, t_expansion *);
 };
 
+struct					s_split_data
+{
+	char				*input;
+	t_quote				**quotes;
+	int					skip_nws;
+	char				ws[100];
+	char 				nws[100];
+	int					not_first;
+};
+
+struct					s_split_word
+{
+	int					start;
+	int 				end;
+};
 /*
 ********************************************************************************
 */
@@ -200,4 +217,11 @@ void	t_quote_show_tab(t_quote **quotes);
 int		t_quote_is_original_quote(int i, t_quote **quotes);
 int		t_quote_get_offset(int i, t_quote **quotes);
 
+int		start_nws_split(t_ast_node **node, t_split_data *data);
+int 	sh_skip_quote(t_quote **quotes, int i);
+int		sh_skip_word_nws(t_split_data *data, t_split_word *word, int *i);
+int 	sh_get_next_word_nws(t_split_data *data, t_split_word *word, int *i);
+int 	split_input(t_ast_node **node, t_split_data *data, int start, int end);
+void	update_quotes(t_quote **quotes, int i, int start, t_ast_node *node);
+int 	sh_skip_ws_2(t_split_data *data, int *i);
 #endif

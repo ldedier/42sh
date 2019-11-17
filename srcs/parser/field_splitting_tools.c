@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/07 15:38:10 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/15 16:02:40 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/16 19:25:05 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,9 @@ t_ast_node			*sh_add_word_to_ast(t_ast_node *previous_word, char *value)
 	while (ptr != NULL)
 	{
 		if ((ret = sh_process_add_new_ast_node(ptr, previous_word, &new_node)))
+		{
 			return (new_node);
+		}
 		ptr = ptr->next;
 	}
 	free(value);

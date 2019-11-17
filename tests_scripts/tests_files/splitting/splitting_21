@@ -1,4 +1,4 @@
 IFS=A\ 
-var="AAAAABonjour"
+var="    AAAAhoho"
 echo $var
 echo "$var"
