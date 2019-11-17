@@ -6,13 +6,14 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 16:47:47 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/20 12:48:46 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/17 15:24:33 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-int		sh_builtin_fc_fill_text(t_history *history, t_dlist *from, t_dlist *to)
+int			sh_builtin_fc_fill_text(t_history *history,
+	t_dlist *from, t_dlist *to)
 {
 	int		list_way;
 	t_dlist	*ptr;
@@ -38,7 +39,7 @@ int		sh_builtin_fc_fill_text(t_history *history, t_dlist *from, t_dlist *to)
 	return (0);
 }
 
-char	*sh_get_editor(char *editor, t_shell *shell)
+char		*sh_get_editor(char *editor, t_shell *shell)
 {
 	char *fcedit_var;
 
@@ -53,7 +54,7 @@ char	*sh_get_editor(char *editor, t_shell *shell)
 	}
 }
 
-void	fill_default_opts_default_synopsis(t_fc_options *opts)
+void		fill_default_opts_default_synopsis(t_fc_options *opts)
 {
 	if (!opts->from.parsed)
 	{
@@ -67,7 +68,7 @@ void	fill_default_opts_default_synopsis(t_fc_options *opts)
 	}
 }
 
-int		sh_execute_editor(char *editor, t_shell *shell)
+int			sh_execute_editor(char *editor, t_shell *shell)
 {
 	char *command;
 
@@ -82,70 +83,19 @@ int		sh_execute_editor(char *editor, t_shell *shell)
 	return (SUCCESS);
 }
 
-static int      sh_process_read_canonical_gnl(t_shell *shell, t_gnl_info *info)
-{
-	int ret;
-
-	if (info->separator != E_SEPARATOR_ZERO)
-	{
-		ft_printf("%s\n", info->line);
-		if ((ret = execute_command(shell, info->line, 1)))
-		{
-			free(info->line);
-			return (ret);
-		}
-	}
-	else
-	{
-		free(info->line);
-		return (sh_perror("Illegal characters received from input",
-					"sh_process_read_canonical_gnl"));
-	}
-	free(info->line);
-	return (ret);
-}
-
-int		sh_execute_commands_from_file(t_shell *shell, char *filename)
-{
-	int			gnl_ret;
-	t_gnl_info	info;
-	int			ret;
-	int			fd;
-
-	if ((fd = open(filename, O_RDONLY)) == -1)
-		return (sh_perror(SH_ERR1_EDIT, "sh_execute_commands_from_edit_file"));
-	ret = SUCCESS;
-	while (shell->running && (gnl_ret = get_next_line2(fd, &info, 1)) == 1)
-	{
-		if ((ret = sh_process_read_canonical_gnl(shell, &info)))
-		{
-			close(fd);
-			return (ret);
-		}
-	}
-	if (gnl_ret == -1)
-	{
-		close(fd);
-		return (sh_perror("get_next_line error",
-			"sh_execute_commands_from_edit_file"));
-	}
-	if (shell->running)
-		free(info.line);
-	close(fd);
-	return (ret);
-}
-
-int		sh_builtin_fc_default_synopsis(t_context *context, t_fc_options *opts)
+int			sh_builtin_fc_default_synopsis(t_context *context,
+	t_fc_options *opts)
 {
 	t_dlist *from;
 	t_dlist *to;
 	int		ret;
 
 	fill_default_opts_default_synopsis(opts);
-	if (!(from
-		= get_entry_from_fc_operand(&context->shell->history, &opts->from, 1)))
+	if (!(from =
+		get_entry_from_fc_operand(&context->shell->history, &opts->from, 1)))
 		return (sh_perror_err(SH_BLT_HISTORY_RANGE, NULL));
-	if (!(to = get_entry_from_fc_operand(&context->shell->history, &opts->to, 1)))
+	if (!(to = get_entry_from_fc_operand(&context->shell->history,
+		&opts->to, 1)))
 		return (sh_perror_err(SH_BLT_HISTORY_RANGE, NULL));
 	if (opts->opt_r)
 		swap_entries(&context->shell->history, &from, &to);
@@ -155,10 +105,7 @@ int		sh_builtin_fc_default_synopsis(t_context *context, t_fc_options *opts)
 		return (sh_perror(SH_ERR1_MALLOC, "sh_builtin_fc_default_synopsis"));
 	ft_printf("%s\n", opts->editor);
 	if (sh_execute_editor(opts->editor, context->shell) != SUCCESS)
-	{
-		free(opts->editor);
-		return (FAILURE);
-	}
+		return (ft_free_turn(opts->editor, FAILURE));
 	free(opts->editor);
 	ret = sh_execute_commands_from_file(context->shell, EDIT_FILE);
 	context->shell->history.should_add = 0;
