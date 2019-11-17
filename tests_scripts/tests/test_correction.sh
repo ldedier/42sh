@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/28 01:13:40 by jmartel           #+#    #+#              #
-#    Updated: 2019/10/10 14:04:51 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/16 17:34:35 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,3 @@ launch "correction"
 	test_launch 'unset a b' "env | grep -E '(a|b)='" "set | grep -E '(a|b)='"
 	test_launch 'unset PATH' 'PATH=/bin:/usr/bin' 'mkdir testdir' 'echo ${?}' 'ls -1 | grep testdir' 'rm -rf testdir'
 	test_launch 'true; echo ${?}; false; echo ${?}'
-
-	launch_show 'https://github.com/we-sh/42ShellTester'
-	test_launch 'echo TOKEN201910101357_1 TOKEN201910101357_2 &>           new_file_stderr_and_stdout' 'rm new_file_stderr_and_stdout'
-	test_launch 'echo TOKEN201910101357_1 TOKEN201910101357_2 &>new_file_stderr_and_stdout' 'rm new_file_stderr_and_stdout'
