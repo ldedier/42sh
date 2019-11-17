@@ -25,6 +25,7 @@ int			t_lexer_init(
 	lexer->mode = mode;
 	t_lexer_reset(lexer, 0);
 	lexer->first_word = 1;
+	lexer->next_alias_index = -1;
 	return (SUCCESS);
 }
 
