@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/15 15:19:04 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/18 12:06:03 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/18 14:54:42 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ long		sh_traverse_ar_root(t_context *context, t_ast_node *root)
 	return (sh_traverse_arithmetic(root, context));
 }
 
-int		sh_execute_arithmetic(t_context *context, char *command)
+long		sh_execute_arithmetic(t_context *context, char *command)
 {
-	int         ret;
+	long        ret;
 	t_exec      res;
 
 	res.ast_root = NULL;

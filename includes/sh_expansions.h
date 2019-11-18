@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 17:46:46 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/23 03:23:27 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/18 15:35:41 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 ** Expansion header
 */
 typedef struct s_expansion	t_expansion;
+typedef struct s_history_expander	t_history_expander;
 typedef enum e_exp_type		t_exp_type;
 
 enum					e_exp_type
@@ -84,11 +85,24 @@ int		sh_expansions_splitting(
 ** sh_expansions_history.c
 */
 char	*ft_strdup_word_delim(char *str, int delim);
-int		sh_history_expand(
+int		sh_process_history_expand(
 	t_shell *shell,
 	t_command_line *command_line,
 	int *index,
-	int *double_quoted);
+	char *double_quoted);
+void	init_expander(t_history_expander *he);
+int		is_eligible_for_history_expansion(
+	t_command_line *command_line, int *i, t_history_expander *he);
+int		sh_history_expand(
+	t_command_line *command_line,
+	int *i,
+	t_history_expander *he,
+	t_shell *shell);
+int		scan_expansions_history(
+	int *i,
+	t_shell *shell,
+	t_command_line *command_line,
+	t_history_expander *he);
 int		sh_expansions_history(
 	t_shell *shell, t_command_line *command_line, int *expanded);
 

@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/15 17:49:36 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/18 13:49:25 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/18 14:38:22 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ long		get_integer_from_var(char *variable, t_context *context)
 static long	sh_traverse_add_factor(t_ast_node *first_child,
 		t_ast_node *second_child, t_context *context)
 {
-	int		ret;
+	long	ret;
 
 	if (second_child->symbol->id == LEX_TOK_AR_VARIABLE)
 	{

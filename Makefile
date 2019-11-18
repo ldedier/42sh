@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/11/18 11:27:58 by ldedier          ###   ########.fr        #
+#    Updated: 2019/11/18 15:41:38 by ldedier          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -366,6 +366,7 @@ SRCS			 +=	sh_expansions.c \
 					sh_expansions_quote_removal.c \
 					sh_expansions_scan.c \
 					sh_expansions_history.c \
+					sh_expansions_history_expand.c \
 					sh_expansions_cmd_subst.c \
 					sh_expansions_proc_subst_in.c \
 					sh_expansions_proc_subst_out.c \

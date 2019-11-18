@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/15 17:44:45 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/18 11:42:01 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/18 14:27:44 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static long	sh_traverse_and_or_ar_operand(t_ast_node *node, t_context *context)
 					&& sh_traverse_arithmetic(node->children->
 						next->next->content, context));
 		else
-			return (first);
+			return (0);
 	}
 	else
 	{
@@ -35,7 +35,7 @@ static long	sh_traverse_and_or_ar_operand(t_ast_node *node, t_context *context)
 					|| sh_traverse_arithmetic(node->children->
 						next->next->content, context));
 		else
-			return (first);
+			return (1);
 	}
 }
 

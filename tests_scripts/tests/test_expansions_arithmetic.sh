@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/17 19:22:25 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/18 14:08:39 by ldedier          ###   ########.fr        #
+#    Updated: 2019/11/18 14:51:04 by ldedier          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,9 +37,19 @@ launch "arithmetic"
 	test_launch 'a=10; b=20; echo $((a-----b))'
 	test_launch 'a=10; b=20; echo $((a------b))'
 
-	test_launch '((1 - - - - + + + - - - - + + + - - - - 5 > 4))'
-	test_launch '((1 - - - - + + + - - - - + + + - - - - 5 > 6))'
-	test_launch '((1 - - - - + + + - - - - + + + - - - - 5 == 6))'
+	test_launch 'a=10; b=20; echo $((a--++-b))'
+	test_launch 'a=10; b=20; echo $((a-++---b))'
+	test_launch 'a=10; b=20; echo $((a-++-++b))'
+	test_launch 'a=10; b=20; echo $((a-++--b))'
+	test_launch 'a=10; b=20; echo $((a-++--b++))'
+	test_launch 'a=10; b=20; echo $((a+--++--b))'
+	test_launch 'a=10; b=20; echo $((++a+--++--b--))'
+	test_launch 'a=10; b=20; echo $((--a+----++b--))'
+	test_launch 'a=10; b=20; echo $((--a--++--b++))'
+
+	test_launch '$((1 - - - - + + + - - - - + + + - - - - 5 > 4))'
+	test_launch '$((1 - - - - + + + - - - - + + + - - - - 5 > 6))'
+	test_launch '$((1 - - - - + + + - - - - + + + - - - - 5 == 6))'
 
 	test_launch 'echo $((2147483647  *  5))' 'echo $?'
 	test_launch 'echo $((-2147483647 / 2 *7 * -1))' 'echo $?'
@@ -76,7 +86,7 @@ launch "arithmetic"
 	6
 	6858476874))'
 	test_launch 'echo $((7854695221584654/0        *0))'
-	test_launch 'echo $((1<=-1=28>=45))'
+	test_launch 'echo $((1<=-1>=28>=45))'
 	test_launch 'echo $((---------1*-----1))'
 	test_launch 'echo $((-2*-2+2/2))'
 	test_launch 'echo $((/>=<=* == 2))'

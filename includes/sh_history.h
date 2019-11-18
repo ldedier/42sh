@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/15 15:40:47 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/15 15:40:47 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/18 15:20:24 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,15 @@ typedef struct		s_entry
 	char			*command;
 	t_list			*saves_stack;
 }					t_entry;
+
+typedef struct		s_history_expander
+{
+	char			single_quoted;
+	char			double_quoted;
+	char			backslashed;
+	char			bracket;
+	int				*expanded;
+}					t_history_expander;
 
 typedef struct      s_history
 {
