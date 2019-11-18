@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/17 19:22:25 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/18 12:17:19 by ldedier          ###   ########.fr        #
+#    Updated: 2019/11/18 14:08:39 by ldedier          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,19 @@ launch "arithmetic"
 	test_launch 'a=0 ; b=0 ; echo $((a+++b))'
 	test_launch 'a=0 ; b=0 ; echo $((a+ ++b))'
 	test_launch 'a=0 ; b=0 ; echo $((a++ +b))'
+
+	test_launch '$((1---42))'
+	test_launch 'a=10; b=20; echo $((a-b))'
+	test_launch 'a=10; b=20; echo $((a--b))'
+	test_launch 'a=10; b=20; echo $((a---b))'
+	test_launch 'a=10; b=20; echo $((a----b))'
+	test_launch 'a=10; b=20; echo $((a-----b))'
+	test_launch 'a=10; b=20; echo $((a------b))'
+
+	test_launch '((1 - - - - + + + - - - - + + + - - - - 5 > 4))'
+	test_launch '((1 - - - - + + + - - - - + + + - - - - 5 > 6))'
+	test_launch '((1 - - - - + + + - - - - + + + - - - - 5 == 6))'
+
 	test_launch 'echo $((2147483647  *  5))' 'echo $?'
 	test_launch 'echo $((-2147483647 / 2 *7 * -1))' 'echo $?'
 	test_launch 'echo $((77777777 % 7 * 4 -5 +8 /8))' 'echo $?'

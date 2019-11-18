@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/15 17:49:36 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/18 11:57:56 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/18 13:49:25 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,13 @@ long		sh_traverse_factor_ar(t_ast_node *node, t_context *context)
 		else
 			return (get_integer_from_var(first_child->token->value, context));
 	}
+	second_child = (t_ast_node *)node->children->next->content;
+	if (first_child->symbol->id == LEX_TOK_AR_PLUS)
+		return (sh_traverse_arithmetic(second_child, context));
+	else if (first_child->symbol->id == LEX_TOK_AR_MINUS)
+		return (-sh_traverse_arithmetic(second_child, context));
 	else
 	{
-		second_child = (t_ast_node *)node->children->next->content;
 		return (sh_traverse_add_factor(first_child,
 			second_child, context));
 	}

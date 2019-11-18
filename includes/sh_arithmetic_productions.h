@@ -6,14 +6,14 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/15 10:58:15 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/17 18:48:48 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/18 13:38:02 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SH_ARITHMETIC_PRODUCTIONS_H
 # define SH_ARITHMETIC_PRODUCTIONS_H
 
-# define NB_PRODUCTIONS_AR	26
+# define NB_PRODUCTIONS_AR	28
 # define NB_SYMBOLS_AR		25
 # define NB_TERMS_AR		19
 
