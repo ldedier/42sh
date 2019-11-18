@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/03 17:11:45 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/07 12:54:58 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/18 10:03:03 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,10 @@ static void	sh_free_token(t_ast_node *node, t_token **token)
 ** the data has already been freed
 */
 
-void	sh_free_ast_node(t_ast_node **node, int node_to_free)
+void		sh_free_ast_node(t_ast_node **node, int node_to_free)
 {
 	t_ast_node		*child;
 	t_ast_node		*tmp;
-
 
 	if (!*node)
 		return ;
@@ -57,13 +56,9 @@ void	sh_free_ast_node(t_ast_node **node, int node_to_free)
 	*node = NULL;
 }
 
-void	sh_free_ast_builder(t_ast_builder *ast_builder)
+void		sh_free_ast_builder(t_ast_builder *ast_builder)
 {
-	static int i = 0;
-	(void)i;
-//	ft_printf("freeing from ast_builder %d\n", ++i);
 	sh_free_ast_node(&ast_builder->ast_node, 1);
 	sh_free_ast_node(&ast_builder->cst_node, 2);
 	free(ast_builder);
-//	ft_printf("end of freeing from ast_builder %d\n", i);
 }

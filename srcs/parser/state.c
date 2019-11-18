@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 12:23:57 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/15 14:45:02 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/18 10:34:50 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ unsigned long	hash_item(void *i)
 	return (res);
 }
 
-int		sh_add_item_to_state(t_lr_parser *parser, t_state *state, t_item *item)
+int				sh_add_item_to_state(t_lr_parser *parser,
+	t_state *state, t_item *item)
 {
 	if (ft_lstaddnew_ptr(&state->items_by_productions
 		[item->production->index],
@@ -52,7 +53,7 @@ int		sh_add_item_to_state(t_lr_parser *parser, t_state *state, t_item *item)
 	return (0);
 }
 
-t_state		*sh_new_state(t_cfg *cfg)
+t_state			*sh_new_state(t_cfg *cfg)
 {
 	t_state		*res;
 	int			i;
@@ -69,7 +70,7 @@ t_state		*sh_new_state(t_cfg *cfg)
 	return (res);
 }
 
-void		sh_free_state(t_state *state, t_cfg *cfg)
+void			sh_free_state(t_state *state, t_cfg *cfg)
 {
 	int i;
 

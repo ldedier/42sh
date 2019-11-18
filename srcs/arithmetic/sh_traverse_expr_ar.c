@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/15 17:47:35 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/16 09:05:16 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/18 11:57:06 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,10 @@ long		sh_traverse_expr_ar(t_ast_node *node, t_context *context)
 	if (middle_node->symbol->id == LEX_TOK_AR_PLUS)
 		return (sh_traverse_arithmetic(first_node, context)
 				+ sh_traverse_arithmetic(third_node, context));
-	else if(middle_node->symbol->id == LEX_TOK_AR_MINUS)
+	else if (middle_node->symbol->id == LEX_TOK_AR_MINUS)
+	{
 		return (sh_traverse_arithmetic(first_node, context)
 				- sh_traverse_arithmetic(third_node, context));
+	}
 	return (0);
 }

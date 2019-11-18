@@ -6,13 +6,13 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/07 23:40:02 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/15 14:39:19 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/18 10:56:39 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-int		sh_init_parsing(t_lr_parser *parser, t_cfg_initializer *cfgi)
+int			sh_init_parsing(t_lr_parser *parser, t_cfg_initializer *cfgi)
 {
 	parser->states = NULL;
 	parser->last_state_ptr = NULL;
@@ -30,7 +30,7 @@ int		sh_init_parsing(t_lr_parser *parser, t_cfg_initializer *cfgi)
 	return (0);
 }
 
-int		sh_init_parsing_posix(t_lr_parser *parser)
+int			sh_init_parsing_posix(t_lr_parser *parser)
 {
 	t_cfg_initializer cfgi;
 
@@ -43,9 +43,7 @@ int		sh_init_parsing_posix(t_lr_parser *parser)
 	cfgi.eoi_index = sh_index(END_OF_INPUT);
 	cfgi.index_func = &sh_index;
 	g_glob.cfg = &parser->cfg;
-//	(void)parser;
-//	return (0);
-	return sh_init_parsing(parser, &cfgi);
+	return (sh_init_parsing(parser, &cfgi));
 }
 
 static int	sh_identity(int value)
@@ -53,7 +51,7 @@ static int	sh_identity(int value)
 	return (value);
 }
 
-int		sh_init_parsing_arithmetic(t_lr_parser *parser)
+int			sh_init_parsing_arithmetic(t_lr_parser *parser)
 {
 	t_cfg_initializer cfgi;
 
@@ -65,5 +63,5 @@ int		sh_init_parsing_arithmetic(t_lr_parser *parser)
 	cfgi.epsilon_index = EPS_AR;
 	cfgi.eoi_index = END_OF_INPUT_AR;
 	cfgi.index_func = &sh_identity;
-	return sh_init_parsing(parser, &cfgi);
+	return (sh_init_parsing(parser, &cfgi));
 }

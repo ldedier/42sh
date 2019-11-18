@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 11:21:50 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/15 14:40:48 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/18 10:00:16 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,13 +75,14 @@ int		sh_compute_lr_automata(t_lr_parser *parser)
 	(void)ret;
 	if (!(first_state = sh_compute_first_state(parser)))
 		return (sh_perror(SH_ERR1_MALLOC, "sh_compute_lr_automata (2)"));
-	if (ft_lstaddnew_ptr_last_list(&parser->states, first_state, sizeof(t_state *), &parser->last_state_ptr))
+	if (ft_lstaddnew_ptr_last_list(&parser->states, first_state,
+			sizeof(t_state *), &parser->last_state_ptr))
 	{
 		sh_free_state(first_state, &parser->cfg);
 		return (sh_perror(SH_ERR1_MALLOC, "sh_compute_lr_automata (2)"));
 	}
 	i = 1;
-	while ((ret = sh_compute_states(parser) == 1))// && i++ < KNOWN_ITERATIONS)
+	while ((ret = sh_compute_states(parser) == 1))
 		;
 	if (ret == -1)
 		return (FAILURE);

@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 17:49:25 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/15 14:46:24 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/18 10:06:59 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ t_action	**sh_create_tables(t_lr_parser *parser)
 	i = 0;
 	while (i < parser->nb_states)
 	{
-		if (!(res[i] = (t_action *)malloc(parser->cfg.nb_symbols * sizeof(t_action))))
+		if (!(res[i] = (t_action *)malloc(parser->cfg.nb_symbols
+			* sizeof(t_action))))
 		{
 			while (--i)
 				free(res[i]);
@@ -39,29 +40,18 @@ t_action	**sh_create_tables(t_lr_parser *parser)
 	return (res);
 }
 
-void	sh_fill_reduce(t_state *state, t_item *item, t_lr_parser *parser)
+void		sh_fill_reduce(t_state *state, t_item *item, t_lr_parser *parser)
 {
 	if (parser->lr_tables[state->index]
 			[item->lookahead->id].action_enum == E_ACTION_REDUCE)
-	{
 		ft_printf("REDUCE REDUCE CONFLICT\n");
-		sh_print_state(state, 0, &parser->cfg);
-		ft_printf("lookahead: ");
-		sh_print_symbol(item->lookahead, &parser->cfg);
-		ft_printf("before:\n");
-		sh_print_production(parser->lr_tables[state->index]
-			[item->lookahead->id].action_union.production, &parser->cfg);
-		ft_printf("after:\n");
-		sh_print_production(item->production, &parser->cfg);
-	}
 	else if (parser->lr_tables[state->index]
 			[item->lookahead->id].action_enum == E_ACTION_SHIFT)
-	{
 		ft_printf("SHIFT REDUCE CONFLICT\n");
-	}
 	if (item->production->from == &parser->cfg.start_symbol
 			&& (item->lookahead->id == parser->cfg.eoi_index))
-		parser->lr_tables[state->index][parser->cfg.eoi_index].action_enum = E_ACTION_ACCEPT;
+		parser->lr_tables[state->index][parser->cfg.eoi_index].action_enum =
+			E_ACTION_ACCEPT;
 	else
 	{
 		parser->lr_tables[state->index]
@@ -71,8 +61,8 @@ void	sh_fill_reduce(t_state *state, t_item *item, t_lr_parser *parser)
 	}
 }
 
-void	sh_fill_tables_by_transition(t_state *state, t_transition *transition,
-			t_lr_parser *parser)
+void		sh_fill_tables_by_transition(t_state *state,
+		t_transition *transition, t_lr_parser *parser)
 {
 	if (parser->lr_tables[state->index]
 			[transition->symbol->id].action_enum == E_ACTION_REDUCE)
@@ -92,14 +82,13 @@ void	sh_fill_tables_by_transition(t_state *state, t_transition *transition,
 	else if (parser->lr_tables[state->index]
 			[transition->symbol->id].action_enum == E_ACTION_SHIFT)
 		ft_printf("SHIFT SHIFT CONFLICT\n");
-
 	parser->lr_tables[state->index]
 		[transition->symbol->id].action_enum = E_ACTION_SHIFT;
 	parser->lr_tables[state->index]
 		[transition->symbol->id].action_union.state = transition->state;
 }
 
-void	sh_fill_tables_by_state(t_state *state, t_lr_parser *parser)
+void		sh_fill_tables_by_state(t_state *state, t_lr_parser *parser)
 {
 	t_list			*ptr;
 	t_item			*item;
@@ -122,11 +111,13 @@ void	sh_fill_tables_by_state(t_state *state, t_lr_parser *parser)
 	}
 }
 
-void	sh_fill_tables(t_lr_parser *parser)
+int			sh_compute_lr_tables(t_lr_parser *parser)
 {
 	t_list	*ptr;
 	t_state	*state;
 
+	if (!(parser->lr_tables = sh_create_tables(parser)))
+		return (1);
 	ptr = parser->states;
 	while (ptr != NULL)
 	{
@@ -134,12 +125,5 @@ void	sh_fill_tables(t_lr_parser *parser)
 		sh_fill_tables_by_state(state, parser);
 		ptr = ptr->next;
 	}
-}
-
-int		sh_compute_lr_tables(t_lr_parser *parser)
-{
-	if (!(parser->lr_tables = sh_create_tables(parser)))
-		return (1);
-	sh_fill_tables(parser);
 	return (0);
 }

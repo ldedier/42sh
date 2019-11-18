@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 14:16:12 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/09 16:58:18 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/18 11:54:55 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@
 
 # define SH_BAD_SUBSTITUTE		"Bad subsitution"
 # define SH_AMB_REDIRECT		"Ambigous redirect"
+
+# define SH_ERR1_DIV_ZERO		"Division by 0"
 
 /*
 ********************************************************************************

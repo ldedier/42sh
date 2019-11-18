@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
+/*   init_cfg.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/04 21:42:55 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/15 14:47:37 by ldedier          ###   ########.fr       */
+/*   Created: 2019/11/18 11:27:28 by ldedier           #+#    #+#             */
+/*   Updated: 2019/11/18 11:27:30 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,45 +41,8 @@ int		sh_add_prod(t_symbol *symbol, t_cfg *cfg, int nb_symbols, ...)
 	return (0);
 }
 
-int		init_start_symbol(t_cfg *cfg, t_symbol *symbol)
+void	init_grammar_from_initializer(t_cfg *cfg, t_cfg_initializer *cfgi)
 {
-	symbol->id = cfg->nb_symbols + 1;
-	symbol->productions = NULL;
-	sh_add_prod(symbol, cfg, 1, cfg->start_id);
-	ft_strcpy(symbol->debug, "S");
-	return (0);
-}
-
-int		init_symbol(t_symbol *symbol, t_cfg *cfg, int index)
-{
-	int i;
-
-	if (!(symbol->first_sets = malloc(sizeof(char) * cfg->nb_terms)))
-		return (1);
-	if (!(symbol->follow_sets = malloc(sizeof(char) * cfg->nb_terms)))
-	{
-		free(symbol->first_sets);
-		return (1);
-	}
-	i = 0;
-	while (i < cfg->nb_terms)
-	{
-		symbol->first_sets[i] = 0;
-		symbol->follow_sets[i] = 0;
-		i++;
-	}
-	symbol->productions = NULL;
-	symbol->id = index;
-	symbol->relevant = cfg->grammar_holder[index].relevant;
-	symbol->replacing = cfg->grammar_holder[index].replacing;
-	ft_strcpy(symbol->debug, cfg->grammar_holder[index].debug);
-	return (0);
-}
-
-int		init_context_free_grammar(t_cfg *cfg, t_cfg_initializer *cfgi)
-{
-	int i;
-
 	cfg->nb_symbols = cfgi->nb_symbols;
 	cfg->nb_productions = cfgi->nb_productions;
 	cfg->nb_terms = cfgi->nb_terms;
@@ -91,28 +54,20 @@ int		init_context_free_grammar(t_cfg *cfg, t_cfg_initializer *cfgi)
 	cfg->index_func = cfgi->index_func;
 	cfg->prod_index = 0;
 	cfg->state_index = 0;
-	if (!(cfg->productions = (t_production *)malloc(sizeof(t_production) * (cfg->nb_productions))))
+}
+
+int		init_context_free_grammar(t_cfg *cfg, t_cfg_initializer *cfgi)
+{
+	init_grammar_from_initializer(cfg, cfgi);
+	if (!(cfg->productions = (t_production *)malloc(sizeof(t_production)
+					* (cfg->nb_productions))))
 		return (1);
-	if (!(cfg->symbols = (t_symbol *)malloc(sizeof(t_symbol) * cfg->nb_symbols)))
+	if (!(cfg->symbols = (t_symbol *)malloc(sizeof(t_symbol)
+					* cfg->nb_symbols)))
 	{
 		free(cfg->productions);
 		return (1);
 	}
 	init_start_symbol(cfg, &cfg->start_symbol);
-	i = 0;
-	while (i < cfg->nb_symbols)
-	{
-		init_symbol(&cfg->symbols[i], cfg, i);
-		i++;
-	}
-	i = cfg->nb_terms;
-	while (i < cfg->nb_symbols)
-	{
-		if (cfg->grammar_holder[i].init_prod(cfg, &cfg->symbols[i]))
-			return (1);
-		i++;
-	}
-	if (sh_compute_first_sets(cfg))
-		return (1);
-	return (0);
+	return (init_context_free_grammar_symbols(cfg));
 }

@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 12:21:04 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/15 14:31:20 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/18 09:59:18 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,6 @@ t_state	*sh_compute_first_state(t_lr_parser *parser)
 		return (NULL);
 	}
 	if (sh_add_item_to_state(parser, first_state, first_item))
-	{
-		//free
 		return (NULL);
-	}
 	return (first_state);
 }

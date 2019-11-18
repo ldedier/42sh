@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/05 19:04:06 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/17 18:40:59 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/18 11:13:44 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ void	sh_print_token(t_token *token, t_cfg *cfg)
 		else if (token->id == LEX_TOK_IO_NUMBER)
 			ft_dprintf(2, "IO_NUMBER: %s%s %s ", YELLOW, token->value, EOC);
 		else
-			ft_dprintf(2, "%s%s %s", YELLOW, cfg->symbols[token->index].debug, EOC);
+			ft_dprintf(2, "%s%s %s", YELLOW, cfg->symbols[token->index].debug,
+				EOC);
 	}
 	else
 	{
@@ -38,7 +39,8 @@ void	sh_print_token(t_token *token, t_cfg *cfg)
 		else if (token->index == LEX_TOK_AR_VARIABLE)
 			ft_dprintf(2, "%s%s %s ", YELLOW, token->value, EOC);
 		else
-			ft_dprintf(2, "%s%s %s", YELLOW, cfg->symbols[token->index].debug, EOC);
+			ft_dprintf(2, "%s%s %s", YELLOW, cfg->symbols[token->index].debug,
+				EOC);
 	}
 }
 

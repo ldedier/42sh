@@ -6,12 +6,21 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/15 15:19:04 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/18 05:23:20 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/18 12:06:03 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
+
+long		sh_throw_ar_error(t_context *context, char *error_message,
+	int error)
+{
+	if (error_message != NULL)
+		sh_perror(error_message, NULL);
+	context->arithmetic_error = error;
+	return (1);
+}
 
 long		sh_traverse_arithmetic(t_ast_node *node, t_context *context)
 {
@@ -24,9 +33,6 @@ long		sh_traverse_arithmetic(t_ast_node *node, t_context *context)
 long		sh_traverse_ar_root(t_context *context, t_ast_node *root)
 {
 	context->arithmetic_error = 0;
-//	ft_printf("%d\n", root->symbol->id);
-//	sh_print_symbol(&context->shell->parser_ar.cfg.symbols[root->symbol->id],
-//		&context->shell->parser_ar.cfg);
 	return (sh_traverse_arithmetic(root, context));
 }
 
@@ -58,10 +64,6 @@ int		sh_execute_arithmetic(t_context *context, char *command)
 	{
 		sh_print_ast(res.ast_root, &context->shell->parser_ar.cfg, 0);
 		ret = sh_traverse_ar_root(context, res.ast_root);
-		// if (context->arithmetic_error)
-		// 	ft_dprintf(2, "Arithmetic error\n");
-		// else
-		// 	ft_printf("RESULT: %d\n", ret);
 		free_execution_tools(&res.tokens, &res.ast_root, &res.cst_root);
 	}
 	return (ret);

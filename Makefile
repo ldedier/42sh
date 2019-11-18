@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/11/17 21:55:16 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/18 11:27:58 by ldedier          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -71,7 +71,7 @@ LIBFT = $(LIBFTDIR)/libft.a
 ########					GRAMMAR						########
 ################################################################
 SRCS			 =	debug.c first_sets.c grammar.c init_cfg.c \
-					first_sets_tools.c
+					init_cfg_symbols.c first_sets_tools.c
 
 ################################################################
 ########					TRAVERSE					########
@@ -150,12 +150,16 @@ SRCS			+=	main.c index.c init.c shell_tools.c \
 ################################################################
 SRCS			+=	parser.c print_ast.c compute_lr_automata.c \
 					compute_lr_tables.c lr_parse.c compute_first_state.c \
-					state.c compute_closure.c compute_transitions.c \
+					state.c compute_closure.c compute_closure_tools.c \
+					compute_transitions.c compute_transitions_tools.c \
+					compute_transitions_allocate.c \
 					init_parsing.c reduce.c reduce_tools.c free_parser.c \
 					transitive_first_sets.c \
 					free_node.c  field_splitting_tools.c\
-					shift.c free_parser_tools.c \
-					reduce_pop.c ast_node_tools.c parser_debug.c
+					shift.c free_parser_tools.c free_stack_item.c \
+					reduce_pop.c ast_node_tools.c print_parser.c \
+					print_production.c print_sets.c print_state.c \
+					print_lr_table.c print_parser_stack.c
 
 ################################################################
 ########					LEXER						########

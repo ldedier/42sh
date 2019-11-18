@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/05 18:46:44 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/15 09:44:58 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/18 11:13:59 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ int		sh_add_to_first_sets(t_symbol *symbol, t_cfg *cfg)
 	{
 		production = (t_production *)(ptr->content);
 		if (sh_add_to_first_sets_by_prod(symbol, production, &changes, cfg))
-			sh_process_transitive_first_set(symbol, cfg->epsilon_index, &changes);
+			sh_process_transitive_first_set(symbol, cfg->epsilon_index,
+				&changes);
 		ptr = ptr->next;
 	}
 	return (changes);

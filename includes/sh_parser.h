@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 12:31:41 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/15 15:06:26 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/18 11:04:21 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ typedef struct		s_lr_parser
 	t_list			**tmp_tokens;
 	t_list			**tmp_ast_builder_list;
 	t_ast_node		**tmp_replacing_ast_node;
+	t_symbol		*tmp_item;
 	int				nb_states;
 	int				index;
 
@@ -141,6 +142,23 @@ t_ast_node			*sh_add_to_ast_node(
 /*
 ** compute_closure.c
 */
+int					sh_add_closure_from_symbol_index(
+	int i, int *changes, t_state *state, t_lr_parser *parser);
+int					sh_add_to_closure(
+	t_state *state,
+	t_symbol *new_item,
+	char *first_sets,
+	t_lr_parser *parser);
+int					sh_process_compute_closure_item(
+	t_item *item, t_state *state, t_lr_parser *parser);
+int					sh_process_compute_closure(
+	t_state *state, t_lr_parser *parser);
+int					sh_compute_closure(
+	t_state *state, t_lr_parser *parser);
+
+/*
+** compute_closure_tools.c
+*/
 int					sh_is_in_state_item(
 	t_production *production, t_state *state, t_symbol *lookahead);
 t_item				*sh_new_item(
@@ -152,19 +170,8 @@ int					sh_process_add_to_closure(
 	t_lr_parser *parser);
 t_symbol			*sh_get_next_non_terminal(
 	t_item *item, t_list **w_ptr);
-int					sh_add_to_closure(
-	t_state *state,
-	t_symbol *new_item,
-	char *first_sets,
-	t_lr_parser *parser);
 void				sh_compute_first_sets_str_append(
 	char *first_sets, t_cfg *cfg, t_list *w, t_symbol *append);
-int					sh_process_compute_closure_item(
-	t_item *item, t_state *state, t_lr_parser *parser);
-int					sh_process_compute_closure(
-	t_state *state, t_lr_parser *parser);
-int					sh_compute_closure(
-	t_state *state, t_lr_parser *parser);
 
 /*
 ** compute_first_state.c
@@ -188,11 +195,29 @@ void				sh_fill_tables_by_transition(
 	t_state *state, t_transition *transition, t_lr_parser *parser);
 void				sh_fill_tables_by_state(
 	t_state *state, t_lr_parser *parser);
-void				sh_fill_tables(t_lr_parser *parser);
 int					sh_compute_lr_tables(t_lr_parser *parser);
 
 /*
 ** compute_transitions.c
+*/
+int					sh_add_to_state_check(
+	t_state *state, t_item *item, int *changes, t_lr_parser *parser);
+int					sh_add_transition_item(
+	t_item *item, t_state *state, t_lr_parser *parser, int *changes);
+int					sh_compute_transitions(
+	t_state *state, t_lr_parser *parser);
+
+/*
+** compute_transitions_allocate.c
+*/
+t_transition		*sh_new_transition(
+	t_state *to, t_symbol *symbol);
+t_item				*sh_new_item_advance(t_item *item);
+t_state				*sh_new_parser_state_from_item(
+	t_item *item, t_lr_parser *parser);
+
+/*
+** compute_transitions_tools.c
 */
 int					sh_is_eligible_for_transition(
 	t_state *state, t_item *item);
@@ -200,21 +225,10 @@ t_state				*sh_get_state_by_symbol(
 	t_item *item, t_lr_parser *parser);
 t_state				*sh_get_state_by_transition(
 	t_state *state, t_symbol *symbol);
-t_transition		*sh_new_transition(
-	t_state *to, t_symbol *symbol);
 int					sh_add_transition(
 	t_state *from, t_state *to, t_symbol *symbol);
-t_item				*sh_new_item_advance(t_item *item);
-t_state				*sh_new_parser_state_from_item(
-	t_item *item, t_lr_parser *parser);
 int					sh_is_in_state_progress_item(
 	t_state *state, t_item *item);
-int					sh_add_to_state_check(
-	t_state *state, t_item *item, int *changes, t_lr_parser *parser);
-int					sh_add_transition_item(
-	t_item *item, t_state *state, t_lr_parser *parser, int *changes);
-int					sh_compute_transitions(
-	t_state *state, t_lr_parser *parser);
 
 /*
 ** field_splitting_tools.c
@@ -239,13 +253,16 @@ void				sh_free_parser(t_lr_parser *parser);
 /*
 ** free_parser_tools.c
 */
-void				sh_free_stack_item(t_stack_item *stack_item);
+void				sh_free_lr_automata(t_lr_parser *parser);
+void				sh_free_production(void *p, size_t dummy);
+
+/*
+** free_stack_item.c
+*/
 void				sh_free_stack_item_light(t_stack_item *stack_item);
 void				sh_free_stack_item(t_stack_item *stack_item);
 void				sh_free_stack_item_lst(void *si, size_t dummy);
 void				sh_free_stack_item_lst_light(void *si, size_t dummy);
-void				sh_free_lr_automata(t_lr_parser *parser);
-void				sh_free_production(void *p, size_t dummy);
 
 /*
 ** init_parsing.c
@@ -291,36 +308,6 @@ int					sh_parser(
 	t_shell *shell, t_lr_parser *parser, t_exec *res);
 
 /*
-** parser_debug.c
-*/
-void				sh_print_symbol_list(t_list *symbols, t_cfg *cfg);
-void				sh_print_production(
-	t_production *production, t_cfg *cfg);
-void				print_non_terminal_production(
-	t_symbol *symbol, t_cfg *cfg);
-void				print_non_terminals_productions(t_cfg *cfg);
-void				sh_process_print_set(t_cfg *cfg, char *sets);
-void				sh_print_first_set(t_cfg *cfg, t_symbol *symbol);
-void				sh_print_follow_set(t_cfg *cfg, t_symbol *symbol);
-void				print_follow_sets(t_cfg *cfg);
-void				print_first_sets(t_cfg *cfg);
-void				sh_print_item(t_item *item, t_cfg *cfg);
-void				sh_print_transition(
-	t_transition *transition, t_cfg *cfg, int depth);
-void				sh_print_state(t_state *state, int depth, t_cfg *cfg);
-void				sh_print_lr_table(t_lr_parser *parser);
-void				sh_print_automata(t_lr_parser *parser, int depth);
-void				sh_print_stack_item(
-	t_stack_item *stack_item, t_cfg *cfg);
-void				sh_print_parser_state(
-	t_lr_parser *parser, t_list *tokens);
-void				sh_print_cfg(t_cfg *cfg);
-void				sh_print_ast_parser(t_lr_parser *parser);
-void				sh_print_parser(t_lr_parser *parser, int depth);
-void				sh_print_ast_builder(
-	t_ast_builder *ast_builder, t_cfg *cfg);
-
-/*
 ** print_ast.c
 */
 char				*sh_color_depth(int i);
@@ -328,6 +315,57 @@ void				sh_print_ast_child(
 	int depth, int *j, t_cfg *cfg, t_ast_node *child);
 void				sh_print_ast(t_ast_node *node, t_cfg *cfg, int depth);
 void				sh_print_ast_root(t_ast_node *node, t_cfg *cfg);
+
+/*
+** print_lr_table.c
+*/
+void				sh_print_lr_table(t_lr_parser *parser);
+
+/*
+** print_parser.c
+*/
+void				sh_print_symbol_list(t_list *symbols, t_cfg *cfg);
+void				sh_print_automata(t_lr_parser *parser, int depth);
+void				sh_print_cfg(t_cfg *cfg);
+void				sh_print_parser(t_lr_parser *parser, int depth);
+
+/*
+** print_parser_stack.c
+*/
+void				sh_print_ast_builder(
+	t_ast_builder *ast_builder, t_cfg *cfg);
+void				sh_print_stack_item(
+	t_stack_item *stack_item, t_cfg *cfg);
+void				sh_print_parser_state(
+	t_lr_parser *parser, t_list *tokens);
+
+/*
+** print_production.c
+*/
+void				sh_print_production(
+	t_production *production, t_cfg *cfg);
+void				print_non_terminal_production(
+	t_symbol *symbol, t_cfg *cfg);
+void				print_non_terminals_productions(t_cfg *cfg);
+
+/*
+** print_sets.c
+*/
+void				sh_process_print_set(t_cfg *cfg, char *sets);
+void				sh_print_first_set(t_cfg *cfg, t_symbol *symbol);
+void				sh_print_follow_set(t_cfg *cfg, t_symbol *symbol);
+void				print_follow_sets(t_cfg *cfg);
+void				print_first_sets(t_cfg *cfg);
+
+/*
+** print_state.c
+*/
+void				sh_print_item(t_item *item, t_cfg *cfg);
+void				sh_print_transition(
+	t_transition *transition, t_cfg *cfg, int depth);
+void				print_state_transitions(
+	t_state *state, int depth, t_cfg *cfg);
+void				sh_print_state(t_state *state, int depth, t_cfg *cfg);
 
 /*
 ** productions/sh_prod_and_or.c

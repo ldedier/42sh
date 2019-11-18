@@ -6,13 +6,13 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/15 17:49:36 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/17 18:40:59 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/18 11:57:56 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-void	add_shell_var(char *variable, int to_add, t_context *context)
+void		add_shell_var(char *variable, int to_add, t_context *context)
 {
 	long res;
 	char *to_store;
@@ -34,7 +34,7 @@ void	add_shell_var(char *variable, int to_add, t_context *context)
 	}
 }
 
-long	get_integer_from_var(char *variable, t_context *context)
+long		get_integer_from_var(char *variable, t_context *context)
 {
 	char *res;
 
@@ -47,10 +47,10 @@ long	get_integer_from_var(char *variable, t_context *context)
 		return (ft_atol(res));
 }
 
-static long sh_traverse_add_factor(t_ast_node *first_child,
+static long	sh_traverse_add_factor(t_ast_node *first_child,
 		t_ast_node *second_child, t_context *context)
 {
-	int			ret;
+	int		ret;
 
 	if (second_child->symbol->id == LEX_TOK_AR_VARIABLE)
 	{

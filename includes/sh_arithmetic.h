@@ -99,6 +99,7 @@ int		sh_ar_init_prod_arithmetic(t_cfg *cfg, t_symbol *symbol);
 /*
 ** productions/sh_ar_prod_comparison.c
 */
+int		sh_ar_init_prod_comparison_others(t_cfg *cfg, t_symbol *symbol);
 int		sh_ar_init_prod_comparison(t_cfg *cfg, t_symbol *symbol);
 
 /*
@@ -119,6 +120,7 @@ int		sh_ar_init_prod_term(t_cfg *cfg, t_symbol *symbol);
 /*
 ** sh_execute_arithmetic.c
 */
+long	sh_throw_ar_error(t_context *context, char *str, int error);
 long	sh_traverse_arithmetic(t_ast_node *node, t_context *context);
 long	sh_traverse_ar_root(t_context *context, t_ast_node *root);
 int		sh_execute_arithmetic(t_context *context, char *command);

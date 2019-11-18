@@ -120,9 +120,16 @@ int					has_eps_prod(t_symbol *symbol);
 */
 int					sh_add_prod(
 	t_symbol *symbol, t_cfg *cfg, int nb_symbols, ...);
-int					init_start_symbol(t_cfg *cfg, t_symbol *symbol);
-int					init_symbol(t_symbol *symbol, t_cfg *cfg, int index);
+void				init_grammar_from_initializer(
+	t_cfg *cfg, t_cfg_initializer *cfgi);
 int					init_context_free_grammar(
 	t_cfg *cfg, t_cfg_initializer *cfgi);
+
+/*
+** init_cfg_symbols.c
+*/
+int					init_start_symbol(t_cfg *cfg, t_symbol *symbol);
+int					init_symbol(t_symbol *symbol, t_cfg *cfg, int index);
+int					init_context_free_grammar_symbols(t_cfg *cfg);
 
 #endif
