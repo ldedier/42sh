@@ -6,7 +6,7 @@
 /*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/16 14:22:54 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/17 19:43:47 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/18 11:43:13 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int 	sh_skip_ws_2(t_split_data *data, int *i)
 		return (0);
 	while (data->input[*i] && ft_strchr(data->ws, data->input[*i]))
 		*i += 1;
+	if (!data->input[*i])
+		return (0);
 	if (ft_strchr(data->nws, data->input[*i])
 			&& !(is_quote = t_quote_is_original_quote(*i, data->quotes)))
 		if (data->skip_nws)

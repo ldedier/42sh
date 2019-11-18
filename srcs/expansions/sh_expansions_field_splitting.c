@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/27 16:47:32 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/17 19:11:00 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/18 11:43:57 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,20 +42,8 @@ static int	sh_splitting_parse_ifs(char *ws, char *nws, char *ifs)
 	return (SUCCESS);
 }
 
-static void	decrease_quotes(t_quote **tbl)
-{
-	int		i;
-
-	i = 0;
-	while (tbl[i])
-	{
-		tbl[i]->index--;
-		tbl[i]->c--;
-		i++;
-	}
-}
-
-static int	sh_splitting_non_white_ifs(t_ast_node *node, char *ifs, char *input, t_dy_tab *quotes)
+static int	sh_splitting_non_white_ifs(
+		t_ast_node *node, char *ifs, char *input, t_dy_tab *quotes)
 {
 	t_split_data	data;
 	t_split_word 	word;
@@ -87,69 +75,33 @@ static int	sh_splitting_non_white_ifs(t_ast_node *node, char *ifs, char *input, 
 
 static int	sh_expansions_splitting_default(t_ast_node *node, t_dy_tab *quotes)
 {
-	int			i;
-	int			start;
-	char		*input;
-	const char	*ifs = "\n\t \0";
+	t_split_data	data;
+	t_split_word	word;
+	int				i;
+	int				ret;
 
-	input = node->token->value;
-	i = 0;
-	start = -2;
+	data.input = node->token->value;
+	data.not_first = 0;
+	data.skip_nws = 0;
+	data.quotes = (t_quote **)quotes->tbl;
+	data.ws[0] = '\n';
+	data.ws[1] = '\t';
+	data.ws[2] = ' ';
+	data.ws[3] = '\0';
+	data.nws[0] = 0;
 	if (sh_verbose_expansion())
 		ft_dprintf(2, RED"default IFS\n"EOC);
-	while (input[i] && ft_strchr(ifs, input[i]))
+	if ((i = start_nws_split(&node, &data)) < 0)
+		return (FAILURE);
+	while (data.input[i])
 	{
-		ft_strdelchar(input, i);
-		decrease_quotes((t_quote**)quotes->tbl); // be carefull if used with IFS using quotes
-	}
-	while (input[i])
-	{
-		if (t_quote_is_original_quote(i, (t_quote**)quotes->tbl))
-		{
-			if (sh_verbose_expansion())
-				ft_dprintf(2, "going threw quotes\n");
-			if (t_quote_get_offset(i, (t_quote**)quotes->tbl) != -1)
-				i = t_quote_get_offset(i, (t_quote**)quotes->tbl);
-		}
-		else if (ft_strchr(ifs, input[i]))
-		{
-			if (start == -2)
-			{
-				input[i] = 0;
-				i++;
-				start = -1;
-				if (sh_verbose_expansion())
-					ft_dprintf(2, "adding first node : (%s)\n", input);
-			}
-			else
-			{
-				if (sh_verbose_expansion())
-					ft_dprintf(2, "adding node : %s\n", node->token->value);
-				if (!(node = sh_add_word_to_ast(node, ft_strndup(input + start, i - start))))
-					return (FAILURE);
-				update_quotes((t_quote**)quotes->tbl, i, start, node);
-			}
-			while (input[i] && ft_strchr(ifs, input[i]))
-				i++;
-			start = i;
-			if (sh_verbose_expansion())
-				ft_dprintf(2, "new start : %d (%c)\n", i, input[i]);
-			i--;
-		}
-		i++;
-	}
-	if (start != i && start >= 0)
-	{
-		if (!(node = sh_add_word_to_ast(node, ft_strndup(input + start, i - start)))) //protect
+		if ((ret = sh_get_next_word_ws(&data, &word, &i)) < 0)
 			return (FAILURE);
-		if (sh_verbose_expansion())
-			ft_dprintf(2, "adding last node : %s\n", node->token->value);
-		update_quotes((t_quote**)quotes->tbl, i, start, node);
-		if (sh_verbose_expansion())
-			ft_dprintf(2, "last node added : start : %d, i : %d\n", start, i);
+		else if (ret == 1)
+			if ((ret = split_input(&node, &data, word.start, word.end)) != SUCCESS)
+				return (ret);
 	}
 	return (SUCCESS);
-	(void)quotes;
 }
 
 /*

@@ -6,7 +6,7 @@
 /*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/17 18:57:14 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/17 19:49:11 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/18 09:51:58 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	start_nws_split(t_ast_node **node, t_split_data *data)
 				return (i);
 			else if (is_quote < 0)
 				return (-1);
-			if (split_input(node, data, i, i) != SUCCESS)//checker le dernier parametre
+			if (split_input(node, data, i, i) != SUCCESS)
 				return (-1);
 			i++;
 		}
