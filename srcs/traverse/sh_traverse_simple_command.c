@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/09 00:51:19 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/18 05:41:52 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int			sh_traverse_simple_command(t_ast_node *node, t_context *context)
 	{
 		if ((ret = sh_traverse_tools_browse(node, context)))
 		{
+			free(context->cmd_string);
 			if (sh_reset_redirection(&(context->redirections)) != SUCCESS)
 				return (FAILURE);
 			return (ret);

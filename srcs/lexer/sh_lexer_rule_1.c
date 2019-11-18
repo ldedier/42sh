@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_lexer_rule_1.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 14:25:15 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/16 17:31:49 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/18 05:42:44 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,22 +63,18 @@ static int	sh_lexer_rule1_check_final_pipe(t_lexer *lexer)
 {
 	t_list		*head;
 	t_list		*last_pipe;
-	t_list		*last_word;
 
 	head = lexer->list;
 	last_pipe = NULL;
-	last_word = NULL;
 	while (head)
 	{
 		if (((t_token*)head->content)->id == LEX_TOK_WORD)
 		{
 			last_pipe = NULL;
-			last_word = head;
 		}
 		else if (((t_token*)head->content)->id == LEX_TOK_PIPE)
 		{
 			last_pipe = head;
-			last_word = NULL;
 		}
 		head = head->next;
 	}
