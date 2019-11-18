@@ -6,9 +6,35 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 11:49:50 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/18 07:52:10 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/18 09:38:28 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+
+#include "sh_21.h"
+#include "sh_job_control.h"
+
+
+static int		handle_expansion_in_bg(void)
+{
+	int	tmp_fd;
+	
+	if ((tmp_fd = open("/dev/null", O_RDONLY)) >= 0)
+		if ((dup2(tmp_fd, STDIN_FILENO)) < 0)
+		{
+			close(tmp_fd);
+			tmp_fd = -1;
+		}
+	// ft_dprintf(g_term_fd, YELLOW"Opened %d\n"EOC, tmp_fd);
+	if (tmp_fd >= 0)
+	{
+		// mdaoud: This could be misplaced.
+		close(tmp_fd);
+		// if (close (tmp_fd) >= 0)
+			// ft_dprintf(g_term_fd, YELLOW"Closed %d\n"EOC, tmp_fd);
+	}
+	return (SUCCESS);
+}
 
 /*
 ** For each process in the current job-
@@ -22,8 +48,6 @@
 ** "cat" is in another process group (and it's its leader).
 */
 
-#include "sh_21.h"
-#include "sh_job_control.h"
 
 static int		sh_exec_child_part(t_ast_node *father_node, t_context *context)
 {
@@ -31,8 +55,13 @@ static int		sh_exec_child_part(t_ast_node *father_node, t_context *context)
 	int		ret;
 
 	cpid = getpid();
-	// if (IS_BG(context->cmd_type))
-	// 	setpgid(cpid, cpid);
+	if (IS_BG(context->cmd_type))
+	{
+		setpgid(cpid, cpid);
+		if (g_job_ctrl->cmd_subst)
+			handle_expansion_in_bg();
+		g_job_ctrl->cmd_subst = 0;
+	}
 	if (g_job_ctrl->interactive)
 	{
 		if (g_job_ctrl->curr_job && g_job_ctrl->curr_job->foreground)
@@ -72,8 +101,8 @@ static int		sh_exec_parent_part(pid_t cpid, t_context *context)
 	}
 	else
 	{
-		// if (IS_BG(context->cmd_type))
-		// 	setpgid(cpid, cpid);
+		if (IS_BG(context->cmd_type))
+			setpgid(cpid, cpid);
 		if (g_job_ctrl->cmd_subst)
 			context->wflags = 0;
 		waitpid(cpid, &ret, context->wflags);
