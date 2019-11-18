@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/17 21:12:41 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/18 03:19:11 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/18 06:11:23 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	t_ar_token_show(t_token *token)
 	else if (token->id == LEX_TOK_AR_DIVIDE)
 		ft_dprintf(2, "/");
 	else if (token->id == LEX_TOK_AR_MODULO)
-		ft_dprintf(2, "%");
+		ft_dprintf(2, "%%");
 	else if (token->id == LEX_TOK_AR_LESS)
 		ft_dprintf(2, "<");
 	else if (token->id == LEX_TOK_AR_GREAT)

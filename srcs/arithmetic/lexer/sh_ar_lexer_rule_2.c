@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/17 19:43:58 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/18 03:07:45 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/18 05:57:45 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,20 @@ int		sh_ar_lexer_rule_2(t_lexer *lexer)
 		return (LEX_CONTINUE);
 	if (lexer->tok_len  != 1)
 		return (LEX_CONTINUE);
-	prev_char = lexer->input[lexer->tok_start + lexer->tok_len];
-	prev_len = lexer->tok_len;
-	if ((prev_char == '<' || prev_char == '>') && lexer->c == '=')
-		lexer->tok_len += 1;
-	else if ((prev_char == '=' || prev_char == '!') && lexer->c == '=')
-		lexer->tok_len += 1;
-	else if ((prev_char == '&' || prev_char == '|')  && lexer->c == prev_char)
-		lexer->tok_len += 1;
-	else if ((prev_char == '+' || prev_char == '-') && lexer->c == prev_char)
-		lexer->tok_len += 1;
-	if (prev_len != lexer->tok_len)
-		return (LEX_OK);
+	if (lexer->tok_start + lexer->tok_len)
+	{
+		prev_char = lexer->input[lexer->tok_start + lexer->tok_len - 1];
+		prev_len = lexer->tok_len;
+		if ((prev_char == '<' || prev_char == '>') && lexer->c == '=')
+			lexer->tok_len += 1;
+		else if ((prev_char == '=' || prev_char == '!') && lexer->c == '=')
+			lexer->tok_len += 1;
+		else if ((prev_char == '&' || prev_char == '|')  && lexer->c == prev_char)
+			lexer->tok_len += 1;
+		else if ((prev_char == '+' || prev_char == '-') && lexer->c == prev_char)
+			lexer->tok_len += 1;
+		if (prev_len != lexer->tok_len)
+			return (LEX_OK);
+	}
 	return (LEX_CONTINUE);
 }

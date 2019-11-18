@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/17 19:43:58 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/18 03:15:26 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/18 06:07:31 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int			rule_3_is_valid_op_first_char(char c)
 	|| c == '%'
 	|| c == '<'
 	|| c == '>'
+	|| c == '!'
 	|| c == '=')
 		return (1);
 	return (0);
@@ -31,9 +32,9 @@ int			rule_3_is_valid_op_first_char(char c)
 static void	rule3_set_token_id_two_len(t_lexer *lexer, char *value)
 {
 	if (value[0] == '&')
-		lexer->current_id = LEX_TOK_AR_OR;
+		lexer->current_id = LEX_TOK_AR_AND;
 	else if (value[0] == '|')
-		lexer->current_id = LEX_TOK_AR_PLUS;
+		lexer->current_id = LEX_TOK_AR_OR;
 	else if (value[0] == '<')
 		lexer->current_id = LEX_TOK_AR_LESSEQ;
 	else if (value[0] == '>')

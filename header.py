@@ -19,7 +19,7 @@ format = "^(void|int|char|t_*|unsigned int|long|unsigned long|pid_t)"
 ignored_files=["sh_ar_grammar.c", "grammar.c", "vshortcuts.c", "main.c", "sh_builtin_bonus.c"]
 
 ## Activate or unactivate verbose mode, you can define verbose level between 1 and 3.
-verbose = 0
+verbose = 3
 
 def read_subdir(dir, subdir, files):
     path = os.path.join(dir, subdir)

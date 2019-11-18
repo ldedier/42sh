@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/17 21:07:33 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/18 03:28:17 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/18 03:40:08 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,12 @@ int				t_ar_lexer_add_token(t_lexer *lexer)
 		free(value);
 		return (LEX_FAIL);
 	}
+	ft_lstadd_last(&lexer->list, link);
 	token = link->content;
 	token->value = value;
-	ft_lstadd_last(&lexer->list, link);
 	token->index_start = lexer->tok_start;
 	token->index_end = lexer->tok_start + lexer->tok_len + 1;
+	token->index = token->id;
 	if (lexer->current_id == LEX_TOK_AR_INTEGER)
 		token->lval = ft_atol(token->value);
 	if (sh_verbose_expansion())

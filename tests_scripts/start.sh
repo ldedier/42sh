@@ -100,11 +100,5 @@ else
 	done
 fi
 
-## Show results message
-if [ "$tried" -ne 0 ] ; then
-	echo "passed ${passed} valgrind tests out of ${tried}"
-fi
-echo "passed ${diff_passed} diff tests out of ${diff_tried}"
-
 ## Cleaning
 clean_and_exit

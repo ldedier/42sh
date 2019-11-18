@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/21 15:58:19 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/09 00:52:16 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/18 05:27:55 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,11 @@ clean_and_exit()
 	rm -rf "${exec}.dSYM"
 	del_history
 	echo "Cleaned and exit"
+	## Show results message
+	if [ "$tried" -ne 0 ] ; then
+	echo "passed ${passed} valgrind tests out of ${tried}"
+	fi
+	echo "passed ${diff_passed} diff tests out of ${diff_tried}"
 	exit
 }
 
@@ -222,6 +227,7 @@ test_launch()
 	<${buffer} bash 1>${res1_bash} 2>${res2_bash}
 	bash_ret=$?
 	<${buffer} ./${exec} 1>${res1_42sh} 2>${res2_42sh}
+#	<${buffer} ./${exec} 1>${res1_42sh} 2>${res2_42sh}
 	sh_ret=$?
 
 	check_ret_value sh_ret bash_ret

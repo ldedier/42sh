@@ -24,7 +24,6 @@ t_grammar_holder g_ar_grammar[NB_SYMBOLS_AR];
 /*
 ** lexer/sh_ar_lexer.c
 */
-t_token	*t_token_integer(long value);
 int		sh_ar_lexer(char *expansion, t_list **tokens, t_shell *shell);
 
 /*

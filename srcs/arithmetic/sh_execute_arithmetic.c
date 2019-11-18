@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/15 15:19:04 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/17 21:46:21 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/18 05:23:20 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int		sh_execute_arithmetic(t_context *context, char *command)
 	ret = 0;
 	if ((ret = sh_ar_lexer(command, &res.tokens, context->shell)) != SUCCESS)
 	{
+		context->arithmetic_error = 1;
 		if (sh_env_update_ret_value_and_question(context->shell, ret) == FAILURE)
 			ret = sh_perror(SH_ERR1_MALLOC, "sh_execute_arithmetic (1)");
 		ft_lstdel(&res.tokens, sh_free_token_lst);
@@ -48,6 +49,7 @@ int		sh_execute_arithmetic(t_context *context, char *command)
 	else if ((ret = sh_parser(context->shell, &context->shell->parser_ar, &res)))
 	{
 		sh_perror_err("syntax error", NULL);
+		context->arithmetic_error = 1;
 		if (sh_env_update_ret_value_and_question(context->shell, ret) == FAILURE)
 			ret = sh_perror(SH_ERR1_MALLOC, "sh_execute_arithmetic (2)");
 		ft_lstdel(&res.tokens, sh_free_token_lst);
@@ -56,10 +58,10 @@ int		sh_execute_arithmetic(t_context *context, char *command)
 	{
 		sh_print_ast(res.ast_root, &context->shell->parser_ar.cfg, 0);
 		ret = sh_traverse_ar_root(context, res.ast_root);
-		if (context->arithmetic_error)
-			ft_dprintf(2, "Arithmetic error\n");
-		else
-			ft_printf("RESULT: %d\n", ret);
+		// if (context->arithmetic_error)
+		// 	ft_dprintf(2, "Arithmetic error\n");
+		// else
+		// 	ft_printf("RESULT: %d\n", ret);
 		free_execution_tools(&res.tokens, &res.ast_root, &res.cst_root);
 	}
 	return (ret);
