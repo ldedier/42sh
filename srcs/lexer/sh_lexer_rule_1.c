@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_lexer_rule_1.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 14:25:15 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/15 05:15:48 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/18 05:42:44 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,25 +63,17 @@ static int	sh_lexer_rule1_check_final_pipe(t_lexer *lexer)
 {
 	t_list		*head;
 	t_list		*last_pipe;
-	t_list		*last_word;
 
 	head = lexer->list;
 	last_pipe = NULL;
-	last_word = NULL;
 	while (head)
 	{
 		if (((t_token*)head->content)->id == LEX_TOK_WORD)
 		{
-			if (last_pipe)
-				last_pipe = NULL;
-			last_word = head;
+			last_pipe = NULL;
 		}
 		else if (((t_token*)head->content)->id == LEX_TOK_PIPE)
 		{
-			if (!last_word)
-				return (SUCCESS);
-			else
-				last_word = NULL;
 			last_pipe = head;
 		}
 		head = head->next;
@@ -120,23 +112,18 @@ int			sh_lexer_rule1(t_lexer *lexer)
 		{
 			if (!isatty(0) || lexer->mode == E_LEX_AUTOCOMPLETION)
 				return (sh_lexer_rule1_process_quoted(lexer));
-			else
-				return (sh_process_quoted(lexer));
+			return (sh_process_quoted(lexer));
 		}
-		ret = t_lexer_add_token(lexer);
-		if (ret == LEX_FAIL)
+		if ((ret = t_lexer_add_token(lexer)) == LEX_FAIL)
 			return (ret);
 		else if (ret == LEX_CONTINUE)
 			return (LEX_OK);
 		if (sh_lexer_rule1_check_final_pipe(lexer))
 		{
+			lexer->quoted = '|';
 			if (!isatty(0) || lexer->mode == E_LEX_AUTOCOMPLETION)
-			{
-				lexer->quoted = '|';
 				return (sh_lexer_rule1_process_quoted(lexer));
-			}
-			else
-				return (sh_process_quoted(lexer));
+			return (sh_process_quoted(lexer));
 		}
 		return (LEX_END);
 	}

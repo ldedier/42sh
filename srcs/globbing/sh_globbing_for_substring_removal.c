@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/08 05:50:11 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/18 07:42:50 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/18 07:44:52 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,15 @@
 
 static int	parse_patterns(char *word, t_list **regexp_list)
 {
-    int     ret;
+	int	ret;
 
-    *regexp_list = NULL;
-    if ((ret = sh_regexp_parse_path_component(word, regexp_list)))
+	*regexp_list = NULL;
+	if ((ret = sh_regexp_parse_path_component(word, regexp_list)))
 	{
-    	if (*regexp_list)
+		if (*regexp_list)
 			ft_lstdel(regexp_list, &t_regexp_free);
 	}
-    return (ret);
+	return (ret);
 }
 
 /*
@@ -51,11 +51,11 @@ static void	prefix_pattern_matching(char *param, int *index, t_list *regexp_list
 
 	i = 0;
 	len = ft_strlen(param);
-    while (i <= len)
-    {
+	while (i <= len)
+	{
 		save = param[i];
 		param[i] = '\0';
-        if (sh_is_pattern_matching(param, regexp_list) == SUCCESS)
+		if (sh_is_pattern_matching(param, regexp_list) == SUCCESS)
 		{
 			param[i] = save;
 			*index = i;
@@ -65,8 +65,8 @@ static void	prefix_pattern_matching(char *param, int *index, t_list *regexp_list
 				break ;
 		}
 		param[i] = save;
-        i++;
-    }
+		i++;
+	}
 }
 
 /*
@@ -83,9 +83,9 @@ static void	suffix_pattern_matching(char *param, int *index, t_list *regexp_list
 	int		i;
 
 	i = ft_strlen(param);
-    while (i >= 0)
-    {
-        if (sh_is_pattern_matching(param + i, regexp_list) == SUCCESS)
+	while (i >= 0)
+	{
+		if (sh_is_pattern_matching(param + i, regexp_list) == SUCCESS)
 		{
 			*index = i;
 			if (sh_verbose_globbing())
@@ -112,20 +112,20 @@ static void	suffix_pattern_matching(char *param, int *index, t_list *regexp_list
 
 static int	sh_globbing_for_substring_removal(char *param, char *word, int *index, char *format)
 {
-    t_list      *regexp_list;
-    int         ret;
+	t_list		*regexp_list;
+	int			ret;
 
 	regexp_list = NULL;
-    if ((ret = parse_patterns(word, &regexp_list)) == FAILURE)
-        return (ret);
-    else if (ret == ERROR)
-        return (SUCCESS);
+	if ((ret = parse_patterns(word, &regexp_list)) == FAILURE)
+		return (ret);
+	else if (ret == ERROR)
+		return (SUCCESS);
 	if (format[0] == '%')
 		suffix_pattern_matching(param, index, regexp_list, format);
 	else
 		prefix_pattern_matching(param, index, regexp_list, format);
 	ft_lstdel(&regexp_list, &t_regexp_free);
-    return (SUCCESS);
+	return (SUCCESS);
 }
 
 /*

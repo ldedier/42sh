@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 13:52:11 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/15 05:26:34 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/16 19:47:42 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,11 @@ int			sh_expansions_parameter_detect(char *start)
 	int		quoted;
 	int		bracket;
 
-	i = 0;
+	i = 2;
 	quoted = 0;
-	if (!(start = ft_strchr(start, '{')))
+	if (start[0] != '$' || start[1] != '{')
         return (-1);
 	bracket = 1;
-	i++;
 	while (start[i] && bracket > 0)
 	{
 		if (start[i] == '\\' && start[i + 1])
@@ -41,7 +40,7 @@ int			sh_expansions_parameter_detect(char *start)
 			quoted = start[i];
 		else if (quoted && start[i] == quoted)
 			quoted = 0;
-		else if (!quoted && start[i] == '{')
+		else if (!quoted && start[i] == '$' && start[i + 1] == '{')
 			bracket++;
 		else if (!quoted && start[i] == '}')
 			bracket--;
@@ -49,7 +48,7 @@ int			sh_expansions_parameter_detect(char *start)
 	}
 	if (!start[i] && bracket > 0)
 		return (-1);
-	return (i + 1);
+	return (i);
 }
 
 /*

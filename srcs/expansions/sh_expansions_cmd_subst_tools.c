@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sh_expansions_cmd_subst.c                          :+:      :+:    :+:   */
+/*   sh_expansions_cmd_subst_tools.c                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/09 14:29:58 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/16 15:49:00 by mdaoud           ###   ########.fr       */
+/*   Created: 2019/11/12 05:44:20 by mdaoud            #+#    #+#             */
+/*   Updated: 2019/11/16 15:25:32 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,65 +14,65 @@
 
 int			sh_expansions_cmd_subst_detect_backquotes(char *start)
 {
-    int     i;
-    int     quoted;
-    int     back_quote;
+	int	i;
+	int	quoted;
+	int	back_quote;
 
 	if (start[0] != '`')
-        return (-1);
+		return (-1);
 	quoted = 0;
-    back_quote = 1;
-    i = 1;
-    while (start[i] && back_quote > 0)
-    {
-        if (start[i] == '\\' && start[i + 1])
-            i += 1;
-        else if (!quoted && (start[i] == '\'' || start[i] == '"'))
-            quoted = start[i];
-        else if (quoted && start[i] == quoted)
-            quoted = 0;
-        else if (!quoted && start[i] == '`')
-            back_quote--;
-        i++;
-    }
-    if (!start[i] && back_quote > 0)
-        return (-1);
-    return (i);
+	back_quote = 1;
+	i = 1;
+	while (start[i] && back_quote > 0)
+	{
+		if (start[i] == '\\' && start[i + 1])
+			i += 1;
+		else if (!quoted && (start[i] == '\'' || start[i] == '"'))
+			quoted = start[i];
+		else if (quoted && start[i] == quoted)
+			quoted = 0;
+		else if (!quoted && start[i] == '`')
+			back_quote--;
+		i++;
+	}
+	if (!start[i] && back_quote > 0)
+		return (-1);
+	return (i);
 }
 
 int			sh_expansions_cmd_subst_detect_dollar(char *start)
 {
-    int     i;
-    int     quoted;
-    int     parenthesis;
+	int	i;
+	int	quoted;
+	int	parenthesis;
 
 	quoted = 0;
 	if (start[0] != '$' || start[1] != '(')
-        return (-1);
-    parenthesis = 1;
-    i = 2;
-    while (start[i] && parenthesis > 0)
-    {
-        if (start[i] == '\\' && start[i + 1])
-            i += 1;
-        else if (!quoted && (start[i] == '\'' || start[i] == '"'))
-            quoted = start[i];
-        else if (quoted && start[i] == quoted)
-            quoted = 0;
-        else if (!quoted && start[i] == '(')
-            parenthesis++;
-        else if (!quoted && start[i] == ')')
-            parenthesis--;
-        i++;
-    }
-    if (!start[i] && parenthesis > 0)
-        return (-1);
-    return (i);
+		return (-1);
+	parenthesis = 1;
+	i = 2;
+	while (start[i] && parenthesis > 0)
+	{
+		if (start[i] == '\\' && start[i + 1])
+			i += 1;
+		else if (!quoted && (start[i] == '\'' || start[i] == '"'))
+			quoted = start[i];
+		else if (quoted && start[i] == quoted)
+			quoted = 0;
+		else if (!quoted && start[i] == '(')
+			parenthesis++;
+		else if (!quoted && start[i] == ')')
+			parenthesis--;
+		i++;
+	}
+	if (!start[i] && parenthesis > 0)
+		return (-1);
+	return (i);
 }
 
 int			sh_expansions_cmd_subst_fill(t_expansion *exp, char *start)
 {
-    int     i;
+	int		i;
 	int		pattern_len;
 
 	i = -1;
@@ -144,63 +144,9 @@ char	*get_string_from_fd(int fd)
 	free(info.line);
 	if (!res)
 	{
+		// ft_dprintf(2, "found nothing in pipe !\n");
 		if (!(res = ft_strnew(0)))
 			return (sh_perrorn(SH_ERR1_MALLOC, "get_string_from_fd"));
 	}
 	return (res);
-}
-
-char 	*get_subshell_output(t_shell *shell, char *command)
-{
-	pid_t	child;
-	char	*str;
-	int		fds[2];
-	int		ret;
-
-	if (pipe(fds))
-		return (sh_perrorn(SH_ERR1_PIPE, "get_subshell_output"));
-	if ((child = fork()) == -1)
-		return (sh_perrorn(SH_ERR1_FORK, "get_subshell_output"));
-	if (child == 0)
-	{
-		if (sh_pre_execution() != SUCCESS)
-			exit (FAILURE);
-		reset_signals();
-		if (dup2(fds[PIPE_IN], STDOUT_FILENO) < 0)
-			return (sh_perrorn(SH_ERR1_INTERN_ERR, "get_subshell_output"));
-		close(fds[PIPE_OUT]);
-		g_job_ctrl->interactive = 0;
-		ret = execute_command(shell, command, 0);
-		close(fds[PIPE_IN]);
-		if (sh_post_execution() != SUCCESS)
-			exit (FAILURE);
-		sh_free_all(shell);
-		exit(ret);
-	}
-	else
-	{
-		close(fds[PIPE_IN]);
-		waitpid(child, &ret, 0);
-		str = get_string_from_fd(fds[PIPE_OUT]);
-		close(fds[PIPE_OUT]);
-		return (str);
-	}
-}
-
-int			sh_expansions_cmd_subst_process(t_context *context,
-				t_expansion *exp)
-{
-	char *str;
-
-	(void)context;
-	(void)exp;
-	if (!(str = get_subshell_output(context->shell, exp->expansion)))
-		return (FAILURE);
-	if (!(exp->res = ft_dy_str_new_str(str)))
-	{
-		free(str);
-		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_cmd_subs_process"));
-	}
-	free(str);
-	return (SUCCESS);
 }

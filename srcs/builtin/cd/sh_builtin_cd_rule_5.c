@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/11 02:35:55 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/13 08:27:11 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/15 15:07:08 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ static int	sh_builtin_cd_cdpath_check_perm(
 **	directory, set curpath to that string and proceed to step 7. Otherwise,
 **	repeat this step with the next pathname in CDPATH until all pathnames
 **	have been tested.
+**	In case of empty field, I changed behaviour by skipping this path,
+**	to feat diff tests using bash as reference.
 */
 
 static int	sh_builtin_cd_cdpath(
@@ -69,7 +71,7 @@ static int	sh_builtin_cd_cdpath(
 		if (*dir)
 			path = ft_strjoin_path(dir, param);
 		else
-			path = ft_strjoin_path(".", param);
+			continue ;
 		if (!path)
 			return (sh_perror(SH_ERR1_MALLOC, "sh_builtin_cd_cdpath"));
 		if (sh_builtin_cd_cdpath_check_perm(path, curpath, args) == SUCCESS)
