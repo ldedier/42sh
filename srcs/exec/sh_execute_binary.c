@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 11:49:50 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/08 23:44:21 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/18 07:52:10 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ static int		sh_exec_child_part(t_ast_node *father_node, t_context *context)
 	int		ret;
 
 	cpid = getpid();
+	// if (IS_BG(context->cmd_type))
+	// 	setpgid(cpid, cpid);
 	if (g_job_ctrl->interactive)
 	{
 		if (g_job_ctrl->curr_job && g_job_ctrl->curr_job->foreground)
@@ -69,7 +71,13 @@ static int		sh_exec_parent_part(pid_t cpid, t_context *context)
 			return (fun_ret);
 	}
 	else
+	{
+		// if (IS_BG(context->cmd_type))
+		// 	setpgid(cpid, cpid);
+		if (g_job_ctrl->cmd_subst)
+			context->wflags = 0;
 		waitpid(cpid, &ret, context->wflags);
+	}
 	sh_env_update_ret_value_wait_result(context, ret);
 	g_glob.command_line.interrupted = WIFSIGNALED(ret) || WIFSTOPPED(ret);
 	return (SUCCESS);
@@ -87,6 +95,11 @@ int				sh_execute_binary(t_ast_node *father_node, t_context *context)
 	pid_t		cpid;
 	int			ret;
 
+	// We shouldn't fork and exit if the command is empty.
+	// 1) Waste of resources.
+	// 2) it will overrite the last question mark value (for expansions)
+	if (!context->params->tbl || !context->params->tbl[0])
+		return(SUCCESS);
 	if (IS_PIPE(context->cmd_type))
 		sh_execute_execve(father_node, context);
 	if (g_job_ctrl->interactive && !g_job_ctrl->job_added)

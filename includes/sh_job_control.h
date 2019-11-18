@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 17:45:00 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/11/08 23:32:57 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/15 14:38:58 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ struct	s_job_control
 	char			job_added;
 	char			ampersand_eol;
 	char			ampersand;
+	char			cmd_subst;
 	pid_t			shell_pgid;
 	int				job_num[MAX_JOBS];
 	t_job			*first_job;

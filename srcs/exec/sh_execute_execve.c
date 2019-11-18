@@ -6,9 +6,12 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 11:52:40 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/16 15:48:38 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/18 07:51:13 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "sh_21.h"
+#include "sh_job_control.h"
 
 #include "sh_21.h"
 #include "sh_job_control.h"
