@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/17 19:43:58 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/17 21:36:43 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/18 03:15:26 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,12 @@ static void	rule3_set_token_id_two_len(t_lexer *lexer, char *value)
 	else if (value[0] == '|')
 		lexer->current_id = LEX_TOK_AR_PLUS;
 	else if (value[0] == '<')
-		lexer->current_id = LEX_TOK_AR_GREATEQ;
+		lexer->current_id = LEX_TOK_AR_LESSEQ;
 	else if (value[0] == '>')
-		lexer->current_id = LEX_TOK_AR_EQUAL;
+		lexer->current_id = LEX_TOK_AR_GREATEQ;
 	else if (value[0] == '=')
+		lexer->current_id = LEX_TOK_AR_EQUAL;
+	else if (value[0] == '!')
 		lexer->current_id = LEX_TOK_AR_NOT_EQUAL;
 	else if (value[0] == '+')
 		lexer->current_id = LEX_TOK_AR_INC;
@@ -49,19 +51,19 @@ static void	rule3_set_token_id_two_len(t_lexer *lexer, char *value)
 static void	rule3_set_token_id_one_len(t_lexer *lexer, char *value)
 {
 	if (value[0] == '+')
-		lexer->current_id = LEX_TOK_AR_MINUS;
+		lexer->current_id = LEX_TOK_AR_PLUS;
 	else if (value[0] == '-')
-		lexer->current_id = LEX_TOK_AR_MULTIPLY;
+		lexer->current_id = LEX_TOK_AR_MINUS;
 	else if (value[0] == '*')
-		lexer->current_id = LEX_TOK_AR_DIVIDE;
+		lexer->current_id = LEX_TOK_AR_MULTIPLY;
 	else if (value[0] == '/')
-		lexer->current_id = LEX_TOK_AR_MODULO;
+		lexer->current_id = LEX_TOK_AR_DIVIDE;
 	else if (value[0] == '%')
-		lexer->current_id = LEX_TOK_AR_LESS;
+		lexer->current_id = LEX_TOK_AR_MODULO;
 	else if (value[0] == '<')
-		lexer->current_id = LEX_TOK_AR_GREAT;
+		lexer->current_id = LEX_TOK_AR_LESS;
 	else if (value[0] == '>')
-		lexer->current_id = LEX_TOK_AR_LESSEQ;
+		lexer->current_id = LEX_TOK_AR_GREAT;
 }
 
 int		sh_ar_lexer_rule_3(t_lexer *lexer)

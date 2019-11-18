@@ -12,18 +12,6 @@
 
 #include "sh_21.h"
 
-t_token		*t_token_integer(long value)
-{
-	t_token *res;
-
-	if (!(res = malloc(sizeof(t_token))))
-		return (NULL);
-	res->value = NULL;
-	res->index = LEX_TOK_AR_INTEGER;
-	res->lval = value;
-	return (res);
-}
-
 static int	sh_ar_lexer_run_rules(t_lexer *lexer)
 {
 	int				ret;

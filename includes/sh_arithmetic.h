@@ -84,6 +84,7 @@ void	t_ar_lexer_show(t_lexer *lexer);
 /*
 ** lexer/t_ar_token.c
 */
+void	t_ar_token_show(t_token *token);
 void	t_ar_token_free(t_token *token);
 
 /*

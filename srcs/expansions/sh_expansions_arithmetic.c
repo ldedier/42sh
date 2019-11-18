@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/17 21:55:20 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/17 23:39:52 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/18 00:00:32 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,20 @@ int			sh_expansions_arithmetic_fill(t_expansion *exp, char *start)
 int			sh_expansions_arithmetic_process(t_context *context,
 				t_expansion *exp)
 {
+	long	ret;
+	char	*buffer;
+
 	if (!(exp->res = ft_dy_str_new_str(exp->expansion)))
 		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_arithmetic_process"));
+	ret = sh_execute_arithmetic(context, exp->expansion);
+	if (context->arithmetic_error)
+		return (context->arithmetic_error);
+	if (!(buffer = ft_ltoa(ret, 10)))
+		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_arithmetic_process"));
+	if (!(exp->res = ft_dy_str_new_ptr(buffer, 1, 1)))
+	{
+		free(buffer);
+		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_arithmetic_process"));
+	}
 	return (SUCCESS);
-	(void)context;
 }
