@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/23 13:10:40 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/16 11:53:14 by jdugoudr         ###   ########.fr        #
+#    Updated: 2019/11/18 13:31:01 by jdugoudr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -74,7 +74,7 @@ launch "Expansions"
 	test_launch 'var='\'''\''$HOME ; echo $var'
 	test_launch 'var='\''$HOME'\'' ; echo $var'
 	test_launch 'var=\"$HOME\" ; echo $var'
-	test_launch 'var='\sd\'\'$HOME ; echo $var'
+	test_launch 'var='\sd\'' $HOME ; echo $var'
 	test_launch 'var=$ASD ; echo $var'
 	test_launch 'var=asd'\''$ASD'\'' ; echo $var'
 	test_launch 'var="Okalm os speculos"$USER ; echo $var'

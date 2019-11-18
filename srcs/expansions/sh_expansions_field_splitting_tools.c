@@ -6,13 +6,62 @@
 /*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/16 14:22:54 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/18 11:43:13 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/18 13:17:48 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-int 	sh_skip_ws_2(t_split_data *data, int *i)
+static void	decrease_quotes(t_quote **tbl)
+{
+	int		i;
+
+	i = 0;
+	while (tbl[i])
+	{
+		tbl[i]->index--;
+		tbl[i]->c--;
+		i++;
+	}
+}
+
+static int	sh_skip_ws(t_split_data *data, int i)
+{
+	while (data->input[i] && ft_strchr(data->ws, data->input[i]))
+	{
+		ft_strdelchar(data->input, i);
+		decrease_quotes(data->quotes);
+	}
+	return (i);
+}
+
+int			start_nws_split(t_ast_node **node, t_split_data *data)
+{
+	int		i;
+	int		is_quote;
+
+	i = 0;
+	while (data->input[i]
+			&& (ft_strchr(data->ws, data->input[i])
+				|| ft_strchr(data->nws, data->input[i])))
+	{
+		sh_skip_ws(data, i);
+		while (data->input[i] && ft_strchr(data->nws, data->input[i]))
+		{
+			(*node)->token->give_as_arg = 1;
+			if ((is_quote = t_quote_is_original_quote(i, data->quotes)) > 0)
+				return (i);
+			else if (is_quote < 0)
+				return (-1);
+			if (split_input(node, data, i, i) != SUCCESS)
+				return (-1);
+			i++;
+		}
+	}
+	return (i);
+}
+
+int			sh_skip_ws_2(t_split_data *data, int *i)
 {
 	int	is_quote;
 
@@ -36,9 +85,10 @@ int 	sh_skip_ws_2(t_split_data *data, int *i)
 	return (1);
 }
 
-int 	split_input(t_ast_node **node, t_split_data *data, int start, int end)
+int			split_input(
+		t_ast_node **node, t_split_data *data, int start, int end)
 {
-	char 	*str;
+	char	*str;
 
 	if (data->not_first == 0)
 	{
@@ -51,7 +101,8 @@ int 	split_input(t_ast_node **node, t_split_data *data, int start, int end)
 	else if (!(*node = sh_add_word_to_ast(*node, str)))
 		return (sh_perror(SH_ERR1_MALLOC, "sh_splitting_non_white_ifs (2)"));
 	if (sh_verbose_expansion())
-		ft_dprintf(2, "non white ifs : Added node : start : %d, i : %d\n", start, end);
+		ft_dprintf(2, "non white ifs : Added node : start : %d, i : %d\n",
+				start, end);
 	update_quotes(data->quotes, end, start, *node);
 	if (sh_verbose_expansion())
 		ft_dprintf(2, "non white ifs : Added node : %s\n", str);

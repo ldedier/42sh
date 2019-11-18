@@ -6,13 +6,13 @@
 /*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/17 19:13:34 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/18 10:53:33 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/18 13:14:56 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-int 	sh_get_next_word_nws(t_split_data *data, t_split_word *word, int *i)
+int			sh_get_next_word_nws(t_split_data *data, t_split_word *word, int *i)
 {
 	int	is_quote;
 
@@ -62,7 +62,7 @@ static int	sh_skip_word_ws(t_split_data *data, t_split_word *word, int *i)
 	return (sh_skip_word_ws(data, word, i));
 }
 
-int 	sh_get_next_word_ws(t_split_data *data, t_split_word *word, int *i)
+int			sh_get_next_word_ws(t_split_data *data, t_split_word *word, int *i)
 {
 	if (!sh_skip_ws_2(data, i))
 		return (0);

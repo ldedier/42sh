@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/06/06 16:09:28 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/16 13:23:38 by jdugoudr         ###   ########.fr        #
+#    Updated: 2019/11/18 13:43:18 by jdugoudr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,8 +51,10 @@ launch "Field splitting"
 		test_launch 'unset IFS' '' 'echo $var'
 
 	launch_show "hard"
-		for i in `seq 1 5` ; do
-			test_launch_pipe ./tests_files/splitting/splitting_${i}
+		for j in `seq 0 2` ; do
+			for i in `seq 1 9` ; do
+				test_launch_pipe ./tests_files/splitting/splitting_${j}${i}
+			done
 		done
 
 

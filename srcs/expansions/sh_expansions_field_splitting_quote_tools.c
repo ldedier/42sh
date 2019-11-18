@@ -6,7 +6,7 @@
 /*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/17 19:01:27 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/17 19:02:22 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/18 13:16:15 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	update_quotes(t_quote **quotes, int i, int start, t_ast_node *node)
 	return ;
 }
 
-int 	sh_skip_quote(t_quote **quotes, int i)
+int		sh_skip_quote(t_quote **quotes, int i)
 {
 	int	is_quote;
 
