@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/06/06 16:09:28 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/18 13:43:18 by jdugoudr         ###   ########.fr        #
+#    Updated: 2019/11/18 14:08:26 by jdugoudr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,8 @@ launch "Field splitting"
 		test_launch 'IFS=ABC' 'var="B   A      C"' 'echo $var'
 		test_launch 'IFS="A"' 'var=AAAbonjour' 'echo $var'
 		test_launch 'IFS="A "' 'var=AAA   AAAbonjo  A  A    ur' 'echo $var'
+		test_launch 'IFS="A "' 'var=AAAAAAA' 'echo $var'
+		test_launch 'IFS="A "' 'var=AAbon   A   AjourAtoiAA' 'echo $var'
 		test_launch 'var="echo tamer | cat -e"' '$var'
 
 	launch_show "IFS unset"
