@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/17 21:55:20 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/19 08:20:30 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/19 11:55:46 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,17 @@ int			sh_expansions_arithmetic_process(t_context *context,
 {
 	long	ret;
 	char	*buffer;
+	t_dy_tab	*quotes; // is that usefull, except to avoid segfault
 
+	if (!(quotes = ft_dy_tab_new(1)))
+		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_arithmetic_process"));
 	if (!(exp->res = ft_dy_str_new_str(exp->expansion)))
 		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_arithmetic_process"));
+	ret = sh_expansions_scan(&(exp->expansion), 0, context, quotes);
+	if (sh_verbose_expansion())
+		ft_dprintf(2, "arithmetic expansion : exp->expansion after expansion_scan : %s\n", exp->expansion);
+	if (ret == FAILURE || ret == STOP_CMD_LINE)
+		return (ret);
 	ret = sh_execute_arithmetic(context, exp->expansion);
 	if (context->arithmetic_error)
 	{
