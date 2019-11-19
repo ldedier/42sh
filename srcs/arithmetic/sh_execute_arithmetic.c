@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/15 15:19:04 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/18 14:54:42 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/19 08:20:19 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ long		sh_execute_arithmetic(t_context *context, char *command)
 	}
 	else
 	{
-		sh_print_ast(res.ast_root, &context->shell->parser_ar.cfg, 0);
+		if (sh_verbose_expansion())
+			sh_print_ast(res.ast_root, &context->shell->parser_ar.cfg, 0);
 		ret = sh_traverse_ar_root(context, res.ast_root);
 		free_execution_tools(&res.tokens, &res.ast_root, &res.cst_root);
 	}

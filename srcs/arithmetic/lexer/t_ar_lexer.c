@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/17 21:07:33 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/18 03:40:08 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/19 08:05:09 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void			t_ar_lexer_init(t_lexer *lexer, t_shell *shell, char *input)
 void			t_ar_lexer_reset(t_lexer *lexer, int tok_start)
 {
 	lexer->quoted = 0;
-	lexer->expansion = 0;
 	lexer->tok_start = tok_start;
 	lexer->tok_len = 0;
 	lexer->current_id = LEX_TOK_UNKNOWN;
@@ -61,6 +60,8 @@ int				t_ar_lexer_add_token(t_lexer *lexer)
 	token->index = token->id;
 	if (lexer->current_id == LEX_TOK_AR_INTEGER)
 		token->lval = ft_atol(token->value);
+	if (lexer->current_id == LEX_TOK_AR_VARIABLE)
+		lexer->first_word = 1;
 	if (sh_verbose_expansion())
 	{
 		ft_dprintf(2, "new token delimited : ");
