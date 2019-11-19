@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/17 19:22:25 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/19 06:39:14 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/19 06:53:36 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,26 +25,26 @@ launch "arithmetic"
 	test_launch 'echo $((5 <= 5)) ; echo $?' 'echo $?'
 	test_launch 'echo $((6 > 3*2)) ; echo $?' 'echo $?'
 	test_launch 'echo $((2147483647 + 2)) ; echo $?' 'echo $?'
-	test_launch 'a=0 ; b=0 ; echo $((a+++b))'
-	test_launch 'a=0 ; b=0 ; echo $((a+ ++b))'
-	test_launch 'a=0 ; b=0 ; echo $((a++ +b))'
+	test_launch 'a=0 ; b=0 ; echo $((a+++b)) ; echo $?' 'echo $a $b $?'
+	test_launch 'a=0 ; b=0 ; echo $((a+ ++b)) ; echo $?' 'echo $a $b $?'
+	test_launch 'a=0 ; b=0 ; echo $((a++ +b)) ; echo $?' 'echo $a $b $?'
 
 	test_launch 'echo $((1---42))'
-	test_launch 'a=10; b=20; echo $((a-b)) ; echo $?' ' echo $?'
-	test_launch 'a=10; b=20; echo $((a--b)) ; echo $?' ' echo $?'
-	test_launch 'a=10; b=20; echo $((a---b)) ; echo $?' ' echo $?'
-	test_launch 'a=10; b=20; echo $((a----b)) ; echo $?' ' echo $?'
-	test_launch 'a=10; b=20; echo $((a-----b)) ; echo $?' ' echo $?'
-	test_launch 'a=10; b=20; echo $((a------b)) ; echo $?' ' echo $?'
-	test_launch 'a=10; b=20; echo $((a--++-b)) ; echo $?' ' echo $?'
-	test_launch 'a=10; b=20; echo $((a-++---b)) ; echo $?' ' echo $?'
-	test_launch 'a=10; b=20; echo $((a-++-++b)) ; echo $?' ' echo $?'
-	test_launch 'a=10; b=20; echo $((a-++--b)) ; echo $?' ' echo $?'
-	test_launch 'a=10; b=20; echo $((a-++--b++)) ; echo $?' ' echo $?'
-	test_launch 'a=10; b=20; echo $((a+--++--b)) ; echo $?' ' echo $?'
-	test_launch 'a=10; b=20; echo $((++a+--++--b--)) ; echo $?' ' echo $?'
-	test_launch 'a=10; b=20; echo $((--a+----++b--)) ; echo $?' ' echo $?'
-	test_launch 'a=10; b=20; echo $((--a--++--b++)) ; echo $?' ' echo $?'
+	test_launch 'a=10; b=20; echo $((a-b)) ; echo $?' ' echo $a $b $?'
+	test_launch 'a=10; b=20; echo $((a--b)) ; echo $?' ' echo $a $b $?'
+	test_launch 'a=10; b=20; echo $((a---b)) ; echo $?' ' echo $a $b $?'
+	test_launch 'a=10; b=20; echo $((a----b)) ; echo $?' ' echo $a $b $?'
+	test_launch 'a=10; b=20; echo $((a-----b)) ; echo $?' ' echo $a $b $?'
+	test_launch 'a=10; b=20; echo $((a------b)) ; echo $?' ' echo $a $b $?'
+	test_launch 'a=10; b=20; echo $((a--++-b)) ; echo $?' ' echo $a $b $?'
+	test_launch 'a=10; b=20; echo $((a-++---b)) ; echo $?' ' echo $a $b $?'
+	test_launch 'a=10; b=20; echo $((a-++-++b)) ; echo $?' ' echo $a $b $?'
+	test_launch 'a=10; b=20; echo $((a-++--b)) ; echo $?' ' echo $a $b $?'
+	test_launch 'a=10; b=20; echo $((a-++--b++)) ; echo $?' ' echo $a $b $?'
+	test_launch 'a=10; b=20; echo $((a+--++--b)) ; echo $?' ' echo $a $b $?'
+	test_launch 'a=10; b=20; echo $((++a+--++--b--)) ; echo $?' ' echo $a $b $?'
+	test_launch 'a=10; b=20; echo $((--a+----++b--)) ; echo $?' ' echo $a $b $?'
+	test_launch 'a=10; b=20; echo $((--a--++--b++)) ; echo $?' ' echo $a $b $?'
 
 	test_launch '$((1 - - - - + + + - - - - + + + - - - - 5 > 4)) ; echo $?' 'echo $?'
 	test_launch '$((1 - - - - + + + - - - - + + + - - - - 5 > 6)) ; echo $?' 'echo $?'
