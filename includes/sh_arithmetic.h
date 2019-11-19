@@ -39,7 +39,6 @@ int		sh_ar_lexer_rule_2(t_lexer *lexer);
 /*
 ** lexer/sh_ar_lexer_rule_3.c
 */
-int		rule_3_is_valid_op_first_char(char c);
 int		sh_ar_lexer_rule_3(t_lexer *lexer);
 
 /*

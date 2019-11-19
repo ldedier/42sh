@@ -84,12 +84,6 @@ int		sh_expansions_splitting(
 /*
 ** sh_expansions_history.c
 */
-char	*ft_strdup_word_delim(char *str, int delim);
-int		sh_process_history_expand(
-	t_shell *shell,
-	t_command_line *command_line,
-	int *index,
-	char *double_quoted);
 void	init_expander(t_history_expander *he);
 int		is_eligible_for_history_expansion(
 	t_command_line *command_line, int *i, t_history_expander *he);
@@ -105,6 +99,16 @@ int		scan_expansions_history(
 	t_history_expander *he);
 int		sh_expansions_history(
 	t_shell *shell, t_command_line *command_line, int *expanded);
+
+/*
+** sh_expansions_history_expand.c
+*/
+char	*ft_strdup_word_delim(char *str, int delim);
+int		sh_process_history_expand(
+	t_shell *shell,
+	t_command_line *command_line,
+	int *index,
+	char *double_quoted);
 
 /*
 ** sh_expansions_parameter.c

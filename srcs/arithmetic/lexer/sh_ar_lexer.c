@@ -38,6 +38,10 @@ static int	sh_ar_lexer_run_rules(t_lexer *lexer)
 	return (ret);
 }
 
+/*
+** lexer->expansion is used to store if we are in a '+' or '-' serie.
+*/
+
 int			sh_ar_lexer(char *expansion, t_list **tokens, t_shell *shell)
 {
 	t_lexer		lexer;
