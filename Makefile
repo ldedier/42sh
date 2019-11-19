@@ -6,7 +6,7 @@
 #    By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/11/16 15:00:02 by mdaoud           ###   ########.fr        #
+#    Updated: 2019/11/19 17:59:45 by mdaoud           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -356,6 +356,10 @@ SRCS			 +=	sh_expansions.c \
 					sh_expansions_variable.c t_expansion.c \
 					sh_expansions_process.c sh_expansions_replace.c \
 					sh_expansions_field_splitting.c \
+					sh_expansions_field_splitting_get_word.c \
+					sh_expansions_field_splitting_tools.c \
+					sh_expansions_field_splitting_nws_tools.c \
+					sh_expansions_field_splitting_quote_tools.c \
 					sh_expansions_quote_removal.c \
 					sh_expansions_scan.c \
 					sh_expansions_history.c \

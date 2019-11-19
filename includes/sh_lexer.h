@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 11:08:27 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/16 13:58:18 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/17 19:53:13 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ typedef struct		s_token
 	int				index_start;
 	int				index_end;
 	int				apply_heredoc_expansion;
+	int				give_as_arg;
 	t_ast_node		*ast_node;
 }					t_token;
 
