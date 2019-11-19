@@ -16,6 +16,7 @@
 ##	./start.sh [-v] [-q] [-2] [-e] [file]
 ##		-v : Activate Valgrind tests
 ##		-2 : Activate comparison on stderr
+##		-2 : Desactivate comparison on stdout (used to detect segfault)
 ##		-q : Activate quiet mode : only show OK or KO
 ##		-e : Show only failed tests (hide [OK])
 ##		-r : Compare returned values with bash
@@ -45,7 +46,7 @@ suppressions_file="${obj_dir}/my_supp.supp"
 error_exit_code=247
 
 ## Options initialisation
-test_stderr="" verbose="ok" show_error="" test_returned_values="" file="" logging="ok"
+test_stdout="yes" test_stderr="" verbose="ok" show_error="" test_returned_values="" file="" logging="ok"
 ## Counters initialisation
 passed=0 tried=0 diff_passed=0 diff_tried=0 
 
@@ -57,6 +58,9 @@ for arg in $@ ; do
 
 	if [ "$arg" = "-2" ] ; then
 		test_stderr="ok" ; fi
+
+	if [ "$arg" = "-1" ] ; then
+		test_stdout="" ; fi
 
 	if [ "$arg" = "-q" ] ; then
 		verbose="" ; fi

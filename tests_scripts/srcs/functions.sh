@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/21 15:58:19 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/18 05:27:55 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/19 04:15:41 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -164,9 +164,10 @@ check_ret_value()
 	sh_ret=$((ret1 & 0xFF))
 	bash_ret=$((ret2 & 0xFF))
 
-	if [ "$sh_ret" -gt 130 -a "$sh_ret" -lt 200 ] ; then
+	if [ "$sh_ret" -gt 128 -a "$sh_ret" -lt 200 ] ; then
 		echo -e "${red}SEGFAULT OR SIGNAL RECEIVED"
 		echo -e "${sh_ret}${eoc}"
+		if [ -z "$test_returned_values" ] ; then echo -en "${yellow}" ;  cat "${buffer}" ; echo -en "${eoc}" ; fi
 		if [ -n "$logging" ] ; then
 			create_logging_file
 			echo -e "Script :" >> "${logging_file}"
@@ -227,13 +228,12 @@ test_launch()
 	<${buffer} bash 1>${res1_bash} 2>${res2_bash}
 	bash_ret=$?
 	<${buffer} ./${exec} 1>${res1_42sh} 2>${res2_42sh}
-#	<${buffer} ./${exec} 1>${res1_42sh} 2>${res2_42sh}
 	sh_ret=$?
 
 	check_ret_value sh_ret bash_ret
 	continue=$?
 # echo "continue (stdout): $continue"
-	if [ 0 -eq "$continue" ] ; then
+	if [ 0 -eq "$continue" ] && [ -n "${test_stdout}" ] ; then
 		diff_files ${res1_42sh} ${res1_bash}
 		continue=$?
 	fi
