@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 17:04:13 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/27 11:40:36 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/19 18:32:32 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 #include "sh_21.h"
 #include "sh_builtin.h"
 #include "string.h"
-
-#define	JOBS_P	1
-#define	JOBS_L	2
 
 static void		builtin_jobs_no_spec(int opt)
 {
@@ -54,21 +51,18 @@ static t_job	*jobs_get_job_to_print(int num)
 	if (j == NULL && num == 0)
 		sh_perror("jobs", "no current job");
 	else if (j == NULL && num == -1)
-		sh_perror("jobs","no previous job");
+		sh_perror("jobs", "no previous job");
 	return (j);
 }
-
 
 static int		builtin_jobs_spec(int j_num[], int opt)
 {
 	int		i;
 	t_job	*j;
-	// char	*str;
 
 	i = 0;
 	while (j_num[i] != -2)
 	{
-		// j = job_get_by_num(j_num[i]);
 		j = jobs_get_job_to_print(j_num[i]);
 		if (j == NULL)
 			return (ERROR);

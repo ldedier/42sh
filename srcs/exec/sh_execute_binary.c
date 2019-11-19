@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 11:49:50 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/19 17:59:29 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/19 18:03:07 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,8 @@ static int		handle_expansion_in_bg(void)
 			close(tmp_fd);
 			tmp_fd = -1;
 		}
-	// ft_dprintf(g_term_fd, YELLOW"Opened %d\n"EOC, tmp_fd);
 	if (tmp_fd >= 0)
-	{
-		// mdaoud: This could be misplaced.
 		close(tmp_fd);
-		// if (close (tmp_fd) >= 0)
-			// ft_dprintf(g_term_fd, YELLOW"Closed %d\n"EOC, tmp_fd);
-	}
 	return (SUCCESS);
 }
 
