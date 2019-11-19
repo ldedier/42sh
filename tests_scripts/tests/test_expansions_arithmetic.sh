@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/17 19:22:25 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/19 06:53:36 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/19 08:48:17 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,19 @@ launch "arithmetic"
 	test_launch 'a=0 ; b=0 ; echo $((a+++b)) ; echo $?' 'echo $a $b $?'
 	test_launch 'a=0 ; b=0 ; echo $((a+ ++b)) ; echo $?' 'echo $a $b $?'
 	test_launch 'a=0 ; b=0 ; echo $((a++ +b)) ; echo $?' 'echo $a $b $?'
+
+	launch_show "Testing implementation"
+	test_launch 'a=var1' 'echo $((a+1)) ; echo $?' 'echo $((a++ + 2)) ; echo $?' 'echo $? $a $b'
+	test_launch 'a=1variable' 'echo $((a+5)) ; echo $?' 'echo $((a++ + 2)) ; echo $?' 'echo $a $b $?'
+	test_launch 'a=54mer b=23vaches ' 'echo $((a + b)) ; echo $?' 'echo $((a++ - ++b)) ; echo $?' 'echo $a $b $?'
+	test_launch 'a=hid42den' 'echo $((a + 5)) ; echo $?' 'echo $a $b $?'
+	
+	launch_show 'syntax error'
+	test_launch  'echo $(()) ; echo $?' 'echo $a $b $?'
+	test_launch  'echo $((+)) ; echo $?' 'echo $a $b $?'
+	test_launch  'echo $((12*)) ; echo $?' 'a=23 ; echo $((a*)) ; echo $?' 'echo $a $b $?'
+	test_launch  'echo $((**12)) ; echo $?' 'echo $a $b $?'
+	test_launch  'echo $((/5)) ; echo $?' 'echo $a $b $?'
 
 	test_launch 'echo $((1---42))'
 	test_launch 'a=10; b=20; echo $((a-b)) ; echo $?' ' echo $a $b $?'
