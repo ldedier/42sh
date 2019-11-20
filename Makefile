@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/11/20 03:05:23 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/20 08:08:57 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,6 +49,7 @@ VPATH		= $(INCLUDESDIR) \
 			  $(SRCDIR)/exec \
 			  $(SRCDIR)/expansions \
 			  $(SRCDIR)/globbing \
+			  $(SRCDIR)/globbing/lexer \
 			  $(SRCDIR)/grammar \
 			  $(SRCDIR)/job_control \
 			  $(SRCDIR)/job_control/job_get_string \
@@ -389,6 +390,13 @@ SRCS			+=	sh_globbing.c \
 					sh_pattern_matching_str.c \
 					sh_pattern_matching_quest.c \
 					sh_pattern_matching_brace.c \
+					sh_glob_lexer.c \
+					sh_glob_lexer_rule_1.c \
+					sh_glob_lexer_rule_2.c \
+					sh_glob_lexer_rule_3.c \
+					sh_glob_lexer_rule_4.c \
+					sh_glob_lexer_rule_5.c \
+					sh_glob_lexer_rule_6.c \
 					t_regexp.c
 
 ################################################################

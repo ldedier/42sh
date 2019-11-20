@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 23:53:16 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/20 06:52:01 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/20 10:13:00 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,9 @@ int			sh_regexp_parse(char *str, t_dy_tab **regexp_tab, t_dy_tab *quotes)
 	char	*path;
 	t_list	**list_tab;
 
+	return (sh_glob_lexer(str, regexp_tab, quotes));
+
+	
 	if (init_dy_tab_regexp(str, regexp_tab) == FAILURE)
 		return (FAILURE);
 	list_tab = (t_list**)(*regexp_tab)->tbl;
@@ -138,7 +141,7 @@ int			sh_regexp_parse(char *str, t_dy_tab **regexp_tab, t_dy_tab *quotes)
 	{
 		if (!*path)
 			continue ;
-		ft_dy_tab_add_ptr(*regexp_tab, NULL);
+		ft_dy_tab_add_ptr(*regexp_tab, NULL); // check ret value : true if error
 		list_tab[i] = NULL;
 		ret = sh_regexp_parse_path_component(path, &(list_tab[i]));
 		i++;

@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 03:46:18 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/20 06:55:05 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/20 08:04:11 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ int			sh_regexp_parse_new_brace(char *str, int *i, t_list **regexp_list)
 		if (first_closing == -1)
 		{
 			*i = start - 1;
-			return (sh_regexp_parse_new_string(str, i, regexp_list));
+			return (LEX_CONTINUE);
 		}
 		*i = first_closing - 1;
 	}
