@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/04 11:17:39 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/16 12:03:40 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/20 11:45:09 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,14 +91,31 @@ int			sh_expansions_scan(char **input, int index,
 	t_context *context, t_dy_tab *quotes)
 {
 	int		ret;
+	int		new_quote[2];
 
+	new_quote[0] = index;
 	while ((*input)[index] != '\'' && (*input)[index] != '"'
 		&& (*input)[index] != '\\' && (*input)[index] != '$'
 		&& (*input)[index] != '<' && (*input)[index] != '>'
 		&& (*input)[index] != '`' && (*input)[index])
 		index++;
+	new_quote[1] = index;
+	if (new_quote[0] < new_quote[1] && ft_strninsert_free(input, new_quote, '\'', 2) >= 0)
+	{
+		new_quote[1] += 1;
+//	ft_dprintf(2, YELLOW"=> segfault %d %d %s\n"EOC, new_quote[0], new_quote[1], *input);
+		if ((t_quote_add_new(quotes, new_quote[0], (*input) + new_quote[0])) != SUCCESS
+			|| (t_quote_add_new(quotes, new_quote[1], (*input) + new_quote[1])) != SUCCESS)
+			return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_scan"));
+		index += 2;
+	}
+	else if (new_quote[0] < new_quote[1])
+		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_scan"));
 	if ((*input)[index] == '\0')
+	{
+		sh_expansions_update_quotes_pointer(input, (t_quote **)quotes->tbl);
 		return (SUCCESS);
+	}
 	if ((*input)[index] == '\'')
 		simple_quote(input, &index, quotes);
 	else if ((*input)[index] == '"')
@@ -118,7 +135,18 @@ int			sh_expansions_scan(char **input, int index,
 	{
 		if (t_quote_add_new(quotes, index, (*input) + index))
 			return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_scan"));
+//		new_quote[0] = index;
+//		new_quote[1] = index + 2;
 		index += 2;
+//	if (ft_strninsert_free(input, new_quote, '\'', 2) >= 0)
+//	{
+//		new_quote[1] += 1;
+//	//	ft_dprintf(2, "%d -%s-\n", new_quote[1], *input);
+//		if ((t_quote_add_new(quotes, new_quote[0], (*input) + new_quote[0])) != SUCCESS
+//			|| (t_quote_add_new(quotes, new_quote[1], (*input) + new_quote[1])) != SUCCESS)
+//			return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_scan"));
+//		index += 4;
+//	}
 	}
 	return (sh_expansions_scan(input, index, context, quotes));
 }

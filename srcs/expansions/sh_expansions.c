@@ -6,11 +6,29 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/05 10:59:30 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/18 11:19:21 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/20 11:49:36 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
+
+//static int 	sh_save_non_var_form_splitting(char **input, int index)
+//{
+//	int 	quote[2];
+//
+//	quote[0] = index;
+//	while ((*input)[index] != '\'' && (*input)[index] != '"'
+//		&& (*input)[index] != '\\' && (*input)[index] != '$'
+//		&& (*input)[index] != '<' && (*input)[index] != '>'
+//		&& (*input)[index] != '`' && (*input)[index])
+//		index++;
+//	quote[1] = index;
+//	if (quote[0] < quote[1] && ft_strninsert_free(input, quote, '\'', 2) < 0)
+//			return (sh_perror(SH_ERR1_MALLOC, "sh_expansions"));
+//	if ((*input)[index] == 0)
+//		return (SUCCESS);
+//	else if ()
+//}
 
 /*
 ** sh_expansions:

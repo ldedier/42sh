@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 17:46:46 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/18 09:41:25 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/20 16:25:21 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,35 @@ int		sh_expansions_cmd_subst_process(
 */
 int		sh_expansions_splitting(
 	t_context *context, t_ast_node *node, t_dy_tab *quotes);
+
+/*
+** sh_expansions_field_splitting_get_word.c
+*/
+int		sh_get_next_word_nws(
+	t_split_data *data, t_split_word *word, int *i);
+int		sh_get_next_word_ws(
+	t_split_data *data, t_split_word *word, int *i);
+
+/*
+** sh_expansions_field_splitting_nws_tools.c
+*/
+int		sh_skip_word_nws(t_split_data *data, t_split_word *word, int *i);
+
+/*
+** sh_expansions_field_splitting_quote_tools.c
+*/
+void	update_quotes(
+	t_quote **quotes, int i, int start, t_ast_node *node);
+int		sh_skip_quote(t_quote **quotes, int i);
+//int		sh_skip_quote(t_quote **quotes, int i, int *give_as_arg);
+
+/*
+** sh_expansions_field_splitting_tools.c
+*/
+int		start_nws_split(t_ast_node **node, t_split_data *data);
+int		sh_skip_ws_2(t_split_data *data, int *i);
+int		split_input(
+	t_ast_node **node, t_split_data *data, int start, int end);
 
 /*
 ** sh_expansions_history.c
@@ -173,6 +202,8 @@ void	sh_expansions_quote_removal_in_str(char *input);
 /*
 ** sh_expansions_replace.c
 */
+void 	sh_expansions_update_quotes_pointer(
+	char **input, t_quote **quotes);
 int		sh_expansions_replace(
 	t_expansion *exp, char **input, int index, t_quote **quotes);
 
@@ -217,12 +248,4 @@ void	t_quote_show_tab(t_quote **quotes);
 int		t_quote_is_original_quote(int i, t_quote **quotes);
 int		t_quote_get_offset(int i, t_quote **quotes);
 
-int		start_nws_split(t_ast_node **node, t_split_data *data);
-int 	sh_skip_quote(t_quote **quotes, int i);
-int		sh_skip_word_nws(t_split_data *data, t_split_word *word, int *i);
-int 	sh_get_next_word_nws(t_split_data *data, t_split_word *word, int *i);
-int 	split_input(t_ast_node **node, t_split_data *data, int start, int end);
-void	update_quotes(t_quote **quotes, int i, int start, t_ast_node *node);
-int 	sh_skip_ws_2(t_split_data *data, int *i);
-int 	sh_get_next_word_ws(t_split_data *data, t_split_word *word, int *i);
 #endif

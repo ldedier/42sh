@@ -6,7 +6,7 @@
 /*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/17 19:01:27 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/18 13:16:15 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/20 15:27:44 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,20 @@ void	update_quotes(t_quote **quotes, int i, int start, t_ast_node *node)
 	return ;
 }
 
+//int		sh_skip_quote(t_quote **quotes, int i, int *give_as_arg)
 int		sh_skip_quote(t_quote **quotes, int i)
 {
 	int	is_quote;
+	int	start;
 
 	if ((is_quote = t_quote_is_original_quote(i, quotes)) < 0)
 		return (-1);
 	if (is_quote)
 	{
+		start = i;
 		if ((is_quote = t_quote_get_offset(i, quotes)) < 0)
 			return (-1);
+//		ft_printf("skip quote %d %d\n", start, i);////
 		i = is_quote + 1;
 	}
 	return (i);

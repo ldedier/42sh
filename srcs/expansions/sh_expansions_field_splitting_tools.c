@@ -6,7 +6,7 @@
 /*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/16 14:22:54 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/18 13:17:48 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/20 16:22:06 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int			start_nws_split(t_ast_node **node, t_split_data *data)
 	int		is_quote;
 
 	i = 0;
+	(*node)->token->give_as_arg = 0;
 	while (data->input[i]
 			&& (ft_strchr(data->ws, data->input[i])
 				|| ft_strchr(data->nws, data->input[i])))
@@ -48,16 +49,18 @@ int			start_nws_split(t_ast_node **node, t_split_data *data)
 		sh_skip_ws(data, i);
 		while (data->input[i] && ft_strchr(data->nws, data->input[i]))
 		{
-			(*node)->token->give_as_arg = 1;
 			if ((is_quote = t_quote_is_original_quote(i, data->quotes)) > 0)
 				return (i);
 			else if (is_quote < 0)
 				return (-1);
+			(*node)->token->give_as_arg = 1;
 			if (split_input(node, data, i, i) != SUCCESS)
 				return (-1);
 			i++;
 		}
 	}
+	if (i >= 1 || data->input[i])
+		(*node)->token->give_as_arg = 1;
 	return (i);
 }
 

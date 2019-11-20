@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/07 10:11:38 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/13 03:13:31 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/19 13:39:36 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -266,6 +266,7 @@ char				*ft_strtolower(char *str);
 
 char				*ft_strjoin_free(const char *s1, const char *s2, int param);
 char				*ft_strinsert_free(char *s1, char *s2, int pos, int param);
+int					ft_strninsert_free(char **str, int *pos, char c, int nb);
 char				*ft_strjoin_path(char *s1, char *s2);
 char				*ft_strjoin_path_free(char *s1, char *s2, int opt);
 char				*ft_strrep(char *s1, char *s2, int start, int len);
