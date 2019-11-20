@@ -64,7 +64,7 @@ def all_patterns_full_random(filename="../tests_scripts/tests/random_expansions_
 		str += '\'a=12 b=-54 var=100000 ;'
 		str += 'echo $(('
 		str += tab[key]
-		str += ')) ; echo $?\''
+		str += ')) ; echo $?\' '
 		str += '\'echo $?\''
 		tab[key] = str
 	fdw = open(filename, 'w')
