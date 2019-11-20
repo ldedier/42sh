@@ -1,0 +1,177 @@
+srcs/command_line/copy_paste_delete.c-45-	if (!to_paste)
+srcs/command_line/copy_paste_delete.c-46-		return (SUCCESS);
+srcs/command_line/copy_paste_delete.c-47-	len = ft_strlen(to_paste);
+srcs/command_line/copy_paste_delete.c:48:	utf8_len = ft_strlen_utf8(to_paste);
+srcs/command_line/copy_paste_delete.c-49-	if (ft_substitute_dy_str(command_line->dy_str, to_paste,
+srcs/command_line/copy_paste_delete.c-50-			command_line->current_index, 0))
+srcs/command_line/copy_paste_delete.c-51-		return (sh_perror(SH_ERR1_MALLOC, "paste_current_index"));
+--
+--
+srcs/command_line/cursor_tools.c-17-	int ret;
+srcs/command_line/cursor_tools.c-18-
+srcs/command_line/cursor_tools.c-19-	if (g_glob.command_line.scrolled_lines)
+srcs/command_line/cursor_tools.c:20:		return (cursor + ft_strlen_utf8(ELIPTIC_COMMAND_LINE));
+srcs/command_line/cursor_tools.c-21-	if (g_glob.command_line.prev_prompt_len != -1)
+srcs/command_line/cursor_tools.c-22-	{
+srcs/command_line/cursor_tools.c-23-		ret = cursor + g_glob.command_line.prev_prompt_len;
+--
+--
+srcs/command_line/cursor_tools.c-24-		g_glob.command_line.prev_prompt_len = -1;
+srcs/command_line/cursor_tools.c-25-	}
+srcs/command_line/cursor_tools.c-26-	else
+srcs/command_line/cursor_tools.c:27:		ret = (cursor + ft_strlen_utf8(g_glob.command_line.prompt));
+srcs/command_line/cursor_tools.c-28-	return (ret);
+srcs/command_line/cursor_tools.c-29-}
+srcs/command_line/cursor_tools.c-30-
+--
+--
+srcs/command_line/cursor_tools.c-31-int		get_true_cursor_pos(int cursor)
+srcs/command_line/cursor_tools.c-32-{
+srcs/command_line/cursor_tools.c-33-	if (!g_glob.command_line.scrolled_lines)
+srcs/command_line/cursor_tools.c:34:		return (cursor + ft_strlen_utf8(g_glob.command_line.prompt));
+srcs/command_line/cursor_tools.c-35-	else
+--
+srcs/command_line/cursor_tools.c-35-	else
+srcs/command_line/cursor_tools.c:36:		return (cursor + ft_strlen_utf8(ELIPTIC_COMMAND_LINE));
+srcs/command_line/cursor_tools.c-37-}
+srcs/command_line/cursor_tools.c-38-
+srcs/command_line/cursor_tools.c-39-void	replace_cursor_on_index(void)
+--
+--
+srcs/command_line/print_command_line.c-30-	c.len = ft_strlen(&command_line->dy_str->str[index]);
+srcs/command_line/print_command_line.c-31-	c.j = 0;
+srcs/command_line/print_command_line.c-32-	while (command_line->dy_str->str[c.i]
+srcs/command_line/print_command_line.c:33:		&& c.nb_chars < empty_space - ft_strlen_utf8(ELIPTIC_COMMAND_LINE))
+srcs/command_line/print_command_line.c-34-		process_copy_utf8_char(str, command_line, index, &c);
+srcs/command_line/print_command_line.c-35-	copy_last_part_of_command_line(command_line, &c, index, str);
+srcs/command_line/print_command_line.c-36-	ft_dprintf(command_line->fd, "%s", str);
+--
+--
+srcs/command_line/print_command_line.c-45-
+srcs/command_line/print_command_line.c-46-	if (command_line->scrolled_lines)
+srcs/command_line/print_command_line.c-47-		empty_space = (g_glob.winsize.ws_col * (g_glob.winsize.ws_row - 1))
+srcs/command_line/print_command_line.c:48:			+ g_glob.winsize.ws_col - ft_strlen_utf8(ELIPTIC_COMMAND_LINE) - 1;
+srcs/command_line/print_command_line.c-49-	else
+srcs/command_line/print_command_line.c-50-		empty_space = (g_glob.winsize.ws_col * (g_glob.winsize.ws_row - 1))
+srcs/command_line/print_command_line.c-51-			+ g_glob.winsize.ws_col
+--
+--
+srcs/command_line/print_command_line.c-49-	else
+srcs/command_line/print_command_line.c-50-		empty_space = (g_glob.winsize.ws_col * (g_glob.winsize.ws_row - 1))
+srcs/command_line/print_command_line.c-51-			+ g_glob.winsize.ws_col
+srcs/command_line/print_command_line.c:52:				- ft_strlen_utf8(g_glob.command_line.prompt) - 1;
+srcs/command_line/print_command_line.c-53-	if (command_line->searcher.active)
+srcs/command_line/print_command_line.c-54-		empty_space -= get_research_nb_lines(command_line)
+srcs/command_line/print_command_line.c-55-			* g_glob.winsize.ws_col;
+--
+--
+srcs/command_line/render_command_line.c-15-int		get_command_line_prefix_len(t_command_line *command_line)
+srcs/command_line/render_command_line.c-16-{
+srcs/command_line/render_command_line.c-17-	if (command_line->scrolled_lines)
+srcs/command_line/render_command_line.c:18:		return (ft_strlen_utf8(ELIPTIC_COMMAND_LINE));
+srcs/command_line/render_command_line.c-19-	else
+--
+srcs/command_line/render_command_line.c-19-	else
+srcs/command_line/render_command_line.c:20:		return (ft_strlen_utf8(command_line->prompt));
+srcs/command_line/render_command_line.c-21-}
+srcs/command_line/render_command_line.c-22-
+srcs/command_line/render_command_line.c-23-/*
+--
+--
+srcs/command_line/render_research.c-23-int			get_research_nb_lines(t_command_line *command_line)
+srcs/command_line/render_research.c-24-{
+srcs/command_line/render_research.c-25-	if (command_line->searcher.active)
+srcs/command_line/render_research.c:26:		return ((((ft_strlen_utf8(command_line->searcher.dy_str->str)
+srcs/command_line/render_research.c-27-			+ ft_strlen(get_research_title(command_line))
+srcs/command_line/render_research.c-28-				+ 1) - 1) / g_glob.winsize.ws_col) + 1);
+srcs/command_line/render_research.c-29-	else
+--
+--
+srcs/command_line/render_research.c-37-
+srcs/command_line/render_research.c-38-	ft_strcpy(title, get_research_title(command_line));
+srcs/command_line/render_research.c-39-	ft_printf("%s%s_", title, command_line->searcher.dy_str->str);
+srcs/command_line/render_research.c:40:	nb_visible_lines = ((ft_strlen_utf8(command_line->searcher.dy_str->str)
+srcs/command_line/render_research.c-41-		+ ft_strlen(title) + 1) - 1) / g_glob.winsize.ws_col;
+srcs/command_line/render_research.c-42-	go_up_left(nb_visible_lines);
+srcs/command_line/render_research.c-43-	return (SUCCESS);
+--
+--
+srcs/command_line/research_history.c-18-	int			new_len;
+srcs/command_line/research_history.c-19-	int			len;
+srcs/command_line/research_history.c-20-
+srcs/command_line/research_history.c:21:	new_len = ft_strlen_utf8(to_search_in);
+srcs/command_line/research_history.c-22-	command_line->searcher.match_index = found - to_search_in;
+srcs/command_line/research_history.c-23-	ft_dy_str_cpy_str(command_line->dy_str, to_search_in);
+srcs/command_line/research_history.c-24-	command_line->nb_chars = new_len;
+--
+--
+srcs/command_line/scroll_command_line.c-75-
+srcs/command_line/scroll_command_line.c-76-	index = get_command_line_starting_index2(scrolled_lines);
+srcs/command_line/scroll_command_line.c-77-	add = get_command_line_prefix_len(command_line);
+srcs/command_line/scroll_command_line.c:78:	if (add + ft_strlen_utf8(&command_line->dy_str->str[index])
+srcs/command_line/scroll_command_line.c-79-		> (g_glob.winsize.ws_row) * g_glob.winsize.ws_col - 1)
+srcs/command_line/scroll_command_line.c-80-		return (1);
+srcs/command_line/scroll_command_line.c-81-	else
+--
+--
+srcs/command_line/sh_update_command_line.c-15-static void	update_command_line_end(t_command_line *command_line)
+srcs/command_line/sh_update_command_line.c-16-{
+srcs/command_line/sh_update_command_line.c-17-	command_line->current_index = command_line->dy_str->current_size;
+srcs/command_line/sh_update_command_line.c:18:	command_line->nb_chars = ft_strlen_utf8(command_line->dy_str->str);
+srcs/command_line/sh_update_command_line.c-19-	render_command_line(command_line,
+srcs/command_line/sh_update_command_line.c-20-		command_line->nb_chars - g_glob.cursor, 1);
+srcs/command_line/sh_update_command_line.c-21-}
+--
+--
+srcs/command_line/sh_update_command_line.c-23-static void	update_command_line_start(t_command_line *command_line)
+srcs/command_line/sh_update_command_line.c-24-{
+srcs/command_line/sh_update_command_line.c-25-	command_line->current_index = 0;
+srcs/command_line/sh_update_command_line.c:26:	command_line->nb_chars = ft_strlen_utf8(command_line->dy_str->str);
+srcs/command_line/sh_update_command_line.c-27-	render_command_line(command_line, -g_glob.cursor, 1);
+srcs/command_line/sh_update_command_line.c-28-}
+srcs/command_line/sh_update_command_line.c-29-
+--
+--
+srcs/command_line/shortcuts/ctrl_t.c-71-	int motion;
+srcs/command_line/shortcuts/ctrl_t.c-72-	int ret;
+srcs/command_line/shortcuts/ctrl_t.c-73-
+srcs/command_line/shortcuts/ctrl_t.c:74:	if (ft_strlen_utf8(command_line->dy_str->str) < 2)
+srcs/command_line/shortcuts/ctrl_t.c-75-		return (SUCCESS);
+srcs/command_line/shortcuts/ctrl_t.c-76-	if ((ret = sh_save_command_line(command_line)) != SUCCESS)
+srcs/command_line/shortcuts/ctrl_t.c-77-		return (ret);
+--
+--
+srcs/command_line/shortcuts/sh_vshortcut_p.c-40-{
+srcs/command_line/shortcuts/sh_vshortcut_p.c-41-	int		nb_chars;
+srcs/command_line/shortcuts/sh_vshortcut_p.c-42-
+srcs/command_line/shortcuts/sh_vshortcut_p.c:43:	nb_chars = ft_strlen_utf8(to_paste);
+srcs/command_line/shortcuts/sh_vshortcut_p.c-44-	command_line->current_index += ft_strlen(to_paste);
+srcs/command_line/shortcuts/sh_vshortcut_p.c-45-	if (command_line->current_index > 0
+srcs/command_line/shortcuts/sh_vshortcut_p.c-46-		&& command_line->current_index
+--
+--
+srcs/command_line/shortcuts/sh_vshortcut_p_maj.c-26-	(void)dummy_2;
+srcs/command_line/shortcuts/sh_vshortcut_p_maj.c-27-	if (!command_line->clipboard)
+srcs/command_line/shortcuts/sh_vshortcut_p_maj.c-28-		return (SUCCESS);
+srcs/command_line/shortcuts/sh_vshortcut_p_maj.c:29:	nb_chars = ft_strlen_utf8(command_line->clipboard);
+srcs/command_line/shortcuts/sh_vshortcut_p_maj.c-30-	if (ft_substitute_dy_str(command_line->dy_str, command_line->clipboard,
+srcs/command_line/shortcuts/sh_vshortcut_p_maj.c-31-		command_line->current_index, 0) != SUCCESS)
+srcs/command_line/shortcuts/sh_vshortcut_p_maj.c-32-		return (FAILURE);
+--
+--
+srcs/command_line/update_prompt.c-119-{
+srcs/command_line/update_prompt.c-120-	char *new_prompt;
+srcs/command_line/update_prompt.c-121-
+srcs/command_line/update_prompt.c:122:	command_line->prev_prompt_len = ft_strlen_utf8(command_line->prompt);
+srcs/command_line/update_prompt.c-123-	ft_strdel(&command_line->prompt);
+srcs/command_line/update_prompt.c-124-	if (update_prompt_context(shell, command_line, &new_prompt))
+srcs/command_line/update_prompt.c-125-		return (FAILURE);
+--
+--
+srcs/command_line/utf8_tools.c-67-}
+srcs/command_line/utf8_tools.c-68-
+srcs/command_line/utf8_tools.c-69-
+srcs/command_line/utf8_tools.c:70:int		ft_strlen_utf8(char *str)
+srcs/command_line/utf8_tools.c-71-{
+srcs/command_line/utf8_tools.c-72-	int i;
+srcs/command_line/utf8_tools.c-73-	int res;

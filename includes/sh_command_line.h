@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/11 17:20:10 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/17 16:26:51 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/20 21:46:26 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -703,5 +703,7 @@ int					get_right_w_char_index(t_command_line *command_line);
 t_xy				get_position(int cursor);
 int					xy_is_equal(t_xy xy1, t_xy xy2);
 
-int         sh_init_command_line(t_shell *shell, t_command_line *command_line);
+int         		sh_init_command_line(t_shell *shell, t_command_line *command_line);
+int					ft_nb_columns(char *str);
+int					ft_nb_columns_n(char *str, int n);
 #endif

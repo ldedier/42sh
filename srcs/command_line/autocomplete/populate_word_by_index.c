@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 12:04:02 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/04 19:44:18 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/20 21:44:47 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,11 @@ int		populate_word_from_token(t_word *word, int index)
 		return (FAILURE);
 	}
 	word->len = ft_strlen(word->str);
-	word->utf8_len = ft_strlen_utf8(word->str);
+	word->utf8_len = ft_nb_columns(word->str);
 	word->start_index = word->token->index_start;
 	word->index_byte_offset = index - word->start_index;
 	word->index_char_offset =
-		ft_strnlen_utf8(word->str, word->index_byte_offset);
+		ft_nb_columns_n(word->str, word->index_byte_offset);
 	word->start_index = word->token->index_start;
 	return (SUCCESS);
 }
