@@ -59,6 +59,8 @@ launch "arithmetic"
 	test_launch 'a=10; b=20; echo $((--a+----++b--)) ; echo $?' ' echo $a $b $?'
 	test_launch 'a=10; b=20; echo $((--a--++--b++)) ; echo $?' ' echo $a $b $?'
 
+	test_launch 'echo $((-10+3/1000000000000000000000000000000000000000))'
+
 	test_launch '$((1 - - - - + + + - - - - + + + - - - - 5 > 4)) ; echo $?' 'echo $?'
 	test_launch '$((1 - - - - + + + - - - - + + + - - - - 5 > 6)) ; echo $?' 'echo $?'
 	test_launch '$((1 - - - - + + + - - - - + + + - - - - 5 == 6)) ; echo $?' 'echo $?'
