@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/08 12:28:13 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/30 10:26:14 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/20 01:57:32 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ char	*ft_strstr(const char *str, const char *find)
 	}
 	return (NULL);
 }
-
 
 /*
 ** ft_strrstr :

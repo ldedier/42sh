@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
+#    By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/12/06 12:53:13 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/19 13:41:54 by jdugoudr         ###   ########.fr        #
+#    Updated: 2019/11/20 16:38:22 by jdugoudr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,7 +60,8 @@ SRCS	+=	./str/ft_strlen.c ./str/ft_strdup.c \
 			./str/ft_strmap.c ./str/ft_strmapi.c \
 			./str/ft_strequ.c ./str/ft_strnequ.c \
 			./str/ft_strsub.c ./str/ft_strjoin.c \
-			./str/ft_strtrim.c ./str/ft_strsplit.c \
+			./str/ft_strtrim.c ./str/ft_strtrim_side.c \
+			./str/ft_strsplit.c \
 			./str/ft_strnlen.c ./str/ft_strrev.c \
 			./str/ft_strstr_count.c ./str/ft_strtolower.c \
 			./str/ft_strjoin_free.c ./str/ft_strinsert_free.c \

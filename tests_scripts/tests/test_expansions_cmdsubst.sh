@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    test_expansions_cmdsubst.sh                        :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
+#    By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/10 06:04:23 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/15 08:12:49 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/18 09:03:43 by mdaoud           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 

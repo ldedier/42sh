@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 11:47:31 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/04 13:31:22 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/20 02:26:30 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int		sh_traverse_tools_search(t_ast_node *node, int searched_symbol_id);
 /*
 ** sh_traverse_tools_browse_redirection.c
 */
-int		loop_traverse_redirection( t_ast_node *node, t_context *context);
+int		loop_traverse_redirection(t_ast_node *node, t_context *context);
 int		loop_traverse_compound_redirection(
 	t_ast_node *node, t_context *context);
 int		sh_traverse_tools_browse_redirection(

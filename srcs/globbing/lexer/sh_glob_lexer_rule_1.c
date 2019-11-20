@@ -1,27 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_dy_str_replace.c                                :+:      :+:    :+:   */
+/*   sh_glob_lexer_rule_1.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/05 06:45:43 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/20 01:57:04 by jmartel          ###   ########.fr       */
+/*   Created: 2019/11/20 07:46:29 by jmartel           #+#    #+#             */
+/*   Updated: 2019/11/20 08:27:47 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "sh_21.h"
 
-int		ft_dy_str_replace(t_dy_str *dy_str, char *str)
+int			sh_glob_lexer_rule_1(t_glob_lexer *lexer)
 {
-	size_t		len;
-
-	if (dy_str->str)
-		ft_strdel(&(dy_str->str));
-	if (!(dy_str->str = ft_strdup(str)))
-		return (1);
-	len = ft_strlen(str);
-	dy_str->current_size = len;
-	dy_str->max_size = len;
-	return (0);
+	if (!lexer->c)
+	{
+		if (lexer->quoted)
+			return (LEX_ERR);
+		if (t_glob_lexer_add_str(lexer))
+			return (LEX_FAIL);
+		if (sh_verbose_globbing())
+		{
+			dprintf(2, GREEN"\tparsed => ");
+			t_regexp_show_list(lexer->regexp_tab->tbl[lexer->regexp_tab_index]);
+		}
+		return (LEX_END);
+	}
+	return (LEX_CONTINUE);
 }

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   sh_check_open_fd.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 15:06:52 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/16 19:30:38 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/20 02:46:41 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-int		is_open(int fd)
+int			is_open(int fd)
 {
 	struct stat buf;
 
@@ -125,7 +125,7 @@ int			sh_check_dst_fd(t_list *lst, t_redirection_type type, int fd)
 ** otherwise 0
 */
 
-int 		sh_check_src_fd(t_list *head, t_redirection *curr_redir)
+int			sh_check_src_fd(t_list *head, t_redirection *curr_redir)
 {
 	t_redirection		*el;
 	t_list				*lst;

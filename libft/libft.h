@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/07 10:11:38 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/19 13:39:36 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/20 16:38:01 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,15 +110,13 @@ typedef struct		s_hash_finder
 	void			*content;
 }					t_hash_finder;
 
-typedef struct s_strsep		t_strsep;
-
-struct		s_strsep
+typedef struct		s_strsep
 {
 	char	**saved_start;
 	char	*end;
 	char	*head;
 	char	save;
-};
+}					t_strsep;
 
 /*
 ********************************** atoi  **************************************
@@ -255,6 +253,7 @@ int					ft_strnequ(const char *s1, const char *s2, size_t n);
 char				*ft_strsub(const char *s, unsigned int start, size_t len);
 char				*ft_strjoin(const char *s1, const char *s2);
 char				*ft_strnjoin_free(char *s1, char *s2, size_t n);
+char				*ft_strtrim_side(char *str, char *charset, int side);
 char				*ft_strtrim(char const *s);
 char				**ft_strsplit(char const *s, char c);
 char				*ft_strtok(char *str, char *delim);
