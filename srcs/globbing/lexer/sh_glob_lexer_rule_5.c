@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/20 07:46:29 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/20 08:46:19 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/20 11:16:52 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ int			sh_glob_lexer_rule_5(t_glob_lexer *lexer)
 
 	if (!lexer->quoted && (lexer->c == '*' || lexer->c == '?'))
 	{
-		regexp_list = &((t_list**)lexer->regexp_tab->tbl)[lexer->regexp_tab_index];
+		regexp_list =
+			&((t_list**)lexer->regexp_tab->tbl)[lexer->regexp_tab_index];
 		if (t_glob_lexer_add_str(lexer))
 			return (LEX_FAIL);
 		if (lexer->c == '*')
@@ -29,5 +30,4 @@ int			sh_glob_lexer_rule_5(t_glob_lexer *lexer)
 		return (ret);
 	}
 	return (LEX_CONTINUE);
-
 }

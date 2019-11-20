@@ -6,23 +6,29 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/20 07:46:29 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/20 10:37:35 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/20 11:23:22 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
 /*
-** Delete current quote id exists in quotes tab, and update every next link index.
+** Delete current quote id exists in quotes tab, and update index of next cases.
 */
 
 static void	treat_quotes(t_glob_lexer *lexer)
 {
 	int		i;
+	t_quote	*quote;
 
 	i = 0;
-	while (lexer->quotes->tbl[i] && ((t_quote**)lexer->quotes->tbl)[i]->index != lexer->tok_start + lexer->tok_len)
+	while (lexer->quotes->tbl[i])
+	{
+		quote = ((t_quote**)lexer->quotes->tbl)[i];
+		if (quote->index == lexer->tok_start + lexer->tok_len)
+			break ;
 		i++;
+	}
 	if (lexer->quotes->tbl[i])
 	{
 		ft_strdelchar(((t_quote**)lexer->quotes->tbl)[i]->c, 0);

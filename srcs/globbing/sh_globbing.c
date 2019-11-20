@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 13:31:28 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/20 10:24:49 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/20 11:18:30 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ void		t_regexp_show_tab(t_dy_tab *regexp_tab)
 	tbl = (t_list**)regexp_tab->tbl;
 	while (tbl[i])
 	{
-		ft_dprintf(2, "tbl[%d] : %p => ", i, tbl[i]);
 		t_regexp_show_list(tbl[i]);
 		i++;
 	}
@@ -95,7 +94,8 @@ int			sh_expansions_globbing(t_ast_node *node, t_dy_tab *quotes)
 		return (ret);
 	else if (ret == ERROR)
 		return (SUCCESS);
-	t_regexp_show_tab(regexp_tab);
+	if (sh_verbose_globbing())
+		t_regexp_show_tab(regexp_tab);
 	init_path(&path, str);
 	ret = sh_expansions_pattern_matching(
 		path, (t_list**)regexp_tab->tbl, &matches);

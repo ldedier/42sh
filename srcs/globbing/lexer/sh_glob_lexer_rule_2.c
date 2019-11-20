@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/20 07:46:29 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/20 10:36:02 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/20 11:23:56 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ static int	add_final_slash(t_list **regexp_tab, int i)
 	lst->next = regexp_tab[i];
 	regexp_tab[i] = lst;
 	return (SUCCESS);
-
 }
 
 int			sh_glob_lexer_rule_2(t_glob_lexer *lexer)
@@ -40,13 +39,15 @@ int			sh_glob_lexer_rule_2(t_glob_lexer *lexer)
 
 	if (lexer->c == '/')
 	{
-		regexp_list = &((t_list**)lexer->regexp_tab->tbl)[lexer->regexp_tab_index];
+		regexp_list =
+			&((t_list**)lexer->regexp_tab->tbl)[lexer->regexp_tab_index];
 		if (t_glob_lexer_add_str(lexer))
 			return (LEX_FAIL);
 		lexer->tok_start += 1;
 		if (!lexer->input[lexer->tok_start])
 		{
-			if (add_final_slash((t_list**)lexer->regexp_tab->tbl, lexer->regexp_tab_index))
+			if (add_final_slash(
+				(t_list**)lexer->regexp_tab->tbl, lexer->regexp_tab_index))
 				return (sh_perror(SH_ERR1_MALLOC, "sh_glob_lexer_rule_2 (1)"));
 		}
 		else if (*regexp_list)
@@ -54,11 +55,6 @@ int			sh_glob_lexer_rule_2(t_glob_lexer *lexer)
 			if (ft_dy_tab_add_ptr(lexer->regexp_tab, NULL))
 				return (sh_perror(SH_ERR1_MALLOC, "sh_glob_lexer_rule_2 (2)"));
 			lexer->regexp_tab_index += 1;
-		}
-		if (sh_verbose_globbing())
-		{
-			dprintf(2, GREEN"\tparsed => ");
-			t_regexp_show_list(*regexp_list);
 		}
 		return (LEX_OK);
 	}
