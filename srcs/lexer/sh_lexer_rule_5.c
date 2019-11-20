@@ -6,13 +6,32 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 14:37:57 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/17 23:26:04 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/20 12:58:51 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-// check but end shall never be equal to 0 !
+static int		sh_lexer_exp_handle_error(t_lexer *lexer, char *start, int end)
+{
+	if (end == -1)
+	{
+		if (start[0] == '<' || start[0] == '>' || start[1] == '(')
+			lexer->quoted = '(';
+		else if (start[1] == '{')
+			lexer->quoted = '{';
+		else if (start[0] == '`')
+			lexer->quoted = '`';
+		sh_perror_unexpected_eof(lexer);
+		if (!isatty(0))
+			return (FAILURE);
+		sh_env_update_ret_value(lexer->shell, 2);
+		return (CTRL_D);
+	}
+	else
+		return (LEX_CONTINUE);
+}
+
 static int		sh_lexer_exp(t_lexer *lexer)
 {
 	char	*start;
@@ -30,13 +49,16 @@ static int		sh_lexer_exp(t_lexer *lexer)
 	else if (ft_strnstr(start, "$(", 2))
 		end = sh_expansions_cmd_subst_detect_dollar(start);
 	else if (ft_strnstr(start, "${", 2))
-		end = sh_expansions_parameter_detect(start) + 1;
+		end = sh_expansions_parameter_detect(start);
 	else if (start[0] == '$')
-		end = sh_expansions_variable_detect(start);
+	{
+		if ((end = sh_expansions_variable_detect(start)) == -1)
+			return (LEX_CONTINUE);
+	}
 	else
-		end = -1;
-	if (end <= 0)
 		return (LEX_CONTINUE);
+	if (end == 0 || end == -1)
+		return (sh_lexer_exp_handle_error(lexer, start, end));
 	lexer->expansion = '$';
 	lexer->tok_len += end;
 	return (LEX_OK);
@@ -46,7 +68,8 @@ int				sh_lexer_rule5(t_lexer *lexer)
 {
 	if (lexer->quoted == '\'' || lexer->quoted == '\\')
 		return (LEX_CONTINUE);
-	if (lexer->c == '$' || lexer->c == '`' || lexer->c == '<' || lexer->c == '>')
+	if (lexer->c == '$' || lexer->c == '`'
+		|| lexer->c == '<' || lexer->c == '>')
 	{
 		if (lexer->current_id == LEX_TOK_UNKNOWN)
 			lexer->current_id = LEX_TOK_WORD;

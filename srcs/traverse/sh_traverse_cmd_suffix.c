@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_traverse_cmd_suffix.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:31:30 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/16 09:05:16 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/20 12:54:24 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,15 @@ static int	sh_process_traverse_cmd_suffix(
 	}
 	if (context->phase == E_TRAVERSE_PHASE_EXECUTE && child->token)
 	{
-		if (!(child->token->expansion && !*child->token->value))
+//		if (!(child->token->expansion && !*child->token->value))
+//		{
+//	ft_printf("before => -%s- %d\n", child->token->value, child->token->give_as_arg);
+		if (*child->token->value || child->token->give_as_arg)
 			if (ft_dy_tab_add_str(context->params, child->token->value))
 				return (sh_perror(SH_ERR1_MALLOC,
 							"sh_traverse_cmd_suffix"));
+//		}
+//	ft_printf("after => -%s- -%s- -%s-\n", context->params->tbl[0], context->params->tbl[1], context->params->tbl[2]);
 	}
 	else if (child && child->symbol && (ret = g_grammar[child->symbol->id].
 				traverse(child, context)))

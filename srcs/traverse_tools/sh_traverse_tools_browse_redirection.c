@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_traverse_tools_browse_redirection.c             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/17 17:32:45 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/16 09:05:16 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/20 12:54:59 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ static int			find_cmd_tokens(t_ast_node *child, t_context *context)
 	return (ret);
 }
 
-int					loop_traverse_redirection(
-		t_ast_node *node, t_context *context)
+int					loop_traverse_redirection(t_ast_node *node,
+	t_context *context)
 {
 	t_list		*ptr;
 	t_ast_node	*child;

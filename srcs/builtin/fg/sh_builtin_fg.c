@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 17:04:13 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/31 16:13:20 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/19 18:31:16 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "sh_21.h"
 #include "sh_builtin.h"
 
-static void		mark_job_as_running (t_job *j)
+static void		mark_job_as_running(t_job *j)
 {
 	t_process *p;
 
@@ -27,7 +27,7 @@ static void		mark_job_as_running (t_job *j)
 	j->notified = 0;
 }
 
-static int	sh_execute_fg(t_job *j, t_context *context)
+static int		sh_execute_fg(t_job *j, t_context *context)
 {
 	int		res;
 	int		retvalue;
@@ -44,7 +44,7 @@ static int	sh_execute_fg(t_job *j, t_context *context)
 	return (SUCCESS);
 }
 
-int			sh_builtin_fg(t_context *context)
+int				sh_builtin_fg(t_context *context)
 {
 	t_job	*j;
 	int		i;
@@ -58,10 +58,9 @@ int			sh_builtin_fg(t_context *context)
 		job_lst[i] = -2;
 	if ((parse_fg_args((char **)context->params->tbl, job_lst)) != SUCCESS)
 		return (ERROR);
-	if (job_lst[0] == -2)
-		job_lst[0] = 0;
-	i = 0;
-	while (job_lst[i] != -2)
+	job_lst[0] = (job_lst[0] == -2 ? 0 : job_lst[0]);
+	i = -1;
+	while (job_lst[++i] != -2)
 	{
 		if ((j = fg_get_job_by_spec(job_lst[i])) == NULL)
 			return (ERROR);
@@ -70,7 +69,6 @@ int			sh_builtin_fg(t_context *context)
 			return (ret);
 		if (context->shell->ret_value == 130)
 			return (SUCCESS);
-		i++;
 	}
 	return (SUCCESS);
 }

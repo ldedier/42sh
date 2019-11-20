@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 11:08:27 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/17 18:43:14 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/20 12:52:02 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,18 @@
 /*
 ** getpwnam: used in lexer_expansion_process_tilde.c
 */
+
 # include <pwd.h>
 
 /*
 ** Possible states for the lexer, returned by lexer functions
 */
+
 # define LEX_OK			SUCCESS
 # define LEX_ERR		ERROR
 # define LEX_FAIL		FAILURE
-# define LEX_CONTINUE	FAILURE + ERROR + SUCCESS + 1
-# define LEX_END		FAILURE + ERROR + SUCCESS + 2
+# define LEX_CONTINUE	FAILURE + ERROR + SUCCESS + CTRL_D + 1
+# define LEX_END		FAILURE + ERROR + SUCCESS + CTRL_D + 2
 
 # define LEX_RULES_LEN	10
 
@@ -73,11 +75,19 @@ typedef struct		s_lexer
 	t_dy_tab		*vars;
 	t_dy_tab		*alias;
 	t_list			*alias_stack;
+	int				next_alias_index;
 	t_shell			*shell;
 	t_lex_mode		mode;
 }					t_lexer;
 
-typedef struct		s_token
+typedef struct		s_token_union
+{
+	int				ival;
+	double			fval;
+	char			*str;
+}					t_token_union;
+
+struct				s_token
 {
 	t_symbol_id		id;
 	int				index;
@@ -87,8 +97,9 @@ typedef struct		s_token
 	int				index_start;
 	int				index_end;
 	int				apply_heredoc_expansion;
+	int				give_as_arg;
 	t_ast_node		*ast_node;
-}					t_token;
+};
 
 /*
 ********************************************************************************
@@ -97,6 +108,7 @@ typedef struct		s_token
 /*
 ** sh_lexer.c
 */
+int					sh_lexer_error_ret_value(t_lexer *lexer, int ret);
 int					sh_lexer(
 	char *input, t_list **tokens, t_shell *shell, t_lex_mode mode);
 

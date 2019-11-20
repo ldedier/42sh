@@ -1,0 +1,4 @@
+IFS=A\ 
+var="    AAAAhoho"
+echo $var
+echo "$var"

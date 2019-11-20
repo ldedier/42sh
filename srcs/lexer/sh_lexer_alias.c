@@ -6,33 +6,18 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 01:10:36 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/09 04:39:56 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/16 15:52:56 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
-
-static void	alias_clean_stack(t_lexer *lexer)
-{
-	t_list	*head;
-	t_list	*prev;
-
-	head = lexer->alias_stack;
-	while (head)
-	{
-		prev = head;
-		head = head->next;
-		free(prev);
-	}
-	lexer->alias_stack = NULL;
-}
 
 static int	alias_add_stack(t_lexer *lexer, char *value)
 {
 	t_list	*new;
 
 	if (!(new = ft_lstnew(value, sizeof(char*))))
-		return (LEX_FAIL);
+		return (sh_perror(SH_ERR1_MALLOC, "alias_add_stack"));
 	ft_lstadd_last(&(lexer->alias_stack), new);
 	return (SUCCESS);
 }
@@ -57,25 +42,22 @@ static int	alias_check_stack(t_lexer *lexer, char *value)
 
 int			sh_lexer_alias(t_lexer *lexer, char *value)
 {
-	char	*alias;
+	char			*alias;
 
-	if (lexer->tok_len == 0 || lexer->current_id != LEX_TOK_WORD || !lexer->first_word)
+	if (lexer->tok_len == 0 || lexer->current_id != LEX_TOK_WORD
+		|| !lexer->first_word || lexer->mode == E_LEX_AUTOCOMPLETION)
 		return (LEX_OK);
 	if (sh_vars_get_index(lexer->alias, value) == -1)
-	{
-		alias_clean_stack(lexer);
 		return (LEX_OK);
-	}
 	alias = sh_vars_get_value(lexer->alias, NULL, value);
 	if (sh_verbose_lexer())
-		ft_dprintf(2, GREEN"\talias detected : (%s) => (%s)\n"EOC, value, alias);
+		ft_dprintf(2, GREEN"\talias detected : (%s)=>(%s)\n"EOC, value, alias);
 	if (alias_check_stack(lexer, alias))
 		return (SUCCESS);
-	lexer->input = ft_strrep_free(lexer->input, alias, lexer->tok_start, lexer->tok_len);
-	if (!lexer->input)
+	if (!(lexer->input =
+		ft_strrep_free(lexer->input, alias, lexer->tok_start, lexer->tok_len)))
 		return (LEX_FAIL);
-	if (sh_verbose_lexer())
-		ft_dprintf(2, GREEN"\trestarting detection on new input : %s\n"EOC, lexer->input + lexer->tok_start);
+	lexer->next_alias_index = lexer->tok_start + ft_strlen(alias);
 	t_lexer_reset(lexer, lexer->tok_start);
 	if (alias_add_stack(lexer, alias))
 		return (LEX_FAIL);

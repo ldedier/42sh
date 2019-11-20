@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_traverse_tools.h                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 11:47:31 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/16 09:05:16 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/20 12:52:25 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ long	sh_traverse_tools_search(t_ast_node *node, int searched_symbol_id);
 /*
 ** sh_traverse_tools_browse_redirection.c
 */
-int		loop_traverse_redirection( t_ast_node *node, t_context *context);
+int		loop_traverse_redirection(t_ast_node *node, t_context *context);
 int		loop_traverse_compound_redirection(
 	t_ast_node *node, t_context *context);
 long	sh_traverse_tools_browse_redirection(

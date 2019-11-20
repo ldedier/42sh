@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/22 19:04:46 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/13 08:53:55 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/15 15:07:40 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,12 +19,12 @@ launch "cd"
 	test_launch 'CDPATH=""' 'cd srcs ; echo $? ; pwd' 'cd objs ; echo $? ; pwd' 'cd logs ; echo $? ; pwd' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
 	test_launch 'CDPATH=""' 'cd ~ ; pwd' ' cd - ; pwd' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
 	test_launch 'CDPATH="/"'    'cd srcs ; echo $? ; pwd' 'cd Desktop ; echo $? ; pwd' 'cd tmp ; echo $? ; pwd' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
-	test_launch 'CDPATH="$HOME' 'cd srcs ; echo $? ; pwd' 'cd Desktop ; echo $? ; pwd' 'cd tmp ; echo $? ; pwd' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
-	test_launch 'CDPATH=":$HOME:/' 'cd srcs ; echo $? ; pwd' 'cd Desktop ; echo $? ; pwd' 'cd tmp ; echo $? ; pwd' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
-	test_launch 'CDPATH=":::::$HOME:/' 'cd srcs ; echo $? ; pwd' 'cd Desktop ; echo $? ; pwd' 'cd tmp ; echo $? ; pwd' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
-	test_launch 'CDPATH="/:$HOME' 'cd srcs ; echo $? ; pwd' 'cd Desktop ; echo $? ; pwd' 'cd tmp ; echo $? ; pwd' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
-	test_launch 'CDPATH="/:$HOME:' 'cd srcs ; echo $? ; pwd' 'cd Desktop ; echo $? ; pwd' 'cd tmp ; echo $? ; pwd' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
-	test_launch 'CDPATH="/:$HOME:::::' 'cd srcs ; echo $? ; pwd' 'cd Desktop ; echo $? ; pwd' 'cd tmp ; echo $? ; pwd' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
+	test_launch 'CDPATH="$HOME"' 'cd srcs ; echo $? ; pwd' 'cd Desktop ; echo $? ; pwd' 'cd tmp ; echo $? ; pwd' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
+	test_launch 'CDPATH=":$HOME:/"' 'cd srcs ; echo $? ; pwd' 'cd Desktop ; echo $? ; pwd' 'cd tmp ; echo $? ; pwd' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
+	test_launch 'CDPATH=":::::$HOME:/"' 'cd srcs ; echo $? ; pwd' 'cd Desktop ; echo $? ; pwd' 'cd tmp ; echo $? ; pwd' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
+	test_launch 'CDPATH="/:$HOME"' 'cd srcs ; echo $? ; pwd' 'cd Desktop ; echo $? ; pwd' 'cd tmp ; echo $? ; pwd' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
+	test_launch 'CDPATH="/:$HOME:"' 'cd srcs ; echo $? ; pwd' 'cd Desktop ; echo $? ; pwd' 'cd tmp ; echo $? ; pwd' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
+	test_launch 'CDPATH="/:$HOME:::::"' 'cd srcs ; echo $? ; pwd' 'cd Desktop ; echo $? ; pwd' 'cd tmp ; echo $? ; pwd' 'cd ; echo $? ; pwd ; cd - ; echo $? ; pwd'
 
 	test_launch "CDPATH=~/ cd Desktop ; pwd ; cd .. ; pwd"
 	test_launch "CDPATH=/bin:/:~/ cd Desktop ; pwd ; cd .. ; pwd"
@@ -36,9 +36,9 @@ launch "cd"
 	test_launch "CDPATH=:~/ ; cd Desktop ; pwd ; cd .. ; pwd"
 	test_launch "CDPATH=:/ ; cd Desktop ; pwd ; cd .. ; pwd"
 	test_launch "CDPATH=:/: ; cd Desktop ; pwd ; cd .. ; pwd"
-	test_launch "export CDPATH=~/ ; cd Desktop ; pwd ; cd .. ; pwd"
-	test_launch "export CDPATH=/: ; cd Desktop ; pwd ; cd .. ; pwd"
-	test_launch "export CDPATH=/:~/ ; cd Desktop ; pwd ; cd .. ; pwd"
+	test_launch "CDPATH=~/ ; cd Desktop ; pwd ; cd .. ; pwd"
+	test_launch "CDPATH=/: ; cd Desktop ; pwd ; cd .. ; pwd"
+	test_launch "CDPATH=/:~/ ; cd Desktop ; pwd ; cd .. ; pwd"
 
 	test_launch "CDPATH=/ cd tmp ; pwd ; cd .. ; pwd"
 	test_launch "CDPATH=/:. cd tmp ; pwd ; cd .. ; pwd"

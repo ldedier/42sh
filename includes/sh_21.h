@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_21.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/30 15:48:56 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/15 11:49:46 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/20 12:50:47 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@
 # define COL_MAGENTA	"\033[0;35m"
 # define COL_B_MAGENTA	"\033[1;35m"
 # define COLOR_END		"\033[1;0m"
+
 /*
 ** ANSI color constants
 */

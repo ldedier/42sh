@@ -3,12 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   sh_execute_execve.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 11:52:40 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/14 16:03:02 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/18 07:51:13 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "sh_21.h"
+#include "sh_job_control.h"
 
 #include "sh_21.h"
 #include "sh_job_control.h"
@@ -27,9 +30,12 @@ void		sh_execute_execve(t_ast_node *father_node, t_context *context)
 			sh_perror_err(context->params->tbl[0], SH_ERR1_CMD_NOT_FOUND);
 			exit(SH_RET_CMD_NOT_FOUND);
 		}
-		if (sh_traverse_sc_check_perm(context,
-					context->path, context->path) != SUCCESS)
-			exit(SH_RET_NO_PERM);
+		if ((ret = sh_traverse_sc_check_perm(context,
+					context->path, context->path)) != SUCCESS)
+		{
+			sh_env_update_ret_value(context->shell, ret);
+			exit(context->shell->ret_value);
+		}
 		close(g_term_fd);
 		execve(context->path, (char **)context->params->tbl,
 				(char **)context->env->tbl);

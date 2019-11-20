@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   sh_history.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/15 15:40:47 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/18 15:20:24 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/20 12:51:46 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SH_HISTORY_H
 # define SH_HISTORY_H
 
-#include "libft.h"
+# include "libft.h"
 
 # define HISTORY_FILE			".history"
 # define MAX_LEN_HISTORY_ENTRY	5000
@@ -36,12 +36,12 @@ typedef struct		s_history_expander
 	int				*expanded;
 }					t_history_expander;
 
-typedef struct      s_history
+typedef struct		s_history
 {
-	t_dlist         *head;
-	t_dlist         *commands;
-	t_dlist         head_start;
-	int             should_add : 1;
+	t_dlist			*head;
+	t_dlist			*commands;
+	t_dlist			head_start;
+	int				should_add : 1;
 	int				start_index;
 	int				nb_entries;
 	int				from;

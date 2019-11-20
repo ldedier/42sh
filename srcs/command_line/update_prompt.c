@@ -37,6 +37,27 @@ int		update_prompt_context(t_shell *shell, t_command_line *command_line,
 		if (!(*new_prompt = ft_strdup(DQUOTE_PROMPT)))
 			return (sh_perror(SH_ERR1_MALLOC, "update_prompt"));
 	}
+	else if (command_line->context == E_CONTEXT_PIPE)
+	{
+		if (!(*new_prompt = ft_strdup(PIPE_PROMPT)))
+			return (sh_perror(SH_ERR1_MALLOC, "update_prompt"));
+	}
+	else if (command_line->context == E_CONTEXT_PRCSUBST_OUT
+		|| command_line->context == E_CONTEXT_PRCSUBST_IN)
+	{
+		if (!(*new_prompt = ft_strdup(PROCSUBST_PROMPT)))
+			return (sh_perror(SH_ERR1_MALLOC, "update_prompt"));
+	}
+	else if (command_line->context == E_CONTEXT_CMDSUBST)
+	{
+		if (!(*new_prompt = ft_strdup(CMDSUBST_PROMPT)))
+			return (sh_perror(SH_ERR1_MALLOC, "update_prompt"));
+	}
+	else if (command_line->context == E_CONTEXT_VARIABLE)
+	{
+		if (!(*new_prompt = ft_strdup(VARIABLE_PROMPT)))
+			return (sh_perror(SH_ERR1_MALLOC, "update_prompt"));
+	}
 	else if (!(*new_prompt = ft_strdup(BACKSLASH_PROMPT)))
 		return (sh_perror(SH_ERR1_MALLOC, "update_prompt"));
 	return (SUCCESS);
@@ -110,6 +131,8 @@ int		update_prompt(t_shell *shell, t_command_line *command_line)
 	return (SUCCESS);
 }
 
+
+
 int		update_prompt_from_quote(t_shell *shell, t_command_line *command_line,
 			char quote, int backslash)
 {
@@ -119,6 +142,16 @@ int		update_prompt_from_quote(t_shell *shell, t_command_line *command_line,
 			command_line->context = E_CONTEXT_QUOTE;
 		else if (quote == '\"')
 			command_line->context = E_CONTEXT_DQUOTE;
+		else if (quote == '<')
+			command_line->context = E_CONTEXT_PRCSUBST_IN;
+		else if (quote == '>')
+			command_line->context = E_CONTEXT_PRCSUBST_OUT;
+		else if (quote == '(')
+			command_line->context = E_CONTEXT_CMDSUBST;
+		else if (quote == '{')
+			command_line->context = E_CONTEXT_VARIABLE;
+		else if (quote == '|')
+			command_line->context = E_CONTEXT_PIPE;
 	}
 	else
 		command_line->context = E_CONTEXT_BACKSLASH;

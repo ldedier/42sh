@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 13:31:28 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/15 16:02:57 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/20 13:01:42 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,20 @@ static int	sh_expansions_globbing_matches(
 	return (SUCCESS);
 }
 
+void		t_regexp_show_tab(t_dy_tab *regexp_tab)
+{
+	t_list	**tbl;
+	int		i;
+
+	i = 0;
+	tbl = (t_list**)regexp_tab->tbl;
+	while (tbl[i])
+	{
+		t_regexp_show_list(tbl[i]);
+		i++;
+	}
+}
+
 /*
 ** pattern matching (globing) : *, ?, [], !, intervals with '-'
 **
@@ -74,10 +88,12 @@ int			sh_expansions_globbing(t_ast_node *node, t_dy_tab *quotes)
 	str = node->token->value;
 	if (!ft_strpbrk(str, "?[*"))
 		return (SUCCESS);
-	if ((ret = sh_regexp_parse(str, &regexp_tab)) == FAILURE)// leaks ?
+	if ((ret = sh_glob_lexer(str, &regexp_tab, quotes)) == FAILURE)
 		return (ret);
 	else if (ret == ERROR)
 		return (SUCCESS);
+	if (sh_verbose_globbing())
+		t_regexp_show_tab(regexp_tab);
 	init_path(&path, str);
 	ret = sh_expansions_pattern_matching(
 		path, (t_list**)regexp_tab->tbl, &matches);

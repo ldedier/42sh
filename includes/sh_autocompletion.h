@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/22 14:59:37 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/04 19:16:25 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/20 02:25:20 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ typedef struct		s_exec
 	t_ast_node		*cst_root;
 }					t_exec;
 
-typedef struct		t_choice_filler
+typedef struct		s_choice_filler
 {
 	char			*transformed_path;
 	char			*path;

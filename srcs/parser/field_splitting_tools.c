@@ -6,23 +6,23 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/07 15:38:10 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/18 10:02:26 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/20 12:56:02 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-static t_ast_node	*sh_add_word_to_ast_first(t_ast_node *parent,
-		t_ast_node **to_add)
-{
-	if (ft_lstaddnew_ptr(&parent->children, *to_add,
-		sizeof(t_ast_node *)))
-	{
-		sh_free_ast_node(to_add, 0);
-		return (sh_perrorn(SH_ERR1_MALLOC, "sh_add_word_to_ast_first"));
-	}
-	return (*to_add);
-}
+//static t_ast_node	*sh_add_word_to_ast_first(t_ast_node *parent,
+//		t_ast_node **to_add)
+//{
+//	if (ft_lstaddnew_ptr(&parent->children, *to_add,
+//		sizeof(t_ast_node *)))
+//	{
+//		sh_free_ast_node(to_add, 0);
+//		return (sh_perrorn(SH_ERR1_MALLOC, "sh_add_word_to_ast_first"));
+//	}
+//	return (*to_add);
+//}
 
 static int			sh_process_add_new_ast_node(t_list *ptr,
 			t_ast_node *previous_word, t_ast_node **new_node)
@@ -67,12 +67,14 @@ t_ast_node			*sh_add_word_to_ast(t_ast_node *previous_word,
 		free(value);
 		return (NULL);
 	}
-	if (previous_word == NULL)
-		return (sh_add_word_to_ast_first(previous_word->parent, &new_node));
+//	if (previous_word == NULL)
+//		return (sh_add_word_to_ast_first(previous_word->parent, &new_node));
 	while (ptr != NULL)
 	{
 		if ((ret = sh_process_add_new_ast_node(ptr, previous_word, &new_node)))
+		{
 			return (new_node);
+		}
 		ptr = ptr->next;
 	}
 	free(value);

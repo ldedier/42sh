@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_node_tools.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 20:10:04 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/15 15:56:13 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/20 12:56:12 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ t_ast_node	*sh_new_ast_node(t_symbol_id id, char *value, t_cfg *cfg)
 		t_token_free(token);
 		return (sh_perrorn(SH_ERR1_MALLOC, "new_ast_node (2)"));
 	}
+	token->give_as_arg = 1;
 	sh_init_ast_node(res, token, &g_glob.cfg->symbols[sh_index(id)], NULL);
 	res->builder = NULL;
 	return (res);

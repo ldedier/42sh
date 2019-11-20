@@ -1,4 +1,8 @@
 ##Useless files
+tester_dir
+GPATH
+GRTAGS
+GTAGS
 .ycm_extra_conf.py
 .my_supp.supp
 ok

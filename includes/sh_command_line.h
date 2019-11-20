@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/11 17:20:10 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/04 21:28:47 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/20 02:14:34 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,10 @@
 # define BACKSLASH_PROMPT	""
 # define QUOTE_PROMPT		"quote"
 # define DQUOTE_PROMPT		"dquote"
+# define PIPE_PROMPT		"pipe"
+# define PROCSUBST_PROMPT	"procsubst"
+# define CMDSUBST_PROMPT	"cmdsubst"
+# define VARIABLE_PROMPT	"braceparam"
 
 # define COMMAND_PROMPT	"(vi"
 # define COUNT_PROMPT	"(arg:"
@@ -37,6 +41,7 @@
 
 typedef char *(*t_heredoc_func)(const char *);
 typedef struct s_entry		t_entry;
+typedef struct s_command_line	t_command_line;
 
 typedef enum		e_edit_style
 {
@@ -58,6 +63,11 @@ typedef enum		e_cl_context
 	E_CONTEXT_HEREDOC,
 	E_CONTEXT_DQUOTE,
 	E_CONTEXT_QUOTE,
+	E_CONTEXT_PRCSUBST_IN,
+	E_CONTEXT_PRCSUBST_OUT,
+	E_CONTEXT_CMDSUBST,
+	E_CONTEXT_VARIABLE,
+	E_CONTEXT_PIPE,
 	E_CONTEXT_BACKSLASH,
 }					t_cl_context;
 
@@ -69,7 +79,6 @@ typedef struct		s_searcher
 	int				match_index;
 	int				unsuccessful;
 }					t_searcher;
-
 
 typedef struct		s_key_buffer
 {
@@ -120,9 +129,8 @@ typedef struct		s_save
 ** count			: vim arguments
 ** last_ft_command	: last f, F, t, or T command executed by the shell
 ** edit_line		: dup from the command_line to retrieve from history
-**
 */
-typedef struct		s_command_line
+struct				s_command_line
 {
 	t_shell			*shell;
 	t_auto_complete	autocompletion;
@@ -151,7 +159,7 @@ typedef struct		s_command_line
 	t_list			*saves_stack;
 	int				edit_counter;
 	int				mark_index;
-}					t_command_line;
+};
 
 typedef struct		s_xy
 {

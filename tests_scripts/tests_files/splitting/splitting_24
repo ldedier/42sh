@@ -1,0 +1,4 @@
+unset IFS
+var="   AAAhoho   A   A  hihi   AA   blop   A   Atitatou    "
+echo $var | cat -e
+echo "$var" | cat -e

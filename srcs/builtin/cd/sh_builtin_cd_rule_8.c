@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 13:33:24 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/12 00:26:21 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/16 19:59:01 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,8 @@ static void	sh_builtin_cd_rule8_c(char **curpath)
 **		SUCCESS : Everything is fine
 */
 
-int			sh_builtin_cd_rule8(char **curpath, char *param)
+int			sh_builtin_cd_rule8(char **curpath)
 {
-	if (sh_builtin_cd_check_perms(*curpath, param))
-		return (ERROR);
 	sh_builtin_cd_rule8_a(curpath);
 	if (sh_verbose_builtin())
 		ft_dprintf(2, MAGENTA"cd : removed . : curpath = %s\n"EOC, *curpath);

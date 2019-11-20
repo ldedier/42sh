@@ -27,12 +27,13 @@ int		process_ctrl_c(t_shell *shell, t_command_line *command_line)
 	return (CTRL_C);
 }
 
+		//	&& (command_line->context == E_CONTEXT_STANDARD
+		//		|| command_line->context == E_CONTEXT_HEREDOC
+		//			|| command_line->context == E_CONTEXT_BACKSLASH))
+
 int		process_ctrl_d(t_shell *shell, t_command_line *command_line)
 {
-	if (command_line->dy_str->current_size == 0
-			&& (command_line->context == E_CONTEXT_STANDARD
-				|| command_line->context == E_CONTEXT_HEREDOC
-					|| command_line->context == E_CONTEXT_BACKSLASH))
+	if (command_line->dy_str->current_size == 0)
 	{
 		if (command_line->context == E_CONTEXT_STANDARD
 			|| command_line->context == E_CONTEXT_BACKSLASH)

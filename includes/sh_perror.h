@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_perror.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 14:16:12 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/18 11:54:55 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/20 12:52:21 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "sh_21.h"
 
-# define SH_NAME		"bash" // need to be changed to 42sh (modified for diff tests)
+# define SH_NAME		"bash" // change to 42sh (modified for diff tests)
 # define SH_ERR_COLOR	COLOR_PINK
 
 # define SH_ERR1_MALLOC			"Malloc error occured"
@@ -58,6 +58,8 @@
 
 # define SH_ERR1_DIV_ZERO		"Division by 0"
 
+typedef struct s_lexer			t_lexer;
+
 /*
 ********************************************************************************
 */
@@ -68,6 +70,7 @@
 int		sh_perror(const char *error, const char *suffix);
 int		sh_perror_err(const char *error, const char *suffix);
 void	*sh_perrorn(const char *error, const char *suffix);
+int		sh_perror_unexpected_eof(t_lexer *lexer);
 
 /*
 ** sh_perror2.c

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/15 16:08:40 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/15 15:08:48 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/20 12:53:21 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ static int	sh_process_command(t_shell *shell, char *command)
 		if (sh_env_update_ret_value_and_question(shell, ret) == FAILURE)
 			ret = sh_perror(SH_ERR1_MALLOC, "sh_process_command (2)");
 		ft_lstdel(&res.tokens, sh_free_token_lst);
+		if (!isatty(0))
+			shell->running = 0;
 	}
 	else
 	{

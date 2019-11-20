@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/04 11:17:39 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/19 11:55:59 by jmartel          ###   ########.fr       */
+/*   Created: 2019/11/20 13:01:18 by jmartel           #+#    #+#             */
+/*   Updated: 2019/11/20 13:01:23 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ static int	double_quote(
 {
 	int	ret;
 
+	ret = SUCCESS;///
 	if (t_quote_add_new(quotes, *index, (*input) + *index))
 		return (sh_perror(SH_ERR1_MALLOC, "double_quote"));
 	(*index) += 1;
@@ -116,7 +117,7 @@ int			sh_expansions_scan(char **input, int index,
 	else
 	{
 		if (t_quote_add_new(quotes, index, (*input) + index))
-			return (sh_perror(SH_ERR1_MALLOC, "double_quote"));
+			return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_scan"));
 		index += 2;
 	}
 	return (sh_expansions_scan(input, index, context, quotes));

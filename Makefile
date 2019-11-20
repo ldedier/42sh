@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/11/18 15:41:38 by ldedier          ###   ########.fr        #
+#    Updated: 2019/11/20 12:50:23 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,6 +49,7 @@ VPATH		= $(INCLUDESDIR) \
 			  $(SRCDIR)/exec \
 			  $(SRCDIR)/expansions \
 			  $(SRCDIR)/globbing \
+			  $(SRCDIR)/globbing/lexer \
 			  $(SRCDIR)/grammar \
 			  $(SRCDIR)/job_control \
 			  $(SRCDIR)/job_control/job_get_string \
@@ -292,7 +293,7 @@ SRCS			+=	vshortcuts.c \
 ################################################################
 SRCS			+=	sh_vars_tools_1.c sh_vars_tools_2.c \
 					sh_verbose.c sh_verbose_check.c sh_env_tools.c \
-					sh_env.c sh_env_save.c
+					sh_env.c sh_env_save.c sh_env_save_tools.c
 
 ################################################################
 ########						EXEC					########
@@ -358,20 +359,28 @@ SRCS			+=	sh_builtin.c sh_builtin_pwd.c \
 SRCS			 +=	sh_expansions.c \
 					sh_expansions_parameter.c \
 					sh_expansions_parameter_process.c \
+					sh_expansions_parameter_str_removal.c \
 					sh_expansions_parameter_tools.c \
 					sh_expansions_tilde.c \
-					sh_expansions_variable.c t_expansion.c \
+					sh_expansions_tilde_tools.c \
+					sh_expansions_variable.c \
+					sh_expansions_variable_detect.c \
 					sh_expansions_process.c sh_expansions_replace.c \
 					sh_expansions_field_splitting.c \
+					sh_expansions_field_splitting_get_word.c \
+					sh_expansions_field_splitting_tools.c \
+					sh_expansions_field_splitting_nws_tools.c \
+					sh_expansions_field_splitting_quote_tools.c \
 					sh_expansions_quote_removal.c \
 					sh_expansions_scan.c \
 					sh_expansions_history.c \
 					sh_expansions_history_expand.c \
 					sh_expansions_cmd_subst.c \
+					sh_expansions_cmd_subst_tools.c \
 					sh_expansions_proc_subst_in.c \
 					sh_expansions_proc_subst_out.c \
 					sh_expansions_arithmetic.c \
-					t_quote.c
+					t_expansion.c t_quote.c
 
 ################################################################
 ########					GLOBBING					########
@@ -390,6 +399,14 @@ SRCS			+=	sh_globbing.c \
 					sh_pattern_matching_str.c \
 					sh_pattern_matching_quest.c \
 					sh_pattern_matching_brace.c \
+					sh_pattern_matching_brace_tools.c \
+					sh_glob_lexer.c \
+					sh_glob_lexer_rule_1.c \
+					sh_glob_lexer_rule_2.c \
+					sh_glob_lexer_rule_3.c \
+					sh_glob_lexer_rule_4.c \
+					sh_glob_lexer_rule_5.c \
+					sh_glob_lexer_rule_6.c \
 					t_regexp.c
 
 ################################################################
