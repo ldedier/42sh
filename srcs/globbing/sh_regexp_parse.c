@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 23:53:16 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/09 06:21:57 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/20 06:52:01 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,19 +98,16 @@ int			sh_regexp_parse_path_component(char *str, t_list **regexp_list)
 **		FAILURE : Malloc error
 */
 
-static int	init_split_table(char *str, char ***split, t_dy_tab **regexp_tab)
+static int	init_dy_tab_regexp(char *str, t_dy_tab **regexp_tab)
 {
-	if (*str == '.' && *str == '/')
-		str += 2;
-	else if (*str == '/')
-		str++;
-	if (!(*split = ft_strsplit(str, '/')))
-		return (sh_perror(SH_ERR1_MALLOC, "init_split_table (1)"));
-	if (!(*regexp_tab = ft_dy_tab_new(ft_strtab_len(*split) + 1)))
-	{
-		ft_strtab_free(*split);
+	char	*path;
+	int		len;
+
+	len = 0;
+	while ((path = ft_strsep(&str, "/")))
+		len++;
+	if (!(*regexp_tab = ft_dy_tab_new(len + 1)))
 		return (sh_perror(SH_ERR1_MALLOC, "init_split_table (2)"));
-	}
 	return (SUCCESS);
 }
 
@@ -125,28 +122,31 @@ static int	init_split_table(char *str, char ***split, t_dy_tab **regexp_tab)
 **		FAILURE : malloc error
 */
 
-int			sh_regexp_parse(char *str, t_dy_tab **regexp_tab)
+int			sh_regexp_parse(char *str, t_dy_tab **regexp_tab, t_dy_tab *quotes)
 {
 	int		i;
 	int		ret;
-	char	**split;
+	char	*path;
 	t_list	**list_tab;
 
-	if (init_split_table(str, &split, regexp_tab) == FAILURE)
+	if (init_dy_tab_regexp(str, regexp_tab) == FAILURE)
 		return (FAILURE);
 	list_tab = (t_list**)(*regexp_tab)->tbl;
 	i = 0;
 	ret = SUCCESS;
-	while (split[i] && !ret)
+	while ((path = ft_strsep(&str, "/")) && !ret)
 	{
+		if (!*path)
+			continue ;
 		ft_dy_tab_add_ptr(*regexp_tab, NULL);
 		list_tab[i] = NULL;
-		ret = sh_regexp_parse_path_component(split[i], &(list_tab[i]));
+		ret = sh_regexp_parse_path_component(path, &(list_tab[i]));
 		i++;
 	}
+	ft_strsep(NULL, NULL);
 	check_for_final_slash(str, list_tab, i - 1);
-	ft_strtab_free(split);
 	if (ret)
 		t_regexp_free_tab(regexp_tab);
 	return (ret);
+	(void)quotes;//
 }

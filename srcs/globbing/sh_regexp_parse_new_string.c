@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 03:34:30 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/07 04:47:34 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/20 06:57:23 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void	remove_quotes_in_value(char *str, int i, char quoted)
 		else if (quoted)
 		{
 			while (str[i] != quoted)
-				quoted == '"' && str[i] == '\\' ? ft_strdelchar(str, i) : i++;
+				quoted == '"' && str[i] == '\\' ? ft_strdelchar(str, i) : i++; // delete but is not escaping next char
 			quoted = 0;
 			ft_strdelchar(str, i);
 		}

@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 04:48:28 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/10 09:00:31 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/20 05:05:11 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ static int	backslash(char *name, t_regexp *regexp, int *i, int *j)
 	ret = sh_pattern_matching_brace_simple(name, regexp, i, j);
 	if (ret != FAILURE)
 		return (ret);
-	(*j)++;
+	(*j) += 1;
 	return (FAILURE);
 }
 
@@ -136,7 +136,7 @@ static int	unquoted(char *name, t_regexp *regexp, int *i, int *j)
 {
 	int		ret;
 
-	if (regexp->value[*j + 1] == '-' && regexp->value[*j + 2] != ']')
+	if (regexp->value[*j + 1] == '-' && regexp->value[*j + 2])
 		ret = sh_pattern_matching_brace_dash(name, regexp, i, j);
 	else
 		ret = sh_pattern_matching_brace_simple(name, regexp, i, j);
