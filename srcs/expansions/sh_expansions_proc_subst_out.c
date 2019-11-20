@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 14:29:58 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/16 20:59:25 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/20 03:06:20 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,12 @@
 
 int			sh_expansions_proc_subst_out_detect(char *start)
 {
-	int     i;
-	int     quoted;
-	int     parenthesis;
+	int	i;
+	int	quoted;
+	int	parenthesis;
 
 	i = 0;
+	// ft_dprintf(2, "start : %s\n", start);
 	if (start[0] != '<' || start[1] != '(')
 		return (-1);
 	quoted = 0;
@@ -45,7 +46,7 @@ int			sh_expansions_proc_subst_out_detect(char *start)
 
 int			sh_expansions_proc_subst_out_fill(t_expansion *exp, char *start)
 {
-	int     i;
+	int	i;
 
 	i = sh_expansions_proc_subst_out_detect(start);
 	if (i == -1)
@@ -76,7 +77,9 @@ static char	*sh_get_process_subst_out(t_shell *shell,
 		if (dup2(fds[PIPE_IN], STDOUT_FILENO) < 0)
 			return (sh_perrorn(SH_ERR1_INTERN_ERR, "sh_get_process_subst_in"));
 		close(fds[PIPE_OUT]);
+		g_job_ctrl->interactive = 0;
 		ret = execute_command(shell, command, 0);
+		g_job_ctrl->interactive = 1;
 		close(fds[PIPE_IN]);
 		sh_free_all(shell);
 		exit(ret);
@@ -86,13 +89,12 @@ static char	*sh_get_process_subst_out(t_shell *shell,
 		close(fds[PIPE_IN]);
 		if (!(str = sh_get_fd_string(fds[PIPE_OUT])))
 			return (NULL);
-		(void)redirections;
 		if (sh_add_redirection_pipe(fds[PIPE_OUT], redirections))
 		{
 			free(str);
 			return (NULL);
 		}
-		wait(NULL); //to remove !
+		waitpid(child, &ret, WNOHANG); //to remove !
 		return (str);
 	}
 }

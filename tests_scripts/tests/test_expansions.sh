@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/23 13:10:40 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/15 14:03:49 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/18 13:31:01 by jdugoudr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -74,7 +74,7 @@ launch "Expansions"
 	test_launch 'var='\'''\''$HOME ; echo $var'
 	test_launch 'var='\''$HOME'\'' ; echo $var'
 	test_launch 'var=\"$HOME\" ; echo $var'
-	test_launch 'var='\sd\'\''$HOME ; echo $var'
+	test_launch 'var='\sd\'' $HOME ; echo $var'
 	test_launch 'var=$ASD ; echo $var'
 	test_launch 'var=asd'\''$ASD'\'' ; echo $var'
 	test_launch 'var="Okalm os speculos"$USER ; echo $var'
@@ -126,6 +126,9 @@ launch "Expansions"
 	test_launch 'var=">file"' 'echo oklam $var' 'cat file ; rm -f file'
 
 	launch_show "invalid names"
+	test_launch 'var=tamer okalm=speculos' 'echo $%%$var ; echo $+++$+++ ; echo \$\$$&---$okalm$++'
+	test_launch 'var=tamer okalm=speculos' 'echo \$var$%%$var' 'echo "$var$%%$novar$%%"'
+	test_launch 'var=tamer okalm=speculos' 'echo \$var$%%$var' 'echo "\$var\$%%\$novar\$%%"'
 	test_launch 'var=tamer okalm=speculos' 'echo $%%$var'
 	test_launch 'var=tamer okalm=speculos' 'echo $+++$+++'
 	test_launch 'var=tamer okalm=speculos' 'echo $\$\$+++$okalm$++'

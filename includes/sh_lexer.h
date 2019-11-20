@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 11:08:27 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/16 13:58:18 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/20 02:09:49 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,13 @@
 /*
 ** getpwnam: used in lexer_expansion_process_tilde.c
 */
+
 # include <pwd.h>
 
 /*
 ** Possible states for the lexer, returned by lexer functions
 */
+
 # define LEX_OK			SUCCESS
 # define LEX_ERR		ERROR
 # define LEX_FAIL		FAILURE
@@ -84,7 +86,7 @@ typedef struct		s_token_union
 	char			*str;
 }					t_token_union;
 
-typedef struct		s_token
+struct				s_token
 {
 	t_token_union	token_union;
 	t_symbol_id		id;
@@ -94,8 +96,9 @@ typedef struct		s_token
 	int				index_start;
 	int				index_end;
 	int				apply_heredoc_expansion;
+	int				give_as_arg;
 	t_ast_node		*ast_node;
-}					t_token;
+};
 
 /*
 ********************************************************************************

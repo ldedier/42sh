@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 14:29:58 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/16 20:59:49 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/20 03:06:11 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,12 @@
 
 int			sh_expansions_proc_subst_in_detect(char *start)
 {
-	int     i;
-	int     quoted;
-	int     parenthesis;
+	int	i;
+	int	quoted;
+	int	parenthesis;
 
 	i = 0;
+	// ft_dprintf(2, "start : %s\n", start);
 	if (start[0] != '>' || start[1] != '(')
 		return (-1);
 	quoted = 0;
@@ -45,7 +46,7 @@ int			sh_expansions_proc_subst_in_detect(char *start)
 
 int			sh_expansions_proc_subst_in_fill(t_expansion *exp, char *start)
 {
-	int     i;
+	int	i;
 
 	i = sh_expansions_proc_subst_in_detect(start);
 	if (i == -1)
@@ -91,7 +92,9 @@ char		*sh_get_process_subst_in(t_shell *shell, char *command,
 		if (dup2(fds[PIPE_OUT], STDIN_FILENO) < 0)
 			return (sh_perrorn(SH_ERR1_INTERN_ERR, "sh_get_process_subst_in"));
 		close(fds[PIPE_IN]);
+		g_job_ctrl->interactive = 0;
 		ret = execute_command(shell, command, 0);
+		g_job_ctrl->interactive = 1;
 		close(fds[PIPE_OUT]);
 	//	ft_printf("done pid: %zu\n", getpid());
 		sh_free_all(shell);

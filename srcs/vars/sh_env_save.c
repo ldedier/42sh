@@ -6,45 +6,11 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/20 14:48:43 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/10 15:47:28 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/20 03:01:46 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
-
-/*
-** restore_command_clean:
-**	Delete assignment in env table that are not in saved_env table,
-**	and delete empty assignments in env table.
-**	Function used after restoring env in a command case.
-*/
-
-static void	restore_command_clean(t_context *context)
-{
-	int		i;
-	char	**tbl;
-
-	tbl = (char**)context->env->tbl;
-	i = 0;
-	while (tbl[i])
-	{
-		if (!ft_strchr(tbl[i], '='))
-		{
-			if (sh_verbose_exec())
-				ft_dprintf(2, GREEN"deleted empty var : %s\n"EOC, tbl[i]);
-			ft_dy_tab_suppr_index(context->env, i);
-		}
-		else if (sh_env_save_get_index(context->saved_env, tbl[i]) == -1)
-		{
-			if (sh_verbose_exec())
-				ft_dprintf(2, GREEN"deleted old var : %s\n"EOC, tbl[i]);
-			ft_dy_tab_suppr_index(context->env, i);
-		}
-		else
-			i++;
-	}
-	return ;
-}
 
 /*
 ** sh_env_save_restore_command_run:
@@ -86,7 +52,7 @@ static int	sh_env_save_restore_command_run(
 **	The aim is to synchronize env with the content of saved_env.
 **	For every assignment in saved_env if entry is not in env, it's added,
 **	if entry exist but value is not the same it is updated in env.
-**	Finally restore_command_clean delete any entry in env
+**	Finally sh_env_save_restore_command_clean delete any entry in env
 **	that is not in saved_env and any non assigned key in env.
 **
 **	Returned Values:
@@ -114,7 +80,7 @@ static int	sh_env_save_restore_command(t_context *context)
 		if (ret != SUCCESS)
 			return (ret);
 	}
-	restore_command_clean(context);
+	sh_env_save_restore_command_clean(context);
 	return (SUCCESS);
 }
 
@@ -171,10 +137,7 @@ static int	sh_env_save_restore_no_command(t_context *context)
 	while (tbl[i])
 	{
 		if (!(equal = ft_strchr(tbl[i], '=')))
-		{
-			ft_dprintf(2, RED"ERROR reported by sh_env_save_restore_no_command : please inform jmartel with current commands\n"EOC); // to del
 			return (FAILURE);
-		}
 		ret = sh_env_save_restore_no_command_run(context, tbl, &i, equal);
 		if (ret)
 			return (ret);
@@ -199,34 +162,4 @@ int			sh_env_save_restore(t_context *context)
 		return (sh_env_save_restore_command(context));
 	else
 		return (sh_env_save_restore_no_command(context));
-}
-
-/*
-** sh_env_save_get_index:
-**	identical to sh_vars_get_index, but it can use and find keys that
-**	are not finished by '=' char.
-**
-**	Returned Value :
-**		-1 : key not foud
-**		Else : index of the key in saved_env
-*/
-
-int			sh_env_save_get_index(t_dy_tab *saved_env, char *key)
-{
-	int		i;
-	int		j;
-	char	**tbl;
-
-	i = 0;
-	tbl = (char**)saved_env->tbl;
-	while (tbl[i])
-	{
-		j = 0;
-		while (tbl[i][j] && key[j] && tbl[i][j] == key[j])
-			j++;
-		if (key[j] == 0 && (tbl[i][j] == '=' || tbl[i][j] == '\0'))
-			return (i);
-		i++;
-	}
-	return (-1);
 }

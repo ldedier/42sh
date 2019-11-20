@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_expansions_variable.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 13:38:26 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/15 14:06:45 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/18 11:48:47 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,10 +109,8 @@ static int	sh_expansions_fill_invalid_vars(t_expansion *exp, char *start)
 {
 	char	*value;
 	int		index;
-	char	quoted;
 
 	index = 1;
-	quoted = 0;
 	while (start[index])
 	{
 		if (start[index] == '$' || start[index] == '\\'

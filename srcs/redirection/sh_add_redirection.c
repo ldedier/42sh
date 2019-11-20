@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_add_redirection.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 10:41:47 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/04 11:24:57 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/20 02:45:56 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static int			sh_add_redirection(
 	return (sh_process_redirection(redirection, list));
 }
 
-int 				sh_add_redirection_file(
+int					sh_add_redirection_file(
 	t_redirection_type type, int redirected_fd, int fd, t_list **list)
 {
 	t_redirection	redirection;
@@ -96,7 +96,7 @@ int					sh_add_redirection_aggreg(
 	return (sh_add_redirection(redirection, list));
 }
 
-int 				sh_add_redirection_pipe(int fd, t_list **list)
+int					sh_add_redirection_pipe(int fd, t_list **list)
 {
 	t_redirection	redirection;
 

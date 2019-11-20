@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/11/16 21:04:53 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/20 03:05:23 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -285,7 +285,7 @@ SRCS			+=	vshortcuts.c \
 ################################################################
 SRCS			+=	sh_vars_tools_1.c sh_vars_tools_2.c \
 					sh_verbose.c sh_verbose_check.c sh_env_tools.c \
-					sh_env.c sh_env_save.c
+					sh_env.c sh_env_save.c sh_env_save_tools.c
 
 ################################################################
 ########						EXEC					########
@@ -359,10 +359,15 @@ SRCS			 +=	sh_expansions.c \
 					sh_expansions_variable_detect.c \
 					sh_expansions_process.c sh_expansions_replace.c \
 					sh_expansions_field_splitting.c \
+					sh_expansions_field_splitting_get_word.c \
+					sh_expansions_field_splitting_tools.c \
+					sh_expansions_field_splitting_nws_tools.c \
+					sh_expansions_field_splitting_quote_tools.c \
 					sh_expansions_quote_removal.c \
 					sh_expansions_scan.c \
 					sh_expansions_history.c \
 					sh_expansions_cmd_subst.c \
+					sh_expansions_cmd_subst_tools.c \
 					sh_expansions_proc_subst_in.c \
 					sh_expansions_proc_subst_out.c \
 					t_expansion.c t_quote.c

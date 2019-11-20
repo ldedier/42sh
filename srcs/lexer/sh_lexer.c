@@ -6,39 +6,11 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/07 16:11:41 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/16 16:02:39 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/17 21:34:36 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
-
-/*
-** sh_lexer_final_check:
-**	Check that any unknown token is present, send an error if any is founc,
-**	to avoid sending it to parser.
-**
-**	Returned Values:
-**		LEX_OK : Assignment word changed, no unknown token found.
-**		LEX_ERR : unknown / unidentified token found
-*/
-
-static int		sh_lexer_final_check(t_lexer *lexer)
-{
-	t_list	*head;
-	t_token	*token;
-
-	head = lexer->list;
-	if (!head || !head->content)
-		return (LEX_OK);
-	while (head)
-	{
-		token = (t_token*)head->content;
-		if (token->id == LEX_TOK_UNKNOWN)
-			return (sh_perror_err("lexer", "Unknow token detected"));
-		head = head->next;
-	}
-	return (LEX_OK);
-}
 
 static int		sh_lexer_run_rules(t_lexer *lexer)
 {
@@ -91,8 +63,6 @@ int				sh_lexer(char *input, t_list **tokens, t_shell *shell,
 	t_lexer		lexer;
 	int			ret;
 
-	ft_bzero(&lexer, sizeof(t_lexer));
-	lexer.next_alias_index = -1;
 	if (t_lexer_init(&lexer, mode, shell, input))
 		return (FAILURE);
 	ret = LEX_OK;
@@ -104,9 +74,8 @@ int				sh_lexer(char *input, t_list **tokens, t_shell *shell,
 		return (sh_lexer_error_ret_value(&lexer, ret));
 	if (sh_verbose_lexer())
 		t_lexer_show(&lexer);
-	ret = sh_lexer_final_check(&lexer);
 	if (sh_verbose_lexer())
 		t_lexer_show(&lexer);
 	*tokens = lexer.list;
-	return (ret);
+	return (SUCCESS);
 }
