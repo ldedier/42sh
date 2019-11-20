@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+         #
+#    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/11/19 17:59:45 by mdaoud           ###   ########.fr        #
+#    Updated: 2019/11/20 03:02:15 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -285,7 +285,7 @@ SRCS			+=	vshortcuts.c \
 ################################################################
 SRCS			+=	sh_vars_tools_1.c sh_vars_tools_2.c \
 					sh_verbose.c sh_verbose_check.c sh_env_tools.c \
-					sh_env.c sh_env_save.c
+					sh_env.c sh_env_save.c sh_env_save_tools.c
 
 ################################################################
 ########						EXEC					########

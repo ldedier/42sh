@@ -138,6 +138,11 @@ int		sh_env_save_restore(t_context *context);
 int		sh_env_save_get_index(t_dy_tab *saved_env, char *key);
 
 /*
+** sh_env_save_tools.c
+*/
+void	sh_env_save_restore_command_clean(t_context *context);
+
+/*
 ** sh_env_tools.c
 */
 char	*sh_env_get_value(char **env, char *str);
