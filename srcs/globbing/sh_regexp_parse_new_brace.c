@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 03:46:18 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/20 08:04:11 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/20 12:22:41 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,15 +52,7 @@ static void	new_brace_quoted(char *str, int *i, char *quoted)
 	}
 }
 
-/*
-** parse_new_brace_find_end:
-**	Browse str string, filling i, first_closing and quoted, until it find an
-**	error, or end of a valid brace pattern.
-**	Content of these variables will be used by sh_regexp_new_brace to
-**	determine if pattern is valid, and it's value.
-*/
-
-static void	parse_new_brace_find_end(
+static void	parse_new_brace_find_end_init(
 	char *str, int *i, int *first_closing, char *quoted)
 {
 	*first_closing = -1;
@@ -73,6 +65,20 @@ static void	parse_new_brace_find_end(
 		*first_closing = (*i);
 		(*i)++;
 	}
+}
+
+/*
+** parse_new_brace_find_end:
+**	Browse str string, filling i, first_closing and quoted, until it find an
+**	error, or end of a valid brace pattern.
+**	Content of these variables will be used by sh_regexp_new_brace to
+**	determine if pattern is valid, and it's value.
+*/
+
+static void	parse_new_brace_find_end(
+	char *str, int *i, int *first_closing, char *quoted)
+{
+	parse_new_brace_find_end_init(str, i, first_closing, quoted);
 	while (str[*i] && str[*i] != ']')
 	{
 		if (*quoted)

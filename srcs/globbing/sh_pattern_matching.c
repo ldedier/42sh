@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 07:35:43 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/20 10:29:23 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/20 12:00:37 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ static int	pattern_matching_read_directory(
 	if (sh_is_pattern_matching(dirent->d_name, *regexp_list) == SUCCESS)
 	{
 		new_path = ft_strjoin_path(path, dirent->d_name);
-		if (new_path && ((t_regexp*)(*regexp_list)->content)->type == REG_FINAL_SLASH)
+		if (new_path &&
+			((t_regexp*)(*regexp_list)->content)->type == REG_FINAL_SLASH)
 			new_path = ft_strjoin_free(new_path, "/", 1);
 		if (!new_path)
 			return (sh_perror(SH_ERR1_MALLOC, "pattern_matching"));
@@ -78,8 +79,8 @@ static int	pattern_matching_read_directory(
 			return (pattern_matching_push_new(matchs, new_path));
 		}
 	}
-	// else if (sh_verbose_globbing())
-	// 	ft_dprintf(2, RED"\t\tfound invalid path : %s\n"EOC, dirent->d_name);
+	else if (sh_verbose_globbing())
+		ft_dprintf(2, RED"\t\tfound invalid path : %s\n"EOC, dirent->d_name);
 	return (SUCCESS);
 }
 
@@ -117,8 +118,8 @@ int			sh_expansions_pattern_matching(
 	ret = SUCCESS;
 	while ((dirent = readdir(dir)) && !ret)
 	{
-		// if (sh_verbose_globbing())
-		// 	ft_dprintf(2, "working on path : %s/%s\n", path, dirent->d_name);
+		if (sh_verbose_globbing())
+			ft_dprintf(2, "working on path : %s/%s\n", path, dirent->d_name);
 		ret = pattern_matching_read_directory(
 			path, regexp_list, matchs, dirent);
 	}

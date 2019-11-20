@@ -117,6 +117,14 @@ int							sh_pattern_matching_brace(
 	char *name, t_regexp *regexp, int *i);
 
 /*
+** sh_pattern_matching_brace_tools.c
+*/
+int							sh_pattern_matching_brace_dash(
+	char *name, t_regexp *regexp, int *i, int *j);
+int							sh_pattern_matching_brace_simple(
+	char *name, t_regexp *regexp, int *i, int *j);
+
+/*
 ** sh_pattern_matching_push_new.c
 */
 int							pattern_matching_push_new(
@@ -145,8 +153,6 @@ int							sh_pattern_matching_str(
 */
 int							sh_regexp_parse_path_component(
 	char *str, t_list **regexp_list);
-int							sh_regexp_parse(
-	char *str, t_dy_tab **regexp_tab, t_dy_tab *quotes);
 
 /*
 ** sh_regexp_parse_new_brace.c

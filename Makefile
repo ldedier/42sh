@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/11/20 08:08:57 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/20 12:23:49 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -390,6 +390,7 @@ SRCS			+=	sh_globbing.c \
 					sh_pattern_matching_str.c \
 					sh_pattern_matching_quest.c \
 					sh_pattern_matching_brace.c \
+					sh_pattern_matching_brace_tools.c \
 					sh_glob_lexer.c \
 					sh_glob_lexer_rule_1.c \
 					sh_glob_lexer_rule_2.c \

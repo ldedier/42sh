@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 13:31:28 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/20 11:18:30 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/20 11:37:48 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 static int	init_path(char **path, char *str)
 {
-	while (*str && ft_strchr("'\"\\", *str)) // ican be useless if rework parser for quotes
-		str++;
 	if (*str == '/')
 		*path = ft_strdup("/");
 	else
@@ -90,7 +88,7 @@ int			sh_expansions_globbing(t_ast_node *node, t_dy_tab *quotes)
 	str = node->token->value;
 	if (!ft_strpbrk(str, "?[*"))
 		return (SUCCESS);
-	if ((ret = sh_regexp_parse(str, &regexp_tab, quotes)) == FAILURE)// leaks ?
+	if ((ret = sh_glob_lexer(str, &regexp_tab, quotes)) == FAILURE)
 		return (ret);
 	else if (ret == ERROR)
 		return (SUCCESS);
