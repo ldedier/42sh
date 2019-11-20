@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 19:42:15 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/04 19:42:22 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/20 21:47:50 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int		process_populate_word_by_index(t_word *word,
 		if (!(word->str = ft_strndup(&word->to_compare[word->start_index],
 						word->len)))
 			return (1);
-		word->utf8_len = ft_strlen_utf8(word->str);
+		word->utf8_len = ft_nb_columns(word->str);
 	}
 	else
 		return (process_populate_empty_word(word));

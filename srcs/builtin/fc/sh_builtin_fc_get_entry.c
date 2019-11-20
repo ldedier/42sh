@@ -6,19 +6,36 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/16 04:49:32 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/17 19:40:08 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/17 15:17:59 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-static t_dlist		*get_entry_from_positive_number(t_history *history,
-		int number, int fc)
+static t_dlist		*get_existing_entry_from_positive_number(t_history *history,
+	int number)
 {
 	int		first;
 	t_entry	*entry;
 	t_dlist	*ptr;
 
+	ptr = history->commands;
+	first = 1;
+	while ((ptr != history->commands && ptr != NULL)
+			|| (first && ptr != NULL))
+	{
+		entry = (t_entry *)ptr->content;
+		if (entry->number == number)
+			return (ptr);
+		ptr = ptr->next;
+		first = 0;
+	}
+	return (NULL);
+}
+
+static t_dlist		*get_entry_from_positive_number(t_history *history,
+		int number, int fc)
+{
 	if (!history->nb_entries)
 		return (NULL);
 	else if (number > history->nb_entries)
@@ -29,20 +46,7 @@ static t_dlist		*get_entry_from_positive_number(t_history *history,
 			return (NULL);
 	}
 	else
-	{
-		ptr = history->commands;
-		first = 1;
-		while ((ptr != history->commands && ptr != NULL)
-			|| (first && ptr != NULL))
-		{
-			entry = (t_entry *)ptr->content;
-			if (entry->number == number)
-				return (ptr);
-			ptr = ptr->next;
-			first = 0;
-		}
-		return (NULL);
-	}
+		return (get_existing_entry_from_positive_number(history, number));
 }
 
 static t_dlist		*get_entry_from_number(t_history *history,

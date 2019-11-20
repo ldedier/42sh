@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 17:42:22 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/17 20:07:37 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/17 15:32:47 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,16 +61,6 @@ void	sh_builtin_fc_list(t_history *history, t_dlist *from,
 		t_entry_print(ptr->content, !opt_n);
 }
 
-void	print_fc_operand(t_fc_operand *op)
-{
-	if (op->type == E_FC_STRING)
-	{
-		ft_printf("string: %s\n", op->un.string);
-	}
-	else
-		ft_printf("int: %d\n", op->un.integer);
-}
-
 void	swap_entries(t_history *history, t_dlist **from, t_dlist **to)
 {
 	t_dlist *tmp;
@@ -98,9 +88,11 @@ int		sh_builtin_fc_l_synopsis(t_context *context, t_fc_options *opts)
 		opts->to.un.integer = -1;
 		opts->to.type = E_FC_INTEGER;
 	}
-	if (!(from = get_entry_from_fc_operand(&context->shell->history, &opts->from, 1)))
+	if (!(from = get_entry_from_fc_operand(&context->shell->history,
+		&opts->from, 1)))
 		return (sh_perror_err(SH_BLT_HISTORY_RANGE, NULL));
-	if (!(to = get_entry_from_fc_operand(&context->shell->history, &opts->to, 1)))
+	if (!(to = get_entry_from_fc_operand(&context->shell->history,
+		&opts->to, 1)))
 		return (sh_perror_err(SH_BLT_HISTORY_RANGE, NULL));
 	if (opts->opt_r)
 		swap_entries(&context->shell->history, &from, &to);

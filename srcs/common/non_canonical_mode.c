@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/05 15:41:50 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/29 17:01:38 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/17 16:29:45 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int		sh_await_command(t_shell *shell)
 	return (ret);
 }
 
-int		sh_process_noncanonical_mode(t_shell *shell)
+int				sh_process_noncanonical_mode(t_shell *shell)
 {
 	while (shell->running)
 	{

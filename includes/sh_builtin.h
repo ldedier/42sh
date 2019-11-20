@@ -219,7 +219,7 @@ int					sh_builtin_cd_rule7(
 /*
 ** cd/sh_builtin_cd_rule_8.c
 */
-int					sh_builtin_cd_rule8(char **curpath, char *param);
+int					sh_builtin_cd_rule8(char **curpath);
 
 /*
 ** export/sh_builtin_export.c
@@ -234,7 +234,6 @@ int					sh_builtin_export_show(t_context *context);
 /*
 ** fc/sh_builtin_fc.c
 */
-int					invalid_argument(char *str, char c);
 int					sh_builtin_fc(t_context *context);
 
 /*
@@ -245,10 +244,16 @@ int					sh_builtin_fc_fill_text(
 char				*sh_get_editor(char *editor, t_shell *shell);
 void				fill_default_opts_default_synopsis(t_fc_options *opts);
 int					sh_execute_editor(char *editor, t_shell *shell);
-int					sh_execute_commands_from_file(
-	t_shell *shell, char *filename);
 int					sh_builtin_fc_default_synopsis(
 	t_context *context, t_fc_options *opts);
+
+/*
+** fc/sh_builtin_fc_get_command_to_execute.c
+*/
+char				*ft_substitute_occurences(
+	char *str, char *to_replace, char *replacement);
+char				*get_command_to_execute_fc(
+	char *command, char *substitution_str);
 
 /*
 ** fc/sh_builtin_fc_get_entry.c
@@ -264,28 +269,37 @@ int					get_listing_way(
 	t_history *history, t_dlist *from, t_dlist *to);
 void				sh_builtin_fc_list(
 	t_history *history, t_dlist *from, t_dlist *to, int opt_n);
-void				print_fc_operand(t_fc_operand *op);
 void				swap_entries(
 	t_history *history, t_dlist **from, t_dlist **to);
 int					sh_builtin_fc_l_synopsis(
 	t_context *context, t_fc_options *opts);
 
 /*
+** fc/sh_builtin_fc_options.c
+*/
+int					invalid_argument(char *str, char c);
+int					parse_fc_options(
+	t_context *context, int *index, t_fc_options *opts);
+int					describe_number(char *str);
+
+/*
 ** fc/sh_builtin_fc_parse_operands.c
 */
-int					sh_atoi_fc(char *str, int *error);
+int					sh_atoi_fc(const char *str, int *error);
 int					parse_fc_operands(
 	t_context *context, int index, t_fc_options *options);
 
 /*
 ** fc/sh_builtin_fc_s_synopsis.c
 */
-char				*ft_substitute_occurences(
-	char *str, char *to_replace, char *replacement);
-char				*get_command_to_execute_fc(
-	char *command, char *substitution_str);
 int					sh_builtin_fc_s_synopsis(
 	t_context *context, t_fc_options *opts);
+
+/*
+** fc/sh_execute_commands_from_file.c
+*/
+int					sh_execute_commands_from_file(
+	t_shell *shell, char *filename);
 
 /*
 ** fg/sh_builtin_fg.c
@@ -325,6 +339,35 @@ int					sh_builtin_jobs(t_context *context);
 int					parse_jobs_args(char **argv, int j_lst[], int *opt);
 
 /*
+** set/sh_builtin_set.c
+*/
+int					sh_builtin_set_param(t_context *context, int *index);
+int					sh_builtin_set_args(t_context *context);
+int					sh_builtin_set(t_context *context);
+
+/*
+** set/sh_builtin_set_options.c
+*/
+int					fill_option_value(
+	int **address_ptr, int *value_ptr, int *address, int value);
+int					get_option(
+	t_shell *shell, char *option_name, int **option, int *value);
+int					add_option(t_context *context, int index);
+int					remove_option(t_context *context, int index);
+
+/*
+** set/sh_builtin_set_print.c
+*/
+int					sh_builtin_set_print(t_context *context);
+
+/*
+** set/sh_builtin_set_print_options.c
+*/
+void				print_builtin_usage(void);
+int					print_options_minus(t_shell *shell);
+int					print_options_plus(t_shell *shell);
+
+/*
 ** sh_builtin.c
 */
 t_builtin_container	*get_builtins(void);
@@ -360,21 +403,6 @@ int					sh_builtin_usage(
 char				*sh_builtin_pwd_physical(void);
 char				*sh_builtin_pwd_logical(t_dy_tab *env);
 int					sh_builtin_pwd(t_context *context);
-
-/*
-** sh_builtin_set.c
-*/
-int					print_options_minus(t_shell *shell);
-int					print_options_plus(t_shell *shell);
-int					fill_option_value(
-	int **address_ptr, int *value_ptr, int *address, int value);
-int					get_option(
-	t_shell *shell, char *option_name, int  **option, int *value);
-int					add_option(t_context *context, int index);
-int					remove_option(t_context *context, int index);
-int					sh_builtin_set_param(t_context *context, int *index);
-int					sh_builtin_set_args(t_context *context);
-int					sh_builtin_set(t_context *context);
 
 /*
 ** sh_builtin_unalias.c

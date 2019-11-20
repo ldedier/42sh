@@ -6,16 +6,16 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/16 04:52:00 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/16 04:52:00 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/17 15:31:35 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-int		sh_atoi_fc(char *str, int *error)
+int			sh_atoi_fc(const char *str, int *error)
 {
-	int     res;
-	int     i;
+	int		res;
+	int		i;
 
 	res = 0;
 	*error = 0;
@@ -24,7 +24,7 @@ int		sh_atoi_fc(char *str, int *error)
 		i++;
 	while (str[i] && ft_isdigit(str[i]))
 	{
-		res = res * 10 +  str[i] - '0';
+		res = res * 10 + str[i] - '0';
 		if (res > HISTSIZE)
 			return (str[0] == '-' ? -res : res);
 		i++;
@@ -50,7 +50,7 @@ static void	process_parse_fc_operand(t_fc_operand *operand,
 	operand->parsed = 1;
 }
 
-int	parse_fc_operands(t_context *context, int index,
+int			parse_fc_operands(t_context *context, int index,
 			t_fc_options *options)
 {
 	t_fc_operand *operand;

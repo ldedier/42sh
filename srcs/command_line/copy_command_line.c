@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/08 19:04:45 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/08 19:04:46 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/20 21:50:27 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	process_copy_utf8_char(char *str,
 	process_termcaps_through_utf8_copy(str, command_line, c);
 	tmp = get_char_len2(0, c->len,
 		(unsigned char *)&command_line->dy_str->str[c->i - index]);
-	ft_strncpy(&str[c->j], &command_line->dy_str->str[c->i], tmp);
+	ft_strncpy(&str[c->j], &command_line->dy_str->str[c->i], tmp); // - index ? 
 	c->len -= tmp;
 	c->i += tmp;
 	c->j += tmp;
@@ -65,8 +65,8 @@ void	process_copy_utf8_char(char *str,
 void	copy_last_part_of_command_line(t_command_line *command_line,
 			t_utf8_copier *c, int index, char *str)
 {
-	if (ft_strlen_utf8(&command_line->dy_str->str[c->i])
-			<= ft_strlen_utf8(ELIPTIC_COMMAND_LINE))
+	if (ft_nb_columns(&command_line->dy_str->str[c->i])
+			<= ft_nb_columns(ELIPTIC_COMMAND_LINE))
 	{
 		while (command_line->dy_str->str[c->i])
 			process_copy_utf8_char(str, command_line, index, c);

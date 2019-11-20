@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 18:55:58 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/04 18:57:45 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/20 20:51:14 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int		execute_motion(t_command_line *line, int index, int vi)
 	index = ft_clamp(0, index, line->dy_str->current_size - vi);
 	i = ft_max(ft_min(index, line->current_index), 0);
 	max = ft_max(index, line->current_index);
-	len = ft_strlen(&line->dy_str->str[i]);
+	len = ft_strlen(&line->dy_str->str[i]) - vi;
 	while (i < max
 		&& ((size_t)i < line->dy_str->current_size - vi || index != max))
 	{
@@ -36,7 +36,7 @@ int		execute_motion(t_command_line *line, int index, int vi)
 		char_diff++;
 	}
 	char_diff = (index == max ? char_diff : -char_diff);
-	line->current_index = ft_clamp(0, index, line->dy_str->current_size - vi);
+	line->current_index = ft_clamp(0, index, i);
 	render_command_line(line, char_diff, 1);
 	return (SUCCESS);
 }

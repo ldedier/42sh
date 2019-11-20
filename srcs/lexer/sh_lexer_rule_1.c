@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 14:25:15 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/15 05:15:48 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/16 17:31:49 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,17 +72,13 @@ static int	sh_lexer_rule1_check_final_pipe(t_lexer *lexer)
 	{
 		if (((t_token*)head->content)->id == LEX_TOK_WORD)
 		{
-			if (last_pipe)
-				last_pipe = NULL;
+			last_pipe = NULL;
 			last_word = head;
 		}
 		else if (((t_token*)head->content)->id == LEX_TOK_PIPE)
 		{
-			if (!last_word)
-				return (SUCCESS);
-			else
-				last_word = NULL;
 			last_pipe = head;
+			last_word = NULL;
 		}
 		head = head->next;
 	}
@@ -120,23 +116,18 @@ int			sh_lexer_rule1(t_lexer *lexer)
 		{
 			if (!isatty(0) || lexer->mode == E_LEX_AUTOCOMPLETION)
 				return (sh_lexer_rule1_process_quoted(lexer));
-			else
-				return (sh_process_quoted(lexer));
+			return (sh_process_quoted(lexer));
 		}
-		ret = t_lexer_add_token(lexer);
-		if (ret == LEX_FAIL)
+		if ((ret = t_lexer_add_token(lexer)) == LEX_FAIL)
 			return (ret);
 		else if (ret == LEX_CONTINUE)
 			return (LEX_OK);
 		if (sh_lexer_rule1_check_final_pipe(lexer))
 		{
+			lexer->quoted = '|';
 			if (!isatty(0) || lexer->mode == E_LEX_AUTOCOMPLETION)
-			{
-				lexer->quoted = '|';
 				return (sh_lexer_rule1_process_quoted(lexer));
-			}
-			else
-				return (sh_process_quoted(lexer));
+			return (sh_process_quoted(lexer));
 		}
 		return (LEX_END);
 	}

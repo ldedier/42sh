@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/14 14:27:47 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/30 22:56:54 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/17 16:08:04 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,18 +30,6 @@ void	free_file(t_file *file)
 	free(file->name);
 	free(file->fullname);
 	free(file);
-}
-
-void	free_file_dlst(void *f, size_t dummy)
-{
-	(void)dummy;
-	free_file((t_file *)f);
-}
-
-void	free_entry_dlst(void *e, size_t dummy)
-{
-	(void)dummy;
-	t_entry_free((t_entry *)e);
 }
 
 void	sh_free_all(t_shell *shell)

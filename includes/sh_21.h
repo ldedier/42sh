@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/30 15:48:56 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/07 19:45:36 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/20 21:31:48 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,13 @@
 # include <signal.h>
 # include <fcntl.h>
 # include <dirent.h>
+
+/*
+** wcwidth(3)
+*/
+
+#include <wchar.h>
+#include <xlocale.h>
 
 /*
 ** wait(2)
@@ -205,9 +212,13 @@ int					execute_command(
 void				sh_free_binary(t_binary *binary);
 void				sh_free_binary_lst(void *b, size_t dummy);
 void				free_file(t_file *file);
+void				sh_free_all(t_shell *shell);
+
+/*
+** free_all_dlist.c
+*/
 void				free_file_dlst(void *f, size_t dummy);
 void				free_entry_dlst(void *e, size_t dummy);
-void				sh_free_all(t_shell *shell);
 
 /*
 ** hash_binaries.c
@@ -241,6 +252,7 @@ int					sh_index(t_symbol_id id);
 /*
 ** init.c
 */
+int					sh_init_allocations(t_shell *shell, char **env);
 int					sh_init_shell(t_shell *shell, char **env);
 
 /*
