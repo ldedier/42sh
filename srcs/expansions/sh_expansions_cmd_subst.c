@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_expansions_cmd_subst.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 14:29:58 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/18 07:49:12 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/20 02:19:17 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static int	parent_part(t_context *context, char **str, int fds[], int cpid)
 	return (SUCCESS);
 }
 
-int 		get_subshell_output(t_context *context, char *command, char **str)
+int			get_subshell_output(t_context *context, char *command, char **str)
 {
 	pid_t	cpid;
 	int		fds[2];

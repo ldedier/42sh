@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_exec.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 17:11:16 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/16 14:59:55 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/20 02:21:27 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@
 
 extern pid_t g_parent;
 
-typedef struct		s_redirection t_redirection;
+typedef struct s_redirection	t_redirection;
+
 typedef enum		e_phase
 {
 	E_TRAVERSE_PHASE_INTERACTIVE_REDIRECTIONS,
@@ -63,7 +64,7 @@ typedef enum		e_phase
 
 typedef struct		s_context
 {
-	char			wflags;	//wait_flags for non-interactive shell
+	char			wflags;
 	int				cmd_type;
 	char			*cmd_string;
 	t_shell			*shell;
