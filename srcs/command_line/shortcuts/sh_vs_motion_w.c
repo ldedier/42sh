@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 11:02:58 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/04 18:36:16 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/20 18:30:26 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int			sh_vs_motion_w(t_command_line *command_line, char dummy)
 		prev_type = new_type;
 		i++;
 	}
-	return (command_line->dy_str->current_size - 1);
+	return (command_line->dy_str->current_size);
 }
 
 int			sh_vs_motion_w_readline(t_command_line *command_line, char dummy)
@@ -96,5 +96,5 @@ int			sh_vs_motion_w_readline(t_command_line *command_line, char dummy)
 		prev_type = new_type;
 		i++;
 	}
-	return (command_line->dy_str->current_size - 1);
+	return (command_line->dy_str->current_size);
 }

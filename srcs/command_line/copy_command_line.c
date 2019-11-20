@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/08 19:04:45 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/08 19:04:46 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/20 20:54:02 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	process_copy_utf8_char(char *str,
 	process_termcaps_through_utf8_copy(str, command_line, c);
 	tmp = get_char_len2(0, c->len,
 		(unsigned char *)&command_line->dy_str->str[c->i - index]);
-	ft_strncpy(&str[c->j], &command_line->dy_str->str[c->i], tmp);
+	ft_strncpy(&str[c->j], &command_line->dy_str->str[c->i], tmp); // - index ? 
 	c->len -= tmp;
 	c->i += tmp;
 	c->j += tmp;
