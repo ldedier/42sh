@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim_side.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/09 19:34:27 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/18 07:13:02 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/20 01:57:52 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char		*ft_strtrim_side(char *str, char *charset, int side)
 	size_t	len;
 	int		start;
 	int		end;
-	
+
 	if (str == NULL)
 		return (NULL);
 	if (side < 1 || side > 3)
@@ -78,7 +78,7 @@ char		*ft_strtrim_side(char *str, char *charset, int side)
 		start = get_leading_index(str, charset);
 	if (side & 2)
 		end = get_trailing_index(str, charset);
-	res = ft_strndup (str + start, end - start + 1);
+	res = ft_strndup(str + start, end - start + 1);
 	free(str);
 	return (res);
 }

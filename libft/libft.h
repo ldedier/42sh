@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/07 10:11:38 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/18 06:59:22 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/20 01:59:08 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,15 +110,13 @@ typedef struct		s_hash_finder
 	void			*content;
 }					t_hash_finder;
 
-typedef struct s_strsep		t_strsep;
-
-struct		s_strsep
+typedef struct		s_strsep
 {
 	char	**saved_start;
 	char	*end;
 	char	*head;
 	char	save;
-};
+}					t_strsep;
 
 /*
 ********************************** atoi  **************************************
