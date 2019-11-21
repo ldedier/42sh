@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 13:31:28 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/20 11:37:48 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/21 11:47:08 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,35 @@ void		t_regexp_show_tab(t_dy_tab *regexp_tab)
 	}
 }
 
+static void	clean_non_original_quotes(t_dy_tab *quotes)
+{
+	int			i;
+	t_quote		**tbl;
+	int			j;
+
+	tbl = (t_quote**)quotes->tbl;
+	i = 0;
+	while (tbl[i])
+	{
+		if (!tbl[i]->is_original)
+		{
+			ft_strdelchar(tbl[i]->c, 0);
+			ft_dy_tab_suppr_index(quotes, i);
+			j = i;
+			while (tbl[j])
+			{
+				tbl[j]->index -= 1;
+				tbl[j]->c -= 1;
+				ft_dprintf(2, "updated a quote : %c\n", tbl[j]->c);
+				j++;
+			}
+		}
+		else
+			i++;
+	}
+	return ;
+}
+
 /*
 ** pattern matching (globing) : *, ?, [], !, intervals with '-'
 **
@@ -86,6 +115,7 @@ int			sh_expansions_globbing(t_ast_node *node, t_dy_tab *quotes)
 	regexp_tab = NULL;
 	matches = NULL;
 	str = node->token->value;
+	clean_non_original_quotes(quotes);
 	if (!ft_strpbrk(str, "?[*"))
 		return (SUCCESS);
 	if ((ret = sh_glob_lexer(str, &regexp_tab, quotes)) == FAILURE)
