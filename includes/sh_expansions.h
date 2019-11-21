@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 17:46:46 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/21 10:41:54 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/21 14:02:28 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -250,12 +250,12 @@ int					sh_expansions_variable_valid_name(char *name);
 int					sh_expansions_variable_detect(char *start);
 int					sh_expansions_variable_fill(
 	t_expansion *exp, char *start);
-int					sh_expansions_variable_process(
-	t_context *context, t_expansion *exp);
 
 /*
-** sh_expansions_variable_detect.c
+** sh_expansions_variable_process.c
 */
+int					sh_expansions_variable_process(
+	t_context *context, t_expansion *exp);
 
 /*
 ** t_expansion.c

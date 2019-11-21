@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/11/21 13:43:37 by jdugoudr         ###   ########.fr        #
+#    Updated: 2019/11/21 14:02:22 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -359,7 +359,7 @@ SRCS			 +=	sh_expansions.c \
 					sh_expansions_tilde.c \
 					sh_expansions_tilde_tools.c \
 					sh_expansions_variable.c \
-					sh_expansions_variable_detect.c \
+					sh_expansions_variable_process.c \
 					sh_expansions_process.c sh_expansions_replace.c \
 					sh_expansions_field_splitting.c \
 					sh_expansions_field_splitting_get_word.c \

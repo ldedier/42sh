@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 21:49:08 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/21 10:41:59 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/21 14:02:33 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void		t_quote_show_tab(t_quote **quotes)
 **		>= 0 : Index of the end of end quoting char
 */
 
-int		t_quote_is_original_quote(int i, t_quote **quotes)
+int			t_quote_is_original_quote(int i, t_quote **quotes)
 {
 	int		j;
 
@@ -89,7 +89,7 @@ int		t_quote_is_original_quote(int i, t_quote **quotes)
 **		>= 0 : Index of the end of end quoting char, or escaped char if '\'
 */
 
-int		t_quote_get_offset(int i, t_quote **quotes)
+int			t_quote_get_offset(int i, t_quote **quotes)
 {
 	int		j;
 	char	quoted;
