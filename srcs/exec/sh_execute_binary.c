@@ -6,19 +6,17 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 11:49:50 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/20 16:48:51 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/21 11:36:39 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "sh_21.h"
 #include "sh_job_control.h"
 
-
 static int		handle_expansion_in_bg(void)
 {
 	int	tmp_fd;
-	
+
 	if ((tmp_fd = open("/dev/null", O_RDONLY)) >= 0)
 		if ((dup2(tmp_fd, STDIN_FILENO)) < 0)
 		{
@@ -41,7 +39,6 @@ static int		handle_expansion_in_bg(void)
 ** "ls" and "wc" are in the same process group (with "ls" as the leader)
 ** "cat" is in another process group (and it's its leader).
 */
-
 
 static int		sh_exec_child_part(t_ast_node *father_node, t_context *context)
 {
@@ -76,9 +73,8 @@ static int		sh_exec_child_part(t_ast_node *father_node, t_context *context)
 **	with context->wait_flag- which had been set before.
 */
 
-static int		sh_exec_parent_part(pid_t cpid, t_context *context)
+static int		sh_exec_parent_part(pid_t cpid, t_context *context, int ret)
 {
-	int		ret;
 	int		fun_ret;
 
 	if (g_job_ctrl->interactive)
@@ -111,6 +107,11 @@ static int		sh_exec_parent_part(pid_t cpid, t_context *context)
 ** We fork, the child will put itself in its own process group.
 ** The parent will also put the child in its own process group.
 ** Then the parent will put the job in the foreground, and wait for it.
+**
+** We have to fork whatever we have a command or not bcause we have to
+**  frok for redirection : '> fifo'.
+** And for now, we can't check if we have or not redirection to apply at this
+**  point. This can be a huge optimisation.
 */
 
 int				sh_execute_binary(t_ast_node *father_node, t_context *context)
@@ -118,12 +119,6 @@ int				sh_execute_binary(t_ast_node *father_node, t_context *context)
 	pid_t		cpid;
 	int			ret;
 
-	// We shouldn't fork and exit if the command is empty.
-	// 1) Waste of resources.
-	// 2) it will overrite the last question mark value (for expansions)
-	// ===> we have to for this kind of problem : > fifo
-//	if (!context->params->tbl || !context->params->tbl[0])
-//		return(SUCCESS);
 	if (IS_PIPE(context->cmd_type))
 		sh_execute_execve(father_node, context);
 	if (g_job_ctrl->interactive && !g_job_ctrl->job_added)
@@ -139,7 +134,7 @@ int				sh_execute_binary(t_ast_node *father_node, t_context *context)
 		return (sh_exec_child_part(father_node, context));
 	else
 	{
-		ret = sh_exec_parent_part(cpid, context);
+		ret = sh_exec_parent_part(cpid, context, SUCCESS);
 		if (g_job_ctrl->interactive)
 			g_job_ctrl->job_added = 0;
 		if (ret != SUCCESS)
