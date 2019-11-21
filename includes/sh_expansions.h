@@ -158,14 +158,14 @@ int					sh_expansions_parameter_quest(
 	t_context *context, t_expansion *exp, char *format);
 int					sh_expansions_parameter_plus(
 	t_context *context, t_expansion *exp, char *format);
-int					sh_expansions_parameter_hash(
-	t_context *context, t_expansion *exp, char *format);
-int					sh_expansions_parameter_percent(
-	t_context *context, t_expansion *exp, char *format);
 
 /*
 ** sh_expansions_parameter_str_removal.c
 */
+int					sh_expansions_parameter_hash(
+	t_context *context, t_expansion *exp, char *format);
+int					sh_expansions_parameter_percent(
+	t_context *context, t_expansion *exp, char *format);
 
 /*
 ** sh_expansions_parameter_tools.c
