@@ -103,6 +103,8 @@ int							sh_globbing_substring_removal_get_word(
 */
 int							sh_is_pattern_matching(
 	char *name, t_list *regexp_head);
+int							sh_is_pattern_matching_for_substring_removal(
+	char *name, t_list *regexp_head);
 
 /*
 ** sh_pattern_matching.c

@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 21:49:08 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/21 14:56:58 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/21 15:44:14 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ t_quote		*t_quote_new(int index, char *c, int is_original)
 	return (new);
 }
 
-int			t_quote_add_new(t_dy_tab *quotes, int index, char *c, int is_original)
+int			t_quote_add_new(
+	t_dy_tab *quotes, int index, char *c, int is_original)
 {
 	t_quote	*new;
 
@@ -44,8 +45,11 @@ void		t_quote_show_tab(t_quote **quotes)
 		return ;
 	while (quotes[i])
 	{
+		ft_dprintf(2, "%d : %c", quotes[i]->index, quotes[i]->c);
 		if (quotes[i + 1])
 			ft_dprintf(2, " || ");
+		else
+			ft_dprintf(2, "\n");
 		i++;
 	}
 	return ;

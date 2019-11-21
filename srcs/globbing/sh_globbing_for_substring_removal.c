@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/08 05:50:11 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/20 12:03:12 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/21 15:43:13 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,8 @@ static void	suffix_pattern_matching(
 	i = ft_strlen(param);
 	while (i >= 0)
 	{
-		if (sh_is_pattern_matching(param + i, regexp_list) == SUCCESS)
+		if (sh_is_pattern_matching_for_substring_removal(
+			param + i, regexp_list) == SUCCESS)
 		{
 			*index = i;
 			if (sh_verbose_globbing())
