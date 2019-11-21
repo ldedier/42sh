@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 16:35:24 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/09 04:27:14 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/21 17:14:02 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,7 @@ int		sh_expansions_parameter_get_word(
 	t_dy_tab	*quotes;
 	int			ret;
 
+	ret = 0;
 	if (exp->expansion[0] == '#')
 		format++;
 	start = ft_strstr(exp->expansion, format);
@@ -136,8 +137,7 @@ int		sh_expansions_parameter_get_word(
 		ft_strdel(word);
 		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions"));
 	}
-	ret = 0;
-	ret = sh_expansions_tilde(word, context, quotes, &ret);
+	ret = sh_expansions_tilde(word, context, quotes, &ret) == FAILURE ? 2 : 0;
 	if (!ret)
 		ret = sh_expansions_scan(word, 0, context, quotes);
 	if (!ret)

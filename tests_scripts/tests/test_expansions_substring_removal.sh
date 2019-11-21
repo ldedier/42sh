@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/21 16:00:50 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/21 15:17:20 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/21 15:24:31 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -128,6 +128,9 @@ launch "substring_removal"
 	test_launch 'string="hello-world" prefix="hell" suffix="ld"' 'foo=${string#"$prefix"} ; echo $? $string'
 	test_launch 'string="hello-world" prefix="hell" suffix="ld"' 'foo=${foo%"$suffix"} ; echo $? $string'
 	test_launch 'string="hello-world" prefix="hell" suffix="ld"' 'foo=${string#"$prefix"} ; foo=${foo%"$suffix"} ; echo $? $string'
+	test_launch 'var="Welcome to the geekstuff"' 'echo ${#var}'
+	test_launch 'filename="bash.string.txt"' 'echo ${filename#*.}' 'echo ${filename%.*}'
+	test_launch 'filename="bash.string.txt"' '${filename##*.}' '${filename%%*.}'
 
 	# test_launch 'param=""'  'echo ${param%}'
 	# test_launch 'param=""'  'echo ${param%}'
