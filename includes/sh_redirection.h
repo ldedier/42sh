@@ -54,12 +54,21 @@ int						sh_add_redirection_pipe(int fd, t_list **list);
 /*
 ** sh_check_open_fd.c
 */
-int						is_open(int fd);
-int						sh_check_open_fd(t_redirection_type type, int fd);
-int						sh_check_dst_fd(
-	t_list *lst, t_redirection_type type, int fd);
+int						sh_check_dst_fd(t_list *lst, int fd);
 int						sh_check_src_fd(
 	t_list *head, t_redirection *curr_redir);
+
+/*
+** sh_check_open_fd_tools.c
+*/
+int						is_open(int fd);
+int						sh_check_open_fd(int fd);
+
+/*
+** sh_new_redirection.c
+*/
+t_redirection			sh_new_redir(
+	t_redirection_type type, int redirected_fd, int fd);
 
 /*
 ** sh_reset_redirection.c
