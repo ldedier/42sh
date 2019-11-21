@@ -6,13 +6,12 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 23:24:10 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/11/15 14:39:05 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/21 11:06:37 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 #include "sh_job_control.h"
-
 
 static void		init_jc_values(void)
 {
@@ -68,7 +67,8 @@ int				jobs_init(void)
 			if (kill (- g_job_ctrl->shell_pgid, SIGHUP) < 0)
 			{
 				free(g_job_ctrl);
-				return (sh_perror("kill", "Could not properly close the shell"));
+				return (sh_perror("kill",
+					"Could not properly close the shell"));
 			}
 		signal(SIGTTOU, SIG_IGN);
 		if (jc_set_process_group() < 0)

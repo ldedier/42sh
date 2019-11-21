@@ -6,14 +6,12 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 11:49:50 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/20 16:48:51 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/21 11:17:57 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "sh_21.h"
 #include "sh_job_control.h"
-
 
 static int		handle_expansion_in_bg(void)
 {
@@ -41,7 +39,6 @@ static int		handle_expansion_in_bg(void)
 ** "ls" and "wc" are in the same process group (with "ls" as the leader)
 ** "cat" is in another process group (and it's its leader).
 */
-
 
 static int		sh_exec_child_part(t_ast_node *father_node, t_context *context)
 {
@@ -97,8 +94,7 @@ static int		sh_exec_parent_part(pid_t cpid, t_context *context)
 	{
 		if (IS_BG(context->cmd_type))
 			setpgid(cpid, cpid);
-		if (g_job_ctrl->cmd_subst)
-			context->wflags = 0;
+		context->wflags = (g_job_ctrl->cmd_subst ? 0 : context->wflags);
 		waitpid(cpid, &ret, context->wflags);
 	}
 	sh_env_update_ret_value_wait_result(context, ret);
@@ -118,12 +114,6 @@ int				sh_execute_binary(t_ast_node *father_node, t_context *context)
 	pid_t		cpid;
 	int			ret;
 
-	// We shouldn't fork and exit if the command is empty.
-	// 1) Waste of resources.
-	// 2) it will overrite the last question mark value (for expansions)
-	// ===> we have to for this kind of problem : > fifo
-//	if (!context->params->tbl || !context->params->tbl[0])
-//		return(SUCCESS);
 	if (IS_PIPE(context->cmd_type))
 		sh_execute_execve(father_node, context);
 	if (g_job_ctrl->interactive && !g_job_ctrl->job_added)
