@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/15 15:38:46 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/21 13:07:23 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ static int	sh_traverse_sc_search_in_dir(
 
 	if (!*path)
 		dir = opendir(".");
-	else 
+	else
 		dir = opendir(path);
 	if (!dir)
 		return (SUCCESS);
