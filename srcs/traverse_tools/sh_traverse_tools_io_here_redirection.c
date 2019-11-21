@@ -6,7 +6,7 @@
 /*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 12:33:12 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/04 14:09:24 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/21 20:25:42 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ int			sh_traverse_tools_io_here_redirection(
 
 	if ((ret = sh_redirection_for_heredoc(
 					node->token->value, &red, context)) == SUCCESS)
-		ret = sh_add_redirection_file(
-			red.type, context->redirected_fd, red.fd, &context->redirections);
+		ret = sh_add_redirection_file(red.type, context, red.fd);
 	return (ret);
 }

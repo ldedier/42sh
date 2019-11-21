@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 10:34:50 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/08 23:37:17 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/21 19:42:13 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ int			sh_traverse_brace(t_ast_node *node, t_context *ctxt)
 	t_list		*lst_redi;
 
 	sh_traverse_tools_show_traverse_start(node, ctxt);
+	ctxt->is_builtin = 1;
 	if (g_job_ctrl->interactive && IS_BG(ctxt->cmd_type))
 	{
 		ft_dprintf(g_term_fd, YELLOW"Adding job in brace\n"EOC);

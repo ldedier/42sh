@@ -6,16 +6,16 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 10:41:47 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/21 13:45:44 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/21 20:24:25 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
 static int	sh_process_redirection(
-	t_redirection redirection, t_list **list)
+	t_redirection redirection, t_list **list, int is_builtin)
 {
-	if (sh_execute_redirection(&redirection) != SUCCESS)
+	if (sh_execute_redirection(&redirection, is_builtin) != SUCCESS)
 		return (STOP_CMD_LINE);
 	if (ft_lstaddnew(list, &redirection, sizeof(t_redirection)))
 	{
@@ -31,7 +31,7 @@ static int	sh_process_redirection(
 */
 
 static int	sh_add_redirection(
-	t_redirection redirection, t_list **list)
+	t_redirection redirection, t_list **list, int is_builtin)
 {
 	if (redirection.fd >= 0
 		&& sh_check_dst_fd(*list, redirection.fd) == -1)
@@ -47,28 +47,30 @@ static int	sh_add_redirection(
 	}
 	if (redirection.was_closed == -1)
 		redirection.was_closed = 0;
-	return (sh_process_redirection(redirection, list));
+	return (sh_process_redirection(redirection, list, is_builtin));
 }
 
 int			sh_add_redirection_file(
-	t_redirection_type type, int redirected_fd, int fd, t_list **list)
+	t_redirection_type type, t_context *context, int fd)
 {
 	t_redirection	redirection;
 
-	redirection = sh_new_redir(type, redirected_fd, fd);
+	redirection = sh_new_redir(type, context->redirected_fd, fd);
 	redirection.was_closed = 1;
-	return (sh_add_redirection(redirection, list));
+	return (sh_add_redirection(
+				redirection, &context->redirections, context->is_builtin));
 }
 
 int			sh_add_redirection_aggreg(
-	t_redirection_type type, int redirected_fd, int fd, t_list **list)
+	t_redirection_type type, t_context *context, int fd)
 {
 	t_redirection	redirection;
 
-	if (redirected_fd == fd)
+	if (context->redirected_fd == fd)
 		return (SUCCESS);
-	redirection = sh_new_redir(type, redirected_fd, fd);
-	return (sh_add_redirection(redirection, list));
+	redirection = sh_new_redir(type, context->redirected_fd, fd);
+	return (sh_add_redirection(
+				redirection, &context->redirections, context->is_builtin));
 }
 
 int			sh_add_redirection_pipe(int fd, t_list **list)

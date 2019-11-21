@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 17:11:16 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/20 02:21:27 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/21 19:16:26 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ typedef struct		s_context
 	t_ast_node		*current_pipe_sequence_node;
 	t_list			*redirections;
 	pid_t			pid;
+	int				is_builtin;
 }					t_context;
 
 typedef struct		s_pipe
@@ -166,7 +167,8 @@ int					sh_post_execution(void);
 /*
 ** sh_execute_redirection.c
 */
-int					sh_execute_redirection(t_redirection *el);
+int					sh_execute_redirection(
+	t_redirection *el, int is_builtin);
 
 /*
 ** sh_execute_simple_command.c

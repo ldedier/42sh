@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/02 10:03:30 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/08 23:37:38 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/21 19:42:22 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ int			sh_traverse_subshell(t_ast_node *node, t_context *ctxt)
 
 	if (IS_PIPE(ctxt->cmd_type))
 		return (child_part(node, ctxt));
+	ctxt->is_builtin = 0;
 	if (g_job_ctrl->interactive && !g_job_ctrl->job_added)
 	{
 		if ((ret = job_add(node->parent->parent, NULL, IS_BG(ctxt->cmd_type))))
