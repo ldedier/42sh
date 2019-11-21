@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/11/20 12:23:49 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/21 13:43:37 by jdugoudr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -308,7 +308,9 @@ SRCS			+=	sh_execute_simple_command.c \
 ################################################################
 SRCS			+=	sh_add_redirection.c \
 					sh_reset_redirection.c \
-					sh_check_open_fd.c
+					sh_check_open_fd.c \
+					sh_check_open_fd_tools.c \
+					sh_new_redirection.c
 
 ################################################################
 ########						BUILTIN					########
