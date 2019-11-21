@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/21 15:58:19 by jmartel           #+#    #+#              #
-#    Updated: 2019/10/14 22:31:58 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/09 00:52:16 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -100,15 +100,17 @@ diff_files()
 	res=`diff $1 $2`
 	if [ -n "$res" ] ; then
 		echo -e "${red}KO${eoc}"
+		echo -en "${yellow}"
+		cat "${buffer}"
+		echo -en "${eoc}"
 		if [ -n "$verbose" ] ; then
-			echo -e "${yellow}`cat ${buffer}`${eoc}"
 			echo -e "${cyan}" `cat $1` "${eoc}"
 			echo -e "${cyan}" `cat $2` "${eoc}"
 		fi
 		if [ -n "$logging" ] ; then
 			create_logging_file
 			echo -e "Script :" >> "${logging_file}"
-			echo -e `cat ${buffer}` >> "${logging_file}"
+			cat "${buffer}" >> "${logging_file}"
 			echo -e "" >> "${logging_file}"
 			echo -e "KO" >> "${logging_file}"
 			echo -e "42sh :" >> "${logging_file}"
@@ -134,7 +136,9 @@ valgrind_test()
 		ret=$?
 		if [ $ret -eq $error_exit_code ] ; then
 			echo -e "${red}valgrind error, tracing logs at ${inner_log_dir}${eoc}"
-			echo -e "${yellow}`cat ${buffer}`${eoc}"
+			echo -en "${yellow}"
+			cat "${buffer}"
+			echo -en "${eoc}"
 			mkdir -p $inner_log_dir
 			cat ${buffer} > "${inner_log_dir}/failed_script"
 			cat $tmp_log_file > "${inner_log_dir}/valgrind_trace"
@@ -161,7 +165,7 @@ check_ret_value()
 		if [ -n "$logging" ] ; then
 			create_logging_file
 			echo -e "Script :" >> "${logging_file}"
-			echo -e `cat ${buffer}` >> "${logging_file}"
+			echo -e cat "${buffer}" >> "${logging_file}"
 			echo -e "" >> "${logging_file}"
 			echo -e "SEGFAULT OR SIGNAL RECEIVED" >> "${logging_file}"
 			echo -e "${sh_ret}" >> "${logging_file}"
@@ -175,7 +179,9 @@ check_ret_value()
 			if [ -n "$verbose" ] ; then
 				echo -e "${red}BAD RETURNED VALUE"
 				echo -e "bash : $bash_ret || 42sh : $sh_ret${eoc}"
-				echo -e "${yellow}`cat ${buffer}`${eoc}"
+				echo -en "${yellow}"
+				cat "${buffer}"
+				echo -en "${eoc}"
 			else
 				echo -e "${red}KO${eoc}"
 			fi
@@ -183,7 +189,7 @@ check_ret_value()
 			if [ -n "$logging" ] ; then
 				create_logging_file
 				echo -e "Script :" >> "${logging_file}"
-				echo -e `cat ${buffer}` >> "${logging_file}"
+				cat "${buffer}" >> "${logging_file}"
 				echo -e "" >> "${logging_file}"
 				echo -e "BAD RETURNED VALUE" >> "${logging_file}"
 				echo -e "bash : $bash_ret || 42sh : $sh_ret" >> "${logging_file}"
@@ -239,7 +245,7 @@ test_launch()
 		valgrind_test
 	fi
 
-	rm "${res1_42sh}" "${res2_42sh}" "${res1_bash}" "${res2_bash}"
+	rm "${res1_42sh}" "${res2_42sh}" "${res1_bash}" "${res2_bash}" "${buffer}"
 }
 
 test_launch_pipe()
@@ -285,5 +291,5 @@ test_launch_pipe()
 		valgrind_test
 	fi
 
-	rm "${res1_42sh}" "${res2_42sh}" "${res1_bash}" "${res2_bash}"
+	rm "${res1_42sh}" "${res2_42sh}" "${res1_bash}" "${res2_bash}" "${buffer}"
 }

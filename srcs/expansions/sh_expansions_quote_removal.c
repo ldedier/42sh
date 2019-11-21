@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 00:53:16 by jmartel           #+#    #+#             */
-/*   Updated: 2019/09/26 01:08:17 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/21 15:01:48 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,14 @@ void		sh_expansions_quote_removal(t_quote **quotes)
 {
 	int		i;
 
-	if (sh_verbose_expansion())
+	if (sh_verbose_expansion() && quotes && quotes[0])
 	{
-		ft_dprintf(2, "Quotes to delete :\n");
+		ft_dprintf(2, YELLOW"Quotes to delete :\n");
 		t_quote_show_tab(quotes);
+		ft_dprintf(2, EOC);
 	}
 	i = 0;
-	while(quotes[i])
+	while (quotes[i])
 		i++;
 	i--;
 	while (i >= 0)

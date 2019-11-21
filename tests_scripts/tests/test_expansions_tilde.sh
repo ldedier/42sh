@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/06/06 16:09:28 by jmartel           #+#    #+#              #
-#    Updated: 2019/09/04 11:54:12 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/16 21:40:20 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,6 +50,13 @@ launch "Tilde_expansion"
 	test_launch 'cd \~d/' 'ls' 'cd "~/"' 'ls'
 	test_launch 'cd \~d/' 'ls' 'cd '\''~/'\''' 'ls'
 
+	test_launch 'ok="~/~:~:\~" ' 'echo $ok' 'ok=~/~:~:\~' 'echo $ok'
+	test_launch 'var=~/~:~:~ ; echo $var'
+	test_launch 'var=~/"~:~":~/~:~~~~/~ ; echo $var'
+	test_launch 'HOME="HOME    WITH    SPACES    "' 'ok="~/~:~:\~" ' 'echo $ok' 'ok=~/~:~:\~' 'echo $ok'
+	test_launch 'HOME="HOME    WITH    SPACES    "' 'var=~/~:~:~ ; echo $var'
+	test_launch 'HOME="HOME    WITH    SPACES    "' 'var=~/"~:~":~/~:~~~~/~ ; echo $var'
+
 	launch_show "Field splittitng"
 	test_launch 'HOME="path    with    spaces    /" ; cd ~/'
 	test_launch 'HOME="path    with    spaces    /" ; cd'
@@ -80,7 +87,7 @@ launch "Tilde_expansion"
 	test_launch 'var=:~root/~root::~jmartel:~root: ; echo $var'
 	test_launch 'var=:~root/~root/::~jmartel:~root: ; echo $var'
 	test_launch 'var=:~root/root/~root/::~jmartel:~root: ; echo $var'
-
+	# test_launch 'var=~\:~ ; echo $var' "var=~':'~ ; echo"' $var' 'var=~":"~ ; echo $var'
 
 	launch_show "Bonus"
 	test_launch 'ls ~jmartel/'

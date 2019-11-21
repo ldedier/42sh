@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_builtin_set.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/21 18:00:32 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/08 15:17:39 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/20 02:03:10 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int			fill_option_value(int **address_ptr, int *value_ptr,
 }
 
 int			get_option(t_shell *shell, char *option_name,
-				int  **option, int *value)
+				int **option, int *value)
 {
 	(void)shell;
 	if (!ft_strcmp(option_name, "vi"))

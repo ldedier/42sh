@@ -22,7 +22,6 @@ void			print_history(t_history *history)
 		return ;
 	ptr = history->commands->prev;
 	first = 1;
-	ft_printf("--------------------------------\n");
 	while ((ptr != history->commands->prev && ptr != NULL)
 		|| (first && ptr != NULL))
 	{
@@ -31,7 +30,6 @@ void			print_history(t_history *history)
 		ptr = ptr->prev;
 		first = 0;
 	}
-	ft_printf("--------------------------------\n");
 }
 
 static int		sh_too_big_to_append_to_history(char *command)

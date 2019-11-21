@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 17:31:19 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/11/04 11:26:29 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/21 11:54:11 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,12 @@ int			sh_execute_simple_command(
 	int	ret;
 
 	ret = SUCCESS;
-	if (!context->params->tbl || !context->params->tbl[0])
-		return (SUCCESS);
-	if (ret == SUCCESS)
+	if (context->params->tbl && context->params->tbl[0]
+			&& (context->builtin = sh_builtin_find(context)))
+		ret = sh_execute_builtin(father_node, context);
+	else
 	{
-		if ((context->builtin = sh_builtin_find(context)))
-			ret = sh_execute_builtin(father_node, context);
-		else
+		if (context->params->tbl && context->params->tbl[0])
 		{
 			if (!ft_strchr(context->params->tbl[0], '/'))
 			{
@@ -52,8 +51,8 @@ int			sh_execute_simple_command(
 			}
 			else if (sh_slash_cmd(context) == FAILURE)
 				return (FAILURE);
-			ret = sh_execute_binary(father_node, context);
 		}
+		ret = sh_execute_binary(father_node, context);
 	}
 	return (ret);
 }

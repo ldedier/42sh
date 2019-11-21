@@ -3,16 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/19 08:53:23 by ldedier           #+#    #+#             */
-/*   Updated: 2019/07/31 16:15:22 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/07 19:44:58 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-pid_t g_parent = 0;
+
+/*
+** mdaoud:
+** Since the change in signal handling, this file is no longer needed.
+** But I kept it just in case
+*/
+
+pid_t		g_parent = 0;
 
 void		transmit_sig_no_motion(int signal)
 {

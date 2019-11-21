@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+         #
+#    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/11/04 13:30:00 by jdugoudr         ###   ########.fr        #
+#    Updated: 2019/11/21 16:08:27 by jdugoudr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,12 +31,25 @@ PRINTFDIR = ft_printf
 
 VPATH		= $(INCLUDESDIR) \
 			  $(SRCDIR)/builtin \
+			  $(SRCDIR)/builtin/alias \
+			  $(SRCDIR)/builtin/bg \
+			  $(SRCDIR)/builtin/cd \
+			  $(SRCDIR)/builtin/fc \
+			  $(SRCDIR)/builtin/export \
+			  $(SRCDIR)/builtin/fc \
+			  $(SRCDIR)/builtin/fg \
+			  $(SRCDIR)/builtin/hash \
+			  $(SRCDIR)/builtin/jobs \
+			  $(SRCDIR)/builtin/test \
+			  $(SRCDIR)/builtin/type \
 			  $(SRCDIR)/command_line \
 			  $(SRCDIR)/command_line/autocomplete \
 			  $(SRCDIR)/command_line/shortcuts \
 			  $(SRCDIR)/common \
 			  $(SRCDIR)/exec \
 			  $(SRCDIR)/expansions \
+			  $(SRCDIR)/globbing \
+			  $(SRCDIR)/globbing/lexer \
 			  $(SRCDIR)/grammar \
 			  $(SRCDIR)/job_control \
 			  $(SRCDIR)/job_control/job_get_string \
@@ -48,7 +61,6 @@ VPATH		= $(INCLUDESDIR) \
 			  $(SRCDIR)/traverse_tools \
 			  $(SRCDIR)/redirection \
 			  $(SRCDIR)/vars
-
 
 SPEED = -j1
 LIBFT = $(LIBFTDIR)/libft.a
@@ -86,6 +98,7 @@ SRCS			+=	keys.c cursor_motion.c edit_command.c \
 					update_prompt_tools.c keys_insert.c \
 					keys_others.c keys_ctrl.c cursor_tools.c \
 					selection.c sh_process_history.c \
+					sh_update_command_line.c \
 					heredoc.c research_history.c \
 					render_research.c heredoc_tools.c \
 					free_command_line.c sh_delete_command.c \
@@ -95,7 +108,12 @@ SRCS			+=	keys.c cursor_motion.c edit_command.c \
 					sh_get_cursor_position.c eof_percent.c \
 					update_prompt_cwd.c keys_insert_tools.c keys_flush.c \
 					keys_debug.c screen_tools.c get_char_len.c \
-					saves.c keys_readline.c
+					saves.c t_save.c keys_readline.c get_down_from_command.c \
+					keys_tools.c keys_ret.c command_count.c restore_save.c \
+					save_command_line.c scroll_command_line.c \
+					print_command_line.c copy_command_line.c \
+					pre_post_render.c
+
 #sh_clipboard.c sh_command_line_tools.c
 #					sh_clipboard_tools.c
 
@@ -186,20 +204,28 @@ SRCS			+=	sh_prod_and_or.c sh_prod_brace_group.c \
 ################################################################
 ########					AUTOCOMPLETE				########
 ################################################################
-SRCS			+=	add_choices_from_dir.c auto_completion.c \
+SRCS			+=	add_choices_from_dir.c \
+					add_choices_tools.c \
+					auto_completion.c \
 					populate_choices.c populate_word_by_index.c \
+					populate_word_by_index_no_parsing.c \
+					debug_word.c \
 					preprocess_choice_add.c arrow_tools.c \
 					render_choices.c add_choices_builtins.c \
 					left_arrow.c right_arrow.c arrows_vertical.c \
 					fill_buffer.c render_choices_tools.c file_tables.c \
 					fill_buffer_from_tables.c add_file_tools.c \
 					auto_completion_tools.c escape.c \
-					add_choices_from_expansions.c
+					add_choices_from_expansions.c \
+					add_choices_from_expansions_tools.c \
+					exec_tools.c
 
 ################################################################
 ########					SHORTCUTS					########
 ################################################################
 SRCS			+=	vshortcuts.c \
+					execute_vshortcuts.c \
+					vshortcuts_tools.c \
 					sh_vshortcut_hashtag.c \
 					sh_vs_motion_space.c \
 					sh_vshortcut_v.c \
@@ -260,7 +286,7 @@ SRCS			+=	vshortcuts.c \
 ################################################################
 SRCS			+=	sh_vars_tools_1.c sh_vars_tools_2.c \
 					sh_verbose.c sh_verbose_check.c sh_env_tools.c \
-					sh_env.c sh_env_save.c
+					sh_env.c sh_env_save.c sh_env_save_tools.c
 
 ################################################################
 ########						EXEC					########
@@ -282,23 +308,31 @@ SRCS			+=	sh_execute_simple_command.c \
 ################################################################
 SRCS			+=	sh_add_redirection.c \
 					sh_reset_redirection.c \
-					sh_check_open_fd.c
+					sh_check_open_fd.c \
+					sh_check_open_fd_tools.c \
+					sh_new_redirection.c
 
 ################################################################
 ########						BUILTIN					########
 ################################################################
 SRCS			+=	sh_builtin.c sh_builtin_pwd.c \
-					sh_builtin_$(ECHO).c sh_builtin_exit.c \
-					sh_builtin_cd.c sh_builtin_cd_pre_rules.c \
-					sh_builtin_cd_post_rules.c \
-					sh_builtin_cd_last_rules.c \
+					sh_builtin_echo.c sh_builtin_exit.c \
+					sh_builtin_cd.c \
+					sh_builtin_cd_parser.c \
+					sh_builtin_cd_pre_rules.c \
+					sh_builtin_cd_rule_5.c \
+					sh_builtin_cd_rule_7.c \
+					sh_builtin_cd_rule_8.c \
+					sh_builtin_cd_rule_10.c \
 					sh_builtin_type.c sh_builtin_type_search_path.c \
 					sh_builtin_type_search.c\
 					sh_builtin_verbose.c \
 					sh_builtin_set.c sh_builtin_unset.c \
 					sh_builtin_export.c sh_builtin_export_show.c \
 					sh_builtin_hash.c sh_builtin_hash_tools.c \
-					sh_builtin_bonus.c sh_builtin_parser.c \
+					sh_builtin_bonus.c \
+					sh_builtin_parser.c \
+					sh_builtin_parser_usage.c \
 					sh_builtin_test.c sh_builtin_test_unary.c \
 					sh_builtin_test_binary.c \
 					sh_builtin_jobs.c sh_builtin_jobs_tools.c\
@@ -320,15 +354,54 @@ SRCS			+=	sh_builtin.c sh_builtin_pwd.c \
 SRCS			 +=	sh_expansions.c \
 					sh_expansions_parameter.c \
 					sh_expansions_parameter_process.c \
+					sh_expansions_parameter_str_removal.c \
 					sh_expansions_parameter_tools.c \
 					sh_expansions_tilde.c \
-					sh_expansions_variable.c t_expansion.c \
+					sh_expansions_tilde_tools.c \
+					sh_expansions_variable.c \
+					sh_expansions_variable_process.c \
 					sh_expansions_process.c sh_expansions_replace.c \
 					sh_expansions_field_splitting.c \
+					sh_expansions_field_splitting_get_word.c \
+					sh_expansions_field_splitting_tools.c \
+					sh_expansions_field_splitting_nws_tools.c \
+					sh_expansions_field_splitting_quote_tools.c \
 					sh_expansions_quote_removal.c \
 					sh_expansions_scan.c \
+					sh_expansions_scan_double_quote.c \
 					sh_expansions_history.c \
-					t_quote.c
+					sh_expansions_cmd_subst.c \
+					sh_expansions_cmd_subst_tools.c \
+					sh_expansions_proc_subst_in.c \
+					sh_expansions_proc_subst_out.c \
+					t_expansion.c t_quote.c
+
+################################################################
+########					GLOBBING					########
+################################################################
+SRCS			+=	sh_globbing.c \
+					sh_globbing_for_substring_removal.c \
+					sh_regexp_parse.c \
+					sh_regexp_parse_new_string.c \
+					sh_regexp_parse_new_brace.c \
+					sh_regexp_parse_new_quest.c \
+					sh_regexp_parse_new_star.c \
+					sh_pattern_matching.c \
+					sh_is_pattern_matching.c \
+					sh_pattern_matching_push_new.c \
+					sh_pattern_matching_star.c \
+					sh_pattern_matching_str.c \
+					sh_pattern_matching_quest.c \
+					sh_pattern_matching_brace.c \
+					sh_pattern_matching_brace_tools.c \
+					sh_glob_lexer.c \
+					sh_glob_lexer_rule_1.c \
+					sh_glob_lexer_rule_2.c \
+					sh_glob_lexer_rule_3.c \
+					sh_glob_lexer_rule_4.c \
+					sh_glob_lexer_rule_5.c \
+					sh_glob_lexer_rule_6.c \
+					t_regexp.c
 
 ################################################################
 ########					PERROR						########
@@ -362,23 +435,25 @@ SRCS			+=	jobs_init.c job_add.c process_add.c job_tools.c \
 ########					INCLUDES					########
 ################################################################
 INCLUDES		=	sh_21.h \
+					sh_autocompletion.h \
+					sh_builtin.h \
+					sh_command_line.h \
+					sh_exec.h \
+					sh_expansions.h \
+					sh_globbing.h \
+					sh_grammar.h \
+					sh_history.h \
 					sh_job_control.h \
 					sh_lexer.h \
-					sh_tokens.h \
 					sh_parser.h \
-					sh_grammar.h \
-				  	sh_command_line.h \
-					sh_autocompletion.h \
-					sh_expansions.h \
-					sh_history.h \
-					sh_exec.h\
-					sh_builtin.h \
+					sh_perror.h \
+					sh_productions.h \
+					sh_redirection.h \
+					sh_shortcuts.h \
+					sh_tokens.h \
 					sh_traverse.h \
 					sh_traverse_tools.h \
-					sh_expansions.h \
-					sh_perror.h \
-					sh_shortcuts.h \
-					sh_redirection.h
+					sh_vars.h
 
 OBJECTS			=	$(addprefix $(OBJDIR), $(SRCS:.c=.o))
 INC 			=	-I $(INCLUDESDIR) -I $(LIBFTDIR) -I $(LIBFTDIR)/$(PRINTFDIR)

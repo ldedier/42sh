@@ -6,11 +6,55 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/21 16:00:41 by jmartel           #+#    #+#              #
-#    Updated: 2019/10/14 22:42:55 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/16 15:17:42 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 launch "Lexer"
+	launch_show 'reserved_words'
+	test_launch '{ echo hi ; { ls ; } }' 'echo $?'
+	test_launch ' { echo lol ; } | { cat -e ; }' 'echo $?'
+	test_launch 'echo {}' 'echo $?' 'echo { }' 'echo $?'
+	test_launch '{ export ABC=def; env|grep ABC; }; env|grep ABC|cat -e' 'echo $?'
+	test_launch '{ echo baz; echo buz >out2; } >out' 'cat out ; echo $? ; cat out2 ; echo $?' 'rm -f out out2'
+	test_launch '{ { { { ls ; } ; ls ; } ; } ; }' 'echo $?'
+	test_launch '{ { ls ; } ls ; }' 'echo $?'
+	test_launch '{ { ls ; } ; ls ; }' 'echo $?'
+	test_launch 'echo { { } }' 'echo } { } {'
+	test_launch 'echo { { { { }' 'echo } } } } {'
+	test_launch '{ ls | { cat -e ; } ; }'
+	test_launch '{ ls && { pwd ; } ; }'
+	test_launch '{ ls nowhere && { pwd ; } ; }'
+	test_launch '{ ls || { pwd ; } ; }'
+	test_launch '{ ls nowhere || { pwd ; } ; }'
+	test_launch '{ ls nowhere ; } ( { ls ; } )'
+	test_launch '{ ls nowhere ; } ; ( { ls ; } )'
+	test_launch '{ }'
+	test_launch '{ ; }'
+	test_launch 'shopt -s expand_aliases ; alias a={' 'a ls ; }'
+	test_launch 'shopt -s expand_aliases ; alias a="{ ls ; }"' 'a ; (pwd)'
+	test_launch 'shopt -s expand_aliases ; alias okalm="{ ls"' "okalm;}"
+	test_launch 'shopt -s expand_aliases ; alias a=\{ b=\ls c=\; d=\}' 'a b ; } ; echo $?' 'a b ; d ; echo $?'
+	test_launch 'shopt -s expand_aliases ; alias a=\{ b=\ls c=\; d=\}' 'a pwd ; d ; ( c ) d'
+	test_launch 'shopt -s expand_aliases ; alias LongNameAlias1="ls ; ls ; LongNameAlias1"'
+	test_launch 'shopt -s expand_aliases ; alias LongNameAlias1="ls ; ls ; LongNameAlias2" LongNameAlias2="ls ; ls ; LongNameAlias1' 'LongNameAlias1' 'LongNameAlias2' 'LongNameAlias1 ; a' 'ls ; ls && LongNameAlias1'
+	test_launch 'shopt -s expand_aliases ; alias a="LongNameAlias1" LongNameAlias1="ls ; ls ; LongNameAlias2" LongNameAlias2="ls ; ls ; LongNameAlias1' '  LongNameAlias1 ;        a  '
+	test_launch 'shopt -s expand_aliases ; alias a="LongNameAlias1" LongNameAlias1="ls ; ls ; LongNameAlias2" LongNameAlias2="ls ; ls ; LongNameAlias1' '    a       '
+	test_launch 'shopt -s expand_aliases ; alias LongName1="ls ; ls ; a" a=b b="ls ; LongName2" LongName2="ls  ; c " c="d     ; ls" d=LongName1 ' 'a ; LongName1' 'd' 'ls ; LongName2'
+
+	launch_show	"Braces and parenthesis detection"
+	test_launch '( ! ls ) && pwd'
+	test_launch '( ! ls ) || pwd'
+	test_launch '( ! ls && pwd )'
+	test_launch '( ! ls || pwd )'
+	test_launch '( VAR=foo ) ; echo $VAR'
+	test_launch '( export VAR=foo ) ; echo $VAR'
+	test_launch '( nocmd )'
+	test_launch '( { echo jey ;} )' '( { echo jey ; } )'
+	test_launch '( echo jey } )'
+	test_launch '( echo jey } )'
+	test_launch '{ echo lol { }} | cat -e ; }'
+
 	launch_show "Quotes"
 	test_launch '"e"c"h"o lol' 'ls'
 	test_launch '"echo" lol' 'ls'
@@ -53,32 +97,28 @@ launch "Lexer"
 	for i in `seq 1 11` ; do
 		test_launch_pipe ./tests_files/alias/alias_${i}
 	done
+	test_launch 'shopt -s expand_aliases' 'alias a=b b="ls ; a" '  'a' 'echo $?'
 
 	launch_show "Random"
 	test_launch '"var=pwe"'
 	test_launch 'ls ""'
 
-	launch_show	"Braces and parenthesis detection"
-	test_launch '( ! ls ) && pwd'
-	test_launch '( ! ls ) || pwd'
-	test_launch '( ! ls && pwd )'
-	test_launch '( ! ls || pwd )'
-	test_launch '( VAR=foo ) ; echo $VAR'
-	test_launch '( export VAR=foo ) ; echo $VAR'
-	test_launch '( nocmd )'
-	test_launch '( { echo jey } )'
-	test_launch '( echo jey } )'
-	test_launch '( echo jey } )'
-	test_launch '{ echo lol { }} | cat -e ; }'
+	launch_show "unclosed pipe"
+	test_launch 'pwd | cat -e' 'pwd |' 'cat -e' 'echo $?'
+	test_launch 'pwd |' 'cat -e' 'pwd' 'echo $?'
+	test_launch 'pwd |' 'echo $?'
+	test_launch 'pwd |' 'cat -e |' 'cat -e' 'echo $?'
+	test_launch 'ls | | pwd' 'echo $?'
+	test_launch 'ls | cat -e | ' 'echo $?'
+	test_launch '|' 'echo $?'
 
-  
-  	mkdir "./test_globbing" && cd "./test_globbing" && touch 'a' 'b' 'c' 'd' 'e' 'f' '!' '^' && cd ..
-	launch_show "wesh tests"
-	test_launch 'cd "./test_globbing"' './obj/write_arguments [abc\]def]'
-	test_launch 'cd "./test_globbing"' './obj/write_arguments [abc\\\]def]'
-	test_launch 'cd "./test_globbing"' './obj/write_arguments [abc\\\\\]def]'
-	test_launch 'cd "./test_globbing"' './obj/write_arguments [abc\\\\\\\]def]"'
-	rm -rf test_globbing
+	launch_show "unclosed expansions"
+	test_launch 'echo `ls'  'echo $?'
+	test_launch 'echo `ls' '-A' 'echo $?'
+	test_launch 'echo ${param' 'echo $?'
+	test_launch 'echo $(param' 'echo $?'
+	test_launch 'echo <(param' 'echo $?'
+	test_launch 'echo >(param' 'echo $?'
 
 finish
 

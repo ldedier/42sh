@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/23 13:10:40 by jmartel           #+#    #+#              #
-#    Updated: 2019/10/10 10:08:55 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/18 13:31:01 by jdugoudr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 launch "Expansions"
 	launch_show "Random"
 	test_launch 'echo $var'
-									test_launch 'echo $TERM'
+	test_launch 'echo $TERM'
 	test_launch 'var=Okalm' 'echo $var'
 	test_launch 'var=Okalm' 'echo $var' 'var=po' 'echo $var'
 	test_launch 'var=Okalm' 'echo ${pwd:=ol}'
@@ -24,13 +24,8 @@ launch "Expansions"
 	test_launch '$novar ls'
 	test_launch	'$pwd $pwd'
 	test_launch "alias al='$var'" 'var="ls -a ; al"'
-
-	launch_show "List tests"
 	test_launch 'ahsdiouashdiuasdhioasjdopasdjoldniouhjnqwioejqnwoel=adisuhiduashnodklajsodiajlsdlkasasdhuasodiu' 'echo $ahsdiouashdiuasdhioasjdopasdjoldniouhjnqwioejqnwoel='
 
-finish
-
-launch "Variables"
 	launch_show "Basic"
 	test_launch '=qsda'
 	test_launch 'var=okalm ; echo $var'
@@ -79,7 +74,7 @@ launch "Variables"
 	test_launch 'var='\'''\''$HOME ; echo $var'
 	test_launch 'var='\''$HOME'\'' ; echo $var'
 	test_launch 'var=\"$HOME\" ; echo $var'
-	test_launch 'var='\sd\'\''$HOME ; echo $var'
+	test_launch 'var='\sd\'' $HOME ; echo $var'
 	test_launch 'var=$ASD ; echo $var'
 	test_launch 'var=asd'\''$ASD'\'' ; echo $var'
 	test_launch 'var="Okalm os speculos"$USER ; echo $var'
@@ -116,8 +111,8 @@ launch "Variables"
 	test_launch 'var=~/:~//::: ; echo $var'
 	test_launch 'var=:~/:~/::: ; echo $var'
 
-	launch_show "Hybrid tests"
-	test_launch 'var=root' 'echo $(echo ~/) ; echo $(echo ~$var/)' 'echo ~$var/'
+	launch_show "Hybrid"
+	# test_launch 'var=root' 'echo $(echo ~/) ; echo $(echo ~$var/)' 'echo ~$var/'
 	test_launch 'shopt -s expand_aliases' 'alias cmd='"'"'cd ~/'"'" 'alias ; cmd ; echo $?' 'pwd'
 	test_launch 'ls -a ; !ls' 'ls ; !ls ; ls -a' 'alias ls=echo' '!ls'
 
@@ -129,6 +124,24 @@ launch "Variables"
 	test_launch 'var="      spa     ces"' 'echo > $var' 'cat "$var"' 'rm -f "$var"'
 	test_launch 'var="      spa     ces"' 'echo > "$var"' 'cat "$var"' 'rm -f "$var"'
 	test_launch 'var=">file"' 'echo oklam $var' 'cat file ; rm -f file'
+
+	launch_show "invalid names"
+	test_launch 'var=tamer okalm=speculos' 'echo $%%$var ; echo $+++$+++ ; echo \$\$$&---$okalm$++'
+	test_launch 'var=tamer okalm=speculos' 'echo \$var$%%$var' 'echo "$var$%%$novar$%%"'
+	test_launch 'var=tamer okalm=speculos' 'echo \$var$%%$var' 'echo "\$var\$%%\$novar\$%%"'
+	test_launch 'var=tamer okalm=speculos' 'echo $%%$var'
+	test_launch 'var=tamer okalm=speculos' 'echo $+++$+++'
+	test_launch 'var=tamer okalm=speculos' 'echo $\$\$+++$okalm$++'
+	test_launch 'var=tamer okalm=speculos' 'echo "\$var\$%%\$novar\$%%"'
+	test_launch 'var=tamer okalm=speculos' 'echo \$var$%%$var'
+	test_launch 'var=tamer okalm=speculos' 'echo "$var$%%$novar$%%"'
+	test_launch 'var=tamer okalm=speculos' 'echo \$var$%%$var'
+	test_launch 'echo %$%%%'
+	test_launch 'echo $var$%%%\$var'
+	test_launch 'echo "$%%%%"'
+	test_launch 'var=tamer okalm=dsadasd' 'echo %%%var$\++%%$okalm'
+	test_launch 'var=tamer okalm=dsa    d   a  sd' 'echo $okalm%%$%%$okalm%% '
+	test_launch 'var=tamer okalm=dsadasd' 'echo %++$++$var++%'
 
 # launch "Deprecated"
 	# launch "Hard"

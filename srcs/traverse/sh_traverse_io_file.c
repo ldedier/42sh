@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 11:19:41 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/04 12:11:39 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/21 13:02:03 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static int	sh_process_file_lessand(char *filename, t_context *context)
 	else
 	{
 		if (fd == -1)
-			return (sh_perror_err(filename, "ambiguous redirect"));
+			return (sh_perror_err(filename, SH_AMB_REDIRECT));
 		else
 		{
 			ft_dprintf(2, "%s%s: %s : %d%s\n", SH_ERR_COLOR,

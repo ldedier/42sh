@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 11:47:31 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/04 13:31:22 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/20 02:26:30 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	sh_traverse_tools_show_traverse_ret_value(
 /*
 ** sh_traverse_tools_get_exec_node.c
 */
-int 	get_node_to_exec(
+int		get_node_to_exec(
 	t_ast_node *node,
 	t_context *context,
 	t_symbol_id symbol,
@@ -73,7 +73,7 @@ char	*get_heredoc(
 /*
 ** sh_traverse_tools_get_separator.c
 */
-int 	sh_get_separator_op(
+int		sh_get_separator_op(
 	t_ast_node *to_execute, t_ast_node *separator, t_context *context);
 int		sh_get_separator(
 	t_ast_node *to_execute, t_ast_node *separator, t_context *context);
@@ -95,14 +95,8 @@ int		sh_traverse_io_here_phase_expansion(
 /*
 ** sh_traverse_tools_io_here_redirection.c
 */
-int 	sh_traverse_tools_io_here_redirection(
+int		sh_traverse_tools_io_here_redirection(
 	t_ast_node *node, t_context *context);
-
-/*
-** sh_traverse_tools_reset.c
-*/
-//void	sh_traverse_tools_reset_context(t_context *context);
-//void	sh_traverse_tools_reset_params(t_context *context);
 
 /*
 ** sh_traverse_tools_simple_command.c
@@ -113,6 +107,7 @@ int		sh_traverse_sc_search_in_path(t_context *context);
 /*
 ** sh_traverse_tools_simple_command_check_perm.c
 */
+int		check_for_symlink_loop(struct stat *st, char *path, int i);
 int		sh_traverse_sc_check_perm_quiet(char *path);
 int		sh_traverse_sc_check_perm(
 	t_context *context, char *path, char *command_name);

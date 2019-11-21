@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:31:30 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/04 12:26:42 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/21 12:00:28 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	sh_process_traverse_cmd_suffix(
 	}
 	if (context->phase == E_TRAVERSE_PHASE_EXECUTE && child->token)
 	{
-		if (!(child->token->expansion && !*child->token->value))
+		if (*child->token->value || child->token->give_as_arg)
 			if (ft_dy_tab_add_str(context->params, child->token->value))
 				return (sh_perror(SH_ERR1_MALLOC,
 							"sh_traverse_cmd_suffix"));

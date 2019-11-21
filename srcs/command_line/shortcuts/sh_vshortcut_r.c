@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 11:02:58 by ldedier           #+#    #+#             */
-/*   Updated: 2019/03/28 11:02:58 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/04 18:39:29 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 /*
 ** sh_vshortcut_r.c
-**	
+**
 ** replace the counth next characters by c
 */
 
-static char *alloc_replacement(int count, char c)
+static char	*alloc_replacement(int count, char c)
 {
 	char	*res;
 	int		i;
@@ -37,13 +37,12 @@ static char *alloc_replacement(int count, char c)
 
 int			sh_vshortcut_r(t_command_line *command_line, int c, int dummy)
 {
-	(void)dummy;
-
 	int		i;
 	int		nb_chars;
 	char	*replacement;
 	int		len;
 
+	(void)dummy;
 	if (advance_count_characters(command_line, &i, &len, &nb_chars) != SUCCESS)
 		return (FAILURE);
 	if (!(replacement = alloc_replacement(nb_chars, c)))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_execute_builtin.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 11:34:44 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/04 11:40:56 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/17 14:29:10 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ static int	execute_builtin_in_bg(t_ast_node *parent_node, t_context *context)
 
 	if (g_job_ctrl->interactive && !g_job_ctrl->job_added)
 	{
-		if ((ret = job_add(parent_node, IS_BG(context->cmd_type))) != SUCCESS)
+		if ((ret = job_add(parent_node, context->cmd_string,
+			IS_BG(context->cmd_type))) != SUCCESS)
 			return (ret);
 		g_job_ctrl->job_added = 1;
 	}

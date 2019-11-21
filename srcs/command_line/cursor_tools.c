@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 14:33:21 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/05 17:16:59 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/04 20:37:57 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,36 +36,6 @@ int		get_true_cursor_pos(int cursor)
 		return (cursor + ft_strlen_utf8(ELIPTIC_COMMAND_LINE));
 }
 
-int		get_down_from_command(t_command_line *command_line)
-{
-	int		full_y;
-	int		cursor_y;
-	int		i;
-	char	*str;
-	int		ret;
-	int		research_nb_lines;
-
-	ret = 0;
-	full_y = (get_true_cursor_pos(command_line->nb_chars)
-		/ g_glob.winsize.ws_col) - command_line->scrolled_lines;
-	cursor_y = (get_true_cursor_pos(g_glob.cursor)
-		/ g_glob.winsize.ws_col) - command_line->scrolled_lines;
-	str = tgetstr("do", NULL);
-	research_nb_lines = get_research_nb_lines(command_line);
-	i = cursor_y;
-	while (i < full_y && i < g_glob.winsize.ws_row - 1 - research_nb_lines)
-	{
-		tputs(str, 1, putchar_int);
-		i++;
-		ret++;
-	}
-	tputs(str, 1, putchar_int);
-	i = 0;
-	while (i++ < cursor_y)
-		ret++;
-	return (ret + 1);
-}
-
 void	replace_cursor_on_index(void)
 {
 	char	*str;
@@ -85,11 +55,6 @@ void	replace_cursor_on_index(void)
 
 void	replace_cursor_after_render(void)
 {
-//	ft_dprintf(2, GREEN"LAAALAA\n"EOC);
-//	sleep(4);
-//	ft_dprintf(2, GREEN"WOOPPLAAALAA\n"EOC);
 	go_up_to_prompt(g_glob.winsize.ws_col, g_glob.command_line.nb_chars);
-//	sleep(4);
-//	sleep(1);
 	replace_cursor_on_index();
 }

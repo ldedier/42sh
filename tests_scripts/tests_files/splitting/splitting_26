@@ -1,0 +1,3 @@
+IFS=a
+var=blat
+echo ${var}aaaaaa${var}

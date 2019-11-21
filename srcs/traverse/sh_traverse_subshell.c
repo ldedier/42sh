@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/02 10:03:30 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/04 11:56:55 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/08 23:37:38 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,16 +73,16 @@ static int	parents_part(pid_t pid, t_context *context)
 ** So we can directly go to compound_list node.
 */
 
-int			sh_traverse_subshell(t_ast_node *node, t_context *context)
+int			sh_traverse_subshell(t_ast_node *node, t_context *ctxt)
 {
 	pid_t	pid;
 	int		ret;
 
-	if (IS_PIPE(context->cmd_type))
-		return (child_part(node, context));
+	if (IS_PIPE(ctxt->cmd_type))
+		return (child_part(node, ctxt));
 	if (g_job_ctrl->interactive && !g_job_ctrl->job_added)
 	{
-		if ((ret = job_add(node->parent->parent, IS_BG(context->cmd_type))))
+		if ((ret = job_add(node->parent->parent, NULL, IS_BG(ctxt->cmd_type))))
 			return (ret);
 		g_job_ctrl->job_added = 1;
 	}
@@ -90,11 +90,11 @@ int			sh_traverse_subshell(t_ast_node *node, t_context *context)
 		return (sh_perror_err(SH_ERR1_FORK, "can't fork for subshell"));
 	else if (pid)
 	{
-		ret = parents_part(pid, context);
+		ret = parents_part(pid, ctxt);
 		g_job_ctrl->job_added = 0;
 		return (ret);
 	}
 	else
-		child_part(node, context);
+		child_part(node, ctxt);
 	return (0);
 }

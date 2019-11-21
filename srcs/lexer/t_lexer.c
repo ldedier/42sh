@@ -6,13 +6,14 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 11:39:44 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/09 02:36:32 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/16 17:18:31 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-int		t_lexer_init(t_lexer *lexer, t_lex_mode mode, t_shell *shell, char *input)
+int			t_lexer_init(
+	t_lexer *lexer, t_lex_mode mode, t_shell *shell, char *input)
 {
 	ft_bzero(lexer, sizeof(*lexer));
 	if (!(lexer->input = ft_strdup(input)))
@@ -24,10 +25,11 @@ int		t_lexer_init(t_lexer *lexer, t_lex_mode mode, t_shell *shell, char *input)
 	lexer->mode = mode;
 	t_lexer_reset(lexer, 0);
 	lexer->first_word = 1;
+	lexer->next_alias_index = -1;
 	return (SUCCESS);
 }
 
-void	t_lexer_reset(t_lexer *lexer, int tok_start)
+void		t_lexer_reset(t_lexer *lexer, int tok_start)
 {
 	lexer->quoted = 0;
 	lexer->expansion = 0;
@@ -35,6 +37,32 @@ void	t_lexer_reset(t_lexer *lexer, int tok_start)
 	lexer->tok_len = 0;
 	lexer->current_id = LEX_TOK_UNKNOWN;
 	lexer->c = lexer->input[lexer->tok_start + lexer->tok_len];
+}
+
+static int	t_lexer_create_and_fill_token(t_lexer *lexer, char *value)
+{
+	t_list		*link;
+	t_token		*token;
+
+	if (!(link = t_token_node_new(lexer->current_id, NULL)))
+	{
+		free(value);
+		return (LEX_FAIL);
+	}
+	token = link->content;
+	token->value = value;
+	ft_lstadd_last(&lexer->list, link);
+	token->expansion = lexer->expansion;
+	token->index_start = lexer->tok_start;
+	token->index_end = lexer->tok_start + lexer->tok_len + 1;
+	t_lexer_reset(lexer, lexer->tok_start + lexer->tok_len);
+	if (sh_verbose_lexer())
+	{
+		ft_dprintf(2, "new token delimited : ");
+		t_token_show(token);
+		ft_dprintf(2, "\n");
+	}
+	return (sh_lexer_reserved_words(lexer, token));
 }
 
 /*
@@ -55,10 +83,8 @@ void	t_lexer_reset(t_lexer *lexer, int tok_start)
 **		LEX_FAIL : malloc error
 */
 
-int		t_lexer_add_token(t_lexer *lexer)
+int			t_lexer_add_token(t_lexer *lexer)
 {
-	t_list		*link;
-	t_token		*token;
 	char		*value;
 	int			ret;
 
@@ -71,25 +97,10 @@ int		t_lexer_add_token(t_lexer *lexer)
 		free(value);
 		return (ret);
 	}
-	if (!(link = t_token_node_new(lexer->current_id, NULL)))
-		return (LEX_FAIL);
-	token = link->content;
-	token->value = value;
-	ft_lstadd_last(&lexer->list, link);
-	token->expansion = lexer->expansion;
-	token->index_start = lexer->tok_start;
-	token->index_end = lexer->tok_start + lexer->tok_len + 1;
-	t_lexer_reset(lexer, lexer->tok_start + lexer->tok_len);
-	if (sh_verbose_lexer())
-	{
-		ft_dprintf(2, "new token delimited : ");
-		t_token_show(token);
-		ft_dprintf(2, "\n");
-	}
-	return (sh_lexer_reserved_words(lexer, token));
+	return (t_lexer_create_and_fill_token(lexer, value));
 }
 
-void	t_lexer_show(t_lexer *lexer)
+void		t_lexer_show(t_lexer *lexer)
 {
 	t_list	*head;
 

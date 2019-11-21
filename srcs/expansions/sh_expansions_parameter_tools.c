@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 16:35:24 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/06 05:44:10 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/09 04:27:14 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ char		*sh_expansions_parameter_get_param(
 }
 
 /*
-** sh_expansions_parameter_get_param :
+** sh_expansions_parameter_get_word :
 **	Detect word in parameter expansion like ${param:-word}, and expand it.
 **	Word obtained is malloced and stored in *word.
 **
@@ -125,9 +125,9 @@ int		sh_expansions_parameter_get_word(
 	t_dy_tab	*quotes;
 	int			ret;
 
-	start = ft_strstr(exp->expansion, format);
 	if (exp->expansion[0] == '#')
 		format++;
+	start = ft_strstr(exp->expansion, format);
 	start += ft_strlen(format);
 	if (!(*word = ft_strdup(start)))
 		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_parameter_get_word"));

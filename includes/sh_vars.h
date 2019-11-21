@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 17:35:18 by jmartel           #+#    #+#             */
-/*   Updated: 2019/07/30 15:54:53 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/10/16 01:05:29 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # define VERBOSE_EXPANSION	0x0010
 # define VERBOSE_BUILTIN	0x0020
 # define VERBOSE_TRAVERSE	0x0040
+# define VERBOSE_GLOBBING	0x0080
 
 # ifndef SIGHUP
 #  define SIGHUP	1
@@ -134,6 +135,11 @@ int		sh_env_update_ret_value_and_question(t_shell *shell, int res);
 ** sh_env_save.c
 */
 int		sh_env_save_restore(t_context *context);
+
+/*
+** sh_env_save_tools.c
+*/
+void	sh_env_save_restore_command_clean(t_context *context);
 int		sh_env_save_get_index(t_dy_tab *saved_env, char *key);
 
 /*
@@ -166,6 +172,7 @@ void	sh_vars_del_key(t_dy_tab *vars, char *key);
 void	sh_verbose_update(t_shell *shell);
 int		sh_verbose_traverse(void);
 int		sh_verbose_builtin(void);
+int		sh_verbose_globbing(void);
 
 /*
 ** sh_verbose_check.c

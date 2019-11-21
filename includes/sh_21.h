@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_21.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/30 15:48:56 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/28 10:25:50 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/20 01:59:59 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@
 # include "sh_traverse_tools.h"
 # include "sh_command_line.h"
 # include "sh_expansions.h"
+# include "sh_globbing.h"
 # include "sh_vars.h"
 # include "sh_shortcuts.h"
 # include "sh_history.h"
@@ -101,6 +102,7 @@
 # define COL_MAGENTA	"\033[0;35m"
 # define COL_B_MAGENTA	"\033[1;35m"
 # define COLOR_END		"\033[1;0m"
+
 /*
 ** ANSI color constants
 */
@@ -143,6 +145,12 @@
 ** The tty can only be open on the fd :
 */
 # define TTY_FD	10
+
+/*
+** The default terminal to launch the shell with
+*/
+
+# define DEFAULT_TERM "xterm-256color"
 
 typedef struct s_shell		t_shell;
 
@@ -259,6 +267,8 @@ int					sh_process_noncanonical_mode(t_shell *shell);
 ** set_signals.c
 */
 void				reset_signals(void);
+void				handler_sighup(int signo);
+void				handler_sigwinch(int signo);
 void				init_signals(void);
 
 /*
@@ -283,7 +293,6 @@ void				handle_cont(int sgnl);
 /*
 ** signals.c
 */
-void				transmit_sig_no_motion(int signal);
 void				transmit_sig_and_die(int signal);
 void				default_sig_bonus(int sgnl);
 void				default_sig(int sgnl);

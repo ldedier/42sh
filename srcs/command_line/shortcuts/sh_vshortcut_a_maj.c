@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 11:02:58 by ldedier           #+#    #+#             */
-/*   Updated: 2019/03/28 11:02:58 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/04 18:15:37 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 /*
 ** sh_vshortcut_a_maj.c
-**	
+**
 ** go to the end of the command line and get into insert mode
 */
 
@@ -33,7 +33,7 @@ int		sh_vshortcut_a_maj(t_command_line *command_line, int dummy, int dummy_2)
 	i = command_line->current_index;
 	while (i < (int)command_line->dy_str->current_size)
 	{
-		 if ((ret = get_char_len(command_line->current_index,
+		if ((ret = get_char_len(command_line->current_index,
 				(unsigned char *)command_line->dy_str->str)) == -1)
 		{
 			return (FAILURE);

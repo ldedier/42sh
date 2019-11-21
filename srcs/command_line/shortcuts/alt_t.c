@@ -6,18 +6,19 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 17:02:45 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/25 17:02:45 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/04 17:56:13 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-int		sh_vs_motion_b_readline_alt(t_command_line *command_line, int nb_words)
+int				sh_vs_motion_b_readline_alt(t_command_line *command_line,
+		int nb_words)
 {
-	int     i;
-	char    prev_type;
-	int     new_type;
-	int     nb_word_start;
+	int		i;
+	char	prev_type;
+	int		new_type;
+	int		nb_word_start;
 
 	if (command_line->current_index == 0)
 		return (command_line->current_index);
@@ -82,12 +83,12 @@ static int		swap_words(t_command_line *command_line,
 	if (!(space_str = ft_strnew(index_b - (index_a + len_a))))
 		ft_free_turn(word_a_str, FAILURE);
 	ft_strncpy(space_str, &command_line->dy_str->str[index_a + len_a],
-		index_b - (index_a + len_a));
+			index_b - (index_a + len_a));
 	ft_strncpy(&command_line->dy_str->str[index_a],
-		&command_line->dy_str->str[index_b], len_b);
+			&command_line->dy_str->str[index_b], len_b);
 	add = len_b;
 	ft_strncpy(&command_line->dy_str->str[index_a + add], space_str,
-		index_b - (index_a + len_a));
+			index_b - (index_a + len_a));
 	add += index_b - (index_a + len_a);
 	ft_strncpy(&command_line->dy_str->str[index_a + add], word_a_str, len_a);
 	free(word_a_str);
@@ -99,7 +100,7 @@ static int		swap_words(t_command_line *command_line,
 ** transpose whole readline words
 */
 
-int		process_alt_t(t_command_line *command_line)
+int				process_alt_t(t_command_line *command_line)
 {
 	int index_a;
 	int index_b;
@@ -114,7 +115,7 @@ int		process_alt_t(t_command_line *command_line)
 	if (motion_index != (int)command_line->dy_str->current_size)
 	{
 		motion_index += get_char_len(motion_index,
-			(unsigned char *)command_line->dy_str->str);
+				(unsigned char *)command_line->dy_str->str);
 	}
 	if (swap_words(command_line, index_a, index_b) != SUCCESS)
 		return (sh_perror(SH_ERR1_MALLOC, "swap_words"));

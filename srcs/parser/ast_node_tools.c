@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 20:10:04 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/13 12:34:17 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/20 15:24:26 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ t_ast_node	*sh_new_ast_node(t_symbol_id id, char *value)
 		t_token_free(token);
 		return (sh_perrorn(SH_ERR1_MALLOC, "new_ast_node (2)"));
 	}
+	token->give_as_arg = 1;
 	sh_init_ast_node(res, token, &g_glob.cfg->symbols[sh_index(id)], NULL);
 	res->builder = NULL;
 	return (res);
@@ -60,3 +61,27 @@ t_ast_node	*sh_add_to_ast_node(t_ast_node *node, t_symbol_id id,
 	new_node->parent = node;
 	return (new_node);
 }
+
+/*
+** sh_del_one_node:
+** Delete one node from ast.
+** This node COULD NOT have children, if it has, it will not be free and
+** an error is return.
+** Other wise is delete.
+** 
+** Return value :
+** SUCCESS : on success
+** ERROR : if the node could not be remove
+*/
+//int		sh_remove_one_node(t_list **lst, t_ast_node *node)
+//{
+//	t_ast_node	*el;
+//
+//	if (node->children)
+//		return (-1);
+//	el = (*lst)->content;
+//	if (el == node)
+//	{
+//		el-
+//	}
+//}

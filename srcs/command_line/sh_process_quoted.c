@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 14:21:18 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/01 16:28:00 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/15 05:09:58 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,11 @@ int		sh_process_process_quoted(int old_context, t_lexer *lexer)
 			g_glob.command_line.interrupted = 1;
 			return (CTRL_C);
 		}
-		else if (ret != CTRL_D)
-			return (CTRL_D);
+		else if (ret == CTRL_D)
+		{
+			sh_perror_unexpected_eof(lexer);
+			return (ret);
+		}
 	}
 	if (!(lexer->input = ft_strjoin_free(lexer->input,
 					g_glob.command_line.dy_str->str, 1)))
@@ -40,6 +43,7 @@ int		sh_process_process_quoted(int old_context, t_lexer *lexer)
 int		sh_process_quoted(t_lexer *lexer)
 {
 	int old_context;
+	int	ret;
 
 	old_context = g_glob.command_line.context;
 	if (update_prompt_from_quote(lexer->shell, &g_glob.command_line,
@@ -50,7 +54,10 @@ int		sh_process_quoted(t_lexer *lexer)
 		if (!(lexer->input = ft_strjoin_free(lexer->input, "\n", 1)))
 			return (sh_perror(SH_ERR1_MALLOC, "sh_lexer_rule1_process_quoted"));
 	}
-	else if (lexer->backslash)
+	ret = sh_process_process_quoted(old_context, lexer);
+	if (lexer->backslash)
 		lexer->backslash = 0;
-	return (sh_process_process_quoted(old_context, lexer));
+	if (lexer->quoted != '\'' && lexer->quoted != '"')
+		lexer->quoted = 0;
+	return (ret);
 }

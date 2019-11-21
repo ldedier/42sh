@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 23:28:27 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/21 17:58:12 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/04 19:35:46 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,24 +65,6 @@ int		process_completion(t_command_line *command_line, t_word word)
 	return (ft_free_turn(str, 0));
 }
 
-void	print_dy_tab(t_dy_tab *dtab)
-{
-	int i;
-
-	i = 0;
-	while (i < (int)dtab->current_size)
-	{
-		ft_printf("%s\n", dtab->tbl[i]);
-		i++;
-	}
-}
-
-int		sh_free_turn_exec(t_exec *exec, int ret)
-{
-	free_execution_tools(&exec->tokens, &exec->ast_root, &exec->cst_root);
-	return (ret);
-}
-
 int		process_tab(t_shell *shell, t_command_line *command_line)
 {
 	int		ret;
@@ -94,13 +76,20 @@ int		process_tab(t_shell *shell, t_command_line *command_line)
 	{
 		if ((ret = populate_parsed_word_by_index(shell,
 			command_line->dy_str->str, command_line->current_index, &exec)))
-			return (sh_free_turn_exec(&exec, ret == FAILURE));
+		{
+			if (ret == FAILURE)
+				return (sh_free_turn_exec_autocompletion(&exec, FAILURE));
+			else if (!exec.word.str)
+				return (SUCCESS);
+			else
+				init_exec_autocompletion(&exec);
+		}
 		ft_dlstdel(&command_line->autocompletion.choices, &free_file_dlst);
 		if (populate_choices_from_word(command_line, shell, &exec.word))
-			return (sh_free_turn_exec(&exec, 1));
+			return (sh_free_turn_exec_autocompletion(&exec, 1));
 		if (command_line->autocompletion.choices != NULL)
 			ret = process_completion(command_line, exec.word);
-		sh_free_turn_exec(&exec, ret == FAILURE);
+		sh_free_turn_exec_autocompletion(&exec, ret == FAILURE);
 	}
 	else
 		process_autocompletion_down(shell, command_line);

@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 11:02:58 by ldedier           #+#    #+#             */
-/*   Updated: 2019/03/28 11:02:58 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/04 18:31:39 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,9 @@
 
 /*
 ** sh_vshortcut_c.c
-**	
+**
 **	delete the characters between the current index and the motion
 **	returned index, then get into insert mode before the deletion
-**
 */
 
 int		sh_vshortcut_c(t_command_line *command_line, int index, int special)

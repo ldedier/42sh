@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/15 16:08:40 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/29 16:55:01 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/13 12:35:45 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ static int	sh_process_command(t_shell *shell, char *command)
 		if (sh_env_update_ret_value_and_question(shell, ret) == FAILURE)
 			ret = sh_perror(SH_ERR1_MALLOC, "sh_process_command (2)");
 		ft_lstdel(&tokens, sh_free_token_lst);
+		if (!isatty(0))
+			shell->running = 0;
 	}
 	else
 	{

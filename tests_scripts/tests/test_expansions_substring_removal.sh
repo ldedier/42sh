@@ -1,0 +1,135 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    test_expansions_substring_removal.sh               :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2019/05/21 16:00:50 by jmartel           #+#    #+#              #
+#    Updated: 2019/11/21 15:17:20 by jmartel          ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+launch "substring_removal"
+	launch_show "# and ## no pattern matching"
+	test_launch 'param="Okalmos Speculos"' 'echo ${param#}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${#}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${#os}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${#param}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param#param}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param#s}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param# Speculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param#Okalmos Speculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param#kalmos Speculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param#kamos Speculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param#Oka}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param#Okalmos Speculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param#OkalmosSpeculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${var#Okalmos Speculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param##}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${##}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param##param}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param##s}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param## Speculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param##Okalmos Speculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param##kalmos Speculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param##kamos Speculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param##Oka}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param##Okalmos Speculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param##OkalmosSpeculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${var##Okalmos Speculos}'
+
+	launch_show "% and %% no pattern matching"
+	test_launch 'param="Okalmos Speculos"' 'echo ${param%}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${%}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${%os}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${%param}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param%param}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param%s}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param% Speculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param%Okalmos Speculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param%kalmos Speculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param%kamos Speculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param%Oka}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param%Okalmos Speculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param%OkalmosSpeculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${var%Okalmos Speculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param%%}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${%%}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${%%os}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${%%param}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param%%param}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param%%s}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param%% Speculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param%%Okalmos Speculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param%%kalmos Speculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param%%kamos Speculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param%%Oka}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param%%Okalmos Speculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${param%%OkalmosSpeculos}'
+	test_launch 'param="Okalmos Speculos"' 'echo ${var%%Okalmos Speculos}'
+
+	launch_show "% pattern matching"
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param%.c}'
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param%%.c}'
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param%/}'
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param%%/}'
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param%.c}'
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param%%.c}'
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param%*.c}'
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param%%*.c}'
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param%?.c}'
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param%%?.c}'
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param%%%?.c}'
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param%*}'
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param%%*}'
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param%???}'
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param%%???}'
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param%[a-z]*}'
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param%%[a-z]*}'
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param%[!a-z]*}'
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param%%[!a-z]*}'
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param%?[!a-z]*}'
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param%%?[!a-z]*}'
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param%?[!a-z]}'
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param%%?[!a-z]}'
+	test_launch 'param="./dir/subdir/file.c" var="./dir/"'  'echo ${param%%$var}'
+	test_launch 'param="./dir/subdir/file.c" var="/file.c"'  'echo ${param%%$var}'
+
+	launch_show "# pattern matching"
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param#.c}'
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param##.c}'
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param#/}'
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param##/}'
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param#.c}'
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param##.c}'
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param#*.c}'
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param##*.c}'
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param#?.c}'
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param##?.c}'
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param###?.c}'
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param#*}'
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param##*}'
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param#???}'
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param##???}'
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param#[a-z]*}'
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param##[a-z]*}'
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param#[!a-z]*}'
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param##[!a-z]*}'
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param#?[!a-z]*}'
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param##?[!a-z]*}'
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param#?[!a-z]}'
+	test_launch 'param="./dir/subdir/file.c"'  'echo ${param##?[!a-z]}'
+	test_launch 'param="./dir/subdir/file.c" var="./dir/"'  'echo ${param##$var}'
+	test_launch 'param="./dir/subdir/file.c" var="/file.c"'  'echo ${param##$var}'
+	
+	launch_show "found on the internet"
+	
+	test_launch 'string="hello-world" prefix="hell" suffix="ld"' 'foo=${string#"$prefix"} ; echo $? $string'
+	test_launch 'string="hello-world" prefix="hell" suffix="ld"' 'foo=${foo%"$suffix"} ; echo $? $string'
+	test_launch 'string="hello-world" prefix="hell" suffix="ld"' 'foo=${string#"$prefix"} ; foo=${foo%"$suffix"} ; echo $? $string'
+
+	# test_launch 'param=""'  'echo ${param%}'
+	# test_launch 'param=""'  'echo ${param%}'
+
+finish

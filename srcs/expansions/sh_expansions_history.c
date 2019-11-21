@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_expansions_history.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 12:01:07 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/09 02:36:16 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/21 15:03:01 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,14 @@ static int ft_word_delim_len(char *str, int delim)
 	return (i);
 }
 
-char	*ft_strdup_word_delim(char *str, int delim)
+char		*ft_strdup_word_delim(char *str, int delim)
 {
 	char	*res;
-	// int		i;
 	int		len;
 
 	len = ft_word_delim_len(str, delim);
 	if (!(res = ft_strnew(len)))
 		return (sh_perrorn(SH_ERR1_MALLOC, "ft_strdup_word_delim"));
-	// i = 0;
 	ft_strncpy(res, str, len);
 	res[len] = '\0';
 	return (res);
@@ -62,7 +60,7 @@ static void	parse_fc_operand_expansion(t_fc_operand *operand,
 	operand->parsed = 1;
 }
 
-int		sh_history_expand(t_shell *shell,
+int			sh_history_expand(t_shell *shell,
 		t_command_line *command_line, int *index, int *double_quoted)
 {
 	char			*str;
@@ -93,17 +91,20 @@ int		sh_history_expand(t_shell *shell,
 	return (SUCCESS);
 }
 
-int		sh_expansions_history(t_shell *shell, t_command_line *command_line,
+int			sh_expansions_history(t_shell *shell, t_command_line *command_line,
 		int *expanded)
 {
 	int i;
 	int single_quoted;
 	int double_quoted;
 	int backslashed;
+	int bracket;
 	int ret;
 
 	single_quoted = 0;
 	backslashed = 0;
+	bracket = 0;
+	double_quoted = 0;
 	i = 0;
 	*expanded = 0;
 	while (i < (int)command_line->dy_str->current_size)
@@ -114,11 +115,20 @@ int		sh_expansions_history(t_shell *shell, t_command_line *command_line,
 			single_quoted = !single_quoted;
 		else if (command_line->dy_str->str[i] == '\"' && !backslashed)
 			double_quoted = !double_quoted;
+		else if (command_line->dy_str->str[i] == '[' && !backslashed)
+			bracket = 1;
+		else if (command_line->dy_str->str[i] == ']' && !backslashed)
+			bracket = 0;
 		else if (command_line->dy_str->str[i] == '!'
 				&& !backslashed && !single_quoted
 				&& (i != (int)command_line->dy_str->current_size - 1
-					&& !ft_iswhite(command_line->dy_str->str[i + 1])))
+				&& !ft_iswhite(command_line->dy_str->str[i + 1])
+				&& command_line->dy_str->str[i + 1] != '=')
+				&& !bracket)
 		{
+			// Added to fix globbing [!...] dedtection, need ldedier to check / improve it 
+			if (i > 0 && command_line->dy_str->str[i - 1] == '[')
+				return (SUCCESS);
 			*expanded = 1;
 			if ((ret = sh_history_expand(shell, command_line, &i,
 				&double_quoted)) != SUCCESS)

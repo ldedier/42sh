@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sh_traverse_simple_command_tools.c                 :+:      :+:    :+:   */
+/*   sh_traverse_tools_simple_command.c                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/31 17:30:53 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/21 13:07:23 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,11 +85,18 @@ static int	sh_traverse_sc_search_in_dir_found(char *path, DIR *dir,
 */
 
 static int	sh_traverse_sc_search_in_dir(
-	char *path, DIR *dir, t_context *context)
+	char *path, t_context *context)
 {
 	t_dirent	*dirent;
 	int			ret;
+	DIR			*dir;
 
+	if (!*path)
+		dir = opendir(".");
+	else
+		dir = opendir(path);
+	if (!dir)
+		return (SUCCESS);
 	while ((dirent = readdir(dir)))
 	{
 		if (ft_strequ(dirent->d_name, context->params->tbl[0]))
@@ -118,29 +125,21 @@ static int	sh_traverse_sc_search_in_dir(
 
 int			sh_traverse_sc_search_in_path(t_context *context)
 {
-	char	**split;
-	int		i;
-	DIR		*dir;
 	char	*buffer;
+	char	*path;
 
 	if (!(buffer = sh_vars_get_value(context->env, context->vars, "PATH")))
-		return (ERROR);
-	if (!(split = sh_split_path(buffer)))
-		return (FAILURE);
-	i = 0;
-	while (split[i])
+		return (sh_traverse_sc_search_in_dir(".", context));
+	while ((path = ft_strsep(&buffer, ":")))
 	{
-		if (!(dir = opendir(split[i])))
+		if (sh_traverse_sc_search_in_dir(path, context) == FAILURE)
 		{
-			i++;
-			continue ;
-		}
-		if (sh_traverse_sc_search_in_dir(split[i], dir, context) == FAILURE)
+			ft_strsep(NULL, NULL);
 			return (FAILURE);
+		}
 		if (context->path)
 			break ;
-		i++;
 	}
-	ft_strtab_free(split);
+	ft_strsep(NULL, NULL);
 	return (SUCCESS);
 }

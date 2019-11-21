@@ -6,7 +6,7 @@
 #    By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/12/06 12:53:13 by jmartel           #+#    #+#              #
-#    Updated: 2019/10/15 03:05:44 by mdaoud           ###   ########.fr        #
+#    Updated: 2019/11/20 16:38:22 by jdugoudr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,10 +60,12 @@ SRCS	+=	./str/ft_strlen.c ./str/ft_strdup.c \
 			./str/ft_strmap.c ./str/ft_strmapi.c \
 			./str/ft_strequ.c ./str/ft_strnequ.c \
 			./str/ft_strsub.c ./str/ft_strjoin.c \
-			./str/ft_strtrim.c ./str/ft_strsplit.c \
+			./str/ft_strtrim.c ./str/ft_strtrim_side.c \
+			./str/ft_strsplit.c \
 			./str/ft_strnlen.c ./str/ft_strrev.c \
 			./str/ft_strstr_count.c ./str/ft_strtolower.c \
 			./str/ft_strjoin_free.c ./str/ft_strinsert_free.c \
+			./str/ft_strninsert_free.c \
 			./str/ft_strjoin_path.c ./str/ft_strndup.c \
 			./str/ft_split_whitespaces.c ./str/ft_strrep_free.c \
 			./str/ft_strpbrk.c ./str/ft_strnrest.c ./str/ft_strjoin_3.c \
@@ -71,6 +73,7 @@ SRCS	+=	./str/ft_strlen.c ./str/ft_strdup.c \
 			./str/ft_isseparator.c ./str/ft_chpbrk.c \
 			./str/ft_strnjoin_free.c ./str/ft_substitute_str.c \
 			./str/ft_strjoin_3_free.c ./str/ft_strtok.c ./str/ft_strcontains.c \
+			./str/ft_strsep.c
 
 SRCS	+=	./str/ft_strtab_free.c ./str/ft_strtab_put.c \
 			./str/ft_strtab_len.c ./str/ft_strtab_new_line.c \

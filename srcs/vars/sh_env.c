@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/14 14:52:02 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/30 22:58:16 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/20 02:57:04 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,6 @@ void		sh_env_update_ret_value_wait_result(t_context *context, int res)
 	t_shell		*shell;
 
 	shell = context->shell;
-	// ft_dprintf(g_term_fd, YELLOW"update: %#X (%d)\n"EOC);
-	// ft_dprintf(g_term_fd, YELLOW"exit value: %d, signal: %d\n"EOC, SH_RET_VALUE_EXIT_STATUS(res), SH_RET_VALUE_SIG_RECEIVED(res));
 	if (!shell->ret_value_set)
 	{
 		if (SH_RET_VALUE_SIG_RECEIVED(res))
