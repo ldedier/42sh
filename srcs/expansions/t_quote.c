@@ -6,13 +6,13 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 21:49:08 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/20 10:37:37 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/21 10:41:59 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-t_quote		*t_quote_new(int index, char *c)
+t_quote		*t_quote_new(int index, char *c, int is_original)
 {
 	t_quote		*new;
 
@@ -20,14 +20,15 @@ t_quote		*t_quote_new(int index, char *c)
 		return (NULL);
 	new->index = index;
 	new->c = c;
+	new->is_original = is_original;
 	return (new);
 }
 
-int			t_quote_add_new(t_dy_tab *quotes, int index, char *c)
+int			t_quote_add_new(t_dy_tab *quotes, int index, char *c, int is_original)
 {
 	t_quote	*new;
 
-	if (!(new = t_quote_new(index, c)))
+	if (!(new = t_quote_new(index, c, is_original)))
 		return (FAILURE);
 	if (ft_dy_tab_add_ptr(quotes, new))
 		return (FAILURE);
