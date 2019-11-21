@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/21 15:03:31 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/21 15:03:53 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/21 17:12:39 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int			sh_expansions_parameter_hash(
 	int		ret;
 
 	param = sh_expansions_parameter_get_param(context, exp);
+	word = NULL;
 	if ((ret = sh_expansions_parameter_get_word(context, exp, format, &word)))
 		return (ret);
 	if (sh_globbing_substring_removal_get_word(param, &word, exp, format))
@@ -56,6 +57,7 @@ int			sh_expansions_parameter_percent(
 	int		ret;
 
 	param = sh_expansions_parameter_get_param(context, exp);
+	word = NULL;
 	if ((ret = sh_expansions_parameter_get_word(context, exp, format, &word)))
 		return (ret);
 	if (sh_globbing_substring_removal_get_word(param, &word, exp, format))
