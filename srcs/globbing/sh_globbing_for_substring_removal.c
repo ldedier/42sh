@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/08 05:50:11 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/21 15:49:15 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/21 16:46:29 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ static void	prefix_pattern_matching(
 	{
 		save = param[i];
 		param[i] = '\0';
-		ft_dprintf(2, "trying with : %s\n", param);
 		if (sh_is_pattern_matching_for_substring_removal(
 			param, regexp_list) == SUCCESS)
 		{
