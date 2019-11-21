@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 13:31:28 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/21 11:47:08 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/21 14:05:28 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ static void	clean_non_original_quotes(t_dy_tab *quotes)
 			{
 				tbl[j]->index -= 1;
 				tbl[j]->c -= 1;
-				ft_dprintf(2, "updated a quote : %c\n", tbl[j]->c);
 				j++;
 			}
 		}

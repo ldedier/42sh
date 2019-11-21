@@ -31,13 +31,11 @@ void	update_quotes(t_quote **quotes, int i, int start, t_ast_node *node)
 int		sh_skip_quote(t_quote **quotes, int i)
 {
 	int	is_quote;
-	int	start;
 
 	if ((is_quote = t_quote_is_original_quote(i, quotes)) < 0)
 		return (-1);
 	if (is_quote)
 	{
-		start = i;
 		if ((is_quote = t_quote_get_offset(i, quotes)) < 0)
 			return (-1);
 		i = is_quote + 1;
