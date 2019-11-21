@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/27 16:47:32 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/18 13:21:35 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/20 16:24:58 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,10 @@ static int	sh_splitting_non_white_ifs(
 		if ((ret = sh_get_next_word_nws(data, &word, &i)) < 0)
 			return (FAILURE);
 		else if (ret == 1)
+		{
 			if ((ret = split_input(&node, data, word.start, word.end)))
 				return (ret);
+		}
 	}
 	return (SUCCESS);
 }
@@ -92,8 +94,10 @@ static int	sh_expansions_splitting_default(
 		if ((ret = sh_get_next_word_ws(data, &word, &i)) < 0)
 			return (FAILURE);
 		else if (ret == 1)
+		{
 			if ((ret = split_input(&node, data, word.start, word.end)))
 				return (ret);
+		}
 	}
 	return (SUCCESS);
 }
@@ -132,19 +136,11 @@ int			sh_expansions_splitting(
 	ifs = sh_vars_get_value(context->env, context->vars, "IFS");
 	init_split_data(&data, node, quotes);
 	if (!ifs || ft_strequ(ifs, " \t\n"))
-	{
-		if (!ft_strpbrk(node->token->value, " \t\n"))
-			return (SUCCESS);
 		ret = sh_expansions_splitting_default(&data, node);
-	}
 	else if (!*ifs)
 		return (SUCCESS);
 	else
-	{
-		if (!ft_strpbrk(node->token->value, ifs))
-			return (SUCCESS);
 		ret = sh_splitting_non_white_ifs(&data, node, ifs);
-	}
 	if (sh_verbose_expansion())
 		sh_print_ast_root(node);
 	return (ret);

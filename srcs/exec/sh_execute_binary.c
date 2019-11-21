@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 11:49:50 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/19 18:03:07 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/20 16:48:51 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,8 +121,9 @@ int				sh_execute_binary(t_ast_node *father_node, t_context *context)
 	// We shouldn't fork and exit if the command is empty.
 	// 1) Waste of resources.
 	// 2) it will overrite the last question mark value (for expansions)
-	if (!context->params->tbl || !context->params->tbl[0])
-		return(SUCCESS);
+	// ===> we have to for this kind of problem : > fifo
+//	if (!context->params->tbl || !context->params->tbl[0])
+//		return(SUCCESS);
 	if (IS_PIPE(context->cmd_type))
 		sh_execute_execve(father_node, context);
 	if (g_job_ctrl->interactive && !g_job_ctrl->job_added)

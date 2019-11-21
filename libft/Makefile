@@ -6,7 +6,7 @@
 #    By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/12/06 12:53:13 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/18 06:56:18 by mdaoud           ###   ########.fr        #
+#    Updated: 2019/11/20 16:38:22 by jdugoudr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -65,6 +65,7 @@ SRCS	+=	./str/ft_strlen.c ./str/ft_strdup.c \
 			./str/ft_strnlen.c ./str/ft_strrev.c \
 			./str/ft_strstr_count.c ./str/ft_strtolower.c \
 			./str/ft_strjoin_free.c ./str/ft_strinsert_free.c \
+			./str/ft_strninsert_free.c \
 			./str/ft_strjoin_path.c ./str/ft_strndup.c \
 			./str/ft_split_whitespaces.c ./str/ft_strrep_free.c \
 			./str/ft_strpbrk.c ./str/ft_strnrest.c ./str/ft_strjoin_3.c \

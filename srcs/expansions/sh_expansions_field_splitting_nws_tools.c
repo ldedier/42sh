@@ -6,7 +6,7 @@
 /*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/17 18:57:14 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/18 13:15:50 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/20 15:30:24 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,12 @@ int			sh_skip_word_nws(t_split_data *data, t_split_word *word, int *i)
 		return (end_of_word(data, word, i));
 	if (is_quote < 0)
 		return (-1);
+//	if ((*i = sh_skip_quote(data->quotes, *i, data->give_as_arg)) < 0)
 	if ((*i = sh_skip_quote(data->quotes, *i)) < 0)
 		return (-1);
 	while (data->input[*i] && !(is_quote = is_nws(data, *i))
-			&& !ft_strchr(data->ws, data->input[*i]))
+			&& !ft_strchr(data->ws, data->input[*i])
+			&& (is_quote = t_quote_is_original_quote(*i, data->quotes) == 0))
 		*i += 1;
 	if (is_quote < 0)
 		return (-1);

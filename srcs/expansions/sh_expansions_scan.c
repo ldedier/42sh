@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/04 11:17:39 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/16 12:03:40 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/21 10:46:34 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	double_quote(
 	int	ret;
 
 	ret = SUCCESS;///
-	if (t_quote_add_new(quotes, *index, (*input) + *index))
+	if (t_quote_add_new(quotes, *index, (*input) + *index, 1))
 		return (sh_perror(SH_ERR1_MALLOC, "double_quote"));
 	(*index) += 1;
 	while ((*input)[*index] && (*input)[*index] != '\"')
@@ -31,7 +31,7 @@ static int	double_quote(
 		}
 		else if ((*input)[*index] == '\\' && ft_strchr("$`\"\\", (*input)[*index + 1]))
 		{
-			if (t_quote_add_new(quotes, *index, (*input) + *index))
+			if (t_quote_add_new(quotes, *index, (*input) + *index, 1))
 				return (sh_perror(SH_ERR1_MALLOC, "double_quote"));
 			(*index) += 2;
 		}
@@ -42,7 +42,7 @@ static int	double_quote(
 	}
 	if (!(*input)[*index])
 		return (ERROR);
-	if (t_quote_add_new(quotes, *index, (*input) + *index))
+	if (t_quote_add_new(quotes, *index, (*input) + *index, 1))
 		return (sh_perror(SH_ERR1_MALLOC, "double_quote"));
 	(*index) += 1;
 	return (SUCCESS);
@@ -63,12 +63,12 @@ static int	unquoted_var(char **input, int *index, t_context *context, t_dy_tab *
 
 static int	simple_quote(char **input, int *index, t_dy_tab *quotes)
 {
-	if (t_quote_add_new(quotes, *index, (*input) + *index))
+	if (t_quote_add_new(quotes, *index, (*input) + *index, 1))
 		return (sh_perror(SH_ERR1_MALLOC, "simple_quote"));
 	(*index) += 1;
 	while ((*input)[*index] && (*input)[*index] != '\'')
 		*index += 1;
-	if (t_quote_add_new(quotes, *index, (*input) + *index))
+	if (t_quote_add_new(quotes, *index, (*input) + *index, 1))
 		return (sh_perror(SH_ERR1_MALLOC, "simple_quote"));
 	(*index) += 1;
 	return (SUCCESS);
@@ -91,14 +91,30 @@ int			sh_expansions_scan(char **input, int index,
 	t_context *context, t_dy_tab *quotes)
 {
 	int		ret;
+	int		new_quote[2];
 
+	new_quote[0] = index;
 	while ((*input)[index] != '\'' && (*input)[index] != '"'
 		&& (*input)[index] != '\\' && (*input)[index] != '$'
 		&& (*input)[index] != '<' && (*input)[index] != '>'
 		&& (*input)[index] != '`' && (*input)[index])
 		index++;
+	new_quote[1] = index;
+	if (new_quote[0] < new_quote[1] && ft_strninsert_free(input, new_quote, '\'', 2) >= 0)
+	{
+		new_quote[1] += 1;
+		if ((t_quote_add_new(quotes, new_quote[0], (*input) + new_quote[0], 0)) != SUCCESS
+			|| (t_quote_add_new(quotes, new_quote[1], (*input) + new_quote[1], 0)) != SUCCESS)
+			return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_scan"));
+		index += 2;
+	}
+	else if (new_quote[0] < new_quote[1])
+		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_scan"));
 	if ((*input)[index] == '\0')
+	{
+		sh_expansions_update_quotes_pointer(input, (t_quote **)quotes->tbl);
 		return (SUCCESS);
+	}
 	if ((*input)[index] == '\'')
 		simple_quote(input, &index, quotes);
 	else if ((*input)[index] == '"')
@@ -116,7 +132,7 @@ int			sh_expansions_scan(char **input, int index,
 		ft_strdelchars((*input) + index, 0, 2);
 	else
 	{
-		if (t_quote_add_new(quotes, index, (*input) + index))
+		if (t_quote_add_new(quotes, index, (*input) + index, 1))
 			return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_scan"));
 		index += 2;
 	}

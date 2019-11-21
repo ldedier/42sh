@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 17:46:46 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/20 03:06:45 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/21 10:41:54 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ enum				e_exp_type
 
 typedef struct		s_quote
 {
+	int				is_original;
 	int				index;
 	char			*c;
 }					t_quote;
@@ -216,6 +217,8 @@ void				sh_expansions_quote_removal_in_str(char *input);
 /*
 ** sh_expansions_replace.c
 */
+void 				sh_expansions_update_quotes_pointer(
+	char **input, t_quote **quotes);
 int					sh_expansions_replace(
 	t_expansion *exp, char **input, int index, t_quote **quotes);
 
@@ -264,8 +267,9 @@ void				t_expansion_show_type(t_expansion *exp);
 /*
 ** t_quote.c
 */
-t_quote				*t_quote_new(int index, char *c);
-int					t_quote_add_new(t_dy_tab *quotes, int index, char *c);
+t_quote				*t_quote_new(int index, char *c, int is_original);
+int					t_quote_add_new(
+	t_dy_tab *quotes, int index, char *c, int is_original);
 void				t_quote_show_tab(t_quote **quotes);
 int					t_quote_is_original_quote(int i, t_quote **quotes);
 int					t_quote_get_offset(int i, t_quote **quotes);

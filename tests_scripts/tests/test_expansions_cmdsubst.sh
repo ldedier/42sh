@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    test_expansions_cmdsubst.sh                        :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+         #
+#    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/10 06:04:23 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/18 09:03:43 by mdaoud           ###   ########.fr        #
+#    Updated: 2019/11/21 11:55:41 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -77,6 +77,6 @@ launch "Process_Substitution"
 	test_launch 'sort -k 9 <(ls -l /bin) <(ls -l /usr/bin) <(ls -l ~/)'
 
 ## Deprecated
-	test_launch 'echo <(ls)        <(ls -l)'
-	test_launch 'echo <(ls) <(ls -l)'
-	test_launch 'echo <(ls)<(ls -l)'
+	# test_launch 'echo <(ls)        <(ls -l)'
+	# test_launch 'echo <(ls) <(ls -l)'
+	# test_launch 'echo <(ls)<(ls -l)'

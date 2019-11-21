@@ -1,0 +1,3 @@
+IFS=A
+var=AAAA
+echo blop$var"" | cat -e
