@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 12:01:07 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/15 08:37:38 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/21 15:03:01 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,14 @@ static int ft_word_delim_len(char *str, int delim)
 	return (i);
 }
 
-char	*ft_strdup_word_delim(char *str, int delim)
+char		*ft_strdup_word_delim(char *str, int delim)
 {
 	char	*res;
-	// int		i;
 	int		len;
 
 	len = ft_word_delim_len(str, delim);
 	if (!(res = ft_strnew(len)))
 		return (sh_perrorn(SH_ERR1_MALLOC, "ft_strdup_word_delim"));
-	// i = 0;
 	ft_strncpy(res, str, len);
 	res[len] = '\0';
 	return (res);
@@ -62,7 +60,7 @@ static void	parse_fc_operand_expansion(t_fc_operand *operand,
 	operand->parsed = 1;
 }
 
-int		sh_history_expand(t_shell *shell,
+int			sh_history_expand(t_shell *shell,
 		t_command_line *command_line, int *index, int *double_quoted)
 {
 	char			*str;
@@ -93,7 +91,7 @@ int		sh_history_expand(t_shell *shell,
 	return (SUCCESS);
 }
 
-int		sh_expansions_history(t_shell *shell, t_command_line *command_line,
+int			sh_expansions_history(t_shell *shell, t_command_line *command_line,
 		int *expanded)
 {
 	int i;
