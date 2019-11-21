@@ -229,6 +229,12 @@ int					sh_expansions_scan(
 	char **input, int index, t_context *context, t_dy_tab *quotes);
 
 /*
+** sh_expansions_scan_double_quote.c
+*/
+int					sh_expansions_scan_double_quote(
+	char **input, int *index, t_context *context, t_dy_tab *quotes);
+
+/*
 ** sh_expansions_tilde.c
 */
 int					sh_expansions_tilde_detect(char *start);
