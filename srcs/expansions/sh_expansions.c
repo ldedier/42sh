@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/05 10:59:30 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/20 16:35:16 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/21 11:43:48 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ int			sh_expansions(t_context *context, t_ast_node *node)
 		ret = sh_expansions_scan(input, index, context, quotes);
 	if (!ret)
 		ret = sh_expansions_splitting(context, node, quotes);
+	ft_dprintf(2, "tamer\n");
+	t_quote_show_tab((t_quote**)quotes->tbl);
 	if (!ret)
 		ret = sh_expansions_globbing(node, quotes);
 	if (!ret)

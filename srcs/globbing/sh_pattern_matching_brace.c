@@ -6,13 +6,13 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 04:48:28 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/20 16:40:49 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/21 10:07:16 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-static int	quote(char *name, t_regexp *regexp, int *i, int *j)
+static int	quote(char *str, t_regexp *regexp, int *i, int *j)
 {
 	int		ret;
 
@@ -21,7 +21,7 @@ static int	quote(char *name, t_regexp *regexp, int *i, int *j)
 	{
 		while (regexp->value[*j] && regexp->value[*j] != '\'')
 		{
-			ret = sh_pattern_matching_brace_simple(name, regexp, i, j);
+			ret = sh_pattern_matching_brace_simple(str, regexp, i, j);
 			if (ret != FAILURE)
 				return (ret);
 			(*j) += 1;
@@ -33,7 +33,7 @@ static int	quote(char *name, t_regexp *regexp, int *i, int *j)
 		{
 			if (regexp->value[*j] == '\\')
 				(j) += 1;
-			if ((ret = sh_pattern_matching_brace_simple(name, regexp, i, j)) < 2)
+			if ((ret = sh_pattern_matching_brace_simple(str, regexp, i, j)) < 2)
 				return (ret);
 			(*j) += 1;
 		}
