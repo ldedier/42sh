@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/04 11:17:39 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/21 10:46:34 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/21 18:35:00 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,6 @@ static int	double_quote(
 		else
 			*index += 1;
 	}
-	if (!(*input)[*index])
-		return (ERROR);
 	if (t_quote_add_new(quotes, *index, (*input) + *index, 1))
 		return (sh_perror(SH_ERR1_MALLOC, "double_quote"));
 	(*index) += 1;
