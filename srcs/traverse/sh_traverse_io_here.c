@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 11:19:41 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/04 12:18:46 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/21 13:00:46 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,6 @@ static int		sh_traverse_io_here_interactive_ctrl_d(
 		return (FAILURE);
 	return (SUCCESS);
 }
-
-// Unactivated quote removal for expansion rework
-// Need to use previous quote removal version in that case
 
 static int		sh_traverse_io_here_interactive(t_ast_node *node,
 		t_context *context, char *(*heredoc_func)(const char *))
