@@ -6,13 +6,12 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 11:52:40 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/21 12:50:47 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/21 14:18:52 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 #include "sh_job_control.h"
-
 
 static int	call_execve(t_context *context)
 {
@@ -32,7 +31,6 @@ static int	call_execve(t_context *context)
 		sh_env_update_ret_value(context->shell, ret);
 		exit(context->shell->ret_value);
 	}
-	ft_dprintf(g_term_fd, BLUE"Calling <%d> \"%s\"\n"EOC, getpid(), (char *)context->params->tbl[0]);
 	close(g_term_fd);
 	execve(context->path, (char **)context->params->tbl,
 			(char **)context->env->tbl);

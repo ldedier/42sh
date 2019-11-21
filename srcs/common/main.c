@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 17:59:53 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/31 08:21:19 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/21 14:14:00 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ int			main(int argc, char **argv, char **env)
 	(void)argv;
 	if (!is_open(0))
 		return (0);
-	init_signals();
 	if (jobs_init())
 		return (FAILURE);
 	if ((g_term_fd = open("/dev/tty", O_RDWR)) < 0)
