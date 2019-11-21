@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 04:48:28 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/20 12:30:53 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/21 09:36:04 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int	quote(char *name, t_regexp *regexp, int *i, int *j)
 		{
 			if (regexp->value[*j] == '\\')
 				(j) += 1;
-			if (ret = sh_pattern_matching_brace_simple(name, regexp, i, j) < 2)
+			if ((ret = sh_pattern_matching_brace_simple(name, regexp, i, j) < 2))
 				return (ret);
 			(*j) += 1;
 		}
