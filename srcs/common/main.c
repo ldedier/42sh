@@ -41,6 +41,7 @@ int			main(int argc, char **argv, char **env)
 
 	(void)argc;
 	(void)argv;
+	setlocale(LC_ALL, "en_US.UTF-8");
 	if (!is_open(0))
 		return (0);
 	init_signals();

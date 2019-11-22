@@ -28,7 +28,8 @@ int		process_enter(t_command_line *command_line)
 int		process_key_insert_printable_utf8(t_key_buffer *buffer,
 			t_shell *shell, t_command_line *command_line)
 {
-	unsigned char c;
+	unsigned char	c;
+	int				nb_cols;
 
 	if (command_line->searcher.active)
 	{
@@ -42,9 +43,11 @@ int		process_key_insert_printable_utf8(t_key_buffer *buffer,
 	}
 	else
 	{
+		nb_cols = ft_nb_columns_n((char *)buffer->buff, 1);
 		if (sh_add_to_command(command_line, buffer->buff, buffer->progress))
 			return (FAILURE);
-		render_command_line(command_line, 1, 1);
+//		ft_printf("%d\n", nb_cols);
+		render_command_line(command_line, nb_cols, 1);
 	}
 	flush_keys(buffer);
 	return (SUCCESS);

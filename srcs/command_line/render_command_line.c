@@ -15,9 +15,9 @@
 int		get_command_line_prefix_len(t_command_line *command_line)
 {
 	if (command_line->scrolled_lines)
-		return (ft_strlen_utf8(ELIPTIC_COMMAND_LINE));
+		return (ft_nb_columns(ELIPTIC_COMMAND_LINE));
 	else
-		return (ft_strlen_utf8(command_line->prompt));
+		return (ft_nb_columns(command_line->prompt));
 }
 
 /*

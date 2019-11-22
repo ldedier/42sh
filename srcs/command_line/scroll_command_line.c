@@ -75,7 +75,7 @@ int		should_elipse_end(t_command_line *command_line, int scrolled_lines)
 
 	index = get_command_line_starting_index2(scrolled_lines);
 	add = get_command_line_prefix_len(command_line);
-	if (add + ft_strlen_utf8(&command_line->dy_str->str[index])
+	if (add + ft_nb_columns(&command_line->dy_str->str[index])
 		> (g_glob.winsize.ws_row) * g_glob.winsize.ws_col - 1)
 		return (1);
 	else

@@ -22,10 +22,14 @@ void	ring_bell(void)
 
 void	process_edit_command_left(t_command_line *command_line)
 {
+	int nb_cols;
+
 	if (command_line->current_index > 0)
 	{
 		command_line->current_index = get_left_w_char_index(command_line);
-		render_command_line(command_line, -1, 1);
+		nb_cols = ft_nb_columns_n(&command_line->
+			dy_str->str[command_line->current_index], 1);
+		render_command_line(command_line, -nb_cols, 1);
 	}
 	else
 		ring_bell();
@@ -34,6 +38,7 @@ void	process_edit_command_left(t_command_line *command_line)
 void	process_edit_command_right(t_command_line *command_line)
 {
 	int limit;
+	int nb_cols;
 
 	if (command_line->mode != E_MODE_COMMAND)
 		limit = command_line->dy_str->current_size;
@@ -41,8 +46,10 @@ void	process_edit_command_right(t_command_line *command_line)
 		limit = command_line->dy_str->current_size - 1;
 	if (command_line->current_index < limit)
 	{
+		nb_cols = ft_nb_columns_n(&command_line->
+			dy_str->str[command_line->current_index], 1);
 		command_line->current_index = get_right_w_char_index(command_line);
-		render_command_line(command_line, 1, 1);
+		render_command_line(command_line, nb_cols, 1);
 	}
 	else
 		ring_bell();

@@ -119,7 +119,7 @@ int		update_prompt(t_shell *shell, t_command_line *command_line)
 {
 	char *new_prompt;
 
-	command_line->prev_prompt_len = ft_strlen_utf8(command_line->prompt);
+	command_line->prev_prompt_len = ft_nb_columns(command_line->prompt);
 	ft_strdel(&command_line->prompt);
 	if (update_prompt_context(shell, command_line, &new_prompt))
 		return (FAILURE);

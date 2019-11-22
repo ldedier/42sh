@@ -17,23 +17,23 @@ int		get_true_cursor_pos_prev_prompt(int cursor)
 	int ret;
 
 	if (g_glob.command_line.scrolled_lines)
-		return (cursor + ft_strlen_utf8(ELIPTIC_COMMAND_LINE));
+		return (cursor + ft_nb_columns(ELIPTIC_COMMAND_LINE));
 	if (g_glob.command_line.prev_prompt_len != -1)
 	{
 		ret = cursor + g_glob.command_line.prev_prompt_len;
 		g_glob.command_line.prev_prompt_len = -1;
 	}
 	else
-		ret = (cursor + ft_strlen_utf8(g_glob.command_line.prompt));
+		ret = (cursor + ft_nb_columns(g_glob.command_line.prompt));
 	return (ret);
 }
 
 int		get_true_cursor_pos(int cursor)
 {
 	if (!g_glob.command_line.scrolled_lines)
-		return (cursor + ft_strlen_utf8(g_glob.command_line.prompt));
+		return (cursor + ft_nb_columns(g_glob.command_line.prompt));
 	else
-		return (cursor + ft_strlen_utf8(ELIPTIC_COMMAND_LINE));
+		return (cursor + ft_nb_columns(ELIPTIC_COMMAND_LINE));
 }
 
 void	replace_cursor_on_index(void)

@@ -23,7 +23,7 @@ static char	*get_research_title(t_command_line *command_line)
 int			get_research_nb_lines(t_command_line *command_line)
 {
 	if (command_line->searcher.active)
-		return ((((ft_strlen_utf8(command_line->searcher.dy_str->str)
+		return ((((ft_nb_columns(command_line->searcher.dy_str->str)
 			+ ft_strlen(get_research_title(command_line))
 				+ 1) - 1) / g_glob.winsize.ws_col) + 1);
 	else
@@ -37,7 +37,7 @@ int			render_research(t_command_line *command_line)
 
 	ft_strcpy(title, get_research_title(command_line));
 	ft_printf("%s%s_", title, command_line->searcher.dy_str->str);
-	nb_visible_lines = ((ft_strlen_utf8(command_line->searcher.dy_str->str)
+	nb_visible_lines = ((ft_nb_columns(command_line->searcher.dy_str->str)
 		+ ft_strlen(title) + 1) - 1) / g_glob.winsize.ws_col;
 	go_up_left(nb_visible_lines);
 	return (SUCCESS);

@@ -14,58 +14,44 @@
 
 int		ft_nb_columns(char *str)
 {
-	int		i;
 	int		res;
 	wchar_t	*buff;
+	int		ret;
 
+	buff = NULL;
 	if (!str)
 		return (-1);
-	i = 0;
-	res = 0;
-	while (str[i])
+	res = mbstowcs(NULL, str, -1);
+	if (!(buff = malloc(sizeof(wchar_t) * (res + 1))))
+		return (-1);
+	else
 	{
-		if (!(str[i] & 0b10000000))
-			i++;
-		else if (str[i] & 0b01000000 && !(str[i] & 0b00100000))
-			i += 2;
-		else if (str[i] & 0b00100000 && !(str[i] & 0b00010000))
-			i += 3;
-		else if (str[i] & 0b000100000 && !(str[i] & 0b00001000))
-			i += 4;
-		else
-			i++;
-		buff = (wchar_t *)&str[i];
-		res += wcwidth(*buff);
+		res = mbstowcs(buff, str, -1);
+		ret = wcswidth(buff, res);
+		free(buff);
+		return (ret);
 	}
-	return (res);
 }
 
-int		ft_nb_columns_n(char *str, int n)
+int		ft_nb_columns_n(char *str, int n) //TOCHECK
 {
-	int		i;
 	int		res;
 	wchar_t	*buff;
+	int		ret;
 
-	i = 0;
-	res = 0;
-	while (str[i] && i < n)
+	buff = NULL;
+	if (!str)
+		return (-1);
+	if (!(buff = malloc(sizeof(wchar_t) * (n + 1))))
+		return (-1);
+	else
 	{
-		if (!(str[i] & 0b10000000))
-			i++;
-		else if (str[i] & 0b01000000 && !(str[i] & 0b00100000))
-			i += 2;
-		else if (str[i] & 0b00100000 && !(str[i] & 0b00010000))
-			i += 3;
-		else if (str[i] & 0b000100000 && !(str[i] & 0b00001000))
-			i += 4;
-		else
-			i++;
-		buff = (wchar_t *)&str[i];
-		res += wcwidth(*buff);
+		res = mbstowcs(buff, str, n);
+		ret = wcswidth(buff, res);
+		free(buff);
+		return (ret);
 	}
-	return (res);
 }
-
 
 int		ft_strlen_utf8(char *str)
 {

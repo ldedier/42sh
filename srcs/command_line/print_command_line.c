@@ -30,7 +30,7 @@ void	process_print_command_line(t_command_line *command_line,
 	c.len = ft_strlen(&command_line->dy_str->str[index]);
 	c.j = 0;
 	while (command_line->dy_str->str[c.i]
-		&& c.nb_chars < empty_space - ft_strlen_utf8(ELIPTIC_COMMAND_LINE))
+		&& c.nb_chars < empty_space - ft_nb_columns(ELIPTIC_COMMAND_LINE))
 		process_copy_utf8_char(str, command_line, index, &c);
 	copy_last_part_of_command_line(command_line, &c, index, str);
 	ft_dprintf(command_line->fd, "%s", str);
@@ -45,11 +45,11 @@ void	print_command_line(t_command_line *command_line)
 
 	if (command_line->scrolled_lines)
 		empty_space = (g_glob.winsize.ws_col * (g_glob.winsize.ws_row - 1))
-			+ g_glob.winsize.ws_col - ft_strlen_utf8(ELIPTIC_COMMAND_LINE) - 1;
+			+ g_glob.winsize.ws_col - ft_nb_columns(ELIPTIC_COMMAND_LINE) - 1;
 	else
 		empty_space = (g_glob.winsize.ws_col * (g_glob.winsize.ws_row - 1))
 			+ g_glob.winsize.ws_col
-				- ft_strlen_utf8(g_glob.command_line.prompt) - 1;
+				- ft_nb_columns(g_glob.command_line.prompt) - 1;
 	if (command_line->searcher.active)
 		empty_space -= get_research_nb_lines(command_line)
 			* g_glob.winsize.ws_col;

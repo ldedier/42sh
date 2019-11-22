@@ -45,7 +45,7 @@ int		paste_current_index(t_command_line *command_line, char *to_paste)
 	if (!to_paste)
 		return (SUCCESS);
 	len = ft_strlen(to_paste);
-	utf8_len = ft_strlen_utf8(to_paste);
+	utf8_len = ft_nb_columns(to_paste);
 	if (ft_substitute_dy_str(command_line->dy_str, to_paste,
 			command_line->current_index, 0))
 		return (sh_perror(SH_ERR1_MALLOC, "paste_current_index"));

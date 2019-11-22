@@ -18,11 +18,11 @@ int		process_find_in_history(t_command_line *command_line,
 	int			new_len;
 	int			len;
 
-	new_len = ft_strlen_utf8(to_search_in);
+	new_len = ft_nb_columns(to_search_in);
 	command_line->searcher.match_index = found - to_search_in;
 	ft_dy_str_cpy_str(command_line->dy_str, to_search_in);
 	command_line->nb_chars = new_len;
-	len = ft_strnlen_utf8(to_search_in, command_line->searcher.match_index);
+	len = ft_nb_columns_n(to_search_in, command_line->searcher.match_index);
 	command_line->current_index = command_line->searcher.match_index;
 	render_command_line(command_line, len - g_glob.cursor, 1);
 	command_line->shell->history.head = command_line->searcher.head;

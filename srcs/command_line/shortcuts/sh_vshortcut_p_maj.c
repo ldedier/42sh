@@ -26,7 +26,7 @@ int		sh_vshortcut_p_maj(t_command_line *command_line, int dummy, int dummy_2)
 	(void)dummy_2;
 	if (!command_line->clipboard)
 		return (SUCCESS);
-	nb_chars = ft_strlen_utf8(command_line->clipboard);
+	nb_chars = ft_nb_columns(command_line->clipboard);
 	if (ft_substitute_dy_str(command_line->dy_str, command_line->clipboard,
 		command_line->current_index, 0) != SUCCESS)
 		return (FAILURE);

@@ -30,6 +30,7 @@
 
 #include <wchar.h>
 #include <xlocale.h>
+#include <locale.h>
 
 /*
 ** wait(2)

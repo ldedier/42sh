@@ -40,7 +40,7 @@ int		sh_vshortcut_process_p(t_command_line *command_line, char *to_paste)
 {
 	int		nb_chars;
 
-	nb_chars = ft_strlen_utf8(to_paste);
+	nb_chars = ft_nb_columns(to_paste);
 	command_line->current_index += ft_strlen(to_paste);
 	if (command_line->current_index > 0
 		&& command_line->current_index

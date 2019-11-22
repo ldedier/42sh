@@ -15,7 +15,7 @@
 static void	update_command_line_end(t_command_line *command_line)
 {
 	command_line->current_index = command_line->dy_str->current_size;
-	command_line->nb_chars = ft_strlen_utf8(command_line->dy_str->str);
+	command_line->nb_chars = ft_nb_columns(command_line->dy_str->str);
 	render_command_line(command_line,
 		command_line->nb_chars - g_glob.cursor, 1);
 }
@@ -23,7 +23,7 @@ static void	update_command_line_end(t_command_line *command_line)
 static void	update_command_line_start(t_command_line *command_line)
 {
 	command_line->current_index = 0;
-	command_line->nb_chars = ft_strlen_utf8(command_line->dy_str->str);
+	command_line->nb_chars = ft_nb_columns(command_line->dy_str->str);
 	render_command_line(command_line, -g_glob.cursor, 1);
 }
 
