@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/21 16:00:47 by jmartel           #+#    #+#              #
-#    Updated: 2019/09/05 15:36:31 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/22 17:05:21 by jdugoudr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,6 +59,11 @@ launch "Pipes"
 		test_launch 'true | exit'
 		test_launch 'yes | head -c1'
 
+	launch_show "invalid pipe"
+		test_launch 'echo hoho | comd_no_exist'
+		test_launch '(echo hoho) | (comd_no_exist)'
+		test_launch 'lsdkfj | (echo hoho) | (comd_no_exist) | { ls ;}'
+		test_launch '{ echo hoho ;} | { comd_no_exist ;}'
 #		Deprecated
 #		test_launch "rm -f file" "./obj/fd_write 4 okalm 4>&1 4>&2 4>&3 3>file ; cat file ; rm file"
 
