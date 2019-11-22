@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/05 01:23:20 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/20 12:54:37 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/22 13:13:49 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ long		sh_traverse_sc_check_perm_quiet(char *path)
 	return (SUCCESS);
 }
 
-static long		sh_traverse_sc_check_perm_reg(t_context *context, struct stat st,
+static long	sh_traverse_sc_check_perm_reg(t_context *context, struct stat st,
 			char *command_name)
 {
 	if (S_ISDIR(st.st_mode))

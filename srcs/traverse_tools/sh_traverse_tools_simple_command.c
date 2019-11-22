@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/22 11:54:09 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/22 13:14:17 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ long		sh_traverse_sc_search_in_hash(t_context *context)
 	return (ERROR);
 }
 
-static long		sh_traverse_sc_search_in_dir_found(char *path, DIR *dir,
+static long	sh_traverse_sc_search_in_dir_found(char *path, DIR *dir,
 			t_dirent *dirent, t_context *context)
 {
 	char *buf;
