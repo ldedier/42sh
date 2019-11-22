@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_traverse_subshell.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/02 10:03:30 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/22 11:53:50 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/22 19:15:48 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ static int	parents_part(pid_t pid, t_context *context)
 			return (FAILURE);
 		if (g_job_ctrl->curr_job->foreground)
 		{
+			if (sh_pre_execution() != SUCCESS)
+				return (FAILURE);
 			if ((fun_ret = job_put_in_fg(g_job_ctrl->curr_job, 0, &ret)))
 				return (fun_ret);
 		}
