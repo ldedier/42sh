@@ -5,43 +5,47 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/17 21:55:20 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/19 11:55:46 by jmartel          ###   ########.fr       */
+/*   Created: 2019/11/22 12:08:09 by jmartel           #+#    #+#             */
+/*   Updated: 2019/11/22 12:21:36 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-int			sh_expansions_arithmetic_detect(char *start)
+static int	arithmetic_detect_return_value(char *start, int i)
 {
-    int     i;
-    int     quoted;
-	int		parenthesis;
+	if (!start[i])
+		return (-1);
+	return (i + 2);
+}
 
+int			sh_expansions_arithmetic_detect(char *str)
+{
+	int			i;
+	int			quoted;
+	int			parenthesis;
+
+	if (str[0] != '$' || str[1] != '(' || str[2] != '(')
+		return (-1);
 	quoted = 0;
-	if (start[0] != '$' || start[1] != '(' || start[2] != '(')
-        return (-1);
-    i = 3;
 	parenthesis = 0;
-    while (start[i])
-    {
-        if (start[i] == '\\' && start[i + 1])
-            i += 1;
-        else if (!quoted && (start[i] == '\'' || start[i] == '"'))
-            quoted = start[i];
-        else if (quoted && start[i] == quoted)
-            quoted = 0;
-		else if (!quoted && start[i] == '(')
+	i = 2;
+	while (str[++i])
+	{
+		if (str[i] == '\\' && str[i + 1])
+			i += 1;
+		else if (!quoted && (str[i] == '\'' || str[i] == '"'))
+			quoted = str[i];
+		else if (quoted && str[i] == quoted)
+			quoted = 0;
+		else if (!quoted && str[i] == '(')
 			parenthesis += 1;
-        else if (!quoted && !parenthesis && start[i] == ')' && start[i + 1] == ')')
-            break ;
-		else if (!quoted && start[i] == ')')
+		else if (!quoted && !parenthesis && str[i] == ')' && str[i + 1] == ')')
+			break ;
+		else if (!quoted && str[i] == ')')
 			parenthesis -= 1;
-        i++;
-    }
-    if (!start[i])
-        return (-1);
-    return (i + 2);
+	}
+	return (arithmetic_detect_return_value(str, i));
 }
 
 int			sh_expansions_arithmetic_fill(t_expansion *exp, char *start)
@@ -59,12 +63,25 @@ int			sh_expansions_arithmetic_fill(t_expansion *exp, char *start)
 	return (SUCCESS);
 }
 
+static int	arithmetic_process_ret_value(t_expansion *exp, int ret)
+{
+	char	*buffer;
+
+	if (!(buffer = ft_ltoa(ret, 10)))
+		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_arithmetic_process"));
+	if (!(exp->res = ft_dy_str_new_ptr(buffer, 1, 1)))
+	{
+		free(buffer);
+		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_arithmetic_process"));
+	}
+	return (SUCCESS);
+}
+
 int			sh_expansions_arithmetic_process(t_context *context,
 				t_expansion *exp)
 {
-	long	ret;
-	char	*buffer;
-	t_dy_tab	*quotes; // is that usefull, except to avoid segfault
+	long		ret;
+	t_dy_tab	*quotes;
 
 	if (!(quotes = ft_dy_tab_new(1)))
 		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_arithmetic_process"));
@@ -72,7 +89,7 @@ int			sh_expansions_arithmetic_process(t_context *context,
 		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_arithmetic_process"));
 	ret = sh_expansions_scan(&(exp->expansion), 0, context, quotes);
 	if (sh_verbose_expansion())
-		ft_dprintf(2, "arithmetic expansion : exp->expansion after expansion_scan : %s\n", exp->expansion);
+		ft_dprintf(2, "arithmetic expansion : %s\n", exp->expansion);
 	if (ret == FAILURE || ret == STOP_CMD_LINE)
 		return (ret);
 	ret = sh_execute_arithmetic(context, exp->expansion);
@@ -83,12 +100,5 @@ int			sh_expansions_arithmetic_process(t_context *context,
 		sh_env_update_ret_value(context->shell, 1);
 		return (STOP_CMD_LINE);
 	}
-	if (!(buffer = ft_ltoa(ret, 10)))
-		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_arithmetic_process"));
-	if (!(exp->res = ft_dy_str_new_ptr(buffer, 1, 1)))
-	{
-		free(buffer);
-		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_arithmetic_process"));
-	}
-	return (SUCCESS);
+	return (arithmetic_process_ret_value(exp, ret));
 }

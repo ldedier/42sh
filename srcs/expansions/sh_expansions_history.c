@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 12:01:07 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/22 11:59:01 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/22 12:05:44 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ int			sh_history_expand(t_command_line *command_line,
 {
 	int ret;
 
-	// Added to fix globbing [!...] dedtection, need ldedier to check / improve it
 	if (*i > 0 && command_line->dy_str->str[*i - 1] == '[')
 		return (SUCCESS);
 	*he->expanded = 1;
