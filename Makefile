@@ -6,7 +6,7 @@
 #    By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/11/21 11:09:09 by mdaoud           ###   ########.fr        #
+#    Updated: 2019/11/21 14:48:54 by mdaoud           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -308,7 +308,9 @@ SRCS			+=	sh_execute_simple_command.c \
 ################################################################
 SRCS			+=	sh_add_redirection.c \
 					sh_reset_redirection.c \
-					sh_check_open_fd.c
+					sh_check_open_fd.c \
+					sh_check_open_fd_tools.c \
+					sh_new_redirection.c
 
 ################################################################
 ########						BUILTIN					########

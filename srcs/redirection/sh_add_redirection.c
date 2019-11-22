@@ -6,34 +6,13 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 10:41:47 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/20 02:45:56 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/21 13:45:44 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-static t_redirection	sh_new_redir(
-	t_redirection_type type, int redirected_fd, int fd)
-{
-	t_redirection redir;
-
-	redir.type = type;
-	redir.backup = -1;
-	redir.fd = fd;
-	redir.was_closed = -1;
-	if (redirected_fd == -1 && type != PIPE)
-	{
-		if (type == INPUT)
-			redir.redirected_fd = STDIN_FILENO;
-		else if (type == OUTPUT)
-			redir.redirected_fd = STDOUT_FILENO;
-	}
-	else
-		redir.redirected_fd = redirected_fd;
-	return (redir);
-}
-
-static int			sh_process_redirection(
+static int	sh_process_redirection(
 	t_redirection redirection, t_list **list)
 {
 	if (sh_execute_redirection(&redirection) != SUCCESS)
@@ -47,19 +26,15 @@ static int			sh_process_redirection(
 }
 
 /*
- * If it already exist and the redirect fd (right fd) was closed, we have to
- * re-close it.
+** If it already exist and the redirect fd (right fd) was closed, we have to
+** re-close it.
 */
-// static int			sh_add_redirection(
-// 	t_redirection_type type, int redirected_fd, int fd, t_list **list)
-static int			sh_add_redirection(
-	t_redirection redirection, /*int redirected_fd, int fd,*/ t_list **list)
-{
-	// t_redirection	redirection;
 
-	// redirection = sh_new_redir(type, redirected_fd, fd);
+static int	sh_add_redirection(
+	t_redirection redirection, t_list **list)
+{
 	if (redirection.fd >= 0
-		&& sh_check_dst_fd(*list, redirection.type, redirection.fd) == -1)
+		&& sh_check_dst_fd(*list, redirection.fd) == -1)
 	{
 		ft_dprintf(2, "%s%s: %d: bad file descriptor\n%s", SH_ERR_COLOR,
 		SH_NAME, redirection.fd, EOC);
@@ -75,7 +50,7 @@ static int			sh_add_redirection(
 	return (sh_process_redirection(redirection, list));
 }
 
-int					sh_add_redirection_file(
+int			sh_add_redirection_file(
 	t_redirection_type type, int redirected_fd, int fd, t_list **list)
 {
 	t_redirection	redirection;
@@ -85,7 +60,7 @@ int					sh_add_redirection_file(
 	return (sh_add_redirection(redirection, list));
 }
 
-int					sh_add_redirection_aggreg(
+int			sh_add_redirection_aggreg(
 	t_redirection_type type, int redirected_fd, int fd, t_list **list)
 {
 	t_redirection	redirection;
@@ -96,7 +71,7 @@ int					sh_add_redirection_aggreg(
 	return (sh_add_redirection(redirection, list));
 }
 
-int					sh_add_redirection_pipe(int fd, t_list **list)
+int			sh_add_redirection_pipe(int fd, t_list **list)
 {
 	t_redirection	redirection;
 
