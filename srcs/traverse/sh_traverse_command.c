@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_traverse_command.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/02 00:35:13 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/04 12:25:50 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/16 09:05:16 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static int	compound_and_redirection(t_ast_node *node, t_context *context)
 ** apply here.
 */
 
-int			sh_traverse_command(t_ast_node *node, t_context *context)
+long		sh_traverse_command(t_ast_node *node, t_context *context)
 {
 	t_ast_node	*child;
 	int			ret;

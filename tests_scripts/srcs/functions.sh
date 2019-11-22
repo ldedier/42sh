@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/21 15:58:19 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/09 00:52:16 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/19 04:15:41 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,11 @@ clean_and_exit()
 	rm -rf "${exec}.dSYM"
 	del_history
 	echo "Cleaned and exit"
+	## Show results message
+	if [ "$tried" -ne 0 ] ; then
+	echo "passed ${passed} valgrind tests out of ${tried}"
+	fi
+	echo "passed ${diff_passed} diff tests out of ${diff_tried}"
 	exit
 }
 
@@ -159,9 +164,10 @@ check_ret_value()
 	sh_ret=$((ret1 & 0xFF))
 	bash_ret=$((ret2 & 0xFF))
 
-	if [ "$sh_ret" -gt 130 -a "$sh_ret" -lt 200 ] ; then
+	if [ "$sh_ret" -gt 128 -a "$sh_ret" -lt 200 ] ; then
 		echo -e "${red}SEGFAULT OR SIGNAL RECEIVED"
 		echo -e "${sh_ret}${eoc}"
+		if [ -z "$test_returned_values" ] ; then echo -en "${yellow}" ;  cat "${buffer}" ; echo -en "${eoc}" ; fi
 		if [ -n "$logging" ] ; then
 			create_logging_file
 			echo -e "Script :" >> "${logging_file}"
@@ -227,7 +233,7 @@ test_launch()
 	check_ret_value sh_ret bash_ret
 	continue=$?
 # echo "continue (stdout): $continue"
-	if [ 0 -eq "$continue" ] ; then
+	if [ 0 -eq "$continue" ] && [ -n "${test_stdout}" ] ; then
 		diff_files ${res1_42sh} ${res1_bash}
 		continue=$?
 	fi

@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 17:46:46 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/21 14:02:28 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/22 11:50:28 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 ** Expansion header
 */
 typedef struct s_expansion	t_expansion;
+typedef struct s_history_expander	t_history_expander;
 typedef struct s_split_data	t_split_data;
 typedef struct s_split_word	t_split_word;
 typedef enum e_exp_type		t_exp_type;
@@ -75,6 +76,15 @@ struct				s_split_word
 int					sh_expansions(t_context *context, t_ast_node *node);
 
 /*
+** sh_expansions_arithmetic.c
+*/
+int					sh_expansions_arithmetic_detect(char *start);
+int					sh_expansions_arithmetic_fill(
+	t_expansion *exp, char *start);
+int					sh_expansions_arithmetic_process(
+	t_context *context, t_expansion *exp);
+
+/*
 ** sh_expansions_cmd_subst.c
 */
 int					get_subshell_output(
@@ -129,14 +139,32 @@ int					split_input(
 /*
 ** sh_expansions_history.c
 */
-char				*ft_strdup_word_delim(char *str, int delim);
+void				init_expander(t_history_expander *he);
+int					is_eligible_for_history_expansion(
+	t_command_line *command_line, int *i, t_history_expander *he);
 int					sh_history_expand(
+	t_command_line *command_line,
+	int *i,
+	t_history_expander *he,
+	t_shell *shell);
+int					scan_expansions_history(
+	int *i,
+	t_shell *shell,
+	t_command_line *command_line,
+	t_history_expander *he);
+int					sh_expansions_history(
+	t_shell *shell, t_command_line *command_line, int *expanded);
+
+/*
+** sh_expansions_history_expand.c
+*/
+int					ft_word_delim_len(char *str, int delim);
+char				*ft_strdup_word_delim(char *str, int delim);
+int					sh_process_history_expand(
 	t_shell *shell,
 	t_command_line *command_line,
 	int *index,
-	int *double_quoted);
-int					sh_expansions_history(
-	t_shell *shell, t_command_line *command_line, int *expanded);
+	char *double_quoted);
 
 /*
 ** sh_expansions_parameter.c

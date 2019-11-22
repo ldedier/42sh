@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/21 13:07:23 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/22 11:54:09 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int	sh_found_sc_search_in_hash(t_context *context, t_binary *binary,
 	return (SUCCESS);
 }
 
-int			sh_traverse_sc_search_in_hash(t_context *context)
+long		sh_traverse_sc_search_in_hash(t_context *context)
 {
 	t_binary		*binary;
 	t_hash_finder	finder;
@@ -49,7 +49,7 @@ int			sh_traverse_sc_search_in_hash(t_context *context)
 	return (ERROR);
 }
 
-static int	sh_traverse_sc_search_in_dir_found(char *path, DIR *dir,
+static long		sh_traverse_sc_search_in_dir_found(char *path, DIR *dir,
 			t_dirent *dirent, t_context *context)
 {
 	char *buf;
@@ -84,7 +84,7 @@ static int	sh_traverse_sc_search_in_dir_found(char *path, DIR *dir,
 **		SUCCESS : any error occur
 */
 
-static int	sh_traverse_sc_search_in_dir(
+static long	sh_traverse_sc_search_in_dir(
 	char *path, t_context *context)
 {
 	t_dirent	*dirent;
@@ -123,7 +123,7 @@ static int	sh_traverse_sc_search_in_dir(
 **		SUCCESS : Any error occured
 */
 
-int			sh_traverse_sc_search_in_path(t_context *context)
+long		sh_traverse_sc_search_in_path(t_context *context)
 {
 	char	*buffer;
 	char	*path;

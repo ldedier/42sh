@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/30 15:48:56 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/20 01:59:59 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/20 12:50:47 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@
 # include "sh_history.h"
 # include "sh_redirection.h"
 # include "sh_job_control.h"
+# include "sh_arithmetic_productions.h"
+# include "sh_arithmetic.h"
 
 # define SUCCESS		0
 # define ERROR			1
@@ -157,6 +159,7 @@ typedef struct s_shell		t_shell;
 struct				s_shell
 {
 	t_lr_parser		parser;
+	t_lr_parser		parser_ar;
 	t_history		history;
 	t_dy_tab		*env;
 	t_dy_tab		*saved_env;
@@ -237,7 +240,7 @@ int					process_subst_home(t_shell *shell, char **str);
 int					sh_index_4(t_symbol_id id);
 int					sh_index_3(t_symbol_id id);
 int					sh_index_2(t_symbol_id id);
-int					sh_index(t_symbol_id id);
+int					sh_index(int id);
 
 /*
 ** init.c

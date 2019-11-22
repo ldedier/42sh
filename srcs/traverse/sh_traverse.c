@@ -26,7 +26,7 @@ static t_ast_node	*go_to_list(t_ast_node *node)
 	return (test);
 }
 
-int					sh_process_traverse(t_shell *shell, t_ast_node *ast_root)
+int			sh_process_traverse(t_shell *shell, t_ast_node *ast_root)
 {
 	t_context	context;
 	t_ast_node	*list_node;

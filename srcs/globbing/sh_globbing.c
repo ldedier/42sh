@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 13:31:28 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/21 14:05:28 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/22 11:56:35 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static int	sh_expansions_globbing_matches(
 	matches = matches->next;
 	while (matches)
 	{
-		if (!(node = sh_add_word_to_ast(node, matches->content)))
+		if (!(node = sh_add_word_to_ast(node, matches->content, g_glob.cfg)))
 		{
 			return (sh_perror(
 				SH_ERR1_MALLOC, "sh_expansions_globbing_matches (2)"));

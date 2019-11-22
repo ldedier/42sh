@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_traverse_list.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/28 16:49:38 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/04 12:19:17 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/16 09:05:16 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 ** We wait its return to continue to run the t_list LIST.
 */
 
-int	sh_traverse_list(t_ast_node *node, t_context *context)
+long		sh_traverse_list(t_ast_node *node, t_context *context)
 {
 	int			ret;
 	t_ast_node	*last_separator;

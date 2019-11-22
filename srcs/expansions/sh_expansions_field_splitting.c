@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/27 16:47:32 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/21 15:23:56 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/22 11:51:01 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,6 @@ int			sh_expansions_splitting(
 	else
 		ret = sh_splitting_non_white_ifs(&data, node, ifs);
 	if (sh_verbose_expansion())
-		sh_print_ast_root(node);
+		sh_print_ast_root(node, g_glob.cfg);
 	return (ret);
 }

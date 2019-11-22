@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 12:06:49 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/17 14:34:37 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/20 12:54:46 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 **		It do not change the node->children value
 */
 
-int		sh_traverse_tools_browse(t_ast_node *node, t_context *context)
+long		sh_traverse_tools_browse(t_ast_node *node, t_context *context)
 {
 	t_list		*ptr;
 	t_ast_node	*child;
@@ -43,7 +43,7 @@ int		sh_traverse_tools_browse(t_ast_node *node, t_context *context)
 	return (ret);
 }
 
-int		sh_traverse_tools_search(t_ast_node *node, int searched_symbol_id)
+long		sh_traverse_tools_search(t_ast_node *node, int searched_symbol_id)
 {
 	t_list		*ptr;
 	t_ast_node	*child;

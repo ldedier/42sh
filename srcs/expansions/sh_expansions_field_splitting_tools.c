@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_expansions_field_splitting_tools.c              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/16 14:22:54 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/20 16:22:06 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/22 11:50:54 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ int			split_input(
 	}
 	if (!(str = ft_strndup(data->input + start, end - start)))
 		return (sh_perror(SH_ERR1_MALLOC, "sh_splitting_non_white_ifs (1)"));
-	else if (!(*node = sh_add_word_to_ast(*node, str)))
+	else if (!(*node = sh_add_word_to_ast(*node, str, g_glob.cfg)))
 		return (sh_perror(SH_ERR1_MALLOC, "sh_splitting_non_white_ifs (2)"));
 	if (sh_verbose_expansion())
 		ft_dprintf(2, "non white ifs : Added node : start : %d, i : %d\n",

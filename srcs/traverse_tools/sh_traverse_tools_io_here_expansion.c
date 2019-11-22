@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_traverse_tools_io_here_expansion.c              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/05 12:43:22 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/04 12:32:53 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/16 09:05:16 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	is_valid_var(char c)
 	return (0);
 }
 
-static int	sh_traverse_io_here_expansion(
+static long		sh_traverse_io_here_expansion(
 		char **str, int *cursor, t_context *context)
 {
 	int			ret;
@@ -75,7 +75,7 @@ static int	loop_expansion(char **str, t_context *context)
 	return (SUCCESS);
 }
 
-int			sh_traverse_io_here_phase_expansion(
+long		sh_traverse_io_here_phase_expansion(
 				t_ast_node *node, t_context *context)
 {
 	t_ast_node		*first_child;

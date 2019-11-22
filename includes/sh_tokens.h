@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 11:18:14 by jmartel           #+#    #+#             */
-/*   Updated: 2019/08/21 17:04:09 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/15 11:23:45 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # define NB_PRODUCTIONS	112
 # define NB_SYMBOLS 102
 # define NB_TERMS	55
-# define NB_NOTERMS	NB_SYMBOLS - NB_TERMS
 
 typedef enum		e_symbol_id
 {

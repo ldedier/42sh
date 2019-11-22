@@ -12,7 +12,7 @@
 
 #include "sh_21.h"
 
-int		sh_traverse_default(t_ast_node *node, t_context *context)
+long		sh_traverse_default(t_ast_node *node, t_context *context)
 {
 	(void)node;
 	(void)context;

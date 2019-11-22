@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 11:19:41 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/21 20:24:15 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/22 11:52:57 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ static int	get_io_file_return(t_ast_node *redir_child,
 ** of redirection we will run.
 */
 
-int			sh_traverse_io_file(t_ast_node *node, t_context *context)
+long		sh_traverse_io_file(t_ast_node *node, t_context *context)
 {
 	t_ast_node	*redir_child;
 	t_ast_node	*filename_child;

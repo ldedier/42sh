@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_traverse_brace.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 10:34:50 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/21 19:42:13 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/22 11:53:58 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static int	sh_execute_brace_bg(t_ast_node *node, t_context *context)
 	return (ret);
 }
 
-int			sh_traverse_brace(t_ast_node *node, t_context *ctxt)
+long		sh_traverse_brace(t_ast_node *node, t_context *ctxt)
 {
 	int			ret;
 	t_ast_node	*compound_redir;
