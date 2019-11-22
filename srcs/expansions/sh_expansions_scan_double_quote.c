@@ -21,8 +21,7 @@ static int 	scan_quote_loop(
 	{
 		if ((*input)[*index] == '$')
 		{
-			if ((ret = sh_expansions_process(
-				input, *input + *index, context, index, quotes)) != SUCCESS)
+			if ((ret = sh_expansions_process(input, context, index, quotes)))
 				return (ret);
 		}
 		else if ((*input)[*index] == '\\'

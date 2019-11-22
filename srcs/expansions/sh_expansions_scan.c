@@ -17,8 +17,7 @@ static int	unquoted_var(
 {
 	int	ret;
 
-	if ((ret = sh_expansions_process(
-		input, *input + *index, context, index, quotes)) != SUCCESS)
+	if ((ret = sh_expansions_process(input, context, index, quotes)))
 	{
 		sh_env_update_ret_value(context->shell, ret);
 		return (ret);

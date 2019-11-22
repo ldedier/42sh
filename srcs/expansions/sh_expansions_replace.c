@@ -12,7 +12,7 @@
 
 #include "sh_21.h"
 
-void 	sh_expansions_update_quotes_pointer(char **input, t_quote **quotes)
+void		sh_expansions_update_quotes_pointer(char **input, t_quote **quotes)
 {
 	int	i;
 
@@ -24,7 +24,8 @@ void 	sh_expansions_update_quotes_pointer(char **input, t_quote **quotes)
 	}
 }
 
-static void	sh_expansions_replace_update_quotes(t_expansion *exp, char *new, t_quote **quotes, int index)
+static void	sh_expansions_replace_update_quotes(
+	t_expansion *exp, char *new, t_quote **quotes, int index)
 {
 	int		offset;
 	int		i;

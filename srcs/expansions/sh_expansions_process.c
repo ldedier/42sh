@@ -13,25 +13,6 @@
 #include "sh_21.h"
 
 /*
-** strlen_dquote_unquote
-** This is a classique strlen but we need to stop
-** if a double quote appear either end of string.
-**
-** Return value:
-** The size of str until the end or '\0'
-*/
-
-//static int	strlen_dquote_unquote(const char *str)
-//{
-//	int	i;
-//
-//	i = 0;
-//	while (str[i] && str[i] != '"')
-//		i++;
-//	return (i);
-//}
-
-/*
 ** sh_expansions_init:
 **	Try to fill type, expansion, original and process fields of a t_expansion
 **	structure for parameter and variable expansions.
@@ -74,31 +55,30 @@ static int	sh_expansions_init(char *original, t_expansion *exp)
 */
 
 int			sh_expansions_process(
-	char **input, char *original, t_context *context, int *index, t_dy_tab *quotes)
+	char **input, t_context *context, int *index, t_dy_tab *quotes)
 {
 	t_expansion	exp;
-	int			ret;
+	int			r;
+	char		*original;
 
-	ret = sh_expansions_init(original, &exp);
+	original = *input + *index;
+	r = sh_expansions_init(original, &exp);
 	if (sh_verbose_expansion())
 		t_expansion_show(&exp);
-	if (!ret)
-		ret = exp.process(context, &exp);
-	if (!ret)
-		ret = sh_expansions_replace(&exp, input, *index, (t_quote**)quotes->tbl);
-	if (ret && exp.type == EXP_VAR)
+	if (!r)
+		r = exp.process(context, &exp);
+	if (!r)
+		r = sh_expansions_replace(&exp, input, *index, (t_quote**)quotes->tbl);
+	if (r)
+		t_expansion_free_content(&exp);
+	if (r && exp.type == EXP_VAR)
 	{
 		(*index)++;
-		t_expansion_free_content(&exp);
 		return (SUCCESS);
 	}
-	if (ret)
-	{
-		t_expansion_free_content(&exp);
-		return (ret);
-	}
+	else if (r)
+		return (r);
 	*index += ft_strlen(exp.res->str);
-//	*index += strlen_dquote_unquote(exp.res->str);
 	t_expansion_free_content(&exp);
 	return (SUCCESS);
 }

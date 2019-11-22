@@ -150,10 +150,14 @@ int					sh_expansions_parameter_process(
 /*
 ** sh_expansions_parameter_equal.c
 */
+int					sh_expansions_parameter_equal(
+	t_context *context, t_expansion *exp, char *format);
 
 /*
 ** sh_expansions_parameter_minus.c
 */
+int					sh_expansions_parameter_minus(
+	t_context *context, t_expansion *exp, char *format);
 
 /*
 ** sh_expansions_parameter_plus.c
@@ -162,18 +166,10 @@ int					sh_expansions_parameter_plus(
 	t_context *context, t_expansion *exp, char *format);
 
 /*
-** sh_expansions_parameter_process.c
-*/
-int					sh_expansions_parameter_minus(
-	t_context *context, t_expansion *exp, char *format);
-int					sh_expansions_parameter_equal(
-	t_context *context, t_expansion *exp, char *format);
-int					sh_expansions_parameter_quest(
-	t_context *context, t_expansion *exp, char *format);
-
-/*
 ** sh_expansions_parameter_quest.c
 */
+int					sh_expansions_parameter_quest(
+	t_context *context, t_expansion *exp, char *format);
 
 /*
 ** sh_expansions_parameter_str_removal.c
@@ -218,11 +214,7 @@ int					sh_expansions_proc_subst_out_process(
 ** sh_expansions_process.c
 */
 int					sh_expansions_process(
-	char **input,
-	char *original,
-	t_context *context,
-	int *index,
-	t_dy_tab *quotes);
+	char **input, t_context *context, int *index, t_dy_tab *quotes);
 
 /*
 ** sh_expansions_quote_removal.c
