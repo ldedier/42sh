@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/30 15:48:56 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/20 21:31:48 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/07 19:45:36 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,6 @@
 # include <signal.h>
 # include <fcntl.h>
 # include <dirent.h>
-
-/*
-** wcwidth(3)
-*/
-
-#include <wchar.h>
-#include <xlocale.h>
 
 /*
 ** wait(2)
@@ -252,7 +245,6 @@ int					sh_index(t_symbol_id id);
 /*
 ** init.c
 */
-int					sh_init_allocations(t_shell *shell, char **env);
 int					sh_init_shell(t_shell *shell, char **env);
 
 /*

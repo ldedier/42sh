@@ -34,11 +34,11 @@ int			ft_isprint_only_utf8(char *str)
 				return (0);
 		}
 		else if (str[i] & 0b01000000 && !(str[i] & 0b00100000))
-			i += 2;
+			return (0);
 		else if (str[i] & 0b00100000 && !(str[i] & 0b00010000))
-			i += 3;
+			return (0);
 		else if (str[i] & 0b000100000 && !(str[i] & 0b00001000))
-			i += 4;
+			return (0);
 		else
 			i++;
 	}

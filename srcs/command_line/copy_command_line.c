@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/08 19:04:45 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/20 21:50:27 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/20 20:54:02 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@ void	process_copy_utf8_char(char *str,
 void	copy_last_part_of_command_line(t_command_line *command_line,
 			t_utf8_copier *c, int index, char *str)
 {
-	if (ft_nb_columns(&command_line->dy_str->str[c->i])
-			<= ft_nb_columns(ELIPTIC_COMMAND_LINE))
+	if (ft_strlen_utf8(&command_line->dy_str->str[c->i])
+			<= ft_strlen_utf8(ELIPTIC_COMMAND_LINE))
 	{
 		while (command_line->dy_str->str[c->i])
 			process_copy_utf8_char(str, command_line, index, c);

@@ -53,7 +53,8 @@ int		process_key_insert_printable_utf8(t_key_buffer *buffer,
 int		insert_keys(t_key_buffer *buffer, t_shell *shell,
 			t_command_line *command_line)
 {
-	if (is_printable_utf8(buffer->buff, buffer->progress))
+	if (buffer->progress == 1
+		&& is_printable_utf8(buffer->buff, buffer->progress))
 	{
 		if (process_key_insert_printable_utf8(buffer,
 				shell, command_line) != SUCCESS)

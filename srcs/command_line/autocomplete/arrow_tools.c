@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 01:47:50 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/20 21:45:03 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/04 19:06:27 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,9 @@ int		substitute_command_str_from_str(t_command_line *command_line,
 	int		utf8_len_to;
 
 	len = ft_strlen(from);
-	utf8_len = ft_nb_columns(from);
+	utf8_len = ft_strlen_utf8(from);
 	len_to = ft_strlen(str);
-	utf8_len_to = ft_nb_columns(str);
+	utf8_len_to = ft_strlen_utf8(str);
 	if (ft_substitute_dy_str(command_line->dy_str, str,
 		command_line->current_index - len, len))
 		return (FAILURE);

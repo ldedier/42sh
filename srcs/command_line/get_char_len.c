@@ -19,7 +19,7 @@ int		get_char_len_unprotected(int index, unsigned char *entry)
 
 	i = index;
 	j = 1;
-	while (j <= 4)
+	while (j <= 1)
 	{
 		if (is_printable_utf8(&entry[i], j))
 			return (j);
@@ -35,7 +35,7 @@ int		get_char_len2(int index, int len, unsigned char *entry)
 
 	i = index;
 	j = 1;
-	while (i + j <= len && j <= 4)
+	while (i + j <= len && j <= 1)
 	{
 		if (is_printable_utf8(&entry[i], j))
 			return (j);
@@ -53,7 +53,7 @@ int		get_char_len(int index, unsigned char *entry)
 	i = index;
 	j = 1;
 	len = ft_strlen((char *)entry);
-	while (i + j <= len && j <= 4)
+	while (i + j <= len && j <= 1)
 	{
 		if (is_printable_utf8(&entry[i], j))
 			return (j);

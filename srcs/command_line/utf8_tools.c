@@ -6,75 +6,20 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 13:37:08 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/20 21:41:32 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/08/06 11:27:17 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
-
-int		ft_nb_columns(char *str)
-{
-	int		i;
-	int		res;
-	wchar_t	*buff;
-
-	if (!str)
-		return (-1);
-	i = 0;
-	res = 0;
-	while (str[i])
-	{
-		if (!(str[i] & 0b10000000))
-			i++;
-		else if (str[i] & 0b01000000 && !(str[i] & 0b00100000))
-			i += 2;
-		else if (str[i] & 0b00100000 && !(str[i] & 0b00010000))
-			i += 3;
-		else if (str[i] & 0b000100000 && !(str[i] & 0b00001000))
-			i += 4;
-		else
-			i++;
-		buff = (wchar_t *)&str[i];
-		res += wcwidth(*buff);
-	}
-	return (res);
-}
-
-int		ft_nb_columns_n(char *str, int n)
-{
-	int		i;
-	int		res;
-	wchar_t	*buff;
-
-	i = 0;
-	res = 0;
-	while (str[i] && i < n)
-	{
-		if (!(str[i] & 0b10000000))
-			i++;
-		else if (str[i] & 0b01000000 && !(str[i] & 0b00100000))
-			i += 2;
-		else if (str[i] & 0b00100000 && !(str[i] & 0b00010000))
-			i += 3;
-		else if (str[i] & 0b000100000 && !(str[i] & 0b00001000))
-			i += 4;
-		else
-			i++;
-		buff = (wchar_t *)&str[i];
-		res += wcwidth(*buff);
-	}
-	return (res);
-}
-
 
 int		ft_strlen_utf8(char *str)
 {
 	int i;
 	int res;
 
-	i = 0;
 	if (!str)
 		return (-1);
+	i = 0;
 	res = 0;
 	while (str[i])
 	{

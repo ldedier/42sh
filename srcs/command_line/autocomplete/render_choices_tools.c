@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 02:26:42 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/20 21:48:15 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/06/07 00:22:11 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int		sh_get_file_len(t_file *file)
 {
-	return (ft_nb_columns(file->name) + (!file->unstatable
+	return (ft_strlen_utf8(file->name) + (!file->unstatable
 			&& S_ISDIR(file->st.st_mode)));
 }
 

@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 14:51:35 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/20 21:49:32 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/10/10 03:33:38 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int		process_substitute_command(t_command_line *command_line, char *str,
 	int utf8_len;
 
 	len = ft_strlen(str);
-	utf8_len = ft_nb_columns(str);
+	utf8_len = ft_strlen_utf8(str);
 	if (ft_substitute_dy_str(command_line->dy_str, str,
 		word.start_index, word.len))
 		return (1);
@@ -68,15 +68,15 @@ int		command_line_nb_rows(t_command_line *command_line)
 	{
 		return (ft_min(g_glob.winsize.ws_row
 			- get_research_nb_lines(command_line),
-				((ft_nb_columns(command_line->dy_str->str)
-					+ ft_nb_columns(ELIPTIC_COMMAND_LINE))
+				((ft_strlen_utf8(command_line->dy_str->str)
+					+ ft_strlen_utf8(ELIPTIC_COMMAND_LINE))
 						/ g_glob.winsize.ws_col + 1)
 							- command_line->scrolled_lines));
 	}
 	else
 	{
-		return ((ft_nb_columns(command_line->dy_str->str) +
-			ft_nb_columns(command_line->prompt))
+		return ((ft_strlen_utf8(command_line->dy_str->str) +
+			ft_strlen_utf8(command_line->prompt))
 				/ g_glob.winsize.ws_col + 1);
 	}
 }
