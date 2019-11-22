@@ -6,12 +6,11 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/15 15:19:04 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/19 08:20:19 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/22 14:01:56 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
-
 
 long		sh_throw_ar_error(t_context *context, char *error_message,
 	int error)
@@ -30,41 +29,48 @@ long		sh_traverse_arithmetic(t_ast_node *node, t_context *context)
 		return (1);
 }
 
-long		sh_traverse_ar_root(t_context *context, t_ast_node *root)
+static long	sh_traverse_ar_root(
+	t_context *context, t_ast_node *root, t_exec *res)
 {
+	if (sh_verbose_expansion())
+		sh_print_ast(res->ast_root, &context->shell->parser_ar.cfg, 0);
 	context->arithmetic_error = 0;
 	return (sh_traverse_arithmetic(root, context));
 }
 
-long		sh_execute_arithmetic(t_context *context, char *command)
+static void	handle_parser_error(t_context *cont, t_exec *res)
 {
-	long        ret;
-	t_exec      res;
+	int		ret;
+
+	ret = 0;
+	sh_perror_err("syntax error", NULL);
+	cont->arithmetic_error = 1;
+	if (sh_env_update_ret_value_and_question(cont->shell, ret) == 2)
+		ret = sh_perror(SH_ERR1_MALLOC, "sh_execute_arithmetic (2)");
+	ft_lstdel(&res->tokens, sh_free_token_lst);
+}
+
+long		sh_execute_arithmetic(t_context *cont, char *command)
+{
+	long		ret;
+	t_exec		res;
 
 	res.ast_root = NULL;
 	res.cst_root = NULL;
 	res.tokens = NULL;
 	ret = 0;
-	if ((ret = sh_ar_lexer(command, &res.tokens, context->shell)) != SUCCESS)
+	if ((ret = sh_ar_lexer(command, &res.tokens, cont->shell)) != SUCCESS)
 	{
-		context->arithmetic_error = 1;
-		if (sh_env_update_ret_value_and_question(context->shell, ret) == FAILURE)
+		cont->arithmetic_error = 1;
+		if (sh_env_update_ret_value_and_question(cont->shell, ret) == 2)
 			ret = sh_perror(SH_ERR1_MALLOC, "sh_execute_arithmetic (1)");
 		ft_lstdel(&res.tokens, sh_free_token_lst);
 	}
-	else if ((ret = sh_parser(context->shell, &context->shell->parser_ar, &res)))
-	{
-		sh_perror_err("syntax error", NULL);
-		context->arithmetic_error = 1;
-		if (sh_env_update_ret_value_and_question(context->shell, ret) == FAILURE)
-			ret = sh_perror(SH_ERR1_MALLOC, "sh_execute_arithmetic (2)");
-		ft_lstdel(&res.tokens, sh_free_token_lst);
-	}
+	else if ((ret = sh_parser(cont->shell, &cont->shell->parser_ar, &res)))
+		handle_parser_error(cont, &res);
 	else
 	{
-		if (sh_verbose_expansion())
-			sh_print_ast(res.ast_root, &context->shell->parser_ar.cfg, 0);
-		ret = sh_traverse_ar_root(context, res.ast_root);
+		ret = sh_traverse_ar_root(cont, res.ast_root, &res);
 		free_execution_tools(&res.tokens, &res.ast_root, &res.cst_root);
 	}
 	return (ret);

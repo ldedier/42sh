@@ -82,6 +82,7 @@ void	t_ar_lexer_show(t_lexer *lexer);
 /*
 ** lexer/t_ar_token.c
 */
+void	t_ar_token_show_1(t_token *token);
 void	t_ar_token_show(t_token *token);
 void	t_ar_token_free(t_token *token);
 
@@ -122,8 +123,7 @@ int		sh_ar_init_prod_term(t_cfg *cfg, t_symbol *symbol);
 long	sh_throw_ar_error(
 	t_context *context, char *error_message, int error);
 long	sh_traverse_arithmetic(t_ast_node *node, t_context *context);
-long	sh_traverse_ar_root(t_context *context, t_ast_node *root);
-long	sh_execute_arithmetic(t_context *context, char *command);
+long	sh_execute_arithmetic(t_context *cont, char *command);
 
 /*
 ** sh_traverse_and_or_ar.c

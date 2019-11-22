@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/17 19:43:58 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/18 03:26:53 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/22 13:40:41 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int			sh_ar_lexer_rule_1(t_lexer *lexer)
 	if (lexer->c == '\0')
 	{
 		if (lexer->quoted != 0)
-			;; // shall return an error ?? (quoting may be handled in sh_lexer)
+			return (LEX_ERR);
 		ret = t_ar_lexer_add_token(lexer);
 		lexer->current_id = END_OF_INPUT_AR;
 		if (!ret)

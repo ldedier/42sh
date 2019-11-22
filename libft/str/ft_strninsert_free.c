@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strninsert_free.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/19 13:40:35 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/19 19:09:36 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/22 12:23:51 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static char 	*strninsert_init(char **str, int *or_len, int nb)
+static char	*strninsert_init(char **str, int *or_len, int nb)
 {
 	char	*tmp;
 
@@ -44,7 +44,7 @@ static void	strinsert_end_loop(char *tmp, int *pos, char c, int i)
 ** -1 if an error occured
 */
 
-int 	ft_strninsert_free(char **str, int *pos, char c, int nb)
+int			ft_strninsert_free(char **str, int *pos, char c, int nb)
 {
 	char	*tmp;
 	int		i;
