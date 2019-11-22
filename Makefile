@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/11/21 16:08:27 by jdugoudr         ###   ########.fr        #
+#    Updated: 2019/11/22 11:08:48 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -377,6 +377,7 @@ SRCS			 +=	sh_expansions.c \
 					sh_expansions_cmd_subst_tools.c \
 					sh_expansions_proc_subst_in.c \
 					sh_expansions_proc_subst_out.c \
+					sh_expansions_proc_subst_tools.c \
 					t_expansion.c t_quote.c
 
 ################################################################

@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 14:29:58 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/20 03:06:02 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/22 10:57:44 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int	child_part(t_context *context, char *command, int fds[])
 {
 	int	ret;
-	
+
 	g_job_ctrl->cmd_subst = 1;
 	sh_pre_execution();
 	reset_signals();
@@ -61,7 +61,7 @@ int			get_subshell_output(t_context *context, char *command, char **str)
 {
 	pid_t	cpid;
 	int		fds[2];
-	
+
 	if (pipe(fds))
 		return (sh_perror(SH_ERR1_PIPE, "get_subshell_output"));
 	if ((cpid = fork()) == -1)
