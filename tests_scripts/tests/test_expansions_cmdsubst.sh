@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/10 06:04:23 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/21 11:55:41 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/22 16:39:52 by jdugoudr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ launch "Command_Substitution_dollar"
 	test_launch 'echo $(ls)'
 	test_launch 'echo $(ls) | cat -e'
 	test_launch 'echo $(ls -a) | cat -e'
+	test_launch 'echo $(ls -a nodir) | cat -e'
 	test_launch 'var=.. ; echo $(ls -a $var) | cat -e'
 	test_launch 'var="ls -la" ; echo $($var ..) | cat -e'
 	test_launch 'shopt -s expand_aliases' 'alias var="ls -a" ; echo $(var ..) | cat -e'
@@ -67,6 +68,8 @@ launch "Command_Substitution_backquote"
 	test_launch 'shopt -s expand_aliases' 'alias var="ls -a | wc -l" ; echo `var ..` | cat -e'
 	test_launch 'shopt -s expand_aliases' 'alias var="ls -a | wc > file" ; echo `var ..` | cat -e ; cat file ; rm -f file'
 	test_launch 'echo `echo `ls` | cat -e ` | cat -e'
+	test_launch 'echo `ls nodfi`'
+	test_launch '`ls $novar`'
 
 launch "Process_Substitution"
 	launch_show "Simple"
@@ -74,7 +77,9 @@ launch "Process_Substitution"
 	test_launch 'diff <(ls) <(ls -a)'
 	test_launch 'sort <(cat -e <(grep fork <(ls -tr /usr/share/man/man2)) | (head -n 1 1> >(rev)))'
 	test_launch 'ls | tee >(cat -e) >/dev/null'
+	test_launch 'ls | wc >(cat -e) >/dev/null'
 	test_launch 'sort -k 9 <(ls -l /bin) <(ls -l /usr/bin) <(ls -l ~/)'
+	test_launch 'echo <(echo this is bad , this really bad)'
 
 ## Deprecated
 	# test_launch 'echo <(ls)        <(ls -l)'

@@ -1,0 +1,33 @@
+arithmetic          : and_or
+|                    EPS
+;
+and_or : comparison
+|        and_or && comparison
+|        and_or || comparison
+;
+comparison : expr
+|        comparison > expr
+|        comparison >= expr
+|        comparison < expr
+|        comparison <= expr
+|        comparison != expr
+|        comparison == expr
+;
+expr             : term 
+|                  expr + term
+|                  expr - term
+;
+term       :   factor
+|              term * factor
+|              term / factor
+|              term % factor
+;
+factor         :   INTEGER
+|                  VARIABLE
+|                  INC VARIABLE
+|                  VARIABLE INC
+|                  DEC VARIABLE
+|                  VARIABLE DEC
+|                  - factor
+|                  + factor
+;

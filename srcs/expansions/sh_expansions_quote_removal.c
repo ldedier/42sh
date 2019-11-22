@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 00:53:16 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/19 19:22:19 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/21 15:01:48 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void		sh_expansions_quote_removal(t_quote **quotes)
 		ft_dprintf(2, EOC);
 	}
 	i = 0;
-	while(quotes[i])
+	while (quotes[i])
 		i++;
 	i--;
 	while (i >= 0)

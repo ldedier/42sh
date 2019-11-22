@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 12:04:02 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/04 19:44:18 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/15 16:00:58 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int		populate_word_from_lexer_no_token(t_list **tokens, t_list **prev,
 	t_list	*token_ptr;
 	t_list	*next;
 
-	if (!(token_ptr = t_token_node_new(LEX_TOK_WORD, "")))
+	if (!(token_ptr = t_token_node_new(LEX_TOK_WORD, "", g_glob.cfg)))
 		return (sh_perror(SH_ERR1_MALLOC, "get_token_from_lexer (2)"));
 	if (*prev == NULL)
 	{
@@ -109,7 +109,7 @@ int		populate_parsed_word_by_index(t_shell *shell, char *command,
 	if (!ret)
 		ret = populate_word_from_lexer(&exec->tokens, index, &exec->word);
 	if (!ret)
-		ret = sh_parser(shell, &exec->tokens, &exec->ast_root, &exec->cst_root);
+		ret = sh_parser(shell, &shell->parser, exec);
 	if (ret == FAILURE)
 	{
 		ft_lstdel(&exec->tokens, sh_free_token_lst);

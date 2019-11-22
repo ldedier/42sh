@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_traverse_ampersand.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 12:27:20 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/04 12:28:47 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/22 13:04:15 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 ** It take the context and the and_or node to execute.
 */
 
-int	sh_traverse_ampersand(t_ast_node *node_to_execute, t_context *context)
+long	sh_traverse_ampersand(t_ast_node *node_to_execute, t_context *context)
 {
 	int	ret;
 

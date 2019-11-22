@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:31:30 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/21 14:48:57 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/22 18:23:50 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static int	sh_process_traverse_cmd_suffix(
 	return (SUCCESS);
 }
 
-int			sh_traverse_cmd_suffix(t_ast_node *node, t_context *context)
+long		sh_traverse_cmd_suffix(t_ast_node *node, t_context *context)
 {
 	t_ast_node	*child;
 	t_list		*ptr;

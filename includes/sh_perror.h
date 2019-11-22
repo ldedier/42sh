@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 14:16:12 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/20 02:03:46 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/20 12:52:21 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@
 
 # define SH_BAD_SUBSTITUTE		"Bad subsitution"
 # define SH_AMB_REDIRECT		"Ambigous redirect"
+
+# define SH_ERR1_DIV_ZERO		"Division by 0"
 
 typedef struct s_lexer			t_lexer;
 

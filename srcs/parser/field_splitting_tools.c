@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/07 15:38:10 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/16 19:25:05 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/20 12:56:02 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,15 @@ static int			sh_process_add_new_ast_node(t_list *ptr,
 ** returns the newly created node or NULL on errors
 */
 
-t_ast_node			*sh_add_word_to_ast(t_ast_node *previous_word, char *value)
+t_ast_node			*sh_add_word_to_ast(t_ast_node *previous_word,
+	char *value, t_cfg *cfg)
 {
 	t_list		*ptr;
 	t_ast_node	*new_node;
 	int			ret;
 
 	ptr = previous_word->parent->children;
-	if (!(new_node = sh_new_ast_node(LEX_TOK_WORD, value)))
+	if (!(new_node = sh_new_ast_node(LEX_TOK_WORD, value, cfg)))
 	{
 		free(value);
 		return (NULL);
@@ -80,8 +81,7 @@ t_ast_node			*sh_add_word_to_ast(t_ast_node *previous_word, char *value)
 	return (NULL);
 }
 
-
-static void		sh_process_delete_node_from_parent(t_ast_node *parent,
+static void			sh_process_delete_node_from_parent(t_ast_node *parent,
 		t_list *prev, t_list *ptr)
 {
 	if (prev == NULL)
@@ -102,7 +102,7 @@ static void		sh_process_delete_node_from_parent(t_ast_node *parent,
 ** delete the ast_node 'node' in the list of children of ast_node 'parent'
 */
 
-void			sh_delete_node_from_parent(t_ast_node *node)
+void				sh_delete_node_from_parent(t_ast_node *node)
 {
 	t_list *ptr;
 	t_list *prev;

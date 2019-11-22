@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 21:49:08 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/21 10:41:59 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/21 15:44:14 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ t_quote		*t_quote_new(int index, char *c, int is_original)
 	return (new);
 }
 
-int			t_quote_add_new(t_dy_tab *quotes, int index, char *c, int is_original)
+int			t_quote_add_new(
+	t_dy_tab *quotes, int index, char *c, int is_original)
 {
 	t_quote	*new;
 
@@ -42,15 +43,15 @@ void		t_quote_show_tab(t_quote **quotes)
 	i = 0;
 	if (!quotes[i])
 		return ;
-	ft_dprintf(2, YELLOW);
 	while (quotes[i])
 	{
-		ft_dprintf(2, "%d : %c", quotes[i]->index, *(quotes[i]->c));
+		ft_dprintf(2, "%d : %c", quotes[i]->index, quotes[i]->c);
 		if (quotes[i + 1])
 			ft_dprintf(2, " || ");
+		else
+			ft_dprintf(2, "\n");
 		i++;
 	}
-	ft_dprintf(2, "\n"EOC);
 	return ;
 }
 
@@ -64,7 +65,7 @@ void		t_quote_show_tab(t_quote **quotes)
 **		>= 0 : Index of the end of end quoting char
 */
 
-int		t_quote_is_original_quote(int i, t_quote **quotes)
+int			t_quote_is_original_quote(int i, t_quote **quotes)
 {
 	int		j;
 
@@ -89,7 +90,7 @@ int		t_quote_is_original_quote(int i, t_quote **quotes)
 **		>= 0 : Index of the end of end quoting char, or escaped char if '\'
 */
 
-int		t_quote_get_offset(int i, t_quote **quotes)
+int			t_quote_get_offset(int i, t_quote **quotes)
 {
 	int		j;
 	char	quoted;

@@ -6,13 +6,13 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:31:30 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/21 14:47:59 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/22 18:23:46 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-int			sh_traverse_cmd_name(t_ast_node *node, t_context *context)
+long		sh_traverse_cmd_name(t_ast_node *node, t_context *context)
 {
 	return (sh_traverse_cmd_suffix(node, context));
 }

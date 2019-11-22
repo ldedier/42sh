@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 15:06:52 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/21 13:46:46 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/21 20:31:10 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static int	save_fd(t_list *lst, t_redirection_type type, int fd)
 ** Return -1 if not
 ** Return fd if it's ok
 **
-** If fd and one backup are egual means fd it's.
+** If fd and one backup are egual means fd it's close.
 ** Because backup can only took on close fd.
 */
 
@@ -70,6 +70,8 @@ int			sh_check_dst_fd(t_list *lst, int fd)
 {
 	t_redirection	*el;
 
+	if (fd == TTY_FD)
+		return (-1);
 	while (lst)
 	{
 		el = lst->content;

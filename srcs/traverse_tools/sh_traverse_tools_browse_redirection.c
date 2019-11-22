@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/17 17:32:45 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/20 02:26:56 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/22 13:07:50 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int					loop_traverse_compound_redirection(
 	return (ret);
 }
 
-int					sh_traverse_tools_browse_redirection(
+long				sh_traverse_tools_browse_redirection(
 		t_ast_node *node, t_context *context)
 {
 	t_list		*ptr;

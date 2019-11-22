@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/06 01:28:29 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/16 15:50:43 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/22 11:55:48 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,14 @@ int				sh_lexer_reserved_words(t_lexer *lexer, t_token *token)
 	if (lexer->first_word && token->id == LEX_TOK_WORD)
 	{
 		if (ft_strequ(token->value, "!"))
-			t_token_update_id(LEX_TOK_BANG, token);
+			t_token_update_id(LEX_TOK_BANG, token, g_glob.cfg);
 		else if (ft_strrchr(token->value, '=')
 			&& sh_expansions_variable_valid_name(token->value))
-			t_token_update_id(LEX_TOK_ASSIGNMENT_WORD, token);
+			t_token_update_id(LEX_TOK_ASSIGNMENT_WORD, token, g_glob.cfg);
 		else if (ft_strequ(token->value, "{"))
-			t_token_update_id(LEX_TOK_LBRACE, token);
+			t_token_update_id(LEX_TOK_LBRACE, token, g_glob.cfg);
 		else if (ft_strequ(token->value, "}"))
-			t_token_update_id(LEX_TOK_RBRACE, token);
+			t_token_update_id(LEX_TOK_RBRACE, token, g_glob.cfg);
 		else
 			lexer->first_word = lexer->first_word ? lexer->first_word - 1 : 0;
 	}

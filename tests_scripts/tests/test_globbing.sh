@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/16 05:23:32 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/20 08:49:12 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/21 14:55:21 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -163,8 +163,8 @@ launch "Globbing"
 	test_launch 'echo ls ~/Desktop/[.][.abv]*'
 	test_launch 'echo \/\t\m\p\/'
 	
-	# rm -rf empty
-	# rm -rf sandbox
+	rm -rf empty
+	rm -rf sandbox
 
   	mkdir "./test_globbing" && cd "./test_globbing" && touch 'a' 'b' 'c' 'd' 'e' 'f' '!' '^' && cd ..
 	launch_show "wesh tests"

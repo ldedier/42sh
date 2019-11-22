@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 11:29:18 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/10 05:57:49 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/15 15:58:39 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@
 **	Update a token id by changing it's id, and looking for it's new index.
 */
 
-void	t_token_update_id(int id, t_token *token)
+void	t_token_update_id(int id, t_token *token, t_cfg *cfg)
 {
 	token->id = id;
-	token->index = sh_index(id);
+	token->index = cfg->index_func(id);
 }
 
-t_token	*t_token_new_ptr(int id, char *value)
+t_token	*t_token_new_ptr(int id, char *value, t_cfg *cfg)
 {
 	t_token		*token;
 
@@ -33,14 +33,14 @@ t_token	*t_token_new_ptr(int id, char *value)
 	if (value)
 		token->value = value;
 	token->id = id;
-	token->index = sh_index(id);
+	token->index = cfg->index_func(id);
 	token->ast_node = NULL;
 	token->expansion = 0;
 	token->apply_heredoc_expansion = 1;
 	return (token);
 }
 
-t_token	*t_token_new(int id, char *value)
+t_token	*t_token_new(int id, char *value, t_cfg *cfg)
 {
 	t_token		*token;
 
@@ -55,7 +55,7 @@ t_token	*t_token_new(int id, char *value)
 		}
 	}
 	token->id = id;
-	token->index = sh_index(id);
+	token->index = cfg->index_func(id);
 	token->apply_heredoc_expansion = 1;
 	return (token);
 }

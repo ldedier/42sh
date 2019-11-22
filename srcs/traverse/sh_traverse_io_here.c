@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 11:19:41 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/21 13:00:46 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/22 13:05:18 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static char		*heredoc_dash(const char *str)
 **		CTRL_C
 */
 
-static int		sh_traverse_io_here_interactive_ctrl_d(
+static long		sh_traverse_io_here_interactive_ctrl_d(
 	t_ast_node *first_child, t_context *context)
 {
 	ft_dprintf(2, "%s: warning: here-document delimited by end of file "
@@ -39,7 +39,7 @@ static int		sh_traverse_io_here_interactive_ctrl_d(
 	return (SUCCESS);
 }
 
-static int		sh_traverse_io_here_interactive(t_ast_node *node,
+static long		sh_traverse_io_here_interactive(t_ast_node *node,
 		t_context *context, char *(*heredoc_func)(const char *))
 {
 	t_ast_node		*child;
@@ -69,7 +69,7 @@ static int		sh_traverse_io_here_interactive(t_ast_node *node,
 	return (ret);
 }
 
-static int		sh_traverse_io_here_phase_interactive(
+static long		sh_traverse_io_here_phase_interactive(
 		t_ast_node *node, t_context *context)
 {
 	t_ast_node		*first_child;
@@ -85,7 +85,7 @@ static int		sh_traverse_io_here_phase_interactive(
 				context, heredoc_func));
 }
 
-int				sh_traverse_io_here(t_ast_node *node, t_context *context)
+long			sh_traverse_io_here(t_ast_node *node, t_context *context)
 {
 	t_ast_node	*first_child;
 	int			ret;

@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/06/06 16:09:28 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/18 14:08:26 by jdugoudr         ###   ########.fr        #
+#    Updated: 2019/11/21 15:06:15 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,10 +55,10 @@ launch "Field splitting"
 	launch_show "hard"
 		for j in `seq 0 2` ; do
 			for i in `seq 1 9` ; do
+				if [ ${i}${j} -gt 27 ] ; then break ; fi
 				test_launch_pipe ./tests_files/splitting/splitting_${j}${i}
 			done
 		done
-
 
 	launch_show "Old failed tests"
 		test_launch 'v="Oka        Lmos" ; echo "$v"$a"$r"'

@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/21 14:48:38 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/22 18:24:10 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 ** pipe sequence.
 */
 
-static int		sh_traverse_pipe_sequence(t_ast_node *node, t_context *context)
+static long	sh_traverse_pipe_sequence(t_ast_node *node, t_context *context)
 {
 	int	ret;
 
@@ -58,7 +58,7 @@ static int		sh_traverse_pipe_sequence(t_ast_node *node, t_context *context)
 ** We update the env question_mark at this point.
 */
 
-int				sh_traverse_pipeline(t_ast_node *node, t_context *context)
+long		sh_traverse_pipeline(t_ast_node *node, t_context *context)
 {
 	int			ret;
 	int			bang;

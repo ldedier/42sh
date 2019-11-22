@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/05 01:23:20 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/16 17:43:55 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/22 13:13:49 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int			check_for_symlink_loop(struct stat *st, char *path, int i)
 **		ERROR : file cannot be considered as an executable
 */
 
-int			sh_traverse_sc_check_perm_quiet(char *path)
+long		sh_traverse_sc_check_perm_quiet(char *path)
 {
 	struct stat	st;
 
@@ -70,7 +70,7 @@ int			sh_traverse_sc_check_perm_quiet(char *path)
 	return (SUCCESS);
 }
 
-static int	sh_traverse_sc_check_perm_reg(t_context *context, struct stat st,
+static long	sh_traverse_sc_check_perm_reg(t_context *context, struct stat st,
 			char *command_name)
 {
 	if (S_ISDIR(st.st_mode))
@@ -96,7 +96,7 @@ static int	sh_traverse_sc_check_perm_reg(t_context *context, struct stat st,
 **		ERROR : file cannot be considered as an executable
 */
 
-int			sh_traverse_sc_check_perm(t_context *context, char *path,
+long		sh_traverse_sc_check_perm(t_context *context, char *path,
 			char *command_name)
 {
 	struct stat		st;

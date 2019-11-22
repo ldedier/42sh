@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:35:27 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/20 02:47:02 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/20 12:52:31 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,72 +42,72 @@ int					sh_process_traverse(
 /*
 ** sh_traverse_ampersand.c
 */
-int					sh_traverse_ampersand(
+long				sh_traverse_ampersand(
 	t_ast_node *node_to_execute, t_context *context);
 
 /*
 ** sh_traverse_and_or.c
 */
-int					sh_traverse_and_or(
+long				sh_traverse_and_or(
 	t_ast_node *node, t_context *context);
 
 /*
 ** sh_traverse_assignment_word.c
 */
-int					sh_traverse_assignment_word(
+long				sh_traverse_assignment_word(
 	t_ast_node *node, t_context *context);
 
 /*
 ** sh_traverse_brace.c
 */
-int					sh_traverse_brace(t_ast_node *node, t_context *ctxt);
+long				sh_traverse_brace(t_ast_node *node, t_context *ctxt);
 
 /*
 ** sh_traverse_cmd_name.c
 */
-int					sh_traverse_cmd_name(
+long				sh_traverse_cmd_name(
 	t_ast_node *node, t_context *context);
 
 /*
 ** sh_traverse_cmd_prefix.c
 */
-int					sh_traverse_cmd_prefix(
+long				sh_traverse_cmd_prefix(
 	t_ast_node *node, t_context *context);
 
 /*
 ** sh_traverse_cmd_suffix.c
 */
-int					sh_traverse_cmd_suffix(
+long				sh_traverse_cmd_suffix(
 	t_ast_node *node, t_context *context);
 
 /*
 ** sh_traverse_cmd_word.c
 */
-int					sh_traverse_cmd_word(
+long				sh_traverse_cmd_word(
 	t_ast_node *node, t_context *context);
 
 /*
 ** sh_traverse_command.c
 */
-int					sh_traverse_command(
+long				sh_traverse_command(
 	t_ast_node *node, t_context *context);
 
 /*
 ** sh_traverse_default.c
 */
-int					sh_traverse_default(
+long				sh_traverse_default(
 	t_ast_node *node, t_context *context);
 
 /*
 ** sh_traverse_io_file.c
 */
-int					sh_traverse_io_file(
+long				sh_traverse_io_file(
 	t_ast_node *node, t_context *context);
 
 /*
 ** sh_traverse_io_here.c
 */
-int					sh_traverse_io_here(
+long				sh_traverse_io_here(
 	t_ast_node *node, t_context *context);
 
 /*
@@ -119,36 +119,36 @@ char				*heredoc_canonical_mode(
 /*
 ** sh_traverse_io_redirect.c
 */
-int					sh_traverse_io_redirect(
+long				sh_traverse_io_redirect(
 	t_ast_node *node, t_context *context);
 
 /*
 ** sh_traverse_list.c
 */
-int					sh_traverse_list(t_ast_node *node, t_context *context);
+long				sh_traverse_list(t_ast_node *node, t_context *context);
 
 /*
 ** sh_traverse_pipeline.c
 */
-int					sh_traverse_pipeline(
+long				sh_traverse_pipeline(
 	t_ast_node *node, t_context *context);
 
 /*
 ** sh_traverse_semicol.c
 */
-int					sh_traverse_semicol(
+long				sh_traverse_semicol(
 	t_ast_node *node_to_execute, t_context *context);
 
 /*
 ** sh_traverse_simple_command.c
 */
-int					sh_traverse_simple_command(
+long				sh_traverse_simple_command(
 	t_ast_node *node, t_context *context);
 
 /*
 ** sh_traverse_subshell.c
 */
-int					sh_traverse_subshell(
+long				sh_traverse_subshell(
 	t_ast_node *node, t_context *ctxt);
 
 #endif

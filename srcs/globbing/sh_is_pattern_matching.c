@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_is_pattern_matching.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 01:30:15 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/20 08:53:02 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/22 18:26:55 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,27 @@ int			sh_is_pattern_matching(char *name, t_list *regexp_head)
 		return (ERROR);
 	while (regexp_head && name[i])
 	{
+		if (call_pattern_function(name, &i, &regexp_head))
+			return (ERROR);
+	}
+	while (regexp_head && ((t_regexp*)regexp_head->content)->type == REG_STAR)
+		regexp_head = regexp_head->next;
+	if (regexp_head || name[i])
+		return (ERROR);
+	return (SUCCESS);
+}
+
+int			sh_is_pattern_matching_for_substring_removal(
+	char *name, t_list *regexp_head)
+{
+	int			i;
+
+	if (!regexp_head)
+		return (SUCCESS);
+	i = 0;
+	while (regexp_head && name[i])
+	{
+		ft_dprintf(2, "evaluating : %s\n", name);
 		if (call_pattern_function(name, &i, &regexp_head))
 			return (ERROR);
 	}

@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 11:52:40 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/21 14:47:32 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/22 18:26:18 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static int	call_execve(t_context *context)
 	return (ret);
 }
 
-void	sh_execute_execve(t_ast_node *parent_node, t_context *context)
+void		sh_execute_execve(t_ast_node *parent_node, t_context *context)
 {
 	int		ret;
 

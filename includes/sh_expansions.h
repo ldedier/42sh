@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 17:46:46 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/21 10:41:54 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/22 11:50:28 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 ** Expansion header
 */
 typedef struct s_expansion	t_expansion;
+typedef struct s_history_expander	t_history_expander;
 typedef struct s_split_data	t_split_data;
 typedef struct s_split_word	t_split_word;
 typedef enum e_exp_type		t_exp_type;
@@ -75,6 +76,15 @@ struct				s_split_word
 int					sh_expansions(t_context *context, t_ast_node *node);
 
 /*
+** sh_expansions_arithmetic.c
+*/
+int					sh_expansions_arithmetic_detect(char *str);
+int					sh_expansions_arithmetic_fill(
+	t_expansion *exp, char *start);
+int					sh_expansions_arithmetic_process(
+	t_context *context, t_expansion *exp);
+
+/*
 ** sh_expansions_cmd_subst.c
 */
 int					get_subshell_output(
@@ -129,14 +139,32 @@ int					split_input(
 /*
 ** sh_expansions_history.c
 */
-char				*ft_strdup_word_delim(char *str, int delim);
+void				init_expander(t_history_expander *he);
+int					is_eligible_for_history_expansion(
+	t_command_line *command_line, int *i, t_history_expander *he);
 int					sh_history_expand(
+	t_command_line *command_line,
+	int *i,
+	t_history_expander *he,
+	t_shell *shell);
+int					scan_expansions_history(
+	int *i,
+	t_shell *shell,
+	t_command_line *command_line,
+	t_history_expander *he);
+int					sh_expansions_history(
+	t_shell *shell, t_command_line *command_line, int *expanded);
+
+/*
+** sh_expansions_history_expand.c
+*/
+int					ft_word_delim_len(char *str, int delim);
+char				*ft_strdup_word_delim(char *str, int delim);
+int					sh_process_history_expand(
 	t_shell *shell,
 	t_command_line *command_line,
 	int *index,
-	int *double_quoted);
-int					sh_expansions_history(
-	t_shell *shell, t_command_line *command_line, int *expanded);
+	char *double_quoted);
 
 /*
 ** sh_expansions_parameter.c
@@ -148,24 +176,36 @@ int					sh_expansions_parameter_process(
 	t_context *context, t_expansion *exp);
 
 /*
-** sh_expansions_parameter_process.c
+** sh_expansions_parameter_equal.c
+*/
+int					sh_expansions_parameter_equal(
+	t_context *context, t_expansion *exp, char *format);
+
+/*
+** sh_expansions_parameter_minus.c
 */
 int					sh_expansions_parameter_minus(
 	t_context *context, t_expansion *exp, char *format);
-int					sh_expansions_parameter_equal(
-	t_context *context, t_expansion *exp, char *format);
-int					sh_expansions_parameter_quest(
-	t_context *context, t_expansion *exp, char *format);
+
+/*
+** sh_expansions_parameter_plus.c
+*/
 int					sh_expansions_parameter_plus(
 	t_context *context, t_expansion *exp, char *format);
-int					sh_expansions_parameter_hash(
-	t_context *context, t_expansion *exp, char *format);
-int					sh_expansions_parameter_percent(
+
+/*
+** sh_expansions_parameter_quest.c
+*/
+int					sh_expansions_parameter_quest(
 	t_context *context, t_expansion *exp, char *format);
 
 /*
 ** sh_expansions_parameter_str_removal.c
 */
+int					sh_expansions_parameter_hash(
+	t_context *context, t_expansion *exp, char *format);
+int					sh_expansions_parameter_percent(
+	t_context *context, t_expansion *exp, char *format);
 
 /*
 ** sh_expansions_parameter_tools.c
@@ -183,9 +223,6 @@ int					sh_expansions_parameter_get_word(
 int					sh_expansions_proc_subst_in_detect(char *start);
 int					sh_expansions_proc_subst_in_fill(
 	t_expansion *exp, char *start);
-char				*sh_get_fd_string(int fd);
-char				*sh_get_process_subst_in(
-	t_shell *shell, char *command, t_list **redirections);
 int					sh_expansions_proc_subst_in_process(
 	t_context *context, t_expansion *exp);
 
@@ -199,14 +236,15 @@ int					sh_expansions_proc_subst_out_process(
 	t_context *context, t_expansion *exp);
 
 /*
+** sh_expansions_proc_subst_tools.c
+*/
+char				*sh_get_fd_string(int fd);
+
+/*
 ** sh_expansions_process.c
 */
 int					sh_expansions_process(
-	char **input,
-	char *original,
-	t_context *context,
-	int *index,
-	t_dy_tab *quotes);
+	char **input, t_context *context, int *index, t_dy_tab *quotes);
 
 /*
 ** sh_expansions_quote_removal.c
@@ -217,7 +255,7 @@ void				sh_expansions_quote_removal_in_str(char *input);
 /*
 ** sh_expansions_replace.c
 */
-void 				sh_expansions_update_quotes_pointer(
+void				sh_expansions_update_quotes_pointer(
 	char **input, t_quote **quotes);
 int					sh_expansions_replace(
 	t_expansion *exp, char **input, int index, t_quote **quotes);
@@ -227,6 +265,12 @@ int					sh_expansions_replace(
 */
 int					sh_expansions_scan(
 	char **input, int index, t_context *context, t_dy_tab *quotes);
+
+/*
+** sh_expansions_scan_double_quote.c
+*/
+int					sh_expansions_scan_double_quote(
+	char **input, int *index, t_context *context, t_dy_tab *quotes);
 
 /*
 ** sh_expansions_tilde.c
@@ -250,12 +294,12 @@ int					sh_expansions_variable_valid_name(char *name);
 int					sh_expansions_variable_detect(char *start);
 int					sh_expansions_variable_fill(
 	t_expansion *exp, char *start);
-int					sh_expansions_variable_process(
-	t_context *context, t_expansion *exp);
 
 /*
-** sh_expansions_variable_detect.c
+** sh_expansions_variable_process.c
 */
+int					sh_expansions_variable_process(
+	t_context *context, t_expansion *exp);
 
 /*
 ** t_expansion.c

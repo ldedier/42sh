@@ -6,16 +6,18 @@
 /*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 16:52:43 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/04 11:26:48 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/21 19:36:44 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-int	sh_execute_redirection(t_redirection *el)
+int	sh_execute_redirection(t_redirection *el, int is_builtin)
 {
 	if (sh_verbose_pipe())
 		ft_dprintf(2, "Redirections %d:\n", el->fd);
+	if (el->redirected_fd == TTY_FD && is_builtin)
+		return (sh_perror_err(SH_ERR1_BAD_FD, "Bad use of fd : 10"));
 	if (el->fd >= 0)
 	{
 		if (sh_verbose_pipe())

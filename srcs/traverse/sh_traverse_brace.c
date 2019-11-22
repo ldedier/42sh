@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_traverse_brace.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 10:34:50 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/08 23:37:17 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/22 11:53:58 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,14 @@ static int	sh_execute_brace_bg(t_ast_node *node, t_context *context)
 	return (ret);
 }
 
-int			sh_traverse_brace(t_ast_node *node, t_context *ctxt)
+long		sh_traverse_brace(t_ast_node *node, t_context *ctxt)
 {
 	int			ret;
 	t_ast_node	*compound_redir;
 	t_list		*lst_redi;
 
 	sh_traverse_tools_show_traverse_start(node, ctxt);
+	ctxt->is_builtin = 1;
 	if (g_job_ctrl->interactive && IS_BG(ctxt->cmd_type))
 	{
 		ft_dprintf(g_term_fd, YELLOW"Adding job in brace\n"EOC);

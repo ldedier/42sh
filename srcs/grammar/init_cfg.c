@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
+/*   init_cfg.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/04 21:42:55 by ldedier           #+#    #+#             */
-/*   Updated: 2019/06/07 06:50:06 by ldedier          ###   ########.fr       */
+/*   Created: 2019/11/18 11:27:28 by ldedier           #+#    #+#             */
+/*   Updated: 2019/11/18 11:27:30 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,78 +14,60 @@
 
 int		sh_add_prod(t_symbol *symbol, t_cfg *cfg, int nb_symbols, ...)
 {
-	va_list		ap;
-	int			symbol_index;
-	int			i;
-	static int	index = 0;
+	va_list			ap;
+	int				symbol_index;
+	t_production	*prod;
+	int				i;
 
-	if (ft_lstaddnew_ptr_last(&symbol->productions,
-			&cfg->productions[index], sizeof(t_production *)))
+	prod = &cfg->productions[cfg->prod_index];
+	if (ft_lstaddnew_ptr_last(&symbol->productions, prod,
+			sizeof(t_production *)))
 		return (1);
 	va_start(ap, nb_symbols);
-	cfg->productions[index].symbols = NULL;
-	cfg->productions[index].from = symbol;
-	cfg->productions[index].index = index;
+	prod->symbols = NULL;
+	prod->from = symbol;
+	prod->index = cfg->prod_index;
 	i = 0;
 	while (i < nb_symbols)
 	{
-		symbol_index = sh_index(va_arg(ap, int));
-		if (ft_lstaddnew_ptr_last(&cfg->productions[index].symbols,
+		symbol_index = cfg->index_func((va_arg(ap, int)));
+		if (ft_lstaddnew_ptr_last(&prod->symbols,
 					&cfg->symbols[symbol_index], sizeof(t_symbol *)))
 			return (1);
 		i++;
 	}
-	index++;
+	cfg->prod_index++;
 	va_end(ap);
 	return (0);
 }
 
-int		init_start_symbol(t_cfg *cfg, t_symbol *symbol)
+void	init_grammar_from_initializer(t_cfg *cfg, t_cfg_initializer *cfgi)
 {
-	symbol->id = NB_SYMBOLS + 1;
-	symbol->productions = NULL;
-	sh_add_prod(symbol, cfg, 1, PROGRAM);
-	ft_strcpy(symbol->debug, "S");
-	return (0);
+	cfg->nb_symbols = cfgi->nb_symbols;
+	cfg->nb_productions = cfgi->nb_productions;
+	cfg->nb_terms = cfgi->nb_terms;
+	cfg->nb_noterms = cfgi->nb_symbols - cfgi->nb_terms;
+	cfg->grammar_holder = cfgi->grammar_holder;
+	cfg->start_id = cfgi->start_id;
+	cfg->epsilon_index = cfgi->epsilon_index;
+	cfg->eoi_index = cfgi->eoi_index;
+	cfg->index_func = cfgi->index_func;
+	cfg->prod_index = 0;
+	cfg->state_index = 0;
 }
 
-void	init_symbol(t_symbol *symbol, int index)
+int		init_context_free_grammar(t_cfg *cfg, t_cfg_initializer *cfgi)
 {
-	int i;
-
-	i = 0;
-	while (i < NB_TERMS)
-	{
-		symbol->first_sets[i] = 0;
-		symbol->follow_sets[i] = 0;
-		i++;
-	}
-	symbol->productions = NULL;
-	symbol->id = index;
-	symbol->relevant = g_grammar[index].relevant;
-	symbol->replacing = g_grammar[index].replacing;
-	ft_strcpy(symbol->debug, g_grammar[index].debug);
-}
-
-int		init_context_free_grammar(t_cfg *cfg)
-{
-	int i;
-
-	init_start_symbol(cfg, &cfg->start_symbol);
-	i = 0;
-	while (i < NB_SYMBOLS)
-	{
-		init_symbol(&cfg->symbols[i], i);
-		i++;
-	}
-	i = NB_TERMS;
-	while (i < NB_SYMBOLS)
-	{
-		if (g_grammar[i].init_prod(cfg, &cfg->symbols[i]))
-			return (1);
-		i++;
-	}
-	if (sh_compute_first_sets(cfg))
+	init_grammar_from_initializer(cfg, cfgi);
+	if (!(cfg->productions = (t_production *)malloc(sizeof(t_production)
+					* (cfg->nb_productions))))
 		return (1);
-	return (0);
+	if (!(cfg->symbols = (t_symbol *)malloc(sizeof(t_symbol)
+					* cfg->nb_symbols)))
+	{
+		free(cfg->productions);
+		return (1);
+	}
+	init_start_symbol(cfg, &cfg->start_symbol);
+	return (init_context_free_grammar_symbols(cfg));
 }
