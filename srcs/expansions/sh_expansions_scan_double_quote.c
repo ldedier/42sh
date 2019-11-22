@@ -6,13 +6,13 @@
 /*   By: jdugoudr <jdugoudr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/21 16:02:16 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/21 16:08:44 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/22 12:56:09 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-static int 	scan_quote_loop(
+static int	scan_quote_loop(
 		char **input, t_context *context, t_dy_tab *quotes, int *index)
 {
 	int	ret;
@@ -39,7 +39,7 @@ static int 	scan_quote_loop(
 	return (SUCCESS);
 }
 
-int	sh_expansions_scan_double_quote(
+int			sh_expansions_scan_double_quote(
 		char **input, int *index, t_context *context, t_dy_tab *quotes)
 {
 	int	ret;
@@ -48,6 +48,7 @@ int	sh_expansions_scan_double_quote(
 		return (sh_perror(SH_ERR1_MALLOC, "double_quote"));
 	*index += 1;
 	if ((ret = scan_quote_loop(input, context, quotes, index)) != SUCCESS)
+		return (ret);
 	if (!(*input)[*index])
 		return (ERROR);
 	if (t_quote_add_new(quotes, *index, (*input) + *index, 1))
@@ -55,4 +56,3 @@ int	sh_expansions_scan_double_quote(
 	*index += 1;
 	return (SUCCESS);
 }
-

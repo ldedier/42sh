@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 12:27:20 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/16 09:05:16 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/22 13:04:15 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 ** It take the context and the and_or node to execute.
 */
 
-long		sh_traverse_ampersand(t_ast_node *node_to_execute, t_context *context)
+long	sh_traverse_ampersand(t_ast_node *node_to_execute, t_context *context)
 {
 	int	ret;
 

@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 21:45:25 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/04 12:29:42 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/22 13:03:34 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static t_ast_node	*go_to_list(t_ast_node *node)
 	return (test);
 }
 
-int			sh_process_traverse(t_shell *shell, t_ast_node *ast_root)
+int					sh_process_traverse(t_shell *shell, t_ast_node *ast_root)
 {
 	t_context	context;
 	t_ast_node	*list_node;

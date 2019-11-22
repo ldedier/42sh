@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/22 11:53:01 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/22 13:05:42 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 ** pipe sequence.
 */
 
-static long		sh_traverse_pipe_sequence(t_ast_node *node, t_context *context)
+static long	sh_traverse_pipe_sequence(t_ast_node *node, t_context *context)
 {
 	int	ret;
 
