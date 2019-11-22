@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/17 19:22:25 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/19 08:48:17 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/22 15:19:42 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,9 +61,9 @@ launch "arithmetic"
 
 	test_launch 'echo $((-10+3/1000000000000000000000000000000000000000))'
 
-	test_launch '$((1 - - - - + + + - - - - + + + - - - - 5 > 4)) ; echo $?' 'echo $?'
-	test_launch '$((1 - - - - + + + - - - - + + + - - - - 5 > 6)) ; echo $?' 'echo $?'
-	test_launch '$((1 - - - - + + + - - - - + + + - - - - 5 == 6)) ; echo $?' 'echo $?'
+	test_launch 'echo $((1 - - - - + + + - - - - + + + - - - - 5 > 4)) ; echo $?' 'echo $?'
+	test_launch 'echo $((1 - - - - + + + - - - - + + + - - - - 5 > 6)) ; echo $?' 'echo $?'
+	test_launch 'echo $((1 - - - - + + + - - - - + + + - - - - 5 == 6)) ; echo $?' 'echo $?'
 
 	test_launch 'echo $((2147483647  *  5)) ; echo $?' 'echo $?'
 	test_launch 'echo $((-2147483647 / 2 *7 * -1)) ; echo $?' 'echo $?'
