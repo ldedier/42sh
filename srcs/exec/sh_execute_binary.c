@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 11:49:50 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/21 11:36:39 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/21 14:49:32 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,7 @@ static int		sh_exec_parent_part(pid_t cpid, t_context *context, int ret)
 	{
 		if (IS_BG(context->cmd_type))
 			setpgid(cpid, cpid);
-		if (g_job_ctrl->cmd_subst)
-			context->wflags = 0;
+		context->wflags = (g_job_ctrl->cmd_subst ? 0 : context->wflags);
 		waitpid(cpid, &ret, context->wflags);
 	}
 	sh_env_update_ret_value_wait_result(context, ret);

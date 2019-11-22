@@ -78,7 +78,7 @@ int					sh_expansions(t_context *context, t_ast_node *node);
 /*
 ** sh_expansions_arithmetic.c
 */
-int					sh_expansions_arithmetic_detect(char *start);
+int					sh_expansions_arithmetic_detect(char *str);
 int					sh_expansions_arithmetic_fill(
 	t_expansion *exp, char *start);
 int					sh_expansions_arithmetic_process(

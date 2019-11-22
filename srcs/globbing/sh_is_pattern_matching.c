@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_is_pattern_matching.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 01:30:15 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/21 15:44:41 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/22 18:26:55 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,13 +87,11 @@ int			sh_is_pattern_matching(char *name, t_list *regexp_head)
 int			sh_is_pattern_matching_for_substring_removal(
 	char *name, t_list *regexp_head)
 {
-	t_regexp	*regexp;
 	int			i;
 
 	if (!regexp_head)
 		return (SUCCESS);
 	i = 0;
-	regexp = (t_regexp*)regexp_head->content;
 	while (regexp_head && name[i])
 	{
 		ft_dprintf(2, "evaluating : %s\n", name);

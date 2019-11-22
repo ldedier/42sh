@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/17 19:43:58 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/19 08:19:30 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/22 13:41:16 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ int			sh_ar_lexer_rule_5(t_lexer *lexer)
 		ret = t_ar_lexer_add_token(lexer);
 		lexer->tok_len += 1;
 		rule5_set_token_id_one_len(lexer, lexer->input + lexer->tok_start);
-		if (lexer->current_id == LEX_TOK_AR_PLUS || lexer->current_id == LEX_TOK_AR_MINUS)
+		if (lexer->current_id == LEX_TOK_AR_PLUS
+			|| lexer->current_id == LEX_TOK_AR_MINUS)
 		{
 			buff = lexer->input + lexer->tok_start + lexer->tok_len;
 			if (buff[0] == lexer->c && (ft_isalpha(buff[1]) || buff[1] == '_'))

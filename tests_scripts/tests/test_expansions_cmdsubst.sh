@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/10 06:04:23 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/21 14:43:53 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/22 16:39:52 by jdugoudr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -79,6 +79,7 @@ launch "Process_Substitution"
 	test_launch 'ls | tee >(cat -e) >/dev/null'
 	test_launch 'ls | wc >(cat -e) >/dev/null'
 	test_launch 'sort -k 9 <(ls -l /bin) <(ls -l /usr/bin) <(ls -l ~/)'
+	test_launch 'echo <(echo this is bad , this really bad)'
 
 ## Deprecated
 	# test_launch 'echo <(ls)        <(ls -l)'

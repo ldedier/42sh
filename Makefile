@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
+#    By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/11/22 11:50:04 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/22 18:30:45 by mdaoud           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -442,7 +442,7 @@ SRCS			+=	jobs_init.c job_add.c process_add.c job_tools.c \
 					jobs_string_great.c jobs_string_dgreat.c \
 					jobs_string_dless.c jobs_string_less_and.c \
 					jobs_string_great_and.c jobs_string_word.c \
-					sh_handle_no_fork.c
+					handle_int.c
 #jobs_error_free.c 
 
 ################################################################

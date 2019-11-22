@@ -22,7 +22,7 @@
 **	so that it can be retaken by another job later.
 */
 
-static int	find_available_job_number(void)
+static int		find_available_job_number(void)
 {
 	int		i;
 
@@ -36,7 +36,7 @@ static int	find_available_job_number(void)
 	return (-1);
 }
 
-static void	init_job_values(t_job *j, int n, int bg)
+static void		init_job_values(t_job *j, int n, int bg)
 {
 
 	j->first_process = NULL;
@@ -88,14 +88,13 @@ static int		get_job_string(t_ast_node *node, char *str, t_job *j)
 ** If not, we add it the tail of the job list.
 */
 
-int			job_add(t_ast_node *node, char *str, int bg)
+int				job_add(t_ast_node *node, char *str, int bg)
 {
 	t_job	*j;
 	t_job	*it;
 	int		n;
 
-	n = find_available_job_number();
-	if (n < 0)
+	if ((n = find_available_job_number()) < 0)
 		return (sh_perror_err("Maxumum number of jobs exceeded", NULL));
 	if ((j = malloc(sizeof(t_job))) == NULL)
 		return (sh_perror(SH_ERR1_MALLOC, "job add"));
@@ -105,9 +104,6 @@ int			job_add(t_ast_node *node, char *str, int bg)
 		free(j);
 		return (FAILURE);
 	}
-	// ft_printf("%sAdded job [%d] %s ", CYAN, g_job_ctrl->curr_job->number, g_job_ctrl->curr_job->command);
-	// ft_printf("in %s%s\n",j->foreground == 1 ? "foreground" : "background", COLOR_END);
-	// Add the newly created job at the end of the job list.
 	if (g_job_ctrl->first_job == NULL)
 	{
 		g_job_ctrl->first_job = j;

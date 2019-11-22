@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_expansions_field_splitting_quote_tools.c        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/17 19:01:27 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/20 16:34:00 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/21 09:08:36 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

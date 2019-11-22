@@ -18,29 +18,22 @@ static int	update_process_info(t_job *j, t_process *p, int status)
 	p->status = status;
 	if (WIFSTOPPED(status) && !p->stopped)
 	{
-		// ft_dprintf(g_term_fd, "<%d> STOPPED \n", p->pid);
 		p->stopped = 1;
 		j->notified = 0;
 	}
 	if (WIFCONTINUED(status) && p->stopped)
 	{
-		// ft_dprintf(g_term_fd, "<%d> CONTINTUED \n", p->pid);
 		p->continued = 1;
 		p->stopped = 0;
 		j->notified = 0;
 	}
 	else if (WIFEXITED(status) || WIFSIGNALED(status))
-	{
-		// ft_dprintf(g_term_fd, "<%d> COMPLETED \n", p->pid);
 		p->completed = 1;
-	}
 	if (WIFSIGNALED (status))
 	{
-		// ft_dprintf(g_term_fd, "<%d> SIGNALED by %d (%d)\n", p->pid, status, WTERMSIG(status));
 		j->notified = 0;
 		j->signal_num = WTERMSIG(status);
 	}
-	// job_notify();
 	return (SUCCESS);
 }
 
