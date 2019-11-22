@@ -353,9 +353,12 @@ SRCS			+=	sh_builtin.c sh_builtin_pwd.c \
 ################################################################
 SRCS			 +=	sh_expansions.c \
 					sh_expansions_parameter.c \
-					sh_expansions_parameter_process.c \
 					sh_expansions_parameter_str_removal.c \
 					sh_expansions_parameter_tools.c \
+					sh_expansions_parameter_minus.c \
+					sh_expansions_parameter_equal.c \
+					sh_expansions_parameter_quest.c \
+					sh_expansions_parameter_plus.c \
 					sh_expansions_tilde.c \
 					sh_expansions_tilde_tools.c \
 					sh_expansions_variable.c \

@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 16:35:24 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/21 17:14:02 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/22 09:01:51 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,26 @@ static void	sh_expansions_parameter_fill_format(char *head, char *format, int n)
 **		SUCCESS : format was successfully filled
 */
 
-int			sh_expansions_parameter_format(t_expansion *exp, char *format, t_context *context)
+static int	format_call_fill_format_functions(
+	char *head, char *format, int i, t_expansion *exp)
+{
+	while (ft_isalnum((int)*head) || *head == '_')
+		head++;
+	if (ft_chpbrk(head[0], "-=?+") == 1)
+		sh_expansions_parameter_fill_format(head, format + i, 1);
+	else if (ft_chpbrk(head[0], ":") == 1 && ft_chpbrk(head[1], "-=?+") == 1)
+		sh_expansions_parameter_fill_format(head, format + i, 2);
+	else if (ft_strnstr(head, "##", 2) || ft_strnstr(head, "%%", 2))
+		sh_expansions_parameter_fill_format(head, format + i, 2);
+	else if (*head == '#' || *head == '%')
+		sh_expansions_parameter_fill_format(head, format + i, 1);
+	else
+		return (sh_perror_err(exp->original, SH_BAD_SUBSTITUTE));
+	return (SUCCESS);
+}
+
+int			sh_expansions_parameter_format(
+	t_expansion *exp, char *format, t_context *context)
 {
 	char	*head;
 	int		i;
@@ -65,19 +84,7 @@ int			sh_expansions_parameter_format(t_expansion *exp, char *format, t_context *
 		return (sh_perror_err(exp->original, SH_BAD_SUBSTITUTE));
 	}
 	head++;
-	while (ft_isalnum((int)*head) || *head == '_')
-		head++;
-	if (ft_chpbrk(head[0], "-=?+") == 1)
-		sh_expansions_parameter_fill_format(head, format + i, 1);
-	else if (ft_chpbrk(head[0], ":") == 1 && ft_chpbrk(head[1], "-=?+") == 1)
-		sh_expansions_parameter_fill_format(head, format + i, 2);
-	else if (ft_strnstr(head, "##", 2) || ft_strnstr(head, "%%", 2))
-		sh_expansions_parameter_fill_format(head, format + i, 2);
-	else if (*head == '#' || *head == '%')
-		sh_expansions_parameter_fill_format(head, format + i, 1);
-	else
-		return (sh_perror_err(exp->original, SH_BAD_SUBSTITUTE));
-	return (SUCCESS);
+	return (format_call_fill_format_functions(head, format, i, exp));
 }
 
 /*
@@ -118,7 +125,7 @@ char		*sh_expansions_parameter_get_param(
 **		ERROR : returned by expansions_ilde or expansions_scan
 */
 
-int		sh_expansions_parameter_get_word(
+int			sh_expansions_parameter_get_word(
 	t_context *context, t_expansion *exp, char *format, char **word)
 {
 	char		*start;
