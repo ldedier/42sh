@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/04 11:17:39 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/22 11:56:26 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/22 15:30:48 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,8 @@ static int	sh_manage_special_char(
 			return (ret);
 	}
 	else if ((*input)[*index] == '$' || (*input)[*index] == '`'
-			|| (*input)[*index] == '<' || (*input)[*index] == '>')
+			|| (((*input)[*index] == '<' || (*input)[*index] == '>')
+				&& (*input)[*index] == '('))
 	{
 		if ((ret = unquoted_var(input, index, context, quotes)) != SUCCESS)
 			return (ret);
