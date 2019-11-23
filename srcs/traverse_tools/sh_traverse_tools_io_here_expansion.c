@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_traverse_tools_io_here_expansion.c              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/05 12:43:22 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/04 12:32:53 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/22 13:09:32 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	is_valid_var(char c)
 	return (0);
 }
 
-static int	sh_traverse_io_here_expansion(
+static long	sh_traverse_io_here_expansion(
 		char **str, int *cursor, t_context *context)
 {
 	int			ret;
@@ -37,8 +37,7 @@ static int	sh_traverse_io_here_expansion(
 	{
 		if (!(quotes = ft_dy_tab_new(1)))
 			return (sh_perror(SH_ERR1_MALLOC, "sh_traverse_io_here_expansion"));
-		ret = sh_expansions_process(
-				str, (*str) + *cursor, context, cursor, quotes);
+		ret = sh_expansions_process(str, context, cursor, quotes);
 		ft_dy_tab_del_ptr(quotes);
 		context->shell->running = 1;
 		if (ret != SUCCESS && ret != STOP_CMD_LINE)
@@ -76,7 +75,7 @@ static int	loop_expansion(char **str, t_context *context)
 	return (SUCCESS);
 }
 
-int			sh_traverse_io_here_phase_expansion(
+long		sh_traverse_io_here_phase_expansion(
 				t_ast_node *node, t_context *context)
 {
 	t_ast_node		*first_child;

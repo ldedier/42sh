@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 12:43:07 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/29 14:07:42 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/20 12:51:35 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,14 @@
 typedef struct s_ast_node	t_ast_node;
 typedef struct s_context	t_context;
 typedef struct s_shell		t_shell;
+typedef struct s_grammar_holder		t_grammar_holder;
 
 typedef struct		s_symbol
 {
 	t_list			*productions;
 	int				id;
-	char			first_sets[NB_TERMS];
-	char			follow_sets[NB_TERMS];
+	char			*first_sets;
+	char			*follow_sets;
 	char			debug[DEBUG_BUFFER];
 	char			relevant;
 	char			replacing;
@@ -42,12 +43,35 @@ typedef struct		s_production
 	t_list			*symbols;
 }					t_production;
 
-typedef struct		s_cfg
+typedef struct			s_cfg
 {
-	t_symbol		start_symbol;
-	t_symbol		symbols[NB_SYMBOLS];
-	t_production	productions[NB_PRODUCTIONS];
-}					t_cfg;
+	t_symbol			start_symbol;
+	t_symbol			*symbols;
+	t_production		*productions;
+	int					nb_symbols;
+	int					nb_productions;
+	int					nb_terms;
+	int					nb_noterms;
+	int					start_id;
+	int					epsilon_index;
+	int					eoi_index;
+	int					(*index_func)(int);
+	int					prod_index;
+	int					state_index;
+	t_grammar_holder	*grammar_holder;
+}						t_cfg;
+
+typedef struct			s_cfg_initializer
+{
+	int					nb_symbols;
+	int					nb_productions;
+	int					nb_terms;
+	t_grammar_holder	*grammar_holder;
+	int					start_id;
+	int					epsilon_index;
+	int					eoi_index;
+	int					(*index_func)(int);
+}						t_cfg_initializer;
 
 typedef struct		s_grammar_holder
 {
@@ -55,7 +79,7 @@ typedef struct		s_grammar_holder
 	char			replacing;
 	char			relevant;
 	int				(*init_prod)(t_cfg *, t_symbol *);
-	int				(*traverse)(t_ast_node *this, t_context *context);
+	long			(*traverse)(t_ast_node *this, t_context *context);
 	int 			(*get_job_string)(t_ast_node *node, char **str);
 }					t_grammar_holder;
 
@@ -68,7 +92,7 @@ t_grammar_holder	g_grammar[NB_SYMBOLS];
 /*
 ** debug.c
 */
-void				sh_print_symbol(t_symbol *symbol);
+void				sh_print_symbol(t_symbol *symbol, t_cfg *cfg);
 void				sh_print_token(t_token *token, t_cfg *cfg);
 void				sh_print_token_list(t_list *list, t_cfg *cfg);
 
@@ -76,10 +100,14 @@ void				sh_print_token_list(t_list *list, t_cfg *cfg);
 ** first_sets.c
 */
 int					sh_add_to_first_sets_by_prod(
-	t_symbol *symbol, t_production *production, int *changes);
-int					sh_add_to_first_sets(t_symbol *symbol);
+	t_symbol *symbol,
+	t_production *production,
+	int *changes,
+	t_cfg *cfg);
+int					sh_add_to_first_sets(t_symbol *symbol, t_cfg *cfg);
 int					sh_process_first_sets(t_cfg *cfg);
-void				sh_init_process_first_sets(t_symbol *symbol);
+void				sh_init_process_first_sets(
+	t_symbol *symbol, t_cfg *cfg);
 int					sh_compute_first_sets(t_cfg *cfg);
 
 /*
@@ -92,8 +120,16 @@ int					has_eps_prod(t_symbol *symbol);
 */
 int					sh_add_prod(
 	t_symbol *symbol, t_cfg *cfg, int nb_symbols, ...);
+void				init_grammar_from_initializer(
+	t_cfg *cfg, t_cfg_initializer *cfgi);
+int					init_context_free_grammar(
+	t_cfg *cfg, t_cfg_initializer *cfgi);
+
+/*
+** init_cfg_symbols.c
+*/
 int					init_start_symbol(t_cfg *cfg, t_symbol *symbol);
-void				init_symbol(t_symbol *symbol, int index);
-int					init_context_free_grammar(t_cfg *cfg);
+int					init_symbol(t_symbol *symbol, t_cfg *cfg, int index);
+int					init_context_free_grammar_symbols(t_cfg *cfg);
 
 #endif

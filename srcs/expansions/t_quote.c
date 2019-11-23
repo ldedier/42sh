@@ -6,13 +6,13 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 21:49:08 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/15 11:31:05 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/21 15:44:14 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-t_quote		*t_quote_new(int index, char *c)
+t_quote		*t_quote_new(int index, char *c, int is_original)
 {
 	t_quote		*new;
 
@@ -20,14 +20,16 @@ t_quote		*t_quote_new(int index, char *c)
 		return (NULL);
 	new->index = index;
 	new->c = c;
+	new->is_original = is_original;
 	return (new);
 }
 
-int			t_quote_add_new(t_dy_tab *quotes, int index, char *c)
+int			t_quote_add_new(
+	t_dy_tab *quotes, int index, char *c, int is_original)
 {
 	t_quote	*new;
 
-	if (!(new = t_quote_new(index, c)))
+	if (!(new = t_quote_new(index, c, is_original)))
 		return (FAILURE);
 	if (ft_dy_tab_add_ptr(quotes, new))
 		return (FAILURE);
@@ -41,15 +43,15 @@ void		t_quote_show_tab(t_quote **quotes)
 	i = 0;
 	if (!quotes[i])
 		return ;
-	ft_dprintf(2, YELLOW);
 	while (quotes[i])
 	{
-		ft_dprintf(2, "%d : %c", quotes[i]->index, *(quotes[i]->c));
+		ft_dprintf(2, "%d : %c", quotes[i]->index, quotes[i]->c);
 		if (quotes[i + 1])
 			ft_dprintf(2, " || ");
+		else
+			ft_dprintf(2, "\n");
 		i++;
 	}
-	ft_dprintf(2, "\n"EOC);
 	return ;
 }
 
@@ -63,7 +65,7 @@ void		t_quote_show_tab(t_quote **quotes)
 **		>= 0 : Index of the end of end quoting char
 */
 
-int		t_quote_is_original_quote(int i, t_quote **quotes)
+int			t_quote_is_original_quote(int i, t_quote **quotes)
 {
 	int		j;
 
@@ -88,7 +90,7 @@ int		t_quote_is_original_quote(int i, t_quote **quotes)
 **		>= 0 : Index of the end of end quoting char, or escaped char if '\'
 */
 
-int		t_quote_get_offset(int i, t_quote **quotes)
+int			t_quote_get_offset(int i, t_quote **quotes)
 {
 	int		j;
 	char	quoted;
@@ -109,6 +111,8 @@ int		t_quote_get_offset(int i, t_quote **quotes)
 	while (quotes[j] && *(quotes[j]->c) != quoted)
 		j++;
 	if (*(quotes[j]->c) == quoted)
+	{
 		return (quotes[j]->index);
+	}
 	return (-1);
 }

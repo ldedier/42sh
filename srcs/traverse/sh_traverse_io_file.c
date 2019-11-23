@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_traverse_io_file.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 11:19:41 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/14 10:48:36 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/22 18:24:05 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,9 @@ static int	sh_process_file_greatand(char *filename, t_context *context)
 	int fd;
 
 	if (!ft_strcmp(filename, "-"))
-	{
-		if (sh_add_redirection_file(OUTPUT, context->redirected_fd, -1,
-		&(context->redirections)))
-			return (FAILURE);
-		return (SUCCESS);
-	}
+		return (sh_add_redirection_file(OUTPUT, context, -1));
 	else if ((fd = get_fd(filename)) >= 0)
-	{
-		return (sh_add_redirection_aggreg(OUTPUT, context->redirected_fd, fd,
-			&(context->redirections)));
-	}
+		return (sh_add_redirection_aggreg(OUTPUT, context, fd));
 	if (fd == -1)
 		return (sh_process_file_output(filename, context, GREAT_OPT));
 	ft_dprintf(2, "%s%s: %s : %d%s\n", SH_ERR_COLOR,
@@ -57,15 +49,9 @@ static int	sh_process_file_lessand(char *filename, t_context *context)
 	int fd;
 
 	if (!ft_strcmp(filename, "-"))
-	{
-		if (sh_add_redirection_file(INPUT, context->redirected_fd, -1,
-			&(context->redirections)))
-			return (FAILURE);
-		return (SUCCESS);
-	}
+		return (sh_add_redirection_file(INPUT, context, -1));
 	else if ((fd = get_fd(filename)) >= 0)
-		return (sh_add_redirection_aggreg(INPUT, context->redirected_fd, fd,
-			&(context->redirections)));
+		return (sh_add_redirection_aggreg(INPUT, context, fd));
 	else
 	{
 		if (fd == -1)
@@ -110,7 +96,7 @@ static int	get_io_file_return(t_ast_node *redir_child,
 ** of redirection we will run.
 */
 
-int			sh_traverse_io_file(t_ast_node *node, t_context *context)
+long		sh_traverse_io_file(t_ast_node *node, t_context *context)
 {
 	t_ast_node	*redir_child;
 	t_ast_node	*filename_child;
@@ -129,7 +115,6 @@ int			sh_traverse_io_file(t_ast_node *node, t_context *context)
 					&& (filename_child->parent->children->next
 						|| !filename_child->token->value[0]))
 			ret = sh_perror_err(SH_AMB_REDIRECT, filename);
-	//	sh_print_ast_root(node);
 		free(filename);
 	}
 	else if (context->phase == E_TRAVERSE_PHASE_REDIRECTIONS)

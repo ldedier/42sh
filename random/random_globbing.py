@@ -97,7 +97,7 @@ def all_patterns(filename="all_test_globbing.sh"):
 				str = 'test_launch \'echo '
 				str += patterns[a] + patterns[b] + patterns[c]
 				str += '\''
-				print(str)
+				# print(str)
 				fdw.write(str + '\n')
 	fdw.close()
 

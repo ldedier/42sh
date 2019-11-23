@@ -28,12 +28,12 @@ void	sh_process_transitive_first_set(t_symbol *symbol,
 */
 
 void	sh_process_transitive_first_sets(t_symbol *symbol,
-			t_symbol *prod_symbol, int *changes)
+			t_symbol *prod_symbol, int *changes, t_cfg *cfg)
 {
 	int i;
 
 	i = 0;
-	while (i < NB_TERMS - 1)
+	while (i < cfg->nb_terms - 1)
 	{
 		if (prod_symbol->first_sets[i] == 1)
 			sh_process_transitive_first_set(symbol, i, changes);
@@ -41,7 +41,7 @@ void	sh_process_transitive_first_sets(t_symbol *symbol,
 	}
 }
 
-void	sh_process_transitive_first_set_2(char first_sets[NB_TERMS], int index)
+void	sh_process_transitive_first_set_2(char *first_sets, int index)
 {
 	if (first_sets[index] == 0)
 		first_sets[index] = 1;
@@ -52,13 +52,13 @@ void	sh_process_transitive_first_set_2(char first_sets[NB_TERMS], int index)
 ** it might have others stuff behind
 */
 
-void	sh_process_transitive_first_sets_2(char first_sets[NB_TERMS],
-			t_symbol *prod_symbol)
+void	sh_process_transitive_first_sets_2(char *first_sets,
+			t_symbol *prod_symbol, t_cfg *cfg)
 {
 	int i;
 
 	i = 0;
-	while (i < NB_TERMS - 1)
+	while (i < cfg->nb_terms - 1)
 	{
 		if (prod_symbol->first_sets[i] == 1)
 			sh_process_transitive_first_set_2(first_sets, i);

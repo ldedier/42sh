@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 14:37:57 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/16 17:11:39 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/20 12:58:51 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ static int		sh_lexer_exp(t_lexer *lexer)
 		end = sh_expansions_proc_subst_out_detect(start);
 	else if (ft_strnstr(start, ">(", 2))
 		end = sh_expansions_proc_subst_in_detect(start);
+	else if (ft_strnstr(start, "$((", 3))
+		end = sh_expansions_arithmetic_detect(start);
 	else if (ft_strnstr(start, "$(", 2))
 		end = sh_expansions_cmd_subst_detect_dollar(start);
 	else if (ft_strnstr(start, "${", 2))

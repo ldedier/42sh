@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 23:26:35 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/10 08:13:30 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/20 08:46:37 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ t_regexp		*t_regexp_new_push(t_list **regexp_list)
 
 void			t_regexp_show_list(t_list *head)
 {
+	if (!head)
+		ft_dprintf(2, "\n"EOC);
 	while (head)
 	{
 		t_regexp_show((t_regexp*)head->content);

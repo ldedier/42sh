@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/06/06 16:09:28 by jmartel           #+#    #+#              #
-#    Updated: 2019/09/12 23:48:11 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/21 15:06:15 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,11 +22,15 @@ launch "Field splitting"
 		test_launch 'var="Okalmos     Specul     os"' 'echo $var'
 		test_launch 'IFS="A "' 'var="OkAlm   SpeculAs"' 'echo $var'
 		test_launch "var='\"Okalmos   Speculos\"'" 'echo $var'
-		test_launch 'IFS=AAAAAA''var=AAAAA' 'echo $var'
-		test_launch 'IFS=A''var=AAAAA' 'echo $var'
-		test_launch 'IFS=ABC''var=BAC' 'echo $var'
+		test_launch 'IFS=AAAAAA' 'var=AAAAA' 'echo $var'
+		test_launch 'IFS=A' 'var=AAAAA' 'echo $var'
+		test_launch 'IFS=ABC' 'var=BAC' 'echo $var'
 		test_launch 'var="OkAAAlmos speculAs" IFS=A\ ' 'echo $var'
-		test_launch 'IFS=ABC''var=B   A      C' 'echo $var'
+		test_launch 'IFS=ABC' 'var="B   A      C"' 'echo $var'
+		test_launch 'IFS="A"' 'var=AAAbonjour' 'echo $var'
+		test_launch 'IFS="A "' 'var=AAA   AAAbonjo  A  A    ur' 'echo $var'
+		test_launch 'IFS="A "' 'var=AAAAAAA' 'echo $var'
+		test_launch 'IFS="A "' 'var=AAbon   A   AjourAtoiAA' 'echo $var'
 		test_launch 'var="echo tamer | cat -e"' '$var'
 
 	launch_show "IFS unset"
@@ -49,10 +53,12 @@ launch "Field splitting"
 		test_launch 'unset IFS' '' 'echo $var'
 
 	launch_show "hard"
-		for i in `seq 1 5` ; do
-			test_launch_pipe ./tests_files/splitting/splitting_${i}
+		for j in `seq 0 2` ; do
+			for i in `seq 1 9` ; do
+				if [ ${i}${j} -gt 27 ] ; then break ; fi
+				test_launch_pipe ./tests_files/splitting/splitting_${j}${i}
+			done
 		done
-
 
 	launch_show "Old failed tests"
 		test_launch 'v="Oka        Lmos" ; echo "$v"$a"$r"'

@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/15 15:38:46 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/22 13:14:17 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int	sh_found_sc_search_in_hash(t_context *context, t_binary *binary,
 	return (SUCCESS);
 }
 
-int			sh_traverse_sc_search_in_hash(t_context *context)
+long		sh_traverse_sc_search_in_hash(t_context *context)
 {
 	t_binary		*binary;
 	t_hash_finder	finder;
@@ -49,7 +49,7 @@ int			sh_traverse_sc_search_in_hash(t_context *context)
 	return (ERROR);
 }
 
-static int	sh_traverse_sc_search_in_dir_found(char *path, DIR *dir,
+static long	sh_traverse_sc_search_in_dir_found(char *path, DIR *dir,
 			t_dirent *dirent, t_context *context)
 {
 	char *buf;
@@ -84,7 +84,7 @@ static int	sh_traverse_sc_search_in_dir_found(char *path, DIR *dir,
 **		SUCCESS : any error occur
 */
 
-static int	sh_traverse_sc_search_in_dir(
+static long	sh_traverse_sc_search_in_dir(
 	char *path, t_context *context)
 {
 	t_dirent	*dirent;
@@ -93,7 +93,7 @@ static int	sh_traverse_sc_search_in_dir(
 
 	if (!*path)
 		dir = opendir(".");
-	else 
+	else
 		dir = opendir(path);
 	if (!dir)
 		return (SUCCESS);
@@ -123,7 +123,7 @@ static int	sh_traverse_sc_search_in_dir(
 **		SUCCESS : Any error occured
 */
 
-int			sh_traverse_sc_search_in_path(t_context *context)
+long		sh_traverse_sc_search_in_path(t_context *context)
 {
 	char	*buffer;
 	char	*path;

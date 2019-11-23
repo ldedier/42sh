@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 00:10:55 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/29 14:53:45 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/21 11:02:06 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "sh_21.h"
 
 /*
-** Putting the job in background only means printing the message on the terminal.
+** Putting the job in background only means printing the message on terminal.
 ** Since it's in the background we don't have to wait for it.
 ** cont: if the job was previously stopped and we want to continue it.
 */
@@ -25,7 +25,7 @@ int			job_put_in_bg(t_job *j)
 
 	if (j == NULL || j->first_process == NULL)
 		return (sh_perror("job_put_in_bg",
-			"Cannot put the job in the background"));
+				"Cannot put the job in the background"));
 	j->foreground = 0;
 	j->notified = 1;
 	ft_dprintf(g_term_fd, "[%d]  ", j->number);
@@ -35,8 +35,6 @@ int			job_put_in_bg(t_job *j)
 		ft_dprintf(g_term_fd, "%d ", p->pid);
 		p = p->next;
 	}
-	// int ret;
-	// waitpid(- j->pgid, &ret, WNOHANG);
 	ft_dprintf(g_term_fd, "\n");
 	return (SUCCESS);
 }

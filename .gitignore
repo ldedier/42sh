@@ -1,4 +1,5 @@
 ##Useless files
+tester_dir
 GPATH
 GRTAGS
 GTAGS
@@ -11,6 +12,7 @@ log
 sandbox
 /b
 .historic
+tester_dir
 empty
 
 /signal

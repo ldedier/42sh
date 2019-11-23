@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 11:39:44 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/16 17:18:31 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/20 13:00:22 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int			t_lexer_init(
 	lexer->mode = mode;
 	t_lexer_reset(lexer, 0);
 	lexer->first_word = 1;
+	lexer->next_alias_index = -1;
 	return (SUCCESS);
 }
 
@@ -43,7 +44,7 @@ static int	t_lexer_create_and_fill_token(t_lexer *lexer, char *value)
 	t_list		*link;
 	t_token		*token;
 
-	if (!(link = t_token_node_new(lexer->current_id, NULL)))
+	if (!(link = t_token_node_new(lexer->current_id, NULL, g_glob.cfg)))
 	{
 		free(value);
 		return (LEX_FAIL);

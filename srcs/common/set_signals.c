@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/31 16:05:53 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/07 19:43:38 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/21 14:18:02 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,11 @@ void			reset_signals(void)
 {
 	int i;
 
-	// ft_dprintf(g_term_fd, "SIGNAL RESET\n");
 	i = 1;
 	while (i <= 31)
 		signal(i++, SIG_DFL);
-	signal(SIGTTOU, SIG_IGN);
-	signal(SIGTTIN, SIG_IGN);
+	if (g_job_ctrl->cmd_subst)
+		signal(SIGTSTP, SIG_IGN);
 }
 
 void			handler_sighup(int signo)
@@ -56,13 +55,11 @@ void			init_signals(void)
 
 	i = 1;
 	while (i <= 31)
-		signal(i++, SIG_DFL);
-	signal(SIGTERM, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, SIG_IGN);
-	signal(SIGTTOU, SIG_IGN);
-	signal(SIGTTIN, SIG_IGN);
-	signal(SIGTSTP, SIG_IGN);
+	{
+		if (i != SIGSTOP && i != SIGKILL)
+			signal(i, SIG_IGN);
+		i++;
+	}
+	signal(SIGCHLD, SIG_DFL);
 	signal(SIGWINCH, handler_sigwinch);
-	signal(SIGHUP, handler_sighup);
 }

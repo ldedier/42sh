@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_execute_and_or.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 15:54:02 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/31 18:02:21 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/16 09:05:16 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int		should_execute(int prev_symb, int ret)
 ** pipe line (sh_traverse_pipe_sequence).
 */
 
-static int		sh_traverse_and_or_call_sons_exec(t_ast_node *node,
+static long		sh_traverse_and_or_call_sons_exec(t_ast_node *node,
 		int *prev_symbol, t_context *context)
 {
 	int			ret;
@@ -71,7 +71,7 @@ static int		sh_traverse_and_or_call_sons_exec(t_ast_node *node,
 ** and_or node execution.
 */
 
-static int		sh_traverse_and_or_process_phase(
+static long		sh_traverse_and_or_process_phase(
 		t_context *context, int prev_symbol, t_list *ptr)
 {
 	int			ret;

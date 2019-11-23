@@ -6,14 +6,14 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/07 17:02:22 by jdugoudr          #+#    #+#              #
-#    Updated: 2019/09/05 16:41:28 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/21 15:51:15 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 launch "test"
 	#initilisation
 	blt_test_files="${obj_dir}/blt_test_file"
-	mkdir ${blt_test_files} ${blt_test_files}/a ${blt_test_files}/dir_no_perm
+	mkdir -p ${blt_test_files} ${blt_test_files}/a ${blt_test_files}/dir_no_perm
 	mkfifo ${blt_test_files}/a/b
 	ln -s ${blt_test_files}/a/b ${blt_test_files}/c
 	touch ${blt_test_files}/d ${blt_test_files}/g

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_exec.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 17:11:16 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/08 23:40:30 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/22 11:50:21 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@
 
 extern pid_t g_parent;
 
-typedef struct		s_redirection t_redirection;
+typedef struct s_redirection	t_redirection;
+
 typedef enum		e_phase
 {
 	E_TRAVERSE_PHASE_INTERACTIVE_REDIRECTIONS,
@@ -63,7 +64,7 @@ typedef enum		e_phase
 
 typedef struct		s_context
 {
-	char			wflags;	//wait_flags for non-interactive shell
+	char			wflags;
 	int				cmd_type;
 	char			*cmd_string;
 	t_shell			*shell;
@@ -81,6 +82,8 @@ typedef struct		s_context
 	t_ast_node		*current_pipe_sequence_node;
 	t_list			*redirections;
 	pid_t			pid;
+	int				is_builtin;
+	int				arithmetic_error;
 }					t_context;
 
 typedef struct		s_pipe
@@ -165,7 +168,8 @@ int					sh_post_execution(void);
 /*
 ** sh_execute_redirection.c
 */
-int					sh_execute_redirection(t_redirection *el);
+int					sh_execute_redirection(
+	t_redirection *el, int is_builtin);
 
 /*
 ** sh_execute_simple_command.c

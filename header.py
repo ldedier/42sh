@@ -14,9 +14,9 @@
 import os
 import re;
 
-format = "^(void|int|char|t_*|unsigned int|unsigned long|pid_t)"
+format = "^(void|int|char|t_*|unsigned int|long|unsigned long|pid_t)"
 
-ignored_files=["grammar.c", "vshortcuts.c", "main.c", "sh_builtin_bonus.c"]
+ignored_files=["sh_ar_grammar.c", "grammar.c", "vshortcuts.c", "main.c", "sh_builtin_bonus.c", "tests"]
 
 ## Activate or unactivate verbose mode, you can define verbose level between 1 and 3.
 verbose = 0
@@ -25,7 +25,7 @@ def read_subdir(dir, subdir, files):
     path = os.path.join(dir, subdir)
     for filename in os.listdir(path):
         if (os.path.isdir(os.path.join(path, filename)) == True):
-            files = read_subdir(os.path.join(path, filename, files))
+            files = read_subdir(path, os.path.join(path, filename), files)
             continue
         if (os.path.isfile(os.path.join(path, filename)) == False):
             continue
@@ -46,12 +46,12 @@ def read_dir(dir):
     res = {}
     files = []
     for filename in os.listdir(dir):
+        if (filename in ignored_files):
+            continue
         if (os.path.isdir(os.path.join(dir, filename)) == True):
             files = read_subdir(dir, filename, files)
             continue
         if (os.path.isfile(os.path.join(dir, filename)) == False):
-            continue
-        if (filename in ignored_files):
             continue
         if (filename[-2] != '.' or filename[-1] != 'c'):
             continue
@@ -180,23 +180,24 @@ def automatic_header(dir, header, tab_offset):
     write_header(header, header_content)
 
 automatic_header("./srcs/lexer",                        "./includes/sh_lexer.h", 5)
-automatic_header("./srcs/expansions",           "./includes/sh_expansions.h", 0)
+automatic_header("./srcs/expansions",           "./includes/sh_expansions.h", 5)
 automatic_header("./srcs/globbing",           "./includes/sh_globbing.h", 7)
 automatic_header("./srcs/traverse_tools",       "./includes/sh_traverse_tools.h", 0)
 automatic_header("./srcs/vars",                         "./includes/sh_vars.h", 0)
-automatic_header("./srcs/traverse",                     "./includes/sh_traverse.h", 0)
+automatic_header("./srcs/arithmetic",                     "./includes/sh_arithmetic.h", 0)
+automatic_header("./srcs/traverse",                     "./includes/sh_traverse.h", 5)
 automatic_header("./srcs/builtin",                      "./includes/sh_builtin.h", 0)
 automatic_header("./srcs/exec",                         "./includes/sh_exec.h", 5)
 automatic_header("./srcs/perror",                       "./includes/sh_perror.h", 0)
 automatic_header("./srcs/grammar",              "./includes/sh_grammar.h", 5)
 automatic_header("./srcs/parser/productions","./includes/sh_productions.h", 0)
 automatic_header("./srcs/parser",                       "./includes/sh_parser.h", 5)
-automatic_header("./srcs/command_line/shortcuts",                       "./includes/sh_shortcuts.h", 5)
+automatic_header("./srcs/command_line/shortcuts",                       "./includes/sh_shortcuts.h", 6)
 #automatic_header("./srcs/command_line", "./includes/sh_command_line.h", 5)
 automatic_header("./srcs/command_line/autocomplete", "./includes/sh_autocompletion.h", 5)
 automatic_header("./srcs/common",                       "./includes/sh_21.h", 5)
-automatic_header("./srcs/redirection",                       "./includes/sh_redirection.h", 5)
-
+automatic_header("./srcs/redirection",                       "./includes/sh_redirection.h", 6)
+automatic_header("./srcs/job_control",				"./includes/sh_job_control.h", 5)
 ######automatic_header("./srcs/parser", "./includes/sh_tokens.h", 0)
 
 

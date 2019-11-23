@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ast_node_tools.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 20:10:04 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/13 12:34:17 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/22 11:54:36 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-t_ast_node	*sh_new_ast_node(t_symbol_id id, char *value)
+t_ast_node	*sh_new_ast_node(t_symbol_id id, char *value, t_cfg *cfg)
 {
 	t_ast_node	*res;
 	t_token		*token;
@@ -20,7 +20,7 @@ t_ast_node	*sh_new_ast_node(t_symbol_id id, char *value)
 	token = NULL;
 	if (value)
 	{
-		if (!(token = t_token_new_ptr(id, value)))
+		if (!(token = t_token_new_ptr(id, value, cfg)))
 			return (sh_perrorn(SH_ERR1_MALLOC, "new_ast_node (1)"));
 	}
 	if (!(res = malloc(sizeof(t_ast_node))))
@@ -28,6 +28,7 @@ t_ast_node	*sh_new_ast_node(t_symbol_id id, char *value)
 		t_token_free(token);
 		return (sh_perrorn(SH_ERR1_MALLOC, "new_ast_node (2)"));
 	}
+	token->give_as_arg = 1;
 	sh_init_ast_node(res, token, &g_glob.cfg->symbols[sh_index(id)], NULL);
 	res->builder = NULL;
 	return (res);
@@ -45,11 +46,11 @@ t_ast_node	*sh_new_ast_node(t_symbol_id id, char *value)
 */
 
 t_ast_node	*sh_add_to_ast_node(t_ast_node *node, t_symbol_id id,
-				char *value)
+				char *value, t_cfg *cfg)
 {
 	t_ast_node *new_node;
 
-	if (!(new_node = sh_new_ast_node(id, value)))
+	if (!(new_node = sh_new_ast_node(id, value, cfg)))
 		return (NULL);
 	if (ft_lstaddnew_ptr_last(&node->children, new_node,
 		sizeof(t_ast_node *)))
@@ -60,3 +61,27 @@ t_ast_node	*sh_add_to_ast_node(t_ast_node *node, t_symbol_id id,
 	new_node->parent = node;
 	return (new_node);
 }
+
+/*
+** sh_del_one_node:
+** Delete one node from ast.
+** This node COULD NOT have children, if it has, it will not be free and
+** an error is return.
+** Other wise is delete.
+** 
+** Return value :
+** SUCCESS : on success
+** ERROR : if the node could not be remove
+*/
+//int		sh_remove_one_node(t_list **lst, t_ast_node *node)
+//{
+//	t_ast_node	*el;
+//
+//	if (node->children)
+//		return (-1);
+//	el = (*lst)->content;
+//	if (el == node)
+//	{
+//		el-
+//	}
+//}

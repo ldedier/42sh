@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 14:47:59 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/25 06:55:36 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/22 11:55:56 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@
 **	Create a new t_list node containing a new token
 */
 
-t_list	*t_token_node_new(int id, char *value)
+t_list	*t_token_node_new(int id, char *value, t_cfg *cfg)
 {
 	t_list		*link;
 	t_token		*token;
 
-	if (!(token = t_token_new(id, value)))
+	if (!(token = t_token_new(id, value, cfg)))
 		return (NULL);
 	if (!(link = ft_lstnew(token, sizeof(token))))
 	{

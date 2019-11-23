@@ -26,7 +26,7 @@ char	*sh_color_depth(int i)
 		return (MAGENTA);
 }
 
-void	sh_print_ast_child(int depth, int *j, t_ast_node *child)
+void	sh_print_ast_child(int depth, int *j, t_cfg *cfg, t_ast_node *child)
 {
 	int k;
 	int i;
@@ -37,10 +37,10 @@ void	sh_print_ast_child(int depth, int *j, t_ast_node *child)
 		ft_dprintf(2, "%s| "EOC, sh_color_depth(k++));
 	ft_dprintf(2, "%sɸ %s%schild #%d:%s", sh_color_depth(k), EOC,
 			sh_color_depth(k + 1), ++(*j), EOC);
-	sh_print_ast(child, depth + 1);
+	sh_print_ast(child, cfg, depth + 1);
 }
 
-void	sh_print_ast(t_ast_node *node, int depth)
+void	sh_print_ast(t_ast_node *node, t_cfg *cfg, int depth)
 {
 	t_list	*ptr;
 	int		j;
@@ -51,20 +51,20 @@ void	sh_print_ast(t_ast_node *node, int depth)
 		return ;
 	}
 	if (!node->token)
-		sh_print_symbol(node->symbol);
+		sh_print_symbol(node->symbol, cfg);
 	else
-		sh_print_token(node->token, g_glob.cfg);
+		sh_print_token(node->token, cfg);
 	ft_dprintf(2, "\n");
 	ptr = node->children;
 	j = 0;
 	while (ptr != NULL)
 	{
-		sh_print_ast_child(depth, &j, (t_ast_node *)ptr->content);
+		sh_print_ast_child(depth, &j, cfg, (t_ast_node *)ptr->content);
 		ptr = ptr->next;
 	}
 }
 
-void	sh_print_ast_root(t_ast_node *node)
+void	sh_print_ast_root(t_ast_node *node, t_cfg *cfg)
 {
 	t_ast_node *root;
 
@@ -75,6 +75,6 @@ void	sh_print_ast_root(t_ast_node *node)
 		root = node;
 		while (root->parent)
 			root = root->parent;
-		sh_print_ast(root, 0);
+		sh_print_ast(root, cfg, 0);
 	}
 }

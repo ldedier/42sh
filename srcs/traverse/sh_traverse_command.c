@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/02 00:35:13 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/04 12:25:50 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/22 19:16:58 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,16 +52,12 @@ static int	compound_and_redirection(t_ast_node *node, t_context *context)
 		if ((ret = apply_expansion_to_children(node->children->next, context)))
 			return (ret);
 	}
-	if (sh_pre_execution() != SUCCESS)
-		return (FAILURE);
 	if (child->symbol->id == sh_index(SUBSHELL))
 		ret = sh_traverse_subshell(child, context);
 	else if (child->symbol->id == sh_index(BRACE_GROUP))
 	{
 		signal(SIGINT, handle_int);
 		ret = sh_traverse_brace(child, context);
-		if (sh_post_execution() != SUCCESS)
-			return (FAILURE);
 	}
 	return (ret);
 }
@@ -75,7 +71,7 @@ static int	compound_and_redirection(t_ast_node *node, t_context *context)
 ** apply here.
 */
 
-int			sh_traverse_command(t_ast_node *node, t_context *context)
+long		sh_traverse_command(t_ast_node *node, t_context *context)
 {
 	t_ast_node	*child;
 	int			ret;

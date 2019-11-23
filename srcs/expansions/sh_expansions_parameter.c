@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 13:52:11 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/16 19:47:42 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/22 08:58:17 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@ int			sh_expansions_parameter_detect(char *start)
 	int		quoted;
 	int		bracket;
 
-	i = 2;
 	quoted = 0;
 	if (start[0] != '$' || start[1] != '{')
-        return (-1);
+		return (-1);
 	bracket = 1;
-	while (start[i] && bracket > 0)
+	i = 1;
+	while (start[++i] && bracket > 0)
 	{
 		if (start[i] == '\\' && start[i + 1])
 			i += 1;
@@ -44,7 +44,6 @@ int			sh_expansions_parameter_detect(char *start)
 			bracket++;
 		else if (!quoted && start[i] == '}')
 			bracket--;
-		i++;
 	}
 	if (!start[i] && bracket > 0)
 		return (-1);
@@ -104,34 +103,11 @@ static int	sh_expansions_parameter_detect_special_var(t_expansion *exp)
 	return (0);
 }
 
-/*
-** sh_expansions_variable_process:
-**	Function called to fill the expansion's res field using informations given
-**	in the t_expansion structure.
-**
-**	return Value:
-**		FAILURE : malloc error
-**		SUCCESS : Successfullly filled exp->res
-*/
-
-int			sh_expansions_parameter_process(t_context *context,
-				t_expansion *exp)
+static int	call_parameter_expansions_functions(
+	t_context *context, t_expansion *exp, char *format)
 {
-	char	format[4];
 	int		ret;
 
-	if (sh_expansions_parameter_detect_special_var(exp))
-		return (sh_expansions_variable_process(context, exp));
-	if (!ft_strpbrk(exp->expansion, ":-=?+%") && (exp->expansion[0] && !ft_strchr(exp->expansion + 1, '#')))
-	{
-		if (ft_strpbrk(exp->expansion, "\'\"\\"))
-			return (sh_perror_err(exp->original, SH_BAD_SUBSTITUTE));
-		if (exp->expansion[0] == '#')
-			return (sh_expansions_variable_process(context, exp));
-		if (!sh_expansions_variable_valid_name(exp->expansion))
-			return (sh_perror_err(exp->original, SH_BAD_SUBSTITUTE));
-		return (sh_expansions_variable_process(context, exp));
-	}
 	if ((ret = sh_expansions_parameter_format(exp, format, context)))
 		return (ret);
 	if (ft_strstr(":-", format) || ft_strstr("-", format))
@@ -149,4 +125,35 @@ int			sh_expansions_parameter_process(t_context *context,
 	else
 		return (sh_perror_err(exp->original, SH_BAD_SUBSTITUTE));
 	return (SUCCESS);
+}
+
+/*
+** sh_expansions_variable_process:
+**	Function called to fill the expansion's res field using informations given
+**	in the t_expansion structure.
+**
+**	return Value:
+**		FAILURE : malloc error
+**		SUCCESS : Successfullly filled exp->res
+*/
+
+int			sh_expansions_parameter_process(t_context *context,
+				t_expansion *exp)
+{
+	char	format[4];
+
+	if (sh_expansions_parameter_detect_special_var(exp))
+		return (sh_expansions_variable_process(context, exp));
+	if (!ft_strpbrk(exp->expansion, ":-=?+%")
+		&& (exp->expansion[0] && !ft_strchr(exp->expansion + 1, '#')))
+	{
+		if (ft_strpbrk(exp->expansion, "\'\"\\"))
+			return (sh_perror_err(exp->original, SH_BAD_SUBSTITUTE));
+		if (exp->expansion[0] == '#')
+			return (sh_expansions_variable_process(context, exp));
+		if (!sh_expansions_variable_valid_name(exp->expansion))
+			return (sh_perror_err(exp->original, SH_BAD_SUBSTITUTE));
+		return (sh_expansions_variable_process(context, exp));
+	}
+	return (call_parameter_expansions_functions(context, exp, format));
 }

@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/20 23:10:38 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/18 15:23:48 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/21 12:50:54 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,17 +46,10 @@ void		job_wait(t_job *j, int *ret)
 	pid = waitpid(- j->pgid, &status, WUNTRACED);
 	if (pid == last_pid)
 		*ret = status;
-	// ft_dprintf(g_term_fd, "%spid: <%d>%s\n",COL_B_MAGENTA, pid, EOC);
-	// ft_dprintf(g_term_fd, "%sRet from job wait: %#X (%d)%s\n",COL_B_MAGENTA, status,status, EOC);
-	// ft_dprintf(g_term_fd, "%s%s pid in job%s\n", COL_B_MAGENTA, (pid == last_pid ? "LAST" : "NOT LAST"), EOC);
 	while (!job_check_changes(pid, status) && !job_is_stopped(j) && !job_is_completed(j))
 	{
 		pid = waitpid(- j->pgid, &status, WUNTRACED);
 		if (pid == last_pid)
 			*ret = status;
-		// ft_dprintf(g_term_fd, "%spid: <%d>%s\n",COL_B_MAGENTA, pid, EOC);
-		// ft_dprintf(g_term_fd, "%sRet from job wait: %#X (%d)%s\n",COL_B_MAGENTA, status,status, EOC);
-		// ft_dprintf(g_term_fd, "%s%s pid in job%s\n", COL_B_MAGENTA, (pid == last_pid ? "LAST" : "NOT LAST"), EOC);
 	}
-	// ft_dprintf(g_term_fd, "%sJob wait returned: %d%s\n", COLOR_PINK, status, EOC);
 }

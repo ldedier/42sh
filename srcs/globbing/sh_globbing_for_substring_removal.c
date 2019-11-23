@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/08 05:50:11 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/09 08:26:48 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/21 16:46:29 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,15 @@
 
 static int	parse_patterns(char *word, t_list **regexp_list)
 {
-    int     ret;
+	int	ret;
 
-    *regexp_list = NULL;
-    if ((ret = sh_regexp_parse_path_component(word, regexp_list)))
+	*regexp_list = NULL;
+	if ((ret = sh_regexp_parse_path_component(word, regexp_list)))
 	{
-    	if (*regexp_list)
+		if (*regexp_list)
 			ft_lstdel(regexp_list, &t_regexp_free);
 	}
-    return (ret);
+	return (ret);
 }
 
 /*
@@ -43,7 +43,8 @@ static int	parse_patterns(char *word, t_list **regexp_list)
 **	Matching string is stored in *index, as the len of the selected substring.
 */
 
-static void	prefix_pattern_matching(char *param, int *index, t_list *regexp_list, char *format)
+static void	prefix_pattern_matching(
+	char *param, int *index, t_list *regexp_list, char *format)
 {
 	int		i;
 	char	save;
@@ -51,11 +52,12 @@ static void	prefix_pattern_matching(char *param, int *index, t_list *regexp_list
 
 	i = 0;
 	len = ft_strlen(param);
-    while (i <= len)
-    {
+	while (i <= len)
+	{
 		save = param[i];
 		param[i] = '\0';
-        if (sh_is_pattern_matching(param, regexp_list) == SUCCESS)
+		if (sh_is_pattern_matching_for_substring_removal(
+			param, regexp_list) == SUCCESS)
 		{
 			param[i] = save;
 			*index = i;
@@ -65,8 +67,8 @@ static void	prefix_pattern_matching(char *param, int *index, t_list *regexp_list
 				break ;
 		}
 		param[i] = save;
-        i++;
-    }
+		i++;
+	}
 }
 
 /*
@@ -78,14 +80,16 @@ static void	prefix_pattern_matching(char *param, int *index, t_list *regexp_list
 **	Matching string is stored in *index, as the start of the selected substring.
 */
 
-static void	suffix_pattern_matching(char *param, int *index, t_list *regexp_list, char *format)
+static void	suffix_pattern_matching(
+	char *param, int *index, t_list *regexp_list, char *format)
 {
 	int		i;
 
 	i = ft_strlen(param);
-    while (i >= 0)
-    {
-        if (sh_is_pattern_matching(param + i, regexp_list) == SUCCESS)
+	while (i >= 0)
+	{
+		if (sh_is_pattern_matching_for_substring_removal(
+			param + i, regexp_list) == SUCCESS)
 		{
 			*index = i;
 			if (sh_verbose_globbing())
@@ -110,28 +114,29 @@ static void	suffix_pattern_matching(char *param, int *index, t_list *regexp_list
 **		FAILURE : Malloc error
 */
 
-static int	sh_globbing_for_substring_removal(char *param, char *word, int *index, char *format)
+static int	sh_globbing_for_substring_removal(
+	char *param, char *word, int *index, char *format)
 {
-    t_list      *regexp_list;
-    int         ret;
+	t_list		*regexp_list;
+	int			ret;
 
 	regexp_list = NULL;
-    if ((ret = parse_patterns(word, &regexp_list)) == FAILURE)
-        return (ret);
-    else if (ret == ERROR)
-        return (SUCCESS);
+	if ((ret = parse_patterns(word, &regexp_list)) == FAILURE)
+		return (ret);
+	else if (ret == ERROR)
+		return (SUCCESS);
 	if (format[0] == '%')
 		suffix_pattern_matching(param, index, regexp_list, format);
 	else
 		prefix_pattern_matching(param, index, regexp_list, format);
 	ft_lstdel(&regexp_list, &t_regexp_free);
-    return (SUCCESS);
+	return (SUCCESS);
 }
 
 /*
 ** sh_globbing_substring_removal_get_word:
-**	Fill word with a malloced string, resulting on performing pattern matching on
-**	param, using patterns contained in original word.
+**	Fill word with a malloced string, resulting on performing pattern matching
+**	on param, using patterns contained in original word.
 **	First it ignore if a '#' in format is here to represent the lenght
 **	char, as in a ${#var}.
 **	If param is empty word will obviously be empty, because no string can match
@@ -141,7 +146,7 @@ static int	sh_globbing_for_substring_removal(char *param, char *word, int *index
 **	Finally it fill *word using format and index value filled by previous
 **	functions.
 **
-**	If index is -1, no substring matched, and word shall contain an empty string.
+**	If index is -1, no substring matched, and word shall contain an empty string
 **	Else,
 **	If in prefix case (#), index contain lenght of substring, starting at
 **	index 0.
@@ -155,7 +160,8 @@ static int	sh_globbing_for_substring_removal(char *param, char *word, int *index
 **		SUCCESS : every cases, except malloc error
 */
 
-int		sh_globbing_substring_removal_get_word(char *param, char **word, t_expansion *exp, char *format)
+int			sh_globbing_substring_removal_get_word(
+	char *param, char **word, t_expansion *exp, char *format)
 {
 	int		index;
 	int		ret;
@@ -164,18 +170,9 @@ int		sh_globbing_substring_removal_get_word(char *param, char **word, t_expansio
 	if (exp->expansion[0] == '#')
 		format++;
 	if (!*word)
-	{
-		*word = ft_strstr(exp->expansion, format);
-		*word += ft_strlen(format);
-	}
+		*word = ft_strstr(exp->expansion, format) + ft_strlen(format);
 	if (!param || (*word && !**word))
 		return (SUCCESS);
-	// if (!*word)
-	// {
-	// 	if (!(*word = ft_strdup("")))
-	// 		return (FAILURE);
-	// 	return (SUCCESS);
-	// }
 	ret = sh_globbing_for_substring_removal(param, *word, &index, format);
 	if (ret == FAILURE)
 		return (ret);
@@ -188,6 +185,6 @@ int		sh_globbing_substring_removal_get_word(char *param, char **word, t_expansio
 	else
 		*word = ft_strdup(param + index);
 	if (!*word)
-		return (FAILURE);
+		return (sh_perror(SH_ERR1_MALLOC, "substring_removal_get_word"));
 	return (SUCCESS);
 }

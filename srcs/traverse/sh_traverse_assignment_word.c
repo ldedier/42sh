@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   sh_traverse_assignment_word.c                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/05 11:20:39 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/09/28 03:17:41 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/16 09:05:16 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-int		sh_traverse_assignment_word(t_ast_node *node, t_context *context)
+long		sh_traverse_assignment_word(t_ast_node *node, t_context *context)
 {
 	int		ret;
 

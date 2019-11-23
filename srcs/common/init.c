@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/14 13:19:50 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/17 16:29:15 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/23 03:08:19 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,9 @@ int			sh_init_allocations(t_shell *shell, char **env)
 	if (sh_init_command_line(shell, &g_glob.command_line) != SUCCESS)
 		return (FAILURE);
 	shell->running = 1;
-	if (sh_init_parsing(&shell->parser) != SUCCESS)
+	if (sh_init_parsing_posix(&shell->parser) != SUCCESS)
+		return (FAILURE);
+	if (sh_init_parsing_arithmetic(&shell->parser_ar) != SUCCESS)
 		return (FAILURE);
 	if ((sh_init_history(&shell->history)) != SUCCESS)
 		return (FAILURE);

@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 17:04:13 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/28 16:05:12 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/19 18:27:18 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "sh_21.h"
 #include "sh_builtin.h"
 
-static void		mark_job_as_running (t_job *j)
+static void		mark_job_as_running(t_job *j)
 {
 	t_process *p;
 
@@ -27,7 +27,7 @@ static void		mark_job_as_running (t_job *j)
 	j->notified = 0;
 }
 
-static int	sh_execute_bg(t_job *j, t_context *context)
+static int		sh_execute_bg(t_job *j, t_context *context)
 {
 	if (!job_is_stopped(j))
 	{
@@ -36,13 +36,13 @@ static int	sh_execute_bg(t_job *j, t_context *context)
 	mark_job_as_running(j);
 	ft_dprintf(g_term_fd, "[%d]  %s &\n",
 		j->number, j->command);
-	if (kill ( - j->pgid, SIGCONT) < 0)
+	if (kill(-j->pgid, SIGCONT) < 0)
 		return (sh_perror_err("bg", "Could not send SIGCONT to the process"));
 	sh_env_update_ret_value_wait_result(context, SUCCESS);
 	return (SUCCESS);
 }
 
-int			sh_builtin_bg(t_context *context)
+int				sh_builtin_bg(t_context *context)
 {
 	t_job	*j;
 	int		i;
@@ -57,24 +57,16 @@ int			sh_builtin_bg(t_context *context)
 		return (ERROR);
 	if (job_lst[0] == -2)
 		job_lst[0] = 0;
-	// ft_printf("numbrs: ");
-	// for (int j = 0; job_lst[j] != -2; j++)
-	// 	ft_printf("[%d] ", job_lst[j]);
-	// ft_printf("\n");
-	i = 0;
-	while (job_lst[i] != -2)
+	i = -1;
+	while (job_lst[++i] != -2)
 	{
 		if ((j = bg_get_job_by_spec(job_lst[i])) == NULL)
 			return (ERROR);
-		// ft_dprintf(g_term_fd, "[%d]  %s\n",
-		// j->number, j->command);
 		context->shell->ret_value_set = 0;
 		if (sh_execute_bg(j, context) != SUCCESS)
 			return (ERROR);
 		if (context->shell->ret_value == 130)
 			return (SUCCESS);
-		i++;
 	}
 	return (SUCCESS);
 }
-

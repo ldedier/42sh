@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_command_line.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/11 17:20:10 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/17 16:26:51 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/23 03:04:49 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include "libft.h"
 
 # define CWD_LEN			1000
-
 
 # define PROMPT				""
 # define BACKSLASH_PROMPT	""
@@ -42,6 +41,7 @@
 
 typedef char *(*t_heredoc_func)(const char *);
 typedef struct s_entry		t_entry;
+typedef struct s_command_line	t_command_line;
 
 typedef enum		e_edit_style
 {
@@ -79,7 +79,6 @@ typedef struct		s_searcher
 	int				match_index;
 	int				unsuccessful;
 }					t_searcher;
-
 
 typedef struct		s_key_buffer
 {
@@ -130,9 +129,8 @@ typedef struct		s_save
 ** count			: vim arguments
 ** last_ft_command	: last f, F, t, or T command executed by the shell
 ** edit_line		: dup from the command_line to retrieve from history
-**
 */
-typedef struct		s_command_line
+struct				s_command_line
 {
 	t_shell			*shell;
 	t_auto_complete	autocompletion;
@@ -161,7 +159,7 @@ typedef struct		s_command_line
 	t_list			*saves_stack;
 	int				edit_counter;
 	int				mark_index;
-}					t_command_line;
+};
 
 typedef struct		s_xy
 {

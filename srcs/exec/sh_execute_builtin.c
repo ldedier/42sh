@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 11:34:44 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/09 00:59:26 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/21 19:29:24 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ int			sh_execute_builtin(t_ast_node *parent_node, t_context *context)
 {
 	int		res;
 
+	context->is_builtin = 1;
 	if (context->cmd_type == (SIMPLE_NODE | BG_NODE))
 		res = execute_builtin_in_bg(parent_node, context);
 	else

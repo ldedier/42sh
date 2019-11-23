@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/03 14:58:45 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/10/10 03:10:11 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/20 13:00:52 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ static int	sh_expansions_init(char *original, t_expansion *exp)
 		return (sh_expansions_proc_subst_out_fill(exp, original));
 	else if (ft_strnstr(original, ">(", 2))
 		return (sh_expansions_proc_subst_in_fill(exp, original));
+	else if (ft_strnstr(original, "$((", 3))
+		return (sh_expansions_arithmetic_fill(exp, original));
 	else if (ft_strnstr(original, "$(", 2) || *original == '`')
 		return (sh_expansions_cmd_subst_fill(exp, original));
 	else if (ft_strnstr(original, "$", 1))
@@ -55,29 +57,29 @@ static int	sh_expansions_init(char *original, t_expansion *exp)
 */
 
 int			sh_expansions_process(
-	char **input, char *original, t_context *context, int *index, t_dy_tab *quotes)
+	char **input, t_context *context, int *index, t_dy_tab *quotes)
 {
 	t_expansion	exp;
-	int			ret;
+	int			r;
+	char		*original;
 
-	ret = sh_expansions_init(original, &exp);
+	original = *input + *index;
+	r = sh_expansions_init(original, &exp);
 	if (sh_verbose_expansion())
 		t_expansion_show(&exp);
-	if (!ret)
-		ret = exp.process(context, &exp);
-	if (!ret)
-		ret = sh_expansions_replace(&exp, input, *index, (t_quote**)quotes->tbl);
-	if (ret && exp.type == EXP_VAR)
+	if (!r)
+		r = exp.process(context, &exp);
+	if (!r)
+		r = sh_expansions_replace(&exp, input, *index, (t_quote**)quotes->tbl);
+	if (r)
+		t_expansion_free_content(&exp);
+	if (r && exp.type == EXP_VAR)
 	{
 		(*index)++;
-		t_expansion_free_content(&exp);
 		return (SUCCESS);
 	}
-	if (ret)
-	{
-		t_expansion_free_content(&exp);
-		return (ret);
-	}
+	else if (r)
+		return (r);
 	*index += ft_strlen(exp.res->str);
 	t_expansion_free_content(&exp);
 	return (SUCCESS);

@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/16 05:23:32 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/15 15:23:00 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/21 14:55:21 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -69,7 +69,7 @@ launch "Globbing"
 	test_launch 'cd sandbox' 'echo "[!a-bz ]"' 'echo "[!a-bz]"'
 	test_launch 'cd sandbox' 'echo [\!a-x]' 'echo [\!a-x]/*' 'echo [\!a-x]*' 'echo [\!a-x]/***'
 	test_launch 'cd sandbox' 'echo \\[a]'
-	test_launch 'cd sandbox' ''
+	test_launch 'cd sandbox' 'echo *[a-]b]' 'echo *[a-]b]*' 'echo [a-]b]*'
 
 	launch_show "star"
 	test_launch 'cd sandbox' 'echo *' 'echo *' 'echo .*' 'echo ./*' 'echo **' 'echo ***'
@@ -132,7 +132,7 @@ launch "Globbing"
 	test_launch 'cd empty' 'cat ./*/*/* ./*/*'
 	test_launch 'cd empty' 'ls /??r'
 	test_launch 'cd empty' 'rm -rf ./*' 'ls'
-	test_launch 'cd empty' 'mkdir -p "[x"' 'touch "[x/foo"'
+	test_launch 'cd empty' 'mkdir -p "[x"' 'touch "[x/foo" 11 22 223'
 	test_launch 'cd empty' 'echo [*; echo *[x; echo [x/*'
 	test_launch 'cd empty' 'rm -rf *'
 	test_launch 'cd empty' 'touch "a[a-z][x" "ab[x"'
@@ -157,9 +157,14 @@ launch "Globbing"
 	launch_show "Absolute path"
 	test_launch 'ls /de*'
 	test_launch 'ls ~/De*'
+	test_launch 'echo "/tmp"/*' 'echo "/tmp/"*'
+	test_launch "echo '/tmp/'"'*' "echo '/tmp'/"'*' "echo /'tmp'/"'*'
+	test_launch 'echo """"/tmp"""/*'
+	test_launch 'echo ls ~/Desktop/[.][.abv]*'
+	test_launch 'echo \/\t\m\p\/'
 	
 	rm -rf empty
-	# rm -rf sandbox
+	rm -rf sandbox
 
   	mkdir "./test_globbing" && cd "./test_globbing" && touch 'a' 'b' 'c' 'd' 'e' 'f' '!' '^' && cd ..
 	launch_show "wesh tests"
@@ -174,5 +179,6 @@ launch "Globbing"
 	test_launch 'tester_dir' './obj/write_arguments [abc\\\]def]'
 	test_launch 'tester_dir' './obj/write_arguments [abc\\\\\]def]'
 	test_launch 'tester_dir' './obj/write_arguments [abc\\\\\\\]def]' 'cd .. ; rm -rf tester_dir'
+	rm -rf tester_dir
 
 finish

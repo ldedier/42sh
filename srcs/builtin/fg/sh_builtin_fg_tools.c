@@ -6,14 +6,13 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/26 19:42:33 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/27 11:57:43 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/19 18:29:24 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-
-int		parse_fg_spec(char *str, int j_lst[], int *it)
+int			parse_fg_spec(char *str, int j_lst[], int *it)
 {
 	int		num;
 
@@ -39,7 +38,7 @@ int		parse_fg_spec(char *str, int j_lst[], int *it)
 	return (SUCCESS);
 }
 
-int		parse_fg_args(char **argv, int job_lst[])
+int			parse_fg_args(char **argv, int job_lst[])
 {
 	int		i;
 	int		it;
@@ -65,12 +64,12 @@ t_job		*fg_get_job_by_spec(int num)
 	if (num == 0)
 	{
 		if ((j = job_get_by_sign('+')) == NULL)
-			sh_perror_err("fg","no current job");
+			sh_perror_err("fg", "no current job");
 	}
 	else if (num == -1)
 	{
 		if ((j = job_get_by_sign('-')) == NULL)
-			sh_perror_err("fg","no previous job");
+			sh_perror_err("fg", "no previous job");
 	}
 	else
 	{

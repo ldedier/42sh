@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 17:59:53 by jmartel           #+#    #+#             */
-/*   Updated: 2019/10/31 08:21:19 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/21 14:47:52 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ static int	main_exit_value(t_shell *shell, int ret)
 	}
 	if (sh_verbose_exec())
 		ft_dprintf(2, "Final returned value : %d\n", ret);
-	// mdaoud: 0 or g_term_fd?
 	if (isatty(0) && ret_save != 2)
 		ft_dprintf(2, "exit\n");
 	if (g_term_fd != -1)
@@ -43,14 +42,13 @@ int			main(int argc, char **argv, char **env)
 	(void)argv;
 	if (!is_open(0))
 		return (0);
-	init_signals();
 	if (jobs_init())
 		return (FAILURE);
 	if ((g_term_fd = open("/dev/tty", O_RDWR)) < 0)
 		return (sh_perror(SH_ERR1_TTY, "main"));
 	if (g_term_fd != TTY_FD)
 	{
-		if (sh_check_open_fd(0, TTY_FD) >= 0 || dup2(g_term_fd, TTY_FD) < 0)
+		if (sh_check_open_fd(TTY_FD) >= 0 || dup2(g_term_fd, TTY_FD) < 0)
 			return (sh_perror(SH_ERR1_TTY, "Can't open fd 10"));
 		close(g_term_fd);
 		g_term_fd = TTY_FD;

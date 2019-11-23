@@ -6,15 +6,15 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/05 19:04:06 by ldedier           #+#    #+#             */
-/*   Updated: 2019/08/14 19:17:50 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/18 11:13:44 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-void	sh_print_symbol(t_symbol *symbol)
+void	sh_print_symbol(t_symbol *symbol, t_cfg *cfg)
 {
-	if (sh_is_term(symbol))
+	if (sh_is_term(symbol, cfg))
 		ft_dprintf(2, "%s%s%s", BLUE, symbol->debug, EOC);
 	else
 		ft_dprintf(2, "%s%s%s", RED, symbol->debug, EOC);
@@ -22,12 +22,26 @@ void	sh_print_symbol(t_symbol *symbol)
 
 void	sh_print_token(t_token *token, t_cfg *cfg)
 {
-	if (token->id == LEX_TOK_WORD)
-		ft_dprintf(2, "%s%s %s", YELLOW, token->value, EOC);
-	else if (token->id == LEX_TOK_IO_NUMBER)
-		ft_dprintf(2, "IO_NUMBER: %s%s %s ", YELLOW, token->value, EOC);
+	if (cfg == g_glob.cfg)
+	{
+		if (token->id == LEX_TOK_WORD)
+			ft_dprintf(2, "%s%s %s", YELLOW, token->value, EOC);
+		else if (token->id == LEX_TOK_IO_NUMBER)
+			ft_dprintf(2, "IO_NUMBER: %s%s %s ", YELLOW, token->value, EOC);
+		else
+			ft_dprintf(2, "%s%s %s", YELLOW, cfg->symbols[token->index].debug,
+				EOC);
+	}
 	else
-		ft_dprintf(2, "%s%s %s", YELLOW, cfg->symbols[token->index].debug, EOC);
+	{
+		if (token->index == LEX_TOK_AR_INTEGER)
+			ft_dprintf(2, "%s%d %s", YELLOW, token->lval, EOC);
+		else if (token->index == LEX_TOK_AR_VARIABLE)
+			ft_dprintf(2, "%s%s %s ", YELLOW, token->value, EOC);
+		else
+			ft_dprintf(2, "%s%s %s", YELLOW, cfg->symbols[token->index].debug,
+				EOC);
+	}
 }
 
 void	sh_print_token_list(t_list *list, t_cfg *cfg)

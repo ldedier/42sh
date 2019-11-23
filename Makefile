@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
+#    By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/11/17 16:21:32 by ldedier          ###   ########.fr        #
+#    Updated: 2019/11/23 03:04:04 by ldedier          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,12 +49,16 @@ VPATH		= $(INCLUDESDIR) \
 			  $(SRCDIR)/exec \
 			  $(SRCDIR)/expansions \
 			  $(SRCDIR)/globbing \
+			  $(SRCDIR)/globbing/lexer \
 			  $(SRCDIR)/grammar \
 			  $(SRCDIR)/job_control \
 			  $(SRCDIR)/job_control/job_get_string \
 			  $(SRCDIR)/lexer \
 			  $(SRCDIR)/parser \
 			  $(SRCDIR)/parser/productions \
+			  $(SRCDIR)/arithmetic \
+			  $(SRCDIR)/arithmetic/productions \
+			  $(SRCDIR)/arithmetic/lexer \
 			  $(SRCDIR)/perror \
 			  $(SRCDIR)/traverse \
 			  $(SRCDIR)/traverse_tools \
@@ -68,7 +72,7 @@ LIBFT = $(LIBFTDIR)/libft.a
 ########					GRAMMAR						########
 ################################################################
 SRCS			 =	debug.c first_sets.c grammar.c init_cfg.c \
-					first_sets_tools.c
+					init_cfg_symbols.c first_sets_tools.c
 
 ################################################################
 ########					TRAVERSE					########
@@ -147,12 +151,16 @@ SRCS			+=	main.c index.c init.c shell_tools.c \
 ################################################################
 SRCS			+=	parser.c print_ast.c compute_lr_automata.c \
 					compute_lr_tables.c lr_parse.c compute_first_state.c \
-					state.c compute_closure.c compute_transitions.c \
+					state.c compute_closure.c compute_closure_tools.c \
+					compute_transitions.c compute_transitions_tools.c \
+					compute_transitions_allocate.c \
 					init_parsing.c reduce.c reduce_tools.c free_parser.c \
 					transitive_first_sets.c \
 					free_node.c  field_splitting_tools.c\
-					shift.c free_parser_tools.c \
-					reduce_pop.c ast_node_tools.c parser_debug.c
+					shift.c free_parser_tools.c free_stack_item.c \
+					reduce_pop.c ast_node_tools.c print_parser.c \
+					print_production.c print_sets.c print_state.c \
+					print_lr_table.c print_parser_stack.c
 
 ################################################################
 ########					LEXER						########
@@ -285,7 +293,7 @@ SRCS			+=	vshortcuts.c \
 ################################################################
 SRCS			+=	sh_vars_tools_1.c sh_vars_tools_2.c \
 					sh_verbose.c sh_verbose_check.c sh_env_tools.c \
-					sh_env.c sh_env_save.c
+					sh_env.c sh_env_save.c sh_env_save_tools.c
 
 ################################################################
 ########						EXEC					########
@@ -307,7 +315,9 @@ SRCS			+=	sh_execute_simple_command.c \
 ################################################################
 SRCS			+=	sh_add_redirection.c \
 					sh_reset_redirection.c \
-					sh_check_open_fd.c
+					sh_check_open_fd.c \
+					sh_check_open_fd_tools.c \
+					sh_new_redirection.c
 
 ################################################################
 ########						BUILTIN					########
@@ -357,19 +367,34 @@ SRCS			+=	sh_builtin.c sh_builtin_pwd.c \
 ################################################################
 SRCS			 +=	sh_expansions.c \
 					sh_expansions_parameter.c \
-					sh_expansions_parameter_process.c \
+					sh_expansions_parameter_str_removal.c \
 					sh_expansions_parameter_tools.c \
+					sh_expansions_parameter_minus.c \
+					sh_expansions_parameter_equal.c \
+					sh_expansions_parameter_quest.c \
+					sh_expansions_parameter_plus.c \
 					sh_expansions_tilde.c \
-					sh_expansions_variable.c t_expansion.c \
+					sh_expansions_tilde_tools.c \
+					sh_expansions_variable.c \
+					sh_expansions_variable_process.c \
 					sh_expansions_process.c sh_expansions_replace.c \
 					sh_expansions_field_splitting.c \
+					sh_expansions_field_splitting_get_word.c \
+					sh_expansions_field_splitting_tools.c \
+					sh_expansions_field_splitting_nws_tools.c \
+					sh_expansions_field_splitting_quote_tools.c \
 					sh_expansions_quote_removal.c \
 					sh_expansions_scan.c \
+					sh_expansions_scan_double_quote.c \
 					sh_expansions_history.c \
+					sh_expansions_history_expand.c \
 					sh_expansions_cmd_subst.c \
+					sh_expansions_cmd_subst_tools.c \
 					sh_expansions_proc_subst_in.c \
 					sh_expansions_proc_subst_out.c \
-					t_quote.c
+					sh_expansions_proc_subst_tools.c \
+					sh_expansions_arithmetic.c \
+					t_expansion.c t_quote.c
 
 ################################################################
 ########					GLOBBING					########
@@ -388,6 +413,14 @@ SRCS			+=	sh_globbing.c \
 					sh_pattern_matching_str.c \
 					sh_pattern_matching_quest.c \
 					sh_pattern_matching_brace.c \
+					sh_pattern_matching_brace_tools.c \
+					sh_glob_lexer.c \
+					sh_glob_lexer_rule_1.c \
+					sh_glob_lexer_rule_2.c \
+					sh_glob_lexer_rule_3.c \
+					sh_glob_lexer_rule_4.c \
+					sh_glob_lexer_rule_5.c \
+					sh_glob_lexer_rule_6.c \
 					t_regexp.c
 
 ################################################################
@@ -416,8 +449,39 @@ SRCS			+=	jobs_init.c job_add.c process_add.c job_tools.c \
 					jobs_string_great.c jobs_string_dgreat.c \
 					jobs_string_dless.c jobs_string_less_and.c \
 					jobs_string_great_and.c jobs_string_word.c \
-					sh_handle_no_fork.c
+					handle_int.c
 #jobs_error_free.c 
+
+################################################################
+########				ARITHMETIC						########
+################################################################
+SRCS			+=	 sh_ar_grammar.c sh_execute_arithmetic.c \
+					sh_ar_lexer.c \
+					sh_ar_lexer_rule_1.c \
+					sh_ar_lexer_rule_2.c \
+					sh_ar_lexer_rule_3.c \
+					sh_ar_lexer_rule_4.c \
+					sh_ar_lexer_rule_5.c \
+					sh_ar_lexer_rule_6.c \
+					sh_ar_lexer_rule_7.c \
+					sh_ar_lexer_rule_8.c \
+					sh_ar_lexer_rule_9.c \
+					t_ar_lexer.c \
+					t_ar_token.c \
+					sh_traverse_and_or_ar.c \
+					sh_traverse_comparison_ar.c \
+					sh_traverse_expr_ar.c \
+					sh_traverse_term_ar.c \
+					sh_traverse_factor_ar.c \
+					sh_traverse_arithmetic_ar.c
+
+################################################################
+########				AR_PRODUCTIONS					########
+################################################################
+SRCS			+=	sh_ar_prod_and_or.c sh_ar_prod_comparison.c \
+					sh_ar_prod_factor.c sh_ar_prod_arithmetic.c \
+					sh_ar_prod_expr.c sh_ar_prod_term.c
+
 ################################################################
 ########					INCLUDES					########
 ################################################################
@@ -440,6 +504,8 @@ INCLUDES		=	sh_21.h \
 					sh_tokens.h \
 					sh_traverse.h \
 					sh_traverse_tools.h \
+					sh_arithmetic.h \
+					sh_arithmetic_productions.h \
 					sh_vars.h
 
 OBJECTS			=	$(addprefix $(OBJDIR), $(SRCS:.c=.o))

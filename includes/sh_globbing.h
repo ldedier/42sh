@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 23:13:55 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/07 04:17:38 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/20 07:43:04 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,63 @@ struct						s_regexp
 	char			*value;
 };
 
+typedef struct 				s_glob_lexer
+{
+	char					*input;
+	char					c;
+	char					quoted;
+	int						tok_len;
+	int						tok_start;
+	t_dy_tab				*quotes;
+	t_dy_tab				*regexp_tab;
+	int						regexp_tab_index;
+}							t_glob_lexer;
+
 /*
 ********************************************************************************
 */
 
 /*
+** lexer/sh_glob_lexer.c
+*/
+int							t_glob_lexer_add_str(t_glob_lexer *lexer);
+int							sh_glob_lexer(
+	char *str, t_dy_tab **regexp_tab, t_dy_tab *quotes);
+
+/*
+** lexer/sh_glob_lexer_rule_1.c
+*/
+int							sh_glob_lexer_rule_1(t_glob_lexer *lexer);
+
+/*
+** lexer/sh_glob_lexer_rule_2.c
+*/
+int							sh_glob_lexer_rule_2(t_glob_lexer *lexer);
+
+/*
+** lexer/sh_glob_lexer_rule_3.c
+*/
+int							sh_glob_lexer_rule_3(t_glob_lexer *lexer);
+
+/*
+** lexer/sh_glob_lexer_rule_4.c
+*/
+int							sh_glob_lexer_rule_4(t_glob_lexer *lexer);
+
+/*
+** lexer/sh_glob_lexer_rule_5.c
+*/
+int							sh_glob_lexer_rule_5(t_glob_lexer *lexer);
+
+/*
+** lexer/sh_glob_lexer_rule_6.c
+*/
+int							sh_glob_lexer_rule_6(t_glob_lexer *lexer);
+
+/*
 ** sh_globbing.c
 */
+void						t_regexp_show_tab(t_dy_tab *regexp_tab);
 int							sh_expansions_globbing(
 	t_ast_node *node, t_dy_tab *quotes);
 
@@ -53,6 +103,8 @@ int							sh_globbing_substring_removal_get_word(
 */
 int							sh_is_pattern_matching(
 	char *name, t_list *regexp_head);
+int							sh_is_pattern_matching_for_substring_removal(
+	char *name, t_list *regexp_head);
 
 /*
 ** sh_pattern_matching.c
@@ -65,6 +117,14 @@ int							sh_expansions_pattern_matching(
 */
 int							sh_pattern_matching_brace(
 	char *name, t_regexp *regexp, int *i);
+
+/*
+** sh_pattern_matching_brace_tools.c
+*/
+int							sh_pattern_matching_brace_dash(
+	char *name, t_regexp *regexp, int *i, int *j);
+int							sh_pattern_matching_brace_simple(
+	char *name, t_regexp *regexp, int *i, int *j);
 
 /*
 ** sh_pattern_matching_push_new.c
@@ -95,8 +155,6 @@ int							sh_pattern_matching_str(
 */
 int							sh_regexp_parse_path_component(
 	char *str, t_list **regexp_list);
-int							sh_regexp_parse(
-	char *str, t_dy_tab **regexp_tab);
 
 /*
 ** sh_regexp_parse_new_brace.c

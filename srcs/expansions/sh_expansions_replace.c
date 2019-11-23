@@ -6,13 +6,26 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/03 14:59:23 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/15 11:29:21 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/19 19:39:37 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-static void	sh_expansions_replace_update_quotes(t_expansion *exp, char *new, t_quote **quotes, int index)
+void		sh_expansions_update_quotes_pointer(char **input, t_quote **quotes)
+{
+	int	i;
+
+	i = 0;
+	while (quotes[i])
+	{
+		quotes[i]->c = (*input) + quotes[i]->index;
+		i++;
+	}
+}
+
+static void	sh_expansions_replace_update_quotes(
+	t_expansion *exp, char *new, t_quote **quotes, int index)
 {
 	int		offset;
 	int		i;

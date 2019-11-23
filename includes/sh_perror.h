@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 14:16:12 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/14 00:59:59 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/20 12:52:21 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "sh_21.h"
 
-# define SH_NAME		"bash" // need to be changed to 42sh (modified for diff tests)
+# define SH_NAME		"bash" // change to 42sh (modified for diff tests)
 # define SH_ERR_COLOR	COLOR_PINK
 
 # define SH_ERR1_MALLOC			"Malloc error occured"
@@ -55,6 +55,8 @@
 
 # define SH_BAD_SUBSTITUTE		"Bad subsitution"
 # define SH_AMB_REDIRECT		"Ambigous redirect"
+
+# define SH_ERR1_DIV_ZERO		"Division by 0"
 
 typedef struct s_lexer			t_lexer;
 

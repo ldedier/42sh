@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 11:08:27 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/16 13:58:18 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/22 11:50:38 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,13 @@
 /*
 ** getpwnam: used in lexer_expansion_process_tilde.c
 */
+
 # include <pwd.h>
 
 /*
 ** Possible states for the lexer, returned by lexer functions
 */
+
 # define LEX_OK			SUCCESS
 # define LEX_ERR		ERROR
 # define LEX_FAIL		FAILURE
@@ -37,6 +39,7 @@
 
 typedef struct s_shell		t_shell;
 typedef struct s_ast_node	t_ast_node;
+typedef struct s_cfg		t_cfg;
 typedef struct s_token		t_token;
 
 typedef enum		e_lex_mode
@@ -84,18 +87,19 @@ typedef struct		s_token_union
 	char			*str;
 }					t_token_union;
 
-typedef struct		s_token
+struct				s_token
 {
-	t_token_union	token_union;
 	t_symbol_id		id;
 	int				index;
 	char			*value;
+	long			lval;
 	char			expansion;
 	int				index_start;
 	int				index_end;
 	int				apply_heredoc_expansion;
+	int				give_as_arg;
 	t_ast_node		*ast_node;
-}					t_token;
+};
 
 /*
 ********************************************************************************
@@ -187,15 +191,15 @@ void				t_lexer_show(t_lexer *lexer);
 /*
 ** t_token.c
 */
-void				t_token_update_id(int id, t_token *token);
-t_token				*t_token_new_ptr(int id, char *value);
-t_token				*t_token_new(int id, char *value);
+void				t_token_update_id(int id, t_token *token, t_cfg *cfg);
+t_token				*t_token_new_ptr(int id, char *value, t_cfg *cfg);
+t_token				*t_token_new(int id, char *value, t_cfg *cfg);
 void				t_token_free(t_token *token);
 
 /*
 ** t_token_list.c
 */
-t_list				*t_token_node_new(int id, char *value);
+t_list				*t_token_node_new(int id, char *value, t_cfg *cfg);
 void				t_token_free_list(t_list **head);
 void				sh_free_token_lst(void *t, size_t dummy);
 t_token				*sh_get_token_by_index(
