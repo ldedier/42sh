@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/07 15:38:10 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/20 12:56:02 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/23 17:58:44 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int			sh_process_add_new_ast_node(t_list *ptr,
 		{
 			sh_free_ast_node(new_node, 0);
 			*new_node = NULL;
-			return (1);
+			return (FAILURE);
 		}
 		new_ptr->next = ptr->next;
 		ptr->next = new_ptr;
@@ -67,14 +67,10 @@ t_ast_node			*sh_add_word_to_ast(t_ast_node *previous_word,
 		free(value);
 		return (NULL);
 	}
-//	if (previous_word == NULL)
-//		return (sh_add_word_to_ast_first(previous_word->parent, &new_node));
 	while (ptr != NULL)
 	{
 		if ((ret = sh_process_add_new_ast_node(ptr, previous_word, &new_node)))
-		{
 			return (new_node);
-		}
 		ptr = ptr->next;
 	}
 	free(value);

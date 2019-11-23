@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/20 07:46:29 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/20 11:23:22 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/23 17:54:19 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ static void	treat_quotes(t_glob_lexer *lexer)
 		ft_strdelchar(((t_quote**)lexer->quotes->tbl)[i]->c, 0);
 		ft_dy_tab_suppr_index(lexer->quotes, i);
 	}
+	else
+		lexer->tok_len += 1;
 	while (lexer->quotes->tbl[i])
 	{
 		((t_quote**)lexer->quotes->tbl)[i]->index -= 1;

@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 13:31:28 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/22 11:56:35 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/23 17:57:55 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,11 @@ static int	init_path(char **path, char *str)
 	return (SUCCESS);
 }
 
+/*
+** -1 in token->lval is here to know nodes that result for globbing, to avoid
+**	recursive loops.
+*/
+
 static int	sh_expansions_globbing_matches(
 	t_ast_node *node, t_list *matches, t_dy_tab *quotes)
 {
@@ -36,6 +41,7 @@ static int	sh_expansions_globbing_matches(
 	start = matches;
 	free(node->token->value);
 	node->token->value = (char*)matches->content;
+	node->token->lval = -1;
 	matches = matches->next;
 	while (matches)
 	{
@@ -44,10 +50,13 @@ static int	sh_expansions_globbing_matches(
 			return (sh_perror(
 				SH_ERR1_MALLOC, "sh_expansions_globbing_matches (2)"));
 		}
+		node->token->lval = -1;
 		matches = matches->next;
 	}
 	ft_lstdel(&start, NULL);
 	ft_dy_tab_empty(quotes);
+	if (sh_verbose_expansion())
+		sh_print_ast_root(node, g_glob.cfg);
 	return (SUCCESS);
 }
 
@@ -100,10 +109,7 @@ static void	clean_non_original_quotes(t_dy_tab *quotes)
 **	SUCCESS : returned even if no globbinghad been processed, for any reasons
 */
 
-// Need to see for quote removal
-// Go throught every field splited fields, with no repeat for non splitted field
-
-int			sh_expansions_globbing(t_ast_node *node, t_dy_tab *quotes)
+static int	sh_expansions_globbing_process_node(t_ast_node *node, t_dy_tab *quotes)
 {
 	char		*str;
 	t_list		*matches;
@@ -129,7 +135,35 @@ int			sh_expansions_globbing(t_ast_node *node, t_dy_tab *quotes)
 	if (ret == FAILURE)
 		return (FAILURE);
 	if (matches)
-		sh_expansions_globbing_matches(node, matches, quotes);
+		ret = sh_expansions_globbing_matches(node, matches, quotes);
 	t_regexp_free_tab(&regexp_tab);
-	return (SUCCESS);
+	return (ret);
+}
+
+int			sh_expansions_globbing(t_ast_node *node, t_dy_tab *quotes)
+{
+	t_ast_node		*children;
+	t_list			*head;
+	t_list			*next_head;
+	int				ret;
+
+	head = node->parent->children;
+	ret = SUCCESS;
+	children = (t_ast_node*)head->content;
+	if (children->token->lval == -1)
+		return (SUCCESS);
+	while (head && !ret)
+	{
+		if (children->symbol->id != sh_index(LEX_TOK_WORD))
+		{
+			head = head->next;
+			continue ;
+		}
+		children = (t_ast_node*)head->content;
+		next_head = head->next;
+		if (children->token->lval != -1)
+			ret = sh_expansions_globbing_process_node(children, quotes);
+		head = next_head;
+	}
+	return (ret);
 }

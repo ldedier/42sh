@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/05 10:59:30 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/21 14:10:06 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/23 17:56:21 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ static int	sh_expansions_call_tilde(
 **	Mother function of expansions process. Read the current token in context,
 **	and perform various expansions on it. It first detect its category,
 **	then perform it, and finally replace original value by result.
+**	Checking lvalue is here to avoid performing expansions on token resulting
+**	from globbing.
 **
 **	Returned Values:
 **		FAILURE : malloc error
@@ -56,7 +58,7 @@ int			sh_expansions(t_context *context, t_ast_node *node)
 	int			index;
 	t_dy_tab	*quotes;
 
-	if (!node || !node->token || !node->token->value)
+	if (!node || !node->token || !node->token->value || node->token->lval == -1)
 		return (SUCCESS);
 	index = 0;
 	input = &node->token->value;
