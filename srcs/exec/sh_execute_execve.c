@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 11:52:40 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/22 18:26:18 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/23 21:32:47 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,17 @@ static int	call_execve(t_context *context)
 
 	ret = SUCCESS;
 	if (!context->params->tbl || !context->params->tbl[0])
-		exit(context->shell->ret_value);
+		return (context->shell->ret_value);
 	if (context->path == NULL)
 	{
 		sh_perror_err(context->params->tbl[0], SH_ERR1_CMD_NOT_FOUND);
-		exit(SH_RET_CMD_NOT_FOUND);
+		return (SH_RET_CMD_NOT_FOUND);
 	}
 	if ((ret = sh_traverse_sc_check_perm(context,
 				context->path, context->path)) != SUCCESS)
 	{
 		sh_env_update_ret_value(context->shell, ret);
-		exit(context->shell->ret_value);
+		return (context->shell->ret_value);
 	}
 	close(g_term_fd);
 	execve(context->path, (char **)context->params->tbl,
@@ -49,5 +49,7 @@ void		sh_execute_execve(t_ast_node *parent_node, t_context *context)
 		ret = call_execve(context);
 	sh_reset_redirection(&context->redirections);
 	sh_free_all(context->shell);
+	free_ast_tools(context);
+	// ft_strdel(&context->cmd_string);
 	exit(ret);
 }

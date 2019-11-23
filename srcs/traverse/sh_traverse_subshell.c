@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/02 10:03:30 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/22 19:15:48 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/23 21:09:53 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ static int	child_part(t_ast_node *node, t_context *context)
 		return (FAILURE);
 	g_job_ctrl->interactive = 1;
 	sh_free_all(context->shell);
+	free_ast_tools(context);
 	if (ret != SUCCESS)
 		exit(ret);
 	exit(context->shell->ret_value);

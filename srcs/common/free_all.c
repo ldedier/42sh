@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_all.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/14 14:27:47 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/23 03:03:45 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/23 21:15:58 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,15 @@ void	free_file(t_file *file)
 	free(file->name);
 	free(file->fullname);
 	free(file);
+}
+
+void	free_ast_tools(t_context *context)
+{
+	sh_free_ast_node(&context->shell->exec->ast_root, 0);
+	sh_free_ast_node(&context->shell->exec->cst_root, 0);
+	ft_lstdel(&context->shell->exec->tokens, sh_free_token_lst);
+	ft_strdel(&context->shell->hist_cmd);
+	t_context_free_content(context);
 }
 
 void	sh_free_all(t_shell *shell)

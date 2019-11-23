@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+         #
+#    By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/11/23 03:04:04 by ldedier          ###   ########.fr        #
+#    Updated: 2019/11/23 21:14:30 by mdaoud           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -143,7 +143,7 @@ SRCS			+=	main.c index.c init.c shell_tools.c \
 					free_all.c free_all_dlist.c init_term.c signals.c \
 					set_signals.c canonical_mode.c history.c home.c \
 					init_tabs.c non_canonical_mode.c hash_binaries.c \
-					check_term.c signal_tools.c execute_command.c \
+					check_term.c execute_command.c \
 					t_entry.c sh_split_path.c sh_execute_binary.c
 
 ################################################################

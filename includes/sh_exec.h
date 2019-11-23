@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_exec.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 17:11:16 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/22 11:50:21 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/23 21:12:40 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,6 @@
 ** Builtin return value
 */
 # define SH_RET_ARG_ERROR		2
-
-extern pid_t g_parent;
 
 typedef struct s_redirection	t_redirection;
 
@@ -126,7 +124,7 @@ int					sh_execute_builtin(
 ** sh_execute_execve.c
 */
 void				sh_execute_execve(
-	t_ast_node *father_node, t_context *context);
+	t_ast_node *parent_node, t_context *context);
 
 /*
 ** sh_execute_pipe.c

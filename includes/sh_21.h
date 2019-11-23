@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_21.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/30 15:48:56 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/20 12:50:47 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/23 21:12:21 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,6 +171,8 @@ struct				s_shell
 	int				ret_value_set;
 	int				ret_value;
 	int				exec_depth;
+	t_exec			*exec;
+	char			*hist_cmd;
 };
 
 /*
@@ -209,6 +211,7 @@ int					execute_command(
 void				sh_free_binary(t_binary *binary);
 void				sh_free_binary_lst(void *b, size_t dummy);
 void				free_file(t_file *file);
+void				free_ast_tools(t_context *context);
 void				sh_free_all(t_shell *shell);
 
 /*
@@ -249,6 +252,7 @@ int					sh_index(int id);
 /*
 ** init.c
 */
+int					sh_init_allocations(t_shell *shell, char **env);
 int					sh_init_shell(t_shell *shell, char **env);
 
 /*
