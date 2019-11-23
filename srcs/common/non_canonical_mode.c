@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/05 15:41:50 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/17 16:29:45 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/23 13:00:35 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,10 @@ int				sh_process_noncanonical_mode(t_shell *shell)
 {
 	while (shell->running)
 	{
+		shell->cmd_dup = NULL;
+		shell->ast_root = NULL;
+		shell->cst_root = NULL;
+		shell->token_list = NULL;
 		if (sh_await_command(shell) == FAILURE)
 		{
 			sh_free_all(shell);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_expansions_cmd_subst.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 14:29:58 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/22 10:57:44 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/22 23:38:43 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ static int	child_part(t_context *context, char *command, int fds[])
 	g_job_ctrl->interactive = 1;
 	close(fds[PIPE_IN]);
 	sh_free_all(context->shell);
+	t_context_free_content(context);
 	return (context->shell->ret_value);
 }
 

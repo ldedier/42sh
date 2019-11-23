@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_all.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/14 14:27:47 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/23 03:03:45 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/23 13:00:09 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,10 @@ void	free_file(t_file *file)
 void	sh_free_all(t_shell *shell)
 {
 	job_control_free();
+	free_execution_tools(shell->token_list, shell->ast_root, shell->cst_root);
+	if (shell->cmd_dup && *(shell->cmd_dup))
+		ft_strdel(shell->cmd_dup);
+	shell->free_ast = 0;
 	sh_free_parser(&shell->parser);
 	sh_free_parser(&shell->parser_ar);
 	sh_free_command_line(&g_glob.command_line);

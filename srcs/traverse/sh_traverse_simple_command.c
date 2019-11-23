@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_traverse_simple_command.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/20 12:54:17 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/23 00:20:07 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ long		sh_traverse_simple_command(t_ast_node *node, t_context *context)
 	{
 		if ((ret = sh_traverse_tools_browse(node, context)))
 		{
-			free(context->cmd_string);
+			ft_strdel(&(context->cmd_string));
 			if (sh_reset_redirection(&(context->redirections)) != SUCCESS)
 				return (FAILURE);
 			return (ret);
@@ -56,7 +56,7 @@ long		sh_traverse_simple_command(t_ast_node *node, t_context *context)
 		context->phase += 1;
 	}
 	ret = sh_execute_simple_command(node, context);
-	free(context->cmd_string);
+	ft_strdel(&(context->cmd_string));
 	context->cmd_string = NULL;
 	if (sh_reset_redirection(&(context->redirections)) != SUCCESS)
 		return (FAILURE);

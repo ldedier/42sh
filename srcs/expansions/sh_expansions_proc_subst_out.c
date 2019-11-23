@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 14:29:58 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/23 11:33:37 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/23 11:44:52 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int			sh_expansions_proc_subst_out_fill(t_expansion *exp, char *start)
 }
 
 static void	sh_get_process_subst_out_child(
-	t_shell *shell, char *command, int fds[2])
+	t_context *context, char *command, int fds[2])
 {
 	int		ret;
 
@@ -69,14 +69,15 @@ static void	sh_get_process_subst_out_child(
 	}
 	close(fds[PIPE_OUT]);
 	g_job_ctrl->interactive = 0;
-	ret = execute_command(shell, command, 0);
+	ret = execute_command(context->shell, command, 0);
 	g_job_ctrl->interactive = 1;
 	close(fds[PIPE_IN]);
-	sh_free_all(shell);
+	sh_free_all(context->shell);
+	t_context_free_content(context);
 	exit(ret);
 }
 
-static char	*sh_get_process_subst_out(t_shell *shell,
+static char	*sh_get_process_subst_out(t_context *context,
 				char *command, t_list **redirections)
 {
 	char	*str;
@@ -89,7 +90,7 @@ static char	*sh_get_process_subst_out(t_shell *shell,
 	if ((child = fork()) == -1)
 		return (sh_perrorn(SH_ERR1_FORK, "sh_get_process_subst_in"));
 	if (child == 0)
-		sh_get_process_subst_out_child(shell, command, fds);
+		sh_get_process_subst_out_child(context, command, fds);
 	else
 	{
 		close(fds[PIPE_IN]);
@@ -111,7 +112,7 @@ int			sh_expansions_proc_subst_out_process(t_context *context,
 {
 	char *str;
 
-	if (!(str = sh_get_process_subst_out(context->shell, exp->expansion,
+	if (!(str = sh_get_process_subst_out(context, exp->expansion,
 		&context->redirections)))
 		return (FAILURE);
 	if (!(exp->res = ft_dy_str_new_str(str)))

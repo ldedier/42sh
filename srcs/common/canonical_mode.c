@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/03 18:06:46 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/10 02:23:20 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/23 13:01:57 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,10 @@ static int		sh_process_read_canonical_mode(t_shell *shell)
 	ret = SUCCESS;
 	while (shell->running && (gnl_ret = get_next_line2(0, &info, 1)) == 1)
 	{
+		shell->ast_root = NULL;
+		shell->cst_root = NULL;
+		shell->token_list = NULL;
+		shell->cmd_dup = NULL;
 		if ((ret = sh_process_read_canonical_gnl(shell, &info)))
 			return (ret);
 	}
