@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/06 01:28:29 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/22 11:55:48 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/23 10:54:38 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ int				sh_lexer_reserved_words(t_lexer *lexer, t_token *token)
 	}
 	else if (token->id == LEX_TOK_SEMICOL || token->id == LEX_TOK_PIPE
 		|| token->id == LEX_TOK_AND_IF || token->id == LEX_TOK_OR_IF
-		|| token->id == LEX_TOK_OPN_PAR || token->id == LEX_TOK_CLS_PAR)
+		|| token->id == LEX_TOK_OPN_PAR || token->id == LEX_TOK_CLS_PAR
+		|| token->id == LEX_TOK_AND)
 		lexer->first_word = 1;
 	else
 		lexer->first_word = lexer->first_word ? lexer->first_word - 1 : 0;
