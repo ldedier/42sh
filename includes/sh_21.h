@@ -249,6 +249,7 @@ int					sh_index(int id);
 /*
 ** init.c
 */
+int					sh_init_allocations(t_shell *shell, char **env);
 int					sh_init_shell(t_shell *shell, char **env);
 
 /*

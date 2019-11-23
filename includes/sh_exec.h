@@ -126,7 +126,7 @@ int					sh_execute_builtin(
 ** sh_execute_execve.c
 */
 void				sh_execute_execve(
-	t_ast_node *father_node, t_context *context);
+	t_ast_node *parent_node, t_context *context);
 
 /*
 ** sh_execute_pipe.c

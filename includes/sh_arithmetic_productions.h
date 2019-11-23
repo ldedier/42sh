@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/15 10:58:15 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/18 13:38:02 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/23 19:45:43 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # define NB_SYMBOLS_AR		25
 # define NB_TERMS_AR		19
 
-typedef enum e_symbol_id_ar
+typedef enum	e_symbol_id_ar
 {
 	LEX_TOK_AR_AND,
 	LEX_TOK_AR_OR,
@@ -44,7 +44,7 @@ typedef enum e_symbol_id_ar
 	EXPR_AR,
 	TERM_AR,
 	FACTOR_AR
-}			t_symbol_id_ar;
+}				t_symbol_id_ar;
 
 /*
 ********************************************************************************

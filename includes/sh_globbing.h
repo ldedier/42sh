@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 23:13:55 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/20 07:43:04 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/23 19:44:56 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ struct						s_regexp
 	char			*value;
 };
 
-typedef struct 				s_glob_lexer
+typedef struct				s_glob_lexer
 {
 	char					*input;
 	char					c;
@@ -88,7 +88,6 @@ int							sh_glob_lexer_rule_6(t_glob_lexer *lexer);
 /*
 ** sh_globbing.c
 */
-void						t_regexp_show_tab(t_dy_tab *regexp_tab);
 int							sh_expansions_globbing(
 	t_ast_node *node, t_dy_tab *quotes);
 

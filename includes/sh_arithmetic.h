@@ -6,14 +6,14 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/15 11:27:40 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/17 19:43:29 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/23 19:45:23 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SH_ARITHMETIC_H
 # define SH_ARITHMETIC_H
 
-#include "sh_21.h"
+# include "sh_21.h"
 
 t_grammar_holder g_ar_grammar[NB_SYMBOLS_AR];
 

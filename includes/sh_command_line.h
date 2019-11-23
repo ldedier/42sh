@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_command_line.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/11 17:20:10 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/23 03:04:49 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/23 19:43:45 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -701,5 +701,7 @@ int					get_right_w_char_index(t_command_line *command_line);
 t_xy				get_position(int cursor);
 int					xy_is_equal(t_xy xy1, t_xy xy2);
 
-int         sh_init_command_line(t_shell *shell, t_command_line *command_line);
+int					sh_init_command_line(
+	t_shell *shell, t_command_line *command_line);
+
 #endif
