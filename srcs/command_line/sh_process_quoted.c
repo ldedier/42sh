@@ -26,7 +26,7 @@ int		sh_process_process_quoted(int old_context, t_lexer *lexer)
 		}
 		else if (ret == CTRL_D)
 		{
-	//		sh_perror_unexpected_eof(lexer);
+			sh_perror_unexpected_eof(lexer);
 			return (ret);
 		}
 	}

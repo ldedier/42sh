@@ -20,7 +20,7 @@ static int	sh_lexer_rule1_process_quoted_start(t_lexer *lexer, int reading)
 			return (LEX_ERR);
 		else if (lexer->quoted)
 		{
-			return (ERROR);
+			return (sh_perror_unexpected_eof(lexer));
 		}
 	}
 	if (lexer->quoted)
