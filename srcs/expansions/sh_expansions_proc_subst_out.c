@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_expansions_proc_subst_out.c                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 14:29:58 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/22 11:38:00 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/23 11:33:37 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ static char	*sh_get_process_subst_out(t_shell *shell,
 			free(str);
 			return (NULL);
 		}
-		waitpid(child, &ret, WNOHANG); //to remove !
+		waitpid(child, &ret, WNOHANG);
 		return (str);
 	}
 	return (SUCCESS);
