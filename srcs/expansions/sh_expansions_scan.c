@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/04 11:17:39 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/22 15:30:48 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/23 09:37:55 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,32 +58,31 @@ static int	sh_quote_original_input(
 }
 
 static int	sh_manage_special_char(
-		char **input, int *index, t_context *context, t_dy_tab *quotes)
+		char **in, int *i, t_context *ctxt, t_dy_tab *quotes)
 {
 	int	ret;
 
-	if ((*input)[*index] == '\'')
-		simple_quote(input, index, quotes);
-	else if ((*input)[*index] == '"')
+	if ((*in)[*i] == '\'')
+		simple_quote(in, i, quotes);
+	else if ((*in)[*i] == '"')
 	{
 		if ((ret = sh_expansions_scan_double_quote(
-			input, index, context, quotes)) != SUCCESS)
+						in, i, ctxt, quotes)) != SUCCESS)
 			return (ret);
 	}
-	else if ((*input)[*index] == '$' || (*input)[*index] == '`'
-			|| (((*input)[*index] == '<' || (*input)[*index] == '>')
-				&& (*input)[*index] == '('))
+	else if ((*in)[*i] == '$' || (*in)[*i] == '`'
+			|| (((*in)[*i] == '<' || (*in)[*i] == '>') && (*in)[*i + 1] == '('))
 	{
-		if ((ret = unquoted_var(input, index, context, quotes)) != SUCCESS)
+		if ((ret = unquoted_var(in, i, ctxt, quotes)) != SUCCESS)
 			return (ret);
 	}
-	else if ((*input)[*index] == '\\' && (*input)[*index + 1] == '\n')
-		ft_strdelchars((*input) + *index, 0, 2);
+	else if ((*in)[*i] == '\\' && (*in)[*i + 1] == '\n')
+		ft_strdelchars((*in) + *i, 0, 2);
 	else
 	{
-		if (t_quote_add_new(quotes, *index, (*input) + *index, 1))
+		if (t_quote_add_new(quotes, *i, (*in) + *i, 1))
 			return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_scan"));
-		*index += 2;
+		*i += 2;
 	}
 	return (SUCCESS);
 }
