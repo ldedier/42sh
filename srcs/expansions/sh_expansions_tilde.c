@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 13:56:29 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/16 21:38:40 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/23 15:12:57 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,7 @@ static int	sh_expansions_init_tilde(char *original, t_expansion *exp)
 	int		i;
 
 	ft_bzero(exp, sizeof(t_expansion));
-	if (!(start = ft_strpbrk(original, "~")))
-		return (ERROR);
+	start = original;
 	if (start[0] != '~')
 		return (ERROR);
 	if ((i = sh_expansions_tilde_detect(start)) == -1)

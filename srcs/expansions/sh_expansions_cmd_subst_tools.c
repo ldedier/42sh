@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 05:44:20 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/11/22 10:59:51 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/23 11:04:27 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ int			sh_expansions_cmd_subst_detect_backquotes(char *start)
 		return (-1);
 	quoted = 0;
 	back_quote = 1;
-	i = 1;
-	while (start[i] && back_quote > 0)
+	i = 0;
+	while (start[++i] && back_quote > 0)
 	{
 		if (start[i] == '\\' && start[i + 1])
 			i += 1;
@@ -33,7 +33,6 @@ int			sh_expansions_cmd_subst_detect_backquotes(char *start)
 			quoted = 0;
 		else if (!quoted && start[i] == '`')
 			back_quote--;
-		i++;
 	}
 	if (!start[i] && back_quote > 0)
 		return (-1);
