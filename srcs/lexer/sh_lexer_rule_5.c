@@ -57,7 +57,7 @@ static int		sh_lexer_exp(t_lexer *lexer)
 	}
 	else
 		return (LEX_CONTINUE);
-	if (end == 0 || end == -1)
+	if ((end == 0 || end == -1) && ((lexer->mode != E_LEX_AUTOCOMPLETION) || 0))
 		return (sh_lexer_exp_handle_error(lexer, start, end));
 	lexer->expansion = '$';
 	lexer->tok_len += end;

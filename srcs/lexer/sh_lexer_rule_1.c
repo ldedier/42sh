@@ -19,7 +19,9 @@ static int	sh_lexer_rule1_process_quoted_start(t_lexer *lexer, int reading)
 		if (lexer->mode == E_LEX_AUTOCOMPLETION)
 			return (LEX_ERR);
 		else if (lexer->quoted)
-			return (sh_perror_unexpected_eof(lexer));
+		{
+			return (ERROR);
+		}
 	}
 	if (lexer->quoted)
 	{

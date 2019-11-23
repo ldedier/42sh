@@ -42,7 +42,7 @@ void		ft_strcat_escaped(char *dest, char *src)
 
 	i = 0;
 	j = ft_strlen(dest);
-	while (i < src[i])
+	while (src[i])
 	{
 		if (sh_should_escape(src[i]))
 		{

@@ -56,7 +56,7 @@ static long	sh_traverse_add_factor(t_ast_node *first_child,
 	{
 		add_shell_var(second_child->token->value,
 			first_child->symbol->id == LEX_TOK_AR_DEC ? -1 : 1, context);
-		return (get_integer_from_var(first_child->token->value, context));
+		return (get_integer_from_var(second_child->token->value, context));
 	}
 	else
 	{
