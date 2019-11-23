@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/11 17:43:29 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/16 19:58:35 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/23 16:00:14 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,10 @@ static int	sh_builtin_cd_body(
 	else if (*param)
 		ret = sh_builtin_cd_check_perms(param, param);
 	if (ret)
+	{
+		ft_strdel(curpath);
 		return (ERROR);
+	}
 	if (args[CD_L_OPT].priority > args[CD_P_OPT].priority)
 	{
 		sh_builtin_cd_rule7(context, curpath, args);
