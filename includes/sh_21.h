@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/30 15:48:56 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/23 12:58:04 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/23 15:21:21 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,11 +171,8 @@ struct				s_shell
 	int				ret_value_set;
 	int				ret_value;
 	int				exec_depth;
-	char			**cmd_dup;
-	char			free_ast;
-	t_ast_node		**ast_root;
-	t_ast_node		**cst_root;
-	t_list			**token_list;
+	char			*cmd_dup;
+	t_exec			*exec;
 };
 
 /*

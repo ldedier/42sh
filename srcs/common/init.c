@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/14 13:19:50 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/23 12:58:36 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/23 15:22:19 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,12 +118,8 @@ int			sh_init_allocations(t_shell *shell, char **env)
 
 int			sh_init_shell(t_shell *shell, char **env)
 {
-	struct termios s;
-
-	shell->ast_root = NULL;
-	shell->cst_root = NULL;
-	shell->token_list = NULL;
-	shell->cmd_dup = NULL;
+	struct termios	s;
+	
 	s = shell->term;
 	ft_bzero(shell, sizeof(t_shell));
 	ft_bzero(&g_glob.command_line, sizeof(t_command_line));
@@ -131,7 +127,13 @@ int			sh_init_shell(t_shell *shell, char **env)
 	if (isatty(0))
 		if (ioctl(0, TIOCGWINSZ, &g_glob.winsize) == -1)
 			return (sh_perror(SH_ERR1_IOCTL, "sh_init_shell"));
+	if ((shell->exec = malloc(sizeof(t_exec))) == NULL)
+		return (sh_perror(SH_ERR1_MALLOC, "sh_init_shell"));
 	shell->term = s;
+	shell->exec->ast_root = NULL;
+	shell->exec->cst_root = NULL;
+	shell->exec->tokens = NULL;
+	shell->cmd_dup = NULL;
 	shell->ret_value = 0;
 	shell->ret_value_set = 0;
 	if (sh_init_allocations(shell, env) == FAILURE)
