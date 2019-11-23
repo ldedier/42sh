@@ -63,6 +63,7 @@ int				sh_lexer(char *input, t_list **tokens, t_shell *shell,
 	t_lexer		lexer;
 	int			ret;
 
+	lexer.mode = mode;
 	if (t_lexer_init(&lexer, mode, shell, input))
 		return (FAILURE);
 	ret = LEX_OK;
