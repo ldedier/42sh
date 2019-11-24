@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   job_tools.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/20 05:57:09 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/11/21 11:05:01 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/24 15:13:38 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_job			*job_get_by_num(int num)
 	return (j);
 }
 
-t_job		*job_get_by_sign(char c)
+t_job			*job_get_by_sign(char c)
 {
 	t_job	*j;
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   job_wait.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/20 23:10:38 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/11/21 12:50:54 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/24 15:16:21 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,20 +35,20 @@ static pid_t	get_last_pid(t_job *j)
 ** We do that until there are no process that have changed status.
 */
 
-
-void		job_wait(t_job *j, int *ret)
+void			job_wait(t_job *j, int *ret)
 {
 	int		status;
 	pid_t	pid;
 	pid_t	last_pid;
 
 	last_pid = get_last_pid(j);
-	pid = waitpid(- j->pgid, &status, WUNTRACED);
+	pid = waitpid(-j->pgid, &status, WUNTRACED);
 	if (pid == last_pid)
 		*ret = status;
-	while (!job_check_changes(pid, status) && !job_is_stopped(j) && !job_is_completed(j))
+	while (!job_check_changes(pid, status)
+		&& !job_is_stopped(j) && !job_is_completed(j))
 	{
-		pid = waitpid(- j->pgid, &status, WUNTRACED);
+		pid = waitpid(-j->pgid, &status, WUNTRACED);
 		if (pid == last_pid)
 			*ret = status;
 	}

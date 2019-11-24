@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   job_check_changes.c                        :+:      :+:    :+:   */
+/*   job_check_changes.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/21 00:46:11 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/09/22 00:40:44 by mdaoud           ###   ########.fr       */
+/*   Created: 2019/11/24 15:10:22 by jmartel           #+#    #+#             */
+/*   Updated: 2019/11/24 15:11:18 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	update_process_info(t_job *j, t_process *p, int status)
 	}
 	else if (WIFEXITED(status) || WIFSIGNALED(status))
 		p->completed = 1;
-	if (WIFSIGNALED (status))
+	if (WIFSIGNALED(status))
 	{
 		j->notified = 0;
 		j->signal_num = WTERMSIG(status);
@@ -40,8 +40,9 @@ static int	update_process_info(t_job *j, t_process *p, int status)
 static int	check_process_changes(t_job *j, int cpid, int status)
 {
 	t_process	*p;
+	int			i;
 
-	int i = 0;
+	i = 0;
 	p = j->first_process;
 	while (p != NULL)
 	{
