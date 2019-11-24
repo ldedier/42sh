@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/11/24 19:59:28 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/24 21:00:18 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -97,7 +97,7 @@ SRCS			+=	keys.c cursor_motion.c edit_command.c \
 					is_printable_utf8.c get_command.c \
 					utf8_tools.c render_command_line.c \
 					arrows.c home_end.c command_line.c \
-					xy.c copy_paste_delete.c update_prompt.c \
+					xy.c copy_paste_delete.c update_prompt.c update_prompt_context.c\
 					update_prompt_tools.c keys_insert.c \
 					keys_others.c keys_ctrl.c cursor_tools.c \
 					selection.c sh_process_history.c \

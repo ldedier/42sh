@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 11:02:58 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/24 20:29:00 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/24 20:52:02 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	sh_ar_init_prod_factor_else(t_cfg *cfg, t_symbol *symbol)
 	return (0);
 }
 
-int		sh_ar_init_prod_factor(t_cfg *cfg, t_symbol *symbol)
+int			sh_ar_init_prod_factor(t_cfg *cfg, t_symbol *symbol)
 {
 	if (sh_add_prod(symbol, cfg, 1,
 		LEX_TOK_AR_INTEGER))
