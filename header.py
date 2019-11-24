@@ -189,7 +189,7 @@ automatic_header("./srcs/traverse",                     "./includes/sh_traverse.
 automatic_header("./srcs/builtin",                      "./includes/sh_builtin.h", 0)
 automatic_header("./srcs/exec",                         "./includes/sh_exec.h", 5)
 automatic_header("./srcs/perror",                       "./includes/sh_perror.h", 0)
-automatic_header("./srcs/grammar",              "./includes/sh_grammar.h", 5)
+automatic_header("./srcs/grammar",              "./includes/sh_grammar.h", 6)
 automatic_header("./srcs/parser/productions","./includes/sh_productions.h", 0)
 automatic_header("./srcs/parser",                       "./includes/sh_parser.h", 5)
 automatic_header("./srcs/command_line/shortcuts",                       "./includes/sh_shortcuts.h", 6)

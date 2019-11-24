@@ -249,14 +249,13 @@ int					sh_index(int id);
 /*
 ** init.c
 */
+int					sh_init_allocations(t_shell *shell, char **env);
 int					sh_init_shell(t_shell *shell, char **env);
 
 /*
-** init_tabs.c
+** init_env.c
 */
-int					sh_update_shell_lvl(t_shell *shell);
 int					sh_main_init_env(t_shell *shell, char **env);
-int					sh_main_init_vars(t_shell *shell);
 
 /*
 ** init_term.c
@@ -264,6 +263,11 @@ int					sh_main_init_vars(t_shell *shell);
 int					sh_init_terminal_database(char **env);
 int					sh_set_term_sig(int value);
 int					sh_init_terminal(t_shell *shell, char **env);
+
+/*
+** init_vars.c
+*/
+int					sh_main_init_vars(t_shell *shell);
 
 /*
 ** non_canonical_mode.c

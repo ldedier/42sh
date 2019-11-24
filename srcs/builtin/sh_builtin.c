@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_builtin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 19:04:16 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/09 16:58:30 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/24 15:22:33 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,6 @@ t_builtin_container		*get_builtins(void)
 		{ "fc", sh_builtin_fc },
 		{ "alias", sh_builtin_alias },
 		{ "unalias", sh_builtin_unalias },
-#if __APPLE__ && __MACH__
-		{ "🐑", sh_builtin_🐑 }
-#endif
 	};
 
 	return (res);

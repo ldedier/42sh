@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   auto_completion.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 23:28:27 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/04 19:35:46 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/24 21:03:03 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 
-int		process_advanced_completion(t_command_line *command_line, t_word word)
+int			process_advanced_completion(
+	t_command_line *command_line, t_word word)
 {
 	t_file *file;
 
@@ -28,7 +29,7 @@ int		process_advanced_completion(t_command_line *command_line, t_word word)
 	return (SUCCESS);
 }
 
-int		process_completion_expand(t_command_line *command_line,
+int			process_completion_expand(t_command_line *command_line,
 		char *str, t_word word)
 {
 	if (ft_dlstlength(command_line->autocompletion.choices) == 1)
@@ -45,7 +46,8 @@ int		process_completion_expand(t_command_line *command_line,
 	return (SUCCESS);
 }
 
-int		process_completion(t_command_line *command_line, t_word word)
+int			process_completion(
+	t_command_line *command_line, t_word word)
 {
 	char	*str;
 
@@ -65,33 +67,37 @@ int		process_completion(t_command_line *command_line, t_word word)
 	return (ft_free_turn(str, 0));
 }
 
-int		process_tab(t_shell *shell, t_command_line *command_line)
+static int	process_tab_autocompletion(
+	t_shell *shell, t_command_line *command_line)
 {
 	int		ret;
 	t_exec	exec;
 
-	ret = 0;
+	ret = SUCCESS;
+	if ((ret = populate_parsed_word_by_index(shell,
+		command_line->dy_str->str, command_line->current_index, &exec)))
+	{
+		if (ret == FAILURE)
+			return (sh_free_turn_exec_autocompletion(&exec, FAILURE));
+		else if (!exec.word.str)
+			return (SUCCESS);
+		else
+			init_exec_autocompletion(&exec);
+	}
+	ft_dlstdel(&command_line->autocompletion.choices, &free_file_dlst);
+	if (populate_choices_from_word(command_line, shell, &exec.word))
+		return (sh_free_turn_exec_autocompletion(&exec, 1));
+	if (command_line->autocompletion.choices != NULL)
+		ret = process_completion(command_line, exec.word);
+	sh_free_turn_exec_autocompletion(&exec, ret == FAILURE);
+	return (ret);
+}
+
+int			process_tab(t_shell *shell, t_command_line *command_line)
+{
 	command_line->autocompletion.choices_common_len = -1;
 	if (!command_line->autocompletion.active)
-	{
-		if ((ret = populate_parsed_word_by_index(shell,
-			command_line->dy_str->str, command_line->current_index, &exec)))
-		{
-			if (ret == FAILURE)
-				return (sh_free_turn_exec_autocompletion(&exec, FAILURE));
-			else if (!exec.word.str)
-				return (SUCCESS);
-			else
-				init_exec_autocompletion(&exec);
-		}
-		ft_dlstdel(&command_line->autocompletion.choices, &free_file_dlst);
-		if (populate_choices_from_word(command_line, shell, &exec.word))
-			return (sh_free_turn_exec_autocompletion(&exec, 1));
-		if (command_line->autocompletion.choices != NULL)
-			ret = process_completion(command_line, exec.word);
-		sh_free_turn_exec_autocompletion(&exec, ret == FAILURE);
-	}
-	else
-		process_autocompletion_down(shell, command_line);
-	return (ret);
+		return (process_tab_autocompletion(shell, command_line));
+	process_autocompletion_down(shell, command_line);
+	return (SUCCESS);
 }

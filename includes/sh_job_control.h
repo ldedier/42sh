@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_job_control.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 17:45:00 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/11/21 10:23:57 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/24 20:44:00 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # define ANY_CHILD_PROCESS		-1
 # define MAX_PROCESS_LEN		1000
 # define WFLAGS_ALL				WUNTRACED | WCONTINUED | WNOHANG
+
 typedef struct s_process		t_process;
 typedef struct s_job			t_job;
 typedef struct s_job_control	t_job_control;
@@ -70,7 +71,7 @@ struct				s_job
 	char			notified;
 	char			*command;
 	char			*cmd_copy;
-	char			signal_num;	//Don't think this is needed anymore
+	char			signal_num;
 	char			sign;
 	char			foreground;
 	int				number;

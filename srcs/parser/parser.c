@@ -6,41 +6,11 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/04 21:42:55 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/18 11:11:01 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/24 20:50:42 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
-
-/*
-** @author: mdaoud
-** Dummy function to check if the command ends with '&'
-** Since the grammar is not coherent with the actual execution of this symbol,
-**		I can't really process it when it occurs at the end of the command line.
-** This SHOULD be replaced by a better and safer function.
-*/
-
-// static void		check_ampersand_at_eoc(t_list *token_lst)
-// {
-// 	t_list	*ptr;
-// 	t_token	*tok;
-
-// 	ptr = token_lst;
-// 	if (token_lst == NULL)
-// 		return ;
-// 	while (ptr->next != NULL)
-// 	{
-// 		tok = (t_token *)ptr->next->content;
-// 		if (tok->id == END_OF_INPUT && (((t_token *)ptr->content)->id == LEX_TOK_AND))
-// 		{
-// 			g_job_ctrl->ampersand_eol = WNOHANG;
-// 			return ;
-// 		}
-// 		else
-// 			g_job_ctrl->ampersand_eol = 0;
-// 		ptr = ptr->next;
-// 	}
-// }
 
 int		sh_is_term(t_symbol *symbol, t_cfg *cfg)
 {

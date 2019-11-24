@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:41:27 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/15 05:47:20 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/24 20:27:33 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,12 @@ int		sh_perror_unexpected_eof(t_lexer *lexer)
 {
 	char	c;
 
+	if (lexer->mode == E_LEX_AUTOCOMPLETION)
+		return (FAILURE);
 	if (lexer->quoted == '\'' || lexer->quoted == '"')
 		c = lexer->quoted;
-	else if (lexer->quoted == '>' || lexer->quoted == '<' || lexer->quoted == '(')
+	else if (lexer->quoted == '>' || lexer->quoted == '<'
+		|| lexer->quoted == '(')
 		c = ')';
 	else if (lexer->quoted == '{')
 		c = '}';
@@ -60,13 +63,13 @@ int		sh_perror_unexpected_eof(t_lexer *lexer)
 	else
 		c = '\0';
 	if (isatty(2))
-		ft_putstr(SH_ERR_COLOR);
+		ft_putstr_fd(SH_ERR_COLOR, 2);
 	if (c)
 		ft_dprintf(2,
 		"%s: unexpected EOF while looking for matching `%c'\n", SH_NAME, c);
 	else
 		ft_dprintf(2, "%s: unexpected end of file\n", SH_NAME);
 	if (isatty(2))
-		ft_putstr(EOC);
+		ft_putstr_fd(EOC, 2);
 	return (FAILURE);
 }

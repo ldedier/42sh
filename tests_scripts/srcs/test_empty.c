@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test.c                                             :+:      :+:    :+:   */
+/*   test_empty.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/31 17:17:37 by ldedier           #+#    #+#             */
-/*   Updated: 2019/07/31 17:21:56 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/24 20:39:04 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 #include <sys/wait.h>
 #include <stdlib.h>
 
-int     main(int argc, char **argv)
+int		main(int argc, char **argv)
 {
-	pid_t pid;
-	int     status;
+	pid_t	pid;
+	int		status;
+	char	*str;
 
-	char *str = malloc(100);
-
+	str = malloc(100);
 	pid = fork();
 	if (pid == 0)
 	{

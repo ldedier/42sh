@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/16 05:23:32 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/21 14:55:21 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/23 19:30:15 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -162,7 +162,13 @@ launch "Globbing"
 	test_launch 'echo """"/tmp"""/*'
 	test_launch 'echo ls ~/Desktop/[.][.abv]*'
 	test_launch 'echo \/\t\m\p\/'
-	
+
+	launch_show "Globbing and field splitting"
+	test_launch 'cd sandbox' 'var="*      *"' 'echo $var'
+	test_launch 'cd sandbox' 'var="*      *"' 'echo "$var"'
+	test_launch 'cd sandbox' 'var="*"' ' echo $var$var' 'echo "$var   $var"'
+	test_launch 'cd sandbox' 'var=?*/      ???????*' 'echo $var' 'echo "$var"'
+
 	rm -rf empty
 	rm -rf sandbox
 

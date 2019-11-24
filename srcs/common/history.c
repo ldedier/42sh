@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/15 15:37:40 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/15 15:37:40 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/24 16:11:33 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ static int		sh_append_entry(t_history *history, char *command)
 {
 	t_entry *entry;
 
-	//if (history->nb_entries <= 10)
 	if (history->nb_entries <= ft_max(32767, HISTSIZE))
 	{
 		history->from = 1;
@@ -80,7 +79,7 @@ static int		sh_append_entry(t_history *history, char *command)
 	return (SUCCESS);
 }
 
-int			sh_append_to_history(t_history *history, char *command,
+int				sh_append_to_history(t_history *history, char *command,
 	int append_file)
 {
 	int		fd;

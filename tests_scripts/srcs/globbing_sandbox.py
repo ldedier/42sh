@@ -31,5 +31,5 @@ for char in range(min_char, max_char + 1, 1):
 				open(chr(char) * len, 'a').close()
 			except :
 				pass
-	try : os.symlink(chr(char), "link_" + str(char))
-	except : pass
+	# try : os.symlink(chr(char), "link_" + str(char))
+	# except : pass

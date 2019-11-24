@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   add_choices_from_expansions.c                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/07 23:21:55 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/04 19:33:08 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/24 15:20:21 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,6 @@ int		populate_choices_from_expansions(t_command_line *command_line,
 	c.types = -1;
 	c.suffix = NULL;
 	c.path = NULL;
-
 	if (fill_choice_filler_expansion(&c, &dollar_index))
 	{
 		if (dollar_index == -1)

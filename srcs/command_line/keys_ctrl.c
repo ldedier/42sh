@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/15 17:27:55 by ldedier           #+#    #+#             */
-/*   Updated: 2019/09/02 14:59:27 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/24 20:55:45 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,6 @@ int		process_ctrl_c(t_shell *shell, t_command_line *command_line)
 	render_command_line(command_line, 0, 1);
 	return (CTRL_C);
 }
-
-		//	&& (command_line->context == E_CONTEXT_STANDARD
-		//		|| command_line->context == E_CONTEXT_HEREDOC
-		//			|| command_line->context == E_CONTEXT_BACKSLASH))
 
 int		process_ctrl_d(t_shell *shell, t_command_line *command_line)
 {

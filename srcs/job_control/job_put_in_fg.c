@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   job_put_in_fg.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/20 23:22:03 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/11/21 11:02:37 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/24 15:13:14 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,13 @@
 
 int			job_put_in_fg(t_job *j, int cont, int *ret)
 {
-	if (cont && kill (- j->pgid, SIGCONT) < 0)
+	if (cont && kill(-j->pgid, SIGCONT) < 0)
 		return (sh_perror_err("fg", "Could not send SIGCONT to the process"));
 	if (tcsetpgrp(g_term_fd, j->pgid) < 0)
+	{
 		return (sh_perror("tcsetpgrp",
 			"Could not put the job in the foreground"));
+	}
 	j->foreground = 1;
 	job_wait(j, ret);
 	job_notify();

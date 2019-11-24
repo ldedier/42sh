@@ -3,21 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   sh_builtin.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 11:36:31 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/23 03:04:42 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/24 15:20:58 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SH_BUILTIN_H
 # define SH_BUILTIN_H
 
-# if __APPLE__ && __MACH__
-#  define NB_BUILTINS	19
-# else
-#  define NB_BUILTINS	18
-# endif
+# define NB_BUILTINS	18
 
 # include "sh_grammar.h"
 # include "sh_21.h"
@@ -403,21 +399,6 @@ int					sh_builtin_usage(
 char				*sh_builtin_pwd_physical(void);
 char				*sh_builtin_pwd_logical(t_dy_tab *env);
 int					sh_builtin_pwd(t_context *context);
-
-/*
-** sh_builtin_set.c
-*/
-int					print_options_minus(t_shell *shell);
-int					print_options_plus(t_shell *shell);
-int					fill_option_value(
-	int **address_ptr, int *value_ptr, int *address, int value);
-int					get_option(
-	t_shell *shell, char *option_name, int **option, int *value);
-int					add_option(t_context *context, int index);
-int					remove_option(t_context *context, int index);
-int					sh_builtin_set_param(t_context *context, int *index);
-int					sh_builtin_set_args(t_context *context);
-int					sh_builtin_set(t_context *context);
 
 /*
 ** sh_builtin_unalias.c

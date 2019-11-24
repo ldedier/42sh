@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   job_add.c                                         :+:      :+:    :+:   */
+/*   job_add.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/14 00:09:20 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/08 16:17:44 by mdaoud           ###   ########.fr       */
+/*   Created: 2019/11/24 15:13:21 by jmartel           #+#    #+#             */
+/*   Updated: 2019/11/24 15:13:31 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ static int		find_available_job_number(void)
 
 static void		init_job_values(t_job *j, int n, int bg)
 {
-
 	j->first_process = NULL;
 	j->next = NULL;
 	j->signal_num = 0;

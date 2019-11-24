@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   str_tab_duplicate.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 21:32:43 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/11/21 11:11:21 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/24 15:18:27 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void		free_string_tab(char **str_tab)
 	}
 }
 
-char	**str_tab_duplicate(char **from)
+char			**str_tab_duplicate(char **from)
 {
 	int		i;
 	char	**to;

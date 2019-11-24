@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 14:37:57 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/20 12:58:51 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/24 20:36:55 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,15 @@ static int		sh_lexer_exp_handle_error(t_lexer *lexer, char *start, int end)
 	}
 	else
 		return (LEX_CONTINUE);
+}
+
+static int		sh_lexer_exp_ret_value(t_lexer *lexer, char *start, int end)
+{
+	if ((end == 0 || end == -1))
+		return (sh_lexer_exp_handle_error(lexer, start, end));
+	lexer->expansion = '$';
+	lexer->tok_len += end;
+	return (LEX_OK);
 }
 
 static int		sh_lexer_exp(t_lexer *lexer)
@@ -57,11 +66,7 @@ static int		sh_lexer_exp(t_lexer *lexer)
 	}
 	else
 		return (LEX_CONTINUE);
-	if ((end == 0 || end == -1) && ((lexer->mode != E_LEX_AUTOCOMPLETION || 1))) // to remove || 1 and fix here
-		return (sh_lexer_exp_handle_error(lexer, start, end));
-	lexer->expansion = '$';
-	lexer->tok_len += end;
-	return (LEX_OK);
+	return (sh_lexer_exp_ret_value(lexer, start, end));
 }
 
 int				sh_lexer_rule5(t_lexer *lexer)

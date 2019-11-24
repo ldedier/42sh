@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   job_notify.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 01:05:04 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/11/21 10:58:37 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/24 15:15:53 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ static void		handle_job_stopped(t_job *j, t_job **tmp)
 	j->notified = 1;
 	*tmp = j;
 }
+
 /*
 ** When we recieve a SIGCHLD from a process in the background,
 **	We call waitpid with the flag "WNOHANG" that will return the pid of

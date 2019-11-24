@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 14:25:15 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/18 07:47:56 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/24 17:11:23 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,7 @@ static int	sh_lexer_rule1_process_quoted_start(t_lexer *lexer, int reading)
 		if (lexer->mode == E_LEX_AUTOCOMPLETION)
 			return (LEX_ERR);
 		else if (lexer->quoted)
-		{
 			return (sh_perror_unexpected_eof(lexer));
-		}
 	}
 	if (lexer->quoted)
 	{

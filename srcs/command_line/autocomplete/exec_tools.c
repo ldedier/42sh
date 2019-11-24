@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_tools.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 19:35:14 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/04 19:35:18 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/24 15:20:37 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int		sh_free_turn_exec_autocompletion(t_exec *exec, int ret)
 	free(exec->word.to_compare);
 	return (ret);
 }
+
 int		sh_free_turn_exec(t_exec *exec, int ret)
 {
 	free_execution_tools(&exec->tokens, &exec->ast_root, &exec->cst_root);

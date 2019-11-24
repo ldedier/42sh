@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   job_put_in_bg.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 00:10:55 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/11/21 11:02:06 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/24 15:11:33 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,10 @@ int			job_put_in_bg(t_job *j)
 	t_process	*p;
 
 	if (j == NULL || j->first_process == NULL)
+	{
 		return (sh_perror("job_put_in_bg",
 				"Cannot put the job in the background"));
+	}
 	j->foreground = 0;
 	j->notified = 1;
 	ft_dprintf(g_term_fd, "[%d]  ", j->number);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   jobs_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 23:24:10 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/11/21 14:14:56 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/24 15:18:08 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,9 @@
 
 static void		init_jc_values(void)
 {
-	int i = 0;
+	int i;
 
+	i = 0;
 	while (i < MAX_JOBS)
 		g_job_ctrl->job_num[i++] = 0;
 	g_job_ctrl->first_job = NULL;
@@ -31,7 +32,7 @@ static void		init_jc_values(void)
 static int		jc_set_process_group(void)
 {
 	g_job_ctrl->shell_pgid = getpid();
-	if (setpgid (g_job_ctrl->shell_pgid, g_job_ctrl->shell_pgid) < 0)
+	if (setpgid(g_job_ctrl->shell_pgid, g_job_ctrl->shell_pgid) < 0)
 	{
 		free(g_job_ctrl);
 		return (sh_perror("setpgid",
@@ -60,11 +61,10 @@ int				jobs_init(void)
 		return (sh_perror(SH_ERR1_MALLOC, "jobs_init"));
 	init_jc_values();
 	g_job_ctrl->interactive = isatty(STDIN_FILENO);
-
 	if (g_job_ctrl->interactive)
 	{
-		while (tcgetpgrp (g_term_fd) != (g_job_ctrl->shell_pgid = getpgrp ()))
-			if (kill (- g_job_ctrl->shell_pgid, SIGTTIN) < 0)
+		while (tcgetpgrp(g_term_fd) != (g_job_ctrl->shell_pgid = getpgrp()))
+			if (kill(-g_job_ctrl->shell_pgid, SIGTTIN) < 0)
 			{
 				free(g_job_ctrl);
 				return (sh_perror("kill",
