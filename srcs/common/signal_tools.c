@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal_tools.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/22 10:38:19 by ldedier           #+#    #+#             */
-/*   Updated: 2019/10/10 01:26:10 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/24 19:46:45 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,8 @@ void	transmit_sig_and_exit(int signal)
 void	handle_stp(int sgnl)
 {
 	(void)sgnl;
-	// sh_reset_shell(0);
-	// signal(SIGTSTP, SIG_DFL);
-	// if (ioctl(0, TIOCSTI, "\x1a") == -1)
-	// 	exit(sh_reset_shell(1));
-	ft_dprintf(g_term_fd, "%sReceived SIGTSTP from pid: %d%s\n", RED, getpid(), EOC);
+	ft_dprintf(g_term_fd,
+	"%sReceived SIGTSTP from pid: %d%s\n", RED, getpid(), EOC);
 }
 
 void	handle_cont(int sgnl)
