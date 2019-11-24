@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:41:27 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/24 17:13:40 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/24 20:27:33 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ int		sh_perror_unexpected_eof(t_lexer *lexer)
 		return (FAILURE);
 	if (lexer->quoted == '\'' || lexer->quoted == '"')
 		c = lexer->quoted;
-	else if (lexer->quoted == '>' || lexer->quoted == '<' || lexer->quoted == '(')
+	else if (lexer->quoted == '>' || lexer->quoted == '<'
+		|| lexer->quoted == '(')
 		c = ')';
 	else if (lexer->quoted == '{')
 		c = '}';

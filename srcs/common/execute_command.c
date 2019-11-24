@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/15 16:08:40 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/24 16:11:12 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/24 20:01:09 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ static void	sh_process_command_parse_error(t_shell *shell, int ret, t_exec *res)
 	if (!isatty(0))
 		shell->running = 0;
 }
+
 static int	sh_process_command(t_shell *shell, char *command)
 {
 	int			ret;
