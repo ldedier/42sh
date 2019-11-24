@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/15 16:08:40 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/24 15:23:03 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/24 16:11:12 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,15 @@ void		free_execution_tools(t_list **tokens, t_ast_node **ast_root,
 	ft_lstdel(tokens, sh_free_token_lst);
 }
 
+static void	sh_process_command_parse_error(t_shell *shell, int ret, t_exec *res)
+{
+	sh_perror_err("syntax error", NULL);
+	if (sh_env_update_ret_value_and_question(shell, ret) == FAILURE)
+		ret = sh_perror(SH_ERR1_MALLOC, "sh_process_command (2)");
+	ft_lstdel(&res->tokens, sh_free_token_lst);
+	if (!isatty(0))
+		shell->running = 0;
+}
 static int	sh_process_command(t_shell *shell, char *command)
 {
 	int			ret;
@@ -30,21 +39,14 @@ static int	sh_process_command(t_shell *shell, char *command)
 	res.tokens = NULL;
 	sh_verbose_update(shell);
 	ret = 0;
-	if ((ret = sh_lexer(command, &res.tokens, shell, E_LEX_STANDARD)) != SUCCESS)
+	if ((ret = sh_lexer(command, &res.tokens, shell, E_LEX_STANDARD)))
 	{
 		if (sh_env_update_ret_value_and_question(shell, ret) == FAILURE)
 			ret = sh_perror(SH_ERR1_MALLOC, "sh_process_command (1)");
 		ft_lstdel(&res.tokens, sh_free_token_lst);
 	}
 	else if ((ret = sh_parser(shell, &shell->parser, &res)))
-	{
-		sh_perror_err("syntax error", NULL);
-		if (sh_env_update_ret_value_and_question(shell, ret) == FAILURE)
-			ret = sh_perror(SH_ERR1_MALLOC, "sh_process_command (2)");
-		ft_lstdel(&res.tokens, sh_free_token_lst);
-		if (!isatty(0))
-			shell->running = 0;
-	}
+		sh_process_command_parse_error(shell, ret, &res);
 	else
 	{
 		ret = sh_process_traverse(shell, res.ast_root);
