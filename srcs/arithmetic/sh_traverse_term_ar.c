@@ -17,7 +17,7 @@ static long	sh_traverse_term_ar_operand(t_ast_node *node,
 {
 	t_ast_node	*middle_node;
 	t_ast_node	*third_node;
-	int			third_node_res;
+	long		third_node_res;
 
 	middle_node = node->children->next->content;
 	third_node = node->children->next->next->content;

@@ -63,7 +63,7 @@ int			sh_expansions_arithmetic_fill(t_expansion *exp, char *start)
 	return (SUCCESS);
 }
 
-static int	arithmetic_process_ret_value(t_expansion *exp, int ret)
+static int	arithmetic_process_ret_value(t_expansion *exp, long ret)
 {
 	char	*buffer;
 

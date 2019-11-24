@@ -12,8 +12,8 @@
 
 #include "sh_21.h"
 
-static int		process_get_down_from_command(int i, int cursor_y,
-	int full_y, int research_nb_lines)
+static int		process_get_down_from_command(int i, int full_y,
+	int cursor_y, int research_nb_lines)
 {
 	char	*str;
 	int		ret;

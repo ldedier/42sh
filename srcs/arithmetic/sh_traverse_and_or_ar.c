@@ -15,7 +15,7 @@
 static long	sh_traverse_and_or_ar_operand(t_ast_node *node, t_context *context)
 {
 	t_ast_node	*middle_node;
-	int			first;
+	long		first;
 
 	middle_node = (t_ast_node *)node->children->next->content;
 	first = sh_traverse_arithmetic(node->children->content, context);
