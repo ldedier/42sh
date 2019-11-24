@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 14:33:21 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/04 20:37:57 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/24 23:03:57 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,10 @@ void	replace_cursor_on_index(void)
 		- g_glob.command_line.scrolled_lines;
 	x = (get_true_cursor_pos(g_glob.cursor)) % g_glob.winsize.ws_col;
 	str = tgetstr("do", NULL);
-	while (y--)
+	while (y-- > 0)
 		tputs(str, 1, putchar_int);
 	str = tgetstr("nd", NULL);
-	while (x--)
+	while (x-- > 0)
 		tputs(str, 1, putchar_int);
 }
 
