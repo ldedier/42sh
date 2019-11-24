@@ -258,12 +258,6 @@ int					sh_init_shell(t_shell *shell, char **env);
 int					sh_main_init_env(t_shell *shell, char **env);
 
 /*
-** init_tabs.c
-*/
-int					sh_main_init_env(t_shell *shell, char **env);
-int					sh_main_init_vars(t_shell *shell);
-
-/*
 ** init_term.c
 */
 int					sh_init_terminal_database(char **env);
