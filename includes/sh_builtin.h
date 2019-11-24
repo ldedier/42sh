@@ -3,21 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   sh_builtin.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 11:36:31 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/23 03:04:42 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/24 15:20:58 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SH_BUILTIN_H
 # define SH_BUILTIN_H
 
-# if __APPLE__ && __MACH__
-#  define NB_BUILTINS	19
-# else
-#  define NB_BUILTINS	18
-# endif
+# define NB_BUILTINS	18
 
 # include "sh_grammar.h"
 # include "sh_21.h"

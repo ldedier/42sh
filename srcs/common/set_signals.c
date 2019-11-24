@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_signals.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/31 16:05:53 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/21 14:18:02 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/24 15:20:08 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void			handler_sighup(int signo)
 	}
 }
 
-void		handler_sigwinch(int signo)
+void			handler_sigwinch(int signo)
 {
 	if (signo == SIGWINCH)
 	{

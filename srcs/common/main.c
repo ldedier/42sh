@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 17:59:53 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/21 14:47:52 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/24 15:27:04 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,20 @@ static int	main_exit_value(t_shell *shell, int ret)
 	if (isatty(0) && ret_save != 2)
 		ft_dprintf(2, "exit\n");
 	if (g_term_fd != -1)
-		close (g_term_fd);
+		close(g_term_fd);
 	return (ret);
+}
+
+static int	main_non_canonical_mode(t_shell *shell, char **env)
+{
+	if (sh_init_terminal(shell, env) != SUCCESS)
+		return (FAILURE);
+	if (sh_init_shell(shell, env) != SUCCESS)
+	{
+		sh_free_all(shell);
+		return (sh_reset_shell(FAILURE));
+	}
+	return (sh_process_noncanonical_mode(shell));
 }
 
 int			main(int argc, char **argv, char **env)
@@ -55,16 +67,7 @@ int			main(int argc, char **argv, char **env)
 	}
 	if (!isatty(STDIN_FILENO))
 		ret = sh_process_canonical_mode(&shell, env);
-	else
-	{
-		if (sh_init_terminal(&shell, env) != SUCCESS)
-			return (FAILURE);
-		if (sh_init_shell(&shell, env) != SUCCESS)
-		{
-			sh_free_all(&shell);
-			return (sh_reset_shell(FAILURE));
-		}
-		ret = sh_process_noncanonical_mode(&shell);
-	}
+	else if ((ret = main_non_canonical_mode(&shell, env)) == FAILURE)
+		return (FAILURE);
 	return (main_exit_value(&shell, ret));
 }
