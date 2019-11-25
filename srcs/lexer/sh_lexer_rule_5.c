@@ -6,11 +6,25 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 14:37:57 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/24 20:36:55 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/25 02:34:03 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
+
+static int		sh_lexer_exp_autocomplete(t_lexer *lexer, char *start)
+{
+	lexer->tok_start = start - lexer->input;
+	if (start[0] == '`')
+		lexer->tok_len = 1;
+	else if (start[1] == '(' && start[2] == '(')
+		lexer->tok_len = 3;
+	else
+		lexer->tok_len = 2;
+	if  (t_lexer_add_token(lexer) == LEX_FAIL)
+		return (FAILURE);
+	return (LEX_OK);
+}
 
 static int		sh_lexer_exp_handle_error(t_lexer *lexer, char *start, int end)
 {
@@ -34,6 +48,8 @@ static int		sh_lexer_exp_handle_error(t_lexer *lexer, char *start, int end)
 
 static int		sh_lexer_exp_ret_value(t_lexer *lexer, char *start, int end)
 {
+	if (lexer->mode == E_LEX_AUTOCOMPLETION && end == -1)
+		return (sh_lexer_exp_autocomplete(lexer, start));
 	if ((end == 0 || end == -1))
 		return (sh_lexer_exp_handle_error(lexer, start, end));
 	lexer->expansion = '$';
