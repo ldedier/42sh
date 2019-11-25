@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_execute_execve.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 11:52:40 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/22 18:26:18 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/25 10:24:29 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ static int	call_execve(t_context *context)
 {
 	int		ret;
 
-	ret = SUCCESS;
 	if (!context->params->tbl || !context->params->tbl[0])
 		exit(context->shell->ret_value);
 	if (context->path == NULL)
@@ -44,7 +43,6 @@ void		sh_execute_execve(t_ast_node *parent_node, t_context *context)
 	int		ret;
 
 	reset_signals();
-	ret = SUCCESS;
 	if ((ret = loop_traverse_redirection(parent_node, context)) == SUCCESS)
 		ret = call_execve(context);
 	sh_reset_redirection(&context->redirections);

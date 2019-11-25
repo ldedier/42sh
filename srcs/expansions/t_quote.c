@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 21:49:08 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/23 09:21:45 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/25 10:44:27 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,9 +112,7 @@ int			t_quote_get_offset(int i, t_quote **quotes)
 	{
 		j++;
 	}
-	if (*(quotes[j]->c) == quoted)
-	{
+	if (quotes[j] && *(quotes[j]->c) == quoted)
 		return (quotes[j]->index);
-	}
 	return (-1);
 }

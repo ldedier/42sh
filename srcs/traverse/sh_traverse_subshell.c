@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_traverse_subshell.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/02 10:03:30 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/22 19:15:48 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/25 10:15:24 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ static int	child_part(t_ast_node *node, t_context *context)
 	t_ast_node	*compound_redir;
 	t_list		*lst_redi;
 
-	ret = 0;
 	if (g_job_ctrl->interactive)
 	{
 		if (set_pgid_child(getpid()) != SUCCESS)

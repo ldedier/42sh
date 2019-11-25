@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 23:28:27 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/24 21:03:03 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/25 10:20:26 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ static int	process_tab_autocompletion(
 	int		ret;
 	t_exec	exec;
 
-	ret = SUCCESS;
 	if ((ret = populate_parsed_word_by_index(shell,
 		command_line->dy_str->str, command_line->current_index, &exec)))
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_expansions_field_splitting_get_word.c           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdugoudr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/17 19:13:34 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/23 09:21:39 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/25 10:59:18 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int			sh_get_next_word_nws(t_split_data *data, t_split_word *word, int *i)
 		return (0);
 	word->start = *i;
 	if (!ft_strchr(data->nws, data->input[*i])
-			|| (is_quote = t_quote_is_original_quote(*i, data->quotes) > 0))
+			|| (is_quote = t_quote_is_original_quote(*i, data->quotes)) > 0)
 	{
 		word->start = *i;
 		if (sh_skip_word_nws(data, word, i) < 0)

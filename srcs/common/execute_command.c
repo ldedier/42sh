@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/15 16:08:40 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/25 07:53:40 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/25 14:14:01 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void		free_execution_tools(t_list **tokens, t_ast_node **ast_root,
 	ft_lstdel(tokens, sh_free_token_lst);
 }
 
-static void	sh_process_command_parse_error(t_shell *shell, int ret, t_exec *res)
+static int	sh_process_command_parse_error(t_shell *shell, int ret, t_exec *res)
 {
 	sh_perror_err("syntax error", NULL);
 	if (sh_env_update_ret_value_and_question(shell, ret) == FAILURE)
@@ -28,6 +28,7 @@ static void	sh_process_command_parse_error(t_shell *shell, int ret, t_exec *res)
 	ft_lstdel(&res->tokens, sh_free_token_lst);
 	if (!isatty(0))
 		shell->running = 0;
+	return (ret);
 }
 
 static int	sh_process_command(t_shell *shell, char *command)
@@ -39,7 +40,6 @@ static int	sh_process_command(t_shell *shell, char *command)
 	res.cst_root = NULL;
 	res.tokens = NULL;
 	sh_verbose_update(shell);
-	ret = 0;
 	if ((ret = sh_lexer(command, &res.tokens, shell, E_LEX_STANDARD)))
 	{
 		if (sh_env_update_ret_value_and_question(shell, ret) == FAILURE)
@@ -47,7 +47,7 @@ static int	sh_process_command(t_shell *shell, char *command)
 		ft_lstdel(&res.tokens, sh_free_token_lst);
 	}
 	else if ((ret = sh_parser(shell, &shell->parser, &res)))
-		sh_process_command_parse_error(shell, ret, &res);
+		ret = sh_process_command_parse_error(shell, ret, &res);
 	else
 	{
 		ret = sh_process_traverse(shell, res.ast_root);

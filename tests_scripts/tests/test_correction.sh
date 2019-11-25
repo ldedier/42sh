@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/28 01:13:40 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/25 03:09:20 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/25 10:23:39 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,12 +15,11 @@ launch "correction"
 	test_launch 'doesnotexist' 'echo $?'
 	test_launch '/bin/ls ; echo $?'
 	test_launch 'ls ; echo $?'
-	test_launch '/bin/ls -alF' ' echo $?'
-	test_launch '/bin/ls -l -a -F' 'echo $?'
+	test_launch '/bin/ls -aFt' ' echo $?'
+	test_launch '/bin/ls -A -t -F' 'echo $?'
 
 	launch_show "21sh"
-	test_launch 'ls > /tmp/ftsh_ls_out /' 'cat /tmp/ftsh_ls_out'
-	test_launch '< /tmp/ftsh_ls_out cat -e >> /tmp/ftsh_ls_out' 'cat /tmp/ftsh_ls_out'
+	test_launch 'ls > /tmp/ftsh_ls_out /' 'cat /tmp/ftsh_ls_out' '< /tmp/ftsh_ls_out cat -e >> /tmp/ftsh_ls_out' 'cat /tmp/ftsh_ls_out' 'rm /mp/ftsh_ls_out'
 	test_launch 'echo 1 >out >&2 2>err' 'echo 2 >out 2>err' 'cat out' 'cat err' 'rm out err'
 	test_launch 'echo nonstadard fd > du_fd' 'cat 4 non-standard fd'
 	test_launch 'cat <&4 2>&1 2>/dev/null'
@@ -31,7 +30,7 @@ launch "correction"
 	test_launch 'ls | sort -rn | cat -e'
 	test_launch ' base64 < /dev/urandom | head -c 1000 | grep 42 | wc -l | sed -e s/1/Yes/g -e s/0/No/g'
 	test_launch "ps a | grep 'base64' | grep -v 'grep'"
-	test_launch 'ls -1; touch test_file; ls -1'
+	test_launch 'ls -1 ; touch test_file ; ls -1' 'rm test_file'
 	test_launch ' exit 1 | exit 2 | exit 3; echo stayin alive' 'echo $?'
 	test_launch ' echo out >&-; echo out2' 'echo out >&- | echo out2'
 	test_launch 'echo out >&- || echo out2' 'echo out >&- || echo out2'
@@ -61,7 +60,7 @@ EOF'
 	test_launch 'type type ls'
 
 	launch_show "logical operators"
-	test_launch 'ls -l && ls'
+	test_launch 'ls -A && ls'
 	test_launch 'ls doesno || echo tamer' 'echo $?'
 	test_launch 'echo noerror || echo asd' 'echo $?'
 	test_launch 'ifalse && echo foo || echo bar' 'true || echo foo && echo bar'
@@ -79,7 +78,7 @@ EOF'
 	test_launch 'true; echo ${?}; false; echo ${?}'
 
 	launch_show "Job Control"
-	test_launch 'mkfifo fifo' 'ls -lR /usr >fifo 2>&1 &' 'jobs'
+	test_launch 'mkfifo fifo' 'ls -AR /usr >fifo 2>&1 &' 'jobs'
 	test_launch 'emacs -nw &' 'emacs -nw &' 'jobs' 'jobs' 'fg'
 
 	launch_show "Signaux"
@@ -132,8 +131,9 @@ EOF'
 	test_launch 'ls asdasd' 'fc -s -- -1 2>/dev/null'
 
 	launch_show 'hash'
-	test_launch 'ls ; type ls; env >/dev/null' 'hash mkdir; hash' 'hash -r ; hash'
-	test_launch 'ls ; hash NOTHING ; hash' 'hash ps 42sh umount ; hash' ' echo $?'
+	## Deprecated
+#	test_launch 'ls ; type ls; env >/dev/null' 'hash mkdir; hash' 'hash -r ; hash'
+#	test_launch 'ls ; hash NOTHING ; hash' 'hash ps 42sh umount ; hash' ' echo $?'
 
 	launch_show 'test'
 	test_launch_pipe tests_files/test/test_1

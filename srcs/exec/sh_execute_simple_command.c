@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_execute_simple_command.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 17:31:19 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/11/21 11:54:11 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/25 10:26:30 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ int			sh_execute_simple_command(
 {
 	int	ret;
 
-	ret = SUCCESS;
 	if (context->params->tbl && context->params->tbl[0]
 			&& (context->builtin = sh_builtin_find(context)))
 		ret = sh_execute_builtin(father_node, context);
