@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_execute_pipe.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 08:21:00 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/11/22 16:59:56 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/25 10:26:21 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,5 +145,5 @@ int			sh_execute_pipe(t_ast_node *node, t_context *context)
 	}
 	free(pipes.tab_pds);
 	free(pipes.tab_pid);
-	return (SUCCESS);
+	return (ret);
 }

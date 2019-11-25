@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_traverse_command.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/02 00:35:13 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/22 19:16:58 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/25 10:15:12 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ static int	compound_and_redirection(t_ast_node *node, t_context *context)
 
 	child = node->children->content;
 	child = child->children->content;
+	ret = SUCCESS;
 	if (node->children->next)
 	{
 		if ((ret = apply_expansion_to_children(node->children->next, context)))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   compute_lr_tables.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 17:49:25 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/18 10:06:59 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/25 10:20:55 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_action	**sh_create_tables(t_lr_parser *parser)
 		if (!(res[i] = (t_action *)malloc(parser->cfg.nb_symbols
 			* sizeof(t_action))))
 		{
-			while (--i)
+			while (--i >= 0)
 				free(res[i]);
 			free(res);
 			return (NULL);
