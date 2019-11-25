@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/14 14:27:47 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/23 21:15:58 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/24 16:17:32 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,40 @@ void	free_file(t_file *file)
 	free(file);
 }
 
-void	free_ast_tools(t_context *context)
+void	free_ast_tools(t_context *context, int free_choice)
 {
-	sh_free_ast_node(&context->shell->exec->ast_root, 0);
-	sh_free_ast_node(&context->shell->exec->cst_root, 0);
-	ft_lstdel(&context->shell->exec->tokens, sh_free_token_lst);
-	ft_strdel(&context->shell->hist_cmd);
-	t_context_free_content(context);
+	if (free_choice & 1)
+	{
+		sh_free_ast_node(&context->shell->exec->ast_root, 0);
+		sh_free_ast_node(&context->shell->exec->cst_root, 0);
+		ft_lstdel(&context->shell->exec->tokens, sh_free_token_lst);
+		free_choice &= ~1;
+	}
+	if (free_choice & 2)
+	{
+		ft_strdel(&context->shell->hist_cmd);
+		free_choice &= ~2;
+	}
+	if (free_choice & 4)
+	{
+		t_context_free_content(context);
+		free_choice &= ~4;
+	}
+	if (free_choice & 8)
+	{
+		ft_strdel(&context->cmd_string);
+		free_choice &= ~8;
+	}
+	// if (free_choice & 16 && IS_PIPE(context->cmd_type))
+	if (IS_PIPE(context->cmd_type))
+	// if (g_job_ctrl->to_free & 16)
+	{
+		free(context->shell->pipe->tab_pds);
+		context->shell->pipe->tab_pds = NULL;
+		free(context->shell->pipe->tab_pid);
+		context->shell->pipe->tab_pid = NULL;
+		g_job_ctrl->to_free &= ~16;
+	}
 }
 
 void	sh_free_all(t_shell *shell)

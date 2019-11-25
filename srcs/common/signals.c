@@ -1,66 +1,65 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals.c                                          :+:      :+:    :+:   */
+/*   set_signals.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/07/19 08:53:23 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/17 16:30:21 by ldedier          ###   ########.fr       */
+/*   Created: 2019/07/31 16:05:53 by ldedier           #+#    #+#             */
+/*   Updated: 2019/11/21 14:18:02 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
+#include "sys/signal.h"
+#include <stdio.h>
+#include <unistd.h>
+#include <signal.h>
+#include <string.h>
 
-/*
-** mdaoud:
-** Since the change in signal handling, this file is no longer needed.
-** But I kept it just in case
-*/
-
-pid_t		g_parent = 0;
-
-void		transmit_sig_no_motion(int signal)
+void			reset_signals(void)
 {
-	if (g_parent)
-		kill(g_parent, signal);
+	int i;
+
+	i = 1;
+	while (i <= 31)
+		signal(i++, SIG_DFL);
+	if (g_job_ctrl->cmd_subst)
+		signal(SIGTSTP, SIG_IGN);
 }
 
-void		transmit_sig_and_die(int signal)
+void			handler_sighup(int signo)
 {
-	if (g_parent)
-		kill(g_parent, signal);
-	exit(sh_reset_shell(0));
-}
-
-void		default_sig_bonus(int sgnl)
-{
-	if (g_parent)
+	if (signo == SIGHUP)
 	{
-		kill(g_parent, sgnl);
-		waitpid(g_parent, NULL, 0);
+		jobs_terminate();
+		sh_post_execution();
+		exit(128 + SIGHUP);
 	}
-	signal(sgnl, SIG_DFL);
-	sh_reset_shell(0);
-	kill(getpid(), sgnl);
 }
 
-void		default_sig(int sgnl)
+void		handler_sigwinch(int signo)
 {
-	if (g_parent)
+	if (signo == SIGWINCH)
 	{
-		kill(g_parent, sgnl);
-		waitpid(g_parent, NULL, 0);
+		if (ioctl(g_term_fd, TIOCGWINSZ, &g_glob.winsize) == -1)
+			exit(sh_reset_shell(1));
+		if (isatty(g_term_fd) && g_glob.command_line.dy_str)
+			render_command_line(&g_glob.command_line, 0, 1);
 	}
-	sh_reset_shell(0);
-	exit(0);
 }
 
-void		handle_resize(int signal)
+void			init_signals(void)
 {
-	(void)signal;
-	if (ioctl(0, TIOCGWINSZ, &g_glob.winsize) == -1)
-		exit(sh_reset_shell(1));
-	if (isatty(0) && g_glob.command_line.dy_str)
-		render_command_line(&g_glob.command_line, 0, 1);
+	int i;
+
+	i = 1;
+	while (i <= 31)
+	{
+		if (i != SIGSTOP && i != SIGKILL)
+			signal(i, SIG_IGN);
+		i++;
+	}
+	signal(SIGCHLD, SIG_DFL);
+	signal(SIGWINCH, handler_sigwinch);
 }

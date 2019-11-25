@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 11:52:40 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/23 21:32:47 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/24 15:44:07 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ void		sh_execute_execve(t_ast_node *parent_node, t_context *context)
 		ret = call_execve(context);
 	sh_reset_redirection(&context->redirections);
 	sh_free_all(context->shell);
-	free_ast_tools(context);
-	// ft_strdel(&context->cmd_string);
+	free_ast_tools(context, 31);
 	exit(ret);
 }

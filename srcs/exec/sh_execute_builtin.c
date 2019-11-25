@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 11:34:44 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/23 21:18:18 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/24 13:49:07 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	execute_child_part(
 	ret = context->builtin(context);
 	g_job_ctrl->interactive = 1;
 	sh_free_all(context->shell);
-	free_ast_tools(context);
+	free_ast_tools(context, 1+2+4+8);
 	ft_strdel(&context->cmd_string);
 	return (ret);
 }

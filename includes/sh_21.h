@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/30 15:48:56 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/23 21:12:21 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/24 15:27:56 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,6 +173,7 @@ struct				s_shell
 	int				exec_depth;
 	t_exec			*exec;
 	char			*hist_cmd;
+	t_pipe			*pipe;
 };
 
 /*
@@ -211,7 +212,7 @@ int					execute_command(
 void				sh_free_binary(t_binary *binary);
 void				sh_free_binary_lst(void *b, size_t dummy);
 void				free_file(t_file *file);
-void				free_ast_tools(t_context *context);
+void				free_ast_tools(t_context *context, int free_choice);
 void				sh_free_all(t_shell *shell);
 
 /*
@@ -275,14 +276,6 @@ int					sh_init_terminal(t_shell *shell, char **env);
 int					sh_process_noncanonical_mode(t_shell *shell);
 
 /*
-** set_signals.c
-*/
-void				reset_signals(void);
-void				handler_sighup(int signo);
-void				handler_sigwinch(int signo);
-void				init_signals(void);
-
-/*
 ** sh_split_path.c
 */
 char				**sh_split_path(char const *path);
@@ -295,19 +288,12 @@ int					sh_set_shell_back(int ret);
 int					clear_all(void);
 
 /*
-** signal_tools.c
-*/
-void				transmit_sig_and_exit(int signal);
-void				handle_stp(int sgnl);
-void				handle_cont(int sgnl);
-
-/*
 ** signals.c
 */
-void				transmit_sig_and_die(int signal);
-void				default_sig_bonus(int sgnl);
-void				default_sig(int sgnl);
-void				handle_resize(int signal);
+void				reset_signals(void);
+void				handler_sighup(int signo);
+void				handler_sigwinch(int signo);
+void				init_signals(void);
 
 /*
 ** t_entry.c

@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/31 12:20:31 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/21 11:53:45 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/24 13:40:47 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	sh_reset_signals_pre_exec(void)
 
 static void	sh_reset_signals_post_exec(void)
 {
-	signal(SIGWINCH, handle_resize);
+	signal(SIGWINCH, handler_sigwinch);
 }
 
 int			sh_pre_execution(void)

@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 23:24:10 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/11/21 14:14:56 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/24 16:15:04 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static void		init_jc_values(void)
 	g_job_ctrl->ampersand_eol = 0;
 	g_job_ctrl->ampersand = 0;
 	g_job_ctrl->cmd_subst = 0;
+	g_job_ctrl->to_free = 0;
 }
 
 static int		jc_set_process_group(void)

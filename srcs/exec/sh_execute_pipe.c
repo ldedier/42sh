@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 08:21:00 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/11/22 16:59:56 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/24 16:18:49 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,7 @@ int			sh_execute_pipe(t_ast_node *node, t_context *context)
 		ret = FAILURE;
 	else
 	{
+		context->shell->pipe = &pipes;
 		ret = -1;
 		while (++ret < pipes.nb_cmd)
 			pipes.tab_pid[ret] = 0;
