@@ -6,14 +6,14 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 11:36:31 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/24 15:20:58 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/25 11:24:21 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SH_BUILTIN_H
 # define SH_BUILTIN_H
 
-# define NB_BUILTINS	18
+# define NB_BUILTINS	19
 
 # include "sh_grammar.h"
 # include "sh_21.h"
@@ -369,6 +369,11 @@ int					print_options_plus(t_shell *shell);
 t_builtin_container	*get_builtins(void);
 t_builtin			sh_builtin_find_name(char *name);
 t_builtin			sh_builtin_find(t_context *context);
+
+/*
+** sh_builtin_bonus.c
+*/
+int					sh_builtin_bonus(t_context *context);
 
 /*
 ** sh_builtin_echo.c

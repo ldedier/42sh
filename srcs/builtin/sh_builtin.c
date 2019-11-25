@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 19:04:16 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/24 15:22:33 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/25 11:23:10 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ t_builtin_container		*get_builtins(void)
 		{ "fc", sh_builtin_fc },
 		{ "alias", sh_builtin_alias },
 		{ "unalias", sh_builtin_unalias },
+		{ "beeeh", sh_builtin_bonus }
 	};
 
 	return (res);
