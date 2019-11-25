@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 11:34:44 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/21 19:29:24 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/25 22:39:48 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ static int	execute_child_part(
 	free_execution_tools(&context->shell->exec->tokens,
 		&context->shell->exec->ast_root, &context->shell->exec->cst_root);
 	sh_free_all(context->shell);
+	ft_strdel(&context->shell->hist_dup);
 	free(context->cmd_string);
 	t_context_free_content(context);
 	return (ret);

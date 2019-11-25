@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_execute_execve.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 11:52:40 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/25 14:42:08 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/25 22:40:00 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void		sh_execute_execve(t_ast_node *parent_node, t_context *context)
 	t_context_free_content(context);
 	free(context->cmd_string);
 	free_execution_tools(&temp->tokens, &temp->ast_root, &temp->cst_root);
+	ft_strdel(&context->shell->hist_dup);
 	sh_free_all(context->shell);
 	exit(ret);
 }

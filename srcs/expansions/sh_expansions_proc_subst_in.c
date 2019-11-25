@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_expansions_proc_subst_in.c                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 14:29:58 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/22 11:35:39 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/25 22:44:21 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,9 @@ static void	sh_get_process_subst_in_child(
 	}
 	close(fds[PIPE_IN]);
 	g_job_ctrl->interactive = 0;
+	free_execution_tools(&shell->exec->tokens, &shell->exec->ast_root,
+		&shell->exec->cst_root);
+	ft_strdel(&shell->hist_dup);
 	ret = execute_command(shell, command, 0);
 	g_job_ctrl->interactive = 1;
 	close(fds[PIPE_OUT]);

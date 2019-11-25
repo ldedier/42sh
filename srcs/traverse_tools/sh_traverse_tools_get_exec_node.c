@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:00:19 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/04 14:08:40 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/25 22:55:45 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ int			get_node_to_exec(t_ast_node *node, t_context *context,
 			context->cmd_type = SIMPLE_NODE;
 			context->wflags = 0;
 			ret = f(node_to_exec, curr_node->children->content, context);
+			if (context->shell->ret_value == 130)
+				return (SUCCESS);
 			node_to_exec = NULL;
 		}
 		else
