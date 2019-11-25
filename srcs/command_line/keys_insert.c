@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 14:17:03 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/04 21:17:29 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/25 01:43:20 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,27 @@ int		process_enter(t_command_line *command_line)
 	return (1);
 }
 
+int		sh_can_add_searcher(t_command_line *command_line)
+{
+	(void)command_line;
+
+	int research_nb_lines;
+	int command_lines;
+	
+	command_lines = ft_max(1,
+		(((get_true_cursor_pos(ft_strlen_utf8(command_line->dy_str->str))))
+			 / g_glob.winsize.ws_col) + 1);
+	research_nb_lines = get_research_nb_lines_n(command_line,
+		ft_strlen_utf8(command_line->searcher.dy_str->str) + 1);
+	if (command_lines - command_line->scrolled_lines > g_glob.winsize.ws_row)
+		return (research_nb_lines < 2);
+	else
+		return (research_nb_lines +
+			command_lines - command_line->scrolled_lines
+				<= g_glob.winsize.ws_row
+					+ command_line->scrolled_lines ? 1 : 0);
+}
+
 int		process_key_insert_printable_utf8(t_key_buffer *buffer,
 			t_shell *shell, t_command_line *command_line)
 {
@@ -32,13 +53,18 @@ int		process_key_insert_printable_utf8(t_key_buffer *buffer,
 
 	if (command_line->searcher.active)
 	{
-		if (sh_add_to_dy_str(command_line->searcher.dy_str, buffer->buff,
-			buffer->progress))
-			return (FAILURE);
-		c = 0;
-		if (sh_add_to_dy_str(command_line->searcher.dy_str, &c, 1))
-			return (FAILURE);
-		update_research_history(command_line, shell, 0);
+		if (sh_can_add_searcher(command_line))
+		{
+			if (sh_add_to_dy_str(command_line->searcher.dy_str, buffer->buff,
+						buffer->progress))
+				return (FAILURE);
+			c = 0;
+			if (sh_add_to_dy_str(command_line->searcher.dy_str, &c, 1))
+				return (FAILURE);
+			update_research_history(command_line, shell, 0);
+		}
+		else
+			ring_bell();
 	}
 	else
 	{
