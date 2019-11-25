@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 14:17:03 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/25 01:43:20 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/25 01:59:54 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,12 @@ int		process_enter(t_command_line *command_line)
 
 int		sh_can_add_searcher(t_command_line *command_line)
 {
-	(void)command_line;
-
 	int research_nb_lines;
 	int command_lines;
-	
+
 	command_lines = ft_max(1,
 		(((get_true_cursor_pos(ft_strlen_utf8(command_line->dy_str->str))))
-			 / g_glob.winsize.ws_col) + 1);
+			/ g_glob.winsize.ws_col) + 1);
 	research_nb_lines = get_research_nb_lines_n(command_line,
 		ft_strlen_utf8(command_line->searcher.dy_str->str) + 1);
 	if (command_lines - command_line->scrolled_lines > g_glob.winsize.ws_row)

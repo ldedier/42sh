@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/22 14:40:58 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/25 01:19:50 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/25 01:58:42 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,34 +88,20 @@ int		get_scroll_to_add(t_command_line *command_line,
 	if (target_screen_line < 1)
 	{
 		if (command_line->scrolled_lines + target_screen_line > 0)
-		{
-//			ft_dprintf(2, "ollal POPOPODDP %d\n", target_screen_line - 1);
 			return (target_screen_line - 1);
-		}
 		else
-		{
-//			ft_dprintf(2, "ollal POPOPOP %d\n", target_screen_line);
 			return (target_screen_line);
-		}
 	}
 	else if (target_screen_line >= g_glob.winsize.ws_row
 				- 1 - research_nb_lines)
 	{
 		if (should_elipse_end(command_line, command_line->scrolled_lines +
 			target_screen_line - g_glob.winsize.ws_row + 1 + research_nb_lines))
-		{
-//			ft_dprintf(2, "ollalala %d\n", target_screen_line - g_glob.winsize.ws_row
-//				+ research_nb_lines + 2);
 			return (target_screen_line - g_glob.winsize.ws_row
 				+ research_nb_lines + 2);
-		}
 		else
-		{
-//			ft_dprintf(2, "ollalalaWSS %d\n", target_screen_line - g_glob.winsize.ws_row
-//				+ research_nb_lines + 1);
 			return (target_screen_line - g_glob.winsize.ws_row
 				+ research_nb_lines + 1);
-		}
 	}
 	else
 		return (0);
@@ -130,7 +116,6 @@ int		sh_scroll_command_line(t_command_line *command_line,
 	int	research_nb_lines;
 
 	research_nb_lines = get_research_nb_lines(command_line);
-//	ft_dprintf(2, "NB_RESEARCH_LINES: %d\n", research_nb_lines);
 	true_cursor = get_true_cursor_pos_prev_prompt(cursor);
 	while (!should_elipse_end(command_line, command_line->scrolled_lines)
 		&& command_line->scrolled_lines
@@ -141,8 +126,6 @@ int		sh_scroll_command_line(t_command_line *command_line,
 		- command_line->scrolled_lines;
 	ret = get_scroll_to_add(command_line, target_screen_line,
 		research_nb_lines);
-//	ft_dprintf(2, "RET: %d\n", ret);
 	command_line->scrolled_lines += ret;
-//	ft_dprintf(2, "SCROLLED_LINES: %d\n", command_line->scrolled_lines);
 	return (ret);
 }
