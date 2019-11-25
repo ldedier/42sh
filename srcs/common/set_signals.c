@@ -33,9 +33,16 @@ void			handler_sighup(int signo)
 	if (signo == SIGHUP)
 	{
 		jobs_terminate();
-		sh_post_execution();
+		sh_reset_shell(0);
 		exit(128 + SIGHUP);
 	}
+}
+
+static void		handler_term_sig(int signo)
+{
+	jobs_terminate();
+	sh_reset_shell(0);
+	exit(128 + signo);
 }
 
 void			handler_sigwinch(int signo)
@@ -57,9 +64,16 @@ void			init_signals(void)
 	while (i <= 31)
 	{
 		if (i != SIGSTOP && i != SIGKILL)
-			signal(i, SIG_IGN);
+			signal(i, handler_term_sig);
 		i++;
 	}
+	signal(SIGTTIN, SIG_IGN);
+	signal(SIGTTOU, SIG_IGN);
 	signal(SIGCHLD, SIG_DFL);
 	signal(SIGWINCH, handler_sigwinch);
+	signal(SIGHUP, handler_sighup);
+	signal(SIGINT, SIG_IGN);
+	signal(SIGTERM, SIG_IGN);
+	signal(SIGTSTP, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 }

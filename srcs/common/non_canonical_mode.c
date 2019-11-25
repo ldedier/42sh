@@ -41,6 +41,7 @@ int				sh_process_noncanonical_mode(t_shell *shell)
 			return (sh_reset_shell(FAILURE));
 		}
 	}
+	jobs_terminate();
 	sh_free_all(shell);
 	return (sh_reset_shell(SUCCESS));
 }
