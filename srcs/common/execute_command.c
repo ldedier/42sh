@@ -50,6 +50,7 @@ static int	sh_process_command(t_shell *shell, char *command)
 		ret = sh_process_command_parse_error(shell, ret, &res);
 	else
 	{
+		shell->exec = &res;
 		ret = sh_process_traverse(shell, res.ast_root);
 		free_execution_tools(&res.tokens, &res.ast_root, &res.cst_root);
 	}

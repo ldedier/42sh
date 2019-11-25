@@ -41,12 +41,16 @@ static int	call_execve(t_context *context)
 void		sh_execute_execve(t_ast_node *parent_node, t_context *context)
 {
 	int		ret;
+	t_exec	*temp;
 
+	temp = context->shell->exec;
 	reset_signals();
 	if ((ret = loop_traverse_redirection(parent_node, context)) == SUCCESS)
 		ret = call_execve(context);
 	sh_reset_redirection(&context->redirections);
+	t_context_free_content(context);
 	free(context->cmd_string);
+	free_execution_tools(&temp->tokens, &temp->ast_root, &temp->cst_root);
 	sh_free_all(context->shell);
 	exit(ret);
 }

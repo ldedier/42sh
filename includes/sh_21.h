@@ -173,6 +173,7 @@ struct				s_shell
 	int				ret_value_set;
 	int				ret_value;
 	int				exec_depth;
+	t_exec			*exec;
 };
 
 /*

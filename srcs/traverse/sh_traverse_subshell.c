@@ -32,6 +32,9 @@ static int	child_part(t_ast_node *node, t_context *context)
 	if (sh_reset_redirection(&lst_redi))
 		return (FAILURE);
 	g_job_ctrl->interactive = 1;
+	t_context_free_content(context);
+	free_execution_tools(&context->shell->exec->tokens,
+		&context->shell->exec->ast_root,&context->shell->exec->cst_root);
 	sh_free_all(context->shell);
 	if (ret != SUCCESS)
 		exit(ret);

@@ -25,6 +25,9 @@ static int	child_part(t_context *context, char *command, int fds[])
 		return (sh_perror(SH_ERR1_INTERN_ERR, "get_subshell_output"));
 	close(fds[PIPE_OUT]);
 	g_job_ctrl->interactive = 0;
+	t_context_free_content(context);
+	free_execution_tools(&context->shell->exec->tokens,
+		&context->shell->exec->ast_root,&context->shell->exec->cst_root);
 	ret = execute_command(context->shell, command, 0);
 	g_job_ctrl->interactive = 1;
 	close(fds[PIPE_IN]);
