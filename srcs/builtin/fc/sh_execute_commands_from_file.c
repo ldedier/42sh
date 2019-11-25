@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_execute_commands_from_file.c                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/17 15:23:43 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/17 15:29:10 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/25 10:57:20 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ int				sh_execute_commands_from_file(t_shell *shell, char *filename)
 
 	if ((fd = open(filename, O_RDONLY)) == -1)
 		return (sh_perror(SH_ERR1_EDIT, "sh_execute_commands_from_edit_file"));
+	gnl_ret = SUCCESS;
 	while (shell->running && (gnl_ret = get_next_line2(fd, &info, 1)) == 1)
 	{
 		if ((ret = sh_process_read_canonical_gnl(shell, &info)))

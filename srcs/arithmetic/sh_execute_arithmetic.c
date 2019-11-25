@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/15 15:19:04 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/22 14:01:56 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/25 10:38:55 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,16 +38,14 @@ static long	sh_traverse_ar_root(
 	return (sh_traverse_arithmetic(root, context));
 }
 
-static void	handle_parser_error(t_context *cont, t_exec *res)
+static int	handle_parser_error(t_context *cont, t_exec *res, int ret)
 {
-	int		ret;
-
-	ret = 0;
 	sh_perror_err("syntax error", NULL);
 	cont->arithmetic_error = 1;
 	if (sh_env_update_ret_value_and_question(cont->shell, ret) == 2)
 		ret = sh_perror(SH_ERR1_MALLOC, "sh_execute_arithmetic (2)");
 	ft_lstdel(&res->tokens, sh_free_token_lst);
+	return (ret);
 }
 
 long		sh_execute_arithmetic(t_context *cont, char *command)
@@ -58,7 +56,6 @@ long		sh_execute_arithmetic(t_context *cont, char *command)
 	res.ast_root = NULL;
 	res.cst_root = NULL;
 	res.tokens = NULL;
-	ret = 0;
 	if ((ret = sh_ar_lexer(command, &res.tokens, cont->shell)) != SUCCESS)
 	{
 		cont->arithmetic_error = 1;
@@ -67,7 +64,7 @@ long		sh_execute_arithmetic(t_context *cont, char *command)
 		ft_lstdel(&res.tokens, sh_free_token_lst);
 	}
 	else if ((ret = sh_parser(cont->shell, &cont->shell->parser_ar, &res)))
-		handle_parser_error(cont, &res);
+		ret = handle_parser_error(cont, &res, ret);
 	else
 	{
 		ret = sh_traverse_ar_root(cont, res.ast_root, &res);

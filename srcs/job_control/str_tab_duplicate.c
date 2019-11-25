@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 21:32:43 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/11/24 15:18:27 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/25 10:43:59 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void		free_string_tab(char **str_tab)
 	i = 0;
 	while (str_tab[i] != NULL)
 	{
-		free(str_tab[i]);
+		ft_strdel(str_tab + i);
 		i++;
 	}
 }

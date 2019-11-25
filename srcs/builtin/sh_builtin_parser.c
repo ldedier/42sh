@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/15 13:19:47 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/13 05:11:40 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/25 10:56:35 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	parser_get_arg_content(t_args *args, char **argv, int *index)
 		if (!argv[*index + 1] || argv[*index + 1][0] == '-')
 			return (ERROR);
 		args->value = argv[*index + 1];
-		index += 1;
+		*index += 1;
 		return (SUCCESS);
 	}
 	else if (args->type == E_ARGS_INT)

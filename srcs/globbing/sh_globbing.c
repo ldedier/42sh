@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 13:31:28 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/23 18:18:50 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/25 10:41:20 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,12 +135,14 @@ int			sh_expansions_globbing(t_ast_node *node, t_dy_tab *quotes)
 		return (SUCCESS);
 	while (head && !ret)
 	{
+		children = (t_ast_node*)head->content;
+		if (!children || !children->token)
+			return (SUCCESS);
 		if (children->symbol->id != sh_index(LEX_TOK_WORD))
 		{
 			head = head->next;
 			continue ;
 		}
-		children = (t_ast_node*)head->content;
 		next_head = head->next;
 		if (children && children->token && children->token->lval != -1)
 			ret = sh_expansions_globbing_process_node(children, quotes);

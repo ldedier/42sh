@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_builtin_fc_get_entry.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/16 04:49:32 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/17 15:17:59 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/25 10:56:56 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ static t_dlist		*get_entry_from_number(t_history *history,
 	t_dlist	*ptr;
 	int		i;
 
-	i = 0;
 	if (number <= 0)
 	{
 		i = -1;
