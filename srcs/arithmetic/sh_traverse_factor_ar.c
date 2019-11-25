@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/15 17:49:36 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/18 14:38:22 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/25 22:17:23 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void		add_shell_var(char *variable, int to_add, t_context *context)
 		sh_perror(SH_ERR1_MALLOC, "add_shell_var");
 		context->arithmetic_error = FAILURE;
 	}
+	free(to_store);
 }
 
 long		get_integer_from_var(char *variable, t_context *context)
