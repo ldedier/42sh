@@ -28,7 +28,11 @@ static int	execute_child_part(
 		return (ret);
 	ret = context->builtin(context);
 	g_job_ctrl->interactive = 1;
+	free_execution_tools(&context->shell->exec->tokens,
+		&context->shell->exec->ast_root, &context->shell->exec->cst_root);
 	sh_free_all(context->shell);
+	free(context->cmd_string);
+	t_context_free_content(context);
 	return (ret);
 }
 
