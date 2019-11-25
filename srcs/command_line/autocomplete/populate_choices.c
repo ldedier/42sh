@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 12:03:42 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/13 06:34:39 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/25 03:23:26 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,8 @@ static int	populate_choices_from_binaries_then_folder(t_shell *shell,
 		if (populate_choices_from_folder(shell, word, -1))
 			return (1);
 	}
+	if (populate_choices_from_expansions(command_line, shell, word))
+		return (1);
 	return (0);
 }
 
