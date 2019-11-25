@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 18:37:05 by mdaoud            #+#    #+#             */
-/*   Updated: 2019/10/31 17:59:46 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/25 23:03:52 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ void	close_pipes_and_free(int curr_cmd, t_pipe *pipes, t_context *context)
 {
 	sh_reset_redirection(&context->redirections);
 	sh_free_all(context->shell);
+	free_execution_tools(&context->shell->exec->tokens,
+		&context->shell->exec->ast_root,&context->shell->exec->cst_root);
 	if (pipes->nb_pipe > curr_cmd)
 	{
 		close(pipes->tab_pds[curr_cmd][OUTPUT]);

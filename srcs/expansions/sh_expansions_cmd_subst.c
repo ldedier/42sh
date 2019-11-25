@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_expansions_cmd_subst.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 14:29:58 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/25 23:12:10 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/26 00:19:18 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ static int	child_part(t_context *context, char *command, int fds[])
 	close(fds[PIPE_OUT]);
 	g_job_ctrl->interactive = 0;
 	t_context_free_content(context);
+	ft_strdel(&context->shell->hist_dup);
 	free_execution_tools(&context->shell->exec->tokens,
 		&context->shell->exec->ast_root, &context->shell->exec->cst_root);
 	ret = execute_command(context->shell, command, 0);

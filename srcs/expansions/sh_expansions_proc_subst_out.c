@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 14:29:58 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/23 11:33:37 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/25 22:44:39 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,9 @@ static void	sh_get_process_subst_out_child(
 	}
 	close(fds[PIPE_OUT]);
 	g_job_ctrl->interactive = 0;
+	free_execution_tools(&shell->exec->tokens, &shell->exec->ast_root,
+		&shell->exec->cst_root);
+	ft_strdel(&shell->hist_dup);
 	ret = execute_command(shell, command, 0);
 	g_job_ctrl->interactive = 1;
 	close(fds[PIPE_IN]);
