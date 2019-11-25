@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/11 17:43:29 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/23 19:35:18 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/25 23:10:54 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static int	sh_builtin_cd_body(
 		ft_dprintf(2, MAGENTA"cd : rules 1 - 6 : curpath = %s\n"EOC, *curpath);
 	if (*curpath && **curpath)
 		ret = sh_builtin_cd_check_perms(*curpath, param);
-	else if (*param)
+	else if (param && *param)
 		ret = sh_builtin_cd_check_perms(param, param);
 	if (!ret && args[CD_L_OPT].priority > args[CD_P_OPT].priority)
 	{

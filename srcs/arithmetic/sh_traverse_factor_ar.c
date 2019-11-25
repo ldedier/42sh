@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/15 17:49:36 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/25 22:17:23 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/25 23:13:48 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void		add_shell_var(char *variable, int to_add, t_context *context)
 	if (sh_vars_assign_key_val(context->shell->env,
 		context->shell->vars, variable, to_store))
 	{
-		free(to_store);
 		sh_perror(SH_ERR1_MALLOC, "add_shell_var");
 		context->arithmetic_error = FAILURE;
 	}
