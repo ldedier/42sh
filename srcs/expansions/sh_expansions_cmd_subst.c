@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 14:29:58 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/25 22:42:25 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/26 00:19:18 by mdaoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@ static int	child_part(t_context *context, char *command, int fds[])
 	g_job_ctrl->cmd_subst = 1;
 	sh_pre_execution();
 	reset_signals();
-	(void)ret;
-	ret = SUCCESS;
 	if (dup2(fds[PIPE_IN], STDOUT_FILENO) < 0)
 		return (sh_perror(SH_ERR1_INTERN_ERR, "get_subshell_output"));
 	close(fds[PIPE_OUT]);
@@ -82,7 +80,6 @@ int			sh_expansions_cmd_subst_process(t_context *context,
 	char	*str;
 	int		ret;
 
-	ret = SUCCESS;
 	if ((ret = get_subshell_output(context, exp->expansion, &str)))
 	{
 		if (str)
