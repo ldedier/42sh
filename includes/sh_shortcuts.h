@@ -141,7 +141,7 @@ int						execute_motion(
 int						execute_vsh_command(
 	t_command_line *command_line,
 	t_vshortcut *vshortcut,
-	char c,
+	int c,
 	int cmd_suffix);
 int						execute_vshortcut(
 	t_command_line *command_line, t_vshortcut *vshortcut, char c);
