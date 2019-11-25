@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 11:52:40 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/25 10:24:29 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/25 14:42:08 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,17 @@ static int	call_execve(t_context *context)
 	int		ret;
 
 	if (!context->params->tbl || !context->params->tbl[0])
-		exit(context->shell->ret_value);
+		return (context->shell->ret_value);
 	if (context->path == NULL)
 	{
 		sh_perror_err(context->params->tbl[0], SH_ERR1_CMD_NOT_FOUND);
-		exit(SH_RET_CMD_NOT_FOUND);
+		return (SH_RET_CMD_NOT_FOUND);
 	}
 	if ((ret = sh_traverse_sc_check_perm(context,
 				context->path, context->path)) != SUCCESS)
 	{
 		sh_env_update_ret_value(context->shell, ret);
-		exit(context->shell->ret_value);
+		return (context->shell->ret_value);
 	}
 	close(g_term_fd);
 	execve(context->path, (char **)context->params->tbl,
@@ -46,6 +46,7 @@ void		sh_execute_execve(t_ast_node *parent_node, t_context *context)
 	if ((ret = loop_traverse_redirection(parent_node, context)) == SUCCESS)
 		ret = call_execve(context);
 	sh_reset_redirection(&context->redirections);
+	free(context->cmd_string);
 	sh_free_all(context->shell);
 	exit(ret);
 }

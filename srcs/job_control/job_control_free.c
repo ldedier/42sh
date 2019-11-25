@@ -18,11 +18,6 @@ void			job_control_free(void)
 	t_job		*j;
 	t_job		*j_next;
 
-	if (g_job_ctrl->interactive == 0)
-	{
-		free(g_job_ctrl);
-		return ;
-	}
 	if (g_job_ctrl == NULL)
 		return ;
 	j = g_job_ctrl->first_job;
