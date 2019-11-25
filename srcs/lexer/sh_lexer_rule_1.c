@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 14:25:15 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/24 17:11:23 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/25 03:11:56 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static int	sh_lexer_rule1_check_final_pipe(t_lexer *lexer)
 		}
 		head = head->next;
 	}
-	if (!last_pipe)
+	if (!last_pipe || lexer->mode == E_LEX_AUTOCOMPLETION)
 		return (SUCCESS);
 	lexer->quoted = '|';
 	return (ERROR);

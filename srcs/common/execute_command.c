@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/15 16:08:40 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/25 10:19:44 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/25 14:14:01 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,8 @@ int			execute_command(t_shell *shell, char *command, int should_add)
 	if (should_add && !(dup = ft_strdup(command)))
 		return (sh_perror(SH_ERR1_MALLOC, "execute_command"));
 	ret = sh_process_command(shell, command);
-	if (ret != FAILURE && should_add && shell->history.should_add)
+	if (ret != FAILURE && should_add
+		&& shell->history.should_add && !ft_iswhite_only(command))
 	{
 		ret = sh_append_to_history(&shell->history, dup, 1);
 		ft_strdel(&dup);

@@ -6,7 +6,7 @@
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 21:15:57 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/04 21:16:12 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/25 07:20:15 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,4 @@ int		process_keys_ret(t_key_buffer *buffer, t_shell *shell,
 		return (ret);
 	else
 		return (KEEP_READ);
-	flush_keys(buffer);
-	return (KEEP_READ);
 }

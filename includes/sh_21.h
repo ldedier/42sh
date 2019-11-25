@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/30 15:48:56 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/20 12:50:47 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/25 07:43:54 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@
 
 # define KEEP_READ		7
 # define HIST_EXP_ERROR	8
+
+# define RETURN_COMMAND	 9
 
 # define MAX_YANK				2000
 # define BINARIES_TABLE_SIZE	200
