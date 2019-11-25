@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/22 14:40:58 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/25 00:19:48 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/25 06:15:48 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,10 @@ int		render_command_line(t_command_line *command_line,
 	int		ret;
 
 	if (!isatty(0) || !command_line || g_glob.winsize.ws_row <= 1)
+	{
+		g_glob.cursor += cursor_inc;
 		return (SUCCESS);
+	}
 	str = tgetstr("vi", NULL);
 	tputs(str, 1, putchar_int);
 	go_up_to_prompt(g_glob.winsize.ws_col, g_glob.cursor);
