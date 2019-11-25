@@ -6,7 +6,7 @@
 /*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 10:34:50 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/23 11:41:50 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/25 11:23:58 by jdugoudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	braces_child_part(t_ast_node *node, t_context *context)
 	if ((ret = sh_traverse_tools_compound_redir(
 					node, context, &compound_redir, &lst_redi)))
 		return (ret);
-	ret = sh_traverse_tools_search_term(node, context);
+	sh_traverse_tools_search_term(node, context);
 	if (sh_reset_redirection(&lst_redi))
 		return (FAILURE);
 	return (SUCCESS);
