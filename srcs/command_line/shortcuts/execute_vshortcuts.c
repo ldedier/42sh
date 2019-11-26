@@ -42,7 +42,7 @@ int		execute_motion(t_command_line *line, int index, int vi)
 }
 
 int		execute_vsh_command(t_command_line *command_line,
-					t_vshortcut *vshortcut, char c, int cmd_suffix)
+					t_vshortcut *vshortcut, int c, int cmd_suffix)
 {
 	if (vshortcut->inclusion != E_MOTION_NO_SAVE &&
 		sh_save_command_line(command_line) != SUCCESS)
