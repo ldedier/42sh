@@ -6,11 +6,11 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/06/06 16:09:28 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/21 15:06:15 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/26 01:26:01 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-launch "Field splitting"
+launch "Field_splitting"
 	launch_show "simple"
 		test_launch 'var="Okalmose speculos"' 'echo $var'
 		test_launch 'var="-n pwd"' 'echo $var'

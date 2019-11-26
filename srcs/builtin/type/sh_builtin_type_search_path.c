@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:34:52 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/25 10:56:14 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/26 07:43:39 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,6 @@ int			sh_builtin_type_search_in_path(
 	int			ret;
 
 	found = 0;
-	ret = SUCCESS;
 	if (!(env_path = sh_vars_get_value(context->env, context->vars, "PATH")))
 		return (ERROR);
 	while ((path = ft_strsep(&env_path, ":")))

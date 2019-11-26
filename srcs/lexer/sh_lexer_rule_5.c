@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 14:37:57 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/25 02:54:09 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/26 08:01:12 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ static int		sh_lexer_exp_autocomplete(t_lexer *lexer, char *start)
 		lexer->tok_len = 3;
 	else
 		lexer->tok_len = 2;
-	// if  (t_lexer_add_token(lexer) == LEX_FAIL)
-	// 	return (FAILURE);
 	lexer->current_id = LEX_TOK_WORD;
 	return (LEX_OK);
 }

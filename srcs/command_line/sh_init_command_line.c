@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/17 16:22:42 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/24 20:56:03 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/26 08:47:21 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int			sh_init_command_line(t_shell *shell, t_command_line *command_line)
 	command_line->pinned_index = -1;
 	command_line->scrolled_lines = 0;
 	command_line->context = E_CONTEXT_STANDARD;
-	command_line->edit_style = E_EDIT_STYLE_VIM;
+	command_line->edit_style = E_EDIT_STYLE_READLINE;
 	command_line->mode = E_MODE_INSERT;
 	return (sh_init_command_line_ret(shell, command_line));
 }

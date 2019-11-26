@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/22 12:08:09 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/25 14:44:16 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/26 08:46:47 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,8 @@ int			sh_expansions_arithmetic_process(t_context *context,
 
 	if (!(quotes = ft_dy_tab_new(1)))
 		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_arithmetic_process"));
-	if (!(exp->res = ft_dy_str_new_str(exp->expansion)))
-		return (sh_perror(SH_ERR1_MALLOC, "sh_expansions_arithmetic_process"));
 	ret = sh_expansions_scan(&(exp->expansion), 0, context, quotes);
+	ft_dy_tab_del_ptr(quotes);
 	if (sh_verbose_expansion())
 		ft_dprintf(2, "arithmetic expansion : %s\n", exp->expansion);
 	if (ret)

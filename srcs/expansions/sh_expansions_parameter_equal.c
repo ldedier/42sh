@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/22 09:05:41 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/22 09:05:46 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/25 23:03:12 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ static int	assign_word(
 	}
 	*param = buff;
 	exp->res = ft_dy_str_new_str(word);
+	free(word);
 	return (SUCCESS);
 }
 

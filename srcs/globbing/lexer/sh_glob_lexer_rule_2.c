@@ -6,11 +6,20 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/20 07:46:29 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/20 11:23:56 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/26 07:53:17 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
+
+static void	verbose_rule_2(t_glob_lexer *lexer)
+{
+	if (sh_verbose_globbing())
+	{
+		dprintf(2, GREEN"\tparsed => ");
+		t_regexp_show_list(lexer->regexp_tab->tbl[lexer->regexp_tab_index]);
+	}
+}
 
 static int	add_final_slash(t_list **regexp_tab, int i)
 {
@@ -52,6 +61,7 @@ int			sh_glob_lexer_rule_2(t_glob_lexer *lexer)
 		}
 		else if (*regexp_list)
 		{
+			verbose_rule_2(lexer);
 			if (ft_dy_tab_add_ptr(lexer->regexp_tab, NULL))
 				return (sh_perror(SH_ERR1_MALLOC, "sh_glob_lexer_rule_2 (2)"));
 			lexer->regexp_tab_index += 1;

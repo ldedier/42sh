@@ -22,7 +22,7 @@ int			sh_glob_lexer_rule_1(t_glob_lexer *lexer)
 			return (LEX_FAIL);
 		if (sh_verbose_globbing())
 		{
-			dprintf(2, GREEN"\tparsed => ");
+			ft_dprintf(2, GREEN"\tparsed => ");
 			t_regexp_show_list(lexer->regexp_tab->tbl[lexer->regexp_tab_index]);
 		}
 		return (LEX_END);

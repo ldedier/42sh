@@ -23,8 +23,8 @@ void			jobs_terminate(void)
 		{
 			if (j->pgid != 0)
 			{
-				kill(-j->pgid, SIGCONT);
 				kill(-j->pgid, SIGHUP);
+				kill(-j->pgid, SIGCONT);
 			}
 			j = j->next;
 		}

@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/11 02:35:55 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/15 15:07:08 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/25 23:50:52 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ int			sh_builtin_cd_rule5(
 
 	cdpath = sh_vars_get_value(context->env, context->vars, "CDPATH");
 	ret = SUCCESS;
-	if (cdpath && *cdpath)
+	if (cdpath && *cdpath && !args[CD_HYPHEN_OPT].value)
 		ret = sh_builtin_cd_cdpath(context, curpath, param, args);
 	if (!ret && !*curpath)
 	{

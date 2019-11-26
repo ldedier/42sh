@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/22 19:04:46 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/15 15:07:40 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/26 00:37:05 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -145,6 +145,9 @@ launch "cd"
 	test_launch 'cd /././ ; echo $? ; pwd'
 	test_launch 'cd /./../ ; echo $? ; pwd'
 	test_launch 'cd /.././ ; echo $? ; pwd'
+	test_launch 'CDPATH="/bin:/tmp"' 'cd - ; pwd'
+	test_launch 'CDPATH="/bin:/tmp"' 'OLDPWD=" "' 'cd - ; pwd'
+	test_launch 'CDPATH="/bin:/tmp"' 'unset OLDPWD' 'cd - ; pwd'
 
 	launch_show "Old errors"
 	test_launch "cd ././../.." 'echo $?' "pwd"

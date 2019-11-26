@@ -89,7 +89,7 @@ int							sh_glob_lexer_rule_6(t_glob_lexer *lexer);
 ** sh_globbing.c
 */
 int							sh_expansions_globbing(
-	t_ast_node *node, t_dy_tab *quotes);
+	t_ast_node *node, t_dy_tab *quotes, int ret);
 
 /*
 ** sh_globbing_for_substring_removal.c
@@ -100,6 +100,8 @@ int							sh_globbing_substring_removal_get_word(
 /*
 ** sh_is_pattern_matching.c
 */
+int							sh_globbing_call_pattern_function(
+	char *name, int *i, t_list **regexp_head);
 int							sh_is_pattern_matching(
 	char *name, t_list *regexp_head);
 int							sh_is_pattern_matching_for_substring_removal(
@@ -141,7 +143,7 @@ int							sh_pattern_matching_quest(
 ** sh_pattern_matching_star.c
 */
 int							sh_pattern_matching_star(
-	char *name, t_regexp *regexp, int *i, t_list *regexp_head);
+	char *name, int *i, t_list *regexp_head);
 
 /*
 ** sh_pattern_matching_str.c

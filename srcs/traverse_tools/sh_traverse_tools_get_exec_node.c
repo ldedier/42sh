@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_traverse_tools_get_exec_node.c                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:00:19 by jdugoudr          #+#    #+#             */
-/*   Updated: 2019/11/04 14:08:40 by jdugoudr         ###   ########.fr       */
+/*   Updated: 2019/11/26 08:07:46 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,14 @@ static int	process_node_to_exec(
 		ret = sh_traverse_and_or(node_to_exec, context);
 	}
 	return (ret);
+}
+
+static void	get_node_to_exec_init(
+	t_list **lst, t_ast_node **node_to_exec, int *ret, t_ast_node *node)
+{
+	*lst = node->children;
+	*node_to_exec = NULL;
+	*ret = SUCCESS;
 }
 
 /*
@@ -49,9 +57,7 @@ int			get_node_to_exec(t_ast_node *node, t_context *context,
 	t_ast_node	*node_to_exec;
 	int			ret;
 
-	lst = node->children;
-	node_to_exec = NULL;
-	ret = SUCCESS;
+	get_node_to_exec_init(&lst, &node_to_exec, &ret, node);
 	while (lst && ret == SUCCESS)
 	{
 		curr_node = lst->content;
@@ -62,6 +68,8 @@ int			get_node_to_exec(t_ast_node *node, t_context *context,
 			context->cmd_type = SIMPLE_NODE;
 			context->wflags = 0;
 			ret = f(node_to_exec, curr_node->children->content, context);
+			if (context->shell->ret_value == 130)
+				return (SUCCESS);
 			node_to_exec = NULL;
 		}
 		else

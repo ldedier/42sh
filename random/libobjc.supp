@@ -1,0 +1,9 @@
+{
+   all tgetent and tgetstre leaks
+   Memcheck:Leak
+   match-leak-kinds: all
+   fun:*alloc
+   ...
+   obj:/usr/lib/libobjc.A.dylib
+   ...
+}

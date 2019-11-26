@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/15 16:08:40 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/25 14:49:10 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/26 08:46:13 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ static int	sh_process_command(t_shell *shell, char *command)
 		ret = sh_process_command_parse_error(shell, ret, &res);
 	else
 	{
+		shell->exec = &res;
 		ret = sh_process_traverse(shell, res.ast_root);
 		free_execution_tools(&res.tokens, &res.ast_root, &res.cst_root);
 	}
@@ -65,6 +66,7 @@ int			execute_command(t_shell *shell, char *command, int should_add)
 	shell->history.should_add = 1;
 	if (should_add && !(dup = ft_strdup(command)))
 		return (sh_perror(SH_ERR1_MALLOC, "execute_command"));
+	shell->hist_dup = dup;
 	ret = sh_process_command(shell, command);
 	if (ret != FAILURE && should_add
 		&& shell->history.should_add && !ft_iswhite_only(command))

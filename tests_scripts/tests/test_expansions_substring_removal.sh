@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/21 16:00:50 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/21 15:24:31 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/26 08:30:46 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -131,6 +131,31 @@ launch "substring_removal"
 	test_launch 'var="Welcome to the geekstuff"' 'echo ${#var}'
 	test_launch 'filename="bash.string.txt"' 'echo ${filename#*.}' 'echo ${filename%.*}'
 	test_launch 'filename="bash.string.txt"' '${filename##*.}' '${filename%%*.}'
+
+	launch_show 'randomly created'
+	test_launch 'param=Okalm'  'word' 'echo ${param%word=}'
+	test_launch 'param=Okalm'  '?' 'echo ${param%word=}'
+	test_launch 'param=Okalm'  '??' 'echo ${param%word=}'
+	test_launch 'param=Okalm'  '?*?' 'echo ${param%word=}'
+	test_launch 'param=Okalm'  '[A-Z][!a-z]' 'echo ${param%word=}'
+	test_launch 'param=Okalm'  '[A-Z][!a-z]?' 'echo ${param%word=}'
+	test_launch 'param=Okalm'  '[A-Z][!a-z]?*' 'echo ${param%word=}'
+	test_launch 'param=Okalm'  '' 'echo ${param%word=}'
+	test_launch 'param=Okalm'  '*/' 'echo ${param%word=}'
+	test_launch 'param=Okalm'  '/*' 'echo ${param%word=}'
+	test_launch 'param=Okalm'  '?/' 'echo ${param%word=}'
+	test_launch 'param=Okalm'  '?/' 'echo ${param%word=}'
+	test_launch 'param=Okalm'  'one?' 'echo ${param%word=}'
+	test_launch 'param=Okalm'  'th???' 'echo ${param%word=}'
+	test_launch 'param=Okalm'  '*/*' 'echo ${param%word=}'
+	test_launch 'param=Okalm'  '[\[]' 'echo ${param%word=}'
+	test_launch 'param=Okalm'  'word' 'echo ${param%}'
+	test_launch 'param=Okalm'  '?' 'echo ${param%}'
+	test_launch 'param=Okalm'  '??' 'echo ${param%}'
+	test_launch 'param=Okalm'  '?*?' 'echo ${param%}'
+	test_launch 'param=Okalm'  '[A-Z][!a-z]' 'echo ${param%}'
+	test_launch 'param=Okalm'  '[A-Z][!a-z]?' 'echo ${param%}'
+	test_launch 'param=Okalm'  '[A-Z][!a-z]?*' 'echo ${param%}'
 
 	# test_launch 'param=""'  'echo ${param%}'
 	# test_launch 'param=""'  'echo ${param%}'

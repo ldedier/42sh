@@ -312,12 +312,6 @@ int					ft_preprocess_choice_add(
 /*
 ** render_choices.c
 */
-char				*new_print_buffer(void);
-int					sh_should_render_choices(
-	t_command_line *command_line, int nb_visible_lines);
-void				update_dimensions(
-	t_command_line *command_line, int max_len);
-void				update_back_nb_cols(t_command_line *command_line);
 int					render_choices(
 	t_command_line *command_line, int *to_go_up);
 
