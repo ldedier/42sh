@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/16 05:23:32 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/23 19:30:15 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/26 01:32:39 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -121,6 +121,11 @@ launch "Globbing"
 	test_launch 'cd sandbox' 'mkdir permission ; chmod 300 permission' 'echo ?????????? ; echo $?' 'echo ??????????/ ; echo $?' 'echo perm* ; echo $?' 'echo perm*/ ; echo $?' 'chmod 777 permission ; rm -r permission'
 	test_launch 'cd sandbox' 'mkdir permission ; chmod 200 permission' 'echo ?????????? ; echo $?' 'echo ??????????/ ; echo $?' 'echo perm* ; echo $?' 'echo perm*/ ; echo $?' 'chmod 777 permission ; rm -r permission'
 	test_launch 'cd sandbox' 'mkdir permission ; chmod 100 permission' 'echo ?????????? ; echo $?' 'echo ??????????/ ; echo $?' 'echo perm* ; echo $?' 'echo perm*/ ; echo $?' 'chmod 777 permission ; rm -r permission'
+
+	launch_show 'old errors'
+	test_launch 'cd sandbox' 'echo ?*' 'echo *?' 'echo *???*'
+	test_launch 'cd sandbox' 'echo ?*/*?'
+	test_launch 'cd sandbox' 'echo ????*/*/*?'
 
 	launch_show "Correction"
 	test_launch 'mkdir -p empty ; cd empty' 'touch a? b* [c]; ls -1'

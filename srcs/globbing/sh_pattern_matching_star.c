@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 04:49:08 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/07 05:22:46 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/26 01:37:41 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ static int	next_is_str(char *name, int *i, t_regexp *next_regexp)
 */
 
 static int	next_is_quest(
-	char *name, t_regexp *regexp, int *i, t_list *next_to_head)
+	char *name, t_regexp *regexp, int *i)
 {
-	if (sh_pattern_matching_star(name, regexp, i, next_to_head))
+	if (sh_pattern_matching_quest(name, regexp, i))
 		return (ERROR);
 	(*i)--;
 	return (SUCCESS);
@@ -111,7 +111,7 @@ int			sh_pattern_matching_star(
 	else if (next_regexp->type == REG_STR)
 		return (next_is_str(name, i, next_regexp));
 	else if (next_regexp->type == REG_QUEST)
-		return (next_is_quest(name, regexp, i, regexp_head->next));
+		return (next_is_quest(name, regexp, i));
 	else if (next_regexp->type == REG_BRACE)
 		return (next_is_brace(name, next_regexp, i));
 	return (ERROR);

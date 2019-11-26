@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/28 01:13:40 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/25 10:23:39 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/25 22:05:31 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,9 +21,9 @@ launch "correction"
 	launch_show "21sh"
 	test_launch 'ls > /tmp/ftsh_ls_out /' 'cat /tmp/ftsh_ls_out' '< /tmp/ftsh_ls_out cat -e >> /tmp/ftsh_ls_out' 'cat /tmp/ftsh_ls_out' 'rm /mp/ftsh_ls_out'
 	test_launch 'echo 1 >out >&2 2>err' 'echo 2 >out 2>err' 'cat out' 'cat err' 'rm out err'
-	test_launch 'echo nonstadard fd > du_fd' 'cat 4 non-standard fd'
+	test_launch 'echo nonstadard fd > du_fd' 'cat 4 non-standard fd' 'rm du_fd'
 	test_launch 'cat <&4 2>&1 2>/dev/null'
-	test_launch 'echo abc >redir_one_to_all' 'cat 9 abc'
+	test_launch 'echo abc >redir_one_to_all' 'cat 9 abc' 'rm redir_one_to_all'
 	test_launch 'cat <&- abc'
 	test_launch 'ls doesnotexist . 2>&1 >/dev/null'
 	test_launch 'ls doesnotexist . >/dev/null 2>&1'
@@ -78,11 +78,11 @@ EOF'
 	test_launch 'true; echo ${?}; false; echo ${?}'
 
 	launch_show "Job Control"
-	test_launch 'mkfifo fifo' 'ls -AR /usr >fifo 2>&1 &' 'jobs'
+	test_launch 'mkfifo fifo' 'ls -AR /usr >fifo 2>&1 &' 'jobs' 'rm fifo'
 	test_launch 'emacs -nw &' 'emacs -nw &' 'jobs' 'jobs' 'fg'
 
 	launch_show "Signaux"
-	test_launch 'python -c "import os, signal;os.kill(os.getpid(), signal.SIGSEGV)"'
+	# test_launch 'python -c "import os, signal;os.kill(os.getpid(), signal.SIGSEGV)"'
 
 	launch_show "Partie modulaire"
 	launch_show "Inhibiteurs"
@@ -95,7 +95,6 @@ EOF'
 	test_launch 'ls\' 's \' '-lat'
 	test_launch 'echo abc \|cat -e'
 	test_launch 'echo abc \\|cat -e'
-
 
 	launch_show "Grouped commands"
 	test_launch '()'
