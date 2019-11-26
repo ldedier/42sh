@@ -98,7 +98,7 @@ if [ -n "$file" ] ; then
 		source $f
 	done
 else
-	for file in `ls tests/test_*.sh` ; do
+	for file in `ls -t1 tests/test_*.sh` ; do
 		echo -e ${blue}${file}${eoc}
 		source $file
 	done
