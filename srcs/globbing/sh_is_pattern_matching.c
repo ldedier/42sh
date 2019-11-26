@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_is_pattern_matching.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaoud <mdaoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 01:30:15 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/22 18:26:55 by mdaoud           ###   ########.fr       */
+/*   Updated: 2019/11/26 07:02:14 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 **		ERROR : A pattern do not matched
 */
 
-static int	call_pattern_function(
+int			sh_globbing_call_pattern_function(
 	char *name, int *i, t_list **regexp_head)
 {
 	int			ret;
@@ -35,7 +35,7 @@ static int	call_pattern_function(
 	else if (regexp->type == REG_BRACE)
 		ret = sh_pattern_matching_brace(name, regexp, i);
 	else if (regexp->type == REG_STAR)
-		ret = sh_pattern_matching_star(name, regexp, i, *regexp_head);
+		ret = sh_pattern_matching_star(name, i, *regexp_head);
 	else
 		ret = ERROR;
 	if (ret)
@@ -74,7 +74,7 @@ int			sh_is_pattern_matching(char *name, t_list *regexp_head)
 		return (ERROR);
 	while (regexp_head && name[i])
 	{
-		if (call_pattern_function(name, &i, &regexp_head))
+		if (sh_globbing_call_pattern_function(name, &i, &regexp_head))
 			return (ERROR);
 	}
 	while (regexp_head && ((t_regexp*)regexp_head->content)->type == REG_STAR)
@@ -95,7 +95,7 @@ int			sh_is_pattern_matching_for_substring_removal(
 	while (regexp_head && name[i])
 	{
 		ft_dprintf(2, "evaluating : %s\n", name);
-		if (call_pattern_function(name, &i, &regexp_head))
+		if (sh_globbing_call_pattern_function(name, &i, &regexp_head))
 			return (ERROR);
 	}
 	while (regexp_head && ((t_regexp*)regexp_head->content)->type == REG_STAR)

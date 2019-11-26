@@ -6,34 +6,11 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 04:49:08 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/26 01:37:41 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/26 07:01:08 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
-
-/*
-** next_is_str:
-**	If next regexp is a string, name shall contain this constant,
-**	if it does not pattern cannot be fitted.
-**
-**	Returned Values
-**		SUCCESS : Pattern can fit
-**		ERROR : Can't find coinstant in name
-*/
-
-static int	next_is_str(char *name, int *i, t_regexp *next_regexp)
-{
-	char	*buff;
-
-	next_regexp->value[next_regexp->len] = '\0';
-	if ((buff = ft_strrstr(name + *i, next_regexp->value)))
-	{
-		(*i) += buff - (name + *i);
-		return (SUCCESS);
-	}
-	return (ERROR);
-}
 
 /*
 ** next_is_quest:
@@ -47,13 +24,32 @@ static int	next_is_str(char *name, int *i, t_regexp *next_regexp)
 **		ERROR : Pattern do not fit
 */
 
-static int	next_is_quest(
-	char *name, t_regexp *regexp, int *i)
+static int	star_recursive_check(
+	char *name, int *i, t_list *regexp_head)
 {
-	if (sh_pattern_matching_quest(name, regexp, i))
-		return (ERROR);
-	(*i)--;
-	return (SUCCESS);
+	int		index;
+	int		j;
+	t_list	*head;
+
+	index = *i;
+	while (name[index])
+	{
+		head = regexp_head->next;
+		j = index;
+		while (head)
+		{
+			t_regexp_show_list(head);
+			if (sh_globbing_call_pattern_function(name, &j, &head) == ERROR)
+				break ;
+		}
+		if (!head && !name[j])
+		{
+			*i = index;
+			return (SUCCESS);
+		}
+		index++;
+	}
+	return (ERROR);
 }
 
 /*
@@ -68,21 +64,6 @@ static int	next_is_quest(
 **		ERROR : Pattern do not fit
 */
 
-static int	next_is_brace(char *name, t_regexp *next_regexp, int *i)
-{
-	int		j;
-
-	j = ft_strlen(name) - 1;
-	while (j >= (*i) && sh_pattern_matching_brace(name, next_regexp, &j))
-	{
-		j--;
-	}
-	if (j < (*i))
-		return (ERROR);
-	(*i) = j - 1;
-	return (SUCCESS);
-}
-
 /*
 ** sh_pattern_matching_star:
 **	Star mechanism is based on next pattern. If star is the last pattern,
@@ -95,24 +76,13 @@ static int	next_is_brace(char *name, t_regexp *next_regexp, int *i)
 */
 
 int			sh_pattern_matching_star(
-	char *name, t_regexp *regexp, int *i, t_list *regexp_head)
+	char *name, int *i, t_list *regexp_head)
 {
-	t_regexp	*next_regexp;
-
 	if (!regexp_head->next)
 	{
 		while (name[*i])
 			(*i) += 1;
 		return (SUCCESS);
 	}
-	next_regexp = (t_regexp*)regexp_head->next->content;
-	if (next_regexp->type == REG_STAR)
-		return (SUCCESS);
-	else if (next_regexp->type == REG_STR)
-		return (next_is_str(name, i, next_regexp));
-	else if (next_regexp->type == REG_QUEST)
-		return (next_is_quest(name, regexp, i));
-	else if (next_regexp->type == REG_BRACE)
-		return (next_is_brace(name, next_regexp, i));
-	return (ERROR);
+	return (star_recursive_check(name, i, regexp_head));
 }
