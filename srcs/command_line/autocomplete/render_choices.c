@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 02:33:03 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/26 07:52:04 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/26 08:00:11 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static int	render_choices_return_value(
 	return (ft_free_turn(print_buffer, SUCCESS));
 }
 
-int		render_choices(t_command_line *command_line, int *to_go_up)
+int			render_choices(t_command_line *command_line, int *to_go_up)
 {
 	char	*print_buffer;
 	int		max_len;

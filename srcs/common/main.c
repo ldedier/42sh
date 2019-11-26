@@ -6,26 +6,12 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 17:59:53 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/25 12:41:14 by ldedier          ###   ########.fr       */
+/*   Updated: 2019/11/26 08:08:38 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_21.h"
 #include "sh_job_control.h"
-
-//pid_t g_tmp_save;
-
-
-void __attribute__((destructor)) end();
-
-void end()
-{
-//	if (getpid() == g_tmp_save)
-//	{
-//		ft_printf("destructor...\n");
-//		while(1);
-//	}
-}
 
 static int	main_exit_value(t_shell *shell, int ret)
 {
@@ -64,9 +50,6 @@ int			main(int argc, char **argv, char **env)
 	t_shell		shell;
 	int			ret;
 
-//	g_tmp_save = getpid();
-	(void)argc;
-	(void)argv;
 	if (!is_open(0))
 		return (0);
 	if (jobs_init())
@@ -85,4 +68,6 @@ int			main(int argc, char **argv, char **env)
 	else if ((ret = main_non_canonical_mode(&shell, env)) == FAILURE)
 		return (FAILURE);
 	return (main_exit_value(&shell, ret));
+	(void)argc;
+	(void)argv;
 }

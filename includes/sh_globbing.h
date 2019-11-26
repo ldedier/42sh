@@ -89,7 +89,7 @@ int							sh_glob_lexer_rule_6(t_glob_lexer *lexer);
 ** sh_globbing.c
 */
 int							sh_expansions_globbing(
-	t_ast_node *node, t_dy_tab *quotes);
+	t_ast_node *node, t_dy_tab *quotes, int ret);
 
 /*
 ** sh_globbing_for_substring_removal.c

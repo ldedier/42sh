@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 13:31:28 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/25 10:41:20 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/26 08:17:05 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,15 +121,13 @@ static int	sh_expansions_globbing_process_node(
 	return (ret);
 }
 
-int			sh_expansions_globbing(t_ast_node *node, t_dy_tab *quotes)
+int			sh_expansions_globbing(t_ast_node *node, t_dy_tab *quotes, int ret)
 {
 	t_ast_node		*children;
 	t_list			*head;
 	t_list			*next_head;
-	int				ret;
 
 	head = node->parent->children;
-	ret = SUCCESS;
 	children = (t_ast_node*)head->content;
 	if (!children || !children->token || children->token->lval == -1)
 		return (SUCCESS);
