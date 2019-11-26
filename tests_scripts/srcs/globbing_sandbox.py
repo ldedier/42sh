@@ -7,6 +7,10 @@ max_subdir = 3
 
 max_len = 10
 
+def touch(file):
+	open(file, 'a').close()
+
+
 try :
 	os.mkdir("./sandbox")
 except :
@@ -31,5 +35,16 @@ for char in range(min_char, max_char + 1, 1):
 				open(chr(char) * len, 'a').close()
 			except :
 				pass
+		touch("." + len * str(char))
 	#try : os.symlink(chr(char), "link_" + str(char))
 	#except : pass
+
+
+touch("filefilefile")
+touch("ababab")
+touch("abcabcabc")
+touch("ABABABAB")
+touch("ABCABCABC")
+touch(".ababab")
+touch(".abcabcabc")
+touch(".o")
