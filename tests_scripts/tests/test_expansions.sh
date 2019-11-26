@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/23 13:10:40 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/26 00:48:00 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/26 07:38:12 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,8 +23,8 @@ launch "Expansions"
 	test_launch 'echo ${)'
 	test_launch 'echo $novar ls'
 	test_launch	'echo $pwd $pwd'
-	test_launch 'alias al="$var"' 'var="ls -a ; al"' 'al ; echo $?' '$var ; echo $?'
-	test_launch 'var="ls -a ; al"' 'alias al="$var"' 'al ; echo $?' '$var ; echo $?'
+	test_launch 'shopt -s expand_aliases' 'alias al="$var"' 'var="ls -a ; al"' 'al ; echo $?' '$var ; echo $?'
+	test_launch 'shopt -s expand_aliases' 'var="ls -a ; al"' 'alias al="$var"' 'al ; echo $?' '$var ; echo $?'
 	test_launch 'ahsdiouashdiuasdhioasjdopasdjoldniouhjnqwioejqnwoel=adisuhiduashnodklajsodiajlsdlkasasdhuasodiu' 'echo $ahsdiouashdiuasdhioasjdopasdjoldniouhjnqwioejqnwoel='
 
 	launch_show "Basic"

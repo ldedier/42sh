@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/28 01:13:40 by jmartel           #+#    #+#              #
-#    Updated: 2019/11/25 22:05:31 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/26 08:24:56 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -77,10 +77,6 @@ EOF'
 	test_launch 'unset PATH' 'PATH=/bin:/usr/bin' 'mkdir testdir' 'echo ${?}' 'ls -1 | grep testdir' 'rm -rf testdir'
 	test_launch 'true; echo ${?}; false; echo ${?}'
 
-	launch_show "Job Control"
-	test_launch 'mkfifo fifo' 'ls -AR /usr >fifo 2>&1 &' 'jobs' 'rm fifo'
-	test_launch 'emacs -nw &' 'emacs -nw &' 'jobs' 'jobs' 'fg'
-
 	launch_show "Signaux"
 	# test_launch 'python -c "import os, signal;os.kill(os.getpid(), signal.SIGSEGV)"'
 
@@ -125,14 +121,9 @@ EOF'
 	test_launch 'diff <(ls) <(ls -a)'
 	test_launch 'ls | tee >(cat -e) >/dev/null'
 	test_launch ' sort <(cat -e <(grep fork <(ls -tr /usr/share/man/man2)) | (head -n 1 1> >(rev)))'
-	test_launch 'echo hello world' '!! | cat -e' '!echo' 'fc -ln' 'fc -lr'
 	test_launch 'echo hello word ; echo lol' 'echo tamer' '!-1'
-	test_launch 'ls asdasd' 'fc -s -- -1 2>/dev/null'
 
 	launch_show 'hash'
-	## Deprecated
-#	test_launch 'ls ; type ls; env >/dev/null' 'hash mkdir; hash' 'hash -r ; hash'
-#	test_launch 'ls ; hash NOTHING ; hash' 'hash ps 42sh umount ; hash' ' echo $?'
 
 	launch_show 'test'
 	test_launch_pipe tests_files/test/test_1
