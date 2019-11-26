@@ -45,7 +45,7 @@ int			sh_regexp_parse_path_component(char *str, t_list **regexp_list)
 	}
 	if (sh_verbose_globbing())
 	{
-		dprintf(2, GREEN"\tparsed : %s => ", str);
+		ft_dprintf(2, GREEN"\tparsed : %s => ", str);
 		t_regexp_show_list(*regexp_list);
 	}
 	return (SUCCESS);
