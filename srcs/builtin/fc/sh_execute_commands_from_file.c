@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/17 15:23:43 by ldedier           #+#    #+#             */
-/*   Updated: 2019/11/25 10:57:20 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/26 07:42:35 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,7 @@ int				sh_execute_commands_from_file(t_shell *shell, char *filename)
 	if (gnl_ret == -1)
 	{
 		close(fd);
-		return (sh_perror("get_next_line error",
-					"sh_execute_commands_from_edit_file"));
+		return (sh_perror("get_next_line", "sh_execute_commands_from_file"));
 	}
 	if (shell->running)
 		free(info.line);
