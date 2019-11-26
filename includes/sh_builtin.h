@@ -6,7 +6,7 @@
 /*   By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 11:36:31 by jmartel           #+#    #+#             */
-/*   Updated: 2019/11/25 11:24:21 by jmartel          ###   ########.fr       */
+/*   Updated: 2019/11/26 08:50:49 by jmartel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@
 /*
 ** Macros for export builtin
 */
-# define EXPORT_MSG			"declare -x" // need to be changed to "export"
+# define EXPORT_MSG			"export"
 # define EXPORT_USAGE		"name[=word]"
 # define EXPORT_P_OPT		0
 # define EXPORT_P_OPT_USAGE	"print all exported variables (default option)"

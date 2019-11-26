@@ -6,7 +6,7 @@
 #    By: jmartel <jmartel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/11 23:08:04 by ldedier           #+#    #+#              #
-#    Updated: 2019/11/25 10:27:55 by jmartel          ###   ########.fr        #
+#    Updated: 2019/11/26 08:51:58 by jmartel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -528,32 +528,12 @@ endif
 
 LFLAGS =	-L $(LIBFTDIR) -lft -ltermcap
 
-ifeq ($(DEBUG), 1)
-	CFLAGS += -fsanitize=address
-	CC += -g3
-	SPEED = -j8
-else
-	SPEED = -j8
-endif
-
-ifeq ($(ANALYZE), 1)
-	CFLAGS += --analyze
-	CC += -g3
-	SPEED = -j8
-else
-	SPEED = -j8
-endif
+SPEED = -j8
 
 all:
 	@$(MAKE) -C $(LIBFTDIR) $(SPEED)
 	@$(ECHO) "$(FLAGS_COLOR)Compiling with flags $(CFLAGS) $(EOC)"
 	@$(MAKE) $(BINDIR)/$(NAME) $(SPEED)
-
-debug:
-	@$(MAKE) all DEBUG=1
-
-analyze:
-	@$(MAKE) all ANALYZE=1
 
 $(LIBFT):
 	@$(MAKE) -C $(LIBFTDIR)
